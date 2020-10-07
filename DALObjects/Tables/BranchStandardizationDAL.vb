@@ -38,15 +38,15 @@ Public Class BranchStandardizationDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("branch_standardization_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -96,42 +96,42 @@ Public Class BranchStandardizationDAL
     'End Function
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function GetBranchAliasList(ByVal description As String, _
-                                    ByVal branchId As Guid, _
-                                    ByVal dealerId As Guid, _
-                                    ByVal companyIds As ArrayList) As DataSet
+    Public Function GetBranchAliasList(description As String, _
+                                    branchId As Guid, _
+                                    dealerId As Guid, _
+                                    companyIds As ArrayList) As DataSet
         Dim selectStmt As String
         If companyIds.Count > 1 Then
-            selectStmt = Me.Config("/SQL/LOAD_LIST_MULTIPLE_COMPANIES")
+            selectStmt = Config("/SQL/LOAD_LIST_MULTIPLE_COMPANIES")
         Else
-            selectStmt = Me.Config("/SQL/LOAD_LIST")
+            selectStmt = Config("/SQL/LOAD_LIST")
         End If
 
         Dim parameters() As OracleParameter
         Dim ds As New DataSet
 
-        If (Not description Is Nothing AndAlso Not (description.Equals(String.Empty))) AndAlso (Me.FormatSearchMask(description)) Then
-            selectStmt &= Environment.NewLine & "AND brchstand." & Me.COL_NAME_DEALER_BRANCH_CODE & description
+        If (Not description Is Nothing AndAlso Not (description.Equals(String.Empty))) AndAlso (FormatSearchMask(description)) Then
+            selectStmt &= Environment.NewLine & "AND brchstand." & COL_NAME_DEALER_BRANCH_CODE & description
         End If
 
         If Not branchId.Equals(Guid.Empty) Then
-            selectStmt &= Environment.NewLine & "AND brchstand." & Me.COL_NAME_BRANCH_ID & " = '" & Me.GuidToSQLString(branchId) & "'"
+            selectStmt &= Environment.NewLine & "AND brchstand." & COL_NAME_BRANCH_ID & " = '" & GuidToSQLString(branchId) & "'"
         End If
 
-        selectStmt &= Environment.NewLine & MiscUtil.BuildListForSql("AND d." & Me.COL_NAME_COMPANY_ID, companyIds, True)
+        selectStmt &= Environment.NewLine & MiscUtil.BuildListForSql("AND d." & COL_NAME_COMPANY_ID, companyIds, True)
 
-        selectStmt &= Environment.NewLine & "ORDER BY UPPER(brchstand." & Me.COL_NAME_DEALER_BRANCH_CODE & ")"
+        selectStmt &= Environment.NewLine & "ORDER BY UPPER(brchstand." & COL_NAME_DEALER_BRANCH_CODE & ")"
 
         If Not dealerId.Equals(Guid.Empty) Then
-            parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_DEALER_ID, dealerId.ToByteArray)}
+            parameters = New OracleParameter() {New OracleParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
         Else
-            parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_DEALER_ID, WILDCARD)}
+            parameters = New OracleParameter() {New OracleParameter(COL_NAME_DEALER_ID, WILDCARD)}
         End If
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Return ds
 
     End Function
@@ -140,8 +140,8 @@ Public Class BranchStandardizationDAL
 
 #Region "Overloaded Methods"
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing)
-        DBHelper.Execute(ds.Tables(Me.TABLE_NAME), Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, transaction)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing)
+        DBHelper.Execute(ds.Tables(TABLE_NAME), Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, transaction)
     End Sub
 
 #End Region

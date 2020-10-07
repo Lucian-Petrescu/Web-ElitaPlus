@@ -7,8 +7,8 @@ Public Class InvalidWildCardSearch
 
     End Sub
 
-    Public Sub New(ByVal strSearchStr As String)
-        Me.SearchedWildCardString = strSearchStr
+    Public Sub New(strSearchStr As String)
+        SearchedWildCardString = strSearchStr
     End Sub
 
     <DataMember(Name:="SearchedWildCardString", IsRequired:=True)>

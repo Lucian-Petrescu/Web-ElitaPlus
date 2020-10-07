@@ -41,8 +41,8 @@ Public Class GetDealers
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -53,10 +53,10 @@ Public Class GetDealers
     Private Sub Load(ByVal ds As GetDealersDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -73,7 +73,7 @@ Public Class GetDealers
         Try
             If ds.GetDealers.Count = 0 Then Exit Sub
             With ds.GetDealers.Item(0)
-                If Not .Iscompany_codeNull Then Me.CompanyCode = .company_code
+                If Not .Iscompany_codeNull Then CompanyCode = .company_code
             End With
 
         Catch ex As BOValidationException
@@ -92,15 +92,15 @@ Public Class GetDealers
 
     Public Property CompanyCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_COMPANY_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COMPANY_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_COMPANY_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_COMPANY_CODE), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_COMPANY_CODE, Value)
+            SetValue(DATA_COL_NAME_COMPANY_CODE, Value)
         End Set
     End Property
 
@@ -113,13 +113,13 @@ Public Class GetDealers
         Dim dealerList As Dealer.DealerSearchDV
 
         Try
-            Me.Validate()
+            Validate()
 
             dealerList = dealerBO.getList(Nothing, Nothing, Guid.Empty, Guid.Empty)
 
             If Not dealerList Is Nothing AndAlso dealerList.Count > 0 Then
-                If Not Me.CompanyCode Is Nothing AndAlso Not Me.CompanyCode.Equals(String.Empty) Then
-                    dealerList.RowFilter = Dealer.DealerSearchDV.COL_COMPANY & " = '" & Me.CompanyCode & "'"
+                If Not CompanyCode Is Nothing AndAlso Not CompanyCode.Equals(String.Empty) Then
+                    dealerList.RowFilter = Dealer.DealerSearchDV.COL_COMPANY & " = '" & CompanyCode & "'"
                     'Sort on Description by default
                     If dealerList.Table.Columns.IndexOf(LookupListNew.COL_DESCRIPTION_NAME) >= 0 Then
                         dealerList.Sort = LookupListNew.COL_DESCRIPTION_NAME

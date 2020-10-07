@@ -20,7 +20,7 @@ Namespace Claims
 
         Protected WithEvents UserControlAvailableSelectedServiceCenters As Assurant.ElitaPlus.ElitaPlusWebApp.Generic.UserControlAvailableSelected
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -52,7 +52,7 @@ Namespace Claims
             Public moIsnew As Boolean
             Public moClaimDenielLetters As Claims.LetterSearchDV
 
-            Public Sub New(ByVal oClaimbo As ClaimBase, ByVal oClaimId As Guid, ByVal oClaim As String, ByVal oCert As String, ByVal oCertId As Guid, ByVal oIsnew As Boolean, ByVal oClaimDenielLetters As Claims.LetterSearchDV)
+            Public Sub New(oClaimbo As ClaimBase, oClaimId As Guid, oClaim As String, oCert As String, oCertId As Guid, oIsnew As Boolean, oClaimDenielLetters As Claims.LetterSearchDV)
                 moClaimbo = oClaimbo
                 moClaimId = oClaimId
                 moClaim = oClaim
@@ -70,9 +70,9 @@ Namespace Claims
             Public LastOperation As DetailPageCommand
             Public EditingBo As DeniedClaims
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As DeniedClaims, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As DeniedClaims, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
@@ -108,70 +108,70 @@ Namespace Claims
         Protected Shadows ReadOnly Property State() As MyState
             Get
                 'Return CType(MyBase.State, MyState)
-                If Me.NavController.State Is Nothing Then
-                    Me.NavController.State = New MyState
+                If NavController.State Is Nothing Then
+                    NavController.State = New MyState
                 Else
-                    If Me.NavController.IsFlowEnded Then
+                    If NavController.IsFlowEnded Then
                         'restart flow
-                        Dim s As MyState = CType(Me.NavController.State, MyState)
+                        Dim s As MyState = CType(NavController.State, MyState)
                         'Me.StartNavControl()
-                        Me.NavController.State = s
+                        NavController.State = s
                     End If
                 End If
-                Return CType(Me.NavController.State, MyState)
+                Return CType(NavController.State, MyState)
             End Get
         End Property
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
 
 
 
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Me.State.MyBO = New DeniedClaims(CType(Me.CallingParameters, Guid))
+                    State.MyBO = New DeniedClaims(CType(CallingParameters, Guid))
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
 #End Region
 #Region "Page Events"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                Me.ErrControllerMaster.Clear_Hide()
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.MenuEnabled = False
+                ErrControllerMaster.Clear_Hide()
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
+                    MenuEnabled = False
                     'Me.State.moParams = CType(Me.CallingParameters, Parameters)
-                    Me.State.moParams = CType(Me.NavController.ParametersPassed, Parameters)
+                    State.moParams = CType(NavController.ParametersPassed, Parameters)
                     'Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
-                    If Me.State.moParams.moIsnew Then
-                        Me.State.MyBO = New DeniedClaims
-                        Me.State.IsNew = True
+                    If State.moParams.moIsnew Then
+                        State.MyBO = New DeniedClaims
+                        State.IsNew = True
                     Else
-                        Me.State.MyBO = New DeniedClaims(Me.State.moParams.moClaimId)
+                        State.MyBO = New DeniedClaims(State.moParams.moClaimId)
                     End If
-                    Me.PopulateDropdowns()
-                    Me.PopulateFormFromBOs()
+                    PopulateDropdowns()
+                    PopulateFormFromBOs()
 
-                    Me.EnableDisableFields()
+                    EnableDisableFields()
                 End If
                 BindBoPropertiesToLabels()
                 'CheckIfComingFromSaveConfirm()
-                If Not Me.IsPostBack Then
-                    Me.AddLabelDecorations(Me.State.MyBO)
+                If Not IsPostBack Then
+                    AddLabelDecorations(State.MyBO)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 #End Region
 #Region "Controlling Logic"
@@ -185,7 +185,7 @@ Namespace Claims
             ControlMgr.SetEnableControl(Me, TextboxDescription, True)
 
 
-            If Not Me.State.moParams.moIsnew Then
+            If Not State.moParams.moIsnew Then
                 ControlMgr.SetVisibleControl(Me, moBtnSave_WRITE, False)
                 ControlMgr.SetVisibleControl(Me, moBtnCancel, False)
                 ControlMgr.SetEnableControl(Me, LabelClaim, False)
@@ -194,15 +194,15 @@ Namespace Claims
                 ControlMgr.SetEnableControl(Me, TextboxDescription, False)
                 ControlMgr.SetEnableControl(Me, LabelDate, False)
                 ControlMgr.SetEnableControl(Me, TextboxDate, False)
-                ControlMgr.SetEnableControl(Me, Me.moAuthorizedApproverDrop, False)
+                ControlMgr.SetEnableControl(Me, moAuthorizedApproverDrop, False)
 
             End If
         End Sub
 
         Protected Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "ApproverId", Me.LabelAuthorizedApproverDrop)
+            BindBOPropertyToLabel(State.MyBO, "ApproverId", LabelAuthorizedApproverDrop)
 
-            Me.ClearGridHeadersAndLabelsErrSign()
+            ClearGridHeadersAndLabelsErrSign()
         End Sub
 
         Protected Sub PopulateDropdowns()
@@ -212,7 +212,7 @@ Namespace Claims
                                                     .AddBlankItem = True
                                                    })
 
-            Me.SetSelectedItem(Me.moAuthorizedApproverDrop, Me.State.MyBO.ApproverId)
+            SetSelectedItem(moAuthorizedApproverDrop, State.MyBO.ApproverId)
 
         End Sub
 
@@ -221,27 +221,27 @@ Namespace Claims
         Sub PopulateUserControlAvailableDeniedReasons()
             Dim availableDv As DataView
             Dim selectedDv As DataView
-            Me.UserControlAvailableSelectedDeniedReasosns.BackColor = "#d5d6e4"
+            UserControlAvailableSelectedDeniedReasosns.BackColor = "#d5d6e4"
             ' ControlMgr.SetVisibleControl(Me, UserControlAvailableSelectedDeniedReasosns, False)
-            If Not Me.State.MyBO.Id.Equals(Guid.Empty) Then
+            If Not State.MyBO.Id.Equals(Guid.Empty) Then
 
-                If Me.State.moParams.moIsnew Then
-                    Dim availDS As DataSet = Me.State.MyBO.GetAvailableDRs(Me.State.moParams.moClaimId, Authentication.LangId)
+                If State.moParams.moIsnew Then
+                    Dim availDS As DataSet = State.MyBO.GetAvailableDRs(State.moParams.moClaimId, Authentication.LangId)
                     If availDS.Tables.Count > 0 Then
                         availableDv = New DataView(availDS.Tables(0))
                     End If
-                    Me.UserControlAvailableSelectedDeniedReasosns.SetAvailableData(availableDv, LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
+                    UserControlAvailableSelectedDeniedReasosns.SetAvailableData(availableDv, LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
                 Else
-                    Dim selectedDS As DataSet = Me.State.MyBO.GetSelectedDRs(Me.State.moParams.moClaimId, Authentication.LangId)
+                    Dim selectedDS As DataSet = State.MyBO.GetSelectedDRs(State.moParams.moClaimId, Authentication.LangId)
                     If selectedDS.Tables.Count > 0 Then
                         selectedDv = New DataView(selectedDS.Tables(0))
                     End If
-                    Me.UserControlAvailableSelectedDeniedReasosns.SetSelectedData(selectedDv, LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
+                    UserControlAvailableSelectedDeniedReasosns.SetSelectedData(selectedDv, LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
                     'EnableDisableControls(UserControlAvailableSelectedDeniedReasosns, True)
 
                 End If
-                Me.UserControlAvailableSelectedDeniedReasosns.AvailableDesc = TranslationBase.TranslateLabelOrMessage(AVAILABLE_DENIAL_REASON)
-                Me.UserControlAvailableSelectedDeniedReasosns.SelectedDesc = TranslationBase.TranslateLabelOrMessage(SELECTED_DENIAL_REASON)
+                UserControlAvailableSelectedDeniedReasosns.AvailableDesc = TranslationBase.TranslateLabelOrMessage(AVAILABLE_DENIAL_REASON)
+                UserControlAvailableSelectedDeniedReasosns.SelectedDesc = TranslationBase.TranslateLabelOrMessage(SELECTED_DENIAL_REASON)
 
             End If
         End Sub
@@ -254,30 +254,30 @@ Namespace Claims
 #End Region
 
         Protected Sub PopulateFormFromBOs()
-            With Me.State.MyBO
+            With State.MyBO
 
-                If Me.State.moParams.moIsnew Then
-                    Me.PopulateControlFromBOProperty(Me.TextboxShortDesc, Me.State.moParams.moCert)
-                    Me.PopulateControlFromBOProperty(Me.TextboxDescription, Me.State.moParams.moClaim)
-                    Me.PopulateControlFromBOProperty(Me.TextboxDate, System.DateTime.Now)
-                    EnableDisableControls(Me.TextboxShortDesc, True)
-                    EnableDisableControls(Me.TextboxDescription, True)
-                    EnableDisableControls(Me.TextboxDate, True)
-                    Me.State.MyBO.ClaimId = Me.State.moParams.moClaimbo.Id
+                If State.moParams.moIsnew Then
+                    PopulateControlFromBOProperty(TextboxShortDesc, State.moParams.moCert)
+                    PopulateControlFromBOProperty(TextboxDescription, State.moParams.moClaim)
+                    PopulateControlFromBOProperty(TextboxDate, System.DateTime.Now)
+                    EnableDisableControls(TextboxShortDesc, True)
+                    EnableDisableControls(TextboxDescription, True)
+                    EnableDisableControls(TextboxDate, True)
+                    State.MyBO.ClaimId = State.moParams.moClaimbo.Id
                 Else
-                    Me.PopulateControlFromBOProperty(Me.TextboxShortDesc, Me.State.moParams.moCert)
-                    Me.PopulateControlFromBOProperty(Me.TextboxDescription, Me.State.moParams.moClaim)
-                    Me.PopulateControlFromBOProperty(Me.TextboxDate, Me.State.MyBO.CreatedDate)
-                    Me.PopulateControlFromBOProperty(Me.TextboxStandardEditing1, Me.State.MyBO.ConditionProblem1)
-                    Me.PopulateControlFromBOProperty(Me.TextboxStandardEditing2, Me.State.MyBO.ConditionProblem2)
-                    Me.PopulateControlFromBOProperty(Me.TextboxSpecialEditing, Me.State.MyBO.ConditionProblem3)
-                    EnableDisableControls(Me.TextboxShortDesc, True)
-                    EnableDisableControls(Me.TextboxDescription, True)
-                    EnableDisableControls(Me.TextboxDate, True)
-                    EnableDisableControls(Me.TextboxStandardEditing1, True)
-                    EnableDisableControls(Me.TextboxStandardEditing2, True)
-                    EnableDisableControls(Me.TextboxSpecialEditing, True)
-                    EnableDisableControls(Me.UserControlAvailableSelectedDeniedReasosns, True)
+                    PopulateControlFromBOProperty(TextboxShortDesc, State.moParams.moCert)
+                    PopulateControlFromBOProperty(TextboxDescription, State.moParams.moClaim)
+                    PopulateControlFromBOProperty(TextboxDate, State.MyBO.CreatedDate)
+                    PopulateControlFromBOProperty(TextboxStandardEditing1, State.MyBO.ConditionProblem1)
+                    PopulateControlFromBOProperty(TextboxStandardEditing2, State.MyBO.ConditionProblem2)
+                    PopulateControlFromBOProperty(TextboxSpecialEditing, State.MyBO.ConditionProblem3)
+                    EnableDisableControls(TextboxShortDesc, True)
+                    EnableDisableControls(TextboxDescription, True)
+                    EnableDisableControls(TextboxDate, True)
+                    EnableDisableControls(TextboxStandardEditing1, True)
+                    EnableDisableControls(TextboxStandardEditing2, True)
+                    EnableDisableControls(TextboxSpecialEditing, True)
+                    EnableDisableControls(UserControlAvailableSelectedDeniedReasosns, True)
 
                 End If
 
@@ -291,124 +291,124 @@ Namespace Claims
 
 
         Protected Sub CreateNew()
-            Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+            State.ScreenSnapShotBO = Nothing 'Reset the backup copy
 
-            Me.State.MyBO = New DeniedClaims
-            Me.State.IsNew = True
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            State.MyBO = New DeniedClaims
+            State.IsNew = True
+            PopulateFormFromBOs()
+            EnableDisableFields()
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-                If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                    Me.State.MyBO.Save()
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+                If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                    State.MyBO.Save()
                 End If
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                        Me.CreateNew()
+                        DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
                         'Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
                         'Me.CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.CreateNew()
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
                         'Me.CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ErrControllerMaster.AddErrorAndShow(Me.State.LastErrMsg)
+                        ErrControllerMaster.AddErrorAndShow(State.LastErrMsg)
                 End Select
             End If
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = ""
         End Sub
 
 
 #End Region
 #Region "Button Clicks"
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
 
                 'Me.NavController.Navigate(Me, "back")
 
-                If Me.State.moParams.moClaimDenielLetters.Count = 0 Then
-                    Me.NavController.Navigate(Me, "back_info", New Claims.ClaimDeniedInformationForm.Parameters(Me.State.moParams.moClaimbo, Me.State.moParams.moClaimbo.Id, Me.State.moParams.moCertId))
+                If State.moParams.moClaimDenielLetters.Count = 0 Then
+                    NavController.Navigate(Me, "back_info", New Claims.ClaimDeniedInformationForm.Parameters(State.moParams.moClaimbo, State.moParams.moClaimbo.Id, State.moParams.moCertId))
                 Else
-                    Me.NavController.Navigate(Me, "back_list", New ClaimDeniedLetterListForm.Parameters(Me.State.moParams.moClaimbo, Me.State.moParams.moClaimDenielLetters, Me.State.moParams.moClaimId, Me.State.moParams.moClaim, Me.State.moParams.moCert, Me.State.moParams.moCertId))
+                    NavController.Navigate(Me, "back_list", New ClaimDeniedLetterListForm.Parameters(State.moParams.moClaimbo, State.moParams.moClaimDenielLetters, State.moParams.moClaimId, State.moParams.moClaim, State.moParams.moCert, State.moParams.moCertId))
                 End If
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
-                Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = Me.ErrControllerMaster.Text
+                HandleErrors(ex, ErrControllerMaster)
+                DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.LastErrMsg = ErrControllerMaster.Text
             End Try
         End Sub
 
-        Private Sub moBtnCancelClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnCancel.Click
+        Private Sub moBtnCancelClick(sender As System.Object, e As System.EventArgs) Handles moBtnCancel.Click
             Try
                 UndoChanges()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub UndoChanges()
-            Me.TextboxStandardEditing1.Text = String.Empty
-            Me.TextboxStandardEditing2.Text = String.Empty
-            Me.TextboxSpecialEditing.Text = String.Empty
-            Me.UserControlAvailableSelectedDeniedReasosns.SelectedListListBox.Items.Clear()
+            TextboxStandardEditing1.Text = String.Empty
+            TextboxStandardEditing2.Text = String.Empty
+            TextboxSpecialEditing.Text = String.Empty
+            UserControlAvailableSelectedDeniedReasosns.SelectedListListBox.Items.Clear()
 
             PopulateFormFromBOs()
-            Me.PopulateDropdowns()
+            PopulateDropdowns()
         End Sub
 
 #End Region
 #Region "Attach - Detach Event Handlers"
 
-        Private Sub UserControlAvailableSelectedDeniedReasosns_Attach(ByVal aSrc As Generic.UserControlAvailableSelected, ByVal attachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedDeniedReasosns.Attach
+        Private Sub UserControlAvailableSelectedDeniedReasosns_Attach(aSrc As Generic.UserControlAvailableSelected, attachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedDeniedReasosns.Attach
             Try
                 If attachedList.Count > 0 Then
-                    Me.State.MyBO.AttachDeniedReason(attachedList)
+                    State.MyBO.AttachDeniedReason(attachedList)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub UserControlAvailableSelectedDeniedReasosns_Detach(ByVal aSrc As Generic.UserControlAvailableSelected, ByVal detachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedDeniedReasosns.Detach
+        Private Sub UserControlAvailableSelectedDeniedReasosns_Detach(aSrc As Generic.UserControlAvailableSelected, detachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedDeniedReasosns.Detach
             Try
                 If detachedList.Count > 0 Then
-                    Me.State.MyBO.DetachDeniedReason(detachedList)
+                    State.MyBO.DetachDeniedReason(detachedList)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
-        Protected Shared Sub NotifyChanges(ByVal navCtrl As INavigationController)
+        Protected Shared Sub NotifyChanges(navCtrl As INavigationController)
             navCtrl.FlowSession(FlowSessionKeys.SESSION_CHANGES_MADE_FLAG) = True
         End Sub
 
-        Private Sub mpHoriz_SelectedIndexChange(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub mpHoriz_SelectedIndexChange(sender As System.Object, e As System.EventArgs)
 
         End Sub
 
-        Protected Sub moBtnSave_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles moBtnSave_WRITE.Click
+        Protected Sub moBtnSave_WRITE_Click(sender As Object, e As EventArgs) Handles moBtnSave_WRITE.Click
             ' Dim oClaim As New Claim(Me.State.moParams.moClaimId)
 
             'Dim oPriceGroupDetail As PriceGroupDetail
@@ -418,53 +418,53 @@ Namespace Claims
             Try
                 ' Me.PopulateBOsFormFrom()
                 ' If Me.State.MyBO.IsFamilyDirty Then
-                Me.State.MyBO.ConditionProblem1 = TextboxStandardEditing1.Text
-                Me.State.MyBO.ConditionProblem2 = TextboxStandardEditing2.Text
-                Me.State.MyBO.ConditionProblem3 = TextboxSpecialEditing.Text
-                Me.PopulateBOProperty(Me.State.MyBO, "ApproverId", moAuthorizedApproverDrop)
-                Me.State.MyBO.Save()
-                Me.State.IsNew = False
-                Me.State.HasDataChanged = True
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                State.MyBO.ConditionProblem1 = TextboxStandardEditing1.Text
+                State.MyBO.ConditionProblem2 = TextboxStandardEditing2.Text
+                State.MyBO.ConditionProblem3 = TextboxSpecialEditing.Text
+                PopulateBOProperty(State.MyBO, "ApproverId", moAuthorizedApproverDrop)
+                State.MyBO.Save()
+                State.IsNew = False
+                State.HasDataChanged = True
+                PopulateFormFromBOs()
+                EnableDisableFields()
                 'Will work only for Single Auth 
                 If (Me.State.moParams.moClaimbo.ClaimAuthorizationType = ClaimAuthorizationType.Single) Then
                     'oPriceGroupDetail = CType(Me.State.moParams.moClaimbo, Claim).GetCurrentPriceGroupDetail
-                    Dim servCenter As New ServiceCenter(CType(Me.State.moParams.moClaimbo, Claim).ServiceCenterId)
+                    Dim servCenter As New ServiceCenter(CType(State.moParams.moClaimbo, Claim).ServiceCenterId)
                     Dim equipConditionid As Guid
                     Dim equipmentId As Guid
                     Dim equipClassId As Guid
 
                     'get the equipment information'if equipment not used then get the prices based on risktypeid
-                    If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, Me.State.moParams.moClaimbo.Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
+                    If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, State.moParams.moClaimbo.Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
                         equipConditionid = LookupListNew.GetIdFromCode(LookupListNew.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
-                        If Me.State.moParams.moClaimbo.ClaimedEquipment Is Nothing Then
+                        If State.moParams.moClaimbo.ClaimedEquipment Is Nothing Then
                             Dim errors() As ValidationError = {New ValidationError(Codes.EQUIPMENT_NOT_FOUND, GetType(ClaimEquipment), Nothing, "", Nothing)}
                             Throw New BOValidationException(errors, GetType(ClaimEquipment).FullName, "Test")
                         End If
-                        equipmentId = Me.State.moParams.moClaimbo.ClaimedEquipment.EquipmentBO.Id
-                        equipClassId = Me.State.moParams.moClaimbo.ClaimedEquipment.EquipmentBO.EquipmentClassId
+                        equipmentId = State.moParams.moClaimbo.ClaimedEquipment.EquipmentBO.Id
+                        equipClassId = State.moParams.moClaimbo.ClaimedEquipment.EquipmentBO.EquipmentClassId
                     End If
                     'calculating the estimate price
 
-                    Dim dvEstimate As DataView = PriceListDetail.GetPricesForServiceType(Me.State.moParams.moClaimbo.CompanyId, servCenter.Code, Me.State.moParams.moClaimbo.RiskTypeId, _
-                                                 DateTime.Now, CType(Me.State.moParams.moClaimbo, Claim).Certificate.SalesPrice.Value, _
+                    Dim dvEstimate As DataView = PriceListDetail.GetPricesForServiceType(State.moParams.moClaimbo.CompanyId, servCenter.Code, State.moParams.moClaimbo.RiskTypeId, _
+                                                 DateTime.Now, CType(State.moParams.moClaimbo, Claim).Certificate.SalesPrice.Value, _
                                                  LookupListNew.GetIdFromCode(Codes.SERVICE_CLASS, Codes.SERVICE_CLASS__REPAIR), _
                                                  LookupListNew.GetIdFromCode(Codes.SERVICE_CLASS_TYPE, Codes.SERVICE_TYPE__ESTIMATE_PRICE), _
-                                                 equipClassId, equipmentId, equipConditionid, Me.State.moParams.moClaimbo.Dealer.Id, String.Empty)
+                                                 equipClassId, equipmentId, equipConditionid, State.moParams.moClaimbo.Dealer.Id, String.Empty)
 
 
-                    If Not dvEstimate Is Nothing AndAlso dvEstimate.Count > 0 Then
+                    If dvEstimate IsNot Nothing AndAlso dvEstimate.Count > 0 Then
                         estimatePrice = CDec(dvEstimate(0)(COL_PRICE_LIST))
                     End If
 
-                    CType(Me.State.moParams.moClaimbo, Claim).AuthorizedAmount = estimatePrice
+                    CType(State.moParams.moClaimbo, Claim).AuthorizedAmount = estimatePrice
                     If estimatePrice = 0 Then
-                        Me.State.moParams.moClaimbo.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED_DENIED)
-                        Me.State.moParams.moClaimbo.CloseTheClaim()
+                        State.moParams.moClaimbo.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED_DENIED)
+                        State.moParams.moClaimbo.CloseTheClaim()
                     End If
-                    Me.NotifyChanges(Me.NavController)
-                    Me.State.moParams.moClaimbo.Save()
+                    NotifyChanges(NavController)
+                    State.moParams.moClaimbo.Save()
 
                     '''''
                     ''If Not oPriceGroupDetail Is Nothing Then
@@ -477,15 +477,15 @@ Namespace Claims
                     ''    Me.State.moParams.moClaimbo.Save()
                     ''End If
                 End If
-                oNewComment = Comment.GetNewComment(Me.State.moParams.moCertId)
+                oNewComment = Comment.GetNewComment(State.moParams.moCertId)
                 oNewComment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.REASON_CLOSED_DENIED)
-                Me.NavController.FlowSession(FlowSessionKeys.SESSION_NEW_COMMENT) = oNewComment
-                Me.NavController.Navigate(Me, FlowEvents.EVENT_SAVE)
+                NavController.FlowSession(FlowSessionKeys.SESSION_NEW_COMMENT) = oNewComment
+                NavController.Navigate(Me, FlowEvents.EVENT_SAVE)
 
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
     End Class

@@ -61,8 +61,8 @@ Namespace Tables
 
         Private Sub SetStateProperties()
             BindBoPropertiesToLabels()
-            Me.AddLabelDecorations(TheMessage)
-            If Me.State.OcMessageId.Equals(Guid.Empty) Then
+            AddLabelDecorations(TheMessage)
+            If State.OcMessageId.Equals(Guid.Empty) Then
                 ClearAll()
             End If
             PopulateAll()
@@ -80,7 +80,7 @@ Namespace Tables
 #Region "Page Call Type"
         Public Class CallType
             Public MessageId As Guid
-            Public Sub New(ByVal messageId As Guid)
+            Public Sub New(messageId As Guid)
                 Me.MessageId = messageId
             End Sub
         End Class
@@ -91,8 +91,8 @@ Namespace Tables
             Public LastOperation As DetailPageCommand
             Public MessageId As Guid
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal messageId As Guid, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
+            Public Sub New(LastOp As DetailPageCommand, messageId As Guid, hasDataChanged As Boolean)
+                LastOperation = LastOp
                 Me.MessageId = messageId
                 Me.HasDataChanged = hasDataChanged
             End Sub
@@ -102,11 +102,11 @@ Namespace Tables
 #Region "Properties"
         Private ReadOnly Property TheMessage As OcMessage
             Get
-                If Me.State.Message Is Nothing Then
-                    Me.State.Message = New OcMessage(Me.State.OcMessageId)
+                If State.Message Is Nothing Then
+                    State.Message = New OcMessage(State.OcMessageId)
                 End If
 
-                Return Me.State.Message
+                Return State.Message
             End Get
         End Property
 #End Region
@@ -120,28 +120,28 @@ Namespace Tables
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
         End Sub
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
 
                 If Not Page.IsPostBack Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
 
                     TranslateGridHeader(MessageParametersGrid)
                     TranslateGridHeader(MessageAttemptsGrid)
                     UpdateBreadCrum()
 
-                    Me.SetStateProperties()
+                    SetStateProperties()
                 End If
 
                 BindBoPropertiesToLabels()
@@ -149,23 +149,23 @@ Namespace Tables
                 MessageAttemptsGrid_BindBoPropertiesToHeaders()
                 CheckIfComingFromConfirm()
 
-                If Not Me.IsPostBack Then
-                    Me.AddLabelDecorations(TheMessage)
+                If Not IsPostBack Then
+                    AddLabelDecorations(TheMessage)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
             If Me.State.LastOperation = DetailPageCommand.Redirect_ Then
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 ClearLabelsErrSign()
-                Me.State.LastOperation = DetailPageCommand.Nothing_
+                State.LastOperation = DetailPageCommand.Nothing_
             Else
-                Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+                ShowMissingTranslations(MasterPage.MessageController)
             End If
         End Sub
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
                 Dim callObj As OcMessageForm.CallType = CType(CallingPar, OcMessageForm.CallType)
 
@@ -175,12 +175,12 @@ Namespace Tables
 
                 If callObj.MessageId <> Guid.Empty Then
                     'Get the id from the parent
-                    Me.State.OcMessageId = callObj.MessageId
+                    State.OcMessageId = callObj.MessageId
                 Else
                     Throw New ArgumentException()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -191,58 +191,58 @@ Namespace Tables
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                If Me.State.MessageAttemptsGrid_IsInEditMode Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                If State.MessageAttemptsGrid_IsInEditMode Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub btnResend_WRITE_Click(sender As Object, e As EventArgs) Handles btnResend_WRITE.Click
             Try
                 If MessageAttemptsGrid.SelectedIndex = -1 Then
-                    Me.moMessageController.Clear()
-                    Me.moMessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_NO_RECORD_SELECTED)
+                    moMessageController.Clear()
+                    moMessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_NO_RECORD_SELECTED)
                     Exit Sub
                 End If
 
                 If SendMessage() Then
                     ' Refresh Screen
                     MessageAttemptsGrid.SelectedIndex = -1
-                    Me.State.MessageAttemptsGrid_DV = Nothing
-                    Me.State.MessageParametersGrid_DV = Nothing
+                    State.MessageAttemptsGrid_DV = Nothing
+                    State.MessageParametersGrid_DV = Nothing
                     MessageParametersGrid_Populate()
                     MessageAttemptsGrid_Populate()
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub CheckIfComingFromConfirm()
             Try
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ComingFromBack()
                 End Select
 
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = String.Empty
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
@@ -250,7 +250,7 @@ Namespace Tables
                     Case MSG_VALUE_YES
                         ' Save and go back to Search Page
                         If SendMessage() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             GoBack()
                         End If
                     Case MSG_VALUE_NO
@@ -260,8 +260,8 @@ Namespace Tables
         End Sub
 
         Private Sub GoBack()
-            Dim retType As New OcMessageForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.OcMessageId, True)
-            Me.ReturnToCallingPage(retType)
+            Dim retType As New OcMessageForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.OcMessageId, True)
+            ReturnToCallingPage(retType)
         End Sub
 
         Private Function SendMessage() As Boolean
@@ -275,20 +275,20 @@ Namespace Tables
                 Dim descTextBox As TextBox
                 Dim descLabel As Label
 
-                emailTextBox = CType(Me.MessageAttemptsGrid.SelectedRow.Cells(2).FindControl("txtRecipientAddress"), TextBox)
-                descTextBox = CType(Me.MessageAttemptsGrid.SelectedRow.Cells(3).FindControl("txtRecipientDescription"), TextBox)
+                emailTextBox = CType(MessageAttemptsGrid.SelectedRow.Cells(2).FindControl("txtRecipientAddress"), TextBox)
+                descTextBox = CType(MessageAttemptsGrid.SelectedRow.Cells(3).FindControl("txtRecipientDescription"), TextBox)
 
-                emailLabel = CType(Me.MessageAttemptsGrid.SelectedRow.Cells(2).FindControl("lblRecipientAddress"), Label)
-                descLabel = CType(Me.MessageAttemptsGrid.SelectedRow.Cells(3).FindControl("lblRecipientDescription"), Label)
+                emailLabel = CType(MessageAttemptsGrid.SelectedRow.Cells(2).FindControl("lblRecipientAddress"), Label)
+                descLabel = CType(MessageAttemptsGrid.SelectedRow.Cells(3).FindControl("lblRecipientDescription"), Label)
 
-                If Not emailTextBox Is Nothing AndAlso Not descTextBox Is Nothing Then
-                    Me.State.SelectedRecipientAddress = emailTextBox.Text
-                    Me.State.SelectedRecipientDescription = descTextBox.Text
+                If emailTextBox IsNot Nothing AndAlso descTextBox IsNot Nothing Then
+                    State.SelectedRecipientAddress = emailTextBox.Text
+                    State.SelectedRecipientDescription = descTextBox.Text
 
                     ' Required Email Address
-                    If String.IsNullOrEmpty(Me.State.SelectedRecipientAddress) Then
-                        Me.moMessageController.Clear()
-                        Me.moMessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_EMAIL_IS_REQUIRED_ERR)
+                    If String.IsNullOrEmpty(State.SelectedRecipientAddress) Then
+                        moMessageController.Clear()
+                        moMessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_EMAIL_IS_REQUIRED_ERR)
                         emailTextBox.Focus()
                         Return False
                     End If
@@ -297,38 +297,38 @@ Namespace Tables
                     'Dim emailExpression As New Regex("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$")
                     Dim emailExpression As New Regex("^[_a-z0-9-]+(.[a-z0-9-]+)+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$")
 
-                    If Not emailExpression.IsMatch(Me.State.SelectedRecipientAddress) Then
-                        Me.moMessageController.Clear()
-                        Me.moMessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
+                    If Not emailExpression.IsMatch(State.SelectedRecipientAddress) Then
+                        moMessageController.Clear()
+                        moMessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
                         emailTextBox.Focus()
                         Return False
                     End If
 
                     ' Required Recipient Description
-                    If Me.State.MessageAttemptsGrid_IsInEditMode AndAlso String.IsNullOrEmpty(Me.State.SelectedRecipientDescription) Then
-                        Me.moMessageController.Clear()
-                        Me.moMessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_DESCRIPTION_IS_REQUIED_ERR)
+                    If State.MessageAttemptsGrid_IsInEditMode AndAlso String.IsNullOrEmpty(State.SelectedRecipientDescription) Then
+                        moMessageController.Clear()
+                        moMessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_DESCRIPTION_IS_REQUIED_ERR)
                         descTextBox.Focus()
                         Return False
                     End If
-                ElseIf Not emailLabel Is Nothing AndAlso Not descLabel Is Nothing Then
-                    Me.State.SelectedRecipientAddress = emailLabel.Text
-                    Me.State.SelectedRecipientDescription = descLabel.Text
+                ElseIf emailLabel IsNot Nothing AndAlso descLabel IsNot Nothing Then
+                    State.SelectedRecipientAddress = emailLabel.Text
+                    State.SelectedRecipientDescription = descLabel.Text
                 End If
 
-                msgAttempt.SaveNewMsgAttempt(Me.State.OcMessageId, Me.State.SelectedRecipientAddress, Me.State.SelectedRecipientDescription, ElitaPlusIdentity.Current.ActiveUser.NetworkId, rtnCode, rtnMessage)
+                msgAttempt.SaveNewMsgAttempt(State.OcMessageId, State.SelectedRecipientAddress, State.SelectedRecipientDescription, ElitaPlusIdentity.Current.ActiveUser.NetworkId, rtnCode, rtnMessage)
 
                 If rtnCode <> 0 Then
-                    Me.moMessageController.Clear()
-                    Me.moMessageController.AddError(rtnMessage)
+                    moMessageController.Clear()
+                    moMessageController.AddError(rtnMessage)
                     Return False
                 Else
-                    Me.moMessageController.Clear()
-                    Me.moMessageController.AddSuccess("MESSAGE_RESEND_SUCCESS", True)
+                    moMessageController.Clear()
+                    moMessageController.AddSuccess("MESSAGE_RESEND_SUCCESS", True)
                     Return True
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
                 Return False
             End Try
 
@@ -337,65 +337,65 @@ Namespace Tables
         Protected Sub btnResendDiffEmail_WRITE_Click(sender As Object, e As EventArgs) Handles btnResendDiffEmail_WRITE.Click
             Try
                 If Not TheMessage.Id.Equals(Guid.Empty) Then
-                    If Not Me.State.MessageAttemptsGrid_IsInEditMode Then
-                        Me.State.MessageAttemptsGrid_IsInEditMode = True
-                        Me.State.MessageAttemptsGrid_DV = Nothing
+                    If Not State.MessageAttemptsGrid_IsInEditMode Then
+                        State.MessageAttemptsGrid_IsInEditMode = True
+                        State.MessageAttemptsGrid_DV = Nothing
                         MessageAttemptsGrid_AddNew()
                         'Disable Resend button on the Form
-                        Me.btnResend_WRITE.Enabled = False
+                        btnResend_WRITE.Enabled = False
                         'Change btnResendDiffEmail button's Text
-                        Me.btnResendDiffEmail_WRITE.Enabled = True
-                        Me.btnResendDiffEmail_WRITE.Text = TranslationBase.TranslateLabelOrMessage("SEND", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                        btnResendDiffEmail_WRITE.Enabled = True
+                        btnResendDiffEmail_WRITE.Text = TranslationBase.TranslateLabelOrMessage("SEND", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                     Else
                         If SendMessage() Then
                             ' Refresh Screen
                             'Enable Resend button on the Form
-                            Me.btnResend_WRITE.Enabled = True
+                            btnResend_WRITE.Enabled = True
                             'Change btnResendDiffEmail button's Text
-                            Me.btnResendDiffEmail_WRITE.Enabled = True
-                            Me.btnResendDiffEmail_WRITE.Text = TranslationBase.TranslateLabelOrMessage("MESSAGE_RESEND_DIFF_EMAIL", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-                            Me.State.MessageAttemptsGrid_IsInEditMode = False
+                            btnResendDiffEmail_WRITE.Enabled = True
+                            btnResendDiffEmail_WRITE.Text = TranslationBase.TranslateLabelOrMessage("MESSAGE_RESEND_DIFF_EMAIL", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                            State.MessageAttemptsGrid_IsInEditMode = False
                             MessageAttemptsGrid.SelectedIndex = -1
-                            Me.State.MessageAttemptsGrid_DV = Nothing
-                            Me.State.MessageParametersGrid_DV = Nothing
+                            State.MessageAttemptsGrid_DV = Nothing
+                            State.MessageParametersGrid_DV = Nothing
                             MessageParametersGrid_Populate()
                             MessageAttemptsGrid_Populate(True)
                         End If
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub MessageAttemptsGrid_AddNew()
-            Me.State.MessageAttemptsGrid_OcMessageAttemptBO = TheMessage.GetNewMessageAttemptChild()
-            Me.State.MessageAttemptsGrid_DV = MessageAttemptsGrid_GetDV()
-            Me.State.MessageAttemptsGrid_OcMessageAttemptId = Me.State.MessageAttemptsGrid_OcMessageAttemptBO.Id
-            Me.MessageAttemptsGrid.DataSource = Me.State.MessageAttemptsGrid_DV
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.MessageAttemptsGrid_DV, Me.State.MessageAttemptsGrid_OcMessageAttemptId, Me.MessageAttemptsGrid, Me.State.MessageAttemptsGrid_PageIndex, Me.State.MessageAttemptsGrid_IsInEditMode)
-            Me.MessageAttemptsGrid.AutoGenerateColumns = False
-            MessageAttemptsGrid_SortAndBind(Me.State.MessageAttemptsGrid_DV)
-            SetGridControls(Me.MessageAttemptsGrid, False)
-            Me.State.MessageAttemptsGrid_RecordNew = True
+            State.MessageAttemptsGrid_OcMessageAttemptBO = TheMessage.GetNewMessageAttemptChild()
+            State.MessageAttemptsGrid_DV = MessageAttemptsGrid_GetDV()
+            State.MessageAttemptsGrid_OcMessageAttemptId = State.MessageAttemptsGrid_OcMessageAttemptBO.Id
+            MessageAttemptsGrid.DataSource = State.MessageAttemptsGrid_DV
+            SetPageAndSelectedIndexFromGuid(State.MessageAttemptsGrid_DV, State.MessageAttemptsGrid_OcMessageAttemptId, MessageAttemptsGrid, State.MessageAttemptsGrid_PageIndex, State.MessageAttemptsGrid_IsInEditMode)
+            MessageAttemptsGrid.AutoGenerateColumns = False
+            MessageAttemptsGrid_SortAndBind(State.MessageAttemptsGrid_DV)
+            SetGridControls(MessageAttemptsGrid, False)
+            State.MessageAttemptsGrid_RecordNew = True
             MessageAttemptsGrid_PopulateFormFromBO()
         End Sub
 
         Private Sub MessageAttemptsGrid_PopulateFormFromBO(Optional ByVal gridRowIdx As Integer? = Nothing)
-            If IsNothing(gridRowIdx) Then gridRowIdx = Me.MessageAttemptsGrid.EditIndex
+            If IsNothing(gridRowIdx) Then gridRowIdx = MessageAttemptsGrid.EditIndex
 
             Try
-                With Me.State.MessageAttemptsGrid_OcMessageAttemptBO
-                    Dim txtRecipientAddress As TextBox = CType(Me.MessageAttemptsGrid.Rows(gridRowIdx).Cells(2).FindControl("txtRecipientAddress"), TextBox)
-                    Me.PopulateControlFromBOProperty(txtRecipientAddress, .RecipientAddress)
+                With State.MessageAttemptsGrid_OcMessageAttemptBO
+                    Dim txtRecipientAddress As TextBox = CType(MessageAttemptsGrid.Rows(gridRowIdx).Cells(2).FindControl("txtRecipientAddress"), TextBox)
+                    PopulateControlFromBOProperty(txtRecipientAddress, .RecipientAddress)
 
-                    Dim txtRecipientDescription As TextBox = CType(Me.MessageAttemptsGrid.Rows(gridRowIdx).Cells(3).FindControl("txtRecipientDescription"), TextBox)
-                    Me.PopulateControlFromBOProperty(txtRecipientDescription, .RecipientDescription)
+                    Dim txtRecipientDescription As TextBox = CType(MessageAttemptsGrid.Rows(gridRowIdx).Cells(3).FindControl("txtRecipientDescription"), TextBox)
+                    PopulateControlFromBOProperty(txtRecipientDescription, .RecipientDescription)
 
-                    CType(Me.MessageAttemptsGrid.Rows(gridRowIdx).Cells(0).FindControl("IdLabel"), Label).Text = .Id.ToString
+                    CType(MessageAttemptsGrid.Rows(gridRowIdx).Cells(0).FindControl("IdLabel"), Label).Text = .Id.ToString
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -411,10 +411,10 @@ Namespace Tables
 
 #Region "Populate"
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("MESSAGE_DETAIL")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("MESSAGE_DETAIL")
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("MESSAGE_DETAIL")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("MESSAGE_DETAIL")
                 End If
             End If
         End Sub
@@ -422,12 +422,12 @@ Namespace Tables
         Private Sub PopulateTexts()
             Try
                 With TheMessage
-                    Me.PopulateControlFromBOProperty(Me.txtTemplateCode, .TemplateCode)
-                    Me.PopulateControlFromBOProperty(Me.txtTemplateDescription, .TemplateDescription)
-                    Me.PopulateControlFromBOProperty(Me.txtSenderReason, .SenderReason)
+                    PopulateControlFromBOProperty(txtTemplateCode, .TemplateCode)
+                    PopulateControlFromBOProperty(txtTemplateDescription, .TemplateDescription)
+                    PopulateControlFromBOProperty(txtSenderReason, .SenderReason)
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -464,54 +464,54 @@ Namespace Tables
 
 #Region "Handlers-Labels"
         Private Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(TheMessage, "TemplateCode", lblTemplateCode)
-            Me.BindBOPropertyToLabel(TheMessage, "TemplateDescription", lblTemplateDescription)
-            Me.BindBOPropertyToLabel(TheMessage, "SenderReason", lblSenderReason)
+            BindBOPropertyToLabel(TheMessage, "TemplateCode", lblTemplateCode)
+            BindBOPropertyToLabel(TheMessage, "TemplateDescription", lblTemplateDescription)
+            BindBOPropertyToLabel(TheMessage, "SenderReason", lblSenderReason)
         End Sub
 
         Private Sub ClearLabelsErrSign()
-            Me.ClearLabelErrSign(lblTemplateCode)
-            Me.ClearLabelErrSign(lblTemplateDescription)
-            Me.ClearLabelErrSign(lblSenderReason)
+            ClearLabelErrSign(lblTemplateCode)
+            ClearLabelErrSign(lblTemplateDescription)
+            ClearLabelErrSign(lblSenderReason)
         End Sub
 
-        Public Shared Sub SetLabelColor(ByVal lbl As Label)
+        Public Shared Sub SetLabelColor(lbl As Label)
             lbl.ForeColor = Color.Black
         End Sub
 #End Region
 
 #Region "Datagrid Related"
 #Region "Parameters Grid"
-        Public Sub ParametersGrid_RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub ParametersGrid_RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub ParametersGrid__PageIndexChanging(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles MessageParametersGrid.PageIndexChanging
+        Private Sub ParametersGrid__PageIndexChanging(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles MessageParametersGrid.PageIndexChanging
             Try
-                If (Not (Me.State.MessageParametersGrid_IsInEditMode)) Then
-                    Me.State.MessageParametersGrid_PageIndex = e.NewPageIndex
-                    Me.MessageParametersGrid.PageIndex = Me.State.MessageParametersGrid_PageIndex
-                    Me.MessageParametersGrid_Populate()
-                    Me.MessageParametersGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                If (Not (State.MessageParametersGrid_IsInEditMode)) Then
+                    State.MessageParametersGrid_PageIndex = e.NewPageIndex
+                    MessageParametersGrid.PageIndex = State.MessageParametersGrid_PageIndex
+                    MessageParametersGrid_Populate()
+                    MessageParametersGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub MessageParametersGrid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles MessageParametersGrid.RowDataBound
+        Private Sub MessageParametersGrid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles MessageParametersGrid.RowDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If Not dvRow Is Nothing And Me.State.MessageParametersGrid_DV.Count > 0 Then
+                If dvRow IsNot Nothing And State.MessageParametersGrid_DV.Count > 0 Then
                     If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
                         CType(e.Row.Cells(0).FindControl("lblParamName"), Label).Text = dvRow(OcMessageParams.MessageParamsDV.COL_PARAM_NAME).ToString
                         CType(e.Row.Cells(1).FindControl("lblParamValue"), Label).Text = dvRow(OcMessageParams.MessageParamsDV.COL_PARAM_VALUE).ToString
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -519,70 +519,70 @@ Namespace Tables
             Try
                 With TheMessage
                     If Not .Id.Equals(Guid.Empty) Then
-                        If Me.State.MessageParametersGrid_DV Is Nothing Then
-                            Me.State.MessageParametersGrid_DV = MessageParametersGrid_GetDV()
+                        If State.MessageParametersGrid_DV Is Nothing Then
+                            State.MessageParametersGrid_DV = MessageParametersGrid_GetDV()
                         End If
                     End If
                 End With
 
-                If Not Me.State.MessageParametersGrid_DV Is Nothing Then
+                If State.MessageParametersGrid_DV IsNot Nothing Then
                     Dim dv As OcMessageParams.MessageParamsDV
 
-                    If Me.State.MessageParametersGrid_DV.Count = 0 Then
-                        dv = Me.State.MessageParametersGrid_DV.AddNewRowToEmptyDV
-                        SetPageAndSelectedIndexFromGuid(dv, Me.State.MessageParametersGrid_MessageParamsId, Me.MessageParametersGrid, Me.State.MessageParametersGrid_PageIndex)
-                        Me.MessageParametersGrid.DataSource = dv
+                    If State.MessageParametersGrid_DV.Count = 0 Then
+                        dv = State.MessageParametersGrid_DV.AddNewRowToEmptyDV
+                        SetPageAndSelectedIndexFromGuid(dv, State.MessageParametersGrid_MessageParamsId, MessageParametersGrid, State.MessageParametersGrid_PageIndex)
+                        MessageParametersGrid.DataSource = dv
                     Else
-                        SetPageAndSelectedIndexFromGuid(Me.State.MessageParametersGrid_DV, Me.State.MessageParametersGrid_MessageParamsId, Me.MessageParametersGrid, Me.State.MessageParametersGrid_PageIndex)
-                        Me.MessageParametersGrid.DataSource = Me.State.MessageParametersGrid_DV
+                        SetPageAndSelectedIndexFromGuid(State.MessageParametersGrid_DV, State.MessageParametersGrid_MessageParamsId, MessageParametersGrid, State.MessageParametersGrid_PageIndex)
+                        MessageParametersGrid.DataSource = State.MessageParametersGrid_DV
                     End If
 
-                    Me.State.MessageParametersGrid_DV.Sort = Me.State.MessageParametersGrid_SortExpression
-                    Me.MessageParametersGrid.AutoGenerateColumns = False
+                    State.MessageParametersGrid_DV.Sort = State.MessageParametersGrid_SortExpression
+                    MessageParametersGrid.AutoGenerateColumns = False
 
-                    If Me.State.MessageParametersGrid_DV.Count = 0 Then
+                    If State.MessageParametersGrid_DV.Count = 0 Then
                         MessageParametersGrid_SortAndBind(dv)
                     Else
-                        MessageParametersGrid_SortAndBind(Me.State.MessageParametersGrid_DV)
+                        MessageParametersGrid_SortAndBind(State.MessageParametersGrid_DV)
                     End If
 
-                    If Me.State.MessageParametersGrid_DV.Count = 0 Then
-                        For Each gvRow As GridViewRow In Me.MessageParametersGrid.Rows
+                    If State.MessageParametersGrid_DV.Count = 0 Then
+                        For Each gvRow As GridViewRow In MessageParametersGrid.Rows
                             gvRow.Visible = False
                             gvRow.Controls.Clear()
                         Next
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub MessageParametersGrid_BindBoPropertiesToHeaders()
-            If Not Me.State.MessageParametersGrid_MessageParamsBO Is Nothing Then
-                Me.BindBOPropertyToGridHeader(Me.State.MessageParametersGrid_MessageParamsBO, "ParamName", Me.MessageParametersGrid.Columns(0))
-                Me.BindBOPropertyToGridHeader(Me.State.MessageParametersGrid_MessageParamsBO, "ParamValue", Me.MessageParametersGrid.Columns(1))
+            If State.MessageParametersGrid_MessageParamsBO IsNot Nothing Then
+                BindBOPropertyToGridHeader(State.MessageParametersGrid_MessageParamsBO, "ParamName", MessageParametersGrid.Columns(0))
+                BindBOPropertyToGridHeader(State.MessageParametersGrid_MessageParamsBO, "ParamValue", MessageParametersGrid.Columns(1))
             End If
-            Me.ClearGridViewHeadersAndLabelsErrSign()
+            ClearGridViewHeadersAndLabelsErrSign()
         End Sub
 
         Protected Sub MessageAttemptsGrid_BindBoPropertiesToHeaders()
-            If Not Me.State.MessageAttemptsGrid_OcMessageAttemptBO Is Nothing Then
-                Me.BindBOPropertyToGridHeader(Me.State.MessageAttemptsGrid_OcMessageAttemptBO, "RecipientAddress", Me.MessageAttemptsGrid.Columns(0))
-                Me.BindBOPropertyToGridHeader(Me.State.MessageAttemptsGrid_OcMessageAttemptBO, "RecipientDescription", Me.MessageAttemptsGrid.Columns(1))
-                Me.BindBOPropertyToGridHeader(Me.State.MessageAttemptsGrid_OcMessageAttemptBO, "MessageAttemptedOn", Me.MessageAttemptsGrid.Columns(2))
-                Me.BindBOPropertyToGridHeader(Me.State.MessageAttemptsGrid_OcMessageAttemptBO, "MessageAttemptedBy", Me.MessageAttemptsGrid.Columns(3))
-                Me.BindBOPropertyToGridHeader(Me.State.MessageAttemptsGrid_OcMessageAttemptBO, "ProcessStatusDescription", Me.MessageAttemptsGrid.Columns(4))
-                Me.BindBOPropertyToGridHeader(Me.State.MessageAttemptsGrid_OcMessageAttemptBO, "MessageError", Me.MessageAttemptsGrid.Columns(5))
+            If State.MessageAttemptsGrid_OcMessageAttemptBO IsNot Nothing Then
+                BindBOPropertyToGridHeader(State.MessageAttemptsGrid_OcMessageAttemptBO, "RecipientAddress", MessageAttemptsGrid.Columns(0))
+                BindBOPropertyToGridHeader(State.MessageAttemptsGrid_OcMessageAttemptBO, "RecipientDescription", MessageAttemptsGrid.Columns(1))
+                BindBOPropertyToGridHeader(State.MessageAttemptsGrid_OcMessageAttemptBO, "MessageAttemptedOn", MessageAttemptsGrid.Columns(2))
+                BindBOPropertyToGridHeader(State.MessageAttemptsGrid_OcMessageAttemptBO, "MessageAttemptedBy", MessageAttemptsGrid.Columns(3))
+                BindBOPropertyToGridHeader(State.MessageAttemptsGrid_OcMessageAttemptBO, "ProcessStatusDescription", MessageAttemptsGrid.Columns(4))
+                BindBOPropertyToGridHeader(State.MessageAttemptsGrid_OcMessageAttemptBO, "MessageError", MessageAttemptsGrid.Columns(5))
             End If
-            Me.ClearGridViewHeadersAndLabelsErrSign()
+            ClearGridViewHeadersAndLabelsErrSign()
         End Sub
 
         Private Function MessageParametersGrid_GetDV() As OcMessageParams.MessageParamsDV
             Dim dv As OcMessageParams.MessageParamsDV
             dv = MessageParametersGrid_GetDataView()
-            dv.Sort = Me.MessageParametersGrid.DataMember()
-            Me.MessageParametersGrid.DataSource = dv
+            dv.Sort = MessageParametersGrid.DataMember()
+            MessageParametersGrid.DataSource = dv
             Return (dv)
         End Function
 
@@ -591,103 +591,103 @@ Namespace Tables
             Return New OcMessageParams.MessageParamsDV(dt)
         End Function
 
-        Private Sub MessageParametersGrid_SortAndBind(ByVal dvBinding As DataView, Optional ByVal blnEmptyList As Boolean = False)
-            Me.MessageParametersGrid.DataSource = dvBinding
-            HighLightSortColumn(Me.MessageParametersGrid, Me.State.MessageParametersGrid_SortExpression)
-            Me.MessageParametersGrid.DataBind()
+        Private Sub MessageParametersGrid_SortAndBind(dvBinding As DataView, Optional ByVal blnEmptyList As Boolean = False)
+            MessageParametersGrid.DataSource = dvBinding
+            HighLightSortColumn(MessageParametersGrid, State.MessageParametersGrid_SortExpression)
+            MessageParametersGrid.DataBind()
 
             If blnEmptyList Then
-                For Each gvRow As GridViewRow In Me.MessageParametersGrid.Rows
+                For Each gvRow As GridViewRow In MessageParametersGrid.Rows
                     gvRow.Controls.Clear()
                 Next
             End If
 
-            Session("recCount") = Me.State.MessageParametersGrid_DV.Count
+            Session("recCount") = State.MessageParametersGrid_DV.Count
 
-            ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Me.MessageParametersGrid)
+            ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, MessageParametersGrid)
         End Sub
 
 #End Region
 
 #Region "MessageAttempts Grid"
 
-        Public Sub MessageAttemptsGrid_RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub MessageAttemptsGrid_RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub MessageAttemptsGrid__PageIndexChanging(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles MessageAttemptsGrid.PageIndexChanging
+        Private Sub MessageAttemptsGrid__PageIndexChanging(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles MessageAttemptsGrid.PageIndexChanging
             Try
-                If (Not (Me.State.MessageAttemptsGrid_IsInEditMode)) Then
-                    Me.State.MessageAttemptsGrid_PageIndex = e.NewPageIndex
-                    Me.MessageAttemptsGrid.PageIndex = Me.State.MessageAttemptsGrid_PageIndex
-                    Me.MessageAttemptsGrid_Populate()
-                    Me.MessageAttemptsGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                If (Not (State.MessageAttemptsGrid_IsInEditMode)) Then
+                    State.MessageAttemptsGrid_PageIndex = e.NewPageIndex
+                    MessageAttemptsGrid.PageIndex = State.MessageAttemptsGrid_PageIndex
+                    MessageAttemptsGrid_Populate()
+                    MessageAttemptsGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub MessageAttemptsGrid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles MessageAttemptsGrid.RowCommand
+        Private Sub MessageAttemptsGrid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles MessageAttemptsGrid.RowCommand
             Dim index As Integer = 0
 
             If e.CommandName = "SelectRecord" Then
-                If Me.State.MessageAttemptsGrid_IsInEditMode Then
+                If State.MessageAttemptsGrid_IsInEditMode Then
                     Exit Sub
                 End If
                 index = CInt(e.CommandArgument)
                 If index <> -1 Then
                     If index <> MessageAttemptsGrid.SelectedIndex Then
                         MessageAttemptsGrid.SelectedIndex = index
-                        Me.State.SelectedRecipientAddress = CType(Me.MessageAttemptsGrid.Rows(index).Cells(0).FindControl("lblRecipientAddress"), Label).Text
-                        Me.State.SelectedRecipientDescription = CType(Me.MessageAttemptsGrid.Rows(index).Cells(0).FindControl("lblRecipientDescription"), Label).Text
-                        Me.btnResend_WRITE.Enabled = True
-                        Me.btnResendDiffEmail_WRITE.Enabled = False
+                        State.SelectedRecipientAddress = CType(MessageAttemptsGrid.Rows(index).Cells(0).FindControl("lblRecipientAddress"), Label).Text
+                        State.SelectedRecipientDescription = CType(MessageAttemptsGrid.Rows(index).Cells(0).FindControl("lblRecipientDescription"), Label).Text
+                        btnResend_WRITE.Enabled = True
+                        btnResendDiffEmail_WRITE.Enabled = False
                     Else
                         MessageAttemptsGrid.SelectedIndex = -1
-                        Me.State.SelectedRecipientAddress = String.Empty
-                        Me.State.SelectedRecipientDescription = String.Empty
-                        Me.btnResend_WRITE.Enabled = False
-                        Me.btnResendDiffEmail_WRITE.Enabled = True
+                        State.SelectedRecipientAddress = String.Empty
+                        State.SelectedRecipientDescription = String.Empty
+                        btnResend_WRITE.Enabled = False
+                        btnResendDiffEmail_WRITE.Enabled = True
                     End If
                 Else
                     MessageAttemptsGrid.SelectedIndex = -1
-                    Me.State.SelectedRecipientAddress = String.Empty
-                    Me.State.SelectedRecipientDescription = String.Empty
-                    Me.btnResend_WRITE.Enabled = False
-                    Me.btnResendDiffEmail_WRITE.Enabled = True
+                    State.SelectedRecipientAddress = String.Empty
+                    State.SelectedRecipientDescription = String.Empty
+                    btnResend_WRITE.Enabled = False
+                    btnResendDiffEmail_WRITE.Enabled = True
                 End If
             ElseIf e.CommandName = "EditRecord" Then
                 index = CInt(e.CommandArgument)
                 MessageAttemptsGrid.EditIndex = index
                 MessageAttemptsGrid.SelectedIndex = index
 
-                Me.State.MessageAttemptsGrid_IsInEditMode = True
-                Me.State.MessageAttemptsGrid_OcMessageAttemptId = New Guid(CType(Me.MessageAttemptsGrid.Rows(index).Cells(0).FindControl("IdLabel"), Label).Text)
-                Me.State.MessageAttemptsGrid_OcMessageAttemptBO = TheMessage.GetMessageAttemptChild(Me.State.MessageAttemptsGrid_OcMessageAttemptId)
+                State.MessageAttemptsGrid_IsInEditMode = True
+                State.MessageAttemptsGrid_OcMessageAttemptId = New Guid(CType(MessageAttemptsGrid.Rows(index).Cells(0).FindControl("IdLabel"), Label).Text)
+                State.MessageAttemptsGrid_OcMessageAttemptBO = TheMessage.GetMessageAttemptChild(State.MessageAttemptsGrid_OcMessageAttemptId)
 
                 MessageAttemptsGrid_Populate()
-                Me.State.MessageAttemptsGrid_PageIndex = MessageAttemptsGrid.PageIndex
-                Me.State.MessageAttemptsGrid_RecordEdit = True
+                State.MessageAttemptsGrid_PageIndex = MessageAttemptsGrid.PageIndex
+                State.MessageAttemptsGrid_RecordEdit = True
                 MessageAttemptsGrid_PopulateFormFromBO(index)
-                MessageAttemptsGrid_SetFocusOnEditableField(Me.MessageAttemptsGrid, 2, "txtRecipientAddress", index)
+                MessageAttemptsGrid_SetFocusOnEditableField(MessageAttemptsGrid, 2, "txtRecipientAddress", index)
             End If
         End Sub
 
-        Private Sub MessageAttemptsGrid_SetFocusOnEditableField(ByVal grid As GridView, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+        Private Sub MessageAttemptsGrid_SetFocusOnEditableField(grid As GridView, cellPosition As Integer, controlName As String, itemIndex As Integer)
             Dim control As TextBox = CType(grid.Rows(itemIndex).Cells(cellPosition).FindControl(controlName), TextBox)
             SetFocus(control)
         End Sub
 
-        Private Sub MessageAttemptsGrid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles MessageAttemptsGrid.RowDataBound
+        Private Sub MessageAttemptsGrid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles MessageAttemptsGrid.RowDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If Not dvRow Is Nothing And Me.State.MessageAttemptsGrid_DV.Count > 0 Then
+                If dvRow IsNot Nothing And State.MessageAttemptsGrid_DV.Count > 0 Then
 
                     If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then
-                        If (Me.State.MessageAttemptsGrid_IsInEditMode = True AndAlso Me.State.MessageAttemptsGrid_OcMessageAttemptId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(OcMessageAttempts.MessageAttemptsDV.COL_OC_MESSAGE_ATTEMPS_ID), Byte())))) Then
+                        If (State.MessageAttemptsGrid_IsInEditMode = True AndAlso State.MessageAttemptsGrid_OcMessageAttemptId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(OcMessageAttempts.MessageAttemptsDV.COL_OC_MESSAGE_ATTEMPS_ID), Byte())))) Then
                             CType(e.Row.Cells(1).FindControl("btnSelect"), ImageButton).Visible = False
                             CType(e.Row.Cells(2).FindControl("txtRecipientAddress"), TextBox).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_RECIPIENT_ADDRESS).ToString
                             CType(e.Row.Cells(3).FindControl("txtRecipientDescription"), TextBox).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_RECIPIENT_DESCRIPTION).ToString
@@ -713,7 +713,7 @@ Namespace Tables
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -721,50 +721,50 @@ Namespace Tables
             Try
                 With TheMessage
                     If Not .Id.Equals(Guid.Empty) Then
-                        If Me.State.MessageAttemptsGrid_DV Is Nothing Then
-                            Me.State.MessageAttemptsGrid_DV = MessageAttemptsGrid_GetDV(clean)
+                        If State.MessageAttemptsGrid_DV Is Nothing Then
+                            State.MessageAttemptsGrid_DV = MessageAttemptsGrid_GetDV(clean)
                         End If
                     End If
                 End With
 
-                If Not Me.State.MessageAttemptsGrid_DV Is Nothing Then
+                If State.MessageAttemptsGrid_DV IsNot Nothing Then
                     Dim dv As OcMessageAttempts.MessageAttemptsDV
 
-                    If Me.State.MessageAttemptsGrid_DV.Count = 0 Then
-                        dv = Me.State.MessageAttemptsGrid_DV.AddNewRowToEmptyDV
-                        SetPageAndSelectedIndexFromGuid(dv, Me.State.MessageAttemptsGrid_OcMessageAttemptId, Me.MessageAttemptsGrid, Me.State.MessageAttemptsGrid_PageIndex)
-                        Me.MessageAttemptsGrid.DataSource = dv
+                    If State.MessageAttemptsGrid_DV.Count = 0 Then
+                        dv = State.MessageAttemptsGrid_DV.AddNewRowToEmptyDV
+                        SetPageAndSelectedIndexFromGuid(dv, State.MessageAttemptsGrid_OcMessageAttemptId, MessageAttemptsGrid, State.MessageAttemptsGrid_PageIndex)
+                        MessageAttemptsGrid.DataSource = dv
                     Else
-                        SetPageAndSelectedIndexFromGuid(Me.State.MessageAttemptsGrid_DV, Me.State.MessageAttemptsGrid_OcMessageAttemptId, Me.MessageAttemptsGrid, Me.State.MessageAttemptsGrid_PageIndex)
-                        Me.MessageAttemptsGrid.DataSource = Me.State.MessageAttemptsGrid_DV
+                        SetPageAndSelectedIndexFromGuid(State.MessageAttemptsGrid_DV, State.MessageAttemptsGrid_OcMessageAttemptId, MessageAttemptsGrid, State.MessageAttemptsGrid_PageIndex)
+                        MessageAttemptsGrid.DataSource = State.MessageAttemptsGrid_DV
                     End If
 
-                    Me.State.MessageAttemptsGrid_DV.Sort = Me.State.MessageAttemptsGrid_SortExpression
-                    Me.MessageAttemptsGrid.AutoGenerateColumns = False
+                    State.MessageAttemptsGrid_DV.Sort = State.MessageAttemptsGrid_SortExpression
+                    MessageAttemptsGrid.AutoGenerateColumns = False
 
-                    If Me.State.MessageAttemptsGrid_DV.Count = 0 Then
+                    If State.MessageAttemptsGrid_DV.Count = 0 Then
                         MessageAttemptsGrid_SortAndBind(dv)
                     Else
-                        MessageAttemptsGrid_SortAndBind(Me.State.MessageAttemptsGrid_DV)
+                        MessageAttemptsGrid_SortAndBind(State.MessageAttemptsGrid_DV)
                     End If
 
-                    If Me.State.MessageAttemptsGrid_DV.Count = 0 Then
-                        For Each gvRow As GridViewRow In Me.MessageAttemptsGrid.Rows
+                    If State.MessageAttemptsGrid_DV.Count = 0 Then
+                        For Each gvRow As GridViewRow In MessageAttemptsGrid.Rows
                             gvRow.Visible = False
                             gvRow.Controls.Clear()
                         Next
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Function MessageAttemptsGrid_GetDV(Optional ByVal clean As Boolean = False) As OcMessageAttempts.MessageAttemptsDV
             Dim dv As OcMessageAttempts.MessageAttemptsDV
             dv = MessageAttemptsGrid_GetDataView(clean)
-            dv.Sort = Me.MessageAttemptsGrid.DataMember()
-            Me.MessageAttemptsGrid.DataSource = dv
+            dv.Sort = MessageAttemptsGrid.DataMember()
+            MessageAttemptsGrid.DataSource = dv
             Return (dv)
         End Function
 
@@ -773,20 +773,20 @@ Namespace Tables
             Return New OcMessageAttempts.MessageAttemptsDV(dt)
         End Function
 
-        Private Sub MessageAttemptsGrid_SortAndBind(ByVal dvBinding As DataView, Optional ByVal blnEmptyList As Boolean = False)
-            Me.MessageAttemptsGrid.DataSource = dvBinding
-            HighLightSortColumn(Me.MessageAttemptsGrid, Me.State.MessageAttemptsGrid_SortExpression)
-            Me.MessageAttemptsGrid.DataBind()
+        Private Sub MessageAttemptsGrid_SortAndBind(dvBinding As DataView, Optional ByVal blnEmptyList As Boolean = False)
+            MessageAttemptsGrid.DataSource = dvBinding
+            HighLightSortColumn(MessageAttemptsGrid, State.MessageAttemptsGrid_SortExpression)
+            MessageAttemptsGrid.DataBind()
 
             If blnEmptyList Then
-                For Each gvRow As GridViewRow In Me.MessageAttemptsGrid.Rows
+                For Each gvRow As GridViewRow In MessageAttemptsGrid.Rows
                     gvRow.Controls.Clear()
                 Next
             End If
 
-            Session("recCount") = Me.State.MessageAttemptsGrid_DV.Count
+            Session("recCount") = State.MessageAttemptsGrid_DV.Count
 
-            ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Me.MessageAttemptsGrid)
+            ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, MessageAttemptsGrid)
         End Sub
 
 #End Region

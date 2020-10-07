@@ -18,7 +18,7 @@ Public Class NotifyDigitalServiceTask
 
 #Region "Constructors"
 
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 
@@ -29,7 +29,7 @@ Public Class NotifyDigitalServiceTask
         Get
             Return _certificateId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _certificateId = value
         End Set
     End Property
@@ -38,7 +38,7 @@ Public Class NotifyDigitalServiceTask
         Get
             Return _oCertificate
         End Get
-        Set(ByVal value As Certificate)
+        Set(value As Certificate)
             _oCertificate = value
         End Set
     End Property
@@ -127,14 +127,14 @@ Public Class NotifyDigitalServiceTask
     Private Function IsValidRequest() As Boolean
         Dim flag As Boolean = True
         Dim sb As StringBuilder = New StringBuilder()
-        If (Not String.IsNullOrEmpty(Me.oCertificate.CertNumber)) Then
+        If (Not String.IsNullOrEmpty(oCertificate.CertNumber)) Then
             flag = False
             sb.AppendLine(String.Format("CertNumber already exists  {0}", GuidControl.GuidToHexString(oCertificate.Id)))
         End If
 
         If (Not flag) Then
             Logger.AddError(sb.ToString())
-            Me.FailReason = sb.ToString()
+            FailReason = sb.ToString()
         End If
 
         Return flag

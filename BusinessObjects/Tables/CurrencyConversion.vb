@@ -8,8 +8,8 @@ Public Class CurrencyConversion
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
     'Exiting BO
     'Public Sub New(ByVal dealerId As Guid, ByVal currency1Id As Guid, ByVal currency2Id As Guid)
@@ -20,39 +20,39 @@ Public Class CurrencyConversion
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CurrencyConversionDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -63,20 +63,20 @@ Public Class CurrencyConversion
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New CurrencyConversionDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -121,7 +121,7 @@ Public Class CurrencyConversion
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CurrencyConversionDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(CurrencyConversionDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
@@ -138,7 +138,7 @@ Public Class CurrencyConversion
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CurrencyConversionDAL.COL_NAME_CURRENCY1_ID, Value)
+            SetValue(CurrencyConversionDAL.COL_NAME_CURRENCY1_ID, Value)
         End Set
     End Property
 
@@ -155,7 +155,7 @@ Public Class CurrencyConversion
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CurrencyConversionDAL.COL_NAME_CURRENCY2_ID, Value)
+            SetValue(CurrencyConversionDAL.COL_NAME_CURRENCY2_ID, Value)
         End Set
     End Property
 
@@ -172,7 +172,7 @@ Public Class CurrencyConversion
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(CurrencyConversionDAL.COL_NAME_EFFECTIVE_DATE, Value)
+            SetValue(CurrencyConversionDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
@@ -200,7 +200,7 @@ Public Class CurrencyConversion
         End Get
         Set(ByVal Value As DoubleType)
             CheckDeleted()
-            Me.SetValue(CurrencyConversionDAL.COL_NAME_CURRENCY1_RATE, Value)
+            SetValue(CurrencyConversionDAL.COL_NAME_CURRENCY1_RATE, Value)
             Currency2Rate = New DoubleType(Math.Round(1 / Currency1Rate.Value, 9))
         End Set
     End Property
@@ -218,7 +218,7 @@ Public Class CurrencyConversion
         End Get
         Set(ByVal Value As DoubleType)
             CheckDeleted()
-            Me.SetValue(CurrencyConversionDAL.COL_NAME_CURRENCY2_RATE, Value)
+            SetValue(CurrencyConversionDAL.COL_NAME_CURRENCY2_RATE, Value)
         End Set
     End Property
 
@@ -231,16 +231,16 @@ Public Class CurrencyConversion
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CurrencyConversionDAL
-                Select Case Me.Row.RowState
+                Select Case Row.RowState
                     Case DataRowState.Added
                         'If Me.IsNew Then
                         SP_Insert()
-                        Me.Load(LoadLastRate(Me.DealerId, Me.Currency1Id, Me.Currency2Id))
+                        Load(LoadLastRate(DealerId, Currency1Id, Currency2Id))
                     Case DataRowState.Modified
-                        dal.Update(Me.Row)
-                        Me.Load(Me.Id)
+                        dal.Update(Row)
+                        Load(Id)
                 End Select
                 'Reload the Data from the DB
                 'If Me.Row.RowState <> DataRowState.Detached Then Me.Load(Me.Id)
@@ -254,7 +254,7 @@ Public Class CurrencyConversion
     Public Sub SP_Insert()
         Dim dal As New CurrencyConversionDAL
         Dim oErrMess As String
-        oErrMess = dal.ExecuteSP(Me.DealerId, Me.EffectiveDate, Me.ExpirationDate, Me.Currency1Id, Me.Currency2Id, Me.Currency1Rate.Value, Me.Currency2Rate.Value)
+        oErrMess = dal.ExecuteSP(DealerId, EffectiveDate, ExpirationDate, Currency1Id, Currency2Id, Currency1Rate.Value, Currency2Rate.Value)
         'If Not oErrMess Is Nothing Then
         '    Throw New ApplicationException(oErrMess)
         'End If
@@ -263,18 +263,18 @@ Public Class CurrencyConversion
     Public Sub SP_Delete()
         Dim dal As New CurrencyConversionDAL
         Dim oErrMess As String
-        oErrMess = dal.ExecuteSP(Me.DealerId, Me.EffectiveDate, Me.ExpirationDate, Me.Currency1Id, Me.Currency2Id)
+        oErrMess = dal.ExecuteSP(DealerId, EffectiveDate, ExpirationDate, Currency1Id, Currency2Id)
         'If Not oErrMess Is Nothing Then
         '    Throw New ApplicationException(oErrMess)
         'End If
 
     End Sub
     Public Sub Copy(ByVal original As CurrencyConversion)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Object")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
 
     End Sub
 
@@ -413,7 +413,7 @@ Public Class CurrencyConversion
             Dim Diff As Integer = CType(DateDiff("d", obj.EffectiveDate.Value, DateAdd("d", 1, obj.ExpirationDate.Value)), Integer)
 
             If Diff > 31 Then
-                Me.Message = Common.ErrorCodes.GUI_CANNOT_ADD_MORE_THAN_31_ENTRIES_AT_A_TIME '"Cannot add more than 31 entries at a time."
+                Message = Common.ErrorCodes.GUI_CANNOT_ADD_MORE_THAN_31_ENTRIES_AT_A_TIME '"Cannot add more than 31 entries at a time."
                 Return False
             End If
 
@@ -423,7 +423,7 @@ Public Class CurrencyConversion
             If DVRow(DV.COL_EFFECTIVE) Is DBNull.Value Or DVRow(DV.COL_EFFECTIVE) Is Nothing Then
                 Return True
             ElseIf CType(DVRow(DV.COL_EFFECTIVE), Date) <> DateAdd("d", -1, obj.EffectiveDate.Value) Then
-                Me.Message = Common.ErrorCodes.GUI_EFFECTIVE_DATE_MUST_BE_1_DAY_HIGHER_THAN_PREVIOUS_EFFECTIVE_DATE '" Effective date must be 1 day higher than previous effective date."
+                Message = Common.ErrorCodes.GUI_EFFECTIVE_DATE_MUST_BE_1_DAY_HIGHER_THAN_PREVIOUS_EFFECTIVE_DATE '" Effective date must be 1 day higher than previous effective date."
                 Return False
             End If
 

@@ -12,7 +12,7 @@ Partial Public Class Dealer
 
         ' Dim trl As RuleList = Me.DealerRuleLists.Where(Function(drl) drl.IsEffective()).SelectMany(Of RuleList)(Function(dlr1) dlr1).FirstOrDefault Then
 
-        For Each srl As DealerRuleList In Me.DealerRuleLists '.Where(Function(r) r.IsEffective).SelectMany(Of RuleList)(Function(t) t.RuleList)
+        For Each srl As DealerRuleList In DealerRuleLists '.Where(Function(r) r.IsEffective).SelectMany(Of RuleList)(Function(t) t.RuleList)
             If (srl.IsEffective) Then
 
                 If (srl.RuleList.IsEffective) Then

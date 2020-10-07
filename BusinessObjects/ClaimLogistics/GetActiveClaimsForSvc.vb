@@ -43,8 +43,8 @@ Public Class GetActiveClaimsForSvc
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -55,13 +55,13 @@ Public Class GetActiveClaimsForSvc
     Private Sub Load(ByVal ds As GetActiveClaimsForSvcDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
-            Me._serviceCenterID = Guid.Empty
-            Me._ExtendedClaimStatusListItemID = Guid.Empty
-            Me._excludeRepairedClaims = False
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            _serviceCenterID = Guid.Empty
+            _ExtendedClaimStatusListItemID = Guid.Empty
+            _excludeRepairedClaims = False
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -77,13 +77,13 @@ Public Class GetActiveClaimsForSvc
         Try
             If ds.GetActiveClaimsForSvc.Count = 0 Then Exit Sub
             With ds.GetActiveClaimsForSvc.Item(0)
-                Me.ServiceCenterCode = .SERVICE_CENTER_CODE.ToUpper
-                Me.SortOrder = .SORT_ORDER
-                If Not .IsCURRENT_CLAIM_STATUS_CODENull Then Me.CurrentClaimStatusCode = .CURRENT_CLAIM_STATUS_CODE
+                ServiceCenterCode = .SERVICE_CENTER_CODE.ToUpper
+                SortOrder = .SORT_ORDER
+                If Not .IsCURRENT_CLAIM_STATUS_CODENull Then CurrentClaimStatusCode = .CURRENT_CLAIM_STATUS_CODE
                 If Not .IsEXCLUDE_REPAIRED_CLAIMSNull Then
-                    Me.ExcludeRepairedClaims = .EXCLUDE_REPAIRED_CLAIMS
+                    ExcludeRepairedClaims = .EXCLUDE_REPAIRED_CLAIMS
                 Else
-                    Me.ExcludeRepairedClaims = "N"
+                    ExcludeRepairedClaims = "N"
                 End If                
                 'DATA_COL_NAME_EXCLUDE_REPAIRED_CLAIMS
             End With
@@ -104,58 +104,58 @@ Public Class GetActiveClaimsForSvc
     <ValueMandatory("")> _
     Public Property ServiceCenterCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_SERVICE_CENTER_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_SERVICE_CENTER_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_SERVICE_CENTER_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_SERVICE_CENTER_CODE), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_SERVICE_CENTER_CODE, Value)
+            SetValue(DATA_COL_NAME_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property SortOrder() As String
         Get
-            If Row(Me.DATA_COL_NAME_SORT_ORDER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_SORT_ORDER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_SORT_ORDER), String))
+                Return (CType(Row(DATA_COL_NAME_SORT_ORDER), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_SORT_ORDER, Value)
+            SetValue(DATA_COL_NAME_SORT_ORDER, Value)
         End Set
     End Property
 
     Public Property CurrentClaimStatusCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_CURRENT_CLAIM_STATUS_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CURRENT_CLAIM_STATUS_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_CURRENT_CLAIM_STATUS_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_CURRENT_CLAIM_STATUS_CODE), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CURRENT_CLAIM_STATUS_CODE, Value)
+            SetValue(DATA_COL_NAME_CURRENT_CLAIM_STATUS_CODE, Value)
         End Set
     End Property
 
     Public Property ExcludeRepairedClaims() As String
         Get
-            If Row(Me.DATA_COL_NAME_EXCLUDE_REPAIRED_CLAIMS) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_EXCLUDE_REPAIRED_CLAIMS) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_EXCLUDE_REPAIRED_CLAIMS), String))
+                Return (CType(Row(DATA_COL_NAME_EXCLUDE_REPAIRED_CLAIMS), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_EXCLUDE_REPAIRED_CLAIMS, Value)
+            SetValue(DATA_COL_NAME_EXCLUDE_REPAIRED_CLAIMS, Value)
         End Set
     End Property
 
@@ -163,23 +163,23 @@ Public Class GetActiveClaimsForSvc
         Get
 
             If _serviceCenterID.Equals(Guid.Empty) Then
-                Dim objServiceCenter As New ServiceCenter(Me.ServiceCenterCode)
-                Me._serviceCenterID = objServiceCenter.Id
+                Dim objServiceCenter As New ServiceCenter(ServiceCenterCode)
+                _serviceCenterID = objServiceCenter.Id
                 If _serviceCenterID.Equals(Guid.Empty) Then
                     Throw New BOValidationException("GetActiveClaimsForSvc Error: ", Common.ErrorCodes.INVALID_SERVICE_CENTER_CODE)
                 End If
             End If
 
-            Return Me._serviceCenterID
+            Return _serviceCenterID
 
         End Get
     End Property
 
     Private ReadOnly Property ExtendedClaimStatusListItemID() As Guid
         Get
-            If Not Me.CurrentClaimStatusCode Is Nothing AndAlso Not Me.CurrentClaimStatusCode.Equals(String.Empty) Then
+            If Not CurrentClaimStatusCode Is Nothing AndAlso Not CurrentClaimStatusCode.Equals(String.Empty) Then
                 If _ExtendedClaimStatusListItemID.Equals(Guid.Empty) Then
-                    Me._ExtendedClaimStatusListItemID = LookupListNew.GetIdFromCode(LookupListNew.LK_EXTENDED_CLAIM_STATUSES, Me.CurrentClaimStatusCode)
+                    _ExtendedClaimStatusListItemID = LookupListNew.GetIdFromCode(LookupListNew.LK_EXTENDED_CLAIM_STATUSES, CurrentClaimStatusCode)
                     If _ExtendedClaimStatusListItemID.Equals(Guid.Empty) Then
                         Throw New BOValidationException("GetActiveClaimsForSvc Error: ", Common.ErrorCodes.INVALID_CLAIM_EXTENDED_STATUS_CODE)
                     End If
@@ -187,7 +187,7 @@ Public Class GetActiveClaimsForSvc
             End If
 
 
-            Return Me._ExtendedClaimStatusListItemID
+            Return _ExtendedClaimStatusListItemID
         End Get
     End Property
 
@@ -197,9 +197,9 @@ Public Class GetActiveClaimsForSvc
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
 
-            Dim objClaimsDS As DataSet = Claim.GetActiveClaimsForSvc(Me.ServiceCenterID, Me.SortOrder, Me.ExtendedClaimStatusListItemID, Me.ExcludeRepairedClaims)
+            Dim objClaimsDS As DataSet = Claim.GetActiveClaimsForSvc(ServiceCenterID, SortOrder, ExtendedClaimStatusListItemID, ExcludeRepairedClaims)
 
             If objClaimsDS Is Nothing Then
                 Throw New BOValidationException("GetActiveClaimsForSvc Error: ", Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE)

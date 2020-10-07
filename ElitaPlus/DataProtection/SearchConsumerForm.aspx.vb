@@ -76,23 +76,23 @@ Namespace DataProtection
 
         Public Sub ClearSearch()
             Try
-                Me.txtCertificate.Text = String.Empty
-                Me.txtCustomerName.Text = String.Empty
-                Me.txtEmail.Text = String.Empty
-                Me.txtAddress.Text = String.Empty
-                Me.txtZip.Text = String.Empty
-                Me.txtTaxIDNumber.Text = String.Empty
-                Me.txtInvoice.Text = String.Empty
-                Me.txtBirthDate.Text = String.Empty
-                Me.txtSerial.Text = String.Empty
-                Me.txtAccount.Text = String.Empty
-                Me.ddlDealer.SelectedIndex = 0
-                Me.ddlGender.SelectedIndex = 0
-                Me.txtPhoneNumber.Text = String.Empty
-                Me.txtRequestID.Text = String.Empty
+                txtCertificate.Text = String.Empty
+                txtCustomerName.Text = String.Empty
+                txtEmail.Text = String.Empty
+                txtAddress.Text = String.Empty
+                txtZip.Text = String.Empty
+                txtTaxIDNumber.Text = String.Empty
+                txtInvoice.Text = String.Empty
+                txtBirthDate.Text = String.Empty
+                txtSerial.Text = String.Empty
+                txtAccount.Text = String.Empty
+                ddlDealer.SelectedIndex = 0
+                ddlGender.SelectedIndex = 0
+                txtPhoneNumber.Text = String.Empty
+                txtRequestID.Text = String.Empty
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -100,31 +100,31 @@ Namespace DataProtection
 
 #Region "Handlers-Pages"
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Me.MasterPage.MessageController.Clear()
-            Me.ErrorCtrl.Clear_Hide()
-            Me.Form.DefaultButton = btnSearch.UniqueID
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+            MasterPage.MessageController.Clear()
+            ErrorCtrl.Clear_Hide()
+            Form.DefaultButton = btnSearch.UniqueID
             Try
-                If Not Me.IsPostBack Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.AddCalendar_New(Me.btntxtBirthDate, Me.txtBirthDate)
+                If Not IsPostBack Then
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    AddCalendar_New(btntxtBirthDate, txtBirthDate)
                     PopulateDropDowns()
                     UpdateBreadCrum()
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 
         Private Sub UpdateBreadCrum()
 
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                         TranslationBase.TranslateLabelOrMessage("CONSUMER_SEARCH")
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CONSUMER_SEARCH")
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CONSUMER_SEARCH")
 
         End Sub
 
@@ -132,7 +132,7 @@ Namespace DataProtection
 #End Region
 
 #Region "Events Handlers"
-        Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
             Try
                 Dim errors() As ValidationError
                 If txtRequestID.Text.Trim().Equals(String.Empty) Then
@@ -205,15 +205,15 @@ Namespace DataProtection
 
                 End If
 
-                If Me.State.DataProtectionBO.GetRequestIdUsedInfo(txtRequestID.Text.Trim()) Then
+                If State.DataProtectionBO.GetRequestIdUsedInfo(txtRequestID.Text.Trim()) Then
                     errors = {New ValidationError(ElitaPlus.Common.ErrorCodes.REQUEST_ID_IS_USED_ERR, GetType(SearchConsumerForm), Nothing, String.Empty, Nothing)}
                     Throw New BOValidationException(errors, GetType(SearchConsumerForm).FullName)
                 End If
 
 
                 Dim userId As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.Id)
-                Dim gender As String = GuidControl.GuidToHexString(Me.GetSelectedItem(Me.ddlGender))
-                Dim dealerID As String = GuidControl.GuidToHexString(Me.GetSelectedItem(Me.ddlDealer))
+                Dim gender As String = GuidControl.GuidToHexString(GetSelectedItem(ddlGender))
+                Dim dealerID As String = GuidControl.GuidToHexString(GetSelectedItem(ddlDealer))
                 Dim languageID As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 Dim TheRptCeInputControl As New ReportCeInputControl
                 Dim cultureCode As String = TheRptCeInputControl.getCultureValue(True)
@@ -231,7 +231,7 @@ Namespace DataProtection
                                                   txtInvoice.Text.TrimEnd(), languageID, cultureCode, ElitaPlusIdentity.Current.EmailAddress, includeRecon))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
 
@@ -258,22 +258,22 @@ Namespace DataProtection
 
 
 #Region "Helper functions"
-        Public Sub DisplayMessageDilog(ByVal strMsg As String, ByVal title As String, ByVal buttons As String, ByVal type As String, Optional ByVal ReturnResponseIn As HtmlInputHidden = Nothing, Optional ByVal Translate As Boolean = True)
+        Public Sub DisplayMessageDilog(strMsg As String, title As String, buttons As String, type As String, Optional ByVal ReturnResponseIn As HtmlInputHidden = Nothing, Optional ByVal Translate As Boolean = True)
             Dim translatedMsg As String = strMsg
             If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
             Dim sJavaScript As String
 
             Dim id As String = "null"
-            If Not ReturnResponseIn Is Nothing Then
+            If ReturnResponseIn IsNot Nothing Then
                 id = ReturnResponseIn.ClientID
             End If
             sJavaScript = "<SCRIPT>" & Environment.NewLine
             sJavaScript &= "try{resizeForm();}catch(e){} showMessageAfterLoaded('" & translatedMsg & "', '" & title & "', '" & buttons & "', '" & type & "', '" & id & "');" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
-            Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+            RegisterStartupScript("ShowConfirmation", sJavaScript)
 
         End Sub
-        Public Overridable Function TranslateMesage(ByVal label As String) As String
+        Public Overridable Function TranslateMesage(label As String) As String
             Return TranslationBase.TranslateLabelOrMessage(label)
         End Function
         Private Sub PopulateDropDowns()
@@ -295,7 +295,7 @@ Namespace DataProtection
                                                         })
 
                     If Dealers.Count > 0 Then
-                        If Not DealerList Is Nothing Then
+                        If DealerList IsNot Nothing Then
                             DealerList.AddRange(Dealers)
                         Else
                             DealerList = Dealers.Clone()
@@ -320,7 +320,7 @@ Namespace DataProtection
                                 })
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -346,18 +346,18 @@ Namespace DataProtection
             searchParams.AppendFormat("V_LANG_CULTURE_CODE => '{0}',", consumerInput.CultureCode)
             searchParams.AppendFormat("V_LANGUAGE_ID => '{0}',", consumerInput.LanguageId)
             searchParams.AppendFormat("V_RECON_RECORDS => '{0}'", consumerInput.IncludeRecon)
-            Me.State.MyBO = New ReportRequests
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "CUSTOMER_SEARCH_EXTRACT")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "R_CONSUMER_SEARCH.Generate_Consumer_Search")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", searchParams.ToString())
-            Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", consumerInput.EmailAddress)
+            State.MyBO = New ReportRequests
+            PopulateBOProperty(State.MyBO, "ReportType", "CUSTOMER_SEARCH_EXTRACT")
+            PopulateBOProperty(State.MyBO, "ReportProc", "R_CONSUMER_SEARCH.Generate_Consumer_Search")
+            PopulateBOProperty(State.MyBO, "ReportParameters", searchParams.ToString())
+            PopulateBOProperty(State.MyBO, "UserEmailAddress", consumerInput.EmailAddress)
 
             ScheduleExtract()
         End Sub
         Private Sub ScheduleExtract()
             Try
                 Dim reportParams As New System.Text.StringBuilder
-                Dim oPage As ElitaPlusPage = CType(Me.Page, ElitaPlusPage)
+                Dim oPage As ElitaPlusPage = CType(Page, ElitaPlusPage)
 
                 If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
                     DisplayMessageDilog(Message.MSG_Email_not_configured, "", oPage.MSG_BTN_OK, oPage.MSG_TYPE_ALERT, , True)
@@ -365,12 +365,12 @@ Namespace DataProtection
 
                     Dim scheduleDate As Date
                     scheduleDate = DateHelper.GetDateValue(DateTime.Now.ToString())
-                    Me.State.MyBO.Save()
-                    Me.State.MyBO.CreateJob(scheduleDate)
+                    State.MyBO.Save()
+                    State.MyBO.CreateJob(scheduleDate)
                     DisplayMessageDilog(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", oPage.MSG_BTN_OK, oPage.MSG_TYPE_ALERT, , True)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 #End Region

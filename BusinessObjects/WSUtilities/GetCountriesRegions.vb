@@ -49,8 +49,8 @@ Public Class GetCountriesRegions
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -61,10 +61,10 @@ Public Class GetCountriesRegions
     Private Sub Load(ByVal ds As GetCountriesRegionsDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -136,7 +136,7 @@ Public Class GetCountriesRegions
         'if the country code(s) were provided, validate them to be within the countries of the user's companies.
         Dim userCountriesDv As DataView = User.GetUserCountries(ElitaPlusIdentity.Current.ActiveUser.Id)
 
-        If Not Me.CountryCodesList Is Nothing AndAlso Me.CountryCodesList.Count > 0 Then
+        If Not CountryCodesList Is Nothing AndAlso CountryCodesList.Count > 0 Then
 
             Dim i, index, intCodesNotFound As Integer
             Dim blnInTheList As Boolean = False
@@ -168,7 +168,7 @@ Public Class GetCountriesRegions
 
         Try
             BuildCountriesIDs()
-            If Me.UserCountriesIDs Is Nothing OrElse UserCountriesIDs.Count = 0 Then
+            If UserCountriesIDs Is Nothing OrElse UserCountriesIDs.Count = 0 Then
                 Throw New BOValidationException("GetCountriesRegions Error: ", COUNTRY_NOT_FOUND)
             Else
 
@@ -188,7 +188,7 @@ Public Class GetCountriesRegions
                     Throw New BOValidationException("GetCountriesRegions Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf objCountriesRegionsDS.Tables.Count > 0 Then
 
-                    objCountriesRegionsDS.DataSetName = Me.DATASET_NAME
+                    objCountriesRegionsDS.DataSetName = DATASET_NAME
 
                     Dim excludeTags As ArrayList = New ArrayList()
                     excludeTags.Add("/GetCountriesRegions/COUNTRY/COUNTRY_ID")

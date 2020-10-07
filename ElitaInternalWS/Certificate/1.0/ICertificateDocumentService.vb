@@ -16,7 +16,7 @@ Namespace Certificates
             FaultContract(GetType(CertificateNotFound)),
             FaultContract(GetType(ValidationFault)),
             FaultContract(GetType(ImageRepositoryNotFoundFault))>
-        Function AttachDocument(ByVal request As AttachCertificateDocumentRequest) As AttachCertificateDocumentResponse
+        Function AttachDocument(request As AttachCertificateDocumentRequest) As AttachCertificateDocumentResponse
 
         <OperationContract(Name:="DownloadDocument"),
             ElitaPermission(PermissionCodes.WS_Cert_DownloadImage),
@@ -26,12 +26,12 @@ Namespace Certificates
             FaultContract(GetType(FileTypeNotValidFault)),
             FaultContract(GetType(ValidationFault)),
             FaultContract(GetType(ImageRepositoryNotFoundFault))>
-        Function DownloadDocument(ByVal request As DownloadCertificateDocumentRequest) As DownloadCertificateDocumentResponse
+        Function DownloadDocument(request As DownloadCertificateDocumentRequest) As DownloadCertificateDocumentResponse
 
 
         <OperationContract(Name:="GetCertificateDocuments"),
             ElitaPermission(PermissionCodes.WS_Cert_GetDetails),
             FaultContract(GetType(ClaimNotFoundFault))>
-        Function GetCertificateDocuments(ByVal request As GetCertificateDocumentsRequest) As GetCertificateDocumentsResponse
+        Function GetCertificateDocuments(request As GetCertificateDocumentsRequest) As GetCertificateDocumentsResponse
     End Interface
 End Namespace

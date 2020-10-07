@@ -19,7 +19,7 @@
         Private _Description As String
         Private _Position As Integer
         Private _Amount As Decimal
-        Public Sub New(ByVal strDesc As String, ByVal intPos As Integer, ByVal dblAmount As Decimal)
+        Public Sub New(strDesc As String, intPos As Integer, dblAmount As Decimal)
             _Description = strDesc
             _Position = intPos
             _Amount = dblAmount
@@ -28,7 +28,7 @@
             Get
                 Return _Description
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 _Description = Value
             End Set
         End Property
@@ -37,7 +37,7 @@
             Get
                 Return _Amount
             End Get
-            Set(ByVal Value As Decimal)
+            Set(Value As Decimal)
                 _Amount = Value
             End Set
         End Property
@@ -46,7 +46,7 @@
             Get
                 Return _Position
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 If Value > 0 And Value < 7 Then _Position = Value
             End Set
         End Property
@@ -76,29 +76,29 @@
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrControllerMaster.Clear_Hide()
-        Me.Form.DefaultButton = btnSave_WRITE.UniqueID
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        ErrControllerMaster.Clear_Hide()
+        Form.DefaultButton = btnSave_WRITE.UniqueID
         Try
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
                 populateGrid()
                 TranslateGridHeader(Grid)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                State.ManualTaxDetials = CType(Me.CallingParameters, Parameters).ManualTaxList
+            If CallingParameters IsNot Nothing Then
+                State.ManualTaxDetials = CType(CallingParameters, Parameters).ManualTaxList
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region
@@ -116,7 +116,7 @@
                 mtd.Amount = State.TaxAmtByDesc(mtd.Description)
             Next
         Else
-            Me.ErrControllerMaster.AddErrorAndShow(ErrMsg.ToArray, False)
+            ErrControllerMaster.AddErrorAndShow(ErrMsg.ToArray, False)
         End If
     End Sub
 
@@ -143,31 +143,31 @@
 #End Region
 
 #Region "Button click handlers"
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
             Dim parm As New Parameters
             parm.ManualTaxList = State.ManualTaxDetials
             ReturnToCallingPage(parm)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnCancel_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCancel_WRITE.Click
+    Private Sub btnCancel_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCancel_WRITE.Click
         Try
             populateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
-            Me.DoSave()
+            DoSave()
             populateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region

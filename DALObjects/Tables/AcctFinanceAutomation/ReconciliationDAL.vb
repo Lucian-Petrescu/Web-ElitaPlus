@@ -29,31 +29,31 @@ Public Class ReconciliationDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("afa_enroll_recon_discrep_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function GetPHPReconData(ByVal dealerId As Guid, ByVal firstDayOfMonth As String, ByVal lastDayOfMonth As String, ByVal showOnlyDiscrep As Boolean) As DataSet
+    Public Function GetPHPReconData(dealerId As Guid, firstDayOfMonth As String, lastDayOfMonth As String, showOnlyDiscrep As Boolean) As DataSet
         Dim whereClauseConditions As String = ""
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PHP_RECON_DATA")
+        Dim selectStmt As String = Config("/SQL/LOAD_PHP_RECON_DATA")
         If showOnlyDiscrep Then
-            selectStmt = Me.Config("/SQL/LOAD_PHP_RECON_DATA_DISCREP_ONLY")
+            selectStmt = Config("/SQL/LOAD_PHP_RECON_DATA_DISCREP_ONLY")
         End If
 
         If Not firstDayOfMonth Is Nothing AndAlso Not lastDayOfMonth Is Nothing Then
@@ -61,16 +61,16 @@ Public Class ReconciliationDAL
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_id", dealerId.ToByteArray)}
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -79,11 +79,11 @@ Public Class ReconciliationDAL
     End Function
 
     ' Execute Store Procedure
-    Public Function OverRideReconciliation(ByVal dealerId As Guid, ByVal firstDayOfMonth As String, ByVal lastDayOfMonth As String,
-                                           ByVal userName As String) As Boolean
+    Public Function OverRideReconciliation(dealerId As Guid, firstDayOfMonth As String, lastDayOfMonth As String,
+                                           userName As String) As Boolean
 
         Dim inputParameters(3) As DBHelper.DBHelperParameter
-        Dim selectStmt As String = Me.Config("/SQL/OVERRIDE_RECON")
+        Dim selectStmt As String = Config("/SQL/OVERRIDE_RECON")
 
         If Not dealerId = Guid.Empty Then
             inputParameters(0) = New DBHelper.DBHelperParameter("pi_dealer_id", dealerId.ToByteArray)
@@ -115,12 +115,12 @@ Public Class ReconciliationDAL
         End Try
     End Function
 
-    Public Function GetMHPReconData(ByVal dealerId As Guid, ByVal firstDayOfMonth As String, ByVal lastDayOfMonth As String, ByVal showOnlyDiscrep As Boolean) As DataSet
+    Public Function GetMHPReconData(dealerId As Guid, firstDayOfMonth As String, lastDayOfMonth As String, showOnlyDiscrep As Boolean) As DataSet
         Dim whereClauseConditions As String = ""
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_MHP_RECON_DATA")
+        Dim selectStmt As String = Config("/SQL/LOAD_MHP_RECON_DATA")
         If showOnlyDiscrep Then
-            selectStmt = Me.Config("/SQL/LOAD_MHP_RECON_DATA_DISCREP_ONLY")
+            selectStmt = Config("/SQL/LOAD_MHP_RECON_DATA_DISCREP_ONLY")
         End If
 
         If Not firstDayOfMonth Is Nothing AndAlso Not lastDayOfMonth Is Nothing Then
@@ -128,16 +128,16 @@ Public Class ReconciliationDAL
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_id", dealerId.ToByteArray)}
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -148,12 +148,12 @@ Public Class ReconciliationDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

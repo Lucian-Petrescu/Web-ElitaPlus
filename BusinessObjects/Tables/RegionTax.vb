@@ -13,47 +13,47 @@ Public Class RegionTax
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     'New with DataRow
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New RegionTaxDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -64,31 +64,31 @@ Public Class RegionTax
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New RegionTaxDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
 
             'load existing detail records
             Dim detailDAL As New RegionTaxDetailDAL, detailBO As New RegionTaxDetail
-            detailDAL.LoadList(Me.Id, Me.Dataset)
+            detailDAL.LoadList(Me.Id, Dataset)
 
             Dim detailRow As DataRow
             If _detailRecords Is Nothing Then _detailRecords = New List(Of RegionTaxDetail)
 
-            For Each detailRow In Me.Dataset.Tables(RegionTaxDetailDAL.TABLE_NAME).Rows
+            For Each detailRow In Dataset.Tables(RegionTaxDetailDAL.TABLE_NAME).Rows
                 detailBO = New RegionTaxDetail(detailRow)
                 _detailRecords.Add(detailBO)
             Next
@@ -131,7 +131,7 @@ Public Class RegionTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(RegionTaxDAL.COL_NAME_REGION_ID, Value)
+            SetValue(RegionTaxDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
 
@@ -147,7 +147,7 @@ Public Class RegionTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(RegionTaxDAL.COL_NAME_TAX_TYPE_ID, Value)
+            SetValue(RegionTaxDAL.COL_NAME_TAX_TYPE_ID, Value)
         End Set
     End Property
 
@@ -162,7 +162,7 @@ Public Class RegionTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
@@ -178,7 +178,7 @@ Public Class RegionTax
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(RegionTaxDAL.COL_NAME_EFFECTIVE_DATE, Value)
+            SetValue(RegionTaxDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
@@ -194,7 +194,7 @@ Public Class RegionTax
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(RegionTaxDAL.COL_NAME_EXPIRATION_DATE, Value)
+            SetValue(RegionTaxDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
@@ -210,7 +210,7 @@ Public Class RegionTax
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(RegionTaxDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(RegionTaxDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -226,7 +226,7 @@ Public Class RegionTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_PRODUCT_TAX_TYPE_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_PRODUCT_TAX_TYPE_ID, Value)
         End Set
     End Property
 
@@ -256,7 +256,7 @@ Public Class RegionTax
 
             If Not value Is Nothing Then
                 If Not blnExisting Then 'create a new one
-                    oRGD = New RegionTaxDetail(Me.Dataset)
+                    oRGD = New RegionTaxDetail(Dataset)
                     _detailRecords.Add(oRGD)
 
                     oRGD.RegionTaxId = Id
@@ -286,7 +286,7 @@ Public Class RegionTax
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(RegionTaxDAL.COL_NAME_COMPANY_TYPE_XCD, Value)
+            SetValue(RegionTaxDAL.COL_NAME_COMPANY_TYPE_XCD, Value)
         End Set
     End Property
 
@@ -307,18 +307,18 @@ Public Class RegionTax
             'validate region tax detail BO
             Dim oRTD As RegionTaxDetail
             For Each oRTD In RegionTaxDetailList
-                If oRTD.IsDirty AndAlso (Not Me.IsDeleted) Then oRTD.Validate()
+                If oRTD.IsDirty AndAlso (Not IsDeleted) Then oRTD.Validate()
             Next
 
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New RegionTaxDAL
-                dal.UpdateFamily(Me.Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -340,7 +340,7 @@ Public Class RegionTax
 
         Dim myCal As Calendar = CultureInfo.InvariantCulture.Calendar
         Dim MinEffDate As Date, MaxExpDate As Date, RecCnt As Integer
-        Me.GetMinEffDateAndMaxExpDate(MinEffDate, MaxExpDate, RecCnt)
+        GetMinEffDateAndMaxExpDate(MinEffDate, MaxExpDate, RecCnt)
 
         Dim NewEffectivedate As Date
         Dim NewExpirationDate As Date
@@ -353,12 +353,12 @@ Public Class RegionTax
 
         NewExpirationDate = myCal.AddYears(myCal.AddDays(NewEffectivedate, -1), 1)
 
-        Me.EffectiveDate = NewEffectivedate
-        Me.ExpirationDate = NewExpirationDate
+        EffectiveDate = NewEffectivedate
+        ExpirationDate = NewExpirationDate
     End Sub
 
     Public Sub Copy(ByVal original As RegionTax)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing region tax")
         End If
         'Copy content
@@ -371,13 +371,13 @@ Public Class RegionTax
     End Sub
 
     Public Sub DeleteAndSave()
-        Me.CheckDeleted()
-        Me.BeginEdit()
+        CheckDeleted()
+        BeginEdit()
         Try
-            Me.Delete()
-            Me.Save()
+            Delete()
+            Save()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Me.cancelEdit()
+            cancelEdit()
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Sub
@@ -389,18 +389,18 @@ Public Class RegionTax
     Private Sub CopyProperties(ByVal original As RegionTax, Optional ByVal KeyIncluded As Boolean = False)
         Dim oRTD As RegionTaxDetail
         With original
-            If KeyIncluded Then Me.SetValue(RegionTaxDAL.COL_NAME_REGION_ID, .Id)
-            Me.RegionId = .RegionId
-            Me.TaxTypeId = .TaxTypeId
-            Me.EffectiveDate = .EffectiveDate
-            Me.ExpirationDate = .ExpirationDate
-            Me.Description = .Description
-            Me.ProductTaxTypeId = .ProductTaxTypeId
-            Me.DealerId = .DealerId
-            Me.CompanyTypeXCD = CompanyTypeXCD
-            Me._detailRecords.Clear()
+            If KeyIncluded Then SetValue(RegionTaxDAL.COL_NAME_REGION_ID, .Id)
+            RegionId = .RegionId
+            TaxTypeId = .TaxTypeId
+            EffectiveDate = .EffectiveDate
+            ExpirationDate = .ExpirationDate
+            Description = .Description
+            ProductTaxTypeId = .ProductTaxTypeId
+            DealerId = .DealerId
+            CompanyTypeXCD = CompanyTypeXCD
+            _detailRecords.Clear()
             For Each oRTD In .RegionTaxDetailList
-                Me.RegionTaxDetail(oRTD.TaxBucket) = oRTD
+                RegionTaxDetail(oRTD.TaxBucket) = oRTD
             Next
         End With
     End Sub
@@ -421,8 +421,8 @@ Public Class RegionTax
     Public Sub GetMinEffDateAndMaxExpDate(ByRef MinEffDate As Date, ByRef MaxExpDate As Date, ByRef RcdCount As Integer)
         Try
             Dim dal As New RegionTaxDAL
-            dal.LoadMinEffDateMaxExpDate(MinEffDate, MaxExpDate, RcdCount, Me.RegionId, Me.TaxTypeId, _
-                                         Me.ProductTaxTypeId, Me.DealerId)
+            dal.LoadMinEffDateMaxExpDate(MinEffDate, MaxExpDate, RcdCount, RegionId, TaxTypeId, _
+                                         ProductTaxTypeId, DealerId)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try

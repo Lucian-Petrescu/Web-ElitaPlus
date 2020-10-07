@@ -6,48 +6,48 @@ Public NotInheritable Class InvoiceItem
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New InvoiceItemDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public NotInheritable Class InvoiceItem
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New InvoiceItemDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -109,10 +109,10 @@ Public NotInheritable Class InvoiceItem
                 Return New Guid(CType(Row(InvoiceItemDAL.COL_NAME_INVOICE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(InvoiceItemDAL.COL_NAME_INVOICE_ID, Value)
-            Me.Invoice = Nothing
+            SetValue(InvoiceItemDAL.COL_NAME_INVOICE_ID, Value)
+            Invoice = Nothing
         End Set
     End Property
 
@@ -126,10 +126,10 @@ Public NotInheritable Class InvoiceItem
                 Return New Guid(CType(Row(InvoiceItemDAL.COL_NAME_CLAIM_AUTHORIZATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(InvoiceItemDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
-            Me.ClaimAuthorization = Nothing
+            SetValue(InvoiceItemDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
+            ClaimAuthorization = Nothing
         End Set
     End Property
 
@@ -144,9 +144,9 @@ Public NotInheritable Class InvoiceItem
                 Return New LongType(CType(Row(InvoiceItemDAL.COL_NAME_LINE_ITEM_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set(Value As LongType)
             CheckDeleted()
-            Me.SetValue(InvoiceItemDAL.COL_NAME_LINE_ITEM_NUMBER, Value)
+            SetValue(InvoiceItemDAL.COL_NAME_LINE_ITEM_NUMBER, Value)
         End Set
     End Property
 
@@ -161,9 +161,9 @@ Public NotInheritable Class InvoiceItem
                 Return CType(Row(InvoiceItemDAL.COL_NAME_VENDOR_SKU), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(InvoiceItemDAL.COL_NAME_VENDOR_SKU, Value)
+            SetValue(InvoiceItemDAL.COL_NAME_VENDOR_SKU, Value)
         End Set
     End Property
 
@@ -178,9 +178,9 @@ Public NotInheritable Class InvoiceItem
                 Return CType(Row(InvoiceItemDAL.COL_NAME_VENDOR_SKU_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(InvoiceItemDAL.COL_NAME_VENDOR_SKU_DESCRIPTION, Value)
+            SetValue(InvoiceItemDAL.COL_NAME_VENDOR_SKU_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -195,9 +195,9 @@ Public NotInheritable Class InvoiceItem
                 Return New DecimalType(CType(Row(InvoiceItemDAL.COL_NAME_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(InvoiceItemDAL.COL_NAME_AMOUNT, Value)
+            SetValue(InvoiceItemDAL.COL_NAME_AMOUNT, Value)
         End Set
     End Property
 
@@ -212,9 +212,9 @@ Public NotInheritable Class InvoiceItem
                 Return New Guid(CType(Row(InvoiceItemDAL.COL_NAME_ADJUSTMENT_REASON_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(InvoiceItemDAL.COL_NAME_ADJUSTMENT_REASON_ID, Value)
+            SetValue(InvoiceItemDAL.COL_NAME_ADJUSTMENT_REASON_ID, Value)
         End Set
     End Property
 
@@ -229,9 +229,9 @@ Public NotInheritable Class InvoiceItem
                 Return New Guid(CType(Row(InvoiceItemDAL.COL_NAME_SERVICE_CLASS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(InvoiceItemDAL.COL_NAME_SERVICE_CLASS_ID, Value)
+            SetValue(InvoiceItemDAL.COL_NAME_SERVICE_CLASS_ID, Value)
         End Set
     End Property
 
@@ -246,9 +246,9 @@ Public NotInheritable Class InvoiceItem
                 Return New Guid(CType(Row(InvoiceItemDAL.COL_NAME_SERVICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(InvoiceItemDAL.COL_NAME_SERVICE_TYPE_ID, Value)
+            SetValue(InvoiceItemDAL.COL_NAME_SERVICE_TYPE_ID, Value)
         End Set
     End Property
 
@@ -263,9 +263,9 @@ Public NotInheritable Class InvoiceItem
                 Return New Guid(CType(Row(InvoiceItemDAL.COL_NAME_SERVICE_LEVEL_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(InvoiceItemDAL.COL_NAME_SERVICE_LEVEL_ID, Value)
+            SetValue(InvoiceItemDAL.COL_NAME_SERVICE_LEVEL_ID, Value)
         End Set
     End Property
 
@@ -279,12 +279,12 @@ Public NotInheritable Class InvoiceItem
         Get
             Dim row As DataRow
             Dim dal As New InvoiceReconciliationDAL
-            If Me.Dataset.Tables.IndexOf(InvoiceReconciliationDAL.TABLE_NAME) >= 0 Then
-                row = FindRow(Me.Id, InvoiceItemDAL.COL_NAME_INVOICE_ITEM_ID, Me.Dataset.Tables(InvoiceReconciliationDAL.TABLE_NAME))
+            If Dataset.Tables.IndexOf(InvoiceReconciliationDAL.TABLE_NAME) >= 0 Then
+                row = FindRow(Id, InvoiceItemDAL.COL_NAME_INVOICE_ITEM_ID, Dataset.Tables(InvoiceReconciliationDAL.TABLE_NAME))
             End If
             If row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.LoadByInvoiceItemId(Me.Dataset, Me.Id)
-                row = Me.FindRow(Me.Id, InvoiceItemDAL.COL_NAME_INVOICE_ITEM_ID, Me.Dataset.Tables(InvoiceReconciliationDAL.TABLE_NAME))
+                dal.LoadByInvoiceItemId(Dataset, Id)
+                row = FindRow(Id, InvoiceItemDAL.COL_NAME_INVOICE_ITEM_ID, Dataset.Tables(InvoiceReconciliationDAL.TABLE_NAME))
             End If
             If (row Is Nothing) Then
                 Return Guid.Empty
@@ -300,15 +300,15 @@ Public NotInheritable Class InvoiceItem
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New InvoiceItemDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -331,13 +331,13 @@ Public NotInheritable Class InvoiceItem
     Public Property Invoice As Invoice
         Get
             If (_invoice Is Nothing) Then
-                If Not Me.InvoiceId.Equals(Guid.Empty) Then
-                    Me.Invoice = New Invoice(Me.InvoiceId, Me.Dataset)
+                If Not InvoiceId.Equals(Guid.Empty) Then
+                    Me.Invoice = New Invoice(InvoiceId, Dataset)
                 End If
             End If
             Return _invoice
         End Get
-        Private Set(ByVal value As Invoice)
+        Private Set(value As Invoice)
             If (_invoice Is Nothing OrElse value Is Nothing OrElse Not _invoice.Equals(value)) Then
                 _invoice = value
             End If
@@ -347,13 +347,13 @@ Public NotInheritable Class InvoiceItem
     Public Property ClaimAuthorization As ClaimAuthorization
         Get
             If (_claimAuthorization Is Nothing) Then
-                If Not Me.ClaimAuthorizationId.Equals(Guid.Empty) Then
-                    Me.ClaimAuthorization = New ClaimAuthorization(Me.ClaimAuthorizationId, Me.Dataset)
+                If Not ClaimAuthorizationId.Equals(Guid.Empty) Then
+                    Me.ClaimAuthorization = New ClaimAuthorization(ClaimAuthorizationId, Dataset)
                 End If
             End If
             Return _claimAuthorization
         End Get
-        Private Set(ByVal value As ClaimAuthorization)
+        Private Set(value As ClaimAuthorization)
             If (_claimAuthorization Is Nothing OrElse value Is Nothing OrElse Not _claimAuthorization.Equals(value)) Then
                 _claimAuthorization = value
             End If
@@ -363,13 +363,13 @@ Public NotInheritable Class InvoiceItem
     Public Property InvoiceReconciliation As InvoiceReconciliation
         Get
             If (_invoiceReconciliation Is Nothing) Then
-                If Not Me.InvoiceReconciliationId.Equals(Guid.Empty) Then
-                    Me.InvoiceReconciliation = New InvoiceReconciliation(Me.InvoiceReconciliationId, Me.Dataset)
+                If Not InvoiceReconciliationId.Equals(Guid.Empty) Then
+                    Me.InvoiceReconciliation = New InvoiceReconciliation(InvoiceReconciliationId, Dataset)
                 End If
             End If
             Return _invoiceReconciliation
         End Get
-        Set(ByVal value As InvoiceReconciliation)
+        Set(value As InvoiceReconciliation)
             If (_invoiceReconciliation Is Nothing OrElse value Is Nothing OrElse Not _invoiceReconciliation.Equals(value)) Then
                 _invoiceReconciliation = value
             End If
@@ -382,15 +382,15 @@ End Class
 Public Class InvoiceItemList
     Inherits BusinessObjectListEnumerableBase(Of Invoice, InvoiceItem)
 
-    Public Sub New(ByVal parent As Invoice)
+    Public Sub New(parent As Invoice)
         MyBase.New(LoadTable(parent), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, InvoiceItem).InvoiceId.Equals(CType(Parent, Invoice).Id)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As Invoice) As DataTable
+    Private Shared Function LoadTable(parent As Invoice) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(InvoiceItemList)) Then
                 Dim dal As New InvoiceItemDAL

@@ -14,7 +14,7 @@ Partial Class ProductPriceRangeByRepairMethod
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -43,9 +43,9 @@ Partial Class ProductPriceRangeByRepairMethod
         Public LastOperation As DetailPageCommand
         Public EditingId As Guid
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curProductCodeId As Guid, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingId = curProductCodeId
+        Public Sub New(LastOp As DetailPageCommand, curProductCodeId As Guid, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingId = curProductCodeId
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -78,15 +78,15 @@ Partial Class ProductPriceRangeByRepairMethod
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Dim params As Parameters = CType(Me.CallingParameters, Parameters)
                 'Me.State.ProductCodeId = params.oProductCodeId
-                Me.State.ProductCodeId = CType(Me.CallingParameters, Guid)
+                State.ProductCodeId = CType(CallingParameters, Guid)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
@@ -97,44 +97,44 @@ Partial Class ProductPriceRangeByRepairMethod
 #Region "Page Parameters"
     Public Class Parameters
         Public oProductCodeId As Guid
-        Public Sub New(ByVal ProductCodeId As Guid)
-            Me.oProductCodeId = ProductCodeId
+        Public Sub New(ProductCodeId As Guid)
+            oProductCodeId = ProductCodeId
         End Sub
     End Class
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
-            Me.ErrorCtrl.Clear_Hide()
-            If Not Me.IsPostBack Then
-                Me.AddControlMsg(Me.btnDeleteChild_Write, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New ProdRepairPrice
+            ErrorCtrl.Clear_Hide()
+            If Not IsPostBack Then
+                AddControlMsg(btnDeleteChild_Write, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, True)
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New ProdRepairPrice
                 End If
                 PopulateDropdowns()
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                PopulateFormFromBOs()
+                EnableDisableFields()
                 EnableDisableChildControls(False)
             End If
             BindBoPropertiesToLabels()
             CheckIfComingFromSaveConfirm()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 #End Region
 
 #Region "Controlling Logic"
 
     Protected Sub EnableDisableFields()
-        If Me.State.IsChildEditing Then
+        If State.IsChildEditing Then
             ControlMgr.SetVisibleControl(Me, PanelAllEditDetail, True)
             EnableDisableParentControls(False)
         Else
@@ -144,13 +144,13 @@ Partial Class ProductPriceRangeByRepairMethod
 
     End Sub
 
-    Sub EnableDisableParentControls(ByVal enableToggle As Boolean)
+    Sub EnableDisableParentControls(enableToggle As Boolean)
         ControlMgr.SetEnableControl(Me, btnBack, enableToggle)
         ControlMgr.SetVisibleControl(Me, DataGridDetail, enableToggle)
         ControlMgr.SetVisibleControl(Me, btnAddNewChildFromGrid_WRITE, enableToggle)
     End Sub
 
-    Sub EnableDisableChildControls(ByVal IsNew As Boolean)
+    Sub EnableDisableChildControls(IsNew As Boolean)
         'Enable by default
         ControlMgr.SetEnableControl(Me, btnDeleteChild_Write, True)
         ControlMgr.SetEnableControl(Me, btnAddChildWithCopy_Write, True)
@@ -165,12 +165,12 @@ Partial Class ProductPriceRangeByRepairMethod
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
-        With Me.State
-            Me.BindBOPropertyToLabel(.MyBO, "MethodOfRepairId", Me.LabelMethodOfRepair)
-            Me.BindBOPropertyToLabel(.MyBO, "PriceRangeFrom", Me.LabelPriceBandRangeFrom)
-            Me.BindBOPropertyToLabel(.MyBO, "PriceRangeTo", Me.LabelPriceBandRangeTo)
+        With State
+            BindBOPropertyToLabel(.MyBO, "MethodOfRepairId", LabelMethodOfRepair)
+            BindBOPropertyToLabel(.MyBO, "PriceRangeFrom", LabelPriceBandRangeFrom)
+            BindBOPropertyToLabel(.MyBO, "PriceRangeTo", LabelPriceBandRangeTo)
         End With
-        Me.ClearGridHeadersAndLabelsErrSign()
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
     Protected Sub PopulateDropdowns()
@@ -199,109 +199,109 @@ Partial Class ProductPriceRangeByRepairMethod
 
     Protected Sub PopulateFormFromBOs()
         PopulateDetailGrid()
-        Dim oProdCode As New ProductCode(Me.State.ProductCodeId)
-        Me.PopulateControlFromBOProperty(Me.moProductCodeText, oProdCode.ProductCode)
-        Me.PopulateControlFromBOProperty(Me.moDescriptionText, oProdCode.Description)
-        Me.SetSelectedItem(Me.moRiskGroupDrop, oProdCode.RiskGroupId)
+        Dim oProdCode As New ProductCode(State.ProductCodeId)
+        PopulateControlFromBOProperty(moProductCodeText, oProdCode.ProductCode)
+        PopulateControlFromBOProperty(moDescriptionText, oProdCode.Description)
+        SetSelectedItem(moRiskGroupDrop, oProdCode.RiskGroupId)
     End Sub
 
     Sub PopulateDetailGrid()
-        Dim dv As ProdRepairPrice.ProdRepairPriceSearchDV = ProdRepairPrice.getList(Me.State.ProductCodeId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-        dv.Sort = Me.State.SortExpressionDetailGrid
+        Dim dv As ProdRepairPrice.ProdRepairPriceSearchDV = ProdRepairPrice.getList(State.ProductCodeId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+        dv.Sort = State.SortExpressionDetailGrid
 
-        Me.DataGridDetail.Columns(Me.GRID_COL_METHOD_OF_REPAIR).SortExpression = ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_METHOD_OF_REPAIR_DESC
-        Me.DataGridDetail.Columns(Me.GRID_COL_PRICE_RANGE_FROM).SortExpression = ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PRICE_RANGE_FROM
-        Me.DataGridDetail.Columns(Me.GRID_COL_PRICE_RANGE_TO).SortExpression = ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PRICE_RANGE_TO
-        Me.SetGridItemStyleColor(Me.DataGridDetail)
+        DataGridDetail.Columns(GRID_COL_METHOD_OF_REPAIR).SortExpression = ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_METHOD_OF_REPAIR_DESC
+        DataGridDetail.Columns(GRID_COL_PRICE_RANGE_FROM).SortExpression = ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PRICE_RANGE_FROM
+        DataGridDetail.Columns(GRID_COL_PRICE_RANGE_TO).SortExpression = ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PRICE_RANGE_TO
+        SetGridItemStyleColor(DataGridDetail)
 
-        SetPageAndSelectedIndexFromGuid(dv, Me.State.selectedChildId, Me.DataGridDetail, Me.State.DetailPageIndex)
-        Me.State.DetailPageIndex = Me.DataGridDetail.CurrentPageIndex
+        SetPageAndSelectedIndexFromGuid(dv, State.selectedChildId, DataGridDetail, State.DetailPageIndex)
+        State.DetailPageIndex = DataGridDetail.CurrentPageIndex
 
-        Me.DataGridDetail.DataSource = dv
-        Me.DataGridDetail.AutoGenerateColumns = False
-        Me.DataGridDetail.DataBind()
+        DataGridDetail.DataSource = dv
+        DataGridDetail.AutoGenerateColumns = False
+        DataGridDetail.DataBind()
     End Sub
 
     Protected Sub PopulateBOsFormFrom()
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO, "ProductCodeId", Me.State.ProductCodeId)
-            Me.PopulateBOProperty(Me.State.MyBO, "MethodOfRepairId", Me.DropdownlistMethodOfRepair)
-            Me.PopulateBOProperty(Me.State.MyBO, "PriceRangeFrom", Me.TextboxPriceBandRangeFrom)
-            Me.PopulateBOProperty(Me.State.MyBO, "PriceRangeTo", Me.TextboxPriceBandRangeTo)
+        With State.MyBO
+            PopulateBOProperty(State.MyBO, "ProductCodeId", State.ProductCodeId)
+            PopulateBOProperty(State.MyBO, "MethodOfRepairId", DropdownlistMethodOfRepair)
+            PopulateBOProperty(State.MyBO, "PriceRangeFrom", TextboxPriceBandRangeFrom)
+            PopulateBOProperty(State.MyBO, "PriceRangeTo", TextboxPriceBandRangeTo)
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
     Protected Sub PopulateChildBODetails()
-        With Me.State.MyBO
-            Me.SetSelectedItem(Me.DropdownlistMethodOfRepair, .MethodOfRepairId)
-            Me.PopulateControlFromBOProperty(Me.TextboxPriceBandRangeFrom, .PriceRangeFrom)
-            Me.PopulateControlFromBOProperty(Me.TextboxPriceBandRangeTo, .PriceRangeTo)
+        With State.MyBO
+            SetSelectedItem(DropdownlistMethodOfRepair, .MethodOfRepairId)
+            PopulateControlFromBOProperty(TextboxPriceBandRangeFrom, .PriceRangeFrom)
+            PopulateControlFromBOProperty(TextboxPriceBandRangeTo, .PriceRangeTo)
         End With
     End Sub
 
     Protected Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-        Me.State.IsChildEditing = True
-        Me.State.MyBO = New ProdRepairPrice
+        State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+        State.IsChildEditing = True
+        State.MyBO = New ProdRepairPrice
         PopulateDropdowns()
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        PopulateFormFromBOs()
+        EnableDisableFields()
         EnableDisableChildControls(True)
         PopulateChildBODetails()
     End Sub
 
     Protected Sub CreateNewWithCopy()
-        Me.State.selectedChildId = Guid.Empty
-        Me.BeginChildEdit()
+        State.selectedChildId = Guid.Empty
+        BeginChildEdit()
         EnableDisableChildControls(True)
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
             '  If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
             'Me.State.MyBO.Save()
             'End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.EndChildEdit(ElitaPlusPage.DetailPageCommand.Back)
+                    EndChildEdit(ElitaPlusPage.DetailPageCommand.Back)
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    Me.CreateNew()
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    Me.CreateNewWithCopy()
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.EndChildEdit(ElitaPlusPage.DetailPageCommand.Back)
+                    EndChildEdit(ElitaPlusPage.DetailPageCommand.Back)
                 Case ElitaPlusPage.DetailPageCommand.Accept
-                    Me.EndChildEdit(ElitaPlusPage.DetailPageCommand.OK)
+                    EndChildEdit(ElitaPlusPage.DetailPageCommand.OK)
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.EndChildEdit(ElitaPlusPage.DetailPageCommand.Back)
+                    EndChildEdit(ElitaPlusPage.DetailPageCommand.Back)
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ErrorCtrl.AddErrorAndShow(Me.State.LastErrMsg)
+                    ErrorCtrl.AddErrorAndShow(State.LastErrMsg)
                 Case ElitaPlusPage.DetailPageCommand.Accept
-                    Me.EndChildEdit(ElitaPlusPage.DetailPageCommand.Back)
+                    EndChildEdit(ElitaPlusPage.DetailPageCommand.Back)
             End Select
         End If
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
     Sub BeginChildEdit()
-        Me.State.IsChildEditing = True
-        Me.EnableDisableFields()
+        State.IsChildEditing = True
+        EnableDisableFields()
         EnableDisableChildControls(False)
-        With Me.State
+        With State
             If Not .selectedChildId.Equals(Guid.Empty) Then
                 .MyBO = New ProdRepairPrice(CType(.selectedChildId, Guid))
             Else
@@ -311,14 +311,14 @@ Partial Class ProductPriceRangeByRepairMethod
         PopulateChildBODetails()
     End Sub
 
-    Sub EndChildEdit(ByVal lastop As ElitaPlusPage.DetailPageCommand)
+    Sub EndChildEdit(lastop As ElitaPlusPage.DetailPageCommand)
         Try
-            With Me.State
+            With State
                 Select Case lastop
                     Case ElitaPlusPage.DetailPageCommand.OK
-                        Me.PopulateBOsFormFrom()
+                        PopulateBOsFormFrom()
                         .MyBO.Save()
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                     Case ElitaPlusPage.DetailPageCommand.Cancel
                         .MyBO.cancelEdit()
                     Case ElitaPlusPage.DetailPageCommand.Back
@@ -326,15 +326,15 @@ Partial Class ProductPriceRangeByRepairMethod
                     Case ElitaPlusPage.DetailPageCommand.Delete
                         .MyBO.Delete()
                         .MyBO.Save()
-                        Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                        AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
                 End Select
             End With
-            Me.State.IsChildEditing = False
-            Me.EnableDisableFields()
+            State.IsChildEditing = False
+            EnableDisableFields()
             EnableDisableChildControls(False)
-            Me.PopulateDetailGrid()
+            PopulateDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -349,180 +349,180 @@ Partial Class ProductPriceRangeByRepairMethod
 
 
 
-    Public Sub DataGridDetail_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles DataGridDetail.ItemDataBound
+    Public Sub DataGridDetail_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles DataGridDetail.ItemDataBound
         Try
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
             If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                e.Item.Cells(Me.GRID_COL_PG_DETAIL_ID).Text = New Guid(CType(dvRow(ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PROD_REPAIR_PRICE_ID), Byte())).ToString
-                e.Item.Cells(Me.GRID_COL_METHOD_OF_REPAIR).Text = dvRow(ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_METHOD_OF_REPAIR_DESC).ToString
-                e.Item.Cells(Me.GRID_COL_PRICE_RANGE_FROM).Text = GetAmountFormattedDoubleString(dvRow(ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PRICE_RANGE_FROM).ToString)
-                e.Item.Cells(Me.GRID_COL_PRICE_RANGE_TO).Text = GetAmountFormattedDoubleString(dvRow(ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PRICE_RANGE_TO).ToString)
+                e.Item.Cells(GRID_COL_PG_DETAIL_ID).Text = New Guid(CType(dvRow(ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PROD_REPAIR_PRICE_ID), Byte())).ToString
+                e.Item.Cells(GRID_COL_METHOD_OF_REPAIR).Text = dvRow(ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_METHOD_OF_REPAIR_DESC).ToString
+                e.Item.Cells(GRID_COL_PRICE_RANGE_FROM).Text = GetAmountFormattedDoubleString(dvRow(ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PRICE_RANGE_FROM).ToString)
+                e.Item.Cells(GRID_COL_PRICE_RANGE_TO).Text = GetAmountFormattedDoubleString(dvRow(ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PRICE_RANGE_TO).ToString)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 
-    Private Sub DataGridDetail_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles DataGridDetail.SortCommand
+    Private Sub DataGridDetail_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles DataGridDetail.SortCommand
         Try
-            If Me.State.SortExpressionDetailGrid.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpressionDetailGrid.StartsWith(e.SortExpression & " DESC") Then
-                    Me.State.SortExpressionDetailGrid = e.SortExpression
+            If State.SortExpressionDetailGrid.StartsWith(e.SortExpression) Then
+                If State.SortExpressionDetailGrid.StartsWith(e.SortExpression & " DESC") Then
+                    State.SortExpressionDetailGrid = e.SortExpression
                 Else
-                    Me.State.SortExpressionDetailGrid = e.SortExpression & " DESC"
+                    State.SortExpressionDetailGrid = e.SortExpression & " DESC"
                 End If
             Else
-                Me.State.SortExpressionDetailGrid = e.SortExpression
+                State.SortExpressionDetailGrid = e.SortExpression
             End If
-            If Me.State.SortExpressionDetailGrid.StartsWith(ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_METHOD_OF_REPAIR_DESC) Then
-                Me.State.SortExpressionDetailGrid &= ", " & ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_METHOD_OF_REPAIR_DESC
+            If State.SortExpressionDetailGrid.StartsWith(ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_METHOD_OF_REPAIR_DESC) Then
+                State.SortExpressionDetailGrid &= ", " & ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_METHOD_OF_REPAIR_DESC
             End If
-            If Me.State.SortExpressionDetailGrid.StartsWith(ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PRICE_RANGE_TO) Then
-                Me.State.SortExpressionDetailGrid &= ", " & ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PRICE_RANGE_TO
+            If State.SortExpressionDetailGrid.StartsWith(ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PRICE_RANGE_TO) Then
+                State.SortExpressionDetailGrid &= ", " & ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PRICE_RANGE_TO
             End If
-            Me.PopulateDetailGrid()
+            PopulateDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub DataGridDetail_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles DataGridDetail.ItemCommand
+    Private Sub DataGridDetail_ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles DataGridDetail.ItemCommand
         Try
             Try
                 If e.CommandName = "ViewRecord" Then
-                    Me.State.IsChildEditing = True
-                    Me.State.selectedChildId = New Guid(e.Item.Cells(Me.GRID_COL_PG_DETAIL_ID).Text)
-                    Me.BeginChildEdit()
-                    Me.EnableDisableFields()
+                    State.IsChildEditing = True
+                    State.selectedChildId = New Guid(e.Item.Cells(GRID_COL_PG_DETAIL_ID).Text)
+                    BeginChildEdit()
+                    EnableDisableFields()
                     EnableDisableChildControls(False)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub DataGridDetail_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGridDetail.PageIndexChanged
+    Private Sub DataGridDetail_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGridDetail.PageIndexChanged
         Try
-            Me.State.DetailPageIndex = e.NewPageIndex
-            Me.State.selectedChildId = Guid.Empty
-            Me.PopulateDetailGrid()
+            State.DetailPageIndex = e.NewPageIndex
+            State.selectedChildId = Guid.Empty
+            PopulateDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         'Me.callPage(ProductPriceRangeByRepairMethod.URL, Me.State.ProductCodeId)
-        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.ProductCodeId, False))
+        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ProductCodeId, False))
     End Sub
 
 
 #Region "Detail Clicks"
 
-    Private Sub btnAddNewChildFromGrid_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAddNewChildFromGrid_WRITE.Click
-        Me.CreateNew()
+    Private Sub btnAddNewChildFromGrid_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnAddNewChildFromGrid_WRITE.Click
+        CreateNew()
     End Sub
 
-    Private Sub btnAddNewChild_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAddNewChild_Write.Click
-        Me.PopulateBOsFormFrom()
-        If (Me.State.MyBO.IsDirty) Then
-            Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+    Private Sub btnAddNewChild_Click(sender As Object, e As System.EventArgs) Handles btnAddNewChild_Write.Click
+        PopulateBOsFormFrom()
+        If (State.MyBO.IsDirty) Then
+            DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
         Else
-            Me.CreateNew()
+            CreateNew()
         End If
     End Sub
 
-    Private Sub btnAddChildWithCopy_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAddChildWithCopy_Write.Click
+    Private Sub btnAddChildWithCopy_Click(sender As Object, e As System.EventArgs) Handles btnAddChildWithCopy_Write.Click
         Try
-            Me.PopulateBOsFormFrom()
+            PopulateBOsFormFrom()
 
-            If Me.State.MyBO.IsDirty Then
-                Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+            If State.MyBO.IsDirty Then
+                AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
-                Me.CreateNewWithCopy()
+                CreateNewWithCopy()
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnBackChild_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBackChild.Click
+    Private Sub btnBackChild_Click(sender As System.Object, e As System.EventArgs) Handles btnBackChild.Click
         Try
-            Me.PopulateBOsFormFrom()
+            PopulateBOsFormFrom()
             Dim iDirtyCols As Integer
-            iDirtyCols = Me.State.MyBO.DirtyColumns.Count
-            If Me.State.MyBO.IsDirty Then
+            iDirtyCols = State.MyBO.DirtyColumns.Count
+            If State.MyBO.IsDirty Then
                 If iDirtyCols > AS_DIRTY_COLUMNS_COUNT Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
                 Else
-                    Me.EndChildEdit(ElitaPlusPage.DetailPageCommand.Back)
+                    EndChildEdit(ElitaPlusPage.DetailPageCommand.Back)
                 End If
             Else
-                Me.EndChildEdit(ElitaPlusPage.DetailPageCommand.Back)
+                EndChildEdit(ElitaPlusPage.DetailPageCommand.Back)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.ErrorCtrl.Text
+            HandleErrors(ex, ErrorCtrl)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = ErrorCtrl.Text
         End Try
     End Sub
 
-    Private Sub btnCancelChild_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCancelChild.Click
+    Private Sub btnCancelChild_Click(sender As Object, e As System.EventArgs) Handles btnCancelChild.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New ProdRepairPrice(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New ProdRepairPrice(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
                 CreateNew()
             End If
-            Me.PopulateChildBODetails()
-            Me.EnableDisableFields()
+            PopulateChildBODetails()
+            EnableDisableFields()
             EnableDisableChildControls(False)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnOkChild_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnOkChild_Write.Click
+    Private Sub btnOkChild_Click(sender As Object, e As System.EventArgs) Handles btnOkChild_Write.Click
         Try
-            Me.EndChildEdit(ElitaPlusPage.DetailPageCommand.OK)
+            EndChildEdit(ElitaPlusPage.DetailPageCommand.OK)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnDeleteChild_Write_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDeleteChild_Write.Click
+    Private Sub btnDeleteChild_Write_Click(sender As Object, e As System.EventArgs) Handles btnDeleteChild_Write.Click
         Try
-            Me.EndChildEdit(ElitaPlusPage.DetailPageCommand.Delete)
+            EndChildEdit(ElitaPlusPage.DetailPageCommand.Delete)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 

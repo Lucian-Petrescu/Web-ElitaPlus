@@ -7,7 +7,7 @@ Imports Assurant.Elita.Security
 Public Module IdentityExtensions
 
     <Extension()>
-    Public Function GetNetworkId(ByVal pPrincipal As IPrincipal) As String
+    Public Function GetNetworkId(pPrincipal As IPrincipal) As String
         Dim identity As IElitaClaimsIdentity
         identity = TryCast(pPrincipal.Identity, IElitaClaimsIdentity)
         If (identity Is Nothing) Then
@@ -26,7 +26,7 @@ Public Module IdentityExtensions
     End Function
 
     <Extension()>
-    Public Function GetCultureCode(ByVal pPrincipal As IPrincipal) As String
+    Public Function GetCultureCode(pPrincipal As IPrincipal) As String
         Dim identity As IElitaClaimsIdentity
         identity = TryCast(pPrincipal.Identity, IElitaClaimsIdentity)
         If (identity Is Nothing) Then
@@ -45,7 +45,7 @@ Public Module IdentityExtensions
     End Function
 
     <Extension()>
-    Public Function GetLanguageCode(ByVal pPrincipal As IPrincipal) As String
+    Public Function GetLanguageCode(pPrincipal As IPrincipal) As String
         Dim identity As IElitaClaimsIdentity
         identity = TryCast(pPrincipal.Identity, IElitaClaimsIdentity)
         If (identity Is Nothing) Then
@@ -64,7 +64,7 @@ Public Module IdentityExtensions
     End Function
 
     <Extension()>
-    Public Function GetLanguageId(ByVal pPrincipal As IPrincipal) As Nullable(Of Guid)
+    Public Function GetLanguageId(pPrincipal As IPrincipal) As Nullable(Of Guid)
         Dim identity As IElitaClaimsIdentity
         identity = TryCast(pPrincipal.Identity, IElitaClaimsIdentity)
         If (identity Is Nothing) Then
@@ -83,7 +83,7 @@ Public Module IdentityExtensions
     End Function
 
     <Extension()>
-    Public Function HasPermission(ByVal pPrincipal As IPrincipal, ByVal pPermissionCode As String) As Boolean
+    Public Function HasPermission(pPrincipal As IPrincipal, pPermissionCode As String) As Boolean
         Dim identity As IElitaClaimsIdentity
         identity = TryCast(pPrincipal.Identity, IElitaClaimsIdentity)
         If (identity Is Nothing) Then
@@ -104,7 +104,7 @@ Public Module IdentityExtensions
     End Function
 
     <Extension()>
-    Public Function HasCompany(ByVal pPrincipal As IPrincipal, ByVal pCompanyCode As String) As Boolean
+    Public Function HasCompany(pPrincipal As IPrincipal, pCompanyCode As String) As Boolean
         Dim identity As IElitaClaimsIdentity
         identity = TryCast(pPrincipal.Identity, IElitaClaimsIdentity)
         If (identity Is Nothing) Then
@@ -125,7 +125,7 @@ Public Module IdentityExtensions
     End Function
 
     <Extension()>
-    Public Function HasCompany(ByVal pPrincipal As IPrincipal, ByVal pCompanyId As Guid) As Boolean
+    Public Function HasCompany(pPrincipal As IPrincipal, pCompanyId As Guid) As Boolean
         Dim identity As IElitaClaimsIdentity
         identity = TryCast(pPrincipal.Identity, IElitaClaimsIdentity)
         If (identity Is Nothing) Then
@@ -146,7 +146,7 @@ Public Module IdentityExtensions
 
 #Region "X509 Certificate"
     <Extension>
-    Public Function HasX509Thumbprint(ByVal pPrincipal As IPrincipal, ByVal Thumbprint As String) As Boolean
+    Public Function HasX509Thumbprint(pPrincipal As IPrincipal, Thumbprint As String) As Boolean
 
         Dim identity As IElitaClaimsIdentity
         identity = TryCast(pPrincipal.Identity, IElitaClaimsIdentity)
@@ -170,7 +170,7 @@ Public Module IdentityExtensions
         End If
     End Function
     <Extension>
-    Public Function IsX509CertificateValid(ByVal pPrincipal As IPrincipal, ByVal Thumbprint As String) As Boolean
+    Public Function IsX509CertificateValid(pPrincipal As IPrincipal, Thumbprint As String) As Boolean
 
         Dim identity As IElitaClaimsIdentity
         identity = TryCast(pPrincipal.Identity, IElitaClaimsIdentity)
@@ -193,7 +193,7 @@ Public Module IdentityExtensions
 
 #Region "Client IP"
     <Extension>
-    Public Function HasClientIP(ByVal pPrincipal As IPrincipal, ByVal ClientIp As String) As Boolean
+    Public Function HasClientIP(pPrincipal As IPrincipal, ClientIp As String) As Boolean
 
         Dim identity As IElitaClaimsIdentity
         identity = TryCast(pPrincipal.Identity, IElitaClaimsIdentity)
@@ -217,7 +217,7 @@ Public Module IdentityExtensions
         End If
     End Function
     <Extension>
-    Public Function IsClientIPValid(ByVal pPrincipal As IPrincipal, ByVal ClientIp As String) As Boolean
+    Public Function IsClientIPValid(pPrincipal As IPrincipal, ClientIp As String) As Boolean
 
         Dim identity As IElitaClaimsIdentity
         identity = TryCast(pPrincipal.Identity, IElitaClaimsIdentity)
@@ -240,7 +240,7 @@ Public Module IdentityExtensions
 
 
     <Extension()>
-    Public Function CanManageUsers(ByVal pPrincipal As IPrincipal) As Boolean
+    Public Function CanManageUsers(pPrincipal As IPrincipal) As Boolean
         if (String.IsNullOrWhiteSpace(ElitaConfig.Current.Security.UserManagementGroup)) 
             Return False
         End If

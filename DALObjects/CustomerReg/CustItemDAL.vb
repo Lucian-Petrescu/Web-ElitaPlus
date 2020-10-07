@@ -53,43 +53,43 @@ Public Class CustItemDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("registration_item_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function    
     
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
 		If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "Functions"
-    Public Function GetItemFromEmail(ByVal emailId As String, ByVal addressTypeId As Guid, ByVal dealerId As Guid) As DataSet
+    Public Function GetItemFromEmail(emailId As String, addressTypeId As Guid, dealerId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_ITEM_FROM_EMAIL")
+        Dim selectStmt As String = Config("/SQL/GET_ITEM_FROM_EMAIL")
 
         Try
             Dim ds As New DataSet
@@ -97,7 +97,7 @@ Public Class CustItemDAL
                                                                                                New DBHelper.DBHelperParameter(COL_NAME_ADDRESS_TYPE_ID, addressTypeId.ToByteArray), _
                                                                                                New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -105,9 +105,9 @@ Public Class CustItemDAL
 
     End Function
 
-    Public Function GetItemforDealerAndRegistration(ByVal imeiNumber As String, ByVal dealerId As Guid, ByVal registrationId As Guid) As DataSet
+    Public Function GetItemforDealerAndRegistration(imeiNumber As String, dealerId As Guid, registrationId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_ITEM_FOR_DEALER_AND_REGISTRATION")
+        Dim selectStmt As String = Config("/SQL/GET_ITEM_FOR_DEALER_AND_REGISTRATION")
 
         Try
             Dim ds As New DataSet
@@ -115,7 +115,7 @@ Public Class CustItemDAL
                                                                                                    New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray), _
                                                                                                    New DBHelper.DBHelperParameter(COL_NAME_REGISTRATION_ID, registrationId.ToByteArray)}
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
 
         Catch ex As Exception
@@ -123,8 +123,8 @@ Public Class CustItemDAL
         End Try
     End Function
 
-    Public Function GetItemByRegistrationAndIMEI(ByVal registrationId As Guid, ByVal imeiNumber As String) As Guid
-        Dim selectStmt As String = Me.Config("/SQL/GET_ITEM_BY_REG_AND_IMEI")
+    Public Function GetItemByRegistrationAndIMEI(registrationId As Guid, imeiNumber As String) As Guid
+        Dim selectStmt As String = Config("/SQL/GET_ITEM_BY_REG_AND_IMEI")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_REGISTRATION_ID, registrationId.ToByteArray), _
                                                                                                New DBHelper.DBHelperParameter(COL_NAME_IMEI_NUMBER, imeiNumber)}
         Try
@@ -141,9 +141,9 @@ Public Class CustItemDAL
         End Try
     End Function
 
-    Public Function CheckItemforDealer(ByVal imeiNumber As String, ByVal dealerId As Guid) As Integer
+    Public Function CheckItemforDealer(imeiNumber As String, dealerId As Guid) As Integer
 
-        Dim selectStmt As String = Me.Config("/SQL/CHECK_ITEM_FOR_DEALER")
+        Dim selectStmt As String = Config("/SQL/CHECK_ITEM_FOR_DEALER")
 
         Try
             Dim ds As New DataSet
@@ -161,8 +161,8 @@ Public Class CustItemDAL
         End Try
     End Function
 
-    Public Function GetCertItemIDforTaxImei(ByVal taxID As String, ByVal imeiNumber As String, ByVal dealerId As Guid, ByVal cellNumber As String) As Guid
-        Dim selectStmt As String = Me.Config("/SQL/GET_CERT_ITEM_ID_FOR_IMEI_AND_TAX_ID")
+    Public Function GetCertItemIDforTaxImei(taxID As String, imeiNumber As String, dealerId As Guid, cellNumber As String) As Guid
+        Dim selectStmt As String = Config("/SQL/GET_CERT_ITEM_ID_FOR_IMEI_AND_TAX_ID")
 
         Dim whereClauseConditions As String = ""
 
@@ -173,9 +173,9 @@ Public Class CustItemDAL
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
@@ -203,20 +203,20 @@ Public Class CustItemDAL
     End Structure
 
 
-    Public Function FindRegistration(ByVal certificateId As Guid) As RegistrationDetails
+    Public Function FindRegistration(certificateId As Guid) As RegistrationDetails
         Dim returnValue As RegistrationDetails
 
         returnValue.RegistrationId = String.Empty
         returnValue.RegistrationItemId = String.Empty
 
-        Dim selectStmt As String = Me.Config("/SQL/FIND_REGISTRATION")
+        Dim selectStmt As String = Config("/SQL/FIND_REGISTRATION")
         Dim inputParameters(0) As DBHelperParameter
         Dim outputParameter(1) As DBHelperParameter
 
-        inputParameters(0) = New DBHelperParameter(Me.PAR_NAME_CERT_ID, certificateId.ToByteArray)
+        inputParameters(0) = New DBHelperParameter(PAR_NAME_CERT_ID, certificateId.ToByteArray)
 
-        outputParameter(0) = New DBHelperParameter(Me.PAR_NAME_REGISTRATION_ID, GetType(String), 32)
-        outputParameter(1) = New DBHelperParameter(Me.PAR_NAME_REGISTRATION_ITEM_ID, GetType(String), 32)
+        outputParameter(0) = New DBHelperParameter(PAR_NAME_REGISTRATION_ID, GetType(String), 32)
+        outputParameter(1) = New DBHelperParameter(PAR_NAME_REGISTRATION_ITEM_ID, GetType(String), 32)
 
         Try
             ' Call DBHelper Store Procedure
@@ -233,9 +233,9 @@ Public Class CustItemDAL
         End Try
     End Function
 
-    Public Function ValidIMEI(ByVal imeiNumber As String) As Boolean
+    Public Function ValidIMEI(imeiNumber As String) As Boolean
 
-        Dim selectStmt As String = Me.Config("/SQL/VALIDATE_IMEI")
+        Dim selectStmt As String = Config("/SQL/VALIDATE_IMEI")
         Dim inputParameters(0) As DBHelperParameter
         Dim outputParameter(0) As DBHelperParameter
 

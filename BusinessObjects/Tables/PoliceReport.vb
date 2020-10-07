@@ -8,58 +8,58 @@ Public Class PoliceReport
     'Existing BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Existing BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
     ''Existing or New BO by claimid ???
     Public Sub New(ByVal claimid As Guid, ByVal NewOrExisting As Boolean)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(claimid, NewOrExisting)
+        Dataset = New Dataset
+        Load(claimid, NewOrExisting)
     End Sub
     'Existing BO attaching to a BO family by claimid
     Public Sub New(ByVal Claimid As Guid, ByVal familyDS As Dataset, ByVal NewOrExisting As Boolean)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(ClaimId, NewOrExisting)
+        Dataset = familyDS
+        Load(ClaimId, NewOrExisting)
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New PoliceReportDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -70,20 +70,20 @@ Public Class PoliceReport
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New PoliceReportDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -95,25 +95,25 @@ Public Class PoliceReport
         ' load the police report by claim id which is not the primary key !
         Try
             Dim dal As New PoliceReportDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(Claimid, dal.COL_NAME_CLAIM_ID, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(Claimid, dal.COL_NAME_CLAIM_ID, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.LoadbyClaimid(Me.Dataset, Claimid)
-                Me.Row = Me.FindRow(Claimid, dal.COL_NAME_CLAIM_ID, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.LoadbyClaimid(Dataset, Claimid)
+                Row = FindRow(Claimid, dal.COL_NAME_CLAIM_ID, Dataset.Tables(dal.TABLE_NAME))
             End If
 
 
-            If Me.Row Is Nothing Then
-                Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-                Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-                Me.Row = newRow
+            If Row Is Nothing Then
+                Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+                Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+                Row = newRow
             End If
 
             '' NOTE: There may or may not be a record for that claim id, so need to catch the following 
@@ -159,7 +159,7 @@ Public Class PoliceReport
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PoliceReportDAL.COL_NAME_POLICE_STATION_ID, Value)
+            SetValue(PoliceReportDAL.COL_NAME_POLICE_STATION_ID, Value)
         End Set
     End Property
 
@@ -176,7 +176,7 @@ Public Class PoliceReport
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PoliceReportDAL.COL_NAME_CLAIM_ID, Value)
+            SetValue(PoliceReportDAL.COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
 
@@ -221,7 +221,7 @@ Public Class PoliceReport
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PoliceReportDAL.COL_NAME_REPORT_NUMBER, Value)
+            SetValue(PoliceReportDAL.COL_NAME_REPORT_NUMBER, Value)
         End Set
     End Property
 
@@ -237,7 +237,7 @@ Public Class PoliceReport
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PoliceReportDAL.COL_NAME_OFFICER_NAME, Value)
+            SetValue(PoliceReportDAL.COL_NAME_OFFICER_NAME, Value)
         End Set
     End Property
 
@@ -247,15 +247,15 @@ Public Class PoliceReport
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New PoliceReportDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -284,7 +284,7 @@ Public Class PoliceReport
     Public Function IsReportNumberInUser(ByRef lstClaimNum As Collections.Generic.List(Of String)) As Boolean
         Dim blnInUser As Boolean = False
         Dim dal As New PoliceReportDAL
-        Dim ds As DataSet = dal.GetClaimsByPoliceRptNumber(Me.PoliceStationId, Me.ReportNumber)
+        Dim ds As DataSet = dal.GetClaimsByPoliceRptNumber(PoliceStationId, ReportNumber)
         If (Not ds Is Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
             blnInUser = True
             If lstClaimNum Is Nothing Then lstClaimNum = New Collections.Generic.List(Of String)
@@ -314,8 +314,8 @@ Public Class PoliceReport
 
     Public ReadOnly Property IsEmpty() As Boolean
         Get
-            If (Not IsEmptyString(Me.ReportNumber)) AndAlso _
-                (Not Me.PoliceStationId.Equals(Guid.Empty)) Then
+            If (Not IsEmptyString(ReportNumber)) AndAlso _
+                (Not PoliceStationId.Equals(Guid.Empty)) Then
                 Return False
             End If
             Return True

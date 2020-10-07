@@ -92,82 +92,82 @@ Public Class GalaxyPayClaim
         Try
             If ds.GalaxyPayClaim.Count = 0 Then Exit Sub
             With ds.GalaxyPayClaim.Item(0)
-                Me.CertificateNumber = .CERTIFICATE_NUMBER
-                Me.DealerCode = .DEALER_CODE
-                Me.UnitNumber = .UNIT_NUMBER
-                Me.ClaimNumber = .CLAIM_NUMBER
-                Me.SvcControlNumber = .SVC_CONTROL_NUMBER
+                CertificateNumber = .CERTIFICATE_NUMBER
+                DealerCode = .DEALER_CODE
+                UnitNumber = .UNIT_NUMBER
+                ClaimNumber = .CLAIM_NUMBER
+                SvcControlNumber = .SVC_CONTROL_NUMBER
                 'If Not .IsPAYMENT_REASONNull Then Me.PaymentReason = .PAYMENT_REASON
-                If Not .IsAUTHORIZATION_NUMBERNull Then Me.AuthorizationNumber = .AUTHORIZATION_NUMBER
+                If Not .IsAUTHORIZATION_NUMBERNull Then AuthorizationNumber = .AUTHORIZATION_NUMBER
 
-                Me.PayeeCode = .PAYEE_CODE
-                Me.PayeeOptionId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYEE, Me.PayeeCode)
-                If Me.PayeeOptionId.Equals(Guid.Empty) Then
+                PayeeCode = .PAYEE_CODE
+                PayeeOptionId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYEE, PayeeCode)
+                If PayeeOptionId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("GalaxyPayClaim Error: ", Common.ErrorCodes.INVALID_PAYEE_OPTION_CODE)
                 End If
 
                 'Added for Def-1782
                 If Not .IsINVOICE_DATENull Then
-                    Me.InvoiceDate = .INVOICE_DATE
+                    InvoiceDate = .INVOICE_DATE
                 End If
 
-                If Not .IsCTC_ADDRESS1Null Then Me.CtcAddress1 = .CTC_ADDRESS1
-                If Not .IsCTC_ADDRESS2Null Then Me.CtcAddress2 = .CTC_ADDRESS2
-                If Not .IsCTC_CITYNull Then Me.CtcCity = .CTC_CITY
+                If Not .IsCTC_ADDRESS1Null Then CtcAddress1 = .CTC_ADDRESS1
+                If Not .IsCTC_ADDRESS2Null Then CtcAddress2 = .CTC_ADDRESS2
+                If Not .IsCTC_CITYNull Then CtcCity = .CTC_CITY
 
                 If Not .IsDISBURSEMENT_COUNTRY_CODENull Then
-                    Me.DisbursementCountryCode = .DISBURSEMENT_COUNTRY_CODE
-                    Me.CountryId = GetCountryID(Me.DisbursementCountryCode)
-                    If Me.CountryId.Equals(Guid.Empty) Then
+                    DisbursementCountryCode = .DISBURSEMENT_COUNTRY_CODE
+                    CountryId = GetCountryID(DisbursementCountryCode)
+                    If CountryId.Equals(Guid.Empty) Then
                         Throw New BOValidationException("GalaxyPayClaim Error: ", Common.ErrorCodes.BO_ERROR_COUNTRY_ID_NOT_FOUND)
                     End If
                 Else
-                    Me.CountryId = GetCountryID()
+                    CountryId = GetCountryID()
                 End If
 
                 If Not .IsCTC_REGION_CODENull Then
-                    Me.CtcRegionCode = .CTC_REGION_CODE
-                    Me.RegionId = GetRegionID(Me.CtcRegionCode, Me.CountryId)
-                    If Me.RegionId.Equals(Guid.Empty) Then
+                    CtcRegionCode = .CTC_REGION_CODE
+                    RegionId = GetRegionID(CtcRegionCode, CountryId)
+                    If RegionId.Equals(Guid.Empty) Then
                         Throw New BOValidationException("GalaxyPayClaim Error: ", Common.ErrorCodes.INVALID_REGION_CODE)
                     End If
                 End If
 
-                If Not .IsCTC_POSTAL_CODENull Then Me.CtcPostalCode = .CTC_POSTAL_CODE
+                If Not .IsCTC_POSTAL_CODENull Then CtcPostalCode = .CTC_POSTAL_CODE
 
-                If Me.PayeeCode = ClaimInvoice.PAYEE_OPTION_OTHER AndAlso .PAYMENT_METHOD = "CHK" Then
-                    If Me.CtcAddress1 Is Nothing OrElse Me.CtcCity Is Nothing OrElse Me.CtcRegionCode Is Nothing OrElse Me.CtcPostalCode Is Nothing Then
+                If PayeeCode = ClaimInvoice.PAYEE_OPTION_OTHER AndAlso .PAYMENT_METHOD = "CHK" Then
+                    If CtcAddress1 Is Nothing OrElse CtcCity Is Nothing OrElse CtcRegionCode Is Nothing OrElse CtcPostalCode Is Nothing Then
                         Throw New BOValidationException("GalaxyPayClaim Error: ", Common.ErrorCodes.MISSING_ADDRESS_INFO_ERR)
                     End If
                 End If
 
-                If Not .IsACCOUNT_NAMENull Then Me.AccountName = .ACCOUNT_NAME
-                If Not .IsBANK_IDNull Then Me.BankId = .BANK_ID
-                If Not .IsACCOUNT_NUMBERNull Then Me.AccountNumber = .ACCOUNT_NUMBER
+                If Not .IsACCOUNT_NAMENull Then AccountName = .ACCOUNT_NAME
+                If Not .IsBANK_IDNull Then BankId = .BANK_ID
+                If Not .IsACCOUNT_NUMBERNull Then AccountNumber = .ACCOUNT_NUMBER
                 If Not .IsPAYMENT_METHODNull Then
-                    Me.PaymentMethod = .PAYMENT_METHOD
-                    Me.PaymentMethodId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYMENTMETHOD, Me.PaymentMethod)
+                    PaymentMethod = .PAYMENT_METHOD
+                    PaymentMethodId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYMENTMETHOD, PaymentMethod)
 
-                    If (Me.PaymentMethodId.Equals(Guid.Empty)) Then
+                    If (PaymentMethodId.Equals(Guid.Empty)) Then
                         Throw New BOValidationException("GalaxyPayClaim Error: ", Common.ErrorCodes.INVALID_PAYMENT_METHOD)
                     End If
                 End If
 
-                If Not .IsIDENTITY_DOCUMENT_NONull Then Me.IdentityDocumentNo = .IDENTITY_DOCUMENT_NO
-                If Not .IsDOCUMENT_TYPENull Then Me.DocumentType = .DOCUMENT_TYPE
-                If Not .IsIBAN_NUMBERNull Then Me.IbanNumber = .IBAN_NUMBER
-                If Not .IsSWIFT_CODENull Then Me.SwiftCode = .SWIFT_CODE
+                If Not .IsIDENTITY_DOCUMENT_NONull Then IdentityDocumentNo = .IDENTITY_DOCUMENT_NO
+                If Not .IsDOCUMENT_TYPENull Then DocumentType = .DOCUMENT_TYPE
+                If Not .IsIBAN_NUMBERNull Then IbanNumber = .IBAN_NUMBER
+                If Not .IsSWIFT_CODENull Then SwiftCode = .SWIFT_CODE
                 If Not .IsACCOUNT_TYPENull Then
-                    Me.AccountType = .ACCOUNT_TYPE
-                    Me.AccountTypeId = Me.GetAccountTypeID(Me.AccountType)
-                    If Me.AccountTypeId.Equals(Guid.Empty) Then
+                    AccountType = .ACCOUNT_TYPE
+                    AccountTypeId = GetAccountTypeID(AccountType)
+                    If AccountTypeId.Equals(Guid.Empty) Then
                         Throw New BOValidationException("GalaxyPayClaim Error: ", Common.ErrorCodes.INVALID_BANK_ACCOUNT_TYPE)
                     End If
                 End If
 
-                If Not .IsPAYEE_OTHER_NAMENull Then Me.PayeeOtherName = .PAYEE_OTHER_NAME
+                If Not .IsPAYEE_OTHER_NAMENull Then PayeeOtherName = .PAYEE_OTHER_NAME
 
-                dsItemCoverages = CertItemCoverage.LoadAllItemCoveragesForGalaxyClaimUpdate(Me.ClaimNumber)
+                dsItemCoverages = CertItemCoverage.LoadAllItemCoveragesForGalaxyClaimUpdate(ClaimNumber)
                 If dsItemCoverages Is Nothing OrElse dsItemCoverages.Tables.Count <= 0 OrElse dsItemCoverages.Tables(0).Rows.Count <= 0 Then
                     Throw New BOValidationException("GalaxyPayClaim Error: ", Common.ErrorCodes.INVALID_CLAIM_NUMBER_ERR)
                 End If
@@ -213,7 +213,7 @@ Public Class GalaxyPayClaim
                     newRow(SOURCE_COL_CERT_ITEM_COVERAGE_ID) = certItemCoverageId
                     newRow(SOURCE_COL_AMOUNT) = amount
                     newRow(SOURCE_COL_IVA_AMOUNT) = ivaAmount
-                    newRow(SOURCE_COL_CLAIM_NUMBER) = claimTmpBO.GetExistClaimNumber(companyId, .CLAIM_NUMBER, coverageCode, Me.UnitNumber, True)
+                    newRow(SOURCE_COL_CLAIM_NUMBER) = claimTmpBO.GetExistClaimNumber(companyId, .CLAIM_NUMBER, coverageCode, UnitNumber, True)
                     newRow(COL_NAME_CUSTOMER_NAME) = customerName
                     newRow(SOURCE_COL_REPAIR_DATE) = ds.COVERAGES(i).REPAIR_DATE
 
@@ -247,7 +247,7 @@ Public Class GalaxyPayClaim
         Dim row As DataRow
 
         Try
-            Me.Validate()
+            Validate()
 
             Dim tempBO As Claim = ClaimFacade.Instance.CreateClaim(Of Claim)()
             Dim isFirstBO As Boolean = True
@@ -270,11 +270,11 @@ Public Class GalaxyPayClaim
                     company = New Company(claimBO.CompanyId)
                 End If
 
-                If Me.CountryId.Equals(Guid.Empty) Then
-                    Me.CountryId = company.CountryId
+                If CountryId.Equals(Guid.Empty) Then
+                    CountryId = company.CountryId
                 End If
 
-                ClaimInvoiceBO.PayeeOptionCode = Me.PayeeCode
+                ClaimInvoiceBO.PayeeOptionCode = PayeeCode
                 ClaimInvoiceBO.PrepopulateClaimInvoice(claimBO)
                 ClaimInvoiceBO.IsNewPaymentFromPaymentAdjustment = False
                 ClaimInvoiceBO.BatchNumber = "1"
@@ -286,39 +286,39 @@ Public Class GalaxyPayClaim
                 ClaimInvoiceBO.RepairDate = CType(row(SOURCE_COL_REPAIR_DATE), DateTime)
 
                 'Added for Def-1782
-                ClaimInvoiceBO.InvoiceDate = Me.InvoiceDate
+                ClaimInvoiceBO.InvoiceDate = InvoiceDate
 
                 If ClaimInvoiceBO.PickUpDate Is Nothing Then
                     ClaimInvoiceBO.PickUpDate = ClaimInvoiceBO.RepairDate
                 End If
 
-                ClaimInvoiceBO.AuthorizationNumber = Me.AuthorizationNumber
+                ClaimInvoiceBO.AuthorizationNumber = AuthorizationNumber
                 ClaimInvoiceBO.Amount = New DecimalType(row(SOURCE_COL_AMOUNT))
 
-                If Not (CType(Me.UnitNumber, Long) > 1) Then
+                If Not (CType(UnitNumber, Long) > 1) Then
                     If claimBO.AssurantPays.Value <> ClaimInvoiceBO.Amount.Value Then
                         Throw New BOValidationException("GalaxyPayClaim Error: ", Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)
                     End If
                 End If
 
                 ClaimInvoiceBO.IvaAmount = CType(row(SOURCE_COL_IVA_AMOUNT), Decimal)
-                ClaimInvoiceBO.SvcControlNumber = Me.SvcControlNumber
+                ClaimInvoiceBO.SvcControlNumber = SvcControlNumber
 
                 ' payee info
-                ClaimInvoiceBO.PaymentMethodCode = Me.PaymentMethod
-                ClaimInvoiceBO.PaymentMethodID = Me.PaymentMethodId
+                ClaimInvoiceBO.PaymentMethodCode = PaymentMethod
+                ClaimInvoiceBO.PaymentMethodID = PaymentMethodId
 
-                Select Case Me.PayeeCode
+                Select Case PayeeCode
                     Case ClaimInvoice.PAYEE_OPTION_MASTER_CENTER
-                        Me.SetMasterCenterInfo(ClaimInvoiceBO, DisbursementBO)
+                        SetMasterCenterInfo(ClaimInvoiceBO, DisbursementBO)
                     Case ClaimInvoice.PAYEE_OPTION_SERVICE_CENTER
-                        Me.SetServiceCenterInfo(ClaimInvoiceBO, DisbursementBO)
+                        SetServiceCenterInfo(ClaimInvoiceBO, DisbursementBO)
                     Case ClaimInvoice.PAYEE_OPTION_LOANER_CENTER
-                        Me.SetLoanerCenterInfo(ClaimInvoiceBO, DisbursementBO)
+                        SetLoanerCenterInfo(ClaimInvoiceBO, DisbursementBO)
                     Case ClaimInvoice.PAYEE_OPTION_CUSTOMER
-                        Me.SetCustomerInfo(ClaimInvoiceBO, DisbursementBO)
+                        SetCustomerInfo(ClaimInvoiceBO, DisbursementBO)
                     Case ClaimInvoice.PAYEE_OPTION_OTHER
-                        Me.SetOtherInfo(ClaimInvoiceBO, DisbursementBO)
+                        SetOtherInfo(ClaimInvoiceBO, DisbursementBO)
                 End Select
 
                 ClaimInvoiceBO.Validate()
@@ -346,21 +346,21 @@ Public Class GalaxyPayClaim
         Dim claimServiceCenter As ServiceCenter = New ServiceCenter(ClaimInvoiceBO.Invoiceable.ServiceCenterId)
         If Not claimServiceCenter.MasterCenterId.Equals(Guid.Empty) Then
             Dim masterServiceCenter As ServiceCenter = New ServiceCenter(claimServiceCenter.MasterCenterId)
-            Me.PayeeOtherName = masterServiceCenter.Description
+            PayeeOtherName = masterServiceCenter.Description
             If ClaimInvoiceBO.IsInsuranceCompany Then
-                ClaimInvoiceBO.CapturePayeeTaxDocumentation(Me.PayeeCode, masterServiceCenter, ClaimInvoiceBO, DisbursementBO, Nothing, Nothing, Nothing)
+                ClaimInvoiceBO.CapturePayeeTaxDocumentation(PayeeCode, masterServiceCenter, ClaimInvoiceBO, DisbursementBO, Nothing, Nothing, Nothing)
             End If
             If Not masterServiceCenter.BankInfoId.Equals(Guid.Empty) Then
                 ClaimInvoiceBO.PayeeAddress = Nothing
-                Me.PayeeAddress = Nothing
-                Me.PayeeBankInfo = ClaimInvoiceBO.Add_BankInfo(masterServiceCenter.BankInfoId)
-                PayeeBankInfo.SourceCountryID = Me.CountryId
-                ClaimInvoiceBO.PayeeBankInfo = Me.PayeeBankInfo
+                PayeeAddress = Nothing
+                PayeeBankInfo = ClaimInvoiceBO.Add_BankInfo(masterServiceCenter.BankInfoId)
+                PayeeBankInfo.SourceCountryID = CountryId
+                ClaimInvoiceBO.PayeeBankInfo = PayeeBankInfo
             Else
                 ClaimInvoiceBO.PayeeBankInfo = Nothing
-                Me.PayeeBankInfo = Nothing
-                Me.PayeeAddress = ClaimInvoiceBO.Add_Address(masterServiceCenter.AddressId)
-                ClaimInvoiceBO.PayeeAddress = Me.PayeeAddress
+                PayeeBankInfo = Nothing
+                PayeeAddress = ClaimInvoiceBO.Add_Address(masterServiceCenter.AddressId)
+                ClaimInvoiceBO.PayeeAddress = PayeeAddress
             End If
         Else
             Throw New BOValidationException("GalaxyPayClaim Error: ", Common.ErrorCodes.INVALID_MASTER_CENTER_NOT_FOUND)
@@ -370,21 +370,21 @@ Public Class GalaxyPayClaim
     Private Sub SetServiceCenterInfo(ByVal ClaimInvoiceBO As ClaimInvoice, ByVal DisbursementBO As Disbursement)
 
         Dim claimServiceCenter As ServiceCenter = New ServiceCenter(ClaimInvoiceBO.Invoiceable.ServiceCenterId)
-        Me.PayeeOtherName = claimServiceCenter.Description
+        PayeeOtherName = claimServiceCenter.Description
         If ClaimInvoiceBO.IsInsuranceCompany Then
-            ClaimInvoiceBO.CapturePayeeTaxDocumentation(Me.PayeeCode, claimServiceCenter, ClaimInvoiceBO, DisbursementBO, Nothing, Nothing, Nothing)
+            ClaimInvoiceBO.CapturePayeeTaxDocumentation(PayeeCode, claimServiceCenter, ClaimInvoiceBO, DisbursementBO, Nothing, Nothing, Nothing)
         End If
         If Not claimServiceCenter.BankInfoId.Equals(Guid.Empty) Then
-            Me.PayeeAddress = Nothing
-            Me.PayeeBankInfo = ClaimInvoiceBO.Add_BankInfo(claimServiceCenter.BankInfoId)
-            Me.PayeeBankInfo.SourceCountryID = Me.CountryId
-            ClaimInvoiceBO.PayeeBankInfo = Me.PayeeBankInfo
-            ClaimInvoiceBO.PayeeAddress = Me.PayeeAddress
+            PayeeAddress = Nothing
+            PayeeBankInfo = ClaimInvoiceBO.Add_BankInfo(claimServiceCenter.BankInfoId)
+            PayeeBankInfo.SourceCountryID = CountryId
+            ClaimInvoiceBO.PayeeBankInfo = PayeeBankInfo
+            ClaimInvoiceBO.PayeeAddress = PayeeAddress
         Else
-            Me.PayeeBankInfo = Nothing
-            Me.PayeeAddress = ClaimInvoiceBO.Add_Address(claimServiceCenter.AddressId)
-            ClaimInvoiceBO.PayeeAddress = Me.PayeeAddress
-            ClaimInvoiceBO.PayeeBankInfo = Me.PayeeBankInfo
+            PayeeBankInfo = Nothing
+            PayeeAddress = ClaimInvoiceBO.Add_Address(claimServiceCenter.AddressId)
+            ClaimInvoiceBO.PayeeAddress = PayeeAddress
+            ClaimInvoiceBO.PayeeBankInfo = PayeeBankInfo
         End If
 
     End Sub
@@ -392,21 +392,21 @@ Public Class GalaxyPayClaim
     Private Sub SetLoanerCenterInfo(ByVal ClaimInvoiceBO As ClaimInvoice, ByVal DisbursementBO As Disbursement)
         If Not ClaimInvoiceBO.Invoiceable.LoanerCenterId.Equals(Guid.Empty) Then
             Dim loanerServiceCenter As ServiceCenter = New ServiceCenter(ClaimInvoiceBO.Invoiceable.LoanerCenterId)
-            Me.PayeeOtherName = loanerServiceCenter.Description
+            PayeeOtherName = loanerServiceCenter.Description
             If ClaimInvoiceBO.IsInsuranceCompany Then
-                ClaimInvoiceBO.CapturePayeeTaxDocumentation(Me.PayeeCode, loanerServiceCenter, ClaimInvoiceBO, DisbursementBO, Nothing, Nothing, Nothing)
+                ClaimInvoiceBO.CapturePayeeTaxDocumentation(PayeeCode, loanerServiceCenter, ClaimInvoiceBO, DisbursementBO, Nothing, Nothing, Nothing)
             End If
             If Not loanerServiceCenter.BankInfoId.Equals(Guid.Empty) Then
-                Me.PayeeAddress = Nothing
-                Me.PayeeBankInfo = ClaimInvoiceBO.Add_BankInfo(loanerServiceCenter.BankInfoId)
-                Me.PayeeBankInfo.SourceCountryID = Me.CountryId
-                ClaimInvoiceBO.PayeeBankInfo = Me.PayeeBankInfo
-                ClaimInvoiceBO.PayeeAddress = Me.PayeeAddress
+                PayeeAddress = Nothing
+                PayeeBankInfo = ClaimInvoiceBO.Add_BankInfo(loanerServiceCenter.BankInfoId)
+                PayeeBankInfo.SourceCountryID = CountryId
+                ClaimInvoiceBO.PayeeBankInfo = PayeeBankInfo
+                ClaimInvoiceBO.PayeeAddress = PayeeAddress
             Else
-                Me.PayeeBankInfo = Nothing
-                Me.PayeeAddress = ClaimInvoiceBO.Add_Address(loanerServiceCenter.AddressId)
-                ClaimInvoiceBO.PayeeAddress = Me.PayeeAddress
-                ClaimInvoiceBO.PayeeBankInfo = Me.PayeeBankInfo
+                PayeeBankInfo = Nothing
+                PayeeAddress = ClaimInvoiceBO.Add_Address(loanerServiceCenter.AddressId)
+                ClaimInvoiceBO.PayeeAddress = PayeeAddress
+                ClaimInvoiceBO.PayeeBankInfo = PayeeBankInfo
             End If
         Else
             Throw New BOValidationException("GalaxyPayClaim Error: ", Common.ErrorCodes.INVALID_LOANER_CENTER_NOT_FOUND)
@@ -415,57 +415,57 @@ Public Class GalaxyPayClaim
     End Sub
 
     Private Sub SetCustomerInfo(ByVal ClaimInvoiceBO As ClaimInvoice, ByVal DisbursementBO As Disbursement)
-        Me.PayeeOtherName = ClaimInvoiceBO.CustomerName
+        PayeeOtherName = ClaimInvoiceBO.CustomerName
         If ClaimInvoiceBO.IsInsuranceCompany Then
             Dim objCertificate As Certificate = New Certificate(ClaimInvoiceBO.Invoiceable.CertificateId)
-            Me.DocumentType = LookupListNew.GetCodeFromId(LookupListNew.LK_DOCUMENT_TYPES, objCertificate.DocumentTypeID)
-            Me.IdentityDocumentNo = objCertificate.IdentificationNumber
-            ClaimInvoiceBO.CapturePayeeTaxDocumentation(Me.PayeeCode, Nothing, ClaimInvoiceBO, DisbursementBO, objCertificate, Nothing, Nothing)
+            DocumentType = LookupListNew.GetCodeFromId(LookupListNew.LK_DOCUMENT_TYPES, objCertificate.DocumentTypeID)
+            IdentityDocumentNo = objCertificate.IdentificationNumber
+            ClaimInvoiceBO.CapturePayeeTaxDocumentation(PayeeCode, Nothing, ClaimInvoiceBO, DisbursementBO, objCertificate, Nothing, Nothing)
         End If
 
-        Me.PayeeAddress = ClaimInvoiceBO.Add_Address(ClaimInvoiceBO.CustomerAddressID)
-        ClaimInvoiceBO.PayeeAddress = Me.PayeeAddress
+        PayeeAddress = ClaimInvoiceBO.Add_Address(ClaimInvoiceBO.CustomerAddressID)
+        ClaimInvoiceBO.PayeeAddress = PayeeAddress
 
         SetInfoBasedOnPaymentMethod(ClaimInvoiceBO)
     End Sub
 
     Private Sub SetOtherInfo(ByVal ClaimInvoiceBO As ClaimInvoice, ByVal DisbursementBO As Disbursement)
 
-        If Me.PaymentMethod = "CHK" Then
-            Me.PayeeAddress = ClaimInvoiceBO.AddressChild()
-            Me.PayeeAddress.Address1 = Me.CtcAddress1
-            Me.PayeeAddress.Address2 = Me.CtcAddress2
-            Me.PayeeAddress.City = Me.CtcCity
-            Me.PayeeAddress.PostalCode = Me.CtcPostalCode
-            Me.PayeeAddress.RegionId = Me.RegionId
-            Me.PayeeAddress.CountryId = Me.CountryId
+        If PaymentMethod = "CHK" Then
+            PayeeAddress = ClaimInvoiceBO.AddressChild()
+            PayeeAddress.Address1 = CtcAddress1
+            PayeeAddress.Address2 = CtcAddress2
+            PayeeAddress.City = CtcCity
+            PayeeAddress.PostalCode = CtcPostalCode
+            PayeeAddress.RegionId = RegionId
+            PayeeAddress.CountryId = CountryId
         End If
 
         If ClaimInvoiceBO.IsInsuranceCompany Then
-            ClaimInvoiceBO.CapturePayeeTaxDocumentation(Me.PayeeCode, Nothing, ClaimInvoiceBO, DisbursementBO, Nothing, Me.DocumentType, Me.IdentityDocumentNo)
+            ClaimInvoiceBO.CapturePayeeTaxDocumentation(PayeeCode, Nothing, ClaimInvoiceBO, DisbursementBO, Nothing, DocumentType, IdentityDocumentNo)
         End If
 
         SetInfoBasedOnPaymentMethod(ClaimInvoiceBO)
     End Sub
 
     Private Sub SetInfoBasedOnPaymentMethod(ByVal ClaimInvoiceBO As ClaimInvoice)
-        Select Case Me.PaymentMethod
+        Select Case PaymentMethod
             Case Codes.PAYMENT_METHOD__BANK_TRANSFER
-                If Me.PayeeBankInfo Is Nothing Then
-                    Me.PayeeBankInfo = ClaimInvoiceBO.Add_BankInfo()
-                    Me.PayeeBankInfo.Account_Name = Me.AccountName
-                    Me.PayeeBankInfo.Account_Number = Me.AccountNumber
-                    Me.PayeeBankInfo.Bank_Id = Me.BankId
-                    Me.PayeeBankInfo.SwiftCode = Me.SwiftCode
-                    Me.PayeeBankInfo.IbanNumber = Me.IbanNumber
-                    Me.PayeeBankInfo.AccountTypeId = Me.AccountTypeId
-                    Me.PayeeBankInfo.CountryID = Me.CountryId
-                    Me.PayeeBankInfo.SourceCountryID = company.CountryId
+                If PayeeBankInfo Is Nothing Then
+                    PayeeBankInfo = ClaimInvoiceBO.Add_BankInfo()
+                    PayeeBankInfo.Account_Name = AccountName
+                    PayeeBankInfo.Account_Number = AccountNumber
+                    PayeeBankInfo.Bank_Id = BankId
+                    PayeeBankInfo.SwiftCode = SwiftCode
+                    PayeeBankInfo.IbanNumber = IbanNumber
+                    PayeeBankInfo.AccountTypeId = AccountTypeId
+                    PayeeBankInfo.CountryID = CountryId
+                    PayeeBankInfo.SourceCountryID = company.CountryId
                 End If
-                ClaimInvoiceBO.PayeeBankInfo = Me.PayeeBankInfo
+                ClaimInvoiceBO.PayeeBankInfo = PayeeBankInfo
 
                 If Not ClaimInvoiceBO.PayeeBankInfo.SourceCountryID.Equals(Guid.Empty) Then
-                    If ClaimInvoiceBO.PayeeBankInfo.SourceCountryID.Equals(Me.CountryId) Then
+                    If ClaimInvoiceBO.PayeeBankInfo.SourceCountryID.Equals(CountryId) Then
                         'Domestic transfer
                         ClaimInvoiceBO.PayeeBankInfo.SwiftCode = String.Empty
                         ClaimInvoiceBO.PayeeBankInfo.IbanNumber = String.Empty
@@ -474,7 +474,7 @@ Public Class GalaxyPayClaim
                         ClaimInvoiceBO.PayeeBankInfo.InternationalEUTransfer = False
                         ClaimInvoiceBO.PayeeBankInfo.InternationalTransfer = False
                     Else
-                        Dim objCountry As New Country(Me.CountryId)
+                        Dim objCountry As New Country(CountryId)
                         If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objCountry.EuropeanCountryId) = Codes.YESNO_Y Then
                             'International transfer & Destination is European country
                             ClaimInvoiceBO.PayeeBankInfo.Bank_Id = Nothing
@@ -511,33 +511,33 @@ Public Class GalaxyPayClaim
 
             Case Codes.PAYMENT_METHOD__CHECK_TO_CONSUMER
                 'Dim PayeeOptionCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, selectedPayee)
-                If Me.PayeeCode = ClaimInvoice.PAYEE_OPTION_CUSTOMER Then
+                If PayeeCode = ClaimInvoice.PAYEE_OPTION_CUSTOMER Then
 
-                    If (Not Me.CtcAddress1 Is Nothing) AndAlso (Not Me.CtcCity Is Nothing) AndAlso (Not Me.CtcPostalCode Is Nothing) AndAlso (Not Me.RegionId.Equals(Guid.Empty)) Then
-                        Me.PayeeAddress = ClaimInvoiceBO.Add_Address()
-                        Me.PayeeAddress.Address1 = Me.CtcAddress1
-                        Me.PayeeAddress.Address2 = Me.CtcAddress2
-                        Me.PayeeAddress.City = Me.CtcCity
-                        Me.PayeeAddress.PostalCode = Me.CtcPostalCode
-                        Me.PayeeAddress.RegionId = Me.RegionId
-                        Me.PayeeAddress.CountryId = Me.CountryId
-                    ElseIf Me.PayeeAddress Is Nothing Then
-                        Me.PayeeAddress = ClaimInvoiceBO.Add_Address(ClaimInvoiceBO.CustomerAddressID)
+                    If (Not CtcAddress1 Is Nothing) AndAlso (Not CtcCity Is Nothing) AndAlso (Not CtcPostalCode Is Nothing) AndAlso (Not RegionId.Equals(Guid.Empty)) Then
+                        PayeeAddress = ClaimInvoiceBO.Add_Address()
+                        PayeeAddress.Address1 = CtcAddress1
+                        PayeeAddress.Address2 = CtcAddress2
+                        PayeeAddress.City = CtcCity
+                        PayeeAddress.PostalCode = CtcPostalCode
+                        PayeeAddress.RegionId = RegionId
+                        PayeeAddress.CountryId = CountryId
+                    ElseIf PayeeAddress Is Nothing Then
+                        PayeeAddress = ClaimInvoiceBO.Add_Address(ClaimInvoiceBO.CustomerAddressID)
                     End If
-                    ClaimInvoiceBO.PayeeAddress = Me.PayeeAddress
+                    ClaimInvoiceBO.PayeeAddress = PayeeAddress
 
-                ElseIf Me.PayeeCode = ClaimInvoice.PAYEE_OPTION_OTHER Then
+                ElseIf PayeeCode = ClaimInvoice.PAYEE_OPTION_OTHER Then
 
-                    If Me.PayeeAddress Is Nothing Then
-                        Me.PayeeAddress = ClaimInvoiceBO.Add_Address()
-                        Me.PayeeAddress.Address1 = Me.CtcAddress1
-                        Me.PayeeAddress.Address2 = Me.CtcAddress2
-                        Me.PayeeAddress.City = Me.CtcCity
-                        Me.PayeeAddress.PostalCode = Me.CtcPostalCode
-                        Me.PayeeAddress.RegionId = Me.RegionId
-                        Me.PayeeAddress.CountryId = Me.CountryId
+                    If PayeeAddress Is Nothing Then
+                        PayeeAddress = ClaimInvoiceBO.Add_Address()
+                        PayeeAddress.Address1 = CtcAddress1
+                        PayeeAddress.Address2 = CtcAddress2
+                        PayeeAddress.City = CtcCity
+                        PayeeAddress.PostalCode = CtcPostalCode
+                        PayeeAddress.RegionId = RegionId
+                        PayeeAddress.CountryId = CountryId
                     End If
-                    ClaimInvoiceBO.PayeeAddress = Me.PayeeAddress
+                    ClaimInvoiceBO.PayeeAddress = PayeeAddress
 
                 End If
 
@@ -609,18 +609,18 @@ Public Class GalaxyPayClaim
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
     Private Sub Load(ByVal ds As GalaxyPayClaimDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -698,7 +698,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CERTIFICATE_NUMBER, Value)
+            SetValue(SOURCE_COL_CERTIFICATE_NUMBER, Value)
         End Set
     End Property
 
@@ -713,7 +713,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_DEALER_CODE, Value)
+            SetValue(SOURCE_COL_DEALER_CODE, Value)
         End Set
     End Property
 
@@ -728,7 +728,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CLAIM_NUMBER, Value)
+            SetValue(SOURCE_COL_CLAIM_NUMBER, Value)
         End Set
     End Property
 
@@ -743,7 +743,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_SVC_CONTROL_NUMBER, Value)
+            SetValue(SOURCE_COL_SVC_CONTROL_NUMBER, Value)
         End Set
     End Property
 
@@ -773,7 +773,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_AUTHORIZATION_NUMBER, Value)
+            SetValue(SOURCE_COL_AUTHORIZATION_NUMBER, Value)
         End Set
     End Property
 
@@ -788,7 +788,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_PAYEE_CODE, Value)
+            SetValue(SOURCE_COL_PAYEE_CODE, Value)
         End Set
     End Property
 
@@ -803,7 +803,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CTC_ADDRESS1, Value)
+            SetValue(SOURCE_COL_CTC_ADDRESS1, Value)
         End Set
     End Property
 
@@ -818,7 +818,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CTC_ADDRESS2, Value)
+            SetValue(SOURCE_COL_CTC_ADDRESS2, Value)
         End Set
     End Property
 
@@ -833,7 +833,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CTC_CITY, Value)
+            SetValue(SOURCE_COL_CTC_CITY, Value)
         End Set
     End Property
 
@@ -848,7 +848,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CTC_REGION_CODE, Value)
+            SetValue(SOURCE_COL_CTC_REGION_CODE, Value)
         End Set
     End Property
 
@@ -863,7 +863,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CTC_POSTAL_CODE, Value)
+            SetValue(SOURCE_COL_CTC_POSTAL_CODE, Value)
         End Set
     End Property
 
@@ -878,7 +878,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_DISBURSEMENT_COUNTRY_CODE, Value)
+            SetValue(SOURCE_COL_DISBURSEMENT_COUNTRY_CODE, Value)
         End Set
     End Property
 
@@ -893,7 +893,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_ACCOUNT_NAME, Value)
+            SetValue(SOURCE_COL_ACCOUNT_NAME, Value)
         End Set
     End Property
 
@@ -908,7 +908,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_BANK_ID, Value)
+            SetValue(SOURCE_COL_BANK_ID, Value)
         End Set
     End Property
 
@@ -923,7 +923,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_ACCOUNT_NUMBER, Value)
+            SetValue(SOURCE_COL_ACCOUNT_NUMBER, Value)
         End Set
     End Property
 
@@ -938,7 +938,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_PAYMENT_METHOD, Value)
+            SetValue(SOURCE_COL_PAYMENT_METHOD, Value)
         End Set
     End Property
 
@@ -953,7 +953,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_IDENTITY_DOCUMENT_NO, Value)
+            SetValue(SOURCE_COL_IDENTITY_DOCUMENT_NO, Value)
         End Set
     End Property
 
@@ -968,7 +968,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_DOCUMENT_TYPE, Value)
+            SetValue(SOURCE_COL_DOCUMENT_TYPE, Value)
         End Set
     End Property
 
@@ -983,7 +983,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_IBAN_NUMBER, Value)
+            SetValue(SOURCE_COL_IBAN_NUMBER, Value)
         End Set
     End Property
 
@@ -998,7 +998,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_SWIFT_CODE, Value)
+            SetValue(SOURCE_COL_SWIFT_CODE, Value)
         End Set
     End Property
 
@@ -1013,7 +1013,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_ACCOUNT_TYPE, Value)
+            SetValue(SOURCE_COL_ACCOUNT_TYPE, Value)
         End Set
     End Property
 
@@ -1028,7 +1028,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_PAYEE_OTHER_NAME, Value)
+            SetValue(SOURCE_COL_PAYEE_OTHER_NAME, Value)
         End Set
     End Property
 
@@ -1043,7 +1043,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_UNIT_NUMBER, Value)
+            SetValue(SOURCE_COL_UNIT_NUMBER, Value)
         End Set
     End Property
 
@@ -1059,7 +1059,7 @@ Public Class GalaxyPayClaim
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_INVOICE_DATE, Value)
+            SetValue(SOURCE_COL_INVOICE_DATE, Value)
         End Set
     End Property
 

@@ -16,7 +16,7 @@ Namespace SpecializedServices
             Get
                 Return _CompanyCode
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 'If String.IsNullOrEmpty(value) Then
                 '    Throw New ArgumentNullException()
                 'End If
@@ -29,7 +29,7 @@ Namespace SpecializedServices
             Get
                 Return _SerialNumber
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 'If String.IsNullOrEmpty(value) Then
                 '    Throw New ArgumentNullException()
                 'End If
@@ -42,7 +42,7 @@ Namespace SpecializedServices
             Get
                 Return _PhoneNumber
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 'If String.IsNullOrEmpty(value) Then
                 '    Throw New ArgumentNullException()
                 'End If
@@ -75,7 +75,7 @@ Namespace SpecializedServices
     
     public Module ClaimStatusTypeExtensions
         <Extension()>
-        Function GetCodeString(ByVal claimstatus As ClaimStatusType) As string
+        Function GetCodeString(claimstatus As ClaimStatusType) As string
             select case claimstatus
                 Case ClaimStatusType.Active
                     return "A"

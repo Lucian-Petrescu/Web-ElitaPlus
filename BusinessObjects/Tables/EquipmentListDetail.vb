@@ -8,46 +8,46 @@ Public Class EquipmentListDetail
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New EquipmentListDetailDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -58,20 +58,20 @@ Public Class EquipmentListDetail
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New EquipmentListDetailDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -115,7 +115,7 @@ Public Class EquipmentListDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(EquipmentListDetailDAL.COL_NAME_EQUIPMENT_ID, Value)
+            SetValue(EquipmentListDetailDAL.COL_NAME_EQUIPMENT_ID, Value)
         End Set
     End Property
 
@@ -132,7 +132,7 @@ Public Class EquipmentListDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(EquipmentListDetailDAL.COL_NAME_EQUIPMENT_LIST_ID, Value)
+            SetValue(EquipmentListDetailDAL.COL_NAME_EQUIPMENT_LIST_ID, Value)
         End Set
     End Property
 
@@ -149,7 +149,7 @@ Public Class EquipmentListDetail
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(EquipmentListDetailDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(EquipmentListDetailDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
@@ -166,7 +166,7 @@ Public Class EquipmentListDetail
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(EquipmentListDetailDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(EquipmentListDetailDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
@@ -179,15 +179,15 @@ Public Class EquipmentListDetail
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New EquipmentListDetailDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -199,9 +199,9 @@ Public Class EquipmentListDetail
     Public Sub AttachEquipments(ByVal selectedEquipmentGuidStrCollection As ArrayList)
         Dim cmpEquipmentIdStr As String
         For Each cmpEquipmentIdStr In selectedEquipmentGuidStrCollection
-            Dim newBO As EquipmentListDetail = New EquipmentListDetail(Me.Dataset)
+            Dim newBO As EquipmentListDetail = New EquipmentListDetail(Dataset)
             If Not newBO Is Nothing Then
-                newBO.EquipmentId = Me.ID
+                newBO.EquipmentId = ID
                 newBO.EquipmentId = New Guid(cmpEquipmentIdStr)
                 newBO.Save()
             End If
@@ -238,7 +238,7 @@ Public Class EquipmentListDetail
     End Function
 
     Public Sub Copy(ByVal original As EquipmentListDetail)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
         MyBase.CopyFrom(original)

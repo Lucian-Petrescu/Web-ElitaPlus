@@ -13,7 +13,7 @@ Partial Class UserControlClaimCloseRules
     End Class
 
 
-    Public Delegate Sub RequestData(ByVal sender As Object, ByRef e As RequestDataEventArgs)
+    Public Delegate Sub RequestData(sender As Object, ByRef e As RequestDataEventArgs)
 
     Public Event RequestClaimCloseRulesData As RequestData
     Public Event CloneDealerData As RequestData
@@ -102,10 +102,10 @@ Partial Class UserControlClaimCloseRules
     Protected ReadOnly Property TheState() As MyState
         Get
             Try
-                If Me.ThePage.StateSession.Item(Me.UniqueID) Is Nothing Then
-                    Me.ThePage.StateSession.Item(Me.UniqueID) = New MyState
+                If ThePage.StateSession.Item(UniqueID) Is Nothing Then
+                    ThePage.StateSession.Item(UniqueID) = New MyState
                 End If
-                Return CType(Me.ThePage.StateSession.Item(Me.UniqueID), MyState)
+                Return CType(ThePage.StateSession.Item(UniqueID), MyState)
 
             Catch ex As Exception
                 'When we are in design mode there is no session object
@@ -122,34 +122,34 @@ Partial Class UserControlClaimCloseRules
 
     Public ReadOnly Property IsGridInEditMode() As Boolean
         Get
-            Return Me.CloseRulesGrid.EditIndex > Me.ThePage.NO_ITEM_SELECTED_INDEX
+            Return CloseRulesGrid.EditIndex > ThePage.NO_ITEM_SELECTED_INDEX
         End Get
     End Property
 
     Public Property SortDirection() As String
         Get
-            If Not ViewState("SortDirection") Is Nothing Then
+            If ViewState("SortDirection") IsNot Nothing Then
                 Return ViewState("SortDirection").ToString
             Else
                 Return String.Empty
             End If
 
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         'AddHandler Me.PropertyChanged, AddressOf MyPropertyChanged
-        If Me.IsPostBack Then
+        If IsPostBack Then
             CheckIfComingFromDeleteConfirm()
         End If
 
     End Sub
 
-    Private Sub MyPropertyChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs)
+    Private Sub MyPropertyChanged(sender As Object, e As PropertyChangedEventArgs)
         If (e.PropertyName = "") OrElse
             (e.PropertyName = "") Then
             '' Hide Grid Data
@@ -160,25 +160,25 @@ Partial Class UserControlClaimCloseRules
 
         Dim e As New RequestDataEventArgs
 
-        If (Me.CompanyId.Equals(Guid.Empty)) Then
+        If (CompanyId.Equals(Guid.Empty)) Then
             Throw New GUIException("You must select a Company first", Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
         End If
 
-        Select Case Me.EntityType
+        Select Case EntityType
             Case CloseRuleEntityType.Company
-                If (Not Me.DealerId.Equals(Guid.Empty)) Then
+                If (Not DealerId.Equals(Guid.Empty)) Then
                     Throw New GUIException("You must select a dealer first", Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
                 End If
             Case CloseRuleEntityType.Dealer
-                If (Me.DealerId.Equals(Guid.Empty)) Then
+                If (DealerId.Equals(Guid.Empty)) Then
                     Throw New GUIException("You must select a dealer first", Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
                 End If
         End Select
 
 
         RaiseEvent RequestClaimCloseRulesData(Me, e)
-        Me.TheState.claimCloseRulesDV = e.Data
-        Me.PopulateGrid()
+        TheState.claimCloseRulesDV = e.Data
+        PopulateGrid()
 
     End Sub
 
@@ -186,43 +186,43 @@ Partial Class UserControlClaimCloseRules
 
     Public Property CompanyId As Guid
         Get
-            Return Me.TheState.companyId
+            Return TheState.companyId
         End Get
-        Set(ByVal value As Guid)
-            Me.TheState.companyId = value
+        Set(value As Guid)
+            TheState.companyId = value
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs("CompanyId"))
         End Set
     End Property
 
     Public Property companyCode As String
         Get
-            Return Me.TheState.companyCode
+            Return TheState.companyCode
         End Get
-        Set(ByVal value As String)
-            Me.TheState.companyCode = value
+        Set(value As String)
+            TheState.companyCode = value
         End Set
     End Property
 
     Public Property DealerId As Nullable(Of Guid)
         Get
-            Return Me.TheState.dealerId
+            Return TheState.dealerId
         End Get
-        Set(ByVal value As Nullable(Of Guid))
-            Me.TheState.dealerId = CType(value, Guid)
+        Set(value As Nullable(Of Guid))
+            TheState.dealerId = CType(value, Guid)
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs("DealerId"))
         End Set
     End Property
 
     Public Property Dealer As String
         Get
-            Return Me.TheState.dealer
+            Return TheState.dealer
         End Get
-        Set(ByVal value As String)
-            Me.TheState.dealer = value
+        Set(value As String)
+            TheState.dealer = value
         End Set
     End Property
 
-    Public Sub HideNewButton(ByVal hide As Boolean)
+    Public Sub HideNewButton(hide As Boolean)
         'when Clone button is clicked then hide the New button and hide the grid
         If hide Then
             NewButton_WRITE.Visible = False
@@ -247,15 +247,15 @@ Partial Class UserControlClaimCloseRules
 #Region "Helper functions"
 
     Private Sub SetControlState()
-        If (Me.TheState.IsEditMode) Then
-            ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, False)
-            If (Me.cboPageSize.Enabled) Then
-                ControlMgr.SetEnableControl(Me.ThePage, cboPageSize, False)
+        If (TheState.IsEditMode) Then
+            ControlMgr.SetVisibleControl(ThePage, NewButton_WRITE, False)
+            If (cboPageSize.Enabled) Then
+                ControlMgr.SetEnableControl(ThePage, cboPageSize, False)
             End If
         Else
-            ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, True)
-            If Not (Me.cboPageSize.Enabled) Then
-                ControlMgr.SetEnableControl(Me.ThePage, Me.cboPageSize, True)
+            ControlMgr.SetVisibleControl(ThePage, NewButton_WRITE, True)
+            If Not (cboPageSize.Enabled) Then
+                ControlMgr.SetEnableControl(ThePage, cboPageSize, True)
             End If
         End If
     End Sub
@@ -264,26 +264,26 @@ Partial Class UserControlClaimCloseRules
 
         CloseRulesGrid.EditIndex = NO_ROW_SELECTED_INDEX
 
-        If (Me.CloseRulesGrid.PageCount = 0) Then
-            ControlMgr.SetVisibleControl(Me.ThePage, CloseRulesGrid, False)
+        If (CloseRulesGrid.PageCount = 0) Then
+            ControlMgr.SetVisibleControl(ThePage, CloseRulesGrid, False)
         Else
-            ControlMgr.SetVisibleControl(Me.ThePage, CloseRulesGrid, True)
+            ControlMgr.SetVisibleControl(ThePage, CloseRulesGrid, True)
         End If
 
-        Me.TheState.IsEditMode = False
-        Me.PopulateGrid()
-        Me.TheState.PageIndex = CloseRulesGrid.PageIndex
+        TheState.IsEditMode = False
+        PopulateGrid()
+        TheState.PageIndex = CloseRulesGrid.PageIndex
         SetControlState()
     End Sub
 
     Private Sub RemoveNewRowFromSearchDV()
-        Dim rowind As Integer = Me.ThePage.NO_ITEM_SELECTED_INDEX
+        Dim rowind As Integer = ThePage.NO_ITEM_SELECTED_INDEX
         With TheState
-            If Not .claimCloseRulesDV Is Nothing Then
-                rowind = Me.ThePage.FindSelectedRowIndexFromGuid(.claimCloseRulesDV, .DefaultClaimCloseRuleID)
+            If .claimCloseRulesDV IsNot Nothing Then
+                rowind = ThePage.FindSelectedRowIndexFromGuid(.claimCloseRulesDV, .DefaultClaimCloseRuleID)
             End If
         End With
-        If rowind <> Me.ThePage.NO_ITEM_SELECTED_INDEX Then TheState.claimCloseRulesDV.Delete(rowind)
+        If rowind <> ThePage.NO_ITEM_SELECTED_INDEX Then TheState.claimCloseRulesDV.Delete(rowind)
     End Sub
 
     Private Function PopulateBOFromForm() As Boolean
@@ -291,69 +291,69 @@ Partial Class UserControlClaimCloseRules
         Dim objTimePeriodTxt As TextBox
         Dim objActiveFlagTxt As TextBox
         Dim objDealerLbl As Label
-        With Me.TheState.MyBO
+        With TheState.MyBO
 
             'validation
-            objTimePeriodTxt = CType(CloseRulesGrid.Rows(Me.CloseRulesGrid.EditIndex).Cells(GRID_COL_TIME_PERIOD_IDX).FindControl(GRID_CTRL_NAME_EDIT_TIME_PERIOD), TextBox)
-            objDealerLbl = CType(CloseRulesGrid.Rows(Me.CloseRulesGrid.EditIndex).Cells(GRID_COL_DEALER_ID_IDX).FindControl(GRID_CTRL_NAME_LABLE_DEALER), Label)
+            objTimePeriodTxt = CType(CloseRulesGrid.Rows(CloseRulesGrid.EditIndex).Cells(GRID_COL_TIME_PERIOD_IDX).FindControl(GRID_CTRL_NAME_EDIT_TIME_PERIOD), TextBox)
+            objDealerLbl = CType(CloseRulesGrid.Rows(CloseRulesGrid.EditIndex).Cells(GRID_COL_DEALER_ID_IDX).FindControl(GRID_CTRL_NAME_LABLE_DEALER), Label)
 
-            If (Me.TheState.IsEditMode = True AndAlso Me.TheState.IsGridAddNew = False) Then
+            If (TheState.IsEditMode = True AndAlso TheState.IsGridAddNew = False) Then
 
                 'if the entity type is company then insert a new row and update the existing row to in-active
                 'if entity type is dealer then keep the company record active and insert a new row with dealer id and parent claim close rule
                 'if the record is already updated by the dealer then insert a new row and deactivate the current row
 
                 If ((Me.EntityType = EntityType.Company) OrElse (Me.EntityType = EntityType.Dealer AndAlso CloseRulesGrid.DataKeys(CloseRulesGrid.EditIndex).Values(2).ToString() <> String.Empty)) Then
-                    ClaimCloseRules.UpdateClaimCloseRuleInActive(Me.TheState.DefaultClaimCloseRuleID)
+                    ClaimCloseRules.UpdateClaimCloseRuleInActive(TheState.DefaultClaimCloseRuleID)
                 End If
 
                 'create a new object to insert this record
-                Me.TheState.MyBO = New ClaimCloseRules()
+                TheState.MyBO = New ClaimCloseRules()
 
                 If (Me.EntityType = EntityType.Dealer) Then
                     'if the dealer record is added first time, then parent claim rule id will be the company rule id
                     If (CloseRulesGrid.DataKeys(CloseRulesGrid.EditIndex).Values(2).ToString() = String.Empty) Then
-                        Me.ThePage.PopulateBOProperty(TheState.MyBO, "ParentClaimCloseRuleId", Me.TheState.DefaultClaimCloseRuleID)
+                        ThePage.PopulateBOProperty(TheState.MyBO, "ParentClaimCloseRuleId", TheState.DefaultClaimCloseRuleID)
                     Else
                         'if the dealer is updated/added second time, then the parent id would be the original company rule id
                         If (CloseRulesGrid.DataKeys(CloseRulesGrid.EditIndex).Values(5).ToString() <> String.Empty) Then
-                            Me.ThePage.PopulateBOProperty(TheState.MyBO, "ParentClaimCloseRuleId", New Guid(CType(CloseRulesGrid.DataKeys(CloseRulesGrid.EditIndex).Values(5), Byte())))
+                            ThePage.PopulateBOProperty(TheState.MyBO, "ParentClaimCloseRuleId", New Guid(CType(CloseRulesGrid.DataKeys(CloseRulesGrid.EditIndex).Values(5), Byte())))
                         End If
                     End If
                 End If
 
             End If
 
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "CompanyId", Me.TheState.companyId)
+            ThePage.PopulateBOProperty(TheState.MyBO, "CompanyId", TheState.companyId)
 
             If (Me.EntityType = EntityType.Dealer) Then
-                Me.ThePage.PopulateBOProperty(TheState.MyBO, "DealerId", Me.TheState.dealerId)
+                ThePage.PopulateBOProperty(TheState.MyBO, "DealerId", TheState.dealerId)
             Else
                 'if a rule is already overridden at Dealer level and when updating that rule at Company level again
-                Me.ThePage.PopulateBOProperty(TheState.MyBO, "DealerId", Guid.Empty)
+                ThePage.PopulateBOProperty(TheState.MyBO, "DealerId", Guid.Empty)
             End If
 
-            objDropDownList = CType(CloseRulesGrid.Rows((Me.CloseRulesGrid.EditIndex)).Cells(GRID_COL_CLOSE_RULE_BASED_ON_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_CLOSE_RULE_BASED_ON), DropDownList)
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "CloseRuleBasedOnId", objDropDownList)
+            objDropDownList = CType(CloseRulesGrid.Rows((CloseRulesGrid.EditIndex)).Cells(GRID_COL_CLOSE_RULE_BASED_ON_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_CLOSE_RULE_BASED_ON), DropDownList)
+            ThePage.PopulateBOProperty(TheState.MyBO, "CloseRuleBasedOnId", objDropDownList)
 
-            objDropDownList = CType(CloseRulesGrid.Rows((Me.CloseRulesGrid.EditIndex)).Cells(GRID_COL_CLAIM_STATUS_BY_GROUP_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_CLM_STAT_BY_GRP), DropDownList)
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "ClaimStatusByGroupId", objDropDownList)
+            objDropDownList = CType(CloseRulesGrid.Rows((CloseRulesGrid.EditIndex)).Cells(GRID_COL_CLAIM_STATUS_BY_GROUP_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_CLM_STAT_BY_GRP), DropDownList)
+            ThePage.PopulateBOProperty(TheState.MyBO, "ClaimStatusByGroupId", objDropDownList)
 
-            objDropDownList = CType(CloseRulesGrid.Rows((Me.CloseRulesGrid.EditIndex)).Cells(GRID_COL_CLAIM_ISSUE_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_CLM_ISSUE), DropDownList)
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "ClaimIssueId", objDropDownList)
+            objDropDownList = CType(CloseRulesGrid.Rows((CloseRulesGrid.EditIndex)).Cells(GRID_COL_CLAIM_ISSUE_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_CLM_ISSUE), DropDownList)
+            ThePage.PopulateBOProperty(TheState.MyBO, "ClaimIssueId", objDropDownList)
 
-            objDropDownList = CType(CloseRulesGrid.Rows((Me.CloseRulesGrid.EditIndex)).Cells(GRID_COL_REASON_CLOSED_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_REASON_CLOSED), DropDownList)
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "ReasonClosedId", objDropDownList)
+            objDropDownList = CType(CloseRulesGrid.Rows((CloseRulesGrid.EditIndex)).Cells(GRID_COL_REASON_CLOSED_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_REASON_CLOSED), DropDownList)
+            ThePage.PopulateBOProperty(TheState.MyBO, "ReasonClosedId", objDropDownList)
 
             If (objTimePeriodTxt.Text = String.Empty) Then
                 objTimePeriodTxt.Text = "0"
             End If
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "TimePeriod", objTimePeriodTxt)
+            ThePage.PopulateBOProperty(TheState.MyBO, "TimePeriod", objTimePeriodTxt)
 
-            objActiveFlagTxt = CType(CloseRulesGrid.Rows(Me.CloseRulesGrid.EditIndex).Cells(GRID_COL_ACTIVE_FLAG_IDX).FindControl(GRID_CTRL_NAME_EDIT_ACTIVE_FLAG), TextBox)
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "ActiveFlag", objActiveFlagTxt)
+            objActiveFlagTxt = CType(CloseRulesGrid.Rows(CloseRulesGrid.EditIndex).Cells(GRID_COL_ACTIVE_FLAG_IDX).FindControl(GRID_CTRL_NAME_EDIT_ACTIVE_FLAG), TextBox)
+            ThePage.PopulateBOProperty(TheState.MyBO, "ActiveFlag", objActiveFlagTxt)
         End With
-        If Me.ThePage.ErrCollection.Count > 0 Then
+        If ThePage.ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Function
@@ -363,33 +363,33 @@ Partial Class UserControlClaimCloseRules
 
     Public Sub PopulateGrid()
         If (Not Page.IsPostBack) Then
-            Me.ThePage.TranslateGridHeader(CloseRulesGrid)
+            ThePage.TranslateGridHeader(CloseRulesGrid)
         End If
         Dim blnNewSearch As Boolean = False
-        cboPageSize.SelectedValue = CType(Me.TheState.PageSize, String)
+        cboPageSize.SelectedValue = CType(TheState.PageSize, String)
         Dim objClaimCloseRules As New ClaimCloseRules
         Dim dv As DataView
         Try
             With TheState
                 If (.claimCloseRulesDV Is Nothing) Then
-                    objClaimCloseRules.CompanyId = Me.TheState.companyId
-                    objClaimCloseRules.DealerId = Me.TheState.dealerId
+                    objClaimCloseRules.CompanyId = TheState.companyId
+                    objClaimCloseRules.DealerId = TheState.dealerId
                     .claimCloseRulesDV = objClaimCloseRules.GetClaimCloseRules()
                     blnNewSearch = True
                 End If
             End With
-            Me.TheState.claimCloseRulesDV.Sort = Me.SortDirection
+            TheState.claimCloseRulesDV.Sort = SortDirection
 
-            If (Me.TheState.IsAfterSave) Then
-                Me.TheState.IsAfterSave = False
-                Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.claimCloseRulesDV, Me.TheState.DefaultClaimCloseRuleID, Me.CloseRulesGrid, Me.TheState.PageIndex)
-            ElseIf (Me.TheState.IsEditMode) Then
-                Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.claimCloseRulesDV, Me.TheState.DefaultClaimCloseRuleID, Me.CloseRulesGrid, Me.TheState.PageIndex, Me.TheState.IsEditMode)
+            If (TheState.IsAfterSave) Then
+                TheState.IsAfterSave = False
+                ThePage.SetPageAndSelectedIndexFromGuid(TheState.claimCloseRulesDV, TheState.DefaultClaimCloseRuleID, CloseRulesGrid, TheState.PageIndex)
+            ElseIf (TheState.IsEditMode) Then
+                ThePage.SetPageAndSelectedIndexFromGuid(TheState.claimCloseRulesDV, TheState.DefaultClaimCloseRuleID, CloseRulesGrid, TheState.PageIndex, TheState.IsEditMode)
             Else
-                Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.claimCloseRulesDV, Guid.Empty, Me.CloseRulesGrid, Me.TheState.PageIndex)
+                ThePage.SetPageAndSelectedIndexFromGuid(TheState.claimCloseRulesDV, Guid.Empty, CloseRulesGrid, TheState.PageIndex)
             End If
 
-            If Me.TheState.claimCloseRulesDV.Count = 0 Then
+            If TheState.claimCloseRulesDV.Count = 0 Then
                 For Each gvRow As GridViewRow In CloseRulesGrid.Rows
                     gvRow.Visible = False
                     gvRow.Controls.Clear()
@@ -402,11 +402,11 @@ Partial Class UserControlClaimCloseRules
                 cboPageSize.Visible = True
                 colonSepertor.Visible = True
             End If
-            Me.CloseRulesGrid.AutoGenerateColumns = False
+            CloseRulesGrid.AutoGenerateColumns = False
             SortAndBindGrid(blnNewSearch)
 
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
@@ -415,208 +415,208 @@ Partial Class UserControlClaimCloseRules
 
         Dim dv As New DataView
         Dim objClaimCloseRules As New ClaimCloseRules
-        Me.TheState.PageIndex = Me.CloseRulesGrid.PageIndex
+        TheState.PageIndex = CloseRulesGrid.PageIndex
 
-        If (Me.TheState.claimCloseRulesDV.Count = 0) Then
+        If (TheState.claimCloseRulesDV.Count = 0) Then
             dv = objClaimCloseRules.GetClaimCloseRules()
 
-            Me.TheState.bnoRow = True
+            TheState.bnoRow = True
             dv = objClaimCloseRules.getEmptyList(dv)
-            Me.TheState.claimCloseRulesDV = Nothing
-            Me.TheState.MyBO = New ClaimCloseRules
-            TheState.MyBO.AddNewRowToSearchDV(Me.TheState.claimCloseRulesDV, Me.TheState.MyBO)
-            Me.CloseRulesGrid.DataSource = Me.TheState.claimCloseRulesDV
-            Me.ThePage.HighLightSortColumn(CloseRulesGrid, Me.SortDirection, True)
-            Me.CloseRulesGrid.DataBind()
+            TheState.claimCloseRulesDV = Nothing
+            TheState.MyBO = New ClaimCloseRules
+            TheState.MyBO.AddNewRowToSearchDV(TheState.claimCloseRulesDV, TheState.MyBO)
+            CloseRulesGrid.DataSource = TheState.claimCloseRulesDV
+            ThePage.HighLightSortColumn(CloseRulesGrid, SortDirection, True)
+            CloseRulesGrid.DataBind()
             If Not CloseRulesGrid.BottomPagerRow.Visible Then CloseRulesGrid.BottomPagerRow.Visible = True
-            Me.CloseRulesGrid.Rows(0).Visible = False
-            Me.TheState.IsGridAddNew = True
-            Me.TheState.IsGridVisible = False
-            Me.lblRecordCount.Text = "0 " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            CloseRulesGrid.Rows(0).Visible = False
+            TheState.IsGridAddNew = True
+            TheState.IsGridVisible = False
+            lblRecordCount.Text = "0 " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             If blnShowErr Then
-                Me.ThePage.MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
+                ThePage.MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
             End If
         Else
-            Me.TheState.bnoRow = False
-            Me.CloseRulesGrid.Enabled = True
-            Me.CloseRulesGrid.PageSize = Me.TheState.PageSize
-            Me.CloseRulesGrid.DataSource = Me.TheState.claimCloseRulesDV
-            Me.TheState.IsGridVisible = True
-            Me.ThePage.HighLightSortColumn(CloseRulesGrid, Me.SortDirection, True)
-            Me.CloseRulesGrid.DataBind()
+            TheState.bnoRow = False
+            CloseRulesGrid.Enabled = True
+            CloseRulesGrid.PageSize = TheState.PageSize
+            CloseRulesGrid.DataSource = TheState.claimCloseRulesDV
+            TheState.IsGridVisible = True
+            ThePage.HighLightSortColumn(CloseRulesGrid, SortDirection, True)
+            CloseRulesGrid.DataBind()
             If Not CloseRulesGrid.BottomPagerRow.Visible Then CloseRulesGrid.BottomPagerRow.Visible = True
         End If
 
-        ControlMgr.SetVisibleControl(Me.ThePage, CloseRulesGrid, Me.TheState.IsGridVisible)
+        ControlMgr.SetVisibleControl(ThePage, CloseRulesGrid, TheState.IsGridVisible)
 
-        Session("recCount") = Me.TheState.claimCloseRulesDV.Count
+        Session("recCount") = TheState.claimCloseRulesDV.Count
 
-        If Me.CloseRulesGrid.Visible Then
-            If (Me.TheState.IsGridAddNew) Then
-                Me.lblRecordCount.Text = (Me.TheState.claimCloseRulesDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        If CloseRulesGrid.Visible Then
+            If (TheState.IsGridAddNew) Then
+                lblRecordCount.Text = (TheState.claimCloseRulesDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             Else
-                Me.lblRecordCount.Text = Me.TheState.claimCloseRulesDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblRecordCount.Text = TheState.claimCloseRulesDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
-        ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me.ThePage, CloseRulesGrid)
+        ControlMgr.DisableEditDeleteGridIfNotEditAuth(ThePage, CloseRulesGrid)
 
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CloseRulesGrid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles CloseRulesGrid.PageIndexChanged
         Try
-            If (Not (Me.TheState.IsEditMode)) Then
-                Me.TheState.PageIndex = CloseRulesGrid.PageIndex
-                Me.TheState.DefaultClaimCloseRuleID = Guid.Empty
-                Me.PopulateGrid()
+            If (Not (TheState.IsEditMode)) Then
+                TheState.PageIndex = CloseRulesGrid.PageIndex
+                TheState.DefaultClaimCloseRuleID = Guid.Empty
+                PopulateGrid()
             End If
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles CloseRulesGrid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles CloseRulesGrid.PageIndexChanging
         Try
             CloseRulesGrid.PageIndex = e.NewPageIndex
             TheState.PageIndex = CloseRulesGrid.PageIndex
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles CloseRulesGrid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles CloseRulesGrid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim strID As String
 
-            If Not dvRow Is Nothing And Not Me.TheState.bnoRow Then
-                strID = Me.ThePage.GetGuidStringFromByteArray(CType(dvRow(ClaimCloseRules.CloseClaimRulesDV.COL_CLAIM_CLOSE_RULE_ID), Byte()))
+            If dvRow IsNot Nothing And Not TheState.bnoRow Then
+                strID = ThePage.GetGuidStringFromByteArray(CType(dvRow(ClaimCloseRules.CloseClaimRulesDV.COL_CLAIM_CLOSE_RULE_ID), Byte()))
 
-                If (Me.TheState.IsEditMode = True AndAlso Me.TheState.DefaultClaimCloseRuleID.ToString.Equals(strID)) Then
+                If (TheState.IsEditMode = True AndAlso TheState.DefaultClaimCloseRuleID.ToString.Equals(strID)) Then
 
-                    Dim moCompanyText As Label = CType(e.Row.Cells(Me.GRID_COL_COMPANY_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_COMPANY), Label)
-                    moCompanyText.Text = Me.TheState.companyCode
+                    Dim moCompanyText As Label = CType(e.Row.Cells(GRID_COL_COMPANY_ID_IDX).FindControl(GRID_CTRL_NAME_LABEL_COMPANY), Label)
+                    moCompanyText.Text = TheState.companyCode
 
                     '''hide the Dealer if this user control is displayed on Company page.
                     If (Me.EntityType = CloseRuleEntityType.Dealer) Then
-                        Dim moDealerText As Label = CType(e.Row.Cells(Me.GRID_COL_DEALER_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABLE_DEALER), Label)
-                        moDealerText.Text = Me.TheState.dealer
-                        CloseRulesGrid.Columns(Me.GRID_COL_DEALER_ID_IDX).Visible = True
+                        Dim moDealerText As Label = CType(e.Row.Cells(GRID_COL_DEALER_ID_IDX).FindControl(GRID_CTRL_NAME_LABLE_DEALER), Label)
+                        moDealerText.Text = TheState.dealer
+                        CloseRulesGrid.Columns(GRID_COL_DEALER_ID_IDX).Visible = True
                     Else
-                        CloseRulesGrid.Columns(Me.GRID_COL_DEALER_ID_IDX).Visible = False
+                        CloseRulesGrid.Columns(GRID_COL_DEALER_ID_IDX).Visible = False
                     End If
 
                     ''Close Rule Based On dropdown
-                    Dim cboRuleBasedOn As DropDownList = CType(e.Row.Cells(Me.GRID_COL_CLOSE_RULE_BASED_ON_ID_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_CLOSE_RULE_BASED_ON), DropDownList)
+                    Dim cboRuleBasedOn As DropDownList = CType(e.Row.Cells(GRID_COL_CLOSE_RULE_BASED_ON_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_CLOSE_RULE_BASED_ON), DropDownList)
                     ElitaPlusPage.BindListControlToDataView(cboRuleBasedOn, LookupListNew.GetClaimCloseRuleBasedOnList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
                     If (Not String.IsNullOrWhiteSpace(dvRow(ClaimCloseRules.CloseClaimRulesDV.COL_CLOSE_RULE_BASED_ON_ID).ToString())) Then
-                        Me.ThePage.SetSelectedItem(cboRuleBasedOn, GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(e.Row.RowIndex).Values(7)))
+                        ThePage.SetSelectedItem(cboRuleBasedOn, GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(e.Row.RowIndex).Values(7)))
                     End If
 
                     ''Claim Extended status dropdown
-                    Dim moClaimStatusByGroupDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_CLAIM_STATUS_BY_GROUP_ID_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_CLM_STAT_BY_GRP), DropDownList)
+                    Dim moClaimStatusByGroupDropDown As DropDownList = CType(e.Row.Cells(GRID_COL_CLAIM_STATUS_BY_GROUP_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_CLM_STAT_BY_GRP), DropDownList)
                     moClaimStatusByGroupDropDown.Enabled = False
                     ElitaPlusPage.BindListControlToDataView(moClaimStatusByGroupDropDown, LookupListNew.GetExtendedStatusByGroupLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
                     If (Not String.IsNullOrWhiteSpace(dvRow(ClaimCloseRules.CloseClaimRulesDV.COL_CLAIM_STATUS_BY_GROUP_ID).ToString())) Then
-                        Me.ThePage.SetSelectedItem(moClaimStatusByGroupDropDown, GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(e.Row.RowIndex).Values(3)))
+                        ThePage.SetSelectedItem(moClaimStatusByGroupDropDown, GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(e.Row.RowIndex).Values(3)))
                     End If
 
                     ''Claim Issue dropdown
-                    Dim moClaimIssueDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_CLAIM_ISSUE_ID_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_CLM_ISSUE), DropDownList)
+                    Dim moClaimIssueDropDown As DropDownList = CType(e.Row.Cells(GRID_COL_CLAIM_ISSUE_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_CLM_ISSUE), DropDownList)
                     moClaimIssueDropDown.Enabled = False
                     ElitaPlusPage.BindListControlToDataView(moClaimIssueDropDown, Issue.GetList("%", String.Empty, String.Empty), "DESCRIPTION", "ISSUE_ID")
                     If (Not String.IsNullOrWhiteSpace(dvRow(ClaimCloseRules.CloseClaimRulesDV.COL_CLAIM_ISSUE_ID).ToString())) Then
-                        Me.ThePage.SetSelectedItem(moClaimIssueDropDown, GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(e.Row.RowIndex).Values(6)))
+                        ThePage.SetSelectedItem(moClaimIssueDropDown, GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(e.Row.RowIndex).Values(6)))
                     End If
 
                     'time period text box
-                    CType(e.Row.Cells(Me.GRID_COL_TIME_PERIOD_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_TIME_PERIOD), TextBox).Text = dvRow("time_period").ToString
+                    CType(e.Row.Cells(GRID_COL_TIME_PERIOD_IDX).FindControl(GRID_CTRL_NAME_EDIT_TIME_PERIOD), TextBox).Text = dvRow("time_period").ToString
 
                     ''Reason Closed dropdown
-                    Dim moReasonClosedDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_CLOSE_CLAIM_RULE_ID).FindControl(Me.GRID_CTRL_NAME_EDIT_REASON_CLOSED), DropDownList)
+                    Dim moReasonClosedDropDown As DropDownList = CType(e.Row.Cells(GRID_COL_CLOSE_CLAIM_RULE_ID).FindControl(GRID_CTRL_NAME_EDIT_REASON_CLOSED), DropDownList)
                     ElitaPlusPage.BindListControlToDataView(moReasonClosedDropDown, LookupListNew.GetReasonClosedLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
                     If (Not String.IsNullOrWhiteSpace(dvRow(ClaimCloseRules.CloseClaimRulesDV.COL_REASON_CLOSED_ID).ToString())) Then
-                        Me.ThePage.SetSelectedItem(moReasonClosedDropDown, GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(e.Row.RowIndex).Values(4)))
+                        ThePage.SetSelectedItem(moReasonClosedDropDown, GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(e.Row.RowIndex).Values(4)))
                     End If
 
                 Else
-                    CType(e.Row.Cells(Me.GRID_COL_COMPANY_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_COMPANY), Label).Text = dvRow("company_code").ToString
+                    CType(e.Row.Cells(GRID_COL_COMPANY_ID_IDX).FindControl(GRID_CTRL_NAME_LABEL_COMPANY), Label).Text = dvRow("company_code").ToString
 
                     If (Me.EntityType = CloseRuleEntityType.Dealer) Then
-                        CType(e.Row.Cells(Me.GRID_COL_DEALER_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABLE_DEALER), Label).Text = dvRow("dealer").ToString
-                        CloseRulesGrid.Columns(Me.GRID_COL_DEALER_ID_IDX).Visible = True
+                        CType(e.Row.Cells(GRID_COL_DEALER_ID_IDX).FindControl(GRID_CTRL_NAME_LABLE_DEALER), Label).Text = dvRow("dealer").ToString
+                        CloseRulesGrid.Columns(GRID_COL_DEALER_ID_IDX).Visible = True
 
                         'Def-25716:The delete button will still not be avaliable at dealer screen for the company level rule)
-                        If (CType(e.Row.Cells(Me.GRID_COL_DEALER_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABLE_DEALER), Label).Text = String.Empty) Then
+                        If (CType(e.Row.Cells(GRID_COL_DEALER_ID_IDX).FindControl(GRID_CTRL_NAME_LABLE_DEALER), Label).Text = String.Empty) Then
 
-                            CType(e.Row.Cells(Me.GRID_COL_CLOSE_CLAIM_RULE_ID).FindControl(Me.GRID_CTRL_NAME_DELETE_CLAIM_RULE), ImageButton).Visible = False
+                            CType(e.Row.Cells(GRID_COL_CLOSE_CLAIM_RULE_ID).FindControl(GRID_CTRL_NAME_DELETE_CLAIM_RULE), ImageButton).Visible = False
 
                         End If
 
                     Else
-                        CloseRulesGrid.Columns(Me.GRID_COL_DEALER_ID_IDX).Visible = False
+                        CloseRulesGrid.Columns(GRID_COL_DEALER_ID_IDX).Visible = False
                     End If
-                    CType(e.Row.Cells(Me.GRID_COL_CLOSE_RULE_BASED_ON_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_CLOSE_RULE_BASED_ON), Label).Text = dvRow("close_rule_based_on").ToString
-                    CType(e.Row.Cells(Me.GRID_COL_CLAIM_STATUS_BY_GROUP_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_CLAIM_STATUS_BY_GROUP), Label).Text = dvRow("claim_status_by_group").ToString
-                    CType(e.Row.Cells(Me.GRID_COL_CLAIM_ISSUE_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_CLAIM_ISSUE), Label).Text = dvRow("claim_issue").ToString
-                    CType(e.Row.Cells(Me.GRID_COL_REASON_CLOSED_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_REASON_CLOSED), Label).Text = dvRow("reason_closed").ToString
-                    CType(e.Row.Cells(Me.GRID_COL_TIME_PERIOD_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_TIME_PERIOD), Label).Text = dvRow("time_period").ToString
+                    CType(e.Row.Cells(GRID_COL_CLOSE_RULE_BASED_ON_ID_IDX).FindControl(GRID_CTRL_NAME_LABEL_CLOSE_RULE_BASED_ON), Label).Text = dvRow("close_rule_based_on").ToString
+                    CType(e.Row.Cells(GRID_COL_CLAIM_STATUS_BY_GROUP_ID_IDX).FindControl(GRID_CTRL_NAME_LABEL_CLAIM_STATUS_BY_GROUP), Label).Text = dvRow("claim_status_by_group").ToString
+                    CType(e.Row.Cells(GRID_COL_CLAIM_ISSUE_ID_IDX).FindControl(GRID_CTRL_NAME_LABEL_CLAIM_ISSUE), Label).Text = dvRow("claim_issue").ToString
+                    CType(e.Row.Cells(GRID_COL_REASON_CLOSED_ID_IDX).FindControl(GRID_CTRL_NAME_LABEL_REASON_CLOSED), Label).Text = dvRow("reason_closed").ToString
+                    CType(e.Row.Cells(GRID_COL_TIME_PERIOD_IDX).FindControl(GRID_CTRL_NAME_LABEL_TIME_PERIOD), Label).Text = dvRow("time_period").ToString
 
                 End If
             End If
 
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles CloseRulesGrid.RowCommand
+    Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles CloseRulesGrid.RowCommand
 
         Try
             Dim index As Integer
-            If (e.CommandName = Me.EDIT_COMMAND) Then
+            If (e.CommandName = EDIT_COMMAND) Then
                 index = CInt(e.CommandArgument)
                 'Do the Edit here
 
                 'Set the IsEditMode flag to TRUE
-                Me.TheState.IsEditMode = True
+                TheState.IsEditMode = True
 
-                Me.TheState.DefaultClaimCloseRuleID = GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(index).Values(0))
+                TheState.DefaultClaimCloseRuleID = GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(index).Values(0))
 
-                Me.TheState.MyBO = New ClaimCloseRules(Me.TheState.DefaultClaimCloseRuleID)
+                TheState.MyBO = New ClaimCloseRules(TheState.DefaultClaimCloseRuleID)
 
-                Me.Populate()
+                Populate()
 
-                Me.TheState.PageIndex = CloseRulesGrid.PageIndex
+                TheState.PageIndex = CloseRulesGrid.PageIndex
 
-                Me.SetControlState()
+                SetControlState()
 
                 Try
-                    Me.CloseRulesGrid.Rows(index).Focus()
+                    CloseRulesGrid.Rows(index).Focus()
                 Catch ex As Exception
-                    Me.CloseRulesGrid.Focus()
+                    CloseRulesGrid.Focus()
                 End Try
 
-            ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+            ElseIf (e.CommandName = DELETE_COMMAND) Then
                 index = CInt(e.CommandArgument)
-                Me.TheState.deleteRowIndex = index
+                TheState.deleteRowIndex = index
 
-                Me.ThePage.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.ThePage.MSG_BTN_YES_NO, Me.ThePage.MSG_TYPE_CONFIRM, Me.HiddenDeletePromptResponse)
-                Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
-                Me.CloseRulesGrid.Focus()
+                ThePage.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", ThePage.MSG_BTN_YES_NO, ThePage.MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
+                TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                CloseRulesGrid.Focus()
             End If
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles CloseRulesGrid.RowCreated
+    Public Sub RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles CloseRulesGrid.RowCreated
         Try
             ThePage.BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
@@ -642,80 +642,80 @@ Partial Class UserControlClaimCloseRules
 
 #Region "Control Handler"
 
-    Protected Sub NewButton_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles NewButton_WRITE.Click
+    Protected Sub NewButton_WRITE_Click(sender As Object, e As EventArgs) Handles NewButton_WRITE.Click
 
         Try
             TheState.IsEditMode = True
             TheState.IsGridVisible = True
             TheState.IsGridAddNew = True
             AddNew()
-            Me.SetControlState()
+            SetControlState()
 
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
 
     Private Sub AddNew()
-        If TheState.MyBO Is Nothing OrElse Me.TheState.MyBO.IsNew = False Then
+        If TheState.MyBO Is Nothing OrElse TheState.MyBO.IsNew = False Then
             TheState.MyBO = New ClaimCloseRules
-            TheState.MyBO.AddNewRowToSearchDV(Me.TheState.claimCloseRulesDV, Me.TheState.MyBO)
+            TheState.MyBO.AddNewRowToSearchDV(TheState.claimCloseRulesDV, TheState.MyBO)
         End If
-        TheState.DefaultClaimCloseRuleID = Me.TheState.MyBO.Id
+        TheState.DefaultClaimCloseRuleID = TheState.MyBO.Id
         TheState.IsGridAddNew = True
         PopulateGrid()
         'Set focus on the Code TextBox for the EditItemIndex row
-        ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.claimCloseRulesDV, Me.TheState.DefaultClaimCloseRuleID, Me.CloseRulesGrid, _
-          TheState.PageIndex, Me.TheState.IsEditMode)
-        ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me.ThePage, CloseRulesGrid)
-        ThePage.SetGridControls(Me.CloseRulesGrid, False)
+        ThePage.SetPageAndSelectedIndexFromGuid(TheState.claimCloseRulesDV, TheState.DefaultClaimCloseRuleID, CloseRulesGrid, _
+          TheState.PageIndex, TheState.IsEditMode)
+        ControlMgr.DisableEditDeleteGridIfNotEditAuth(ThePage, CloseRulesGrid)
+        ThePage.SetGridControls(CloseRulesGrid, False)
 
         Try
-            Me.CloseRulesGrid.Rows(Me.CloseRulesGrid.SelectedIndex).Focus()
+            CloseRulesGrid.Rows(CloseRulesGrid.SelectedIndex).Focus()
         Catch ex As Exception
-            Me.CloseRulesGrid.Focus()
+            CloseRulesGrid.Focus()
         End Try
 
     End Sub
 
-    Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnSave_Click(sender As Object, e As EventArgs)
 
         Try
             PopulateBOFromForm()
             '25716: Check if the claim close rule already exits  before saving claim close rules.
             Dim objClaimCloseRules As New ClaimCloseRules
-            Dim isClaimCloseRulesExists As Integer = objClaimCloseRules.ValidateClaimCloseRule(Me.TheState.companyId, Me.TheState.dealerId, TheState.MyBO.CloseRuleBasedOnId, TheState.MyBO.ClaimStatusByGroupId, Me.EntityType.ToString(), TheState.MyBO.ClaimIssueId)
+            Dim isClaimCloseRulesExists As Integer = objClaimCloseRules.ValidateClaimCloseRule(TheState.companyId, TheState.dealerId, TheState.MyBO.CloseRuleBasedOnId, TheState.MyBO.ClaimStatusByGroupId, EntityType.ToString(), TheState.MyBO.ClaimIssueId)
 
             If isClaimCloseRulesExists > 0 Then
-                Me.ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_CLAIM_CLOASE_RULE, True)
+                ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_CLAIM_CLOASE_RULE, True)
                 Return
             End If
             '25716-End
-            If (Me.TheState.MyBO.IsDirty) Then
+            If (TheState.MyBO.IsDirty) Then
                 Try
-                    Me.TheState.MyBO.Save()
+                    TheState.MyBO.Save()
                 Catch ex As DataBaseUniqueKeyConstraintViolationException
                     Throw New GUIException("Unique constraint violation", Assurant.ElitaPlus.Common.ErrorCodes.DUPLICATE_KEY_CONSTRAINT_VIOLATED)
                 End Try
 
-                Me.TheState.IsAfterSave = True
-                Me.TheState.IsGridAddNew = False
-                Me.ThePage.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_SAVED_OK, True)
-                Me.TheState.claimCloseRulesDV = Nothing
-                Me.TheState.MyBO = Nothing
-                Me.ReturnFromEditing()
+                TheState.IsAfterSave = True
+                TheState.IsGridAddNew = False
+                ThePage.MasterPage.MessageController.AddSuccess(MSG_RECORD_SAVED_OK, True)
+                TheState.claimCloseRulesDV = Nothing
+                TheState.MyBO = Nothing
+                ReturnFromEditing()
             Else
-                Me.ThePage.MasterPage.MessageController.AddWarning(Me.MSG_RECORD_NOT_SAVED, True)
-                Me.ReturnFromEditing()
+                ThePage.MasterPage.MessageController.AddWarning(MSG_RECORD_NOT_SAVED, True)
+                ReturnFromEditing()
             End If
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs)
         Try
             With TheState
                 If .IsGridAddNew Then
@@ -724,31 +724,31 @@ Partial Class UserControlClaimCloseRules
                     CloseRulesGrid.PageIndex = .PageIndex
                 End If
                 .DefaultClaimCloseRuleID = Guid.Empty
-                Me.TheState.MyBO = Nothing
+                TheState.MyBO = Nothing
                 .IsEditMode = False
             End With
-            CloseRulesGrid.EditIndex = Me.ThePage.NO_ITEM_SELECTED_INDEX
+            CloseRulesGrid.EditIndex = ThePage.NO_ITEM_SELECTED_INDEX
 
             PopulateGrid()
             SetControlState()
-            Me.CloseRulesGrid.Focus()
+            CloseRulesGrid.Focus()
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
 
             CloseRulesGrid.PageIndex = NewCurrentPageIndex(CloseRulesGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.TheState.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.PopulateGrid()
+            TheState.PageSize = CType(cboPageSize.SelectedValue, Integer)
+            PopulateGrid()
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Overloads Function NewCurrentPageIndex(ByVal dg As GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer) As Integer
+    Private Overloads Function NewCurrentPageIndex(dg As GridView, intRecordCount As Integer, intNewPageSize As Integer) As Integer
         Dim intOldPageSize As Integer    ' old page size    
         Dim intFirstRecordIndex As Integer        ' top record index on current page
         Dim intNewPageCount As Integer  ' new page count
@@ -783,37 +783,37 @@ Partial Class UserControlClaimCloseRules
     End Function
 #End Region
     Protected Sub CheckIfComingFromDeleteConfirm()
-        Dim confResponse As String = Me.HiddenDeletePromptResponse.Value
-        Dim confResponseDel As String = Me.HiddenDeletePromptResponse.Value
+        Dim confResponse As String = HiddenDeletePromptResponse.Value
+        Dim confResponseDel As String = HiddenDeletePromptResponse.Value
         Try
-            If Not confResponseDel Is Nothing AndAlso confResponseDel = Me.ThePage.MSG_VALUE_YES Then
-                If Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
-                    Me.TheState.DefaultClaimCloseRuleID = GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(Me.TheState.deleteRowIndex).Values(0))
+            If confResponseDel IsNot Nothing AndAlso confResponseDel = ThePage.MSG_VALUE_YES Then
+                If TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
+                    TheState.DefaultClaimCloseRuleID = GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(TheState.deleteRowIndex).Values(0))
                     'make the rule inactive
-                    ClaimCloseRules.UpdateClaimCloseRuleInActive(Me.TheState.DefaultClaimCloseRuleID)
+                    ClaimCloseRules.UpdateClaimCloseRuleInActive(TheState.DefaultClaimCloseRuleID)
 
-                    Me.ThePage.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_DELETED_OK, True)
+                    ThePage.MasterPage.MessageController.AddSuccess(MSG_RECORD_DELETED_OK, True)
 
-                    Me.TheState.PageIndex = CloseRulesGrid.PageIndex
+                    TheState.PageIndex = CloseRulesGrid.PageIndex
 
                     'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-                    Me.TheState.IsAfterSave = True
-                    Me.TheState.claimCloseRulesDV = Nothing
+                    TheState.IsAfterSave = True
+                    TheState.claimCloseRulesDV = Nothing
                     PopulateGrid()
-                    Me.TheState.PageIndex = CloseRulesGrid.PageIndex
-                    Me.TheState.IsEditMode = False
+                    TheState.PageIndex = CloseRulesGrid.PageIndex
+                    TheState.IsEditMode = False
                     SetControlState()
                     'Clean after consuming the action
-                    Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                    Me.HiddenDeletePromptResponse.Value = ""
+                    TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                    HiddenDeletePromptResponse.Value = ""
                 End If
-            ElseIf Not confResponseDel Is Nothing AndAlso confResponseDel = Me.ThePage.MSG_VALUE_NO Then
+            ElseIf confResponseDel IsNot Nothing AndAlso confResponseDel = ThePage.MSG_VALUE_NO Then
                 'Clean after consuming the action
-                Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenDeletePromptResponse.Value = ""
+                TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenDeletePromptResponse.Value = ""
             End If
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
@@ -829,7 +829,7 @@ Partial Class UserControlClaimCloseRules
                 selectedCode = dvRuleBasedOn.Item(0).Item("code").ToString()
             End If
 
-            Dim SelectedRow As GridViewRow = CloseRulesGrid.Rows(Me.CloseRulesGrid.EditIndex)
+            Dim SelectedRow As GridViewRow = CloseRulesGrid.Rows(CloseRulesGrid.EditIndex)
 
             'CLMISSUE and CLEXTSTAT are mutually exclusive - there can be only one.
             Select Case selectedCode
@@ -855,7 +855,7 @@ Partial Class UserControlClaimCloseRules
             CType(SelectedRow.Cells(GRID_COL_REASON_CLOSED_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_REASON_CLOSED), DropDownList).SelectedIndex = 0
 
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
 
         End Try
     End Sub

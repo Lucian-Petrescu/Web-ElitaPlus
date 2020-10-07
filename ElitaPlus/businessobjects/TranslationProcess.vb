@@ -99,7 +99,7 @@ Public Class TranslationProcess
     'End Function
 
 
-    Public Sub TranslateBasicControls(ByVal SingleValueControlArray As SingleValueControlArray, ByVal InClause As String, ByVal nLanguageID As Guid)
+    Public Sub TranslateBasicControls(SingleValueControlArray As SingleValueControlArray, InClause As String, nLanguageID As Guid)
 
 
         Dim oSingleValueControl As SingleValueControl
@@ -181,7 +181,7 @@ Public Class TranslationProcess
     'Purpose:'separate the control types into 3 collections. Then translate each group.
     'Input Values:oCurrentPage- the main container for the page.
     '-------------------------------------
-    Public Sub TranslateThePage(ByVal oCurrentObject As Control, ByVal nLanguageID As Guid)
+    Public Sub TranslateThePage(oCurrentObject As Control, nLanguageID As Guid)
 
         Dim sResult As String
         CollectTheTextFromTheControls(oCurrentObject, nLanguageID)
@@ -206,7 +206,7 @@ Public Class TranslationProcess
 
     End Sub
 
-    Sub TranslateToolTips(ByVal oCurrentObject As Control, ByVal nLanguageID As Guid)
+    Sub TranslateToolTips(oCurrentObject As Control, nLanguageID As Guid)
 
         Dim sResultString As String
         Dim oDVToolTips As DataView
@@ -226,7 +226,7 @@ Public Class TranslationProcess
 
     End Sub
 
-    Private Function GetToolTipDBTranslations(ByVal sResultString As String, ByVal nLanguageID As Guid) As DataView
+    Private Function GetToolTipDBTranslations(sResultString As String, nLanguageID As Guid) As DataView
 
         Dim oDS As DataSet
         Dim oDV As New DataView
@@ -244,7 +244,7 @@ Public Class TranslationProcess
 
 #Region "TOOLTIP ROUTINES"
 
-    Sub SetToolTipText(ByVal oCurrentObject As Control, ByVal nLanguageID As Guid, ByVal oDVToolTips As DataView)
+    Sub SetToolTipText(oCurrentObject As Control, nLanguageID As Guid, oDVToolTips As DataView)
 
         Dim sResultString As String
         Dim oDS As DataSet
@@ -289,7 +289,7 @@ Public Class TranslationProcess
     End Sub
 
 
-    Sub GetToolTipText(ByVal oCurrentObject As Control, ByVal nLanguageID As Guid)
+    Sub GetToolTipText(oCurrentObject As Control, nLanguageID As Guid)
 
         Dim sText As String = String.Empty
         Dim oType As Type = oCurrentObject.GetType
@@ -312,7 +312,7 @@ Public Class TranslationProcess
 
 
 
-    Private Sub AddControlToSingleValueArray(ByVal oControl As Control)
+    Private Sub AddControlToSingleValueArray(oControl As Control)
 
 
         Dim oSingleValueControl As New SingleValueControl
@@ -334,7 +334,7 @@ Public Class TranslationProcess
 
 
 
-    Private Sub CollectTheTextFromTheControls(ByVal oCurrentObject As Control, ByVal nLanguageID As Guid)
+    Private Sub CollectTheTextFromTheControls(oCurrentObject As Control, nLanguageID As Guid)
 
         '  Dim oDB As New DbStruct
         Dim oDS As DataSet
@@ -356,7 +356,7 @@ Public Class TranslationProcess
 
                 End If
 
-                If oPageControl.GetType.IsSubclassOf(GetType(System.Web.UI.WebControls.WebControl)) AndAlso Not oPageControl.ID Is Nothing AndAlso Not oPageControl.GetType.IsSubclassOf(GetType(System.Web.UI.WebControls.ListControl)) Then
+                If oPageControl.GetType.IsSubclassOf(GetType(System.Web.UI.WebControls.WebControl)) AndAlso oPageControl.ID IsNot Nothing AndAlso Not oPageControl.GetType.IsSubclassOf(GetType(System.Web.UI.WebControls.ListControl)) Then
                     sCurrentText = GetTextFromControl(oPageControl, TEXT)
 
                     'now get the tool tip text for translation.
@@ -376,7 +376,7 @@ Public Class TranslationProcess
 
                         If (Not CType(oPageControl.Page, ElitaPlusPage).IsNewUI) Then
                             'ALR - 9/18/2007 - Set the CSS Style for the datagrid 
-                            If Not CType(oPageControl, DataGrid).CssClass = Me.DATAGRID_NOWRAP_STYLE OrElse CType(oPageControl, DataGrid).CssClass.Trim.Equals(String.Empty) Then
+                            If Not CType(oPageControl, DataGrid).CssClass = DATAGRID_NOWRAP_STYLE OrElse CType(oPageControl, DataGrid).CssClass.Trim.Equals(String.Empty) Then
                                 CType(oPageControl, DataGrid).CssClass = DATAGRIDSTYLE
                             End If
                         End If
@@ -408,7 +408,7 @@ Public Class TranslationProcess
 
 
 
-    Private Sub TranslateRadioAndCheckBoxList(ByVal oPageControl As Control)
+    Private Sub TranslateRadioAndCheckBoxList(oPageControl As Control)
 
         '   If oPageControl.GetType.BaseType Is GetType(System.Web.UI.WebControls.ListControl) Then
 
@@ -419,7 +419,7 @@ Public Class TranslationProcess
         End If
     End Sub
 
-    Private Sub TranslateSingleListControl(ByVal oControl As ListControl)
+    Private Sub TranslateSingleListControl(oControl As ListControl)
 
         Dim oItem As ListItem
         Dim oTranslationItem As TranslationItem
@@ -442,8 +442,8 @@ Public Class TranslationProcess
         Next
 
         'do the translation
-        If (Not oTranslationItemArray Is Nothing And oTranslationItemArray.Items.Count > 0) Then
-            Me.TranslateList(oTranslationItemArray, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+        If (oTranslationItemArray IsNot Nothing And oTranslationItemArray.Items.Count > 0) Then
+            TranslateList(oTranslationItemArray, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         End If
 
         'go thru the array and set the text of the control to it's matching translation.
@@ -460,7 +460,7 @@ Public Class TranslationProcess
 
     End Sub
 
-    Private Sub TranslateTabStrip(ByVal oPageControl As Control)
+    Private Sub TranslateTabStrip(oPageControl As Control)
 
         If oPageControl.GetType Is GetType(Microsoft.Web.UI.WebControls.TabStrip) Then
 
@@ -469,7 +469,7 @@ Public Class TranslationProcess
         End If
     End Sub
 
-    Private Sub TranslateSingleTabStripControl(ByVal oControl As Microsoft.Web.UI.WebControls.TabStrip)
+    Private Sub TranslateSingleTabStripControl(oControl As Microsoft.Web.UI.WebControls.TabStrip)
 
         Dim oItem As Microsoft.Web.UI.WebControls.TabItem
         Dim oTranslationItem As TranslationItem
@@ -492,7 +492,7 @@ Public Class TranslationProcess
         Next
 
         'do the translation
-        Me.TranslateList(oTranslationItemArray, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+        TranslateList(oTranslationItemArray, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
         'go thru the array and set the text of the control to it's matching translation.
         For Each oItem In oControl.Items
@@ -508,7 +508,7 @@ Public Class TranslationProcess
 
     End Sub
 
-    Private Shared Function GetTextFromControl(ByVal oControl As Object, ByVal sPropertyName As String) As String
+    Private Shared Function GetTextFromControl(oControl As Object, sPropertyName As String) As String
 
         Dim sText As String = String.Empty
         Dim oType As Type = oControl.GetType
@@ -647,7 +647,7 @@ Public Class TranslationProcess
 
     End Sub
 
-    Public Overloads Function TranslateControlsInGrid(ByVal oGrid As DataGrid) As ArrayList
+    Public Overloads Function TranslateControlsInGrid(oGrid As DataGrid) As ArrayList
 
         LoadTranslationTypesForGrid()
 
@@ -673,11 +673,11 @@ Public Class TranslationProcess
 
 
         ' Return Me.GetCurrentMissingTranslations
-        Return Me.TranslationMissingList
+        Return TranslationMissingList
 
     End Function
 
-    Public Overloads Function TranslateControlsInGrid(ByVal oGrid As GridView) As ArrayList
+    Public Overloads Function TranslateControlsInGrid(oGrid As GridView) As ArrayList
 
         LoadTranslationTypesForGrid()
 
@@ -703,7 +703,7 @@ Public Class TranslationProcess
 
 
         ' Return Me.GetCurrentMissingTranslations
-        Return Me.TranslationMissingList
+        Return TranslationMissingList
 
     End Function
 
@@ -714,7 +714,7 @@ Public Class TranslationProcess
     'Uses:GetControlFromSingleCell
     '-------------------------------------
 
-    Private Overloads Function GetTextFromControlsInGrid(ByVal oGridRow As DataGridItem) As ArrayList
+    Private Overloads Function GetTextFromControlsInGrid(oGridRow As DataGridItem) As ArrayList
 
 
         Dim oItem As DataGridItem
@@ -783,7 +783,7 @@ Public Class TranslationProcess
     'Uses:GetControlFromSingleCell
     '-------------------------------------
 
-    Private Overloads Function GetTextFromControlsInGrid(ByVal oGridRow As GridViewRow) As ArrayList
+    Private Overloads Function GetTextFromControlsInGrid(oGridRow As GridViewRow) As ArrayList
 
 
         Dim oItem As GridViewRow
@@ -844,7 +844,7 @@ Public Class TranslationProcess
 
     End Function
 
-    Private Function GetControlFromSingleCell(ByVal oCell As TableCell) As Control
+    Private Function GetControlFromSingleCell(oCell As TableCell) As Control
 
         Dim oControl As Control
 
@@ -881,7 +881,7 @@ Public Class TranslationProcess
 
 
 
-    Private Sub TranslateListOfControlsInGrid(ByVal aryGridTextFromControls As ArrayList)
+    Private Sub TranslateListOfControlsInGrid(aryGridTextFromControls As ArrayList)
 
         Dim aryList As New ArrayList
         Dim sResultString As String
@@ -899,7 +899,7 @@ Public Class TranslationProcess
 
     End Sub
 
-    Private Overloads Sub TranslateGridButtonColumns(ByVal oGrid As DataGrid)
+    Private Overloads Sub TranslateGridButtonColumns(oGrid As DataGrid)
         Dim ods As DataSet
         Dim oView As New DataView
 
@@ -937,7 +937,7 @@ Public Class TranslationProcess
 
     End Sub
 
-    Private Overloads Sub TranslateGridButtonColumns(ByVal oGrid As GridView)
+    Private Overloads Sub TranslateGridButtonColumns(oGrid As GridView)
         Dim ods As DataSet
         Dim oView As New DataView
 
@@ -974,7 +974,7 @@ Public Class TranslationProcess
 
 
     End Sub
-    Private Overloads Sub SetGridButtonColumnText(ByVal oGrid As DataGrid, ByVal oView As DataView)
+    Private Overloads Sub SetGridButtonColumnText(oGrid As DataGrid, oView As DataView)
 
         Dim nCounter As Integer
         Dim nColumnCount As Integer = oGrid.Columns.Count
@@ -1007,7 +1007,7 @@ Public Class TranslationProcess
 
     End Sub
 
-    Private Overloads Sub SetGridButtonColumnText(ByVal oGrid As GridView, ByVal oView As DataView)
+    Private Overloads Sub SetGridButtonColumnText(oGrid As GridView, oView As DataView)
 
         Dim nCounter As Integer
         Dim nColumnCount As Integer = oGrid.Columns.Count
@@ -1077,7 +1077,7 @@ Public Class TranslationProcess
 
     End Sub
 
-    Public Overloads Function TranslateGridHeader(ByVal oGrid As System.Web.UI.WebControls.DataGrid) As ArrayList
+    Public Overloads Function TranslateGridHeader(oGrid As System.Web.UI.WebControls.DataGrid) As ArrayList
         Dim ods As DataSet
         Dim oView As New DataView
 
@@ -1110,12 +1110,12 @@ Public Class TranslationProcess
 
 
         'Return Me.GetCurrentMissingTranslations
-        Return Me.TranslationMissingList
+        Return TranslationMissingList
 
 
     End Function
 
-    Public Overloads Function TranslateGridHeader(ByVal oGrid As System.Web.UI.WebControls.GridView) As ArrayList
+    Public Overloads Function TranslateGridHeader(oGrid As System.Web.UI.WebControls.GridView) As ArrayList
         Dim ods As DataSet
         Dim oView As New DataView
 
@@ -1148,12 +1148,12 @@ Public Class TranslationProcess
 
 
         'Return Me.GetCurrentMissingTranslations
-        Return Me.TranslationMissingList
+        Return TranslationMissingList
 
 
     End Function
 
-    Private Overloads Sub SetGridHeaderText(ByVal oGrid As System.Web.UI.WebControls.DataGrid, ByVal oView As DataView)
+    Private Overloads Sub SetGridHeaderText(oGrid As System.Web.UI.WebControls.DataGrid, oView As DataView)
 
         Dim nCounter As Integer
         Dim nColumnCount As Integer = oGrid.Columns.Count
@@ -1168,7 +1168,7 @@ Public Class TranslationProcess
 
     End Sub
 
-    Private Overloads Sub SetGridHeaderText(ByVal oGrid As System.Web.UI.WebControls.GridView, ByVal oView As DataView)
+    Private Overloads Sub SetGridHeaderText(oGrid As System.Web.UI.WebControls.GridView, oView As DataView)
 
         Dim nCounter As Integer
         Dim nColumnCount As Integer = oGrid.Columns.Count
@@ -1183,7 +1183,7 @@ Public Class TranslationProcess
 
     End Sub
 
-    Private Overloads Function GetGridButtonColumnText(ByVal oGrid As System.Web.UI.WebControls.DataGrid) As ArrayList
+    Private Overloads Function GetGridButtonColumnText(oGrid As System.Web.UI.WebControls.DataGrid) As ArrayList
 
         Dim nCounter As Integer
         Dim nColumnCount As Integer = oGrid.Columns.Count
@@ -1222,7 +1222,7 @@ Public Class TranslationProcess
 
     End Function
 
-    Private Overloads Function GetGridButtonColumnText(ByVal oGrid As System.Web.UI.WebControls.GridView) As ArrayList
+    Private Overloads Function GetGridButtonColumnText(oGrid As System.Web.UI.WebControls.GridView) As ArrayList
 
         Dim nCounter As Integer
         Dim nColumnCount As Integer = oGrid.Columns.Count
@@ -1306,7 +1306,7 @@ Public Class TranslationProcess
     End Function
 
 
-    Private Overloads Function GetGridHeaderText(ByVal oGrid As System.Web.UI.WebControls.DataGrid) As ArrayList
+    Private Overloads Function GetGridHeaderText(oGrid As System.Web.UI.WebControls.DataGrid) As ArrayList
 
         Dim nCounter As Integer
         Dim nColumnCount As Integer = oGrid.Columns.Count
@@ -1322,7 +1322,7 @@ Public Class TranslationProcess
 
     End Function
 
-    Private Overloads Function GetGridHeaderText(ByVal oGrid As System.Web.UI.WebControls.GridView) As ArrayList
+    Private Overloads Function GetGridHeaderText(oGrid As System.Web.UI.WebControls.GridView) As ArrayList
 
         Dim nCounter As Integer
         Dim nColumnCount As Integer = oGrid.Columns.Count

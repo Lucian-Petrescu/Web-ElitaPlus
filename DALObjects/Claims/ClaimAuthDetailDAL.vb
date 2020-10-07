@@ -33,47 +33,47 @@ Public Class ClaimAuthDetailDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid, Optional ByVal blnLoadByClaimID As Boolean = False)
+    Public Sub Load(familyDS As DataSet, id As Guid, Optional ByVal blnLoadByClaimID As Boolean = False)
         Dim selectStmt As String
         Dim parameters() As DBHelper.DBHelperParameter
         If blnLoadByClaimID Then
-            selectStmt = Me.Config("/SQL/LOAD_BY_CLAIM_ID")
+            selectStmt = Config("/SQL/LOAD_BY_CLAIM_ID")
             parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_id", id.ToByteArray)}
         Else
-            selectStmt = Me.Config("/SQL/LOAD")
+            selectStmt = Config("/SQL/LOAD")
             parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_auth_detail_id", id.ToByteArray)}
         End If
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim oPartsInfoDAL As New PartsInfoDAL
         Dim oClaimDAL As New ClaimDAL
 
@@ -86,7 +86,7 @@ Public Class ClaimAuthDetailDAL
             'to be used by maintain invoice use case
             oPartsInfoDAL.Update(familyDataset, tr, DataRowState.Deleted)
             'no changes for claimAuthDetail DAL
-            Me.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
             oClaimDAL.Update(familyDataset, tr, DataRowState.Deleted)
 
             If Not familyDataset.Tables(ClaimStatusDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
@@ -95,7 +95,7 @@ Public Class ClaimAuthDetailDAL
             End If
 
             'Second Pass updates additions and changes
-            Me.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             oPartsInfoDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             oClaimDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 

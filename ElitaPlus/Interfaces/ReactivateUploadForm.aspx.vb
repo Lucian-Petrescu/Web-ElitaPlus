@@ -56,31 +56,31 @@ Public Class ReactivateUploadForm
 
 #Region "Page Event"
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        If (State IsNot Nothing) Then
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End If
     End Sub
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.MasterPage.MessageController.Clear_Hide()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        MasterPage.MessageController.Clear_Hide()
         Try
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-            Me.UpdateBreadCrum()
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            UpdateBreadCrum()
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
                 TranslateGridHeader(Grid)
                 PopulateDropdown()
             End If
-            Me.DisplayNewProgressBarOnClick(Me.btnLoadFile_WRITE, "LOADING")
-            Me.panelIntProgControl.Visible = False
+            DisplayNewProgressBarOnClick(btnLoadFile_WRITE, "LOADING")
+            panelIntProgControl.Visible = False
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
         InstallDisplayProgressBar()
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 #End Region
 
@@ -90,7 +90,7 @@ Public Class ReactivateUploadForm
 
         Using sr As New StreamReader(InputFile.PostedFile.InputStream, Encoding.Default)
             Dim line As String = sr.ReadLine()
-            While Not line Is Nothing
+            While line IsNot Nothing
                 If line.Trim <> String.Empty Then
                     fileLines.Add(line.Trim)
                 End If
@@ -118,7 +118,7 @@ Public Class ReactivateUploadForm
                     afterUpload()
                 Catch ex As Threading.ThreadAbortException
                 Catch ex As Exception
-                    HandleErrors(ex, Me.MasterPage.MessageController)
+                    HandleErrors(ex, MasterPage.MessageController)
                 End Try
             ElseIf strResult = "F" Then   'display the error message
                 Dim ErrList() As String = {"UPLOAD_FILE_PROGRESS"}
@@ -134,7 +134,7 @@ Public Class ReactivateUploadForm
 
     End Sub
 
-    Function SetParameters(ByVal intStatusId As Guid, ByVal baseController As String) As Interfaces.InterfaceBaseForm.Params
+    Function SetParameters(intStatusId As Guid, baseController As String) As Interfaces.InterfaceBaseForm.Params
         Dim params As New Interfaces.InterfaceBaseForm.Params
         With params
             .intStatusId = intStatusId
@@ -147,7 +147,7 @@ Public Class ReactivateUploadForm
         If State.searchDV Is Nothing Then
             State.searchDV = commonUpload.GetProcessingError(State.UploadType)
         End If
-        SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Nothing, Me.Grid, Me.State.PageIndex, False)
+        SetPageAndSelectedIndexFromGuid(State.searchDV, Nothing, Grid, State.PageIndex, False)
         Grid.DataSource = State.searchDV
         Grid.DataBind()
     End Sub
@@ -165,13 +165,13 @@ Public Class ReactivateUploadForm
         State.searchDV = Nothing
         PopulateGrid()
         panelResult.Visible = True
-        Me.MasterPage.MessageController.AddInformation(Message.MSG_INTERFACES_HAS_COMPLETED)
+        MasterPage.MessageController.AddInformation(Message.MSG_INTERFACES_HAS_COMPLETED)
     End Sub
 #End Region
 
 #Region "control event handler"
 
-    Private Sub btnLoadFile_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnLoadFile_WRITE.Click
+    Private Sub btnLoadFile_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnLoadFile_WRITE.Click
         Dim ErrList As New Collections.Generic.List(Of String)
 
         panelResult.Visible = False
@@ -199,44 +199,44 @@ Public Class ReactivateUploadForm
                 uploadFile()
             End If
         Catch ex As Exception
-            HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #Region "Grid Related"
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = Grid.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -251,14 +251,14 @@ Public Class ReactivateUploadForm
             Dim strCompanyGroupCode As String = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Code
 
             If String.IsNullOrEmpty(strEmailAddress) Then
-                Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
             Else
                 commonUpload.ExtractReport(strUploadType, strEmailAddress, strCompanyGroupCode, extractFile)
-                Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
             End If
 
         Catch ex As Exception
-            HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 

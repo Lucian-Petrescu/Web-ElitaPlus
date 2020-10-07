@@ -316,20 +316,20 @@ Namespace SpecializedServices.GW
         <DataMember(Name:="Items")>
         Public Property Items As IEnumerable(Of CertificateItemInfo)
 
-        Friend Sub Populate(ByVal pCertificate As Certificate,
-                            ByVal pDealer As Dealer,
-                            ByVal pProduct As Product,
-                            ByVal pcompany As Company,
-                            ByVal pAddress As Address,
-                            ByVal pCountry As Country,
-                            ByVal pContract As Contract,
-                            ByVal pCompanyGroup As CompanyGroup,
-                            ByVal pEquipmentManager As EquipmentManager,
-                            ByVal pCommonManager As ICommonManager,
-                            ByVal pClaimManager As IClaimManager,
-                            ByVal pCountryManager As ICountryManager,
-                            ByVal pCertificateManager As ICertificateManager,
-                            ByVal pLanguage As String,
+        Friend Sub Populate(pCertificate As Certificate,
+                            pDealer As Dealer,
+                            pProduct As Product,
+                            pcompany As Company,
+                            pAddress As Address,
+                            pCountry As Country,
+                            pContract As Contract,
+                            pCompanyGroup As CompanyGroup,
+                            pEquipmentManager As EquipmentManager,
+                            pCommonManager As ICommonManager,
+                            pClaimManager As IClaimManager,
+                            pCountryManager As ICountryManager,
+                            pCertificateManager As ICertificateManager,
+                            pLanguage As String,
                             Optional ByVal pCurrency As Currency = Nothing)
             With Me
 
@@ -475,10 +475,10 @@ Namespace SpecializedServices.GW
 
             End With
 
-            Me.Items = New List(Of CertificateItemInfo)()
+            Items = New List(Of CertificateItemInfo)()
 
             For Each ci As CertificateItem In pCertificate.Item
-                DirectCast(Me.Items, IList(Of CertificateItemInfo)).Add(New CertificateItemInfo(ci, pCommonManager, pCompanyGroup, pEquipmentManager, pProduct, pLanguage))
+                DirectCast(Items, IList(Of CertificateItemInfo)).Add(New CertificateItemInfo(ci, pCommonManager, pCompanyGroup, pEquipmentManager, pProduct, pLanguage))
             Next
 
 

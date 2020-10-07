@@ -29,7 +29,7 @@ Namespace Tables
 
         Public ReadOnly Property IsEditing() As Boolean
             Get
-                IsEditing = (Me.Grid.EditItemIndex > NO_ROW_SELECTED_INDEX)
+                IsEditing = (Grid.EditItemIndex > NO_ROW_SELECTED_INDEX)
             End Get
         End Property
 
@@ -41,7 +41,7 @@ Namespace Tables
                     RepairCodeId = moRepairCode.Id.ToString
                 Else
                     ' For updating, deleting
-                    Dim oRepairCodeId As Guid = Me.GetGuidFromString(RepairCodeId)
+                    Dim oRepairCodeId As Guid = GetGuidFromString(RepairCodeId)
                     moRepairCode = New RepairCode(oRepairCodeId)
                 End If
 
@@ -51,23 +51,23 @@ Namespace Tables
 
         Private Property IsNewRepairCode() As Boolean
             Get
-                Return Me.State.IsNew
+                Return State.IsNew
             End Get
-            Set(ByVal Value As Boolean)
-                Me.State.IsNew = Value
+            Set(Value As Boolean)
+                State.IsNew = Value
             End Set
         End Property
 
         Private Property RepairCodeId() As String
             Get
-                If Grid.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX Then
-                    moRepairCodeId = Me.GetSelectedGridText(Grid, ID_COL_IDX)
+                If Grid.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                    moRepairCodeId = GetSelectedGridText(Grid, ID_COL_IDX)
                 End If
                 Return moRepairCodeId
             End Get
-            Set(ByVal Value As String)
-                If Grid.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX Then
-                    Me.SetSelectedGridText(Grid, ID_COL_IDX, Value)
+            Set(Value As String)
+                If Grid.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                    SetSelectedGridText(Grid, ID_COL_IDX, Value)
                 End If
                 moRepairCodeId = Value
             End Set
@@ -123,7 +123,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -165,21 +165,21 @@ Namespace Tables
 
 #Region "Button Click Handlers"
 
-        Private Sub SearchButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SearchButton.Click
+        Private Sub SearchButton_Click(sender As System.Object, e As System.EventArgs) Handles SearchButton.Click
             Try
-                Me.State.PageIndex = 0
-                Me.State.Id = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.searchDV = Nothing
+                State.PageIndex = 0
+                State.Id = Guid.Empty
+                State.IsGridVisible = True
+                State.searchDV = Nothing
                 PopulateGrid()
-                Me.State.PageIndex = Grid.CurrentPageIndex
+                State.PageIndex = Grid.CurrentPageIndex
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
-        Private Sub ClearButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearButton.Click
+        Private Sub ClearButton_Click(sender As System.Object, e As System.EventArgs) Handles ClearButton.Click
 
             ClearSearchCriteria()
 
@@ -192,69 +192,69 @@ Namespace Tables
                 SearchCodeTextBox.Text = String.Empty
 
                 'Update Page State
-                With Me.State
+                With State
                     .DescriptionMask = SearchDescriptionTextBox.Text
                     .CodeMask = SearchCodeTextBox.Text
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
-        Private Sub NewButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NewButton_WRITE.Click
+        Private Sub NewButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles NewButton_WRITE.Click
 
             Try
                 IsNewRepairCode = True
-                Me.State.IsEditMode = True
-                Me.State.IsGridVisible = True
-                Me.State.AddingNewRow = True
+                State.IsEditMode = True
+                State.IsGridVisible = True
+                State.AddingNewRow = True
                 AddNew()
                 SetButtonsState()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
-        Private Sub SaveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+        Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
 
             Try
                 PopulateBOFromForm()
-                If (Me.State.myBO.IsDirty) Then
-                    Me.State.myBO.Save()
-                    Me.State.IsAfterSave = True
-                    Me.State.AddingNewRow = False
-                    Me.AddInfoMsg(Me.MSG_RECORD_SAVED_OK)
-                    Me.State.searchDV = Nothing
-                    Me.ReturnFromEditing()
+                If (State.myBO.IsDirty) Then
+                    State.myBO.Save()
+                    State.IsAfterSave = True
+                    State.AddingNewRow = False
+                    AddInfoMsg(MSG_RECORD_SAVED_OK)
+                    State.searchDV = Nothing
+                    ReturnFromEditing()
                 Else
-                    Me.AddInfoMsg(Me.MSG_RECORD_NOT_SAVED)
-                    Me.ReturnFromEditing()
+                    AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                    ReturnFromEditing()
                 End If
                 If IsNewRepairCode = True Then
                     IsNewRepairCode = False
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
-        Private Sub CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CancelButton.Click
+        Private Sub CancelButton_Click(sender As System.Object, e As System.EventArgs) Handles CancelButton.Click
 
             Try
                 IsNewRepairCode = True
-                Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
-                Me.State.Canceling = True
-                If (Me.State.AddingNewRow) Then
-                    Me.State.AddingNewRow = False
-                    Me.State.searchDV = Nothing
+                Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                State.Canceling = True
+                If (State.AddingNewRow) Then
+                    State.AddingNewRow = False
+                    State.searchDV = Nothing
                 End If
                 ReturnFromEditing()
                 IsNewRepairCode = False
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
@@ -263,76 +263,76 @@ Namespace Tables
 
 #Region "Private Methods"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
             'Put user code to initialize the page here
             Try
                 ErrController.Clear_Hide()
-                Me.SetStateProperties()
+                SetStateProperties()
                 If Not Page.IsPostBack Then
-                    Me.SetDefaultButton(Me.SearchDescriptionTextBox, Me.SearchButton)
-                    Me.SetDefaultButton(Me.SearchCodeTextBox, Me.SearchButton)
+                    SetDefaultButton(SearchDescriptionTextBox, SearchButton)
+                    SetDefaultButton(SearchCodeTextBox, SearchButton)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SetGridItemStyleColor(Me.Grid)
+                    SetGridItemStyleColor(Grid)
                     IsNewRepairCode = False
-                    Me.State.PageIndex = 0
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.myBO = New RepairCode
+                    State.PageIndex = 0
+                    If State.MyBO Is Nothing Then
+                        State.myBO = New RepairCode
                     End If
                     SetButtonsState()
                 End If
                 BindBoPropertiesToGridHeaders()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
-            Me.ShowMissingTranslations(ErrController)
+            ShowMissingTranslations(ErrController)
         End Sub
 
         Private Sub PopulateGrid(Optional ByVal oAction As String = ACTION_NONE)
 
-            If (Me.State.searchDV Is Nothing) Then
-                Me.State.searchDV = GetGridDataView()
+            If (State.searchDV Is Nothing) Then
+                State.searchDV = GetGridDataView()
                 'Ticket # 748479 - Search grids in Tables tab should not show pop-up message when number of retrieved record is over 1,000
                 'If Not IsNewRepairCode Then Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
             End If
 
-            Me.State.searchDV.Sort = Me.State.SortExpression
-            If (Me.State.IsAfterSave) Then
-                Me.State.IsAfterSave = False
-                Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.Grid, Me.State.PageIndex)
-            ElseIf (Me.State.IsEditMode) Then
-                Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+            State.searchDV.Sort = State.SortExpression
+            If (State.IsAfterSave) Then
+                State.IsAfterSave = False
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, State.PageIndex)
+            ElseIf (State.IsEditMode) Then
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, State.PageIndex, State.IsEditMode)
             Else
                 'In a Delete scenario...
-                Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+                SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, State.PageIndex, State.IsEditMode)
             End If
 
-            Me.Grid.AutoGenerateColumns = False
-            Me.Grid.Columns(Me.DESCRIPTION_COL_IDX).SortExpression = RepairCode.RepairCodeSearchDV.COL_DESCRIPTION
-            Me.Grid.Columns(Me.CODE_COL_IDX).SortExpression = RepairCode.RepairCodeSearchDV.COL_CODE
+            Grid.AutoGenerateColumns = False
+            Grid.Columns(DESCRIPTION_COL_IDX).SortExpression = RepairCode.RepairCodeSearchDV.COL_DESCRIPTION
+            Grid.Columns(CODE_COL_IDX).SortExpression = RepairCode.RepairCodeSearchDV.COL_CODE
 
             'If oAction <> Me.ACTION_EDIT Then
-            Me.SortAndBindGrid()
+            SortAndBindGrid()
 
         End Sub
 
         Private Sub SortAndBindGrid()
-            Me.State.PageIndex = Me.Grid.CurrentPageIndex
-            Me.Grid.DataSource = Me.State.searchDV
-            HighLightSortColumn(Grid, Me.State.SortExpression)
-            Me.Grid.DataBind()
+            State.PageIndex = Grid.CurrentPageIndex
+            Grid.DataSource = State.searchDV
+            HighLightSortColumn(Grid, State.SortExpression)
+            Grid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.Grid.Visible Then
-                If (Me.State.AddingNewRow) Then
-                    Me.lblRecordCount.Text = (Me.State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                If (State.AddingNewRow) Then
+                    lblRecordCount.Text = (State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 Else
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
@@ -348,48 +348,48 @@ Namespace Tables
 
         Private Sub SetStateProperties()
 
-            Me.State.DescriptionMask = SearchDescriptionTextBox.Text
-            Me.State.CodeMask = SearchCodeTextBox.Text
+            State.DescriptionMask = SearchDescriptionTextBox.Text
+            State.CodeMask = SearchCodeTextBox.Text
             'Me.State.CompanyIds = ElitaPlusIdentity.Current.ActiveUser.Companies
 
         End Sub
 
         Private Sub AddNew()
 
-            Me.State.searchDV = GetGridDataView()
+            State.searchDV = GetGridDataView()
 
-            Me.State.myBO = New RepairCode
-            Me.State.Id = Me.State.myBO.Id
+            State.myBO = New RepairCode
+            State.Id = State.myBO.Id
 
-            Me.State.searchDV = Me.State.myBO.GetNewDataViewRow(Me.State.searchDV, Me.State.Id)
+            State.searchDV = State.myBO.GetNewDataViewRow(State.searchDV, State.Id)
 
-            Grid.DataSource = Me.State.searchDV
-            SetGridControls(Me.Grid, False)
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+            Grid.DataSource = State.searchDV
+            SetGridControls(Grid, False)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, State.PageIndex, State.IsEditMode)
 
-            Me.Grid.AutoGenerateColumns = False
-            Me.Grid.Columns(Me.DESCRIPTION_COL_IDX).SortExpression = RepairCode.RepairCodeSearchDV.COL_DESCRIPTION
-            Me.Grid.Columns(Me.CODE_COL_IDX).SortExpression = RepairCode.RepairCodeSearchDV.COL_CODE
+            Grid.AutoGenerateColumns = False
+            Grid.Columns(DESCRIPTION_COL_IDX).SortExpression = RepairCode.RepairCodeSearchDV.COL_DESCRIPTION
+            Grid.Columns(CODE_COL_IDX).SortExpression = RepairCode.RepairCodeSearchDV.COL_CODE
 
-            Me.SortAndBindGrid()
+            SortAndBindGrid()
 
             'Me.CreateCompanyDropDownOrLabel()
 
             'Set focus on the Code TextBox for the EditItemIndex row
-            Me.SetFocusOnEditableFieldInGrid(Me.Grid, Me.CODE_COL_IDX, Me.Grid.EditItemIndex)
+            SetFocusOnEditableFieldInGrid(Grid, CODE_COL_IDX, Grid.EditItemIndex)
 
         End Sub
 
         Private Sub PopulateBOFromForm()
 
             Try
-                With Me.State.myBO
-                    .Description = CType(Me.Grid.Items(Me.Grid.EditItemIndex).Cells(Me.DESCRIPTION_COL_IDX).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text
-                    .ShortDesc = CType(Me.Grid.Items(Me.Grid.EditItemIndex).Cells(Me.CODE_COL_IDX).FindControl(CODE_IN_GRID_CONTROL_NAME), TextBox).Text
+                With State.myBO
+                    .Description = CType(Grid.Items(Grid.EditItemIndex).Cells(DESCRIPTION_COL_IDX).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text
+                    .ShortDesc = CType(Grid.Items(Grid.EditItemIndex).Cells(CODE_COL_IDX).FindControl(CODE_IN_GRID_CONTROL_NAME), TextBox).Text
                     .CompanygroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id()
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
@@ -398,30 +398,30 @@ Namespace Tables
 
             Grid.EditItemIndex = NO_ROW_SELECTED_INDEX
 
-            If Me.Grid.PageCount = 0 Then
+            If Grid.PageCount = 0 Then
                 'if returning to the "1st time in" screen
                 ControlMgr.SetVisibleControl(Me, Grid, False)
             Else
                 ControlMgr.SetVisibleControl(Me, Grid, True)
             End If
             SetGridControls(Grid, True)
-            Me.State.IsEditMode = False
-            Me.PopulateGrid()
-            Me.State.PageIndex = Grid.CurrentPageIndex
+            State.IsEditMode = False
+            PopulateGrid()
+            State.PageIndex = Grid.CurrentPageIndex
             SetButtonsState()
 
         End Sub
 
         Private Sub SetButtonsState()
 
-            If (Me.State.IsEditMode) Then
+            If (State.IsEditMode) Then
                 ControlMgr.SetVisibleControl(Me, SaveButton_WRITE, True)
                 ControlMgr.SetVisibleControl(Me, CancelButton, True)
                 ControlMgr.SetVisibleControl(Me, NewButton_WRITE, False)
                 ControlMgr.SetEnableControl(Me, SearchButton, False)
                 ControlMgr.SetEnableControl(Me, ClearButton, False)
-                Me.MenuEnabled = False
-                If (Me.cboPageSize.Visible) Then
+                MenuEnabled = False
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, False)
                 End If
             Else
@@ -430,8 +430,8 @@ Namespace Tables
                 ControlMgr.SetVisibleControl(Me, NewButton_WRITE, True)
                 ControlMgr.SetEnableControl(Me, SearchButton, True)
                 ControlMgr.SetEnableControl(Me, ClearButton, True)
-                Me.MenuEnabled = True
-                If (Me.cboPageSize.Visible) Then
+                MenuEnabled = True
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, True)
                 End If
             End If
@@ -443,7 +443,7 @@ Namespace Tables
 #Region " Datagrid Related "
 
         'The Binding Logic is here
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
@@ -452,49 +452,49 @@ Namespace Tables
                     itemType = ListItemType.AlternatingItem OrElse _
                     itemType = ListItemType.SelectedItem) Then
 
-                    e.Item.Cells(Me.ID_COL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(RepairCode.RepairCodeSearchDV.COL_REPAIR_CODE_ID), Byte()))
-                    e.Item.Cells(Me.DESCRIPTION_COL_IDX).Text = dvRow(RepairCode.RepairCodeSearchDV.COL_DESCRIPTION).ToString
-                    e.Item.Cells(Me.CODE_COL_IDX).Text = dvRow(RepairCode.RepairCodeSearchDV.COL_CODE).ToString
+                    e.Item.Cells(ID_COL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(RepairCode.RepairCodeSearchDV.COL_REPAIR_CODE_ID), Byte()))
+                    e.Item.Cells(DESCRIPTION_COL_IDX).Text = dvRow(RepairCode.RepairCodeSearchDV.COL_DESCRIPTION).ToString
+                    e.Item.Cells(CODE_COL_IDX).Text = dvRow(RepairCode.RepairCodeSearchDV.COL_CODE).ToString
                 ElseIf (itemType = ListItemType.EditItem) Then
-                    e.Item.Cells(Me.ID_COL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(RepairCode.RepairCodeSearchDV.COL_REPAIR_CODE_ID), Byte()))
-                    CType(e.Item.Cells(Me.DESCRIPTION_COL_IDX).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text = dvRow(RepairCode.RepairCodeSearchDV.COL_DESCRIPTION).ToString
-                    CType(e.Item.Cells(Me.CODE_COL_IDX).FindControl(CODE_IN_GRID_CONTROL_NAME), TextBox).Text = dvRow(RepairCode.RepairCodeSearchDV.COL_CODE).ToString
+                    e.Item.Cells(ID_COL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(RepairCode.RepairCodeSearchDV.COL_REPAIR_CODE_ID), Byte()))
+                    CType(e.Item.Cells(DESCRIPTION_COL_IDX).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text = dvRow(RepairCode.RepairCodeSearchDV.COL_DESCRIPTION).ToString
+                    CType(e.Item.Cells(CODE_COL_IDX).FindControl(CODE_IN_GRID_CONTROL_NAME), TextBox).Text = dvRow(RepairCode.RepairCodeSearchDV.COL_CODE).ToString
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
                 'To handle the requirement of always going to the FIRST page on the Grid whenever the user switches the sorting criterion
                 'Set the Me.State.selectedClaimId = Guid.Empty and set Me.State.PageIndex = 0
-                Me.State.Id = Guid.Empty
-                Me.State.PageIndex = 0
+                State.Id = Guid.Empty
+                State.PageIndex = 0
 
-                Me.PopulateGrid()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.PopulateGrid()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
@@ -513,111 +513,111 @@ Namespace Tables
 
         'End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
 
             Try
-                If (Not (Me.State.IsEditMode)) Then
-                    Me.State.PageIndex = e.NewPageIndex
-                    Me.Grid.CurrentPageIndex = Me.State.PageIndex
-                    Me.PopulateGrid()
-                    Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+                If (Not (State.IsEditMode)) Then
+                    State.PageIndex = e.NewPageIndex
+                    Grid.CurrentPageIndex = State.PageIndex
+                    PopulateGrid()
+                    Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
-        Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
 
             Try
                 Dim index As Integer = e.Item.ItemIndex
 
-                If (e.CommandName = Me.EDIT_COMMAND) Then
+                If (e.CommandName = EDIT_COMMAND) Then
                     'Do the Edit here
 
                     'Set the IsEditMode flag to TRUE
-                    Me.State.IsEditMode = True
+                    State.IsEditMode = True
 
-                    Me.State.Id = New Guid(Me.Grid.Items(e.Item.ItemIndex).Cells(Me.ID_COL_IDX).Text)
+                    State.Id = New Guid(Grid.Items(e.Item.ItemIndex).Cells(ID_COL_IDX).Text)
 
-                    Me.State.myBO = New RepairCode(Me.State.Id)
+                    State.myBO = New RepairCode(State.Id)
 
-                    Me.PopulateGrid(Me.ACTION_EDIT)
+                    PopulateGrid(ACTION_EDIT)
 
                     'Me.CreateCompanyDropDownOrLabel()
 
-                    Me.State.PageIndex = Grid.CurrentPageIndex
+                    State.PageIndex = Grid.CurrentPageIndex
 
                     'Disable all Edit and Delete icon buttons on the Grid
-                    SetGridControls(Me.Grid, False)
+                    SetGridControls(Grid, False)
 
                     'Set focus on the Code TextBox for the EditItemIndex row
-                    Me.SetFocusOnEditableFieldInGrid(Me.Grid, Me.CODE_COL_IDX, index)
+                    SetFocusOnEditableFieldInGrid(Grid, CODE_COL_IDX, index)
 
-                    Me.SetButtonsState()
+                    SetButtonsState()
 
-                ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+                ElseIf (e.CommandName = DELETE_COMMAND) Then
                     'Do the delete here
 
                     'Clear the SelectedItemStyle to remove the highlight from the previously saved row
-                    Grid.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
+                    Grid.SelectedIndex = NO_ROW_SELECTED_INDEX
 
                     'Save the Id in the Session
-                    Me.State.Id = New Guid(Me.Grid.Items(e.Item.ItemIndex).Cells(Me.ID_COL_IDX).Text)
-                    Me.State.myBO = New RepairCode(Me.State.Id)
+                    State.Id = New Guid(Grid.Items(e.Item.ItemIndex).Cells(ID_COL_IDX).Text)
+                    State.myBO = New RepairCode(State.Id)
 
                     Try
-                        Me.State.myBO.Delete()
+                        State.myBO.Delete()
                         'Call the Save() method in the Business Object here
-                        Me.State.myBO.Save()
+                        State.myBO.Save()
                     Catch ex As Exception
-                        Me.State.myBO.RejectChanges()
+                        State.myBO.RejectChanges()
                         Throw ex
                     End Try
 
-                    Me.State.PageIndex = Grid.CurrentPageIndex
+                    State.PageIndex = Grid.CurrentPageIndex
 
                     'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-                    Me.State.IsAfterSave = True
+                    State.IsAfterSave = True
 
-                    Me.State.searchDV = Nothing
+                    State.searchDV = Nothing
                     PopulateGrid()
-                    Me.State.PageIndex = Grid.CurrentPageIndex
+                    State.PageIndex = Grid.CurrentPageIndex
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
-        Protected Sub ItemBound(ByVal source As Object, ByVal e As DataGridItemEventArgs) Handles Grid.ItemDataBound
+        Protected Sub ItemBound(source As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
             Try
                 BaseItemBound(source, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Protected Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Protected Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
         Protected Sub BindBoPropertiesToGridHeaders()
-            Me.BindBOPropertyToGridHeader(Me.State.myBO, "Description", Me.Grid.Columns(Me.DESCRIPTION_COL_IDX))
-            Me.BindBOPropertyToGridHeader(Me.State.myBO, "ShortDesc", Me.Grid.Columns(Me.CODE_COL_IDX))
-            Me.ClearGridHeadersAndLabelsErrSign()
+            BindBOPropertyToGridHeader(State.myBO, "Description", Grid.Columns(DESCRIPTION_COL_IDX))
+            BindBOPropertyToGridHeader(State.myBO, "ShortDesc", Grid.Columns(CODE_COL_IDX))
+            ClearGridHeadersAndLabelsErrSign()
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As DataGrid, ByVal cellPosition As Integer, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As DataGrid, cellPosition As Integer, itemIndex As Integer)
             'Set focus on the specified control on the EditItemIndex row for the grid
             Dim ctrlCode As TextBox = CType(grid.Items(itemIndex).Cells(cellPosition).FindControl(CODE_IN_GRID_CONTROL_NAME), TextBox)
             SetFocus(ctrlCode)
             Dim ctrlDescription As TextBox = CType(grid.Items(itemIndex).Cells(cellPosition + 1).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox)
-            ctrlDescription.Style("width") = Me.DESCRIPTION_CELL_STYLE_WIDTH
+            ctrlDescription.Style("width") = DESCRIPTION_CELL_STYLE_WIDTH
         End Sub
 
-        Private Sub SetFieldWidthStyle(ByVal grid As DataGrid, ByVal cellPosition As Integer, ByVal itemIndex As Integer, ByVal width As String)
+        Private Sub SetFieldWidthStyle(grid As DataGrid, cellPosition As Integer, itemIndex As Integer, width As String)
 
             Dim ctrl As TextBox = CType(grid.Items(itemIndex).Cells(cellPosition).Controls.Item(0), TextBox)
             ctrl.Style("width") = width

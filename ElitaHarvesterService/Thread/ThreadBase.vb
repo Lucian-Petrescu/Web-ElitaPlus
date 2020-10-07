@@ -16,27 +16,27 @@ Public MustInherit Class ThreadBase
         End Get
     End Property
 
-    Public Sub New(ByVal config As IThreadConfig)
+    Public Sub New(config As IThreadConfig)
         _config = config
         ''TODO: Handle Seconds to Time Span Conversion.... chances of Overflow
-        Me.SleepTime = New TimeSpan(0, 0, config.SleepTimeSeconds)
+        SleepTime = New TimeSpan(0, 0, config.SleepTimeSeconds)
     End Sub
 
     Protected Sub Sleep()
-        Thread.Sleep(Me.SleepTime)
+        Thread.Sleep(SleepTime)
     End Sub
 
     Public Property SleepTime() As TimeSpan
         Get
             Return _sleepTime
         End Get
-        Private Set(ByVal value As TimeSpan)
+        Private Set(value As TimeSpan)
             _sleepTime = value
         End Set
     End Property
 
     <Obsolete()> _
-    Public Sub New(ByVal timespan As Nullable(Of TimeSpan))
+    Public Sub New(timespan As Nullable(Of TimeSpan))
         _sleepTime = timespan.Value
     End Sub
 
@@ -64,10 +64,10 @@ Public MustInherit Class ThreadBase
         End Get
     End Property
 
-    Public Sub ThreadStart(ByVal runAtBackground As Boolean)
+    Public Sub ThreadStart(runAtBackground As Boolean)
         Logger.AddDebugLogEnter()
         _threadObject = New Thread(New ThreadStart(AddressOf MethodToInvoke))
-        _threadObject.Name = Me.ThreadName
+        _threadObject.Name = ThreadName
         _threadObject.IsBackground = runAtBackground
         _threadObject.Start()
         Logger.AddDebugLogExit()
@@ -76,7 +76,7 @@ Public MustInherit Class ThreadBase
     Public Sub ThreadStop()
         _stopped = True
         ' Increase Priority of Thread so that CPU will try to finish thread early and adhering to grace time limits
-        Me.ThreadObject.Priority = ThreadPriority.AboveNormal
+        ThreadObject.Priority = ThreadPriority.AboveNormal
         Thread.CurrentThread.Priority = ThreadPriority.BelowNormal
         Thread.Sleep(30) 'Read value from Config
         If (ThreadObject.IsAlive) Then

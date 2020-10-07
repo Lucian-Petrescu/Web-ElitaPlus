@@ -16,7 +16,7 @@ Public Class WorkQueueForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -111,77 +111,77 @@ Public Class WorkQueueForm
     Private listDisabledTabs As New Collections.Generic.List(Of Integer)
     Private SelectedTabIndex As Integer = 0
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingParameters As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingParameters As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                Me.State.WorkQueueReturnObject = CType(CallingParameters, WorkQueueListForm.WorkQueueReturnType)
-                If (Not Me.State.WorkQueueReturnObject.WorkQueueId.Equals(Guid.Empty)) Then
-                    Me.State.MyBO = New WorkQueue(Me.State.WorkQueueReturnObject.WorkQueueId)
+            If Me.CallingParameters IsNot Nothing Then
+                State.WorkQueueReturnObject = CType(CallingParameters, WorkQueueListForm.WorkQueueReturnType)
+                If (Not State.WorkQueueReturnObject.WorkQueueId.Equals(Guid.Empty)) Then
+                    State.MyBO = New WorkQueue(State.WorkQueueReturnObject.WorkQueueId)
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
-            Me.MasterPage.MessageController.Clear()
-            If (Not Me.IsPostBack) Then
+            MasterPage.MessageController.Clear()
+            If (Not IsPostBack) Then
                 ' Popup Configuration for Delete Message Box
                 lblCancelMessage.Text = TranslationBase.TranslateLabelOrMessage("MSG_CONFIRM_PROMPT")
                 btnModalCancelYes.Attributes.Add("onclick", "YesButtonClick();")
 
                 ' Date Calendars
-                Me.AddCalendarwithTime_New(btnEffectiveDate, moEffectiveDate)
-                Me.AddCalendarwithTime_New(btnExpirationDate, moExpirationDate)
+                AddCalendarwithTime_New(btnEffectiveDate, moEffectiveDate)
+                AddCalendarwithTime_New(btnExpirationDate, moExpirationDate)
 
-                If (Me.State.MyBO Is Nothing) Then
-                    Me.State.MyBO = New WorkQueue()
+                If (State.MyBO Is Nothing) Then
+                    State.MyBO = New WorkQueue()
                 End If
 
                 Dim extendedUser As Auth.ExtendedUser
-                Me.State.UserHasPermissions = True
+                State.UserHasPermissions = True
                 extendedUser = ElitaPlusIdentity.Current.ActiveUser.ExtendedUser
                 If (Not extendedUser.HasPermission(New Auth.Permission With {.ResourceType = ServiceHelper.RESTYP_WORKQUEUESYSTEM, .Resource = ServiceHelper.RES_WORKQUEUESYSTEM, .Action = ServiceHelper.PA_WQS_CREATE_QUEUE})) Then
-                    Me.State.UserHasPermissions = False
+                    State.UserHasPermissions = False
                 End If
-                If (Me.State.UserHasPermissions AndAlso Not extendedUser.HasPermission(New Auth.Permission With {.ResourceType = ServiceHelper.RESTYP_WORKQUEUESYSTEM, .Resource = ServiceHelper.RES_WORKQUEUESYSTEM, .Action = ServiceHelper.PA_WQS_MANAGE_ITEM_STATUS})) Then
-                    Me.State.UserHasPermissions = False
+                If (State.UserHasPermissions AndAlso Not extendedUser.HasPermission(New Auth.Permission With {.ResourceType = ServiceHelper.RESTYP_WORKQUEUESYSTEM, .Resource = ServiceHelper.RES_WORKQUEUESYSTEM, .Action = ServiceHelper.PA_WQS_MANAGE_ITEM_STATUS})) Then
+                    State.UserHasPermissions = False
                 End If
 
                 ' Translate Grid Headers
-                TranslateGridHeader(Me.GridViewReDirectReasons)
-                TranslateGridHeader(Me.GridViewSchedules)
-                TranslateGridHeader(Me.GridViewReQueueReasons)
+                TranslateGridHeader(GridViewReDirectReasons)
+                TranslateGridHeader(GridViewSchedules)
+                TranslateGridHeader(GridViewReQueueReasons)
 
                 ' Populate Bread Crum
                 UpdateBreadCrum()
 
                 ' Populate Drop Downs
                 PopulateDropdowns()
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                PopulateFormFromBOs()
+                EnableDisableFields()
             Else
-                If (Me.State.MyBO.IsNew) Then
-                    Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "TimeZoneCode", GetSelectedValue(Me.moTimeZoneDropDown))
-                    Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "Effective", Me.moEffectiveDate)
-                    Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "Expiration", Me.moExpirationDate)
+                If (State.MyBO.IsNew) Then
+                    PopulateBOProperty(State.MyBO.WorkQueue, "TimeZoneCode", GetSelectedValue(moTimeZoneDropDown))
+                    PopulateBOProperty(State.MyBO.WorkQueue, "Effective", moEffectiveDate)
+                    PopulateBOProperty(State.MyBO.WorkQueue, "Expiration", moExpirationDate)
                 End If
                 BindBoPropertiesToGridHeaders()
                 SelectedTabIndex = hdnSelectedTab.Value
             End If
             BindBoPropertiesToLabels()
             CheckIfComingFromSaveConfirm()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
     Private Sub WorkQueueForm_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
@@ -200,104 +200,104 @@ Public Class WorkQueueForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFormFrom()
-            Me.State.WorkQueueReturnObject.WorkQueueId = Me.State.MyBO.WorkQueue.Id
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            PopulateBOsFormFrom()
+            State.WorkQueueReturnObject.WorkQueueId = State.MyBO.WorkQueue.Id
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New PageReturnType(Of WorkQueueListForm.WorkQueueReturnType)(ElitaPlusPage.DetailPageCommand.Back, Me.State.WorkQueueReturnObject, Me.State.HasDataChanged))
+                ReturnToCallingPage(New PageReturnType(Of WorkQueueListForm.WorkQueueReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.WorkQueueReturnObject, State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+            HandleErrors(ex, MasterPage.MessageController)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = MasterPage.MessageController.Text
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.State.MyBO.Save()
-                Me.State.MyBO = New WorkQueue(Me.State.MyBO.Id)
-                Me.State.HasDataChanged = True
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                State.MyBO.Save()
+                State.MyBO = New WorkQueue(State.MyBO.Id)
+                State.HasDataChanged = True
+                PopulateFormFromBOs()
+                EnableDisableFields()
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
             Else
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New WorkQueue(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBOId.Equals(Guid.Empty) Then
+                State.MyBO = New WorkQueue(State.MyBO.Id)
+            ElseIf Not State.ScreenSnapShotBOId.Equals(Guid.Empty) Then
                 'It was a new with copy
-                Me.State.MyBO = New WorkQueue(Me.State.ScreenSnapShotBOId)
+                State.MyBO = New WorkQueue(State.ScreenSnapShotBOId)
             Else
-                Me.State.MyBO = New WorkQueue()
+                State.MyBO = New WorkQueue()
             End If
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub DoDelete()
-        Me.State.MyBO.Delete()
-        Me.State.MyBO.Save()
-        Me.State.HasDataChanged = True
-        Me.State.WorkQueueReturnObject.WorkQueueId = Me.State.MyBO.WorkQueue.Id
-        Me.ReturnToCallingPage(New PageReturnType(Of WorkQueueListForm.WorkQueueReturnType)(ElitaPlusPage.DetailPageCommand.Delete, Me.State.WorkQueueReturnObject, Me.State.HasDataChanged))
+        State.MyBO.Delete()
+        State.MyBO.Save()
+        State.HasDataChanged = True
+        State.WorkQueueReturnObject.WorkQueueId = State.MyBO.WorkQueue.Id
+        ReturnToCallingPage(New PageReturnType(Of WorkQueueListForm.WorkQueueReturnType)(ElitaPlusPage.DetailPageCommand.Delete, State.WorkQueueReturnObject, State.HasDataChanged))
     End Sub
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+            DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.CreateNew()
+                CreateNew()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
-                Me.CreateNewWithCopy()
+                CreateNewWithCopy()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
@@ -305,40 +305,40 @@ Public Class WorkQueueForm
 #Region "Controlling Logic"
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Delete _
-                AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Expire Then
-                Me.State.MyBO.Save()
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Delete _
+                AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Expire Then
+                State.MyBO.Save()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New PageReturnType(Of WorkQueueListForm.WorkQueueReturnType)(ElitaPlusPage.DetailPageCommand.Back, Me.State.WorkQueueReturnObject, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New PageReturnType(Of WorkQueueListForm.WorkQueueReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.WorkQueueReturnObject, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNew()
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNewWithCopy()
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New PageReturnType(Of WorkQueueListForm.WorkQueueReturnType)(ElitaPlusPage.DetailPageCommand.Back, Me.State.WorkQueueReturnObject, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New PageReturnType(Of WorkQueueListForm.WorkQueueReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.WorkQueueReturnObject, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.Delete
                     DoDelete()
                 Case ElitaPlusPage.DetailPageCommand.Expire
-                    If (Me.State.IsScheduleAdding) Then
+                    If (State.IsScheduleAdding) Then
                         Try
-                            Me.State.MyScheduleChildBO.Validate()
+                            State.MyScheduleChildBO.Validate()
                         Catch ex As BOValidationException
                             Dim validationError As ValidationError() = ex.ValidationErrorList()
                             If (validationError.Length = 1 AndAlso validationError(0).Message = Assurant.ElitaPlus.Common.ErrorCodes.OVERLAPPING_SCHEDULE_ERR) Then
-                                For Each drv As DataRowView In Me.State.MyBO.GetScheduleSelectionView
-                                    Dim es As EntitySchedule = Me.State.MyBO.GetScheduleChild(New Guid(CType(drv(EntitySchedule.ScheduleSelectionView.COL_NAME_ENTITY_SCHEDULE_ID), Byte())))
-                                    If (Not es.Id.Equals(Me.State.MyScheduleChildBO.Id)) Then
-                                        If (Me.State.MyScheduleChildBO.Effective.Value > es.Effective.Value AndAlso Me.State.MyScheduleChildBO.Effective.Value < es.Expiration.Value) Then
+                                For Each drv As DataRowView In State.MyBO.GetScheduleSelectionView
+                                    Dim es As EntitySchedule = State.MyBO.GetScheduleChild(New Guid(CType(drv(EntitySchedule.ScheduleSelectionView.COL_NAME_ENTITY_SCHEDULE_ID), Byte())))
+                                    If (Not es.Id.Equals(State.MyScheduleChildBO.Id)) Then
+                                        If (State.MyScheduleChildBO.Effective.Value > es.Effective.Value AndAlso State.MyScheduleChildBO.Effective.Value < es.Expiration.Value) Then
                                             es.BeginEdit()
-                                            es.Expiration = Me.State.MyScheduleChildBO.Effective.Value.AddSeconds(-1)
+                                            es.Expiration = State.MyScheduleChildBO.Effective.Value.AddSeconds(-1)
                                             es.EndEdit()
-                                            Me.State.MyScheduleChildBO.Validate()
+                                            State.MyScheduleChildBO.Validate()
                                             Exit For
                                         End If
                                     End If
@@ -347,11 +347,11 @@ Public Class WorkQueueForm
                                 Throw
                             End If
                         End Try
-                        Me.State.MyScheduleChildBO.EndEdit()
-                        Me.State.IsScheduleAdding = False
-                        Me.State.IsScheduleEditing = False
-                        Me.State.MyScheduleChildBO = Nothing
-                        Me.EnableDisableFields()
+                        State.MyScheduleChildBO.EndEdit()
+                        State.IsScheduleAdding = False
+                        State.IsScheduleEditing = False
+                        State.MyScheduleChildBO = Nothing
+                        EnableDisableFields()
                         PopulateScheduleGrid()
                     End If
 
@@ -383,16 +383,16 @@ Public Class WorkQueueForm
                     '            Me.PopulateAttributeValueDetailGrid()
                     '            Me.PopulateRelatedEquipmentDetailGrid()
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New PageReturnType(Of WorkQueueListForm.WorkQueueReturnType)(ElitaPlusPage.DetailPageCommand.Back, Me.State.WorkQueueReturnObject, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New PageReturnType(Of WorkQueueListForm.WorkQueueReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.WorkQueueReturnObject, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                    MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
 
                     '        Case ElitaPlusPage.DetailPageCommand.Accept
                     '            If (Me.State.IsCommentEditing) Then
@@ -432,15 +432,15 @@ Public Class WorkQueueForm
         End If
 
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGESUBTAB) & ElitaBase.Sperator
-        Me.MasterPage.BreadCrum = Me.MasterPage.BreadCrum & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGESUBTAB) & ElitaBase.Sperator
+        MasterPage.BreadCrum = MasterPage.BreadCrum & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.UsePageTabTitleInBreadCrum = False
     End Sub
 
     Private Sub PopulateDropdowns()
@@ -462,54 +462,54 @@ Public Class WorkQueueForm
         actions = (From llItem As DataRow In LookupListNew.GetWorkQueueAction(languageId).ToTable().AsEnumerable() _
             Select New ListItem(llItem.Field(Of String)(LookupListNew.COL_DESCRIPTION_NAME), llItem.Field(Of String)(LookupListNew.COL_CODE_NAME))).ToArray()
 
-        Me.BindListControlToArray(moCompanyDropDown, companies)
-        Me.BindListControlToArray(moAdminRole, roles)
-        Me.BindListControlToArray(moActionDropDown, actions)
-        Me.BindListControlToArray(moWorkQueueTypeDropDown, workQueueTypes, , , Guid.Empty.ToString())
-        Me.BindListControlToArray(moLockableDataType, workQueueItemDataTypes, , , Guid.Empty.ToString())
-        Me.BindListControlToArray(moTimeZoneDropDown, timeZones)
+        BindListControlToArray(moCompanyDropDown, companies)
+        BindListControlToArray(moAdminRole, roles)
+        BindListControlToArray(moActionDropDown, actions)
+        BindListControlToArray(moWorkQueueTypeDropDown, workQueueTypes, , , Guid.Empty.ToString())
+        BindListControlToArray(moLockableDataType, workQueueItemDataTypes, , , Guid.Empty.ToString())
+        BindListControlToArray(moTimeZoneDropDown, timeZones)
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO.WorkQueue, "Name", Me.moWorkQueueNameLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO.WorkQueue, "CompanyCode", Me.moCompanyLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO.WorkQueue, "TimeZoneCode", Me.moTimeZoneLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO.WorkQueue, "Effective", Me.moEffectiveDateLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO.WorkQueue, "ActiveOn", Me.moEffectiveDateLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO.WorkQueue, "Expiration", Me.moExpirationDateLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO.WorkQueue, "StartItemDelayMinutes", Me.moStartItemDelayMinutesLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO.WorkQueue, "TimeToCompleteMinutes", Me.moTimeToCompleteMinutesLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO.WorkQueue, "MaxRequeue", Me.moMaximumReQueueLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO.WorkQueue, "WorkQueueTypeId", Me.moWorkQueueTypeLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO.WorkQueue, "AdminRole", Me.moAdminRoleLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO.WorkQueue, "ActionCode", Me.moActionLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO.WorkQueue, "TransformationFile", Me.moTransformationFileLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO.WorkQueue, "LockableDataTypeId", Me.moLockableDataTypeLabel)
+        BindBOPropertyToLabel(State.MyBO.WorkQueue, "Name", moWorkQueueNameLabel)
+        BindBOPropertyToLabel(State.MyBO.WorkQueue, "CompanyCode", moCompanyLabel)
+        BindBOPropertyToLabel(State.MyBO.WorkQueue, "TimeZoneCode", moTimeZoneLabel)
+        BindBOPropertyToLabel(State.MyBO.WorkQueue, "Effective", moEffectiveDateLabel)
+        BindBOPropertyToLabel(State.MyBO.WorkQueue, "ActiveOn", moEffectiveDateLabel)
+        BindBOPropertyToLabel(State.MyBO.WorkQueue, "Expiration", moExpirationDateLabel)
+        BindBOPropertyToLabel(State.MyBO.WorkQueue, "StartItemDelayMinutes", moStartItemDelayMinutesLabel)
+        BindBOPropertyToLabel(State.MyBO.WorkQueue, "TimeToCompleteMinutes", moTimeToCompleteMinutesLabel)
+        BindBOPropertyToLabel(State.MyBO.WorkQueue, "MaxRequeue", moMaximumReQueueLabel)
+        BindBOPropertyToLabel(State.MyBO.WorkQueue, "WorkQueueTypeId", moWorkQueueTypeLabel)
+        BindBOPropertyToLabel(State.MyBO.WorkQueue, "AdminRole", moAdminRoleLabel)
+        BindBOPropertyToLabel(State.MyBO.WorkQueue, "ActionCode", moActionLabel)
+        BindBOPropertyToLabel(State.MyBO.WorkQueue, "TransformationFile", moTransformationFileLabel)
+        BindBOPropertyToLabel(State.MyBO.WorkQueue, "LockableDataTypeId", moLockableDataTypeLabel)
         'DEF-3035
-        Me.BindBOPropertyToLabel(Me.State.MyBO.WorkQueue, "RequeueItemDelayMinutes", Me.moReQueueDelayLabel)
+        BindBOPropertyToLabel(State.MyBO.WorkQueue, "RequeueItemDelayMinutes", moReQueueDelayLabel)
         'DEF-3035 End
-        Me.ClearGridViewHeadersAndLabelsErrSign()
+        ClearGridViewHeadersAndLabelsErrSign()
     End Sub
 
     Protected Sub PopulateFormFromBOs()
         moMessageController.Clear()
-        With Me.State.MyBO
-            Me.State.IsReadOnly = False
-            If (.WorkQueue.InActiveOn.HasValue AndAlso .WorkQueue.InActiveOn.Value < DateTime.UtcNow) Then Me.State.IsReadOnly = True
+        With State.MyBO
+            State.IsReadOnly = False
+            If (.WorkQueue.InActiveOn.HasValue AndAlso .WorkQueue.InActiveOn.Value < DateTime.UtcNow) Then State.IsReadOnly = True
 
-            If (Not Me.State.UserHasPermissions) Then
+            If (Not State.UserHasPermissions) Then
                 moMessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ERROR_NO_CREATEQUEUE_MANAGEITEMSTATUSLIST_PERMISSION)
-                Me.State.IsReadOnly = True
+                State.IsReadOnly = True
             End If
             If (Not .IsNew) Then
                 If (Not ElitaPlusIdentity.Current.ActiveUser.isInRole(.WorkQueue.AdminRole)) Then
                     moMessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ERROR_NO_ADMIN_ROLE)
-                    Me.State.IsReadOnly = True
+                    State.IsReadOnly = True
                 End If
 
-                If (Not ElitaPlusIdentity.Current.ActiveUser.ExtendedUser.HasPermission(New Auth.Permission With {.ResourceType = ServiceHelper.RESTYP_WORKQUEUE, .Resource = Me.State.MyBO.WorkQueue.Name, .Action = ServiceHelper.PA_WQ_EDIT})) Then
+                If (Not ElitaPlusIdentity.Current.ActiveUser.ExtendedUser.HasPermission(New Auth.Permission With {.ResourceType = ServiceHelper.RESTYP_WORKQUEUE, .Resource = State.MyBO.WorkQueue.Name, .Action = ServiceHelper.PA_WQ_EDIT})) Then
                     moMessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ERROR_NO_EDIT_PERMISSION)
-                    Me.State.IsReadOnly = True
+                    State.IsReadOnly = True
                 End If
             End If
 
@@ -517,29 +517,29 @@ Public Class WorkQueueForm
             PopulateReQueueReasonGrid()
             PopulateReDirectReasonGrid()
 
-            Me.PopulateControlFromBOProperty(Me.moWorkQueueName, .WorkQueue.Name)
-            Me.SetSelectedItem(Me.moCompanyDropDown, .WorkQueue.CompanyCode)
-            Me.SetSelectedItem(Me.moTimeZoneDropDown, .WorkQueue.TimeZoneCode)
-            Me.PopulateControlFromBOProperty(Me.moEffectiveDate, .WorkQueue.Effective)
-            Me.PopulateControlFromBOProperty(Me.moExpirationDate, .WorkQueue.Expiration)
-            Me.PopulateControlFromBOProperty(Me.moStartItemDelayMinutes, .WorkQueue.StartItemDelayMinutes)
-            Me.PopulateControlFromBOProperty(Me.moTimeToCompleteMinutes, .WorkQueue.TimeToCompleteMinutes)
-            Me.PopulateControlFromBOProperty(Me.moMaximumReQueue, .WorkQueue.MaxRequeue)
-            Me.PopulateControlFromBOProperty(Me.moWorkQueueTypeDropDown, .WorkQueue.WorkQueueTypeId)
-            Me.SetSelectedItem(Me.moAdminRole, .WorkQueue.AdminRole)
-            Me.SetSelectedItem(Me.moActionDropDown, .WorkQueue.ActionCode)
-            Me.PopulateControlFromBOProperty(Me.moTransformationFile, .WorkQueue.TransformationFile)
-            Me.PopulateControlFromBOProperty(Me.moLockableDataType, .WorkQueue.LockableDataTypeId)
+            PopulateControlFromBOProperty(moWorkQueueName, .WorkQueue.Name)
+            SetSelectedItem(moCompanyDropDown, .WorkQueue.CompanyCode)
+            SetSelectedItem(moTimeZoneDropDown, .WorkQueue.TimeZoneCode)
+            PopulateControlFromBOProperty(moEffectiveDate, .WorkQueue.Effective)
+            PopulateControlFromBOProperty(moExpirationDate, .WorkQueue.Expiration)
+            PopulateControlFromBOProperty(moStartItemDelayMinutes, .WorkQueue.StartItemDelayMinutes)
+            PopulateControlFromBOProperty(moTimeToCompleteMinutes, .WorkQueue.TimeToCompleteMinutes)
+            PopulateControlFromBOProperty(moMaximumReQueue, .WorkQueue.MaxRequeue)
+            PopulateControlFromBOProperty(moWorkQueueTypeDropDown, .WorkQueue.WorkQueueTypeId)
+            SetSelectedItem(moAdminRole, .WorkQueue.AdminRole)
+            SetSelectedItem(moActionDropDown, .WorkQueue.ActionCode)
+            PopulateControlFromBOProperty(moTransformationFile, .WorkQueue.TransformationFile)
+            PopulateControlFromBOProperty(moLockableDataType, .WorkQueue.LockableDataTypeId)
             'DEF-3035
-            Me.PopulateControlFromBOProperty(Me.moReQueueDelay, .WorkQueue.RequeueItemDelayMinutes)
+            PopulateControlFromBOProperty(moReQueueDelay, .WorkQueue.RequeueItemDelayMinutes)
             'End of DEF-3035
 
-            Me.moCompanyText.Text = Me.GetSelectedDescription(moCompanyDropDown)
-            Me.moActionText.Text = Me.GetSelectedDescription(moActionDropDown)
-            Me.moWorkQueueTypeText.Text = Me.GetSelectedDescription(moWorkQueueTypeDropDown)
-            Me.moTimeZoneText.Text = Me.GetSelectedDescription(moTimeZoneDropDown)
+            moCompanyText.Text = GetSelectedDescription(moCompanyDropDown)
+            moActionText.Text = GetSelectedDescription(moActionDropDown)
+            moWorkQueueTypeText.Text = GetSelectedDescription(moWorkQueueTypeDropDown)
+            moTimeZoneText.Text = GetSelectedDescription(moTimeZoneDropDown)
 
-            Me.moWorkQueueName.ReadOnly = Not .IsNew
+            moWorkQueueName.ReadOnly = Not .IsNew
             ControlMgr.SetVisibleControl(Me, moCompanyDropDown, .IsNew)
             ControlMgr.SetVisibleControl(Me, moCompanyText, Not .IsNew)
             ControlMgr.SetVisibleControl(Me, moActionDropDown, .IsNew)
@@ -563,31 +563,31 @@ Public Class WorkQueueForm
     End Sub
 
     Private Sub BindBoPropertiesToGridHeaders()
-        Me.BindBOPropertyToGridHeader(Me.State.MyScheduleChildBO, "ScheduleId", Me.GridViewSchedules.Columns(Me.GRID_COL_CODE_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyScheduleChildBO, "ScheduleCode", Me.GridViewSchedules.Columns(Me.GRID_COL_CODE_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyScheduleChildBO, "ScheduleDescription", Me.GridViewSchedules.Columns(Me.GRID_COL_DESCRIPTION_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyScheduleChildBO, "Effective", Me.GridViewSchedules.Columns(Me.GRID_COL_EFFECTIVE_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyScheduleChildBO, "Expiration", Me.GridViewSchedules.Columns(Me.GRID_COL_EXPIRATION_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyScheduleChildBO, "EntityEffective", Me.GridViewSchedules.Columns(Me.GRID_COL_EFFECTIVE_IDX))
+        BindBOPropertyToGridHeader(State.MyScheduleChildBO, "ScheduleId", GridViewSchedules.Columns(GRID_COL_CODE_IDX))
+        BindBOPropertyToGridHeader(State.MyScheduleChildBO, "ScheduleCode", GridViewSchedules.Columns(GRID_COL_CODE_IDX))
+        BindBOPropertyToGridHeader(State.MyScheduleChildBO, "ScheduleDescription", GridViewSchedules.Columns(GRID_COL_DESCRIPTION_IDX))
+        BindBOPropertyToGridHeader(State.MyScheduleChildBO, "Effective", GridViewSchedules.Columns(GRID_COL_EFFECTIVE_IDX))
+        BindBOPropertyToGridHeader(State.MyScheduleChildBO, "Expiration", GridViewSchedules.Columns(GRID_COL_EXPIRATION_IDX))
+        BindBOPropertyToGridHeader(State.MyScheduleChildBO, "EntityEffective", GridViewSchedules.Columns(GRID_COL_EFFECTIVE_IDX))
 
-        Me.BindBOPropertyToGridHeader(Me.State.MyReDirectReasonChildBO, "Reason", Me.GridViewReDirectReasons.Columns(Me.GRID_COL_CODE_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyReDirectReasonChildBO, "Description", Me.GridViewReDirectReasons.Columns(Me.GRID_COL_DESCRIPTION_IDX))
+        BindBOPropertyToGridHeader(State.MyReDirectReasonChildBO, "Reason", GridViewReDirectReasons.Columns(GRID_COL_CODE_IDX))
+        BindBOPropertyToGridHeader(State.MyReDirectReasonChildBO, "Description", GridViewReDirectReasons.Columns(GRID_COL_DESCRIPTION_IDX))
 
-        Me.BindBOPropertyToGridHeader(Me.State.MyReQueueReasonChildBO, "Reason", Me.GridViewReQueueReasons.Columns(Me.GRID_COL_CODE_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyReQueueReasonChildBO, "Description", Me.GridViewReQueueReasons.Columns(Me.GRID_COL_DESCRIPTION_IDX))
+        BindBOPropertyToGridHeader(State.MyReQueueReasonChildBO, "Reason", GridViewReQueueReasons.Columns(GRID_COL_CODE_IDX))
+        BindBOPropertyToGridHeader(State.MyReQueueReasonChildBO, "Description", GridViewReQueueReasons.Columns(GRID_COL_DESCRIPTION_IDX))
 
-        Me.ClearGridViewHeadersAndLabelsErrSign()
+        ClearGridViewHeadersAndLabelsErrSign()
     End Sub
 
     Protected Sub EnableDisableFields()
-        If Me.State.IsScheduleEditing OrElse Me.State.IsReDirectReasonEditing OrElse Me.State.IsReQueueReasonEditing Then
+        If State.IsScheduleEditing OrElse State.IsReDirectReasonEditing OrElse State.IsReQueueReasonEditing Then
             EnableDisableParentControls(False)
         Else
             EnableDisableParentControls(True)
         End If
     End Sub
 
-    Sub EnableDisableParentControls(ByVal enableToggle As Boolean)
+    Sub EnableDisableParentControls(enableToggle As Boolean)
         ControlMgr.SetEnableControl(Me, btnBack, enableToggle)
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, enableToggle)
         ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enableToggle)
@@ -599,23 +599,23 @@ Public Class WorkQueueForm
         ControlMgr.SetEnableControl(Me, btnAddNewReDirectReason_WRITE, enableToggle)
         ControlMgr.SetEnableControl(Me, btnAddNewReQueueReason_WRITE, enableToggle)
 
-        Me.moWorkQueueName.ReadOnly = Not (Me.State.MyBO.IsNew)
-        ControlMgr.SetEnableControl(Me, moCompanyDropDown, Me.State.MyBO.IsNew)
-        ControlMgr.SetEnableControl(Me, moTimeZoneDropDown, Me.State.MyBO.IsNew)
-        Me.moEffectiveDate.ReadOnly = Not (Me.State.MyBO.IsNew)
-        ControlMgr.SetVisibleControl(Me, btnEffectiveDate, Me.State.MyBO.IsNew)
+        moWorkQueueName.ReadOnly = Not (State.MyBO.IsNew)
+        ControlMgr.SetEnableControl(Me, moCompanyDropDown, State.MyBO.IsNew)
+        ControlMgr.SetEnableControl(Me, moTimeZoneDropDown, State.MyBO.IsNew)
+        moEffectiveDate.ReadOnly = Not (State.MyBO.IsNew)
+        ControlMgr.SetVisibleControl(Me, btnEffectiveDate, State.MyBO.IsNew)
 
         If (enableToggle) Then
             'Enabled by Default
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
 
             'Now disable depebding on the object state
-            If Me.State.MyBO.IsNew Then
+            If State.MyBO.IsNew Then
                 ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
             End If
-            If (Me.State.IsReadOnly) Then
+            If (State.IsReadOnly) Then
                 ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnSave_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnUndo_Write, False)
@@ -623,7 +623,7 @@ Public Class WorkQueueForm
                 ControlMgr.SetEnableControl(Me, btnAddNewReQueueReason_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnAddNewSchedule_WRITE, False)
             End If
-            If (Not Me.State.UserHasPermissions) Then
+            If (Not State.UserHasPermissions) Then
                 ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
             End If
@@ -631,55 +631,55 @@ Public Class WorkQueueForm
     End Sub
 
     Protected Sub CreateNew()
-        Me.State.ScreenSnapShotBOId = Guid.Empty 'Reset the backup copy
-        Me.State.MyBO = New WorkQueue()
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        State.ScreenSnapShotBOId = Guid.Empty 'Reset the backup copy
+        State.MyBO = New WorkQueue()
+        PopulateFormFromBOs()
+        EnableDisableFields()
     End Sub
 
     Protected Sub CreateNewWithCopy()
         Dim newObj As New WorkQueue
-        newObj.Copy(Me.State.MyBO)
+        newObj.Copy(State.MyBO)
 
         'create the backup copy
-        Me.State.ScreenSnapShotBOId = Me.State.MyBO.Id
+        State.ScreenSnapShotBOId = State.MyBO.Id
 
-        Me.State.MyBO = newObj
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        State.MyBO = newObj
+        PopulateFormFromBOs()
+        EnableDisableFields()
     End Sub
 
     Protected Sub PopulateBOsFormFrom()
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "Name", Me.moWorkQueueName)
-            Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "CompanyCode", GetSelectedValue(Me.moCompanyDropDown))
-            Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "TimeZoneCode", GetSelectedValue(Me.moTimeZoneDropDown))
-            Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "Effective", Me.moEffectiveDate)
-            Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "Expiration", Me.moExpirationDate)
-            Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "StartItemDelayMinutes", Me.moStartItemDelayMinutes)
-            Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "TimeToCompleteMinutes", Me.moTimeToCompleteMinutes)
-            Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "MaxRequeue", Me.moMaximumReQueue)
-            Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "WorkQueueTypeId", Me.moWorkQueueTypeDropDown)
-            Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "AdminRole", GetSelectedValue(Me.moAdminRole))
-            Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "ActionCode", GetSelectedValue(Me.moActionDropDown))
-            Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "TransformationFile", Me.moTransformationFile)
-            Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "LockableDataTypeId", Me.moLockableDataType)
+        With State.MyBO
+            PopulateBOProperty(State.MyBO.WorkQueue, "Name", moWorkQueueName)
+            PopulateBOProperty(State.MyBO.WorkQueue, "CompanyCode", GetSelectedValue(moCompanyDropDown))
+            PopulateBOProperty(State.MyBO.WorkQueue, "TimeZoneCode", GetSelectedValue(moTimeZoneDropDown))
+            PopulateBOProperty(State.MyBO.WorkQueue, "Effective", moEffectiveDate)
+            PopulateBOProperty(State.MyBO.WorkQueue, "Expiration", moExpirationDate)
+            PopulateBOProperty(State.MyBO.WorkQueue, "StartItemDelayMinutes", moStartItemDelayMinutes)
+            PopulateBOProperty(State.MyBO.WorkQueue, "TimeToCompleteMinutes", moTimeToCompleteMinutes)
+            PopulateBOProperty(State.MyBO.WorkQueue, "MaxRequeue", moMaximumReQueue)
+            PopulateBOProperty(State.MyBO.WorkQueue, "WorkQueueTypeId", moWorkQueueTypeDropDown)
+            PopulateBOProperty(State.MyBO.WorkQueue, "AdminRole", GetSelectedValue(moAdminRole))
+            PopulateBOProperty(State.MyBO.WorkQueue, "ActionCode", GetSelectedValue(moActionDropDown))
+            PopulateBOProperty(State.MyBO.WorkQueue, "TransformationFile", moTransformationFile)
+            PopulateBOProperty(State.MyBO.WorkQueue, "LockableDataTypeId", moLockableDataType)
             'DEF-3035
-            Me.PopulateBOProperty(Me.State.MyBO.WorkQueue, "RequeueItemDelayMinutes", Me.moReQueueDelay)
+            PopulateBOProperty(State.MyBO.WorkQueue, "RequeueItemDelayMinutes", moReQueueDelay)
             'DEF-3035 End
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
     Private Sub PopulateScheduleGrid()
         Dim isEmpty As Boolean
-        Dim dv As EntitySchedule.ScheduleSelectionView = Me.State.MyBO.GetScheduleSelectionView()
-        dv.Sort = Me.State.ScheduleSortExpression
+        Dim dv As EntitySchedule.ScheduleSelectionView = State.MyBO.GetScheduleSelectionView()
+        dv.Sort = State.ScheduleSortExpression
 
         If (dv.Count > 0) Then
-            Me.GridViewSchedules.PageSize = dv.Count
+            GridViewSchedules.PageSize = dv.Count
         Else
             Dim dr As DataRow
             dr = dv.Table.NewRow()
@@ -690,75 +690,75 @@ Public Class WorkQueueForm
             isEmpty = True
         End If
 
-        SetPageAndSelectedIndexFromGuid(dv, Me.State.EntityScheduleChildId, Me.GridViewSchedules, 1, Me.State.IsScheduleEditing)
+        SetPageAndSelectedIndexFromGuid(dv, State.EntityScheduleChildId, GridViewSchedules, 1, State.IsScheduleEditing)
 
-        Me.GridViewSchedules.DataSource = dv
-        Me.GridViewSchedules.AutoGenerateColumns = False
-        Me.GridViewSchedules.DataBind()
-        If (isEmpty) Then Me.GridViewSchedules.Rows(0).Visible = False
+        GridViewSchedules.DataSource = dv
+        GridViewSchedules.AutoGenerateColumns = False
+        GridViewSchedules.DataBind()
+        If (isEmpty) Then GridViewSchedules.Rows(0).Visible = False
     End Sub
 
     Private Sub PopulateReQueueReasonGrid()
         Dim isEmpty As Boolean = False
-        Me.GridViewReQueueReasons.Columns(Me.GRID_COL_CODE_IDX).SortExpression = WorkQueueItemStatusReason.COL_REASON
-        Me.GridViewReQueueReasons.Columns(Me.GRID_COL_DESCRIPTION_IDX).SortExpression = WorkQueueItemStatusReason.COL_DESCRIPTION
+        GridViewReQueueReasons.Columns(GRID_COL_CODE_IDX).SortExpression = WorkQueueItemStatusReason.COL_REASON
+        GridViewReQueueReasons.Columns(GRID_COL_DESCRIPTION_IDX).SortExpression = WorkQueueItemStatusReason.COL_DESCRIPTION
 
         Dim dv As IOrderedEnumerable(Of WorkQueueItemStatusReason)
-        dv = Me.State.MyBO.ReQueueReasons.OrderBy(Me.State.ReQueueReasonSortExpression, Me.State.ReQueueReasonSortDirection)
+        dv = State.MyBO.ReQueueReasons.OrderBy(State.ReQueueReasonSortExpression, State.ReQueueReasonSortDirection)
 
         If (dv.Count() > 0) Then
-            Me.GridViewReQueueReasons.PageSize = dv.Count()
-            If (Not Me.State.MyReQueueReasonChildBO Is Nothing) Then
-                Me.GridViewReQueueReasons.EditIndex = GetSelectedRowIndex(Of WorkQueueItemStatusReason)(dv, Me.State.MyReQueueReasonChildBO.ItemStatusReason.Id, Function(item) item.ItemStatusReason.Id)
+            GridViewReQueueReasons.PageSize = dv.Count()
+            If (State.MyReQueueReasonChildBO IsNot Nothing) Then
+                GridViewReQueueReasons.EditIndex = GetSelectedRowIndex(Of WorkQueueItemStatusReason)(dv, State.MyReQueueReasonChildBO.ItemStatusReason.Id, Function(item) item.ItemStatusReason.Id)
             Else
-                Me.GridViewReQueueReasons.EditIndex = NO_ITEM_SELECTED_INDEX
+                GridViewReQueueReasons.EditIndex = NO_ITEM_SELECTED_INDEX
             End If
         Else
             Dim emptyArray(0) As WorkQueueItemStatusReason
-            emptyArray(0) = Me.State.MyBO.CreateReason()
-            dv = emptyArray.OrderBy(Me.State.ReQueueReasonSortExpression, Me.State.ReQueueReasonSortDirection)
+            emptyArray(0) = State.MyBO.CreateReason()
+            dv = emptyArray.OrderBy(State.ReQueueReasonSortExpression, State.ReQueueReasonSortDirection)
             isEmpty = True
         End If
 
-        Me.GridViewReQueueReasons.DataSource = dv
-        Me.GridViewReQueueReasons.AutoGenerateColumns = False
-        Me.GridViewReQueueReasons.DataBind()
-        If (isEmpty) Then Me.GridViewReQueueReasons.Rows(0).Visible = False
+        GridViewReQueueReasons.DataSource = dv
+        GridViewReQueueReasons.AutoGenerateColumns = False
+        GridViewReQueueReasons.DataBind()
+        If (isEmpty) Then GridViewReQueueReasons.Rows(0).Visible = False
     End Sub
 
     Private Sub PopulateReDirectReasonGrid()
         Dim isEmpty As Boolean = False
-        Me.GridViewReDirectReasons.Columns(Me.GRID_COL_CODE_IDX).SortExpression = WorkQueueItemStatusReason.COL_REASON
-        Me.GridViewReDirectReasons.Columns(Me.GRID_COL_DESCRIPTION_IDX).SortExpression = WorkQueueItemStatusReason.COL_DESCRIPTION
+        GridViewReDirectReasons.Columns(GRID_COL_CODE_IDX).SortExpression = WorkQueueItemStatusReason.COL_REASON
+        GridViewReDirectReasons.Columns(GRID_COL_DESCRIPTION_IDX).SortExpression = WorkQueueItemStatusReason.COL_DESCRIPTION
 
         Dim dv As IOrderedEnumerable(Of WorkQueueItemStatusReason)
-        dv = Me.State.MyBO.ReDirectReasons.OrderBy(Me.State.ReDirectReasonSortExpression, Me.State.ReDirectReasonSortDirection)
+        dv = State.MyBO.ReDirectReasons.OrderBy(State.ReDirectReasonSortExpression, State.ReDirectReasonSortDirection)
 
         If (dv.Count() > 0) Then
-            Me.GridViewReDirectReasons.PageSize = dv.Count()
-            If (Not Me.State.MyReDirectReasonChildBO Is Nothing) Then
-                Me.GridViewReDirectReasons.EditIndex = GetSelectedRowIndex(Of WorkQueueItemStatusReason)(dv, Me.State.MyReDirectReasonChildBO.ItemStatusReason.Id, Function(item) item.ItemStatusReason.Id)
+            GridViewReDirectReasons.PageSize = dv.Count()
+            If (State.MyReDirectReasonChildBO IsNot Nothing) Then
+                GridViewReDirectReasons.EditIndex = GetSelectedRowIndex(Of WorkQueueItemStatusReason)(dv, State.MyReDirectReasonChildBO.ItemStatusReason.Id, Function(item) item.ItemStatusReason.Id)
             Else
-                Me.GridViewReDirectReasons.EditIndex = NO_ITEM_SELECTED_INDEX
+                GridViewReDirectReasons.EditIndex = NO_ITEM_SELECTED_INDEX
             End If
         Else
             Dim emptyArray(0) As WorkQueueItemStatusReason
-            emptyArray(0) = Me.State.MyBO.CreateReason()
-            dv = emptyArray.OrderBy(Me.State.ReDirectReasonSortExpression, Me.State.ReDirectReasonSortDirection)
+            emptyArray(0) = State.MyBO.CreateReason()
+            dv = emptyArray.OrderBy(State.ReDirectReasonSortExpression, State.ReDirectReasonSortDirection)
             isEmpty = True
         End If
 
-        Me.GridViewReDirectReasons.DataSource = dv
-        Me.GridViewReDirectReasons.AutoGenerateColumns = False
-        Me.GridViewReDirectReasons.DataBind()
-        If (isEmpty) Then Me.GridViewReDirectReasons.Rows(0).Visible = False
+        GridViewReDirectReasons.DataSource = dv
+        GridViewReDirectReasons.AutoGenerateColumns = False
+        GridViewReDirectReasons.DataBind()
+        If (isEmpty) Then GridViewReDirectReasons.Rows(0).Visible = False
     End Sub
 
 
 #End Region
 
 #Region "Common Grid Events/Methods"
-    Private Function GetSelectedRowIndex(Of T)(ByVal dv As IOrderedEnumerable(Of T), ByVal selectedGuid As Guid, ByVal idFunction As Func(Of T, Guid)) As Integer
+    Private Function GetSelectedRowIndex(Of T)(dv As IOrderedEnumerable(Of T), selectedGuid As Guid, idFunction As Func(Of T, Guid)) As Integer
         Dim selectedRowIndex As Integer = NO_ITEM_SELECTED_INDEX
         If (Not (selectedGuid.Equals(Guid.Empty))) Then
             'Jump to the Right Page
@@ -774,17 +774,17 @@ Public Class WorkQueueForm
         Return (selectedRowIndex)
     End Function
 
-    Private Sub GridViewReasons_RowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles GridViewReDirectReasons.RowCreated, GridViewReQueueReasons.RowCreated, GridViewSchedules.RowCreated
+    Private Sub GridViewReasons_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles GridViewReDirectReasons.RowCreated, GridViewReQueueReasons.RowCreated, GridViewSchedules.RowCreated
         Try
             MyBase.BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "ReQueue / ReDirect Reason Grid"
-    Public Sub GridViewReasons_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles GridViewReDirectReasons.RowDataBound, GridViewReQueueReasons.RowDataBound
+    Public Sub GridViewReasons_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridViewReDirectReasons.RowDataBound, GridViewReQueueReasons.RowDataBound
         Try
             Dim itemType As DataControlRowType = e.Row.RowType
             Dim reasonsDV As DataView
@@ -796,9 +796,9 @@ Public Class WorkQueueForm
             If itemType = DataControlRowType.DataRow Then
                 wqisr = CType(e.Row.DataItem, WorkQueueItemStatusReason)
                 If ((e.Row.RowState And DataControlRowState.Edit) = DataControlRowState.Edit) Then
-                    moCodeDropDown = CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_CODE_DROPDOWN), DropDownList)
+                    moCodeDropDown = CType(e.Row.Cells(GRID_COL_CODE_IDX).FindControl(GRID_COL_CODE_DROPDOWN), DropDownList)
                     moCodeDropDown.Visible = True
-                    moDescriptionDropDown = CType(e.Row.Cells(Me.GRID_COL_DESCRIPTION_IDX).FindControl(Me.GRID_COL_DESCRIPTION_DROPDOWN), DropDownList)
+                    moDescriptionDropDown = CType(e.Row.Cells(GRID_COL_DESCRIPTION_IDX).FindControl(GRID_COL_DESCRIPTION_DROPDOWN), DropDownList)
                     moDescriptionDropDown.Visible = True
 
                     'reasonsDV = LookupListNew.DropdownLookupList(LookupListNew.LK_REASON_CODE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False)
@@ -826,99 +826,99 @@ Public Class WorkQueueForm
                                 })
 
                     If (wqisr.Reason <> String.Empty) Then
-                        Me.SetSelectedItemByText(moCodeDropDown, wqisr.Reason)
+                        SetSelectedItemByText(moCodeDropDown, wqisr.Reason)
                     End If
                     If (wqisr.Description <> String.Empty) Then
-                        Me.SetSelectedItemByText(moDescriptionDropDown, wqisr.Description)
+                        SetSelectedItemByText(moDescriptionDropDown, wqisr.Description)
                     End If
 
                     moCodeDropDown.Attributes.Add("onchange", String.Format("ToggleSelection('{0}', '{1}', '{2}', '{3}')", moCodeDropDown.ClientID, moDescriptionDropDown.ClientID, "D", String.Empty))
                     moDescriptionDropDown.Attributes.Add("onchange", String.Format("ToggleSelection('{0}', '{1}', '{2}', '{3}')", moCodeDropDown.ClientID, moDescriptionDropDown.ClientID, "C", String.Empty))
                 Else
-                    moLabel = CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_CODE_LABEL), Label)
+                    moLabel = CType(e.Row.Cells(GRID_COL_CODE_IDX).FindControl(GRID_COL_CODE_LABEL), Label)
                     moLabel.Text = wqisr.ItemStatusReason.Reason
-                    moLabel = CType(e.Row.Cells(Me.GRID_COL_DESCRIPTION_IDX).FindControl(Me.GRID_COL_DESCRIPTION_LABEL), Label)
+                    moLabel = CType(e.Row.Cells(GRID_COL_DESCRIPTION_IDX).FindControl(GRID_COL_DESCRIPTION_LABEL), Label)
                     moLabel.Text = wqisr.Description
 
-                    moImageButton = CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_DELETE_IMAGE_BUTTON), ImageButton)
-                    If (Me.State.IsReadOnly) Then
+                    moImageButton = CType(e.Row.Cells(GRID_COL_CODE_IDX).FindControl(GRID_COL_DELETE_IMAGE_BUTTON), ImageButton)
+                    If (State.IsReadOnly) Then
                         ControlMgr.SetVisibleControl(Me, moImageButton, False)
                     Else
                         moImageButton.Attributes.Add("onclick", String.Format("ShowDeleteConfirmation('{0}', '{1}${2}'); return false;", (DirectCast(sender, GridView)).UniqueID, DELETE_COMMAND_NAME, wqisr.Id.ToString()))
-                        moImageButton.Attributes.Add("onclick1", Me.ClientScript.GetPostBackEventReference(DirectCast(sender, GridView), String.Format("{0}${1}", DELETE_COMMAND_NAME, wqisr.Id.ToString())))
+                        moImageButton.Attributes.Add("onclick1", ClientScript.GetPostBackEventReference(DirectCast(sender, GridView), String.Format("{0}${1}", DELETE_COMMAND_NAME, wqisr.Id.ToString())))
                     End If
                 End If
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GridViewReQueueReasons_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles GridViewReQueueReasons.RowCommand
+    Private Sub GridViewReQueueReasons_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GridViewReQueueReasons.RowCommand
         Try
             Select Case e.CommandName
                 Case SAVE_COMMAND_NAME
                     PopulateReQueueReasonBOsFormFrom()
-                    Me.State.MyReQueueReasonChildBO.Validate()
-                    Me.State.IsReQueueReasonAdding = False
-                    Me.State.IsReQueueReasonEditing = False
-                    Me.State.MyReQueueReasonChildBO = Nothing
+                    State.MyReQueueReasonChildBO.Validate()
+                    State.IsReQueueReasonAdding = False
+                    State.IsReQueueReasonEditing = False
+                    State.MyReQueueReasonChildBO = Nothing
                 Case CANCEL_COMMAND_NAME
-                    If (Me.State.MyReQueueReasonChildBO.IsNew) Then
-                        If (Me.State.IsReQueueReasonAdding) Then Me.State.MyReQueueReasonChildBO.Delete()
+                    If (State.MyReQueueReasonChildBO.IsNew) Then
+                        If (State.IsReQueueReasonAdding) Then State.MyReQueueReasonChildBO.Delete()
                     End If
-                    Me.State.IsReQueueReasonAdding = False
-                    Me.State.IsReQueueReasonEditing = False
-                    Me.State.MyReQueueReasonChildBO = Nothing
+                    State.IsReQueueReasonAdding = False
+                    State.IsReQueueReasonEditing = False
+                    State.MyReQueueReasonChildBO = Nothing
                 Case DELETE_COMMAND_NAME
-                    Me.State.MyReQueueReasonChildBO = (From wqisr In Me.State.MyBO.ReQueueReasons Where wqisr.ItemStatusReason.Id = New Guid(e.CommandArgument.ToString()) Select wqisr).First()
-                    Me.State.MyReQueueReasonChildBO.Delete()
-                    Me.State.MyReQueueReasonChildBO = Nothing
+                    State.MyReQueueReasonChildBO = (From wqisr In State.MyBO.ReQueueReasons Where wqisr.ItemStatusReason.Id = New Guid(e.CommandArgument.ToString()) Select wqisr).First()
+                    State.MyReQueueReasonChildBO.Delete()
+                    State.MyReQueueReasonChildBO = Nothing
                 Case Else
                     'TODO : Throw
             End Select
-            Me.EnableDisableFields()
+            EnableDisableFields()
             PopulateReQueueReasonGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GridViewReDirectReasons_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles GridViewReDirectReasons.RowCommand
+    Private Sub GridViewReDirectReasons_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GridViewReDirectReasons.RowCommand
         Try
             Select Case e.CommandName
                 Case SAVE_COMMAND_NAME
                     PopulateReDirectReasonBOsFormFrom()
-                    Me.State.MyReDirectReasonChildBO.Validate()
-                    Me.State.IsReDirectReasonAdding = False
-                    Me.State.IsReDirectReasonEditing = False
-                    Me.State.MyReDirectReasonChildBO = Nothing
+                    State.MyReDirectReasonChildBO.Validate()
+                    State.IsReDirectReasonAdding = False
+                    State.IsReDirectReasonEditing = False
+                    State.MyReDirectReasonChildBO = Nothing
                 Case CANCEL_COMMAND_NAME
-                    If (Me.State.MyReDirectReasonChildBO.IsNew) Then
-                        If (Me.State.IsReDirectReasonAdding) Then Me.State.MyReDirectReasonChildBO.Delete()
+                    If (State.MyReDirectReasonChildBO.IsNew) Then
+                        If (State.IsReDirectReasonAdding) Then State.MyReDirectReasonChildBO.Delete()
                     End If
-                    Me.State.IsReDirectReasonAdding = False
-                    Me.State.IsReDirectReasonEditing = False
-                    Me.State.MyReDirectReasonChildBO = Nothing
+                    State.IsReDirectReasonAdding = False
+                    State.IsReDirectReasonEditing = False
+                    State.MyReDirectReasonChildBO = Nothing
                 Case DELETE_COMMAND_NAME
-                    Me.State.MyReDirectReasonChildBO = (From wqisr In Me.State.MyBO.ReDirectReasons Where wqisr.ItemStatusReason.Id = New Guid(e.CommandArgument.ToString()) Select wqisr).First()
-                    Me.State.MyReDirectReasonChildBO.Delete()
-                    Me.State.MyReDirectReasonChildBO = Nothing
+                    State.MyReDirectReasonChildBO = (From wqisr In State.MyBO.ReDirectReasons Where wqisr.ItemStatusReason.Id = New Guid(e.CommandArgument.ToString()) Select wqisr).First()
+                    State.MyReDirectReasonChildBO.Delete()
+                    State.MyReDirectReasonChildBO = Nothing
                 Case Else
                     'TODO : Throw
             End Select
-            Me.EnableDisableFields()
+            EnableDisableFields()
             PopulateReDirectReasonGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 #End Region
 
 #Region "Schedule Grid"
-    Private Sub GridViewSchedules_DataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles GridViewSchedules.RowDataBound
+    Private Sub GridViewSchedules_DataBound(sender As Object, e As GridViewRowEventArgs) Handles GridViewSchedules.RowDataBound
         Try
             Dim itemType As DataControlRowType = e.Row.RowType
             Dim moLabel As Label
@@ -934,9 +934,9 @@ Public Class WorkQueueForm
                 If ((e.Row.RowState And DataControlRowState.Edit) = DataControlRowState.Edit) Then
                     isNewRow = DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_IS_NEW), Boolean)
                     If (isNewRow) Then
-                        moCodeDropDown = CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_CODE_DROPDOWN), DropDownList)
+                        moCodeDropDown = CType(e.Row.Cells(GRID_COL_CODE_IDX).FindControl(GRID_COL_CODE_DROPDOWN), DropDownList)
                         moCodeDropDown.Visible = True
-                        moDescriptionDropDown = CType(e.Row.Cells(Me.GRID_COL_DESCRIPTION_IDX).FindControl(Me.GRID_COL_DESCRIPTION_DROPDOWN), DropDownList)
+                        moDescriptionDropDown = CType(e.Row.Cells(GRID_COL_DESCRIPTION_IDX).FindControl(GRID_COL_DESCRIPTION_DROPDOWN), DropDownList)
                         moDescriptionDropDown.Visible = True
 
                         'scheduleDV = Schedule.GetSchedulesList("*", "*")
@@ -967,93 +967,93 @@ Public Class WorkQueueForm
                         moDescriptionDropDown.Attributes.Add("onchange", String.Format("ToggleSelection('{0}', '{1}', '{2}', '{3}')", moCodeDropDown.ClientID, moDescriptionDropDown.ClientID, "C", String.Empty))
 
                         If (dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_SCHEDULE_CODE).ToString() <> String.Empty) Then
-                            Me.SetSelectedItemByText(moCodeDropDown, dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_SCHEDULE_CODE).ToString())
+                            SetSelectedItemByText(moCodeDropDown, dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_SCHEDULE_CODE).ToString())
                         End If
                         If (dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_SCHEDULE_DESCRIPTION).ToString() <> String.Empty) Then
-                            Me.SetSelectedItemByText(moDescriptionDropDown, dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_SCHEDULE_DESCRIPTION).ToString())
+                            SetSelectedItemByText(moDescriptionDropDown, dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_SCHEDULE_DESCRIPTION).ToString())
                         End If
 
 
-                        moTextBox = CType(e.Row.Cells(Me.GRID_COL_EFFECTIVE_IDX).FindControl(Me.GRID_COL_EFFECTIVE_TEXT), TextBox)
+                        moTextBox = CType(e.Row.Cells(GRID_COL_EFFECTIVE_IDX).FindControl(GRID_COL_EFFECTIVE_TEXT), TextBox)
                         moTextBox.Visible = True
-                        moImageButton = CType(e.Row.Cells(Me.GRID_COL_EFFECTIVE_IDX).FindControl(Me.GRID_COL_EFFECTIVE_IMAGE), ImageButton)
+                        moImageButton = CType(e.Row.Cells(GRID_COL_EFFECTIVE_IDX).FindControl(GRID_COL_EFFECTIVE_IMAGE), ImageButton)
                         moImageButton.Visible = True
                         moTextBox.Text = GetLongDateFormattedString(DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EFFECTIVE), Date))
-                        Me.AddCalendarwithTime_New(moImageButton, moTextBox)
+                        AddCalendarwithTime_New(moImageButton, moTextBox)
                     Else
-                        moLabel = CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_CODE_LABEL), Label)
+                        moLabel = CType(e.Row.Cells(GRID_COL_CODE_IDX).FindControl(GRID_COL_CODE_LABEL), Label)
                         moLabel.Visible = True
                         moLabel.Text = dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_SCHEDULE_CODE).ToString()
 
-                        moLabel = CType(e.Row.Cells(Me.GRID_COL_DESCRIPTION_IDX).FindControl(Me.GRID_COL_DESCRIPTION_LABEL), Label)
+                        moLabel = CType(e.Row.Cells(GRID_COL_DESCRIPTION_IDX).FindControl(GRID_COL_DESCRIPTION_LABEL), Label)
                         moLabel.Visible = True
                         moLabel.Text = dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_SCHEDULE_DESCRIPTION).ToString()
 
-                        moLabel = CType(e.Row.Cells(Me.GRID_COL_EFFECTIVE_IDX).FindControl(Me.GRID_COL_EFFECTIVE_LABEL), Label)
+                        moLabel = CType(e.Row.Cells(GRID_COL_EFFECTIVE_IDX).FindControl(GRID_COL_EFFECTIVE_LABEL), Label)
                         moLabel.Visible = True
                         moLabel.Text = GetLongDateFormattedString(DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EFFECTIVE), Date))
                     End If
 
                     Dim expirationDate As DateTime = WorkQueue.DEFAULT_EXPIRATION_DATE
-                    If (Not dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EXPIRATION) Is DBNull.Value) Then
+                    If (dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EXPIRATION) IsNot DBNull.Value) Then
                         expirationDate = DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EXPIRATION), DateTime)
                     End If
                     If (isNewRow OrElse expirationDate > DateTime.Now) Then
-                        moTextBox = CType(e.Row.Cells(Me.GRID_COL_EXPIRATION_IDX).FindControl(Me.GRID_COL_EXPIRATION_TEXT), TextBox)
+                        moTextBox = CType(e.Row.Cells(GRID_COL_EXPIRATION_IDX).FindControl(GRID_COL_EXPIRATION_TEXT), TextBox)
                         moTextBox.Visible = True
-                        moImageButton = CType(e.Row.Cells(Me.GRID_COL_EXPIRATION_IDX).FindControl(Me.GRID_COL_EXPIRATION_IMAGE), ImageButton)
+                        moImageButton = CType(e.Row.Cells(GRID_COL_EXPIRATION_IDX).FindControl(GRID_COL_EXPIRATION_IMAGE), ImageButton)
                         moImageButton.Visible = True
                         moTextBox.Text = GetLongDateFormattedString(expirationDate)
-                        Me.AddCalendarwithTime_New(moImageButton, moTextBox)
+                        AddCalendarwithTime_New(moImageButton, moTextBox)
                     Else
-                        moLabel = CType(e.Row.Cells(Me.GRID_COL_EXPIRATION_IDX).FindControl(Me.GRID_COL_EXPIRATION_LABEL), Label)
+                        moLabel = CType(e.Row.Cells(GRID_COL_EXPIRATION_IDX).FindControl(GRID_COL_EXPIRATION_LABEL), Label)
                         moLabel.Visible = True
                         moLabel.Text = GetLongDateFormattedString(expirationDate)
                     End If
                 Else
-                    moLabel = CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_CODE_LABEL), Label)
+                    moLabel = CType(e.Row.Cells(GRID_COL_CODE_IDX).FindControl(GRID_COL_CODE_LABEL), Label)
                     moLabel.Visible = True
                     moLabel.Text = dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_SCHEDULE_CODE).ToString()
 
-                    moLabel = CType(e.Row.Cells(Me.GRID_COL_DESCRIPTION_IDX).FindControl(Me.GRID_COL_DESCRIPTION_LABEL), Label)
+                    moLabel = CType(e.Row.Cells(GRID_COL_DESCRIPTION_IDX).FindControl(GRID_COL_DESCRIPTION_LABEL), Label)
                     moLabel.Visible = True
                     moLabel.Text = dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_SCHEDULE_DESCRIPTION).ToString()
 
-                    moLabel = CType(e.Row.Cells(Me.GRID_COL_EFFECTIVE_IDX).FindControl(Me.GRID_COL_EFFECTIVE_LABEL), Label)
+                    moLabel = CType(e.Row.Cells(GRID_COL_EFFECTIVE_IDX).FindControl(GRID_COL_EFFECTIVE_LABEL), Label)
                     moLabel.Visible = True
                     moLabel.Text = GetLongDateFormattedString(DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EFFECTIVE), Date))
 
                     Dim expirationDate As DateTime = WorkQueue.DEFAULT_EXPIRATION_DATE
-                    If (Not dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EXPIRATION) Is DBNull.Value) Then
+                    If (dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EXPIRATION) IsNot DBNull.Value) Then
                         expirationDate = DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EXPIRATION), DateTime)
                     End If
-                    moLabel = CType(e.Row.Cells(Me.GRID_COL_EXPIRATION_IDX).FindControl(Me.GRID_COL_EXPIRATION_LABEL), Label)
+                    moLabel = CType(e.Row.Cells(GRID_COL_EXPIRATION_IDX).FindControl(GRID_COL_EXPIRATION_LABEL), Label)
                     moLabel.Visible = True
                     moLabel.Text = GetLongDateFormattedString(expirationDate)
 
-                    If (Me.State.IsScheduleEditing) Then
-                        moImageButton = CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_EDIT_IMAGE_BUTTON), ImageButton)
+                    If (State.IsScheduleEditing) Then
+                        moImageButton = CType(e.Row.Cells(GRID_COL_CODE_IDX).FindControl(GRID_COL_EDIT_IMAGE_BUTTON), ImageButton)
                         moImageButton.Visible = False
-                        moImageButton = CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_DELETE_IMAGE_BUTTON), ImageButton)
+                        moImageButton = CType(e.Row.Cells(GRID_COL_CODE_IDX).FindControl(GRID_COL_DELETE_IMAGE_BUTTON), ImageButton)
                         moImageButton.Visible = False
                     Else
                         Dim scheduleId As Guid
                         scheduleId = New Guid(CType(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_ENTITY_SCHEDULE_ID), Byte()))
-                        moImageButton = CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_EDIT_IMAGE_BUTTON), ImageButton)
-                        If (Me.State.IsReadOnly) Then
+                        moImageButton = CType(e.Row.Cells(GRID_COL_CODE_IDX).FindControl(GRID_COL_EDIT_IMAGE_BUTTON), ImageButton)
+                        If (State.IsReadOnly) Then
                             ControlMgr.SetVisibleControl(Me, moImageButton, False)
                         Else
                             moImageButton.CommandArgument = scheduleId.ToString()
                         End If
-                        moImageButton = CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_DELETE_IMAGE_BUTTON), ImageButton)
-                        If (Me.State.IsReadOnly) Then
+                        moImageButton = CType(e.Row.Cells(GRID_COL_CODE_IDX).FindControl(GRID_COL_DELETE_IMAGE_BUTTON), ImageButton)
+                        If (State.IsReadOnly) Then
                             ControlMgr.SetVisibleControl(Me, moImageButton, False)
                         Else
                             moImageButton.Attributes.Add("onclick", String.Format("ShowDeleteConfirmation('{0}', '{1}${2}'); return false;", (DirectCast(sender, GridView)).UniqueID, DELETE_COMMAND_NAME, scheduleId.ToString()))
-                            moImageButton.Attributes.Add("onclick1", Me.ClientScript.GetPostBackEventReference(DirectCast(sender, GridView), String.Format("{0}${1}", DELETE_COMMAND_NAME, scheduleId.ToString())))
+                            moImageButton.Attributes.Add("onclick1", ClientScript.GetPostBackEventReference(DirectCast(sender, GridView), String.Format("{0}${1}", DELETE_COMMAND_NAME, scheduleId.ToString())))
                         End If
                         'Check if the Schedule’s effective date has been passed, if yes then don’t show the delete Icon to the user 
-                        If (Not dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EFFECTIVE) Is DBNull.Value) Then
+                        If (dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EFFECTIVE) IsNot DBNull.Value) Then
                             Dim EffectiveDate As DateTime = DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EFFECTIVE), DateTime)
                             If (EffectiveDate < DateTime.UtcNow) Then
                                 ControlMgr.SetVisibleControl(Me, moImageButton, False)
@@ -1063,144 +1063,144 @@ Public Class WorkQueueForm
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GridViewSchedules_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles GridViewSchedules.RowCommand
+    Private Sub GridViewSchedules_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GridViewSchedules.RowCommand
         Try
             Select Case e.CommandName
                 Case EDIT_COMMAND_NAME
-                    Me.State.EntityScheduleChildId = New Guid(e.CommandArgument.ToString())
-                    Me.BeginScheduleChildEdit()
+                    State.EntityScheduleChildId = New Guid(e.CommandArgument.ToString())
+                    BeginScheduleChildEdit()
                 Case SAVE_COMMAND_NAME
                     PopulateScheduleBOsFormFrom()
                     ' Check if adding new Schedule
-                    If (Me.State.MyScheduleChildBO.IsNew) Then
+                    If (State.MyScheduleChildBO.IsNew) Then
                         ' Check if Current Schedule Effective Date is greater than any Effective Date
-                        For Each drv As DataRowView In Me.State.MyBO.GetScheduleSelectionView
-                            Dim es As EntitySchedule = Me.State.MyBO.GetScheduleChild(New Guid(CType(drv(EntitySchedule.ScheduleSelectionView.COL_NAME_ENTITY_SCHEDULE_ID), Byte())))
-                            If (Not es.Id.Equals(Me.State.MyScheduleChildBO.Id)) Then
-                                If (Me.State.MyScheduleChildBO.Effective.Value > es.Effective.Value AndAlso Me.State.MyScheduleChildBO.Effective.Value < es.Expiration.Value) Then
+                        For Each drv As DataRowView In State.MyBO.GetScheduleSelectionView
+                            Dim es As EntitySchedule = State.MyBO.GetScheduleChild(New Guid(CType(drv(EntitySchedule.ScheduleSelectionView.COL_NAME_ENTITY_SCHEDULE_ID), Byte())))
+                            If (Not es.Id.Equals(State.MyScheduleChildBO.Id)) Then
+                                If (State.MyScheduleChildBO.Effective.Value > es.Effective.Value AndAlso State.MyScheduleChildBO.Effective.Value < es.Expiration.Value) Then
                                     ' Display Message
-                                    Me.DisplayMessage(Message.MSG_EXPIRE_PREVIOUS_WQ_SCHEDULE, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Expire
+                                    DisplayMessage(Message.MSG_EXPIRE_PREVIOUS_WQ_SCHEDULE, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Expire
                                     Return
                                 End If
                             End If
                         Next
                     End If
-                    Me.State.MyScheduleChildBO.Validate()
-                    Me.State.MyScheduleChildBO.EndEdit()
-                    Me.State.IsScheduleAdding = False
-                    Me.State.IsScheduleEditing = False
-                    Me.State.MyScheduleChildBO = Nothing
+                    State.MyScheduleChildBO.Validate()
+                    State.MyScheduleChildBO.EndEdit()
+                    State.IsScheduleAdding = False
+                    State.IsScheduleEditing = False
+                    State.MyScheduleChildBO = Nothing
                 Case CANCEL_COMMAND_NAME
-                    If (Me.State.MyScheduleChildBO.IsNew) Then
-                        If (Me.State.IsScheduleAdding) Then Me.State.MyScheduleChildBO.Delete()
+                    If (State.MyScheduleChildBO.IsNew) Then
+                        If (State.IsScheduleAdding) Then State.MyScheduleChildBO.Delete()
                     Else
-                        Me.State.MyScheduleChildBO.cancelEdit()
+                        State.MyScheduleChildBO.cancelEdit()
                     End If
-                    Me.State.IsScheduleAdding = False
-                    Me.State.IsScheduleEditing = False
-                    Me.State.MyScheduleChildBO = Nothing
+                    State.IsScheduleAdding = False
+                    State.IsScheduleEditing = False
+                    State.MyScheduleChildBO = Nothing
                 Case DELETE_COMMAND_NAME
-                    Me.State.MyScheduleChildBO = Me.State.MyBO.GetScheduleChild(New Guid(e.CommandArgument.ToString()))
-                    Me.State.MyScheduleChildBO.Delete()
-                    Me.State.MyScheduleChildBO = Nothing
+                    State.MyScheduleChildBO = State.MyBO.GetScheduleChild(New Guid(e.CommandArgument.ToString()))
+                    State.MyScheduleChildBO.Delete()
+                    State.MyScheduleChildBO = Nothing
                 Case Else
                     'TODO : Throw
             End Select
-            Me.EnableDisableFields()
+            EnableDisableFields()
             PopulateScheduleGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "Child Objects Command Buttons Event Handlers"
-    Private Sub btnAddNewReDirectReason_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAddNewReDirectReason_WRITE.Click
+    Private Sub btnAddNewReDirectReason_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnAddNewReDirectReason_WRITE.Click
         Try
-            Me.State.IsReDirectReasonAdding = True
-            Me.State.ReDirectReasonSelectedChildId = Guid.Empty
-            Me.BeginReDirectReasonChildEdit()
+            State.IsReDirectReasonAdding = True
+            State.ReDirectReasonSelectedChildId = Guid.Empty
+            BeginReDirectReasonChildEdit()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub PopulateReDirectReasonBOsFormFrom()
         Dim moCodeDropDown As DropDownList
         With GridViewReDirectReasons.Rows(GridViewReDirectReasons.EditIndex)
-            If (Me.State.MyReDirectReasonChildBO.IsNew) Then
-                moCodeDropDown = CType(.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_CODE_DROPDOWN), DropDownList)
-                Me.PopulateBOProperty(Me.State.MyReDirectReasonChildBO.ItemStatusReason, "Reason", GetSelectedDescription(moCodeDropDown))
+            If (State.MyReDirectReasonChildBO.IsNew) Then
+                moCodeDropDown = CType(.Cells(GRID_COL_CODE_IDX).FindControl(GRID_COL_CODE_DROPDOWN), DropDownList)
+                PopulateBOProperty(State.MyReDirectReasonChildBO.ItemStatusReason, "Reason", GetSelectedDescription(moCodeDropDown))
             End If
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
     Sub BeginReDirectReasonChildEdit()
-        Me.State.IsReDirectReasonEditing = True
-        Me.EnableDisableFields()
-        With Me.State
+        State.IsReDirectReasonEditing = True
+        EnableDisableFields()
+        With State
             If .ReDirectReasonSelectedChildId.Equals(Guid.Empty) Then
-                .MyReDirectReasonChildBO = Me.State.MyBO.AddReDirectReason()
+                .MyReDirectReasonChildBO = State.MyBO.AddReDirectReason()
                 .ReDirectReasonSelectedChildId = .MyReDirectReasonChildBO.Id
             Else
-                .MyReDirectReasonChildBO = (From wqisr In Me.State.MyBO.ReDirectReasons Where wqisr.ItemStatusReason.Id = .ReDirectReasonSelectedChildId Select wqisr).First()
+                .MyReDirectReasonChildBO = (From wqisr In State.MyBO.ReDirectReasons Where wqisr.ItemStatusReason.Id = .ReDirectReasonSelectedChildId Select wqisr).First()
             End If
         End With
         PopulateReDirectReasonGrid()
     End Sub
 
-    Private Sub btnAddNewReQueueReason_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAddNewReQueueReason_WRITE.Click
+    Private Sub btnAddNewReQueueReason_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnAddNewReQueueReason_WRITE.Click
         Try
-            Me.State.IsReQueueReasonAdding = True
-            Me.State.ReQueueReasonSelectedChildId = Guid.Empty
-            Me.BeginReQueueReasonChildEdit()
+            State.IsReQueueReasonAdding = True
+            State.ReQueueReasonSelectedChildId = Guid.Empty
+            BeginReQueueReasonChildEdit()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub PopulateReQueueReasonBOsFormFrom()
         Dim moCodeDropDown As DropDownList
         With GridViewReQueueReasons.Rows(GridViewReQueueReasons.EditIndex)
-            If (Me.State.MyReQueueReasonChildBO.IsNew) Then
-                moCodeDropDown = CType(.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_CODE_DROPDOWN), DropDownList)
-                Me.PopulateBOProperty(Me.State.MyReQueueReasonChildBO.ItemStatusReason, "Reason", GetSelectedDescription(moCodeDropDown))
+            If (State.MyReQueueReasonChildBO.IsNew) Then
+                moCodeDropDown = CType(.Cells(GRID_COL_CODE_IDX).FindControl(GRID_COL_CODE_DROPDOWN), DropDownList)
+                PopulateBOProperty(State.MyReQueueReasonChildBO.ItemStatusReason, "Reason", GetSelectedDescription(moCodeDropDown))
             End If
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
     Sub BeginReQueueReasonChildEdit()
-        Me.State.IsReQueueReasonEditing = True
-        Me.EnableDisableFields()
-        With Me.State
+        State.IsReQueueReasonEditing = True
+        EnableDisableFields()
+        With State
             If .ReQueueReasonSelectedChildId.Equals(Guid.Empty) Then
-                .MyReQueueReasonChildBO = Me.State.MyBO.AddReQueueReason()
+                .MyReQueueReasonChildBO = State.MyBO.AddReQueueReason()
                 .ReQueueReasonSelectedChildId = .MyReQueueReasonChildBO.Id
             Else
-                .MyReQueueReasonChildBO = (From wqisr In Me.State.MyBO.ReQueueReasons Where wqisr.ItemStatusReason.Id = .ReQueueReasonSelectedChildId Select wqisr).First()
+                .MyReQueueReasonChildBO = (From wqisr In State.MyBO.ReQueueReasons Where wqisr.ItemStatusReason.Id = .ReQueueReasonSelectedChildId Select wqisr).First()
             End If
         End With
         PopulateReQueueReasonGrid()
     End Sub
 
-    Private Sub btnAddNewSchedule_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAddNewSchedule_WRITE.Click
+    Private Sub btnAddNewSchedule_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnAddNewSchedule_WRITE.Click
         Try
-            Me.State.IsScheduleAdding = True
-            Me.State.EntityScheduleChildId = Guid.Empty
-            Me.BeginScheduleChildEdit()
+            State.IsScheduleAdding = True
+            State.EntityScheduleChildId = Guid.Empty
+            BeginScheduleChildEdit()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -1209,32 +1209,32 @@ Public Class WorkQueueForm
         Dim moDescriptionDropDown As DropDownList
         Dim moTextBox As TextBox
         With GridViewSchedules.Rows(GridViewSchedules.EditIndex)
-            If (Me.State.MyScheduleChildBO.IsNew) Then
-                moCodeDropDown = CType(.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_CODE_DROPDOWN), DropDownList)
-                moDescriptionDropDown = CType(.Cells(Me.GRID_COL_DESCRIPTION_IDX).FindControl(Me.GRID_COL_DESCRIPTION_DROPDOWN), DropDownList)
-                moTextBox = CType(.Cells(Me.GRID_COL_EFFECTIVE_IDX).FindControl(Me.GRID_COL_EFFECTIVE_TEXT), TextBox)
+            If (State.MyScheduleChildBO.IsNew) Then
+                moCodeDropDown = CType(.Cells(GRID_COL_CODE_IDX).FindControl(GRID_COL_CODE_DROPDOWN), DropDownList)
+                moDescriptionDropDown = CType(.Cells(GRID_COL_DESCRIPTION_IDX).FindControl(GRID_COL_DESCRIPTION_DROPDOWN), DropDownList)
+                moTextBox = CType(.Cells(GRID_COL_EFFECTIVE_IDX).FindControl(GRID_COL_EFFECTIVE_TEXT), TextBox)
 
-                Me.PopulateBOProperty(Me.State.MyScheduleChildBO, "ScheduleId", moCodeDropDown)
-                Me.PopulateBOProperty(Me.State.MyScheduleChildBO, "ScheduleCode", GetSelectedDescription(moCodeDropDown))
-                If (Me.State.MyScheduleChildBO.ScheduleId.Equals(GetSelectedItem(moDescriptionDropDown))) Then
-                    Me.PopulateBOProperty(Me.State.MyScheduleChildBO, "ScheduleDescription", GetSelectedDescription(moDescriptionDropDown))
+                PopulateBOProperty(State.MyScheduleChildBO, "ScheduleId", moCodeDropDown)
+                PopulateBOProperty(State.MyScheduleChildBO, "ScheduleCode", GetSelectedDescription(moCodeDropDown))
+                If (State.MyScheduleChildBO.ScheduleId.Equals(GetSelectedItem(moDescriptionDropDown))) Then
+                    PopulateBOProperty(State.MyScheduleChildBO, "ScheduleDescription", GetSelectedDescription(moDescriptionDropDown))
                 Else
-                    Me.PopulateBOProperty(Me.State.MyScheduleChildBO, "ScheduleDescription", String.Empty)
+                    PopulateBOProperty(State.MyScheduleChildBO, "ScheduleDescription", String.Empty)
                 End If
-                Me.PopulateBOProperty(Me.State.MyScheduleChildBO, "Effective", moTextBox)
+                PopulateBOProperty(State.MyScheduleChildBO, "Effective", moTextBox)
             End If
-            moTextBox = CType(.Cells(Me.GRID_COL_EXPIRATION_IDX).FindControl(Me.GRID_COL_EXPIRATION_TEXT), TextBox)
-            Me.PopulateBOProperty(Me.State.MyScheduleChildBO, "Expiration", moTextBox)
+            moTextBox = CType(.Cells(GRID_COL_EXPIRATION_IDX).FindControl(GRID_COL_EXPIRATION_TEXT), TextBox)
+            PopulateBOProperty(State.MyScheduleChildBO, "Expiration", moTextBox)
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
     Private Sub BeginScheduleChildEdit()
-        Me.State.IsScheduleEditing = True
-        Me.EnableDisableFields()
-        With Me.State
+        State.IsScheduleEditing = True
+        EnableDisableFields()
+        With State
             If .EntityScheduleChildId.Equals(Guid.Empty) Then
                 .MyScheduleChildBO = .MyBO.GetNewScheduleChild
                 .EntityScheduleChildId = .MyScheduleChildBO.Id
@@ -1248,7 +1248,7 @@ Public Class WorkQueueForm
 #End Region
 
 #Region "Tab related"
-    Private Sub EnableDisableTabs(ByVal blnFlag As Boolean)
+    Private Sub EnableDisableTabs(blnFlag As Boolean)
         listDisabledTabs.Clear()
         Dim cnt As Integer
         If blnFlag = False Then 'disable tabs

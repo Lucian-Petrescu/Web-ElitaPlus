@@ -25,41 +25,41 @@ Public Class ZipDistrictDetailDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("zip_district_detail_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub LoadList(ByVal familyDs As DataSet, ByVal zipDistrictId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Dim zipDistrictParam As New DBHelper.DBHelperParameter(Me.COL_NAME_ZIP_DISTRICT_ID, zipDistrictId)
-        DBHelper.Fetch(familyDs, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {zipDistrictParam})
+    Public Sub LoadList(familyDs As DataSet, zipDistrictId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Dim zipDistrictParam As New DBHelper.DBHelperParameter(COL_NAME_ZIP_DISTRICT_ID, zipDistrictId)
+        DBHelper.Fetch(familyDs, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {zipDistrictParam})
     End Sub
 
-    Public Function LoadNegativeList(ByVal countryId As Guid, ByVal zipDistrictId As Guid) As DataSet
+    Public Function LoadNegativeList(countryId As Guid, zipDistrictId As Guid) As DataSet
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_NEGATIVE_LIST")
-        Dim zipDistrictParam As New DBHelper.DBHelperParameter(Me.COL_NAME_ZIP_DISTRICT_ID, zipDistrictId)
-        Dim compParam As New DBHelper.DBHelperParameter(Me.COL_NAME_COUNTRY_ID, countryId)
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {compParam, zipDistrictParam})
+        Dim selectStmt As String = Config("/SQL/LOAD_NEGATIVE_LIST")
+        Dim zipDistrictParam As New DBHelper.DBHelperParameter(COL_NAME_ZIP_DISTRICT_ID, zipDistrictId)
+        Dim compParam As New DBHelper.DBHelperParameter(COL_NAME_COUNTRY_ID, countryId)
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {compParam, zipDistrictParam})
         Return ds
     End Function
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

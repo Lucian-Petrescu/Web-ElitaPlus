@@ -25,7 +25,7 @@ Partial Class CountryAddressForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -33,7 +33,7 @@ Partial Class CountryAddressForm
 
 #End Region
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         If Not Page.IsPostBack Then
             ListItemValue = 0
@@ -45,19 +45,19 @@ Partial Class CountryAddressForm
             LoadMailAddrFormatList(False)
         End If
 
-        chkOptional.Attributes.Add("OnClick", "SetSelectedItemOptional(document.getElementById('" & Me.MailAddrFormatList.ClientID & "'))")
-        btnSave_WRITE.Attributes.Add("OnClick", "SaveFormat(document.getElementById('" & Me.MailAddrFormatList.ClientID & "'));return false;")
-        MailAddrFormatList.Attributes.Add("OnChange", "SetOptionalFlag(document.getElementById('" & Me.chkOptional.ClientID & "'))")
+        chkOptional.Attributes.Add("OnClick", "SetSelectedItemOptional(document.getElementById('" & MailAddrFormatList.ClientID & "'))")
+        btnSave_WRITE.Attributes.Add("OnClick", "SaveFormat(document.getElementById('" & MailAddrFormatList.ClientID & "'));return false;")
+        MailAddrFormatList.Attributes.Add("OnChange", "SetOptionalFlag(document.getElementById('" & chkOptional.ClientID & "'))")
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
+    Private Sub Page_PreRender(sender As Object, e As System.EventArgs) Handles Me.PreRender
         Dim strAddressFormat As String = ""
 
         For Each tempItem As ListItem In MailAddrFormatList.Items
             strAddressFormat = strAddressFormat + tempItem.Text
         Next
         strAddressFormat = strAddressFormat.Replace("[\n]", "[\\n]")
-        Me.literalJS.Text = "<SCRIPT>document.getElementById(""hiddenAddrFormat"").value = """ & strAddressFormat & """;</SCRIPT>"
+        literalJS.Text = "<SCRIPT>document.getElementById(""hiddenAddrFormat"").value = """ & strAddressFormat & """;</SCRIPT>"
     End Sub
 
     Private Sub LoadMailAddrFormatList(Optional ByVal blnInit As Boolean = True)
@@ -98,7 +98,7 @@ Partial Class CountryAddressForm
         End If
 
     End Sub
-    Public Sub SpecialCharChanged(ByVal sender As System.Object, ByVal e As EventArgs)
+    Public Sub SpecialCharChanged(sender As System.Object, e As EventArgs)
         Dim cSpecialCharTextBox As String = SpecialChar.Text.Trim()
         If cSpecialCharTextBox.Length <> 0 Then
             CreateTokenFormat("[" & cSpecialCharTextBox & "]") ', CType(Session("AddAtEnd"), Boolean))
@@ -109,7 +109,7 @@ Partial Class CountryAddressForm
     End Sub
 
 
-    Private Sub CreateTokenFormat(ByVal tokenValue As String, Optional ByVal insertAtEnd As Boolean = True)
+    Private Sub CreateTokenFormat(tokenValue As String, Optional ByVal insertAtEnd As Boolean = True)
         'TokenBox.Text = TokenBox.Text & tokenValue
         If insertAtEnd Then
             MailAddrFormatList.Items.Add(New ListItem(tokenValue, ListItemValue.ToString))
@@ -125,7 +125,7 @@ Partial Class CountryAddressForm
         RefreshPreview()
     End Sub
 
-    Private Sub AddValueToDisplay(ByVal displayValue As String, ByVal tokenValue As String)
+    Private Sub AddValueToDisplay(displayValue As String, tokenValue As String)
         If tokenValue = "[Space]" Then
             displayValue = " "
         End If
@@ -139,7 +139,7 @@ Partial Class CountryAddressForm
     End Sub
 
 
-    Private Sub ClearButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearButton.Click
+    Private Sub ClearButton_Click(sender As System.Object, e As System.EventArgs) Handles ClearButton.Click
         'TokenBox.Text = ""
         MailAddrFormatList.Items.Clear()
         ListItemValue = 0
@@ -147,11 +147,11 @@ Partial Class CountryAddressForm
         RefreshPreview()
     End Sub
 
-    Private Sub RefreshButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefreshButton.Click
+    Private Sub RefreshButton_Click(sender As System.Object, e As System.EventArgs) Handles RefreshButton.Click
         RefreshPreview()
     End Sub
 
-    Private Function StripTokenFlag(ByVal strToken As String) As String
+    Private Function StripTokenFlag(strToken As String) As String
         If strToken.Trim.EndsWith("]*") Then
             Return strToken.Substring(0, strToken.Length - 1)
         Else
@@ -219,11 +219,11 @@ Partial Class CountryAddressForm
         End If
     End Sub
 
-    Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
+    Private Sub btnAdd_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd.Click
         AddToFormatList() '(True)
     End Sub
 
-    Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
+    Private Sub btnRemove_Click(sender As System.Object, e As System.EventArgs) Handles btnRemove.Click
         'If MailAddrFormatList.Items.Count > 4 Then
         '    If MailAddrFormatList.SelectedIndex > 3 Then
         '        MailAddrFormatList.Items.Remove(MailAddrFormatList.SelectedItem)
@@ -234,7 +234,7 @@ Partial Class CountryAddressForm
         RefreshPreview()
     End Sub
 
-    Private Sub btnMoveUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMoveUp.Click
+    Private Sub btnMoveUp_Click(sender As System.Object, e As System.EventArgs) Handles btnMoveUp.Click
         'If MailAddrFormatList.Items.Count > 4 Then
         '    Dim iSelectedIndex As Integer = MailAddrFormatList.SelectedIndex
         '    If (iSelectedIndex > 4) Then
@@ -253,7 +253,7 @@ Partial Class CountryAddressForm
         End If
     End Sub
 
-    Private Sub btnMoveDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMoveDown.Click
+    Private Sub btnMoveDown_Click(sender As System.Object, e As System.EventArgs) Handles btnMoveDown.Click
         'If MailAddrFormatList.Items.Count > 4 Then
         '    Dim iSelectedIndex As Integer = MailAddrFormatList.SelectedIndex
         '    If (iSelectedIndex > 3) And (iSelectedIndex <> MailAddrFormatList.Items.Count - 1) Then
@@ -273,7 +273,7 @@ Partial Class CountryAddressForm
     End Sub
 
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         'If Not Page.IsStartupScriptRegistered("SaveCountryAddress") Then
         Dim addrFormatStr As String = ""
 
@@ -287,7 +287,7 @@ Partial Class CountryAddressForm
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "parent.SaveCountryAddress('" & addrFormatStr & "');" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("SaveCountryAddress", sJavaScript)
+        RegisterStartupScript("SaveCountryAddress", sJavaScript)
         'End If
     End Sub
 

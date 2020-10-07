@@ -4,11 +4,11 @@ Imports System.Runtime.Serialization
 Public Class CacheException
     Inherits ElitaPlusException
 
-    Public Sub New(ByVal msg As String, Optional ByVal innerExcp As Exception = Nothing)
+    Public Sub New(msg As String, Optional ByVal innerExcp As Exception = Nothing)
         MyBase.New(msg, ErrorCodes.CONFIG_CACHE_ERR, innerExcp)
     End Sub
 
-    Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+    Protected Sub New(info As SerializationInfo, context As StreamingContext)
         MyBase.New(info, context)
     End Sub
 End Class

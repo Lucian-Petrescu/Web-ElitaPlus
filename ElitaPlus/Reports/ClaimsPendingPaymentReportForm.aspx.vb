@@ -89,7 +89,7 @@
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -100,29 +100,29 @@
 #Region "Handlers-Init"
 
         Private Sub InitializeForm()
-            Me.chkSvcCode.Checked = False
+            chkSvcCode.Checked = False
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.ClearErrLabels()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            ErrControllerMaster.Clear_Hide()
+            ClearErrLabels()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     InitializeForm()
                     TheReportCeInputControl.populateReportLanguages(RPT_FILENAME)
                     'Date Calendars                    
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
 
         End Sub
 
@@ -130,12 +130,12 @@
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -146,8 +146,8 @@
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(lblbeginbatch)
-            Me.ClearLabelErrSign(lblendbatch)
+            ClearLabelErrSign(lblbeginbatch)
+            ClearLabelErrSign(lblendbatch)
         End Sub
 
 #End Region
@@ -158,8 +158,8 @@
 
 #Region "Crystal Enterprise"
 
-        Sub SetReportParams(ByVal rptParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                        ByVal rptName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(rptParams As ReportParams, repParams() As ReportCeBaseForm.RptParam,
+                        rptName As String, startIndex As Integer)
             With rptParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_USER_KEY", .userId, rptName)
                 repParams(startIndex + 1) = New ReportCeBaseForm.RptParam("V_BEGIN_BATCH", .beginbatch, rptName)
@@ -172,9 +172,9 @@
 
         End Sub
 
-        Function SetParameters(ByVal userId As String, ByVal beginbatch As String,
-                               ByVal endbatch As String, ByVal selectionType As String,
-                               ByVal svccode As String, ByVal taxtype As String, ByVal culturecode As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, beginbatch As String,
+                               endbatch As String, selectionType As String,
+                               svccode As String, taxtype As String, culturecode As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             'Dim reportName As String = RPT_FILENAME
@@ -207,9 +207,9 @@
             Return params
         End Function
 
-        Function SetExpParameters(ByVal userId As String, ByVal beginbatch As String,
-                                  ByVal endbatch As String, ByVal selectionType As String,
-                                  ByVal svccode As String, ByVal taxtype As String, ByVal culturecode As String) As ReportCeBaseForm.Params
+        Function SetExpParameters(userId As String, beginbatch As String,
+                                  endbatch As String, selectionType As String,
+                                  svccode As String, taxtype As String, culturecode As String) As ReportCeBaseForm.Params
 
             Dim reportName As String
             Dim params As New ReportCeBaseForm.Params
@@ -290,7 +290,7 @@
                 Throw New GUIException(Message.MSG_INVOICE_NUMBER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_BATCH_NUMBER_MUST_BE_LESS_THAN_END_BATCH_NUMBER_ERR)
             End If
 
-            If Me.chkSvcCode.Checked = True Then
+            If chkSvcCode.Checked = True Then
                 svccode = YES
             Else
                 svccode = NO

@@ -30,22 +30,22 @@ Public Class AfaInvoiceManaulDataDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("afa_invoice_manual_data_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadListByDealer(ByVal dealerID As Guid, ByVal PeriodYear As String, ByVal PeriodMonth As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadListByDealer(dealerID As Guid, PeriodYear As String, PeriodMonth As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim para() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_id", dealerID.ToByteArray)}
         Dim ds As New DataSet
 
@@ -60,7 +60,7 @@ Public Class AfaInvoiceManaulDataDAL
         End If
 
         Try
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
             ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, para)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -68,8 +68,8 @@ Public Class AfaInvoiceManaulDataDAL
         Return ds
     End Function
 
-    Public Function LoadListByTypeForPeriod(ByVal DealerID As Guid, ByVal ManualDataType As String, ByVal InvoiceMonthStart As String, ByVal InvoiceMonthEnd As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_TYPE")
+    Public Function LoadListByTypeForPeriod(DealerID As Guid, ManualDataType As String, InvoiceMonthStart As String, InvoiceMonthEnd As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_TYPE")
         Dim para() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, DealerID.ToByteArray), _
                                                                                     New DBHelper.DBHelperParameter(COL_NAME_AMOUNT_TYPE_CODE, ManualDataType)}
         Dim ds As New DataSet
@@ -84,7 +84,7 @@ Public Class AfaInvoiceManaulDataDAL
             inClauseCondition += " and invoice_month <= '" & InvoiceMonthEnd & "'"
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
+        selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
         Try
             ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, para)
         Catch ex As Exception
@@ -93,8 +93,8 @@ Public Class AfaInvoiceManaulDataDAL
         Return ds
     End Function
 
-    Public Function LoadPONumberListByDealer(ByVal dealerID As Guid, ByVal PeriodGreaterThan As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_PONumber")
+    Public Function LoadPONumberListByDealer(dealerID As Guid, PeriodGreaterThan As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_PONumber")
         Dim para() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_id", dealerID.ToByteArray)}
         Dim ds As New DataSet
 
@@ -105,7 +105,7 @@ Public Class AfaInvoiceManaulDataDAL
         End If
 
         Try
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
             ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, para)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -113,8 +113,8 @@ Public Class AfaInvoiceManaulDataDAL
         Return ds
     End Function
 
-    Public Function LoadDealerMonthlyRecords(ByVal dealerID As Guid, ByVal AccountingMonth As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_MONTHLY_AMOUNTS")
+    Public Function LoadDealerMonthlyRecords(dealerID As Guid, AccountingMonth As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_MONTHLY_AMOUNTS")
         Dim para() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_id", dealerID.ToByteArray), _
                                                                                      New DBHelper.DBHelperParameter("invoice_month", AccountingMonth)}
         Dim ds As New DataSet
@@ -127,9 +127,9 @@ Public Class AfaInvoiceManaulDataDAL
         Return ds
     End Function
 
-    Public Function StartInvoiceProcess(ByVal dealerId As Guid, ByVal BillingMonth As String, ByVal userName As String) As Boolean
+    Public Function StartInvoiceProcess(dealerId As Guid, BillingMonth As String, userName As String) As Boolean
 
-        Dim selectStmt As String = Me.Config("/SQL/START_INVOICE_PROCESS")
+        Dim selectStmt As String = Config("/SQL/START_INVOICE_PROCESS")
 
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                     New DBHelper.DBHelperParameter("pi_dealer_id", dealerId.ToByteArray), _
@@ -152,8 +152,8 @@ Public Class AfaInvoiceManaulDataDAL
         End Try
     End Function
 
-    Public Function LoadDealerInvoiceDates(ByVal dealerID As Guid, ByVal AccountingMonth As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_INVOICE_DATES")
+    Public Function LoadDealerInvoiceDates(dealerID As Guid, AccountingMonth As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_INVOICE_DATES")
         Dim para() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("invoice_month", AccountingMonth), _
                                                                                      New DBHelper.DBHelperParameter("dealer_id", dealerID.ToByteArray)}
         Dim ds As New DataSet
@@ -166,9 +166,9 @@ Public Class AfaInvoiceManaulDataDAL
         Return ds
     End Function
 
-    Public Sub UpdateInvoiceWithManualDates(ByVal dealerId As Guid, ByVal BillingMonth As String, ByRef strMsg As String)
+    Public Sub UpdateInvoiceWithManualDates(dealerId As Guid, BillingMonth As String, ByRef strMsg As String)
 
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_INVOICE_WITH_MANUAL_DATES")
+        Dim selectStmt As String = Config("/SQL/UPDATE_INVOICE_WITH_MANUAL_DATES")
 
 
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
@@ -190,12 +190,12 @@ Public Class AfaInvoiceManaulDataDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

@@ -63,71 +63,71 @@ Public Class RepairAndLogisticsDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid, ByVal languageid As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid, languageid As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("language_id1", languageid.ToByteArray), _
         New DBHelper.DBHelperParameter("language_id2", languageid.ToByteArray), _
         New DBHelper.DBHelperParameter("language_id3", languageid.ToByteArray), _
         New DBHelper.DBHelperParameter("claim_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal compIds As ArrayList, ByVal claimNumber As String, ByVal serialNumber As String, _
-                             ByVal customerName As String, ByVal taxID As String, _
-                             ByVal authorizationNumber As String, ByVal cellPhoneNumber As String, ByVal sortBy As String, _
-                             ByVal externalUserServiceCenterIds As ArrayList, ByVal serviceCenterIds As ArrayList, ByVal claimAuthorizationNumber As String, _
-                             ByVal dealerId As Guid, Optional ByVal dealerGroupCode As String = "") As DataSet
+    Public Function LoadList(compIds As ArrayList, claimNumber As String, serialNumber As String, _
+                             customerName As String, taxID As String, _
+                             authorizationNumber As String, cellPhoneNumber As String, sortBy As String, _
+                             externalUserServiceCenterIds As ArrayList, serviceCenterIds As ArrayList, claimAuthorizationNumber As String, _
+                             dealerId As Guid, Optional ByVal dealerGroupCode As String = "") As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_DYNAMIC")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_DYNAMIC")
 
         Dim whereClauseConditions As String = ""
 
-        If Me.FormatSearchMask(claimNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "cview." & Me.COL_NAME_CLAIM_NUMBER & " " & claimNumber
+        If FormatSearchMask(claimNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "cview." & COL_NAME_CLAIM_NUMBER & " " & claimNumber
         End If
 
-        If Me.FormatSearchMask(serialNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(ce." & Me.COL_NAME_SERIAL_NUMBER & ") " & serialNumber
+        If FormatSearchMask(serialNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(ce." & COL_NAME_SERIAL_NUMBER & ") " & serialNumber
         End If
 
-        If Me.FormatSearchMask(customerName) Then
+        If FormatSearchMask(customerName) Then
             whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(cview.cust_name) " & customerName
         End If
 
-        If Me.FormatSearchMask(taxID) Then
+        If FormatSearchMask(taxID) Then
             whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(c.identification_number) " & taxID
         End If
 
         If (MiscUtil.IsCriteriaSelected(externalUserServiceCenterIds) = True) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & MiscUtil.BuildListForSql("COALESCE(cview." & Me.COL_NAME_SERVICE_CENTER_ID & ", ca." & Me.COL_NAME_SERVICE_CENTER_ID & ")", externalUserServiceCenterIds)
+            whereClauseConditions &= " AND " & Environment.NewLine & MiscUtil.BuildListForSql("COALESCE(cview." & COL_NAME_SERVICE_CENTER_ID & ", ca." & COL_NAME_SERVICE_CENTER_ID & ")", externalUserServiceCenterIds)
         End If
 
 
         If (MiscUtil.IsCriteriaSelected(serviceCenterIds) = True) Then
 
 
-            whereClauseConditions &= " AND " & Environment.NewLine & MiscUtil.BuildListForSql("COALESCE(cview." & Me.COL_NAME_SERVICE_CENTER_ID & ", ca." & Me.COL_NAME_SERVICE_CENTER_ID & ")", serviceCenterIds)
+            whereClauseConditions &= " AND " & Environment.NewLine & MiscUtil.BuildListForSql("COALESCE(cview." & COL_NAME_SERVICE_CENTER_ID & ", ca." & COL_NAME_SERVICE_CENTER_ID & ")", serviceCenterIds)
         End If
 
 
-        If Me.FormatSearchMask(authorizationNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(cview." & Me.COL_NAME_AUTHORIZATION_NUMBER & ") " & authorizationNumber.ToUpper
+        If FormatSearchMask(authorizationNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(cview." & COL_NAME_AUTHORIZATION_NUMBER & ") " & authorizationNumber.ToUpper
         End If
 
-        If Me.FormatSearchMask(claimAuthorizationNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(ca." & Me.COL_NAME_CLAIM_AUTHORIZATION_NUMBER & ") " & claimAuthorizationNumber.ToUpper
+        If FormatSearchMask(claimAuthorizationNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(ca." & COL_NAME_CLAIM_AUTHORIZATION_NUMBER & ") " & claimAuthorizationNumber.ToUpper
         End If
 
 
-        If Me.FormatSearchMask(cellPhoneNumber) Then
+        If FormatSearchMask(cellPhoneNumber) Then
             whereClauseConditions &= " AND " & Environment.NewLine & "cview.cust_work_phone " & cellPhoneNumber
         End If
 
@@ -137,27 +137,27 @@ Public Class RepairAndLogisticsDAL
             whereClauseConditions &= Environment.NewLine & " AND cview.dealer_id = hextoraw(" & MiscUtil.GetDbStringFromGuid(dealerId) & ")"
         End If
 
-        If (dealerGroupCode <> String.Empty AndAlso (Me.FormatSearchMask(dealerGroupCode))) Then
+        If (dealerGroupCode <> String.Empty AndAlso (FormatSearchMask(dealerGroupCode))) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(dg.code) " & dealerGroupCode.ToUpper & ""
         End If
 
         ' not HextoRaw
         whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cview.company_id", compIds, True)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         If Not IsNothing(sortBy) Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
                                             Environment.NewLine & "ORDER BY " & Environment.NewLine & sortBy)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, _
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, _
                             New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
@@ -166,8 +166,8 @@ Public Class RepairAndLogisticsDAL
 
     End Function
 
-    Public Function GetReplacementParts(ByVal claimId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/REPLACEMENT_PARTS")
+    Public Function GetReplacementParts(claimId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/REPLACEMENT_PARTS")
         Dim parameters() As OracleParameter = New OracleParameter() _
                                            {New OracleParameter("claim_id", claimId.ToByteArray)}
 
@@ -180,8 +180,8 @@ Public Class RepairAndLogisticsDAL
 
     End Function
 
-    Public Function GetServiceCenters(ByVal claimId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/SERVICE_CENTERS")
+    Public Function GetServiceCenters(claimId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/SERVICE_CENTERS")
         Dim parameters() As OracleParameter = New OracleParameter() _
                                            {New OracleParameter("claim_id", claimId.ToByteArray)}
 
@@ -193,11 +193,11 @@ Public Class RepairAndLogisticsDAL
         End Try
 
     End Function
-    Public Function UpdateVerificationNumber(ByVal strVerificationNumber As String, ByVal claimId As Guid) As Boolean
+    Public Function UpdateVerificationNumber(strVerificationNumber As String, claimId As Guid) As Boolean
         Dim sqlStmt As String
         Dim parameters() As DBHelper.DBHelperParameter
 
-        sqlStmt = Me.Config("/SQL/UPDATE_VERIFICATION_NUMBER")
+        sqlStmt = Config("/SQL/UPDATE_VERIFICATION_NUMBER")
         parameters = New DBHelper.DBHelperParameter() { _
                         New DBHelper.DBHelperParameter("VERIFICATION_NUMBER", strVerificationNumber), _
                         New DBHelper.DBHelperParameter("CLAIM_ID", claimId.ToByteArray)}
@@ -216,12 +216,12 @@ Public Class RepairAndLogisticsDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

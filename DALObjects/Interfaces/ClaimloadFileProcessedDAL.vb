@@ -34,7 +34,7 @@ Public Class ClaimloadFileProcessedDAL
 #End Region
 
 #Region "Delegate Signatures"
-    Public Delegate Sub AsyncCaller(ByVal oFileProcessedData As ClaimLoadFileProcessedData, ByVal selectStmt As String)
+    Public Delegate Sub AsyncCaller(oFileProcessedData As ClaimLoadFileProcessedData, selectStmt As String)
 #End Region
 
 #Region "Constructors"
@@ -46,22 +46,22 @@ Public Class ClaimloadFileProcessedDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claimload_file_processed_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal userId As Guid, ByVal countryCode As String, ByVal fileType As String, ByVal fileName As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(userId As Guid, countryCode As String, fileType As String, fileName As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
 
         OracleDbHelper.AddParameter(cmd, "pi_user_id", OracleDbType.Raw, userId.ToByteArray)
@@ -71,7 +71,7 @@ Public Class ClaimloadFileProcessedDAL
         OracleDbHelper.AddParameter(cmd, "po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+            Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -81,15 +81,15 @@ Public Class ClaimloadFileProcessedDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim oInvoiceDAL As New InvoiceDAL
         Dim oClaimDAL As New ClaimDAL
         Dim oInvoiceReconWrkDAL As New InvoiceReconWrkDAL
@@ -108,7 +108,7 @@ Public Class ClaimloadFileProcessedDAL
             End If
             oInvoiceReconWrkDAL.Update(familyDataset, tr, DataRowState.Modified)
             oClaimloadReconWrkDAL.Update(familyDataset, tr, DataRowState.Modified)
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
 
             If Transaction Is Nothing Then
                 'We are the creator of the transaction we shoul commit it  and close the connection
@@ -125,7 +125,7 @@ Public Class ClaimloadFileProcessedDAL
 #End Region
 
 #Region "StoreProcedures Control"
-    Private Sub AsyncExecuteSP(ByVal oFileProcessedData As ClaimLoadFileProcessedData, ByVal selectStmt As String)
+    Private Sub AsyncExecuteSP(oFileProcessedData As ClaimLoadFileProcessedData, selectStmt As String)
         Dim inputParameters(TOTAL_PARAM_SP) As DBHelperParameter
         Dim outputParameter(0) As DBHelperParameter
 
@@ -142,14 +142,14 @@ Public Class ClaimloadFileProcessedDAL
         End If
     End Sub
 
-    Private Sub ExecuteSP(ByVal oFileProcessedData As ClaimLoadFileProcessedData, ByVal selectStmt As String)
+    Private Sub ExecuteSP(oFileProcessedData As ClaimLoadFileProcessedData, selectStmt As String)
         Dim aSyncHandler As New AsyncCaller(AddressOf AsyncExecuteSP)
         aSyncHandler.BeginInvoke(oFileProcessedData, selectStmt, Nothing, Nothing)
     End Sub
 
-    Public Sub ValidateFile(ByVal oData As ClaimLoadFileProcessedData)
+    Public Sub ValidateFile(oData As ClaimLoadFileProcessedData)
         Dim selectStmt As String
-        selectStmt = Me.Config("/SQL/VALIDATE_FILE")
+        selectStmt = Config("/SQL/VALIDATE_FILE")
         Try
             ExecuteSP(oData, selectStmt)
         Catch ex As Exception
@@ -157,9 +157,9 @@ Public Class ClaimloadFileProcessedDAL
         End Try
     End Sub
 
-    Public Sub ProcessFile(ByVal oData As ClaimLoadFileProcessedData)
+    Public Sub ProcessFile(oData As ClaimLoadFileProcessedData)
         Dim selectStmt As String
-        selectStmt = Me.Config("/SQL/PROCESS_FILE")
+        selectStmt = Config("/SQL/PROCESS_FILE")
         Try
             ExecuteSP(oData, selectStmt)
         Catch ex As Exception
@@ -167,9 +167,9 @@ Public Class ClaimloadFileProcessedDAL
         End Try
     End Sub
 
-    Public Sub DeleteFile(ByVal oData As ClaimLoadFileProcessedData)
+    Public Sub DeleteFile(oData As ClaimLoadFileProcessedData)
         Dim selectStmt As String
-        selectStmt = Me.Config("/SQL/DELETE_FILE")
+        selectStmt = Config("/SQL/DELETE_FILE")
         Try
             ExecuteSP(oData, selectStmt)
         Catch ex As Exception

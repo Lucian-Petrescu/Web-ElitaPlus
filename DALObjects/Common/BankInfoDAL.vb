@@ -56,23 +56,23 @@ Public Class BankInfoDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("bank_info_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 #End Region
@@ -81,9 +81,9 @@ Public Class BankInfoDAL
 #Region "StoreProcedures Control"
 
     ' Execute Store Procedure
-    Public Function IbanIsValid(ByVal ibanNumber As String, ByVal countryCode As String) As Boolean
+    Public Function IbanIsValid(ibanNumber As String, countryCode As String) As Boolean
         Dim inputParameters(1) As DBHelper.DBHelperParameter
-        Dim sql As String = Me.Config("/SQL/VALIDATE_IBAN_NUMBER")
+        Dim sql As String = Config("/SQL/VALIDATE_IBAN_NUMBER")
 
         inputParameters(0) = New DBHelper.DBHelperParameter("p_iban", ibanNumber)
         inputParameters(1) = New DBHelper.DBHelperParameter("p_country_code", countryCode)
@@ -99,13 +99,13 @@ Public Class BankInfoDAL
 
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         Try
             If ds Is Nothing Then
                 Return
             End If
-            If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-                MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+            If Not ds.Tables(TABLE_NAME) Is Nothing Then
+                MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
             End If
         Catch ex As ElitaPlus.DALObjects.DataBaseIntegrityConstraintViolation
             'DEF-1128 - ALR - Added the exception handler in case the bankinfo object belongs to another svc center, dealer, etc..
@@ -113,7 +113,7 @@ Public Class BankInfoDAL
         End Try
     End Sub
 
-    Public Overloads Sub UpdateAddress(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateAddress(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim addressDAL As New AddressDAL
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then

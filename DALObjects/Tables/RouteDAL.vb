@@ -34,24 +34,24 @@ Public Class RouteDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("route_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal companyGroupId As Guid, ByVal RouteId As Guid, ByVal serviceNetworkId As Guid) As DataSet
+    Public Function LoadList(companyGroupId As Guid, RouteId As Guid, serviceNetworkId As Guid) As DataSet
 
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As OracleParameter
         Dim whereClausecondition As String = ""
 
@@ -81,7 +81,7 @@ Public Class RouteDAL
                                      New OracleParameter(COL_NAME_ROUTE_ID, RouteId.ToByteArray), _
                                      New OracleParameter(COL_NAME_SERVICE_NETWORK_ID, serviceNetworkId.ToByteArray)}
             End If
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -94,18 +94,18 @@ Public Class RouteDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         Dim scDal As new ServiceCenterDAL
         Dim tr As IDbTransaction = Transaction
@@ -116,10 +116,10 @@ Public Class RouteDAL
 
             'First Pass updates Deletions
             'scDal.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 
             If familyDataset.Tables.Count > 1 Then
                 scDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
@@ -141,45 +141,45 @@ Public Class RouteDAL
 
 #Region "Public Methods"
 
-    Public Sub LoadSelectedSCs(ByVal ds As DataSet, ByVal routeID As Guid)
+    Public Sub LoadSelectedSCs(ds As DataSet, routeID As Guid)
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_SELECTED_SERVICE_CENTER_LIST")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_ROUTE_ID, routeID.ToByteArray)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_ROUTE_SC, parameters)
-
-    End Sub
-
-    Public Sub LoadAvailableSCs(ByVal ds As DataSet, ByVal scNetworkId As Guid)
-
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_AVAILABLE_SERVICE_CENTER_LIST")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_SERVICE_NETWORK_ID, scNetworkId.ToByteArray)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_ROUTE_SC, parameters)
+        Dim selectStmt As String = Config("/SQL/LOAD_SELECTED_SERVICE_CENTER_LIST")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_ROUTE_ID, routeID.ToByteArray)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME_ROUTE_SC, parameters)
 
     End Sub
 
-    Public Function LoadList(ByVal scNetworkId As Guid) As DataSet
+    Public Sub LoadAvailableSCs(ds As DataSet, scNetworkId As Guid)
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_DYNAMIC")
+        Dim selectStmt As String = Config("/SQL/LOAD_AVAILABLE_SERVICE_CENTER_LIST")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_SERVICE_NETWORK_ID, scNetworkId.ToByteArray)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME_ROUTE_SC, parameters)
+
+    End Sub
+
+    Public Function LoadList(scNetworkId As Guid) As DataSet
+
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_DYNAMIC")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() _
                             {New OracleParameter(COL_NAME_SERVICE_NETWORK_ID, scNetworkId.ToByteArray)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function GetRouteByCode(ByVal companyGroupId As Guid, ByVal routeCode As String) As DataSet
+    Public Function GetRouteByCode(companyGroupId As Guid, routeCode As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_ROUTE_BY_CODE")
+        Dim selectStmt As String = Config("/SQL/GET_ROUTE_BY_CODE")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() _
                             {New OracleParameter(COL_NAME_COMPANY_GROUP_ID, companyGroupId.ToByteArray), _
                              New OracleParameter(COL_NAME_ROUTE_CODE, routeCode)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try

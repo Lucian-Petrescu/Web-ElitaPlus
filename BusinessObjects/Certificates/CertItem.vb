@@ -8,36 +8,36 @@ Public Class CertItem
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
@@ -45,12 +45,12 @@ Public Class CertItem
     Protected Sub Load()
         Try
             Dim dal As New CertItemDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -58,23 +58,23 @@ Public Class CertItem
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CertItemDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
             'Me.LoadMfgDeductible(id)
@@ -102,19 +102,19 @@ Public Class CertItem
             If IsNothing(Effective_on_date) Then
                 Effective_on_date = DateTime.Now
             End If
-            Dim cert As Certificate = New Certificate(Me.CertId, Me.Dataset)
-            Dim dealer As Dealer = New Dealer(cert.DealerId, Me.Dataset)
+            Dim cert As Certificate = New Certificate(CertId, Dataset)
+            Dim dealer As Dealer = New Dealer(cert.DealerId, Dataset)
             Dealer_EquipmentList_code = dealer.EquipmentListCode
-            Me.EquipmentId = Guid.Empty
-            If Me.IsEquipmentRequired Then
-                Me.EquipmentId = Equipment.GetEquipmentIdByEquipmentList(dealer.EquipmentListCode, Effective_on_date, Me.ManufacturerId, Me.Model)
-                If (Not Me.EquipmentId.Equals(Guid.Empty)) Then
-                    Dim eqp As New Equipment(Me.EquipmentId)
-                    Me.ItemDescription = eqp.Description
-                    Me.Save()
+            EquipmentId = Guid.Empty
+            If IsEquipmentRequired Then
+                EquipmentId = Equipment.GetEquipmentIdByEquipmentList(dealer.EquipmentListCode, Effective_on_date, ManufacturerId, Model)
+                If (Not EquipmentId.Equals(Guid.Empty)) Then
+                    Dim eqp As New Equipment(EquipmentId)
+                    ItemDescription = eqp.Description
+                    Save()
                     retVal = True
                 Else
-                    Me.ItemDescription = String.Empty
+                    ItemDescription = String.Empty
                 End If
             End If
             Return retVal
@@ -128,7 +128,7 @@ Public Class CertItem
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CertItemDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -139,7 +139,7 @@ Public Class CertItem
     End Property
 
     <ValueMandatory("")> _
-    Public Property CertId() As Guid
+    Public Property CertId As Guid
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_CERT_ID) Is DBNull.Value Then
@@ -148,13 +148,13 @@ Public Class CertItem
                 Return New Guid(CType(Row(CertItemDAL.COL_NAME_CERT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_CERT_ID, Value)
+            SetValue(CertItemDAL.COL_NAME_CERT_ID, Value)
         End Set
     End Property
 
-    Public Property SkuNumber() As String
+    Public Property SkuNumber As String
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_SKU_NUMBER) Is DBNull.Value Then
@@ -163,14 +163,14 @@ Public Class CertItem
                 Return CType(Row(CertItemDAL.COL_NAME_SKU_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_SKU_NUMBER, Value)
+            SetValue(CertItemDAL.COL_NAME_SKU_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ItemNumber() As LongType
+    Public Property ItemNumber As LongType
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_ITEM_NUMBER) Is DBNull.Value Then
@@ -179,15 +179,15 @@ Public Class CertItem
                 Return New LongType(CType(Row(CertItemDAL.COL_NAME_ITEM_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_ITEM_NUMBER, Value)
+            SetValue(CertItemDAL.COL_NAME_ITEM_NUMBER, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_RISK_TYPE_ID) Is DBNull.Value Then
@@ -196,16 +196,16 @@ Public Class CertItem
                 Return New Guid(CType(Row(CertItemDAL.COL_NAME_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_RISK_TYPE_ID, Value)
+            SetValue(CertItemDAL.COL_NAME_RISK_TYPE_ID, Value)
         End Set
     End Property
 
     ' Commenting this Custom Validator to allow the Equipment to be updated as null eventhough the Dealer is using the 
     ' Equipment for REQ-918 - To Save the Cert Item Details in the Claim Equipment Table
     '<ValidateEquipment("")> _
-    Public Property EquipmentId() As Guid
+    Public Property EquipmentId As Guid
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_EQUIPMENT_ID) Is DBNull.Value Then
@@ -214,13 +214,13 @@ Public Class CertItem
                 Return New Guid(CType(Row(CertItemDAL.COL_NAME_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_EQUIPMENT_ID, Value)
+            SetValue(CertItemDAL.COL_NAME_EQUIPMENT_ID, Value)
         End Set
     End Property
 
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -229,13 +229,13 @@ Public Class CertItem
                 Return New Guid(CType(Row(CertItemDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_MANUFACTURER_ID, Value)
+            SetValue(CertItemDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
     End Property
 
-    Public Property MaxReplacementCost() As DecimalType
+    Public Property MaxReplacementCost As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_MAX_REPLACEMENT_COST) Is DBNull.Value Then
@@ -244,15 +244,15 @@ Public Class CertItem
                 Return New DecimalType(CType(Row(CertItemDAL.COL_NAME_MAX_REPLACEMENT_COST), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_MAX_REPLACEMENT_COST, Value)
+            SetValue(CertItemDAL.COL_NAME_MAX_REPLACEMENT_COST, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=30), SerialNumberValidator("")> _
-    Public Property SerialNumber() As String
+    Public Property SerialNumber As String
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_SERIAL_NUMBER) Is DBNull.Value Then
@@ -261,14 +261,14 @@ Public Class CertItem
                 Return CType(Row(CertItemDAL.COL_NAME_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_SERIAL_NUMBER, Value)
+            SetValue(CertItemDAL.COL_NAME_SERIAL_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30), SerialNumberValidator("")> _
-    Public Property IMEINumber() As String
+    Public Property IMEINumber As String
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_IMEI_NUMBER) Is DBNull.Value Then
@@ -277,13 +277,13 @@ Public Class CertItem
                 Return CType(Row(CertItemDAL.COL_NAME_IMEI_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_IMEI_NUMBER, Value)
+            SetValue(CertItemDAL.COL_NAME_IMEI_NUMBER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=100)>
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -292,13 +292,13 @@ Public Class CertItem
                 Return CType(Row(CertItemDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_MODEL, Value)
+            SetValue(CertItemDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
 
-    Public ReadOnly Property GetCoverageTypeDescription(ByVal coverageID As Guid) As String
+    Public ReadOnly Property GetCoverageTypeDescription(coverageID As Guid) As String
         Get
             Dim moCoverage As New CertItemCoverage
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -311,7 +311,7 @@ Public Class CertItem
         End Get
     End Property
 
-    Public ReadOnly Property GetCoverageTypeCode(ByVal coverageID As Guid) As String
+    Public ReadOnly Property GetCoverageTypeCode(coverageID As Guid) As String
         Get
             Dim moCoverage As New CertItemCoverage
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -324,13 +324,13 @@ Public Class CertItem
         End Get
     End Property
 
-    Public ReadOnly Property GetCertificate(ByVal certID As Guid) As Certificate
+    Public ReadOnly Property GetCertificate(certID As Guid) As Certificate
         Get
-            Return New Certificate(certID, Me.Dataset)
+            Return New Certificate(certID, Dataset)
         End Get
     End Property
 
-    Public ReadOnly Property GetReinsuranceStatusDescription(ByVal ReinsuranceStatusID As Guid) As String
+    Public ReadOnly Property GetReinsuranceStatusDescription(ReinsuranceStatusID As Guid) As String
         Get
             Dim moCoverage As New CertItemCoverage
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -345,7 +345,7 @@ Public Class CertItem
 
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -354,14 +354,14 @@ Public Class CertItem
                 Return New Guid(CType(Row(CertItemDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(CertItemDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property ItemDescription() As String
+    Public Property ItemDescription As String
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_ITEM_DESCRIPTION) Is DBNull.Value Then
@@ -370,14 +370,14 @@ Public Class CertItem
                 Return CType(Row(CertItemDAL.COL_NAME_ITEM_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_ITEM_DESCRIPTION, Value)
+            SetValue(CertItemDAL.COL_NAME_ITEM_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)> _
-    Public Property ItemCode() As String
+    Public Property ItemCode As String
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_ITEM_CODE) Is DBNull.Value Then
@@ -386,13 +386,13 @@ Public Class CertItem
                 Return CType(Row(CertItemDAL.COL_NAME_ITEM_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_ITEM_CODE, Value)
+            SetValue(CertItemDAL.COL_NAME_ITEM_CODE, Value)
         End Set
     End Property
 
-    Public Property ItemRetailPrice() As DecimalType
+    Public Property ItemRetailPrice As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_ITEM_RETAIL_PRICE) Is DBNull.Value Then
@@ -401,13 +401,13 @@ Public Class CertItem
                 Return New DecimalType(CType(Row(CertItemDAL.COL_NAME_ITEM_RETAIL_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_ITEM_RETAIL_PRICE, Value)
+            SetValue(CertItemDAL.COL_NAME_ITEM_RETAIL_PRICE, Value)
         End Set
     End Property
 
-    Public Property ItemReplaceReturnDate() As DateType
+    Public Property ItemReplaceReturnDate As DateType
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_ITEM_REPLACE_RETURN_DATE) Is DBNull.Value Then
@@ -416,14 +416,14 @@ Public Class CertItem
                 Return New DateType(CType(Row(CertItemDAL.COL_NAME_ITEM_REPLACE_RETURN_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_ITEM_REPLACE_RETURN_DATE, Value)
+            SetValue(CertItemDAL.COL_NAME_ITEM_REPLACE_RETURN_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)> _
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
@@ -432,24 +432,24 @@ Public Class CertItem
                 Return CType(Row(CertItemDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_PRODUCT_CODE, Value)
+            SetValue(CertItemDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 
     Private _CertItemCoverageId As Guid
-    Public Property CertItemCoverageId() As Guid
+    Public Property CertItemCoverageId As Guid
         Get
             Return _CertItemCoverageId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _CertItemCoverageId = Value
         End Set
     End Property
@@ -465,30 +465,30 @@ Public Class CertItem
     'End Property
     Public Function AddNewItemCoverage() As CertItemCoverage
         Dim objCertItemCov As CertItemCoverage
-        objCertItemCov = New CertItemCoverage(Me.Dataset)
+        objCertItemCov = New CertItemCoverage(Dataset)
 
         Return objCertItemCov
     End Function
     Private _cert As Certificate
     Private _address As Address
-    Public ReadOnly Property Cert() As Certificate
+    Public ReadOnly Property Cert As Certificate
         Get
             If _cert Is Nothing Then
-                Me._cert = New Certificate(Me.CertId, Me.Dataset)
+                _cert = New Certificate(CertId, Dataset)
             End If
-            Return Me._cert
+            Return _cert
         End Get
     End Property
 
-    Public ReadOnly Property Address() As Address
+    Public ReadOnly Property Address As Address
         Get
             If _address Is Nothing Then
-                Me._address = New Address(Me.Cert.AddressId, Me.Dataset, Nothing)
+                _address = New Address(Cert.AddressId, Dataset, Nothing)
             End If
-            Return Me._address
+            Return _address
         End Get
     End Property
-    Public ReadOnly Property DeductibleByMfgFlag() As Boolean
+    Public ReadOnly Property DeductibleByMfgFlag As Boolean
         Get
             Try
                 Dim oContract As New Contract(Contract.GetContractID(CertId))
@@ -508,11 +508,11 @@ Public Class CertItem
         End Get
     End Property
 
-    Public ReadOnly Property AreManufacturerAndModelMissing() As Boolean
+    Public ReadOnly Property AreManufacturerAndModelMissing As Boolean
         Get
             Dim dr As DataRow
-            If Me.Dataset.Tables(CertItemDAL.TABLE_NAME_MFG_DEDUCT).Rows.Count > 0 Then
-                dr = Me.Dataset.Tables(CertItemDAL.TABLE_NAME_MFG_DEDUCT).Rows(0)
+            If Dataset.Tables(CertItemDAL.TABLE_NAME_MFG_DEDUCT).Rows.Count > 0 Then
+                dr = Dataset.Tables(CertItemDAL.TABLE_NAME_MFG_DEDUCT).Rows(0)
             End If
             CheckDeleted()
             If Not dr Is Nothing AndAlso dr(CertItemDAL.COL_NAME_MFG_DEDUCTIBLE) Is DBNull.Value Then
@@ -529,7 +529,7 @@ Public Class CertItem
 
     End Property
 
-    Public Property OriginalRetailPrice() As DecimalType
+    Public Property OriginalRetailPrice As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_ORIGINAL_RETAIL_PRICE) Is DBNull.Value Then
@@ -538,14 +538,14 @@ Public Class CertItem
                 Return New DecimalType(CType(Row(CertItemDAL.COL_NAME_ORIGINAL_RETAIL_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_ORIGINAL_RETAIL_PRICE, Value)
+            SetValue(CertItemDAL.COL_NAME_ORIGINAL_RETAIL_PRICE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)> _
-    Public Property MobileType() As String
+    Public Property MobileType As String
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_MOBILE_TYPE) Is DBNull.Value Then
@@ -554,13 +554,13 @@ Public Class CertItem
                 Return CType(Row(CertItemDAL.COL_NAME_MOBILE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_MOBILE_TYPE, Value)
+            SetValue(CertItemDAL.COL_NAME_MOBILE_TYPE, Value)
         End Set
     End Property
 
-    Public Property FirstUseDate() As DateType
+    Public Property FirstUseDate As DateType
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_FIRST_USE_DATE) Is DBNull.Value Then
@@ -569,13 +569,13 @@ Public Class CertItem
                 Return New DateType(CType(Row(CertItemDAL.COL_NAME_FIRST_USE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_FIRST_USE_DATE, Value)
+            SetValue(CertItemDAL.COL_NAME_FIRST_USE_DATE, Value)
         End Set
     End Property
 
-    Public Property LastUseDate() As DateType
+    Public Property LastUseDate As DateType
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_LAST_USE_DATE) Is DBNull.Value Then
@@ -584,14 +584,14 @@ Public Class CertItem
                 Return New DateType(CType(Row(CertItemDAL.COL_NAME_LAST_USE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_LAST_USE_DATE, Value)
+            SetValue(CertItemDAL.COL_NAME_LAST_USE_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property SimCardNumber() As String
+    Public Property SimCardNumber As String
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_SIM_CARD_NUMBER) Is DBNull.Value Then
@@ -600,17 +600,17 @@ Public Class CertItem
                 Return CType(Row(CertItemDAL.COL_NAME_SIM_CARD_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_SIM_CARD_NUMBER, Value)
+            SetValue(CertItemDAL.COL_NAME_SIM_CARD_NUMBER, Value)
         End Set
     End Property
 
-    Public ReadOnly Property IsEquipmentRequired() As Boolean
+    Public ReadOnly Property IsEquipmentRequired As Boolean
         Get
             CheckDeleted()
-            Dim cert As Certificate = New Certificate(Me.CertId, Me.Dataset)
-            Dim dealer As Dealer = New Dealer(cert.DealerId, Me.Dataset)
+            Dim cert As Certificate = New Certificate(CertId, Dataset)
+            Dim dealer As Dealer = New Dealer(cert.DealerId, Dataset)
             If (dealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
                 Return True
             Else
@@ -619,7 +619,7 @@ Public Class CertItem
         End Get
     End Property
 
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -628,13 +628,13 @@ Public Class CertItem
                 Return New DateType(CType(Row(CertItemDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_EFFECTIVE_DATE, Value)
+            SetValue(CertItemDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -643,14 +643,14 @@ Public Class CertItem
                 Return New DateType(CType(Row(CertItemDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_EXPIRATION_DATE, Value)
+            SetValue(CertItemDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)> _
-    Public Property CertProductCode() As String
+    Public Property CertProductCode As String
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_CERT_PROD_CODE) Is DBNull.Value Then
@@ -659,14 +659,14 @@ Public Class CertItem
                 Return CType(Row(CertItemDAL.COL_NAME_CERT_PROD_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_CERT_PROD_CODE, Value)
+            SetValue(CertItemDAL.COL_NAME_CERT_PROD_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property ImeiUpdateSource() As String
+    Public Property ImeiUpdateSource As String
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_IMEI_UPDATE_SOURCE) Is DBNull.Value Then
@@ -675,14 +675,14 @@ Public Class CertItem
                 Return CType(Row(CertItemDAL.COL_NAME_IMEI_UPDATE_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_IMEI_UPDATE_SOURCE, Value)
+            SetValue(CertItemDAL.COL_NAME_IMEI_UPDATE_SOURCE, Value)
         End Set
     End Property
 
     <ValidStringLength("")>
-    Public Property AllowedEvents() As String
+    Public Property AllowedEvents As String
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_ALLOWED_EVENTS) Is DBNull.Value Then
@@ -691,13 +691,13 @@ Public Class CertItem
                 Return CType(Row(CertItemDAL.COL_NAME_ALLOWED_EVENTS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_ALLOWED_EVENTS, Value)
+            SetValue(CertItemDAL.COL_NAME_ALLOWED_EVENTS, Value)
         End Set
     End Property
     <ValidStringLength("")>
-    Public Property MaxInsuredAmount() As String
+    Public Property MaxInsuredAmount As String
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_MAX_INSURED_AMOUNT) Is DBNull.Value Then
@@ -706,13 +706,13 @@ Public Class CertItem
                 Return CType(Row(CertItemDAL.COL_NAME_MAX_INSURED_AMOUNT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_MAX_INSURED_AMOUNT, Value)
+            SetValue(CertItemDAL.COL_NAME_MAX_INSURED_AMOUNT, Value)
         End Set
     End Property
 
-     Public Property BenefitStatus() As String
+     Public Property BenefitStatus As String
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_BENEFIT_STATUS) Is DBNull.Value Then
@@ -721,13 +721,13 @@ Public Class CertItem
                 Return CType(Row(CertItemDAL.COL_NAME_BENEFIT_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_BENEFIT_STATUS, Value)
+            SetValue(CertItemDAL.COL_NAME_BENEFIT_STATUS, Value)
         End Set
     End Property
 
-     Public Property IneligibilityReason() As String
+     Public Property IneligibilityReason As String
         Get
             CheckDeleted()
             If Row(CertItemDAL.COL_NAME_INELIGIBILITY_REASON) Is DBNull.Value Then
@@ -736,9 +736,9 @@ Public Class CertItem
                 Return CType(Row(CertItemDAL.COL_NAME_INELIGIBILITY_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemDAL.COL_NAME_INELIGIBILITY_REASON, Value)
+            SetValue(CertItemDAL.COL_NAME_INELIGIBILITY_REASON, Value)
         End Set
     End Property
 
@@ -749,9 +749,9 @@ Public Class CertItem
 
     Public ReadOnly Property Coverages As IEnumerable(Of CertItemCoverage)
         Get
-            Return CertItemCoverage.GetItemCovListForCertificate(Me.Cert.Id, Me.Cert) _
+            Return CertItemCoverage.GetItemCovListForCertificate(Cert.Id, Cert) _
                 .AsQueryable() _
-                .Where(Function(ci) Me.Id = ci.CertItemId) _
+                .Where(Function(ci) Id = ci.CertItemId) _
                 .AsEnumerable()
         End Get
     End Property
@@ -759,44 +759,44 @@ Public Class CertItem
 #End Region
 
 #Region "Public Members"
-    Public Sub UpdateSKU(ByVal force As Boolean)
+    Public Sub UpdateSKU(force As Boolean)
         Dim bMakeModelChanged As Boolean = False
         If (force) Then
             bMakeModelChanged = True
         Else
             ' Check if Make and Model is Modified since Last DB Update
-            If (Me.Row.HasVersion(DataRowVersion.Original)) Then
+            If (Row.HasVersion(DataRowVersion.Original)) Then
                 Dim manufacturerId As Guid
                 Dim originalManufacturerId As Guid
                 manufacturerId = Me.ManufacturerId
-                If (Me.Row(CertItemDAL.COL_NAME_MANUFACTURER_ID, DataRowVersion.Original) Is DBNull.Value) Then
+                If (Row(CertItemDAL.COL_NAME_MANUFACTURER_ID, DataRowVersion.Original) Is DBNull.Value) Then
                     originalManufacturerId = Nothing
                 Else
-                    originalManufacturerId = New Guid(CType(Me.Row(CertItemDAL.COL_NAME_MANUFACTURER_ID, DataRowVersion.Original), Byte()))
+                    originalManufacturerId = New Guid(CType(Row(CertItemDAL.COL_NAME_MANUFACTURER_ID, DataRowVersion.Original), Byte()))
                 End If
                 If Not (manufacturerId.Equals(originalManufacturerId)) Then
                     bMakeModelChanged = True
                 End If
 
                 Dim originalModel As String
-                If (Me.Row(CertItemDAL.COL_NAME_MODEL, DataRowVersion.Original) Is DBNull.Value) Then
+                If (Row(CertItemDAL.COL_NAME_MODEL, DataRowVersion.Original) Is DBNull.Value) Then
                     originalModel = String.Empty
                 Else
                     originalModel = CType(Row(CertItemDAL.COL_NAME_MODEL, DataRowVersion.Original), String)
                 End If
-                If (Me.Model <> originalModel) Then
+                If (Model <> originalModel) Then
                     bMakeModelChanged = True
                 End If
 
                 ' Check if SKU is Changed, If Make and Model are changed and SKU is also Chaned then there is chance that
                 ' User entered the SKU or is resolved by System
                 Dim originalSKU As String
-                If (Me.Row(CertItemDAL.COL_NAME_SKU_NUMBER, DataRowVersion.Original) Is DBNull.Value) Then
+                If (Row(CertItemDAL.COL_NAME_SKU_NUMBER, DataRowVersion.Original) Is DBNull.Value) Then
                     originalSKU = String.Empty
                 Else
                     originalSKU = CType(Row(CertItemDAL.COL_NAME_SKU_NUMBER, DataRowVersion.Original), String)
                 End If
-                If (Me.SkuNumber <> originalSKU) Then
+                If (SkuNumber <> originalSKU) Then
                     bMakeModelChanged = False
                 End If
             End If
@@ -804,8 +804,8 @@ Public Class CertItem
 
         If (bMakeModelChanged) Then
             ' Check if SKU can be resolved
-            If (Not Me.ManufacturerId.Equals(Guid.Empty)) AndAlso Len(Trim(Me.Model)) > 0 Then
-                Me.SkuNumber = ListPrice.GetSKU(Cert.DealerId, LookupListNew.GetDescriptionFromId(LookupListNew.LK_MANUFACTURERS, Me.ManufacturerId), Me.Model)
+            If (Not ManufacturerId.Equals(Guid.Empty)) AndAlso Len(Trim(Model)) > 0 Then
+                SkuNumber = ListPrice.GetSKU(Cert.DealerId, LookupListNew.GetDescriptionFromId(LookupListNew.LK_MANUFACTURERS, ManufacturerId), Model)
             End If
         End If
     End Sub
@@ -815,16 +815,16 @@ Public Class CertItem
             UpdateSKU(False)
             Dim moCert As Certificate
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CertItemDAL
-                dal.UpdateFamily(Me.Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
-                    moCert = Me.GetCertificate(Me.CertId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
+                    moCert = GetCertificate(CertId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -835,15 +835,15 @@ Public Class CertItem
     Public Sub SaveItem()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CertItemDAL
-                dal.UpdateCertItemAndCov(Me.Dataset)
+                dal.UpdateCertItemAndCov(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -854,20 +854,20 @@ Public Class CertItem
     Public Function CopyEnrolledEquip_into_ClaimedEquip() As ClaimEquipment
         '#@REQ 1106
         Dim objClaimedEquipment As New ClaimEquipment()
-        Dim cert As Certificate = New Certificate(Me.CertId, Me.Dataset)
-        Dim dealer As Dealer = New Dealer(cert.DealerId, Me.Dataset)
+        Dim cert As Certificate = New Certificate(CertId, Dataset)
+        Dim dealer As Dealer = New Dealer(cert.DealerId, Dataset)
         Try
             With objClaimedEquipment
-                .ManufacturerId = Me.ManufacturerId
-                .Model = Me.Model
-                .SKU = Me.SkuNumber
+                .ManufacturerId = ManufacturerId
+                .Model = Model
+                .SKU = SkuNumber
                 'Resolve the equipment
-                .EquipmentId = Equipment.GetEquipmentIdByEquipmentList(dealer.EquipmentListCode, DateTime.Today, Me.ManufacturerId, Me.Model)
+                .EquipmentId = Equipment.GetEquipmentIdByEquipmentList(dealer.EquipmentListCode, DateTime.Today, ManufacturerId, Model)
                 '.EquipmentId = Me.EquipmentId
-                .SerialNumber = Me.SerialNumber
-                .IMEINumber = Me.IMEINumber
+                .SerialNumber = SerialNumber
+                .IMEINumber = IMEINumber
                 .ClaimEquipmentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_EQUIPMENT_TYPE, "C")
-                .EquipmentId = Me.EquipmentId
+                .EquipmentId = EquipmentId
             End With
             Return objClaimedEquipment
         Catch ex As Exception
@@ -878,7 +878,7 @@ Public Class CertItem
     Public Function ProcessAppleCareEnrollment(attValue As String) As String
         Dim strErrMsg As String
         Dim dal As New CertItemDAL
-        dal.ProcessAppleCareEnrolledItem(Me.Id, attValue, strErrMsg)
+        dal.ProcessAppleCareEnrolledItem(Id, attValue, strErrMsg)
         Return strErrMsg
     End Function
 
@@ -891,16 +891,16 @@ Public Class CertItem
     Public Class ItemList
         Inherits BusinessObjectListEnumerableBase(Of Certificate, CertItem)
 
-        Public Sub New(ByVal parent As Certificate)
+        Public Sub New(parent As Certificate)
             MyBase.New(parent.Dataset.Tables(CertItemDAL.TABLE_NAME), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return True
         End Function
     End Class
 
-    Public Shared Function GetItemListForCertificate(ByVal certId As Guid, ByVal parent As BusinessObjectBase) As ItemList
+    Public Shared Function GetItemListForCertificate(certId As Guid, parent As BusinessObjectBase) As ItemList
         If parent.Dataset.Tables.IndexOf(CertItemDAL.TABLE_NAME) < 0 Then
             Dim dal As New CertItemDAL
             dal.LoadAllItemsForCertificate(certId, parent.Dataset)
@@ -908,7 +908,7 @@ Public Class CertItem
         Return New ItemList(parent)
     End Function
 
-    Public Shared Function GetItems(ByVal certId As Guid) As CertItemSearchDV
+    Public Shared Function GetItems(certId As Guid) As CertItemSearchDV
         Try
             Dim dal As New CertItemDAL
 
@@ -918,7 +918,7 @@ Public Class CertItem
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetRegisteredItems(ByVal certId As Guid) As CertRegItemSearchDV
+    Public Shared Function GetRegisteredItems(certId As Guid) As CertRegItemSearchDV
         Try
             Dim dal As New CertItemDAL
 
@@ -929,7 +929,7 @@ Public Class CertItem
         End Try
     End Function
 
-    Public Shared Function GetNextItemNumber(ByVal certId As Guid) As Long
+    Public Shared Function GetNextItemNumber(certId As Guid) As Long
         Try
             Dim dal As New CertItemDAL
             Dim ds As DataSet = dal.GetMaxItemNumber(certId)
@@ -947,7 +947,7 @@ Public Class CertItem
         End Try
     End Function
 
-    Public Shared Function GetItemsForWS(ByVal certIds As ArrayList) As DataTable
+    Public Shared Function GetItemsForWS(certIds As ArrayList) As DataTable
         Try
             Dim dal As New CertItemDAL
 
@@ -980,22 +980,22 @@ Public Class CertItem
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Function IsSerialNumberExist(ByVal serialNo As String) As Boolean
-            Me.RowFilter = String.Format("serial_number = '{0}'", serialNo)
-            Return IIf(Me.Count = 0, False, True)
+        Public Function IsSerialNumberExist(serialNo As String) As Boolean
+            RowFilter = String.Format("serial_number = '{0}'", serialNo)
+            Return IIf(Count = 0, False, True)
         End Function
 
-        Public Function GetOriginalRetailPrice(ByVal serialNo As String) As Nullable(Of Decimal)
+        Public Function GetOriginalRetailPrice(serialNo As String) As Nullable(Of Decimal)
             Dim originalRetailPrice As Nullable(Of Decimal)
-            Me.Sort = "effective_date desc"
+            Sort = "effective_date desc"
             If Not String.IsNullOrEmpty(serialNo) Then
-                Me.RowFilter = String.Format("serial_number = '{0}'", serialNo)
+                RowFilter = String.Format("serial_number = '{0}'", serialNo)
             End If
-            If Me.Count > 0 Then
+            If Count > 0 Then
                 If Not IsDBNull(Me(0)("original_retail_price")) Then
                     originalRetailPrice = Convert.ToDecimal(Me(0)("original_retail_price"))
                 Else
@@ -1038,7 +1038,7 @@ Public Class CertItem
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -1048,18 +1048,18 @@ Public Class CertItem
 #Region "Certificate Children"
 
     Public Function AddCertificateChild() As Certificate
-        If Not Me.CertId.Equals(Guid.Empty) Then
-            Return New Certificate(Me.CertId, Me.Dataset)
+        If Not CertId.Equals(Guid.Empty) Then
+            Return New Certificate(CertId, Dataset)
         End If
         Return Nothing
     End Function
 
-    Public Function AddClaimExtendedStatus(ByVal claimStatusID As Guid) As ClaimStatus
+    Public Function AddClaimExtendedStatus(claimStatusID As Guid) As ClaimStatus
         If claimStatusID.Equals(Guid.Empty) Then
-            Dim objClaimStatus As New ClaimStatus(Me.Dataset)
+            Dim objClaimStatus As New ClaimStatus(Dataset)
             Return objClaimStatus
         Else
-            Dim objClaimStatus As New ClaimStatus(claimStatusID, Me.Dataset)
+            Dim objClaimStatus As New ClaimStatus(claimStatusID, Dataset)
             Return objClaimStatus
         End If
     End Function
@@ -1067,7 +1067,7 @@ Public Class CertItem
 
 #Region "Functions"
 
-    Public Shared Function ValidateSerialNumber(ByVal SerialNumber As String, ByVal CertNumber As String, ByVal CompanyGroupId As Guid) As DataView
+    Public Shared Function ValidateSerialNumber(SerialNumber As String, CertNumber As String, CompanyGroupId As Guid) As DataView
         Dim dal As New CertItemDAL
         Dim ds As DataSet
 
@@ -1077,13 +1077,13 @@ Public Class CertItem
     End Function
 
     Public Function IsCustomerAddressRequired() As Boolean
-        Dim objContractId As Guid = Contract.GetContractID(Me.CertId)
+        Dim objContractId As Guid = Contract.GetContractID(CertId)
         Dim objContract As New Contract(objContractId)
         Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")
 
         If objContract.CustmerAddressRequiredId.Equals(yesId) Then
             Dim addressNotComplet As Boolean = True
-            If Me.Cert.AddressId = Guid.Empty OrElse Me.Address Is Nothing Then
+            If Cert.AddressId = Guid.Empty OrElse Address Is Nothing Then
                 Return True
             Else
                 Return ValidateAddressField()
@@ -1102,35 +1102,35 @@ Public Class CertItem
     Private Function ValidateAddressField() As Boolean
         Dim addressErrorExist As Boolean = False
 
-        Dim strAddFmt As String = New Country(Me.Address.CountryId).MailAddrFormat.ToUpper
+        Dim strAddFmt As String = New Country(Address.CountryId).MailAddrFormat.ToUpper
         If Me.Address.IsAddressComponentRequired(strAddFmt, "ADR1") Then
-            If Me.Address.Address1 Is Nothing OrElse Me.Address.Address1.Equals(String.Empty) Then
+            If Address.Address1 Is Nothing OrElse Address.Address1.Equals(String.Empty) Then
                 addressErrorExist = True
             End If
         End If
 
 
         If Me.Address.IsAddressComponentRequired(strAddFmt, "CITY") Then
-            If Me.Address.City Is Nothing OrElse Me.Address.City.Equals(String.Empty) Then
+            If Address.City Is Nothing OrElse Address.City.Equals(String.Empty) Then
                 addressErrorExist = True
             End If
         End If
 
         If Me.Address.IsAddressComponentRequired(strAddFmt, "ZIP") Then
-            If Me.Address.PostalCode Is Nothing OrElse Me.Address.PostalCode.Equals(String.Empty) Then
+            If Address.PostalCode Is Nothing OrElse Address.PostalCode.Equals(String.Empty) Then
                 addressErrorExist = True
             End If
         End If
 
         If Me.Address.IsAddressComponentRequired(strAddFmt, "RGNAME") OrElse _
            Me.Address.IsAddressComponentRequired(strAddFmt, "RGCODE") Then
-            If Me.Address.RegionId.Equals(Guid.Empty) Then
+            If Address.RegionId.Equals(Guid.Empty) Then
                 addressErrorExist = True
             End If
         End If
 
         If Me.Address.IsAddressComponentRequired(strAddFmt, "COU") Then
-            If Me.Address.CountryId.Equals(Guid.Empty) Then
+            If Address.CountryId.Equals(Guid.Empty) Then
                 addressErrorExist = True
             End If
         End If
@@ -1141,17 +1141,17 @@ Public Class CertItem
 
     Public Function CreateClaimedEquipmentFromEnrolledEquipment(ByRef claimEquipment As ClaimEquipment, ByRef msgList As List(Of String)) As Boolean
         Dim flag As Boolean = False
-        If Me.IsEquipmentRequired Then
-            If Not Me.EquipmentId.Equals(Guid.Empty) Then
+        If IsEquipmentRequired Then
+            If Not EquipmentId.Equals(Guid.Empty) Then
                 'If equipmentid exists resolves create claim equipment
-                claimEquipment = Me.CopyEnrolledEquip_into_ClaimedEquip()
+                claimEquipment = CopyEnrolledEquip_into_ClaimedEquip()
                 flag = True
             Else
-                If Not Me.ManufacturerId.Equals(Guid.Empty) AndAlso Not String.IsNullOrEmpty(Me.Model) Then
+                If Not ManufacturerId.Equals(Guid.Empty) AndAlso Not String.IsNullOrEmpty(Model) Then
                     'If make and model found try to resolve equipment
-                    Me.VerifyEquipment()
-                    claimEquipment = Me.CopyEnrolledEquip_into_ClaimedEquip()
-                    If Me.EquipmentId.Equals(Guid.Empty) Then
+                    VerifyEquipment()
+                    claimEquipment = CopyEnrolledEquip_into_ClaimedEquip()
+                    If EquipmentId.Equals(Guid.Empty) Then
                         msgList.Add("EQUIPMENT_NOT_CONFIGURED")
                         flag = True
                     End If
@@ -1164,7 +1164,7 @@ Public Class CertItem
     End Function
 
 
-    Public Shared Function LoadSku(ByVal equipmentId As Guid, ByVal dealerId As Guid) As DataView
+    Public Shared Function LoadSku(equipmentId As Guid, dealerId As Guid) As DataView
 
         Dim dal As New CertItemDAL
         Dim dv As DataView
@@ -1186,12 +1186,12 @@ Public Class CertItem
     Public NotInheritable Class ValidateEquipment
         Inherits ValidBaseAttribute
         Private _fieldDisplayName As String
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Certificate.EQUIPMENT_NOT_FOUND)
             _fieldDisplayName = fieldDisplayName
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CertItem = CType(objectToValidate, CertItem)
             If (obj.IsEquipmentRequired) Then
                 Dim vma As ValueMandatoryAttribute = New ValueMandatoryAttribute(_fieldDisplayName)
@@ -1206,11 +1206,11 @@ Public Class CertItem
     Public NotInheritable Class SerialNumberValidator
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.SERIAL_NUMBER_ALREADY_EXIST)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CertItem = CType(objectToValidate, CertItem)
             Dim dal As New CertItemDAL
 

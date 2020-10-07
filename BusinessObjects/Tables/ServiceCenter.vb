@@ -32,53 +32,53 @@ Public Class ServiceCenter
     'Existing BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     Public Sub New(ByVal code As String)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(code)
+        Dataset = New DataSet
+        Load(code)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Existing BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     'Existing BO 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ServiceCenterDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -89,20 +89,20 @@ Public Class ServiceCenter
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New ServiceCenterDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -113,26 +113,26 @@ Public Class ServiceCenter
     Protected Sub Load(ByVal code As String)
         Try
             Dim dal As New ServiceCenterDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(Id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(Id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
                 Dim oCountryIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Countries
-                dal.Load(Me.Dataset, code, oCountryIds)
-                If Not Me.Dataset.Tables(dal.TABLE_NAME) Is Nothing AndAlso Me.Dataset.Tables(dal.TABLE_NAME).Rows.Count > 0 Then
-                    Me.Row = Me.FindRow(New Guid(CType(Me.Dataset.Tables(dal.TABLE_NAME).Rows(0)(dal.TABLE_KEY_NAME), Byte())),
-                                    dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+                dal.Load(Dataset, code, oCountryIds)
+                If Not Dataset.Tables(dal.TABLE_NAME) Is Nothing AndAlso Dataset.Tables(dal.TABLE_NAME).Rows.Count > 0 Then
+                    Row = FindRow(New Guid(CType(Dataset.Tables(dal.TABLE_NAME).Rows(0)(dal.TABLE_KEY_NAME), Byte())),
+                                    dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
                 Else
                     Throw New StoredProcedureGeneratedException("Service Center Invalid Parameters Error", Common.ErrorCodes.INVALID_SERVICE_CENTER_CODE)
                 End If
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New StoredProcedureGeneratedException("Service Center Invalid Parameters Error", Common.ErrorCodes.INVALID_SERVICE_CENTER_CODE)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -166,13 +166,13 @@ Public Class ServiceCenter
     'Initialization code for new objects
     Private Sub Initialize()
         '  Me.CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyId
-        Me.StatusCode = "A"
+        StatusCode = "A"
         'START  2818
-        If Me.NetDays Is Nothing Then
+        If NetDays Is Nothing Then
             Me.NetDays = DEFAULT_NET_DAYS
         End If
         'END    2818
-        Me.PreInvoiceId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(Codes.LIST__SVCPREINV, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), Codes.LIST_ITEM__SVCPICOMP)
+        PreInvoiceId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(Codes.LIST__SVCPREINV, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), Codes.LIST_ITEM__SVCPICOMP)
     End Sub
     Private _isBankInfoNeedDeletion As Boolean
     Private _lastPaymentMethodId As Guid = Guid.Empty
@@ -186,7 +186,7 @@ Public Class ServiceCenter
     Public ReadOnly Property AttributeValues As AttributeValueList(Of IAttributable) Implements IAttributable.AttributeValues
         Get
             If (_AttributeValueList Is Nothing) Then
-                _AttributeValueList = New AttributeValueList(Of IAttributable)(Me.Dataset, Me)
+                _AttributeValueList = New AttributeValueList(Of IAttributable)(Dataset, Me)
             End If
             Return _AttributeValueList
         End Get
@@ -209,7 +209,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_ORIGINAL_DEALER, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_ORIGINAL_DEALER, Value)
         End Set
     End Property
 
@@ -236,7 +236,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
@@ -252,7 +252,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_ADDRESS_ID, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_ADDRESS_ID, Value)
         End Set
     End Property
 
@@ -284,7 +284,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_SERVICE_GROUP_ID, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_SERVICE_GROUP_ID, Value)
         End Set
     End Property
 
@@ -300,7 +300,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_PAYMENT_METHOD_ID, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_PAYMENT_METHOD_ID, Value)
         End Set
     End Property
 
@@ -316,7 +316,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_LOANER_CENTER_ID, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_LOANER_CENTER_ID, Value)
         End Set
     End Property
 
@@ -331,9 +331,9 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_MASTER_CENTER_ID, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_MASTER_CENTER_ID, Value)
             If Value = Guid.Empty Then
-                Me.PayMaster = False
+                PayMaster = False
             End If
         End Set
     End Property
@@ -351,7 +351,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_CODE, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
@@ -368,7 +368,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -385,7 +385,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_RATING_CODE, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_RATING_CODE, Value)
         End Set
     End Property
 
@@ -402,7 +402,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_CONTACT_NAME, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_CONTACT_NAME, Value)
         End Set
     End Property
 
@@ -419,7 +419,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_OWNER_NAME, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_OWNER_NAME, Value)
         End Set
     End Property
 
@@ -436,7 +436,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_PHONE1, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_PHONE1, Value)
         End Set
     End Property
 
@@ -453,7 +453,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_PHONE2, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_PHONE2, Value)
         End Set
     End Property
 
@@ -470,7 +470,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_FAX, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_FAX, Value)
         End Set
     End Property
 
@@ -486,7 +486,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_EMAIL, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_EMAIL, Value)
         End Set
     End Property
 
@@ -503,7 +503,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_FTP_ADDRESS, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_FTP_ADDRESS, Value)
         End Set
     End Property
 
@@ -520,7 +520,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_TAX_ID, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_TAX_ID, Value)
         End Set
     End Property
 
@@ -537,7 +537,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_SERVICE_WARRANTY_DAYS, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_SERVICE_WARRANTY_DAYS, Value)
         End Set
     End Property
 
@@ -554,7 +554,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_STATUS_CODE, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_STATUS_CODE, Value)
         End Set
     End Property
 
@@ -571,7 +571,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_BUSINESS_HOURS, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_BUSINESS_HOURS, Value)
         End Set
     End Property
     Public Property ConstrVoilation() As Boolean
@@ -579,7 +579,7 @@ Public Class ServiceCenter
             Return _constrVoilation
         End Get
         Set(ByVal Value As Boolean)
-            Me._constrVoilation = Value
+            _constrVoilation = Value
         End Set
     End Property
 
@@ -595,7 +595,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_MASTER_FLAG, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_MASTER_FLAG, Value)
         End Set
     End Property
 
@@ -612,7 +612,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_LOANER_FLAG, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_LOANER_FLAG, Value)
         End Set
     End Property
 
@@ -638,9 +638,9 @@ Public Class ServiceCenter
         Set(ByVal Value As Boolean)
             CheckDeleted()
             If Value Then
-                Me.SetValue(ServiceCenterDAL.COL_NAME_DEFAULT_TO_EMAIL_FLAG, "Y")
+                SetValue(ServiceCenterDAL.COL_NAME_DEFAULT_TO_EMAIL_FLAG, "Y")
             Else
-                Me.SetValue(ServiceCenterDAL.COL_NAME_DEFAULT_TO_EMAIL_FLAG, "N")
+                SetValue(ServiceCenterDAL.COL_NAME_DEFAULT_TO_EMAIL_FLAG, "N")
             End If
         End Set
     End Property
@@ -658,9 +658,9 @@ Public Class ServiceCenter
         Set(ByVal Value As Boolean)
             CheckDeleted()
             If Value Then
-                Me.SetValue(ServiceCenterDAL.COL_NAME_IVA_RESPONSIBLE_FLAG, "Y")
+                SetValue(ServiceCenterDAL.COL_NAME_IVA_RESPONSIBLE_FLAG, "Y")
             Else
-                Me.SetValue(ServiceCenterDAL.COL_NAME_IVA_RESPONSIBLE_FLAG, "N")
+                SetValue(ServiceCenterDAL.COL_NAME_IVA_RESPONSIBLE_FLAG, "N")
             End If
         End Set
     End Property
@@ -677,9 +677,9 @@ Public Class ServiceCenter
         Set(ByVal Value As Boolean)
             CheckDeleted()
             If Value Then
-                Me.SetValue(ServiceCenterDAL.COL_NAME_FREE_ZONE_FLAG, "Y")
+                SetValue(ServiceCenterDAL.COL_NAME_FREE_ZONE_FLAG, "Y")
             Else
-                Me.SetValue(ServiceCenterDAL.COL_NAME_FREE_ZONE_FLAG, DBNull.Value)
+                SetValue(ServiceCenterDAL.COL_NAME_FREE_ZONE_FLAG, DBNull.Value)
             End If
         End Set
     End Property
@@ -711,7 +711,7 @@ Public Class ServiceCenter
 
     Public ReadOnly Property HasLoanerCenter() As Boolean
         Get
-            Return Not Me.LoanerCenterId.Equals(Guid.Empty)
+            Return Not LoanerCenterId.Equals(Guid.Empty)
         End Get
     End Property
 
@@ -727,7 +727,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_COMMENTS, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_COMMENTS, Value)
         End Set
     End Property
 
@@ -743,7 +743,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_BANKINFO_ID, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_BANKINFO_ID, Value)
         End Set
     End Property
 
@@ -760,9 +760,9 @@ Public Class ServiceCenter
         Set(ByVal Value As Boolean)
             CheckDeleted()
             If Value Then
-                Me.SetValue(ServiceCenterDAL.COL_NAME_SHIPPING, "Y")
+                SetValue(ServiceCenterDAL.COL_NAME_SHIPPING, "Y")
             Else
-                Me.SetValue(ServiceCenterDAL.COL_NAME_SHIPPING, "N")
+                SetValue(ServiceCenterDAL.COL_NAME_SHIPPING, "N")
             End If
         End Set
     End Property
@@ -780,7 +780,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_PROCESSING_FEE, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_PROCESSING_FEE, Value)
         End Set
     End Property
 
@@ -789,7 +789,7 @@ Public Class ServiceCenter
             Return _lastPaymentMethodId
         End Get
         Set(ByVal Value As Guid)
-            Me._lastPaymentMethodId = Value
+            _lastPaymentMethodId = Value
         End Set
     End Property
 
@@ -805,7 +805,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_CC_EMAIL, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_CC_EMAIL, Value)
         End Set
     End Property
 
@@ -820,7 +820,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_ROUTE_ID, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_ROUTE_ID, Value)
         End Set
     End Property
 
@@ -835,7 +835,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_INTEGRATED_WITH_ID, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_INTEGRATED_WITH_ID, Value)
         End Set
     End Property
 
@@ -843,8 +843,8 @@ Public Class ServiceCenter
         Get
             Dim ret As Boolean = False
 
-            If Not Me.IntegratedWithID.Equals(Guid.Empty) Then
-                Dim code As String = LookupListNew.GetCodeFromId(LookupListNew.GetIntegratedWithLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.IntegratedWithID)
+            If Not IntegratedWithID.Equals(Guid.Empty) Then
+                Dim code As String = LookupListNew.GetCodeFromId(LookupListNew.GetIntegratedWithLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), IntegratedWithID)
 
                 If Not code Is Nothing AndAlso code = Codes.INTEGRATED_WITH_GVS Then
                     ret = True
@@ -867,9 +867,9 @@ Public Class ServiceCenter
         Set(ByVal Value As Boolean)
             CheckDeleted()
             If Value Then
-                Me.SetValue(ServiceCenterDAL.COL_NAME_PAY_MASTER, "Y")
+                SetValue(ServiceCenterDAL.COL_NAME_PAY_MASTER, "Y")
             Else
-                Me.SetValue(ServiceCenterDAL.COL_NAME_PAY_MASTER, "N")
+                SetValue(ServiceCenterDAL.COL_NAME_PAY_MASTER, "N")
             End If
 
         End Set
@@ -911,7 +911,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_REVERSE_LOGISTICS_ID, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_REVERSE_LOGISTICS_ID, Value)
         End Set
     End Property
 
@@ -941,7 +941,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_DISTRIBUTION_METHOD_ID, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_DISTRIBUTION_METHOD_ID, Value)
         End Set
     End Property
 
@@ -958,7 +958,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_FULFILLMENT_TIME_ZONE_ID, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_FULFILLMENT_TIME_ZONE_ID, Value)
         End Set
     End Property
 
@@ -975,7 +975,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_PRICE_LIST_CODE, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_PRICE_LIST_CODE, Value)
         End Set
     End Property
 
@@ -990,7 +990,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_PRICE_LIST_CODE, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_PRICE_LIST_CODE, Value)
         End Set
     End Property
 
@@ -1006,7 +1006,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_DISCOUNT_PCT, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_DISCOUNT_PCT, Value)
         End Set
     End Property
 
@@ -1023,7 +1023,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_DISCOUNT_DAYS, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_DISCOUNT_DAYS, Value)
         End Set
     End Property
 
@@ -1047,13 +1047,13 @@ Public Class ServiceCenter
             '    Value = 30
             'End If
             'END    DEF-2818
-            Me.SetValue(ServiceCenterDAL.COL_NAME_NET_DAYS, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_NET_DAYS, Value)
         End Set
     End Property
 
     Public ReadOnly Property MyDataset() As DataSet
         Get
-            Return Me.Dataset
+            Return Dataset
         End Get
     End Property
 
@@ -1069,7 +1069,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_PRE_INVOICE_ID, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_PRE_INVOICE_ID, Value)
         End Set
     End Property
     Public Property AutoProcessInventoryFileXcd() As String
@@ -1083,7 +1083,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_AUTO_PROCESS_INV_FILE_XCD, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_AUTO_PROCESS_INV_FILE_XCD, Value)
         End Set
     End Property
 
@@ -1099,7 +1099,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_BASED_ON_XCD, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_BASED_ON_XCD, Value)
         End Set
     End Property
     <ValidNumericRange("", Max:=100, Min:=0, MaxExclusive:=False, MinExclusive:=True), RequiredConditionally("")>
@@ -1114,7 +1114,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_PERCENT, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_PERCENT, Value)
         End Set
     End Property
 
@@ -1130,7 +1130,7 @@ Public Class ServiceCenter
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ServiceCenterDAL.COL_NAME_WITHHOLDING_RATE, Value)
+            SetValue(ServiceCenterDAL.COL_NAME_WITHHOLDING_RATE, Value)
         End Set
     End Property
 #End Region
@@ -1141,36 +1141,36 @@ Public Class ServiceCenter
         Dim blnBankInfoSave As Boolean
 
         Try
-            If Not Me.IsDeleted Then IntegratedWithGVSValidation()
+            If Not IsDeleted Then IntegratedWithGVSValidation()
             MyBase.Save()
-            If Not Me.IsDeleted Then Me.LastPaymentMethodId = Me.PaymentMethodId
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If Not IsDeleted Then LastPaymentMethodId = PaymentMethodId
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ServiceCenterDAL '
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.LastPaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
+                If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, LastPaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
                     blnBankInfoSave = True
-                    Me.isBankInfoNeedDeletion = True
+                    isBankInfoNeedDeletion = True
                 Else
                     blnBankInfoSave = False
-                    If Not Me.IsNew AndAlso Me.isBankInfoNeedDeletion Then
-                        Me.CurrentBankInfo.BeginEdit()
-                        Me.CurrentBankInfo.Delete()
+                    If Not IsNew AndAlso isBankInfoNeedDeletion Then
+                        CurrentBankInfo.BeginEdit()
+                        CurrentBankInfo.Delete()
                     End If
                 End If
-                MyBase.UpdateFamily(Me.Dataset)
-                dal.UpdateFamily(Me.Dataset, ElitaPlusIdentity.Current.ActiveUser.Company.Id, , blnBankInfoSave) 'New Code Added Manually
+                MyBase.UpdateFamily(Dataset)
+                dal.UpdateFamily(Dataset, ElitaPlusIdentity.Current.ActiveUser.Company.Id, , blnBankInfoSave) 'New Code Added Manually
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
-                    Me._address = Nothing
-                    Me._bankinfo = Nothing
-                    Me._loanerCenter = Nothing
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
+                    _address = Nothing
+                    _bankinfo = Nothing
+                    _loanerCenter = Nothing
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Me.CurrentBankInfo.cancelEdit()
+            CurrentBankInfo.cancelEdit()
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
@@ -1186,15 +1186,15 @@ Public Class ServiceCenter
         Get
             Dim bDirty As Boolean
 
-            bDirty = MyBase.IsDirty OrElse Me.IsChildrenDirty OrElse
-            (Not Me.Address.IsNew And Me.Address.IsDirty) OrElse
-            (Me.Address.IsNew And Not Me.Address.IsEmpty)
+            bDirty = MyBase.IsDirty OrElse IsChildrenDirty OrElse
+            (Not Address.IsNew And Address.IsDirty) OrElse
+            (Address.IsNew And Not Address.IsEmpty)
 
             If bDirty = False Then
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
+                If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
                     bDirty = bDirty OrElse
-                (Not Me.CurrentBankInfo Is Nothing AndAlso (Not Me.CurrentBankInfo.IsNew And Me.CurrentBankInfo.IsDirty)) OrElse
-                (Not Me.CurrentBankInfo Is Nothing AndAlso (Me.CurrentBankInfo.IsNew And Not Me.CurrentBankInfo.IsEmpty))
+                (Not CurrentBankInfo Is Nothing AndAlso (Not CurrentBankInfo.IsNew And CurrentBankInfo.IsDirty)) OrElse
+                (Not CurrentBankInfo Is Nothing AndAlso (CurrentBankInfo.IsNew And Not CurrentBankInfo.IsEmpty))
                 End If
             End If
 
@@ -1203,7 +1203,7 @@ Public Class ServiceCenter
     End Property
 
     Public Sub Copy(ByVal original As ServiceCenter)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Service Center")
         End If
         'Copy myself
@@ -1217,7 +1217,7 @@ Public Class ServiceCenter
         For i = 0 To selMfrDv.Count - 1
             selMfrList.Add(New Guid(CType(selMfrDv(i)(LookupListNew.COL_ID_NAME), Byte())).ToString)
         Next
-        Me.AttachManufacturers(selMfrList)
+        AttachManufacturers(selMfrList)
 
         'Dealers
         Dim selDlrDv As DataView = original.GetSelectedDealers
@@ -1226,7 +1226,7 @@ Public Class ServiceCenter
         For j = 0 To selDlrDv.Count - 1
             selDlrList.Add(New Guid(CType(selDlrDv(j)(LookupListNew.COL_ID_NAME), Byte())).ToString)
         Next
-        Me.AttachDealers(selDlrList)
+        AttachDealers(selDlrList)
 
         'Networks
         Dim selNtwDv As DataView = original.GetSelectedServiceNetworks
@@ -1235,7 +1235,7 @@ Public Class ServiceCenter
         For l = 0 To selNtwDv.Count - 1
             selNtwList.Add(New Guid(CType(selNtwDv(l)(LookupListNew.COL_ID_NAME), Byte())).ToString)
         Next
-        Me.AttachServiceNetworks(selNtwList)
+        AttachServiceNetworks(selNtwList)
 
         'Districts
         Dim selDstDv As DataView = original.GetSelectedDistricts
@@ -1244,10 +1244,10 @@ Public Class ServiceCenter
         For k = 0 To selDstDv.Count - 1
             selDstList.Add(New Guid(CType(selDstDv(k)(LookupListNew.COL_ID_NAME), Byte())).ToString)
         Next
-        Me.AttachDistricts(selDstList)
+        AttachDistricts(selDstList)
 
-        Me.AddressId = Guid.Empty
-        Me.Address.CopyFrom(original.Address)
+        AddressId = Guid.Empty
+        Address.CopyFrom(original.Address)
 
         'mthod of  repair
 
@@ -1260,25 +1260,25 @@ Public Class ServiceCenter
     End Sub
 
     Public Sub DeleteAndSave()
-        Me.CheckDeleted()
-        Dim addr As Address = Me.Address
-        Dim binfo As BankInfo = Me.CurrentBankInfo
-        Me.BeginEdit()
+        CheckDeleted()
+        Dim addr As Address = Address
+        Dim binfo As BankInfo = CurrentBankInfo
+        BeginEdit()
         addr.BeginEdit()
         If Not binfo Is Nothing Then binfo.BeginEdit()
         Try
-            Me.LastPaymentMethodId = Me.PaymentMethodId
+            LastPaymentMethodId = PaymentMethodId
             'delete service center reference record first
-            Me.Delete()
+            Delete()
             'delete address and bank info record
             addr.Delete()
             If Not binfo Is Nothing Then binfo.Delete()
-            Me.Save()
+            Save()
         Catch ex As Exception
             If ex.Message = "Integrity Constraint Violation" Then
-                Me.ConstrVoilation = True
+                ConstrVoilation = True
             End If
-            Me.cancelEdit()
+            cancelEdit()
             addr.cancelEdit()
             If Not binfo Is Nothing Then binfo.cancelEdit()
             Throw ex
@@ -1300,11 +1300,11 @@ Public Class ServiceCenter
 
     Public Sub UpdateManufacturers(ByVal selectedManufacturerGuidStrCollection As Hashtable)
         If selectedManufacturerGuidStrCollection.Count = 0 Then
-            If Not Me.IsDeleted Then Me.Delete()
+            If Not IsDeleted Then Delete()
         Else
             'first Pass
             Dim bo As ServiceCenterManufacturer
-            For Each bo In Me.ServiceCenterManufacturerChildren
+            For Each bo In ServiceCenterManufacturerChildren
                 If Not selectedManufacturerGuidStrCollection.Contains(bo.ManufacturerId.ToString) Then
                     'delete
                     bo.Delete()
@@ -1314,11 +1314,11 @@ Public Class ServiceCenter
             'Second Pass
             Dim entry As DictionaryEntry
             For Each entry In selectedManufacturerGuidStrCollection
-                If Me.ServiceCenterManufacturerChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
+                If ServiceCenterManufacturerChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
                     'add
                     Dim scManBO As ServiceCenterManufacturer = ServiceCenterManufacturerChildren.GetNewChild()
                     scManBO.ManufacturerId = New Guid(entry.Key.ToString)
-                    scManBO.ServiceCenterId = Me.Id
+                    scManBO.ServiceCenterId = Id
                     scManBO.Save()
                 End If
             Next
@@ -1326,11 +1326,11 @@ Public Class ServiceCenter
     End Sub
     Public Sub UpdateMethodOfRepair(ByVal selectedMethodOfRepairGuidStrCollection As Hashtable)
         If selectedMethodOfRepairGuidStrCollection.Count = 0 Then
-            If Not Me.IsDeleted Then Me.Delete()
+            If Not IsDeleted Then Delete()
         Else
             'first Pass
             Dim bo As ServCenterMethRepair
-            For Each bo In Me.ServiceCenterManufacturerChildren
+            For Each bo In ServiceCenterManufacturerChildren
                 If Not selectedMethodOfRepairGuidStrCollection.Contains(bo.ServiceCenterId.ToString) Then
                     'delete
                     bo.Delete()
@@ -1340,11 +1340,11 @@ Public Class ServiceCenter
             'Second Pass
             Dim entry As DictionaryEntry
             For Each entry In selectedMethodOfRepairGuidStrCollection
-                If Me.ServiceCenterMethoOfRepairsChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
+                If ServiceCenterMethoOfRepairsChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
                     'add
                     Dim scManBO As ServCenterMethRepair = ServiceCenterMethoOfRepairsChildren.GetNewChild()
                     scManBO.ServCenterMorId = New Guid(entry.Key.ToString)
-                    scManBO.ServiceCenterId = Me.Id
+                    scManBO.ServiceCenterId = Id
                     scManBO.Save()
                 End If
             Next
@@ -1354,9 +1354,9 @@ Public Class ServiceCenter
     Public Sub AttachManufacturers(ByVal selectedManufacturerGuidStrCollection As ArrayList)
         Dim scManIdStr As String
         For Each scManIdStr In selectedManufacturerGuidStrCollection
-            Dim scManBO As ServiceCenterManufacturer = Me.ServiceCenterManufacturerChildren.GetNewChild
+            Dim scManBO As ServiceCenterManufacturer = ServiceCenterManufacturerChildren.GetNewChild
             scManBO.ManufacturerId = New Guid(scManIdStr)
-            scManBO.ServiceCenterId = Me.Id
+            scManBO.ServiceCenterId = Id
             scManBO.Save()
         Next
     End Sub
@@ -1364,7 +1364,7 @@ Public Class ServiceCenter
     Public Sub DetachManufacturers(ByVal selectedManufacturerGuidStrCollection As ArrayList)
         Dim scManIdStr As String
         For Each scManIdStr In selectedManufacturerGuidStrCollection
-            Dim scManBO As ServiceCenterManufacturer = Me.ServiceCenterManufacturerChildren.Find(New Guid(scManIdStr))
+            Dim scManBO As ServiceCenterManufacturer = ServiceCenterManufacturerChildren.Find(New Guid(scManIdStr))
             scManBO.Delete()
             scManBO.Save()
         Next
@@ -1396,7 +1396,7 @@ Public Class ServiceCenter
 
         Dim scManBO As ServiceCenterManufacturer
         Dim inClause As String = "(-1"
-        For Each scManBO In Me.ServiceCenterManufacturerChildren
+        For Each scManBO In ServiceCenterManufacturerChildren
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, scManBO.ManufacturerId)
         Next
         inClause &= ")"
@@ -1424,9 +1424,9 @@ Public Class ServiceCenter
     Public Sub AttachServiceNetworks(ByVal selectedServiceNetworkGuidStrCollection As ArrayList)
         Dim snSrvIdStr As String
         For Each snSrvIdStr In selectedServiceNetworkGuidStrCollection
-            Dim snSrvBO As ServiceNetworkSvc = Me.ServiceCenterNetworkChildren.GetNewChild
+            Dim snSrvBO As ServiceNetworkSvc = ServiceCenterNetworkChildren.GetNewChild
             snSrvBO.ServiceNetworkId = New Guid(snSrvIdStr)
-            snSrvBO.ServiceCenterId = Me.Id
+            snSrvBO.ServiceCenterId = Id
             snSrvBO.Save()
         Next
     End Sub
@@ -1434,7 +1434,7 @@ Public Class ServiceCenter
     Public Sub DetachServiceNetworks(ByVal selectedServiceNetworkGuidStrCollection As ArrayList)
         Dim snSrvIdStr As String
         For Each snSrvIdStr In selectedServiceNetworkGuidStrCollection
-            Dim snSrvBO As ServiceNetworkSvc = Me.ServiceCenterNetworkChildren.FindSrvNetwork(New Guid(snSrvIdStr))
+            Dim snSrvBO As ServiceNetworkSvc = ServiceCenterNetworkChildren.FindSrvNetwork(New Guid(snSrvIdStr))
             snSrvBO.Delete()
             snSrvBO.Save()
         Next
@@ -1467,7 +1467,7 @@ Public Class ServiceCenter
 
         Dim snSrvBO As ServiceNetworkSvc
         Dim inClause As String = "(-1"
-        For Each snSrvBO In Me.ServiceCenterNetworkChildren
+        For Each snSrvBO In ServiceCenterNetworkChildren
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, snSrvBO.ServiceNetworkId)
         Next
         inClause &= ")"
@@ -1494,11 +1494,11 @@ Public Class ServiceCenter
 
     Public Sub UpdateDealers(ByVal selectedDealerGuidStrCollection As Hashtable)
         If selectedDealerGuidStrCollection.Count = 0 Then
-            If Not Me.IsDeleted Then Me.Delete()
+            If Not IsDeleted Then Delete()
         Else
             'first Pass
             Dim bo As ServiceCenterDealer
-            For Each bo In Me.ServiceCenterDealerChildren
+            For Each bo In ServiceCenterDealerChildren
                 If Not selectedDealerGuidStrCollection.Contains(bo.DealerId.ToString) Then
                     'delete
                     bo.Delete()
@@ -1508,11 +1508,11 @@ Public Class ServiceCenter
             'Second Pass
             Dim entry As DictionaryEntry
             For Each entry In selectedDealerGuidStrCollection
-                If Me.ServiceCenterDealerChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
+                If ServiceCenterDealerChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
                     'add
                     Dim scDlrBO As ServiceCenterDealer = ServiceCenterDealerChildren.GetNewChild()
                     scDlrBO.DealerId = New Guid(entry.Key.ToString)
-                    scDlrBO.ServiceCenterId = Me.Id
+                    scDlrBO.ServiceCenterId = Id
                     'Set the PreferredDealerFlag value to "Y" for now...
                     scDlrBO.PreferredDealerFlag = True
                     scDlrBO.Save()
@@ -1524,9 +1524,9 @@ Public Class ServiceCenter
     Public Sub AttachDealers(ByVal selectedDealerGuidStrCollection As ArrayList)
         Dim scDlrIdStr As String
         For Each scDlrIdStr In selectedDealerGuidStrCollection
-            Dim scDlrBO As ServiceCenterDealer = Me.ServiceCenterDealerChildren.GetNewChild
+            Dim scDlrBO As ServiceCenterDealer = ServiceCenterDealerChildren.GetNewChild
             scDlrBO.DealerId = New Guid(scDlrIdStr)
-            scDlrBO.ServiceCenterId = Me.Id
+            scDlrBO.ServiceCenterId = Id
             'Set the PreferredDealerFlag value to "Y" for now...
             scDlrBO.PreferredDealerFlag = True
             scDlrBO.Save()
@@ -1536,7 +1536,7 @@ Public Class ServiceCenter
     Public Sub DetachDealers(ByVal selectedDealerGuidStrCollection As ArrayList)
         Dim scDlrIdStr As String
         For Each scDlrIdStr In selectedDealerGuidStrCollection
-            Dim scDlrBO As ServiceCenterDealer = Me.ServiceCenterDealerChildren.Find(New Guid(scDlrIdStr))
+            Dim scDlrBO As ServiceCenterDealer = ServiceCenterDealerChildren.Find(New Guid(scDlrIdStr))
             scDlrBO.Delete()
             scDlrBO.Save()
         Next
@@ -1544,7 +1544,7 @@ Public Class ServiceCenter
 
     Public Function GetAvailableDealers() As DataView
 
-        Dim dv As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies(Me.CountryId))
+        Dim dv As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies(CountryId))
         Dim sequenceCondition As String = GetDealersLookupListSelectedSequenceFilter(dv, False)
         If dv.RowFilter Is Nothing OrElse dv.RowFilter.Trim.Length = 0 Then
             dv.RowFilter = sequenceCondition
@@ -1555,7 +1555,7 @@ Public Class ServiceCenter
     End Function
 
     Public Function GetSelectedDealers() As DataView
-        Dim dv As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies(Me.CountryId))
+        Dim dv As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies(CountryId))
         Dim sequenceCondition As String = GetDealersLookupListSelectedSequenceFilter(dv, True)
         If dv.RowFilter Is Nothing OrElse dv.RowFilter.Trim.Length = 0 Then
             dv.RowFilter = sequenceCondition
@@ -1569,7 +1569,7 @@ Public Class ServiceCenter
 
         Dim scDlrBO As ServiceCenterDealer
         Dim inClause As String = "(-1"
-        For Each scDlrBO In Me.ServiceCenterDealerChildren
+        For Each scDlrBO In ServiceCenterDealerChildren
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, scDlrBO.DealerId)
         Next
         inClause &= ")"
@@ -1595,11 +1595,11 @@ Public Class ServiceCenter
 
     Public Sub UpdateDistricts(ByVal selectedDistrictGuidStrCollection As Hashtable)
         If selectedDistrictGuidStrCollection.Count = 0 Then
-            If Not Me.IsDeleted Then Me.Delete()
+            If Not IsDeleted Then Delete()
         Else
             'first Pass
             Dim bo As ServiceCenterZipDistrict
-            For Each bo In Me.ServiceCenterDistrictChildren
+            For Each bo In ServiceCenterDistrictChildren
                 If Not selectedDistrictGuidStrCollection.Contains(bo.ZipDistrictId.ToString) Then
                     'delete
                     bo.Delete()
@@ -1609,11 +1609,11 @@ Public Class ServiceCenter
             'Second Pass
             Dim entry As DictionaryEntry
             For Each entry In selectedDistrictGuidStrCollection
-                If Me.ServiceCenterDistrictChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
+                If ServiceCenterDistrictChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
                     'add
                     Dim scDstBO As ServiceCenterZipDistrict = ServiceCenterDistrictChildren.GetNewChild()
                     scDstBO.ZipDistrictId = New Guid(entry.Key.ToString)
-                    scDstBO.ServiceCenterId = Me.Id
+                    scDstBO.ServiceCenterId = Id
                     scDstBO.Save()
                 End If
             Next
@@ -1623,9 +1623,9 @@ Public Class ServiceCenter
     Public Sub AttachDistricts(ByVal selectedDistrictGuidStrCollection As ArrayList)
         Dim scDstIdStr As String
         For Each scDstIdStr In selectedDistrictGuidStrCollection
-            Dim scDstBO As ServiceCenterZipDistrict = Me.ServiceCenterDistrictChildren.GetNewChild
+            Dim scDstBO As ServiceCenterZipDistrict = ServiceCenterDistrictChildren.GetNewChild
             scDstBO.ZipDistrictId = New Guid(scDstIdStr)
-            scDstBO.ServiceCenterId = Me.Id
+            scDstBO.ServiceCenterId = Id
             scDstBO.Save()
         Next
     End Sub
@@ -1633,7 +1633,7 @@ Public Class ServiceCenter
     Public Sub DetachDistricts(ByVal selectedDistrictGuidStrCollection As ArrayList)
         Dim scDstIdStr As String
         For Each scDstIdStr In selectedDistrictGuidStrCollection
-            Dim scDstBO As ServiceCenterZipDistrict = Me.ServiceCenterDistrictChildren.Find(New Guid(scDstIdStr))
+            Dim scDstBO As ServiceCenterZipDistrict = ServiceCenterDistrictChildren.Find(New Guid(scDstIdStr))
             scDstBO.Delete()
             scDstBO.Save()
         Next
@@ -1642,7 +1642,7 @@ Public Class ServiceCenter
     Public Function GetAvailableDistricts() As DataView
 
         ' Dim dv As DataView = LookupListNew.GetZipDistrictLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
-        Dim dv As DataView = LookupListNew.GetZipDistrictLookupList(Me.CountryId)
+        Dim dv As DataView = LookupListNew.GetZipDistrictLookupList(CountryId)
         Dim sequenceCondition As String = GetDistrictsLookupListSelectedSequenceFilter(dv, False)
         If dv.RowFilter Is Nothing OrElse dv.RowFilter.Trim.Length = 0 Then
             dv.RowFilter = sequenceCondition
@@ -1654,7 +1654,7 @@ Public Class ServiceCenter
 
     Public Function GetSelectedDistricts() As DataView
         '  Dim dv As DataView = LookupListNew.GetZipDistrictLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
-        Dim dv As DataView = LookupListNew.GetZipDistrictLookupList(Me.CountryId)
+        Dim dv As DataView = LookupListNew.GetZipDistrictLookupList(CountryId)
         Dim sequenceCondition As String = GetDistrictsLookupListSelectedSequenceFilter(dv, True)
         If dv.RowFilter Is Nothing OrElse dv.RowFilter.Trim.Length = 0 Then
             dv.RowFilter = sequenceCondition
@@ -1668,7 +1668,7 @@ Public Class ServiceCenter
 
         Dim scDstBO As ServiceCenterZipDistrict
         Dim inClause As String = "(-1"
-        For Each scDstBO In Me.ServiceCenterDistrictChildren
+        For Each scDstBO In ServiceCenterDistrictChildren
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, scDstBO.ZipDistrictId)
         Next
         inClause &= ")"
@@ -1700,7 +1700,7 @@ Public Class ServiceCenter
 
         Dim scMrBO As ServCenterMethRepair
         Dim inClause As String = "(-1"
-        For Each scMrBO In Me.ServiceCenterMethoOfRepairsChildren
+        For Each scMrBO In ServiceCenterMethoOfRepairsChildren
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, scMrBO.ServCenterMorId)
         Next
         inClause &= ")"
@@ -1742,9 +1742,9 @@ Public Class ServiceCenter
     Public Sub AttachMethodOfRepair(ByVal selectedMethodRepairGuidStrCollection As ArrayList)
         Dim snMorIdStr As String
         For Each snMorIdStr In selectedMethodRepairGuidStrCollection
-            Dim snMorBO As ServCenterMethRepair = Me.ServiceCenterMethoOfRepairsChildren.GetNewChild
+            Dim snMorBO As ServCenterMethRepair = ServiceCenterMethoOfRepairsChildren.GetNewChild
             snMorBO.ServCenterMorId = New Guid(snMorIdStr)
-            snMorBO.ServiceCenterId = Me.Id
+            snMorBO.ServiceCenterId = Id
             snMorBO.ServiceWarrantyDays = 0
             snMorBO.Save()
             MethodOfRepairCount = MethodOfRepairCount + 1
@@ -1777,17 +1777,17 @@ Public Class ServiceCenter
     Private _address As Address = Nothing
     Public ReadOnly Property Address() As Address
         Get
-            If Me._address Is Nothing Then
-                If Me.AddressId.Equals(Guid.Empty) Then
-                    Me._address = New Address(Me.Dataset, Nothing)
+            If _address Is Nothing Then
+                If AddressId.Equals(Guid.Empty) Then
+                    _address = New Address(Dataset, Nothing)
                     'Me._address.CountryId = Me.CountryId
-                    Me.AddressId = Me._address.Id
+                    AddressId = _address.Id
                 Else
-                    Me._address = New Address(Me.AddressId, Me.Dataset, Nothing)
+                    _address = New Address(AddressId, Dataset, Nothing)
                 End If
             End If
-            Me._address.CountryId = Me.CountryId
-            Return Me._address
+            _address.CountryId = CountryId
+            Return _address
         End Get
     End Property
 
@@ -1818,12 +1818,12 @@ Public Class ServiceCenter
 
     Public Function Add_BankInfo() As BankInfo
 
-        If Me.BankInfoId.Equals(Guid.Empty) Then
-            _bankinfo = New BankInfo(Me.Dataset)
+        If BankInfoId.Equals(Guid.Empty) Then
+            _bankinfo = New BankInfo(Dataset)
             'default new Bank Info country to the Service Center's country
-            _bankinfo.CountryID = Me.Address.CountryId
+            _bankinfo.CountryID = Address.CountryId
         Else
-            _bankinfo = New BankInfo(Me.BankInfoId, Me.Dataset)
+            _bankinfo = New BankInfo(BankInfoId, Dataset)
         End If
         Return _bankinfo
     End Function
@@ -1835,12 +1835,12 @@ Public Class ServiceCenter
 
     Public ReadOnly Property LoanerCenter() As ServiceCenter
         Get
-            If Me.HasLoanerCenter Then
-                If Me._loanerCenter Is Nothing Then
-                    Me._loanerCenter = New ServiceCenter(Me.LoanerCenterId)
+            If HasLoanerCenter Then
+                If _loanerCenter Is Nothing Then
+                    _loanerCenter = New ServiceCenter(LoanerCenterId)
                 End If
             End If
-            Return Me._loanerCenter
+            Return _loanerCenter
         End Get
     End Property
 #End Region
@@ -1909,7 +1909,7 @@ Public Class ServiceCenter
         Get
             Dim dv As SVCPlReconSearchDV = GetLatestRecbySVC()
             If dv.Table.Rows.Count = 1 Then
-                _SvcPriceListRecon = New SvcPriceListRecon(SVCPlReconSearchDV.Id(dv.Table.Rows(0)), Me.Dataset)
+                _SvcPriceListRecon = New SvcPriceListRecon(SVCPlReconSearchDV.Id(dv.Table.Rows(0)), Dataset)
                 Return _SvcPriceListRecon
             End If
             Return _SvcPriceListRecon
@@ -1921,15 +1921,15 @@ Public Class ServiceCenter
     End Property
 
     Public Function Add_SVCPLRecon() As SvcPriceListRecon
-        _SvcPriceListRecon = New SvcPriceListRecon(Me.Dataset)
-        _SvcPriceListRecon.ServiceCenterId = Me.Id
+        _SvcPriceListRecon = New SvcPriceListRecon(Dataset)
+        _SvcPriceListRecon.ServiceCenterId = Id
         Return _SvcPriceListRecon
     End Function
 
     Public Function GetLatestRecbySVC() As SVCPlReconSearchDV
         Try
 
-            Return New SVCPlReconSearchDV(SvcPriceListRecon.LoadLatestStatusList(Me.Id).Tables(0))
+            Return New SVCPlReconSearchDV(SvcPriceListRecon.LoadLatestStatusList(Id).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
@@ -2238,33 +2238,33 @@ Public Class ServiceCenter
 #Region "GVS"
     Private Sub IntegratedWithGVSValidation()
         Dim dvIntegratedWith As DataView = LookupListNew.GetIntegratedWithLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-        Dim integratedWithCode As String = LookupListNew.GetCodeFromId(dvIntegratedWith, Me.IntegratedWithID)
+        Dim integratedWithCode As String = LookupListNew.GetCodeFromId(dvIntegratedWith, IntegratedWithID)
 
         If Not integratedWithCode Is Nothing AndAlso integratedWithCode = Codes.INTEGRATED_WITH_GVS _
-            AndAlso Me.CheckColumnChanged(ServiceCenterDAL.COL_NAME_INTEGRATED_WITH_ID) Then
+            AndAlso CheckColumnChanged(ServiceCenterDAL.COL_NAME_INTEGRATED_WITH_ID) Then
             ' Once turn on GVS integration, the following actions will take place:
             ' 1. Integrated With will be saved as Awaiting GVS
             ' 2. Status will be saved as C
             ' 3. Call GVS web service and send the service center integration information in the back-end process
-            Me.IntegratedWithID = LookupListNew.GetIdFromCode(dvIntegratedWith, Codes.INTEGRATED_WITH_AGVS)
-            Me.StatusCode = Codes.CLAIM_STATUS__CLOSED
+            IntegratedWithID = LookupListNew.GetIdFromCode(dvIntegratedWith, Codes.INTEGRATED_WITH_AGVS)
+            StatusCode = Codes.CLAIM_STATUS__CLOSED
 
             ' Log the GVS integration into the transaction log header
-            Dim logHeader As TransactionLogHeader = New TransactionLogHeader(Me.Dataset)
-            logHeader.KeyID = Me.Id
+            Dim logHeader As TransactionLogHeader = New TransactionLogHeader(Dataset)
+            logHeader.KeyID = Id
             logHeader.FunctionTypeID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_SVC)
             logHeader.TransactionStatusID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSTransactionStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), DALObjects.TransactionLogHeaderDAL.TRANSACTION_STATUS_NEW)
             logHeader.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-            logHeader.TransactionXml = Me.GetTransactionXML(logHeader.Id)
+            logHeader.TransactionXml = GetTransactionXML(logHeader.Id)
         ElseIf Not integratedWithCode Is Nothing AndAlso integratedWithCode = Codes.INTEGRATED_WITH_GVS _
-        AndAlso Me.CheckColumnChanged(ServiceCenterDAL.COL_NAME_REVERSE_LOGISTICS_ID) Then
+        AndAlso CheckColumnChanged(ServiceCenterDAL.COL_NAME_REVERSE_LOGISTICS_ID) Then
             ' Log the GVS integration into the transaction log header
-            Dim logHeader As TransactionLogHeader = New TransactionLogHeader(Me.Dataset)
-            logHeader.KeyID = Me.Id
+            Dim logHeader As TransactionLogHeader = New TransactionLogHeader(Dataset)
+            logHeader.KeyID = Id
             logHeader.FunctionTypeID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_SVC)
             logHeader.TransactionStatusID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSTransactionStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), DALObjects.TransactionLogHeaderDAL.TRANSACTION_STATUS_NEW)
             logHeader.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-            logHeader.TransactionXml = Me.GetTransactionXML(logHeader.Id)
+            logHeader.TransactionXml = GetTransactionXML(logHeader.Id)
         End If
     End Sub
 
@@ -2519,10 +2519,10 @@ Public Class ServiceCenter
 
     Public Function AddVendorContact(ByVal VendorContactID As Guid) As VendorContact
         If VendorContactID.Equals(Guid.Empty) Then
-            Dim objVendorContact As New VendorContact(Me.Dataset)
+            Dim objVendorContact As New VendorContact(Dataset)
             Return objVendorContact
         Else
-            Dim objVendorContact As New VendorContact(VendorContactID, Me.Dataset)
+            Dim objVendorContact As New VendorContact(VendorContactID, Dataset)
             Return objVendorContact
         End If
     End Function
@@ -2563,7 +2563,7 @@ Public Class ServiceCenter
     Public Function GetContactsSelectionView() As ContactsView
         Dim t As DataTable = ContactsView.CreateTable
         Dim detail As VendorContact
-        For Each detail In Me.ContactsChildren
+        For Each detail In ContactsChildren
             Dim row As DataRow = t.NewRow
             row(ContactsView.COL_NAME_ID) = detail.Id.ToByteArray
             row(ContactsView.COL_NAME_SERVICE_CENTER_ID) = detail.ServiceCenterId.ToByteArray
@@ -2593,12 +2593,12 @@ Public Class ServiceCenter
     End Property
 
     Public Function GeChildContacts(ByVal childId As Guid) As VendorContact
-        Return CType(Me.ContactsChildren.GetChild(childId), VendorContact)
+        Return CType(ContactsChildren.GetChild(childId), VendorContact)
     End Function
 
     Public Function GetNewChildContacts() As VendorContact
-        Dim NewContactsList As VendorContact = CType(Me.ContactsChildren.GetNewChild, VendorContact)
-        NewContactsList.ServiceCenterId = Me.Id
+        Dim NewContactsList As VendorContact = CType(ContactsChildren.GetNewChild, VendorContact)
+        NewContactsList.ServiceCenterId = Id
         Return NewContactsList
     End Function
 
@@ -2608,10 +2608,10 @@ Public Class ServiceCenter
 
     Public Function AddContactInfo(ByVal ContactInfoID As Guid) As ContactInfo
         If ContactInfoID.Equals(Guid.Empty) Then
-            Dim objContactInfo As New ContactInfo(Me.Dataset)
+            Dim objContactInfo As New ContactInfo(Dataset)
             Return objContactInfo
         Else
-            Dim objContactInfo As New ContactInfo(ContactInfoID, Me.Dataset)
+            Dim objContactInfo As New ContactInfo(ContactInfoID, Dataset)
             Return objContactInfo
         End If
     End Function
@@ -2654,7 +2654,7 @@ Public Class ServiceCenter
     Public Function GetContactInfoSelectionView() As ContactInfoView
         Dim t As DataTable = ContactsView.CreateTable
         Dim detail As ContactInfo
-        For Each detail In Me.ContactsChildren
+        For Each detail In ContactsChildren
             Dim row As DataRow = t.NewRow
             row(ContactInfoView.COL_NAME_ID) = detail.Id.ToByteArray
             row(ContactInfoView.COL_NAME_ADDRESS_TYPE_ID) = detail.AddressTypeId.ToByteArray
@@ -2684,11 +2684,11 @@ Public Class ServiceCenter
     End Property
 
     Public Function GeChildContactInfo(ByVal obj As VendorContact, ByVal childId As Guid) As ContactInfo
-        Return CType(Me.ContactInfoChildren(obj).GetChild(childId), ContactInfo)
+        Return CType(ContactInfoChildren(obj).GetChild(childId), ContactInfo)
     End Function
 
     Public Function GetNewChildContactInfo(ByVal obj As VendorContact) As ContactInfo
-        Dim NewContactInfoList As ContactInfo = CType(Me.ContactInfoChildren(obj).GetNewChild, ContactInfo)
+        Dim NewContactInfoList As ContactInfo = CType(ContactInfoChildren(obj).GetNewChild, ContactInfo)
         obj.ContactInfoId = NewContactInfoList.Id
         Return NewContactInfoList
     End Function
@@ -2698,10 +2698,10 @@ Public Class ServiceCenter
 
     Public Function AddAddress(ByVal AddressID As Guid) As Address
         If AddressID.Equals(Guid.Empty) Then
-            Dim objAddress As New Address(Me.Dataset)
+            Dim objAddress As New Address(Dataset)
             Return objAddress
         Else
-            Dim objAddress As New Address(AddressID, Me.Dataset)
+            Dim objAddress As New Address(AddressID, Dataset)
             Return objAddress
         End If
     End Function
@@ -2740,7 +2740,7 @@ Public Class ServiceCenter
     Public Function GetAddressSelectionView() As AddressView
         Dim t As DataTable = AddressView.CreateTable
         Dim detail As Address
-        For Each detail In Me.ContactsChildren
+        For Each detail In ContactsChildren
             Dim row As DataRow = t.NewRow
             row(AddressView.COL_NAME_ID) = detail.Id.ToByteArray
             row(AddressView.COL_NAME_ADDRESS1) = detail.Address1
@@ -2768,11 +2768,11 @@ Public Class ServiceCenter
     End Property
 
     Public Function GeChildAddress(ByVal obj As ContactInfo, ByVal childId As Guid) As Address
-        Return CType(Me.AddressChildren(obj).GetChild(childId), Address)
+        Return CType(AddressChildren(obj).GetChild(childId), Address)
     End Function
 
     Public Function GetNewChildAddress(ByVal obj As ContactInfo) As Address
-        Dim NewAddressList As Address = CType(Me.AddressChildren(obj).GetNewChild, Address)
+        Dim NewAddressList As Address = CType(AddressChildren(obj).GetNewChild, Address)
         obj.AddressId = NewAddressList.Id
         Return NewAddressList
     End Function
@@ -2828,7 +2828,7 @@ Public Class ServiceCenter
     Public Function GetQuantitySelectionView() As QuantityView
         Dim t As DataTable = QuantityView.CreateTable
         Dim detail As VendorQuantity
-        For Each detail In Me.QuantityChildren
+        For Each detail In QuantityChildren
             Dim row As DataRow = t.NewRow
             'Check if the Vendor_Quantity_id is empty. If yes, then set the vendor quantity id to an valid value
             If detail.Id = Guid.Empty Then
@@ -2866,12 +2866,12 @@ Public Class ServiceCenter
     End Property
 
     Public Function GeChildQuantity(ByVal childId As Guid) As VendorQuantity
-        Return CType(Me.QuantityChildren.GetChild(childId), VendorQuantity)
+        Return CType(QuantityChildren.GetChild(childId), VendorQuantity)
     End Function
 
     Public Function GetNewChildQuantity() As VendorQuantity
-        Dim NewQuantityList As VendorQuantity = CType(Me.QuantityChildren.GetNewChild, VendorQuantity)
-        NewQuantityList.ReferenceId = Me.Id
+        Dim NewQuantityList As VendorQuantity = CType(QuantityChildren.GetNewChild, VendorQuantity)
+        NewQuantityList.ReferenceId = Id
         Return NewQuantityList
     End Function
 
@@ -2929,7 +2929,7 @@ Public Class ServiceCenter
     Public Function GetScheduleSelectionView() As ScheduleView
         Dim t As DataTable = ScheduleView.CreateTable
         Dim detail As ServiceSchedule
-        For Each detail In Me.scheduleChildren
+        For Each detail In scheduleChildren
             Dim row As DataRow = t.NewRow
             row(ScheduleView.COL_NAME_ID) = detail.Id.ToByteArray
             row(ScheduleView.COL_NAME_SERVICE_CLASS_ID) = detail.ServiceClassId.ToByteArray
@@ -2958,12 +2958,12 @@ Public Class ServiceCenter
     End Property
 
     Public Function GeChildSchedule(ByVal childId As Guid) As ServiceSchedule
-        Return CType(Me.scheduleChildren.GetChild(childId), ServiceSchedule)
+        Return CType(scheduleChildren.GetChild(childId), ServiceSchedule)
     End Function
 
     Public Function GetNewChildSchedule() As ServiceSchedule
-        Dim NewScheduleList As ServiceSchedule = CType(Me.scheduleChildren.GetNewChild, ServiceSchedule)
-        NewScheduleList.ServiceCenterId = Me.Id
+        Dim NewScheduleList As ServiceSchedule = CType(scheduleChildren.GetNewChild, ServiceSchedule)
+        NewScheduleList.ServiceCenterId = Id
         Return NewScheduleList
     End Function
 #End Region
@@ -2991,7 +2991,7 @@ Public Class ServiceCenter
     Public Function GetScheduleTableSelectionView() As ScheduleTableView
         Dim t As DataTable = ScheduleTableView.CreateTable
         Dim detail As Schedule
-        For Each detail In Me.scheduleChildren
+        For Each detail In scheduleChildren
             Dim row As DataRow = t.NewRow
             row(ScheduleTableView.COL_NAME_ID) = detail.Id.ToByteArray
             row(ScheduleTableView.COL_NAME_CODE) = detail.Code
@@ -3013,11 +3013,11 @@ Public Class ServiceCenter
     End Property
 
     Public Function GeChildScheduleTable(ByVal obj As ServiceSchedule, ByVal childId As Guid) As Schedule
-        Return CType(Me.scheduleTableChildren(obj).GetChild(childId), Schedule)
+        Return CType(scheduleTableChildren(obj).GetChild(childId), Schedule)
     End Function
 
     Public Function GetNewChildScheduleTable(ByVal obj As ServiceSchedule) As Schedule
-        Dim NewScheduleTableList As Schedule = CType(Me.scheduleTableChildren(obj).GetNewChild, Schedule)
+        Dim NewScheduleTableList As Schedule = CType(scheduleTableChildren(obj).GetNewChild, Schedule)
         obj.ScheduleId = NewScheduleTableList.Id
         Return NewScheduleTableList
     End Function
@@ -3050,7 +3050,7 @@ Public Class ServiceCenter
     Public Function GetScheduleDetailSelectionView() As ScheduleView
         Dim t As DataTable = ScheduleView.CreateTable
         Dim detail As ServiceSchedule
-        For Each detail In Me.scheduleChildren
+        For Each detail In scheduleChildren
             Dim row As DataRow = t.NewRow
             row(ScheduleView.COL_NAME_ID) = detail.Id.ToByteArray
             row(ScheduleView.COL_NAME_SERVICE_CLASS_ID) = detail.ServiceClassId.ToByteArray
@@ -3079,11 +3079,11 @@ Public Class ServiceCenter
     End Property
 
     Public Function GeChildScheduleDetail(ByVal obj As Schedule, ByVal childId As Guid, ByVal objParent As ServiceSchedule) As ScheduleDetail
-        Return CType(Me.scheduledDtailChildren(obj, objParent).GetChildThird(childId, Me.Dataset, "schedule_id"), ScheduleDetail)
+        Return CType(scheduledDtailChildren(obj, objParent).GetChildThird(childId, Dataset, "schedule_id"), ScheduleDetail)
     End Function
 
     Public Function GetNewChildScheduleDetail(ByVal obj As Schedule, ByVal objParent As ServiceSchedule) As ScheduleDetail
-        Dim NewScheduleDetailList As ScheduleDetail = CType(Me.scheduledDtailChildren(obj, objParent).GetNewChild, ScheduleDetail)
+        Dim NewScheduleDetailList As ScheduleDetail = CType(scheduledDtailChildren(obj, objParent).GetNewChild, ScheduleDetail)
         NewScheduleDetailList.ScheduleId = obj.Id
         Return NewScheduleDetailList
     End Function
@@ -3169,28 +3169,28 @@ Public Class ServiceCenter
 
         Public Sub New(ByVal fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Messages.VALID_STRING_LENGTH_ERR)
-            Me._minLength = 0
-            Me._maxLength = 0
-            Me._minLengthSet = False
-            Me._maxLengthSet = False
+            _minLength = 0
+            _maxLength = 0
+            _minLengthSet = False
+            _maxLengthSet = False
         End Sub
         Public Property Min As Int32
             Get
-                Return Me._minLength
+                Return _minLength
             End Get
             Set(ByVal value As Int32)
-                Me._minLength = value
-                Me._minLengthSet = True
+                _minLength = value
+                _minLengthSet = True
             End Set
         End Property
 
         Public Property Max As Int32
             Get
-                Return Me._maxLength
+                Return _maxLength
             End Get
             Set(ByVal value As Int32)
-                Me._maxLength = value
-                Me._maxLengthSet = True
+                _maxLength = value
+                _maxLengthSet = True
             End Set
         End Property
 
@@ -3210,13 +3210,13 @@ Public Class ServiceCenter
                     If (RequiresByteConversionId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then ' If Flag = Yes then perform Byte check else not 
                         Dim svcDAL As ServiceCenterDAL = New ServiceCenterDAL()
                         Dim length As Int32 = svcDAL.GetServicecenterDescBytes(objectToCheck.ToString())
-                        If Me._minLengthSet Then
-                            If length < Me._minLength Then
+                        If _minLengthSet Then
+                            If length < _minLength Then
                                 retVal = False
                             End If
                         End If
-                        If Me._maxLengthSet Then
-                            If length > Me._maxLength Then
+                        If _maxLengthSet Then
+                            If length > _maxLength Then
                                 retVal = False
                             End If
                         End If
@@ -3244,28 +3244,28 @@ Public NotInheritable Class ValidateByteLengthAttribute
 
     Public Sub New(ByVal fieldDisplayName As String)
         MyBase.New(fieldDisplayName, Messages.VALID_STRING_LENGTH_ERR)
-        Me._minLength = 0
-        Me._maxLength = 0
-        Me._minLengthSet = False
-        Me._maxLengthSet = False
+        _minLength = 0
+        _maxLength = 0
+        _minLengthSet = False
+        _maxLengthSet = False
     End Sub
     Public Property Min As Int32
         Get
-            Return Me._minLength
+            Return _minLength
         End Get
         Set(ByVal value As Int32)
-            Me._minLength = value
-            Me._minLengthSet = True
+            _minLength = value
+            _minLengthSet = True
         End Set
     End Property
 
     Public Property Max As Int32
         Get
-            Return Me._maxLength
+            Return _maxLength
         End Get
         Set(ByVal value As Int32)
-            Me._maxLength = value
-            Me._maxLengthSet = True
+            _maxLength = value
+            _maxLengthSet = True
         End Set
     End Property
 
@@ -3285,13 +3285,13 @@ Public NotInheritable Class ValidateByteLengthAttribute
                 If (RequiresByteConversionId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then ' If Flag = Yes then perform Byte check else not 
                     Dim svcDAL As ServiceCenterDAL = New ServiceCenterDAL()
                     Dim length As Int32 = svcDAL.GetServicecenterDescBytes(objectToCheck.ToString())
-                    If Me._minLengthSet Then
-                        If length < Me._minLength Then
+                    If _minLengthSet Then
+                        If length < _minLength Then
                             retVal = False
                         End If
                     End If
-                    If Me._maxLengthSet Then
-                        If length > Me._maxLength Then
+                    If _maxLengthSet Then
+                        If length > _maxLength Then
                             retVal = False
                         End If
                     End If

@@ -34,45 +34,45 @@ Public Class UpdateSubscriberStatus
     <ValueMandatory("")> _
     Public Property DealerCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_DEALER_CODE), String)
+                Return CType(Row(DATA_COL_NAME_DEALER_CODE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER_CODE, Value)
+            SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property CertificateNumber() As String
         Get
-            If Row(Me.DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CERT_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CERT_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property SubscriberStatus As String
         Get
-            If Row(Me.DATA_COL_NAME_SUBSCRIBER_STATUS) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_SUBSCRIBER_STATUS) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_SUBSCRIBER_STATUS), String)
+                Return CType(Row(DATA_COL_NAME_SUBSCRIBER_STATUS), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_SUBSCRIBER_STATUS, Value)
+            SetValue(DATA_COL_NAME_SUBSCRIBER_STATUS, Value)
         End Set
     End Property
 
@@ -80,15 +80,15 @@ Public Class UpdateSubscriberStatus
     <ValueMandatory("")> _
     Public Property StatusChangeDate() As DateType
         Get
-            If Row(Me.DATA_COL_NAME_STATUS_CHANGE_DATE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_STATUS_CHANGE_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_STATUS_CHANGE_DATE), DateTime)
+                Return CType(Row(DATA_COL_NAME_STATUS_CHANGE_DATE), DateTime)
             End If
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_STATUS_CHANGE_DATE, Value)
+            SetValue(DATA_COL_NAME_STATUS_CHANGE_DATE, Value)
         End Set
     End Property
 
@@ -108,8 +108,8 @@ Public Class UpdateSubscriberStatus
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -119,10 +119,10 @@ Public Class UpdateSubscriberStatus
     Private Sub Load(ByVal ds As UpdateSubscriberStatusDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -138,10 +138,10 @@ Public Class UpdateSubscriberStatus
         Try
             If ds.UpdateSubscriberStatus.Count = 0 Then Exit Sub
             With ds.UpdateSubscriberStatus.Item(0)
-                Me.DealerCode = .DEALER_CODE
-                Me.CertificateNumber = .CERT_NUMBER
-                Me.SubscriberStatus = .SUBSCRIBER_STATUS
-                Me.StatusChangeDate = .STATUS_CHANGE_DATE
+                DealerCode = .DEALER_CODE
+                CertificateNumber = .CERT_NUMBER
+                SubscriberStatus = .SUBSCRIBER_STATUS
+                StatusChangeDate = .STATUS_CHANGE_DATE
             End With
 
         Catch ex As BOValidationException
@@ -159,7 +159,7 @@ Public Class UpdateSubscriberStatus
 
         Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
 
-        Me._dealerId = LookupListNew.GetIdFromCode(list, Me.DealerCode)
+        _dealerId = LookupListNew.GetIdFromCode(list, DealerCode)
 
         If _dealerId = Guid.Empty Then
             Throw New BOValidationException("UpdateSubscriberStatus Error: ", Common.ErrorCodes.WS_DEALER_NOT_FOUND)
@@ -171,7 +171,7 @@ Public Class UpdateSubscriberStatus
     Private Function FindCertificate()
 
         Dim dal As New CertificateDAL
-        Dim dsCert As DataSet = dal.GetCertIDWithCertNumAndDealer(Me.CertificateNumber, Me._dealerId)
+        Dim dsCert As DataSet = dal.GetCertIDWithCertNumAndDealer(CertificateNumber, _dealerId)
         Dim strResult As String = String.Empty
 
         If Not dsCert Is Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
@@ -196,7 +196,7 @@ Public Class UpdateSubscriberStatus
 
     Private Function validateStatusForCertAndSubscriber(Type As String)
 
-        If (Me.SubscriberStatus <> "A" AndAlso Me.SubscriberStatus <> "S") Then
+        If (SubscriberStatus <> "A" AndAlso SubscriberStatus <> "S") Then
             Throw New BOValidationException("UpdateSubscriberStatus Error: ", Common.ErrorCodes.MSG_INVALID_SUBSCRIBER_STATUS)
         End If
 
@@ -210,25 +210,25 @@ Public Class UpdateSubscriberStatus
         Try
             Dim dal As New CertificateDAL
 
-            Me.Validate()
+            Validate()
 
             'validate the dealer code
-            If Not Me.DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty Then
-                Me.FindDealer()
+            If Not DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty Then
+                FindDealer()
             End If
 
             'validate the certificate number
-            If Not Me.CertificateNumber Is Nothing AndAlso CertificateNumber.Trim <> String.Empty Then
-                Me.FindCertificate()
+            If Not CertificateNumber Is Nothing AndAlso CertificateNumber.Trim <> String.Empty Then
+                FindCertificate()
             End If
 
             'verify the incoming Subscriber status
             validateStatusForCertAndSubscriber("Subscriber")
 
             'Get the Certificate information
-            Dim MyBO As Certificate = New Certificate(Me._certId)
-            MyBO.SubscriberStatus = LookupListNew.GetIdFromCode("SUBSTAT", Me.SubscriberStatus)
-            MyBO.SubStatusChangeDate = Me.StatusChangeDate
+            Dim MyBO As Certificate = New Certificate(_certId)
+            MyBO.SubscriberStatus = LookupListNew.GetIdFromCode("SUBSTAT", SubscriberStatus)
+            MyBO.SubStatusChangeDate = StatusChangeDate
             'validate the document type flag
             MyBO.ValFlag = MyBO.GetValFlag()
 

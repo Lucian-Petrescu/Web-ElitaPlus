@@ -82,53 +82,53 @@ Public Class CertRegisteredItemDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_registered_item_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
-    Public Function getDeviceTypeDesc(ByVal languageId As Guid, ByVal deviceTypeId As Guid)
+    Public Function getDeviceTypeDesc(languageId As Guid, deviceTypeId As Guid)
 
         Dim ds As New DataSet
         Dim parameters() As DBHelper.DBHelperParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEVICE_TYPE_DESC")
+        Dim selectStmt As String = Config("/SQL/GET_DEVICE_TYPE_DESC")
 
         parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("device_type_id", deviceTypeId.ToByteArray),
                                                        New DBHelper.DBHelperParameter("language_id", languageId.ToByteArray)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
-    Public Function UpdateRegisterItem(ByVal certNumber As String, ByVal dealerCode As String, ByVal regItemIdentifier As String, ByVal manufacturer As String,
-                                  ByVal model As String, ByVal serialNumber As String, ByVal itemDesc As String,
-                                  ByVal purchaseDate As Date, ByVal purchasePrice As Double, ByVal registeredItemName As String,
-                                  ByVal user As String, ByVal itemStatus As String,
-                                  ByVal retailPrice As DecimalType, ByVal registrationDate As DateType, ByVal indixID As String,
-                                  ByVal deviceType As String, ByVal Id As Guid,
+    Public Function UpdateRegisterItem(certNumber As String, dealerCode As String, regItemIdentifier As String, manufacturer As String,
+                                  model As String, serialNumber As String, itemDesc As String,
+                                  purchaseDate As Date, purchasePrice As Double, registeredItemName As String,
+                                  user As String, itemStatus As String,
+                                  retailPrice As DecimalType, registrationDate As DateType, indixID As String,
+                                  deviceType As String, Id As Guid,
                                   ByRef CertRegItemID As Guid,
                                   ByRef ErrRejectCode As String, ByRef ErrRejectReason As String,
                                   ByRef ErrMsgUIProgCode As String, ByRef ErrMsgParam As String)
@@ -136,7 +136,7 @@ Public Class CertRegisteredItemDAL
         Dim outputParameter(4) As DBHelper.DBHelperParameter
         Dim sqlStmt As String
 
-        sqlStmt = Me.Config("/SQL/UPDATE_REG_ITEM")
+        sqlStmt = Config("/SQL/UPDATE_REG_ITEM")
 
         Try
             inputParameters(0) = New DBHelper.DBHelperParameter(PAR_I_CERT_NUMBER, certNumber, GetType(String))
@@ -198,11 +198,11 @@ Public Class CertRegisteredItemDAL
         End Try
     End Function
 
-    Public Function RegisterItem(ByVal certNumber As String, ByVal dealerCode As String, ByVal manufacturer As String,
-                                  ByVal model As String, ByVal deviceType As String, ByVal serialNumber As String, ByVal itemDesc As String,
-                                  ByVal purchaseDate As Date, ByVal purchasePrice As Double, ByVal registeredItemName As String,
-                                  ByVal registrationDate As DateType, ByVal retailPrice As DecimalType, ByVal indixID As String,
-                                  ByVal user As String, ByRef CertRegItemID As Guid,
+    Public Function RegisterItem(certNumber As String, dealerCode As String, manufacturer As String,
+                                  model As String, deviceType As String, serialNumber As String, itemDesc As String,
+                                  purchaseDate As Date, purchasePrice As Double, registeredItemName As String,
+                                  registrationDate As DateType, retailPrice As DecimalType, indixID As String,
+                                  user As String, ByRef CertRegItemID As Guid,
                                   ByRef ErrRejectCode As String, ByRef ErrRejectReason As String,
                                   ByRef ErrMsgUIProgCode As String, ByRef ErrMsgParam As String)
 
@@ -210,7 +210,7 @@ Public Class CertRegisteredItemDAL
         Dim outputParameter(4) As DBHelper.DBHelperParameter
         Dim sqlStmt As String
 
-        sqlStmt = Me.Config("/SQL/REG_ITEM")
+        sqlStmt = Config("/SQL/REG_ITEM")
 
         Try
             inputParameters(0) = New DBHelper.DBHelperParameter(PAR_I_CERT_NUMBER, certNumber, GetType(String))
@@ -268,8 +268,8 @@ Public Class CertRegisteredItemDAL
         End Try
     End Function
 
-    Public Function GetCertRegisterItemId(ByVal ClaimID As Guid) As Guid
-        Dim selectStmt As String = Me.Config("/SQL/GET_CERT_REG_ITEM_BY_CLAIM_ID")
+    Public Function GetCertRegisterItemId(ClaimID As Guid) As Guid
+        Dim selectStmt As String = Config("/SQL/GET_CERT_REG_ITEM_BY_CLAIM_ID")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_id", ClaimID.ToByteArray)}
         Try
             Dim obj As Object
@@ -283,8 +283,8 @@ Public Class CertRegisteredItemDAL
         End Try
     End Function
 
-    Public Function GetCertRegisterItemIdByMasterClaimNo(ByVal ClaimNumber As String, ByVal CompanyId As Guid) As Guid
-        Dim selectStmt As String = Me.Config("/SQL/GET_CERT_REG_ITEM_BY_MASTER_CLAIM_NO")
+    Public Function GetCertRegisterItemIdByMasterClaimNo(ClaimNumber As String, CompanyId As Guid) As Guid
+        Dim selectStmt As String = Config("/SQL/GET_CERT_REG_ITEM_BY_MASTER_CLAIM_NO")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_number", ClaimNumber),
                                                                                            New DBHelper.DBHelperParameter("company_id", CompanyId.ToByteArray)}
         Try

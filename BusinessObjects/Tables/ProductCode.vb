@@ -9,52 +9,52 @@ Public Class ProductCode
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     Public Sub New(ByVal dealerId As Guid, ByVal productCode As String, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(dealerId, productCode)
+        Dataset = familyDS
+        Load(dealerId, productCode)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ProductCodeDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -65,20 +65,20 @@ Public Class ProductCode
     Protected Sub Load(ByVal dealerId As Guid, ByVal productCode As String)
         Try
             Dim dal As New ProductCodeDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(Id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(Id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.LoadByDealerProduct(Me.Dataset, dealerId, productCode)
-                Me.Row = Me.FindRow(dealerId, dal.COL_NAME_DEALER_ID, productCode, dal.COL_NAME_PRODUCT_CODE, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.LoadByDealerProduct(Dataset, dealerId, productCode)
+                Row = FindRow(dealerId, dal.COL_NAME_DEALER_ID, productCode, dal.COL_NAME_PRODUCT_CODE, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -89,20 +89,20 @@ Public Class ProductCode
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New ProductCodeDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -114,9 +114,9 @@ Public Class ProductCode
         Try
             Dim dal As New ProductEquipmentDAL
 
-            dal.LoadBenefitsList(Me.Dataset, Me.Id)
+            dal.LoadBenefitsList(Dataset, Id)
 
-            Me.AddChildrenCollection(GetType(ProductEquipment.ProductBenefitsDetailList))
+            AddChildrenCollection(GetType(ProductEquipment.ProductBenefitsDetailList))
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -127,8 +127,8 @@ Public Class ProductCode
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        Me.UpgradeProgramId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        Me.Inuseflag = "N"
+        UpgradeProgramId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+        Inuseflag = "N"
     End Sub
 #End Region
 
@@ -147,7 +147,7 @@ Public Class ProductCode
     Public ReadOnly Property AttributeValues As AttributeValueList(Of IAttributable) Implements IAttributable.AttributeValues
         Get
             If (_AttributeValueList Is Nothing) Then
-                _AttributeValueList = New AttributeValueList(Of IAttributable)(Me.Dataset, Me)
+                _AttributeValueList = New AttributeValueList(Of IAttributable)(Dataset, Me)
             End If
             Return _AttributeValueList
         End Get
@@ -183,7 +183,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
@@ -200,7 +200,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_PRODUCT_CODE, Value)
+            SetValue(ProductCodeDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
@@ -217,7 +217,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_RISK_GROUP_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_RISK_GROUP_ID, Value)
         End Set
     End Property
 
@@ -234,7 +234,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_PRICE_MATRIX_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_PRICE_MATRIX_ID, Value)
         End Set
     End Property
 
@@ -250,7 +250,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_PERCENT_OF_RETAIL, Value)
+            SetValue(ProductCodeDAL.COL_NAME_PERCENT_OF_RETAIL, Value)
         End Set
     End Property
 
@@ -267,7 +267,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(ProductCodeDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -284,7 +284,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
         End Set
     End Property
 
@@ -301,7 +301,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID, Value)
         End Set
     End Property
 
@@ -317,7 +317,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_USE_DEPRECIATION, Value)
+            SetValue(ProductCodeDAL.COL_NAME_USE_DEPRECIATION, Value)
         End Set
     End Property
 
@@ -333,7 +333,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_BUNDLED_ITEM_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_BUNDLED_ITEM_ID, Value)
         End Set
     End Property
 
@@ -349,7 +349,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_METHOD_OF_REPAIR_BY_PRICE_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_METHOD_OF_REPAIR_BY_PRICE_ID, Value)
         End Set
     End Property
 
@@ -365,7 +365,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_SPLIT_WARRANTY_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_SPLIT_WARRANTY_ID, Value)
         End Set
     End Property
 
@@ -381,7 +381,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_COMMENTS, Value)
+            SetValue(ProductCodeDAL.COL_NAME_COMMENTS, Value)
         End Set
     End Property
 
@@ -397,7 +397,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_SPECIAL_SERVICE, Value)
+            SetValue(ProductCodeDAL.COL_NAME_SPECIAL_SERVICE, Value)
         End Set
     End Property
 
@@ -415,7 +415,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_BILLING_FREQUENCY_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_BILLING_FREQUENCY_ID, Value)
         End Set
     End Property
 
@@ -431,7 +431,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Integer)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_NUMBER_OF_INSTALLMENTS, Value)
+            SetValue(ProductCodeDAL.COL_NAME_NUMBER_OF_INSTALLMENTS, Value)
         End Set
     End Property
 
@@ -447,7 +447,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_NUM_OF_CLAIMS, Value)
+            SetValue(ProductCodeDAL.COL_NAME_NUM_OF_CLAIMS, Value)
         End Set
     End Property
 
@@ -479,7 +479,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_CLAIM_WAITING_PERIOD, Value)
+            SetValue(ProductCodeDAL.COL_NAME_CLAIM_WAITING_PERIOD, Value)
         End Set
     End Property
 
@@ -495,7 +495,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_FULL_REFUND_DAYS, Value)
+            SetValue(ProductCodeDAL.COL_NAME_FULL_REFUND_DAYS, Value)
         End Set
     End Property
 
@@ -511,14 +511,14 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_UPGRADE_PROGRAM_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_UPGRADE_PROGRAM_ID, Value)
         End Set
     End Property
 
     Public ReadOnly Property UpgradeFinanceBalanceComputationMethod As String
         Get
-            If (Me.UPGFinanceBalCompMethId <> Guid.Empty) Then
-                Return LookupListNew.GetCodeFromId(LookupListNew.LK_UPG_FINANCE_BAL_COMP_METH, Me.UPGFinanceBalCompMethId)
+            If (UPGFinanceBalCompMethId <> Guid.Empty) Then
+                Return LookupListNew.GetCodeFromId(LookupListNew.LK_UPG_FINANCE_BAL_COMP_METH, UPGFinanceBalCompMethId)
             Else
                 Return Codes.UPG_FINANCE_BAL_COMP_METH__NONE
             End If
@@ -536,7 +536,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_UPG_FINANCE_BAL_COMP_METH_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_UPG_FINANCE_BAL_COMP_METH_ID, Value)
         End Set
     End Property
 
@@ -551,7 +551,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_IGNORE_WAITING_PERIOD_WSD_PSD, Value)
+            SetValue(ProductCodeDAL.COL_NAME_IGNORE_WAITING_PERIOD_WSD_PSD, Value)
         End Set
     End Property
 
@@ -567,7 +567,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT_BASE_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT_BASE_ID, Value)
         End Set
     End Property
     <ValidateProdLiabilityLimitPolicy("")>
@@ -582,7 +582,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT_POLICY_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT_POLICY_ID, Value)
         End Set
     End Property
     Public Property PerIncidentLiabilityLimitCap() As DecimalType
@@ -596,7 +596,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_PER_INCIDENT_LIABILITY_LIMIT_CAP, Value)
+            SetValue(ProductCodeDAL.COL_NAME_PER_INCIDENT_LIABILITY_LIMIT_CAP, Value)
         End Set
     End Property
 
@@ -611,7 +611,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT, Value)
+            SetValue(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT, Value)
         End Set
     End Property
 
@@ -626,7 +626,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT_PERCENT, Value)
+            SetValue(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT_PERCENT, Value)
         End Set
     End Property
 
@@ -642,7 +642,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_CLAIM_AUTO_APPROVE_PSP, Value)
+            SetValue(ProductCodeDAL.COL_NAME_CLAIM_AUTO_APPROVE_PSP, Value)
         End Set
     End Property
 
@@ -658,7 +658,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_NUM_OF_REPAIR_CLAIMS, Value)
+            SetValue(ProductCodeDAL.COL_NAME_NUM_OF_REPAIR_CLAIMS, Value)
         End Set
     End Property
 
@@ -674,7 +674,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_NUM_OF_REPLACEMENT_CLAIMS, Value)
+            SetValue(ProductCodeDAL.COL_NAME_NUM_OF_REPLACEMENT_CLAIMS, Value)
         End Set
     End Property
 
@@ -691,7 +691,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_1, Value)
+            SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_1, Value)
         End Set
     End Property
 
@@ -708,7 +708,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_2, Value)
+            SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_2, Value)
         End Set
     End Property
 
@@ -725,7 +725,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_3, Value)
+            SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_3, Value)
         End Set
     End Property
 
@@ -742,7 +742,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_4, Value)
+            SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_4, Value)
         End Set
     End Property
 
@@ -759,7 +759,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_5, Value)
+            SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_5, Value)
         End Set
     End Property
 
@@ -776,7 +776,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_6, Value)
+            SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_6, Value)
         End Set
     End Property
 
@@ -793,7 +793,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_7, Value)
+            SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_7, Value)
         End Set
     End Property
 
@@ -810,7 +810,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_8, Value)
+            SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_8, Value)
         End Set
     End Property
 
@@ -828,7 +828,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_9, Value)
+            SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_9, Value)
         End Set
     End Property
 
@@ -845,7 +845,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_10, Value)
+            SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_10, Value)
         End Set
     End Property
     Public Property IsReInsuredId() As Guid
@@ -859,7 +859,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_IS_REINSURED_ID, Value)
+            SetValue(ProductCodeDAL.COL_IS_REINSURED_ID, Value)
         End Set
     End Property
 
@@ -874,7 +874,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_UPG_FINANCE_INFO_REQUIRE_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_UPG_FINANCE_INFO_REQUIRE_ID, Value)
         End Set
     End Property
 
@@ -889,7 +889,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_UPGRADE_TERM_UOM_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_UPGRADE_TERM_UOM_ID, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0, Max:=9999)>
@@ -904,7 +904,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_UPGRADE_TERM_FROM, Value)
+            SetValue(ProductCodeDAL.COL_NAME_UPGRADE_TERM_FROM, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0, Max:=9999)>
@@ -919,7 +919,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_UPGRADE_TERM_TO, Value)
+            SetValue(ProductCodeDAL.COL_NAME_UPGRADE_TERM_TO, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0, Max:=999)>
@@ -934,7 +934,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_UPGRADE_FIXED_TERM, Value)
+            SetValue(ProductCodeDAL.COL_NAME_UPGRADE_FIXED_TERM, Value)
         End Set
     End Property
 
@@ -949,7 +949,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_INSTALLMENT_REPRICABLE_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_INSTALLMENT_REPRICABLE_ID, Value)
         End Set
     End Property
 
@@ -965,7 +965,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_INUSEFLAG, Value)
+            SetValue(ProductCodeDAL.COL_NAME_INUSEFLAG, Value)
         End Set
     End Property
 
@@ -980,7 +980,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_CNL_DEPENDENCY_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_CNL_DEPENDENCY_ID, Value)
         End Set
     End Property
 
@@ -995,7 +995,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_BILLING_CRITERIA_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_BILLING_CRITERIA_ID, Value)
         End Set
     End Property
 
@@ -1010,7 +1010,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_POST_PRE_PAID_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_POST_PRE_PAID_ID, Value)
         End Set
     End Property
 
@@ -1025,7 +1025,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_CNL_LUMPSUM_BILLING_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_CNL_LUMPSUM_BILLING_ID, Value)
         End Set
     End Property
     'REQ-5980
@@ -1051,7 +1051,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_IS_PRODUCT_EQUIPMENT_VALIDATION, Value)
+            SetValue(ProductCodeDAL.COL_NAME_IS_PRODUCT_EQUIPMENT_VALIDATION, Value)
         End Set
     End Property
     Public Property UpgradeFee() As DecimalType
@@ -1065,7 +1065,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_UPGRADE_FEE, Value)
+            SetValue(ProductCodeDAL.COL_NAME_UPGRADE_FEE, Value)
         End Set
     End Property
 
@@ -1081,7 +1081,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_ALLOW_REGISTERED_ITEMS, Value)
+            SetValue(ProductCodeDAL.COL_NAME_ALLOW_REGISTERED_ITEMS, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0, Max:=999)>
@@ -1096,7 +1096,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_MAX_AGE_OF_REGISTERED_ITEM, Value)
+            SetValue(ProductCodeDAL.COL_NAME_MAX_AGE_OF_REGISTERED_ITEM, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0, Max:=999)>
@@ -1111,7 +1111,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_MAX_REGISTRATIONS_ALLOWED, Value)
+            SetValue(ProductCodeDAL.COL_NAME_MAX_REGISTRATIONS_ALLOWED, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0, Max:=999)>
@@ -1126,7 +1126,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_CLAIM_LIMIT_PER_REG_ITEM, Value)
+            SetValue(ProductCodeDAL.COL_NAME_CLAIM_LIMIT_PER_REG_ITEM, Value)
         End Set
     End Property
     <ListOfDeviceGroupsValidation("")>
@@ -1141,7 +1141,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_LIST_FOR_DEVICE_GROUPS, Value)
+            SetValue(ProductCodeDAL.COL_NAME_LIST_FOR_DEVICE_GROUPS, Value)
         End Set
     End Property
     Public Property ListForDeviceGroupCode() As String
@@ -1155,7 +1155,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_LIST_FOR_DEVICE_GROUP_CODE, Value)
+            SetValue(ProductCodeDAL.COL_NAME_LIST_FOR_DEVICE_GROUP_CODE, Value)
         End Set
     End Property
     <UpdateReplaceRegItemsIdValidation("")>
@@ -1170,7 +1170,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_UPDATE_REPLACE_REG_ITEMS_ID, Value)
+            SetValue(ProductCodeDAL.COL_NAME_UPDATE_REPLACE_REG_ITEMS_ID, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=1, Max:=999)>
@@ -1185,7 +1185,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_REGISTERED_ITEMS_LIMIT, Value)
+            SetValue(ProductCodeDAL.COL_NAME_REGISTERED_ITEMS_LIMIT, Value)
         End Set
     End Property
 
@@ -1214,7 +1214,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_PROD_LIMIT_APPLICABLE_TO_XCD, Value)
+            SetValue(ProductCodeDAL.COL_NAME_PROD_LIMIT_APPLICABLE_TO_XCD, Value)
         End Set
     End Property
 
@@ -1229,7 +1229,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_CANCELLATION_WITHIN_TERM_XCD, Value)
+            SetValue(ProductCodeDAL.COL_NAME_CANCELLATION_WITHIN_TERM_XCD, Value)
         End Set
     End Property
 
@@ -1245,7 +1245,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_EXPIRATION_NOTIFICATION_DAYS, Value)
+            SetValue(ProductCodeDAL.COL_NAME_EXPIRATION_NOTIFICATION_DAYS, Value)
         End Set
     End Property
     Public Property FullillmentReimburesementThreshold() As DecimalType
@@ -1274,7 +1274,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_BENEFIT_ELIGIBLE_XCD, Value)
+            SetValue(ProductCodeDAL.COL_NAME_BENEFIT_ELIGIBLE_XCD, Value)
         End Set
     End Property
     <BenefitEligibleActionValidation("")>
@@ -1289,7 +1289,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_BENEFIT_ELIGIBLE_ACTION_XCD, Value)
+            SetValue(ProductCodeDAL.COL_NAME_BENEFIT_ELIGIBLE_ACTION_XCD, Value)
         End Set
     End Property
 
@@ -1304,7 +1304,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_CALC_COVG_END_DATE_BASED_ON_XCD, Value)
+            SetValue(ProductCodeDAL.COL_NAME_CALC_COVG_END_DATE_BASED_ON_XCD, Value)
         End Set
     End Property
 
@@ -1319,7 +1319,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.ColNameClaimProfileCode, Value)
+            SetValue(ProductCodeDAL.ColNameClaimProfileCode, Value)
         End Set
     End Property
 
@@ -1334,7 +1334,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_PRICE_MATRIX_USES_WP_XCD, Value)
+            SetValue(ProductCodeDAL.COL_NAME_PRICE_MATRIX_USES_WP_XCD, Value)
         End Set
     End Property
 
@@ -1349,7 +1349,7 @@ Public Class ProductCode
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_EXPECTED_PREMIUM_IS_WP_XCD, Value)
+            SetValue(ProductCodeDAL.COL_NAME_EXPECTED_PREMIUM_IS_WP_XCD, Value)
         End Set
     End Property
 
@@ -1359,17 +1359,17 @@ Public Class ProductCode
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso (Me.IsDirty OrElse Me.IsFamilyDirty) AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso (IsDirty OrElse IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ProductCodeDAL
                 'dal.Update(Me.Row)
-                MyBase.UpdateFamily(Me.Dataset)
-                dal.UpdateFamily(Me.Dataset)
+                MyBase.UpdateFamily(Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -1393,18 +1393,18 @@ Public Class ProductCode
         Get
             Dim bDirty As Boolean
 
-            bDirty = MyBase.IsDirty OrElse Me.IsChildrenDirty
+            bDirty = MyBase.IsDirty OrElse IsChildrenDirty
 
             Return bDirty
         End Get
     End Property
 
     Public Sub Copy(ByVal original As ProductCode)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Product")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
 
         Dim selREGDv As DataView '= original.GetSelectedMethodOfRepair
         Dim selRegList As New ArrayList
@@ -1416,7 +1416,7 @@ Public Class ProductCode
         For n As Integer = 0 To selREGDv.Count - 1
             selRegList.Add(New Guid(CType(selREGDv(n)(LookupListNew.COL_ID_NAME), Byte())).ToString)
         Next
-        Me.AttachRegions(selRegList)
+        AttachRegions(selRegList)
 
         'child Policies
         Dim dr As DataRow
@@ -1428,8 +1428,8 @@ Public Class ProductCode
             EqiupDesc = LookupListNew.GetDescriptionFromId(EquipDV, GuidControl.ByteArrayToGuid(CType(dr(ProductPolicy.ProductPolicySearchDV.COL_TYPE_OF_EQUIPMENT_ID), Byte())))
             ExtProdDesc = LookupListNew.GetDescriptionFromId(ExtProddv, GuidControl.ByteArrayToGuid(CType(dr(ProductPolicy.ProductPolicySearchDV.COL_EXTERNAL_PROD_CODE_ID), Byte())))
 
-            Me.CreateProductPolicyDetail(GuidControl.ByteArrayToGuid(CType(dr(ProductPolicy.ProductPolicySearchDV.COL_TYPE_OF_EQUIPMENT_ID), Byte())),
-                                         EqiupDesc, Me.Id,
+            CreateProductPolicyDetail(GuidControl.ByteArrayToGuid(CType(dr(ProductPolicy.ProductPolicySearchDV.COL_TYPE_OF_EQUIPMENT_ID), Byte())),
+                                         EqiupDesc, Id,
                                          GuidControl.ByteArrayToGuid(CType(dr(ProductPolicy.ProductPolicySearchDV.COL_EXTERNAL_PROD_CODE_ID), Byte())),
                                          ExtProdDesc, CType(dr(ProductPolicy.ProductPolicySearchDV.COL_POLICY_NUM), Long))
 
@@ -1673,11 +1673,11 @@ Public Class ProductCode
 
     Public Sub UpdateRegions(ByVal selectedRegionGuidStrCollection As Hashtable)
         If selectedRegionGuidStrCollection.Count = 0 Then
-            If Not Me.IsDeleted Then Me.Delete()
+            If Not IsDeleted Then Delete()
         Else
             'first Pass
             Dim bo As ProductRegion
-            For Each bo In Me.ProductRegionChildren
+            For Each bo In ProductRegionChildren
                 If Not selectedRegionGuidStrCollection.Contains(bo.RegionId.ToString) Then
                     'delete
                     bo.Delete()
@@ -1687,11 +1687,11 @@ Public Class ProductCode
             'Second Pass
             Dim entry As DictionaryEntry
             For Each entry In selectedRegionGuidStrCollection
-                If Me.ProductRegionChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
+                If ProductRegionChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
                     'add
                     Dim Prdregion As ProductRegion = ProductRegionChildren.GetNewChild()
                     Prdregion.RegionId = New Guid(entry.Key.ToString)
-                    Prdregion.ProductCodeId = Me.Id
+                    Prdregion.ProductCodeId = Id
                     Prdregion.Save()
                 End If
             Next
@@ -1700,9 +1700,9 @@ Public Class ProductCode
     Public Sub AttachRegions(ByVal selectedRegionGuidStrCollection As ArrayList)
         Dim Prdregionstr As String
         For Each Prdregionstr In selectedRegionGuidStrCollection
-            Dim Prdregion As ProductRegion = Me.ProductRegionChildren.GetNewChild
+            Dim Prdregion As ProductRegion = ProductRegionChildren.GetNewChild
             Prdregion.RegionId = New Guid(Prdregionstr)
-            Prdregion.ProductCodeId = Me.Id
+            Prdregion.ProductCodeId = Id
             Prdregion.Save()
         Next
     End Sub
@@ -1711,16 +1711,16 @@ Public Class ProductCode
     Public Function AddRegionsChild(ByVal RegionId As Guid) As ProductRegion
         Dim oPrdRegion As ProductRegion
 
-        oPrdRegion = New ProductRegion(Me.Dataset)
+        oPrdRegion = New ProductRegion(Dataset)
         oPrdRegion.RegionId = RegionId
-        oPrdRegion.ProductCodeId = Me.Id
+        oPrdRegion.ProductCodeId = Id
         Return oPrdRegion
 
     End Function
     Public Sub DetachRegions(ByVal selectedRegionGuidStrCollection As ArrayList)
         Dim Prdregionstr As String
         For Each Prdregionstr In selectedRegionGuidStrCollection
-            Dim Prdregion As ProductRegion = Me.ProductRegionChildren.Find(New Guid(Prdregionstr))
+            Dim Prdregion As ProductRegion = ProductRegionChildren.Find(New Guid(Prdregionstr))
             Prdregion.Delete()
             Prdregion.Save()
         Next
@@ -1769,7 +1769,7 @@ Public Class ProductCode
 
         Dim ProdRegionBO As ProductRegion
         Dim inClause As String = "(-1"
-        For Each ProdRegionBO In Me.ProductRegionChildren
+        For Each ProdRegionBO In ProductRegionChildren
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, ProdRegionBO.RegionId)
         Next
         inClause &= ")"
@@ -1796,9 +1796,9 @@ Public Class ProductCode
     Public Sub AttachDeviceTypes(ByVal selecteddeviceTypeGuidStrCollection As ArrayList)
         Dim Prddevicetypestr As String
         For Each Prddevicetypestr In selecteddeviceTypeGuidStrCollection
-            Dim Prddevicetype As ProductEquipment = Me.ProductDeviceTypeChildren.GetNewChild
+            Dim Prddevicetype As ProductEquipment = ProductDeviceTypeChildren.GetNewChild
             Prddevicetype.DeviceTypeId = New Guid(Prddevicetypestr)
-            Prddevicetype.ProductCodeId = Me.Id
+            Prddevicetype.ProductCodeId = Id
             Prddevicetype.EffectiveDateProductEquip = DateTime.Now.Date
             Prddevicetype.ExpirationDateProductEquip = DateTime.MaxValue.Date
             Prddevicetype.Save()
@@ -1809,7 +1809,7 @@ Public Class ProductCode
     Public Sub DetachDeviceTypes(ByVal selecteddeviceTypeGuidStrCollection As ArrayList)
         Dim Prddevicetypestr As String
         For Each Prddevicetypestr In selecteddeviceTypeGuidStrCollection
-            Dim Prddevicetype As ProductEquipment = Me.ProductDeviceTypeChildren.Find(New Guid(Prddevicetypestr))
+            Dim Prddevicetype As ProductEquipment = ProductDeviceTypeChildren.Find(New Guid(Prddevicetypestr))
             ' Prdrisktype.Delete()
             Prddevicetype.ExpirationDateProductEquip = DateTime.Now.Date
 
@@ -1910,7 +1910,7 @@ Public Class ProductCode
 
         Dim ProdDeviceTypeBO As ProductEquipment
         Dim inClause As String = "(-1"
-        For Each ProdDeviceTypeBO In Me.ProductDeviceTypeChildren
+        For Each ProdDeviceTypeBO In ProductDeviceTypeChildren
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, ProdDeviceTypeBO.DeviceTypeId)
         Next
         inClause &= ")"
@@ -1964,21 +1964,21 @@ Public Class ProductCode
 
 
     Public Function GetProductPolicyDetailChild(ByVal childId As Guid) As ProductPolicy
-        Dim Prdpolicy As ProductPolicy = Me.ProductPolicyDetailChildren.Find(childId)
+        Dim Prdpolicy As ProductPolicy = ProductPolicyDetailChildren.Find(childId)
         Return Prdpolicy
 
         'Return CType(Me.ProductPolicyDetailChildren.GetChild(childId), ProductPolicy)
     End Function
 
     Public Function RemoveProductPolicyDetailChild(ByVal childId As Guid)
-        Me.ProductPolicyDetailChildren.Delete(childId)
+        ProductPolicyDetailChildren.Delete(childId)
         'Return CType(Me.ProductPolicyDetailChildren.GetChild(childId), ProductPolicy)
     End Function
 
     Public Function GetNewProductPolicyDetailChild() As ProductPolicy
 
-        Dim newProdPolicyDetail As ProductPolicy = Me.ProductPolicyDetailChildren.GetNewChild
-        newProdPolicyDetail.ProductCodeId = Me.Id
+        Dim newProdPolicyDetail As ProductPolicy = ProductPolicyDetailChildren.GetNewChild
+        newProdPolicyDetail.ProductCodeId = Id
         Return newProdPolicyDetail
     End Function
 
@@ -1993,7 +1993,7 @@ Public Class ProductCode
                                         ByVal Extprodcode As String, ByVal policy As Long)
         Dim MyPymntGrpDetailChildBO As ProductPolicy
 
-        MyPymntGrpDetailChildBO = Me.GetNewProductPolicyDetailChild()
+        MyPymntGrpDetailChildBO = GetNewProductPolicyDetailChild()
         MyPymntGrpDetailChildBO.BeginEdit()
 
         MyPymntGrpDetailChildBO.ProductCodeId = ProdCodeId
@@ -2020,21 +2020,21 @@ Public Class ProductCode
 
 
     Public Function GetProductRewardsDetailChild(ByVal childId As Guid) As ProductRewards
-        Dim Prdrewards As ProductRewards = Me.ProductRewardsDetailChildren.Find(childId)
+        Dim Prdrewards As ProductRewards = ProductRewardsDetailChildren.Find(childId)
         Return Prdrewards
 
         'Return CType(Me.ProductPolicyDetailChildren.GetChild(childId), ProductPolicy)
     End Function
 
     Public Function RemoveProductRewardsDetailChild(ByVal childId As Guid)
-        Me.ProductRewardsDetailChildren.Delete(childId)
+        ProductRewardsDetailChildren.Delete(childId)
         'Return CType(Me.ProductPolicyDetailChildren.GetChild(childId), ProductPolicy)
     End Function
 
     Public Function GetNewProductRewardsDetailChild() As ProductRewards
 
-        Dim newProdRewardsDetail As ProductRewards = Me.ProductRewardsDetailChildren.GetNewChild
-        newProdRewardsDetail.ProductCodeId = Me.Id
+        Dim newProdRewardsDetail As ProductRewards = ProductRewardsDetailChildren.GetNewChild
+        newProdRewardsDetail.ProductCodeId = Id
         Return newProdRewardsDetail
     End Function
     'Public Function GetNewParent() As ProductCodeParent
@@ -2048,7 +2048,7 @@ Public Class ProductCode
                                         ByVal DaysToRedeem As Integer, ByVal EffectiveDate As Date, ByVal ExpirationDate As Date)
         Dim MyPymntGrpDetailChildBO As ProductRewards
 
-        MyPymntGrpDetailChildBO = Me.GetNewProductRewardsDetailChild()
+        MyPymntGrpDetailChildBO = GetNewProductRewardsDetailChild()
         MyPymntGrpDetailChildBO.BeginEdit()
 
         MyPymntGrpDetailChildBO.ProductCodeId = ProdCodeId
@@ -2075,21 +2075,21 @@ Public Class ProductCode
 
 
     Public Function GetProductBenefitsDetailChild(ByVal childId As Guid) As ProductEquipment
-        Dim Prdbenefits As ProductEquipment = Me.ProductBenefitsDetailChildren.Find(childId)
+        Dim Prdbenefits As ProductEquipment = ProductBenefitsDetailChildren.Find(childId)
         Return Prdbenefits
 
         'Return CType(Me.ProductPolicyDetailChildren.GetChild(childId), ProductPolicy)
     End Function
 
     Public Function RemoveProductBenefitsDetailChild(ByVal childId As Guid)
-        Me.ProductBenefitsDetailChildren.Delete(childId)
+        ProductBenefitsDetailChildren.Delete(childId)
         'Return CType(Me.ProductPolicyDetailChildren.GetChild(childId), ProductPolicy)
     End Function
 
     Public Function GetNewProductBenefitsDetailChild() As ProductEquipment
 
-        Dim newProdBenefitsDetail As ProductEquipment = Me.ProductBenefitsDetailChildren.CreateNewChild()
-        newProdBenefitsDetail.ProductCodeId = Me.Id
+        Dim newProdBenefitsDetail As ProductEquipment = ProductBenefitsDetailChildren.CreateNewChild()
+        newProdBenefitsDetail.ProductCodeId = Id
         newProdBenefitsDetail.ConfigPurposeXcd = ProductEquipmentDAL.BENEFITS_PURPOSE
         'newProdBenefitsDetail.EffectiveDateProductEquip = DateTime.Today
         'newProdBenefitsDetail.ExpirationDateProductEquip = DateTime.Today
@@ -2209,7 +2209,7 @@ Public Class ProductCode
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
             If Not obj.NumOfClaims Is Nothing And obj.NumOfRepairClaims Is Nothing Then
-                Dim mandatAttr As New ValueMandatoryAttribute(Me.DisplayName)
+                Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
                 Return True
@@ -2250,7 +2250,7 @@ Public Class ProductCode
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
             If Not obj.NumOfClaims Is Nothing And obj.NumOfReplacementClaims Is Nothing Then
-                Dim mandatAttr As New ValueMandatoryAttribute(Me.DisplayName)
+                Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
                 Return True

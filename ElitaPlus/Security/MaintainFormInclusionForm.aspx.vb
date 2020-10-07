@@ -44,7 +44,7 @@ Namespace Security
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -66,12 +66,12 @@ Namespace Security
                     newNode.PopulateOnDemand = True
                     newNode.Expanded = False
 
-                    Me.tvFormList.Nodes.Add(newNode)
+                    tvFormList.Nodes.Add(newNode)
                 End If
             Next
         End Sub
 
-        Private Sub populateFormNotes(ByVal tabNode As SysWebUICtls.TreeNode)
+        Private Sub populateFormNotes(tabNode As SysWebUICtls.TreeNode)
             TabFormList.RowFilter = "TAB_CODE='" & tabNode.Value & "'"
             Dim strTemp As String, i As Integer
             Dim drv As DataRowView
@@ -87,7 +87,7 @@ Namespace Security
             TabFormList.RowFilter = ""
         End Sub
 
-        Private Sub populateRolePermission(ByVal formNode As SysWebUICtls.TreeNode)
+        Private Sub populateRolePermission(formNode As SysWebUICtls.TreeNode)
             Dim strFormID As String = formNode.Value.Split("|"c)(1)
             Dim dv As DataView = RoleAuthFormInclusion.GetPermissionByFormID(New Guid(strFormID))
 
@@ -115,7 +115,7 @@ Namespace Security
             Next
         End Sub
 
-        Private Sub tvFormList_TreeNodePopulate(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.TreeNodeEventArgs) Handles tvFormList.TreeNodePopulate
+        Private Sub tvFormList_TreeNodePopulate(sender As Object, e As System.Web.UI.WebControls.TreeNodeEventArgs) Handles tvFormList.TreeNodePopulate
             Try
                 Select Case e.Node.Depth
                     Case 0
@@ -130,14 +130,14 @@ Namespace Security
 #End Region
 
 #Region "Handlers"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             If Not Page.IsPostBack Then
                 populateTabs()
             End If
         End Sub
 
-        Private Sub BtnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSave_WRITE.Click
+        Private Sub BtnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnSave_WRITE.Click
             Try
                 ProcessChanges()
             Catch ex As Exception
@@ -145,7 +145,7 @@ Namespace Security
             End Try
         End Sub
 
-        Private Sub BtnReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnReset.Click
+        Private Sub BtnReset_Click(sender As System.Object, e As System.EventArgs) Handles BtnReset.Click
             tvFormList.Nodes.Clear()
             populateTabs()
         End Sub
@@ -214,7 +214,7 @@ Namespace Security
             ReloadControlPermissions(changedNotes)
         End Sub
 
-        Sub ReloadControlPermissions(ByVal changedNodes As SysWebUICtls.TreeNodeCollection)
+        Sub ReloadControlPermissions(changedNodes As SysWebUICtls.TreeNodeCollection)
             Dim strFormID As String, strRoleID As String
             For Each tabNode As SysWebUICtls.TreeNode In tvFormList.Nodes
                 For Each formNode As SysWebUICtls.TreeNode In tabNode.ChildNodes
@@ -226,7 +226,7 @@ Namespace Security
             Next
         End Sub
 
-        Function IsFormPermissionChanged(ByVal changedNodes As SysWebUICtls.TreeNodeCollection, ByVal formNode As SysWebUICtls.TreeNode) As Boolean
+        Function IsFormPermissionChanged(changedNodes As SysWebUICtls.TreeNodeCollection, formNode As SysWebUICtls.TreeNode) As Boolean
             Dim blnChanged As Boolean = False
             For Each objNode As TreeNode In changedNodes
                 If objNode.Value = formNode.Value Then

@@ -86,7 +86,7 @@ Public Class ClaimFileManagementSearchForm
     Public Class ReturnType
         Public LastOperation As ElitaPlusPage.DetailPageCommand
 
-        Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand)
+        Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand)
             LastOperation = LastOp
         End Sub
 
@@ -162,7 +162,7 @@ Public Class ClaimFileManagementSearchForm
 
         Private SelectedGridRow As GridViewRow = Nothing
 
-        Public Sub New(ByVal SelectedRow As GridViewRow)
+        Public Sub New(SelectedRow As GridViewRow)
             SelectedGridRow = SelectedRow
         End Sub
 
@@ -250,7 +250,7 @@ Public Class ClaimFileManagementSearchForm
             End Get
         End Property
 
-        Public Function ClaimFileParams(ByVal CommandName As String) As ClaimFileDetailPageParams
+        Public Function ClaimFileParams(CommandName As String) As ClaimFileDetailPageParams
             Dim FileInfoParams As ClaimFileInfoParams = Nothing
 
             Select Case CommandName
@@ -279,7 +279,7 @@ Public Class ClaimFileManagementSearchForm
 #End Region
 
 #Region "Page event handlers"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         Try
             MasterPage.MessageController.Clear()
             MasterPage.UsePageTabTitleInBreadCrum = False
@@ -323,7 +323,7 @@ Public Class ClaimFileManagementSearchForm
 
     Private Sub UpdateBreadCrum()
 
-        If (Not State Is Nothing) Then
+        If (State IsNot Nothing) Then
             MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                 TranslationBase.TranslateLabelOrMessage(PageTitle)
         End If
@@ -382,7 +382,7 @@ Public Class ClaimFileManagementSearchForm
             Dim wsResponse As FileInfoDto() = WcfClientHelper.Execute(Of FileManagerRelayClient, FileManagerRelay, FileInfoDto())(
                 GetClient(),
                 New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                Function(ByVal c As FileManagerRelayClient)
+                Function(c As FileManagerRelayClient)
                     Return c.SearchFileInfoRecords(SearchInfo)
                 End Function)
 
@@ -398,7 +398,7 @@ Public Class ClaimFileManagementSearchForm
                     WcfClientHelper.Execute(Of FileManagerRelayClient, FileManagerRelay, FileInfoDto())(
                     GetClient(),
                     New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                    Function(ByVal c As FileManagerRelayClient)
+                    Function(c As FileManagerRelayClient)
                         Return c.SearchFileInfoRecords(Nothing)
                     End Function).Count
 
@@ -411,7 +411,7 @@ Public Class ClaimFileManagementSearchForm
         End Try
     End Sub
 
-    Private Function DeleteClaimFileInfo(ByVal FileIdentifier As String) As Boolean
+    Private Function DeleteClaimFileInfo(FileIdentifier As String) As Boolean
 
         Try
             Dim SelectedFile As FileInfoSummary = State.SelectedFile
@@ -427,7 +427,7 @@ Public Class ClaimFileManagementSearchForm
                 Dim wsResponse As FileInfoDto = WcfClientHelper.Execute(Of FileManagerRelayClient, FileManagerRelay, FileInfoDto)(
                         GetClient(),
                         New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                        Function(ByVal c As FileManagerRelayClient)
+                        Function(c As FileManagerRelayClient)
                             Return c.RemoveFileInfoRecord(FileInfoLocator)
                         End Function)
 
@@ -443,7 +443,7 @@ Public Class ClaimFileManagementSearchForm
 
     End Function
 
-    Private Function ReprocessFileInfoRecords(ByVal FileIdentifier As String) As Boolean
+    Private Function ReprocessFileInfoRecords(FileIdentifier As String) As Boolean
         Try
             Dim SelectedFile As FileInfoSummary = State.SelectedFile
 
@@ -458,7 +458,7 @@ Public Class ClaimFileManagementSearchForm
                 Return WcfClientHelper.Execute(Of FileManagerRelayClient, FileManagerRelay, Boolean)(
                     GetClient(),
                     New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                    Function(ByVal c As FileManagerRelayClient)
+                    Function(c As FileManagerRelayClient)
                         Return c.ReprocessFileInfoRecords(FileInfoLocator)
                     End Function)
             End If
@@ -606,7 +606,7 @@ Public Class ClaimFileManagementSearchForm
 
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Dim PageSize As Integer = CType(cboPageSize.SelectedValue, Int32)
 
@@ -614,18 +614,18 @@ Public Class ClaimFileManagementSearchForm
             PopulateGrid(True)
 
         Catch ex As Exception
-            HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles DataGridView.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles DataGridView.PageIndexChanging
         Try
             State.PagingInfo = New PagingFilter With {.PageIndex = e.NewPageIndex, .PageSize = State.PagingInfo.PageSize}
             PopulateGrid(True)
 
         Catch ex As Exception
-            HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub

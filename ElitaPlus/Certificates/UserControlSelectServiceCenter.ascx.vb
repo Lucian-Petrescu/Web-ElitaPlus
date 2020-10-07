@@ -32,10 +32,10 @@ Public Class UserControlSelectServiceCenter
 
     Public ReadOnly Property State() As MyState
         Get
-            If Me.Page.StateSession.Item(Me.UniqueID) Is Nothing Then
-                Me.Page.StateSession.Item(Me.UniqueID) = New MyState
+            If Page.StateSession.Item(UniqueID) Is Nothing Then
+                Page.StateSession.Item(UniqueID) = New MyState
             End If
-            Return CType(Me.Page.StateSession.Item(Me.UniqueID), MyState)
+            Return CType(Page.StateSession.Item(UniqueID), MyState)
         End Get
     End Property
 
@@ -58,17 +58,17 @@ Public Class UserControlSelectServiceCenter
 
     Public ReadOnly Property moMessageController As MessageController
         Get
-            Return Me.MessageController
+            Return MessageController
         End Get
     End Property
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         MessageController.Clear()
     End Sub
 
-    Public Sub Populate(ByVal claim As ClaimBase, ByVal existingServiceCenterId As Guid)
-        Me.State.claimBO = claim
-        Me.State.ExistingServiceCenterId = existingServiceCenterId
+    Public Sub Populate(claim As ClaimBase, existingServiceCenterId As Guid)
+        State.claimBO = claim
+        State.ExistingServiceCenterId = existingServiceCenterId
         PopulateCurrentSearchType()
         PopulateCountryDropdown()
         PopulateGridOrDropDown()
@@ -77,23 +77,23 @@ Public Class UserControlSelectServiceCenter
 
     Sub PopulateCurrentSearchType()
         Try
-            Select Case Me.State.LocateServiceCenterSearchType
+            Select Case State.LocateServiceCenterSearchType
                 Case LocateServiceCenterSearchType.ByZip
-                    Me.RadioButtonByZip.Checked = True
+                    RadioButtonByZip.Checked = True
                 Case LocateServiceCenterSearchType.ByCity
-                    Me.RadioButtonByCity.Checked = True
+                    RadioButtonByCity.Checked = True
                 Case LocateServiceCenterSearchType.All
-                    Me.RadioButtonAll.Checked = True
+                    RadioButtonAll.Checked = True
                 Case LocateServiceCenterSearchType.None
-                    Me.RadioButtonNO_SVC_OPTION.Checked = True
+                    RadioButtonNO_SVC_OPTION.Checked = True
             End Select
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.MessageController)
+            Page.HandleErrors(ex, MessageController)
         End Try
     End Sub
 
     Sub PopulateCountryDropdown()
-        Dim address As New Address(Me.State.claimBO.Certificate.AddressId)
+        Dim address As New Address(State.claimBO.Certificate.AddressId)
         Dim dv As ServiceCenter.ServiceCenterSearchDV
         Dim CountryId As Guid
         CountryId = address.CountryId
@@ -108,22 +108,22 @@ Public Class UserControlSelectServiceCenter
         {
        .AddBlankItem = False
         })
-        Me.Page.SetSelectedItem(Me.moCountryDrop, CountryId)
+        Page.SetSelectedItem(moCountryDrop, CountryId)
     End Sub
 
     Public Sub PopulateGridOrDropDown()
         'get the customer countryId
         Try
             Dim ServNetworkSvc As New ServiceNetworkSvc
-            Dim address As New Address(Me.State.claimBO.Certificate.AddressId)
-            Dim objCompany As New Company(Me.State.claimBO.Certificate.CompanyId)
+            Dim address As New Address(State.claimBO.Certificate.AddressId)
+            Dim objCompany As New Company(State.claimBO.Certificate.CompanyId)
             Dim UseZipDistrict As Boolean = True
             Dim DealerType As String
             Dim MethodOfRepairType As String, FlagMethodOfRepairRecovery As Boolean = False
 
             'REQ-5546
             Dim objCountry As New Country(objCompany.CountryId)
-            Me.State.default_service_center_id = objCountry.DefaultSCId
+            State.default_service_center_id = objCountry.DefaultSCId
 
             If objCompany.UseZipDistrictId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")) Then
                 UseZipDistrict = False
@@ -131,42 +131,42 @@ Public Class UserControlSelectServiceCenter
 
             Dim SelectedCountry As New ArrayList
             Dim isNetwork As Boolean
-            SelectedCountry.Add(Me.Page.GetSelectedItem(moCountryDrop))
+            SelectedCountry.Add(Page.GetSelectedItem(moCountryDrop))
 
-            If Not Me.State.claimBO.Dealer.ServiceNetworkId.Equals(Guid.Empty) Then
-                ServNetworkSvc.ServiceNetworkId = Me.State.claimBO.Dealer.ServiceNetworkId
+            If Not State.claimBO.Dealer.ServiceNetworkId.Equals(Guid.Empty) Then
+                ServNetworkSvc.ServiceNetworkId = State.claimBO.Dealer.ServiceNetworkId
                 isNetwork = True
             Else
                 isNetwork = False
             End If
 
             'srvCenterdIDs = ServNetworkSvc.ServiceCentersIDs(isNetwork, cert.MethodOfRepairId)
-            DealerType = LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, Me.State.claimBO.Dealer.DealerTypeId)  '= Codes.DEALER_TYPES__VSC
+            DealerType = LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, State.claimBO.Dealer.DealerTypeId)  '= Codes.DEALER_TYPES__VSC
 
 
-            If Me.State.claimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Or _
-              Me.State.claimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__GENERAL Or _
-               Me.State.claimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__LEGAL Then
+            If State.claimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Or _
+              State.claimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__GENERAL Or _
+               State.claimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__LEGAL Then
                 FlagMethodOfRepairRecovery = True
             End If
 
             Dim dv As ServiceCenter.LocateServiceCenterResultsDv
-            Select Case Me.State.LocateServiceCenterSearchType
+            Select Case State.LocateServiceCenterSearchType
                 Case LocateServiceCenterSearchType.ByZip
-                    dv = ServiceCenter.LocateServiceCenterByZip(Me.State.claimBO.Certificate.DealerId, Me.State.claimBO.Certificate.AddressChild.ZipLocator, Me.State.claimBO.RiskTypeId, Me.State.claimBO.CertificateItem.ManufacturerId, Me.State.claimBO.CertificateItemCoverage.CoverageTypeCode, SelectedCountry, Me.State.claimBO.Dealer.ServiceNetworkId, isNetwork, Me.State.claimBO.MethodOfRepairId, UseZipDistrict, DealerType, FlagMethodOfRepairRecovery, MethodOfRepairType, IsUserCompaniesWithAcctSettings())
+                    dv = ServiceCenter.LocateServiceCenterByZip(State.claimBO.Certificate.DealerId, State.claimBO.Certificate.AddressChild.ZipLocator, State.claimBO.RiskTypeId, State.claimBO.CertificateItem.ManufacturerId, State.claimBO.CertificateItemCoverage.CoverageTypeCode, SelectedCountry, State.claimBO.Dealer.ServiceNetworkId, isNetwork, State.claimBO.MethodOfRepairId, UseZipDistrict, DealerType, FlagMethodOfRepairRecovery, MethodOfRepairType, IsUserCompaniesWithAcctSettings())
                     PopulateServiceCenterGrid(CType(dv, DataView))
                 Case LocateServiceCenterSearchType.ByCity
-                    dv = ServiceCenter.LocateServiceCenterByCity(Me.State.claimBO.Certificate.DealerId, Me.State.claimBO.Certificate.AddressChild.ZipLocator, Me.TextboxCity.Text, Me.State.claimBO.RiskTypeId, Me.State.claimBO.CertificateItem.ManufacturerId, Me.State.claimBO.CertificateItemCoverage.CoverageTypeCode, SelectedCountry, Me.State.claimBO.Dealer.ServiceNetworkId, isNetwork, Me.State.claimBO.MethodOfRepairId, DealerType, FlagMethodOfRepairRecovery, MethodOfRepairType, IsUserCompaniesWithAcctSettings())
+                    dv = ServiceCenter.LocateServiceCenterByCity(State.claimBO.Certificate.DealerId, State.claimBO.Certificate.AddressChild.ZipLocator, TextboxCity.Text, State.claimBO.RiskTypeId, State.claimBO.CertificateItem.ManufacturerId, State.claimBO.CertificateItemCoverage.CoverageTypeCode, SelectedCountry, State.claimBO.Dealer.ServiceNetworkId, isNetwork, State.claimBO.MethodOfRepairId, DealerType, FlagMethodOfRepairRecovery, MethodOfRepairType, IsUserCompaniesWithAcctSettings())
                     PopulateServiceCenterGrid(CType(dv, DataView))
                 Case LocateServiceCenterSearchType.All
                     Dim selectedSCIds As New ArrayList
                     selectedSCIds.Add(moMultipleColumnDrop.SelectedGuid)
                     PopulateCountryDropdown(SelectedCountry)
-                    PopulateServiceCenterGrid(ServiceCenter.GetLocateServiceCenterDetails(selectedSCIds, Me.State.claimBO.Certificate.DealerId, Me.State.claimBO.CertificateItem.ManufacturerId).Tables(0).DefaultView)
+                    PopulateServiceCenterGrid(ServiceCenter.GetLocateServiceCenterDetails(selectedSCIds, State.claimBO.Certificate.DealerId, State.claimBO.CertificateItem.ManufacturerId).Tables(0).DefaultView)
             End Select
 
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.MessageController)
+            Page.HandleErrors(ex, MessageController)
         End Try
     End Sub
 
@@ -175,33 +175,33 @@ Public Class UserControlSelectServiceCenter
         Dim dvCount As Integer = 0
 
         'cache the search results for multiple grid pages
-        Me.State.ServiceCenterView = dv
+        State.ServiceCenterView = dv
 
-        If Not Me.State.ServiceCenterView Is Nothing Then
-            dvCount = Me.State.ServiceCenterView.Count
+        If State.ServiceCenterView IsNot Nothing Then
+            dvCount = State.ServiceCenterView.Count
         End If
 
-        ShowServiceCenterGridData(Me.State.ServiceCenterView)
-        Me.HandleGridMessages(dvCount, True)
+        ShowServiceCenterGridData(State.ServiceCenterView)
+        HandleGridMessages(dvCount, True)
     End Sub
 
-    Private Sub HandleGridMessages(ByVal count As Int32, Optional ByVal checkForCount As Boolean = False)
+    Private Sub HandleGridMessages(count As Int32, Optional ByVal checkForCount As Boolean = False)
         If count > 1000 AndAlso checkForCount Then
-            Me.MessageController.AddInformation(Message.MSG_MAX_LIMIT_EXCEEDED_REFINE_SEARCH_CRITERIA, True)
+            MessageController.AddInformation(Message.MSG_MAX_LIMIT_EXCEEDED_REFINE_SEARCH_CRITERIA, True)
         ElseIf count = 0 Then
-            Me.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
+            MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
         End If
 
     End Sub
 
-    Private Sub PopulateCountryDropdown(ByVal customerCountry As ArrayList)
+    Private Sub PopulateCountryDropdown(customerCountry As ArrayList)
         Try
             'clear results from intelligent search to reduce the cache storage
             State.ServiceCenterView = Nothing
 
             Dim dv As DataView, strFilter As String
 
-            dv = ServiceCenter.GetAllServiceCenter(customerCountry, Me.State.claimBO.MethodOfRepairId, IsUserCompaniesWithAcctSettings())
+            dv = ServiceCenter.GetAllServiceCenter(customerCountry, State.claimBO.MethodOfRepairId, IsUserCompaniesWithAcctSettings())
 
             Dim overRideSingularity As Boolean
             If dv.Count > 0 Then
@@ -211,12 +211,12 @@ Public Class UserControlSelectServiceCenter
             End If
 
             moMultipleColumnDrop.SetControl(True, moMultipleColumnDrop.MODES.NEW_MODE, True, dv, TranslationBase.TranslateLabelOrMessage(LABEL_SERVICE_CENTER), overRideSingularity)
-            If Not Me.State.SelectedServiceCenterId.Equals(Guid.Empty) Then
-                moMultipleColumnDrop.SelectedGuid = Me.State.SelectedServiceCenterId
+            If Not State.SelectedServiceCenterId.Equals(Guid.Empty) Then
+                moMultipleColumnDrop.SelectedGuid = State.SelectedServiceCenterId
             End If
 
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.MessageController)
+            Page.HandleErrors(ex, MessageController)
         End Try
     End Sub
 
@@ -226,7 +226,7 @@ Public Class UserControlSelectServiceCenter
             Return False
         Else
             For Each objAC In ElitaPlusIdentity.Current.ActiveUser.AccountingCompanies()
-                Dim certCompany As New Company(Me.State.claimBO.CertificateItem.CompanyId)
+                Dim certCompany As New Company(State.claimBO.CertificateItem.CompanyId)
                 If certCompany.AcctCompanyId.Equals(objAC.Id) Then
                     If objAC.UseAccounting = "Y" AndAlso objAC.AcctSystemId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId), FelitaEngine.FELITA_PREFIX) Then Return True
                 End If
@@ -236,7 +236,7 @@ Public Class UserControlSelectServiceCenter
 
     End Function
 
-    Private Sub ShowServiceCenterGridData(ByVal dv As DataView)
+    Private Sub ShowServiceCenterGridData(dv As DataView)
         Try
             Dim dataSet As New DataSet
             hdnSelectedServiceCenterId.Value = "XXXX"
@@ -248,16 +248,16 @@ Public Class UserControlSelectServiceCenter
             xmlSource.TransformArgumentList.AddParam("recordCount", String.Empty, 10)
             xmlSource.Document = xdoc
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.MessageController)
+            Page.HandleErrors(ex, MessageController)
         End Try
     End Sub
 
-    Private Sub btnSelectServiceCenter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSelectServiceCenter.Click
+    Private Sub btnSelectServiceCenter_Click(sender As System.Object, e As System.EventArgs) Handles btnSelectServiceCenter.Click
         Try
             If (Not hdnSelectedServiceCenterId.Value = "XXXX") Then
-                Me.State.SelectedServiceCenterId = ServiceCenter.GetServiceCenterID(hdnSelectedServiceCenterId.Value)
-                Me.SelectedServiceCenterId = Me.State.SelectedServiceCenterId
-                If (Not Me.State.ExistingServiceCenterId.Equals(Guid.Empty) AndAlso Me.State.SelectedServiceCenterId = Me.State.ExistingServiceCenterId) Then
+                State.SelectedServiceCenterId = ServiceCenter.GetServiceCenterID(hdnSelectedServiceCenterId.Value)
+                SelectedServiceCenterId = State.SelectedServiceCenterId
+                If (Not State.ExistingServiceCenterId.Equals(Guid.Empty) AndAlso State.SelectedServiceCenterId = State.ExistingServiceCenterId) Then
                     Throw New GUIException("EXISTING_SERVICE_CENTER_SELECTED", "EXISTING_SERVICE_CENTER_SELECTED")
                 End If
                 RaiseEvent SelectServiceCenter(sender, e)
@@ -267,143 +267,143 @@ Public Class UserControlSelectServiceCenter
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.MessageController)
+            Page.HandleErrors(ex, MessageController)
         End Try
     End Sub
 
-    Private Sub btnSearchServiceCenter_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearchServiceCenter_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.SelectedServiceCenterId = Guid.Empty
-            Me.PopulateGridOrDropDown()
+            State.PageIndex = 0
+            State.SelectedServiceCenterId = Guid.Empty
+            PopulateGridOrDropDown()
             Dim x As String = "<script language='JavaScript'> revealModal('ModalServiceCenter') </script>"
-            Me.Page.RegisterStartupScript("Startup", x)
+            Page.RegisterStartupScript("Startup", x)
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.MessageController)
+            Page.HandleErrors(ex, MessageController)
         End Try
     End Sub
 
-    Private Sub btnClearSearchServiceCenter_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearchServiceCenter_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
         Try
-            Me.TextboxCity.Text = ""
+            TextboxCity.Text = ""
             Dim x As String = "<script language='JavaScript'> revealModal('ModalServiceCenter') </script>"
-            Me.Page.RegisterStartupScript("Startup", x)
+            Page.RegisterStartupScript("Startup", x)
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.MessageController)
+            Page.HandleErrors(ex, MessageController)
         End Try
     End Sub
 
-    Private Sub RadioButtonByZip_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButtonByZip.CheckedChanged
+    Private Sub RadioButtonByZip_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles RadioButtonByZip.CheckedChanged
         Try
-            If Me.RadioButtonByZip.Checked Then
-                Me.State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.ByZip
+            If RadioButtonByZip.Checked Then
+                State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.ByZip
             End If
-            Me.EnableDisableControls()
+            EnableDisableControls()
             Dim x As String = "<script language='JavaScript'> revealModal('ModalServiceCenter') </script>"
-            Me.Page.RegisterStartupScript("Startup", x)
+            Page.RegisterStartupScript("Startup", x)
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.MessageController)
+            Page.HandleErrors(ex, MessageController)
         End Try
     End Sub
 
-    Private Sub RadioButtonByCity_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButtonByCity.CheckedChanged
+    Private Sub RadioButtonByCity_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles RadioButtonByCity.CheckedChanged
         Try
-            If Me.RadioButtonByCity.Checked Then
-                Me.State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.ByCity
+            If RadioButtonByCity.Checked Then
+                State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.ByCity
             End If
-            Me.EnableDisableControls()
+            EnableDisableControls()
             Dim x As String = "<script language='JavaScript'> revealModal('ModalServiceCenter') </script>"
-            Me.Page.RegisterStartupScript("Startup", x)
+            Page.RegisterStartupScript("Startup", x)
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.MessageController)
+            Page.HandleErrors(ex, MessageController)
         End Try
     End Sub
 
-    Private Sub RadioButtonNO_SVC_OPTION_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButtonNO_SVC_OPTION.CheckedChanged
+    Private Sub RadioButtonNO_SVC_OPTION_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles RadioButtonNO_SVC_OPTION.CheckedChanged
         Try
-            Me.EnableDisableControls()
-            If Me.RadioButtonNO_SVC_OPTION.Checked Then
-                Me.State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.None
+            EnableDisableControls()
+            If RadioButtonNO_SVC_OPTION.Checked Then
+                State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.None
                 'Dim address As New Address(Me.State.claimBO.Certificate.AddressId)
                 'Dim SelectedCountry As New ArrayList
                 'SelectedCountry.Add(Me.Page.GetSelectedItem(moCountryDrop))
                 'PopulateCountryDropdown(SelectedCountry)
             End If
             Dim x As String = "<script language='JavaScript'> revealModal('ModalServiceCenter') </script>"
-            Me.Page.RegisterStartupScript("Startup", x)
+            Page.RegisterStartupScript("Startup", x)
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.MessageController)
+            Page.HandleErrors(ex, MessageController)
         End Try
     End Sub
 
-    Private Sub RadioButtonAll_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButtonAll.CheckedChanged
+    Private Sub RadioButtonAll_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles RadioButtonAll.CheckedChanged
         Try
-            Me.EnableDisableControls()
-            If Me.RadioButtonAll.Checked Then
-                Me.State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.All
-                Dim address As New Address(Me.State.claimBO.Certificate.AddressId)
+            EnableDisableControls()
+            If RadioButtonAll.Checked Then
+                State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.All
+                Dim address As New Address(State.claimBO.Certificate.AddressId)
                 Dim SelectedCountry As New ArrayList
-                SelectedCountry.Add(Me.Page.GetSelectedItem(moCountryDrop))
+                SelectedCountry.Add(Page.GetSelectedItem(moCountryDrop))
                 PopulateCountryDropdown(SelectedCountry)
             End If
             Dim x As String = "<script language='JavaScript'> revealModal('ModalServiceCenter') </script>"
-            Me.Page.RegisterStartupScript("Startup", x)
+            Page.RegisterStartupScript("Startup", x)
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.MessageController)
+            Page.HandleErrors(ex, MessageController)
         End Try
     End Sub
-    Private Sub moCountryDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moCountryDrop.SelectedIndexChanged
+    Private Sub moCountryDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moCountryDrop.SelectedIndexChanged
         Try
-            If Me.RadioButtonAll.Checked Then
-                Me.EnableDisableControls()
-                Me.State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.All
+            If RadioButtonAll.Checked Then
+                EnableDisableControls()
+                State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.All
 
-                Dim address As New Address(Me.State.claimBO.Certificate.AddressId)
+                Dim address As New Address(State.claimBO.Certificate.AddressId)
                 Dim SelectedCountry As New ArrayList
-                SelectedCountry.Add(Me.Page.GetSelectedItem(moCountryDrop))
+                SelectedCountry.Add(Page.GetSelectedItem(moCountryDrop))
 
                 PopulateCountryDropdown(SelectedCountry)
             End If
             Dim x As String = "<script language='JavaScript'> revealModal('ModalServiceCenter') </script>"
-            Me.Page.RegisterStartupScript("Startup", x)
+            Page.RegisterStartupScript("Startup", x)
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.MessageController)
+            Page.HandleErrors(ex, MessageController)
         End Try
     End Sub
 
-    Private Sub moMultipleColumnDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl_New) _
+    Private Sub moMultipleColumnDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl_New) _
         Handles moMultipleColumnDrop.SelectedDropChanged
         Try
             PopulateGridOrDropDown()
             Dim x As String = "<script language='JavaScript'> revealModal('ModalServiceCenter') </script>"
-            Me.Page.RegisterStartupScript("Startup", x)
+            Page.RegisterStartupScript("Startup", x)
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.MessageController)
+            Page.HandleErrors(ex, MessageController)
         End Try
     End Sub
 
     Private Sub EnableDisableControls()
-        Dim showCityFields As Boolean = Me.RadioButtonByCity.Checked
-        Dim showAllFields As Boolean = Me.RadioButtonAll.Checked
-        Dim NO_SVC_OPTION As Boolean = Me.RadioButtonNO_SVC_OPTION.Checked
+        Dim showCityFields As Boolean = RadioButtonByCity.Checked
+        Dim showAllFields As Boolean = RadioButtonAll.Checked
+        Dim NO_SVC_OPTION As Boolean = RadioButtonNO_SVC_OPTION.Checked
 
         ' City
-        ControlMgr.SetVisibleControl(Me.Page, tdCityLabel, showCityFields)
-        ControlMgr.SetVisibleControl(Me.Page, moCityLabel, showCityFields)
-        ControlMgr.SetVisibleControl(Me.Page, tdCityTextBox, showCityFields)
-        ControlMgr.SetVisibleControl(Me.Page, TextboxCity, showCityFields)
-        ControlMgr.SetVisibleControl(Me.Page, tdClearButton, showCityFields)
-        ControlMgr.SetVisibleControl(Me.Page, btnClearSearch, showCityFields)
+        ControlMgr.SetVisibleControl(Page, tdCityLabel, showCityFields)
+        ControlMgr.SetVisibleControl(Page, moCityLabel, showCityFields)
+        ControlMgr.SetVisibleControl(Page, tdCityTextBox, showCityFields)
+        ControlMgr.SetVisibleControl(Page, TextboxCity, showCityFields)
+        ControlMgr.SetVisibleControl(Page, tdClearButton, showCityFields)
+        ControlMgr.SetVisibleControl(Page, btnClearSearch, showCityFields)
 
         ' All
-        ControlMgr.SetVisibleForControlFamily(Me.Page, moMultipleColumnDrop, showAllFields)
-        ControlMgr.SetVisibleControl(Me.Page, btnSearch, Not showAllFields)
+        ControlMgr.SetVisibleForControlFamily(Page, moMultipleColumnDrop, showAllFields)
+        ControlMgr.SetVisibleControl(Page, btnSearch, Not showAllFields)
 
         'REQ-5546
         'NO_SVC_OPTION
-        ControlMgr.SetVisibleControl(Me.Page, btnClearSearch, Not NO_SVC_OPTION)
-        ControlMgr.SetVisibleControl(Me.Page, btnSearch, Not NO_SVC_OPTION)
-        ControlMgr.SetVisibleControl(Me.Page, RadioButtonNO_SVC_OPTION, Not Me.State.default_service_center_id.Equals(Guid.Empty))
+        ControlMgr.SetVisibleControl(Page, btnClearSearch, Not NO_SVC_OPTION)
+        ControlMgr.SetVisibleControl(Page, btnSearch, Not NO_SVC_OPTION)
+        ControlMgr.SetVisibleControl(Page, RadioButtonNO_SVC_OPTION, Not State.default_service_center_id.Equals(Guid.Empty))
 
     End Sub
 
@@ -418,7 +418,7 @@ Public Class UserControlSelectServiceCenter
         sJavaScript &= "else { objDescDropDown.value = objCodeDropDown.options[objCodeDropDown.selectedIndex].value;}" & Environment.NewLine
         sJavaScript &= "if (lblCaption != '') {document.all.item(lblCaption).style.color = '';}}" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.Page.RegisterStartupScript("ToggleDropDown", sJavaScript)
+        Page.RegisterStartupScript("ToggleDropDown", sJavaScript)
     End Sub
 
 End Class

@@ -32,7 +32,7 @@ Public Class CustomUsernameTokenManager
     ' Constructs an instance of this security token manager.
     ' </summary>
     ' <param name="nodes">An XmlNodeList containing XML elements from a configuration file.</param>
-    Public Sub New(ByVal nodes As XmlNodeList)
+    Public Sub New(nodes As XmlNodeList)
         MyBase.New(nodes)
     End Sub
 
@@ -69,7 +69,7 @@ Public Class CustomUsernameTokenManager
     ' </summary>
     ' <param name="token">The username token</param>
     ' <returns>The password (or password equivalent) for the username</returns>
-    Protected Overrides Function AuthenticateToken(ByVal token As UsernameToken) As String
+    Protected Overrides Function AuthenticateToken(token As UsernameToken) As String
         ' This is a very simple manager.
         ' In most production systems the following code
         ' typically consults an external database of (username,password) pairs where

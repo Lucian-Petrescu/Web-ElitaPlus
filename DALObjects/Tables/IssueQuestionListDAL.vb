@@ -28,25 +28,25 @@ Public Class IssueQuestionListDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_ISSUE_QUESTION_LIST_ID, id.ToByteArray)}
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_ISSUE_QUESTION_LIST_ID, id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub LoadList(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_QUESTION_LIST_ID, id.ToByteArray)}
+    Public Sub LoadList(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_QUESTION_LIST_ID, id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -56,37 +56,37 @@ Public Class IssueQuestionListDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "Public Method"
 
-    Public Function IsChild(ByVal QuestionListId As Guid, ByVal IssueQuestionId As Guid, ByVal companyIds As ArrayList, ByVal languageId As Guid) As DataSet
+    Public Function IsChild(QuestionListId As Guid, IssueQuestionId As Guid, companyIds As ArrayList, languageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/IS_CHILD")
+        Dim selectStmt As String = Config("/SQL/IS_CHILD")
         Dim whereClauseConditions As String = String.Empty
         Dim ds As New DataSet
 
         Try
-            Dim params() As DBHelper.DBHelperParameter = {New DBHelper.DBHelperParameter(Me.COL_NAME_ISSUE_QUESTION_ID, IssueQuestionId.ToByteArray), _
-                                                          New DBHelper.DBHelperParameter(Me.COL_NAME_QUESTION_LIST_ID, QuestionListId.ToByteArray)}
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, params)
+            Dim params() As DBHelper.DBHelperParameter = {New DBHelper.DBHelperParameter(COL_NAME_ISSUE_QUESTION_ID, IssueQuestionId.ToByteArray), _
+                                                          New DBHelper.DBHelperParameter(COL_NAME_QUESTION_LIST_ID, QuestionListId.ToByteArray)}
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, params)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function GetSelectedDealerList(ByVal QuestionListCode As String) As DataSet
+    Public Function GetSelectedDealerList(QuestionListCode As String) As DataSet
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GetSelectedDealerList")
+        Dim selectStmt As String = Config("/SQL/GetSelectedDealerList")
 
         Dim params() As DBHelper.DBHelperParameter = {}
         Dim dynamic_Where_Clause As String = String.Empty
@@ -103,11 +103,11 @@ Public Class IssueQuestionListDAL
 
     End Function
 
-    Public Function GetSelectedQuestionList(ByVal QuestionListID As Guid) As DataSet
+    Public Function GetSelectedQuestionList(QuestionListID As Guid) As DataSet
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/SEARCH_Question_List_Selected")
+        Dim selectStmt As String = Config("/SQL/SEARCH_Question_List_Selected")
         Dim QuestionListParams As DBHelper.DBHelperParameter
-        QuestionListParams = New DBHelper.DBHelperParameter(Me.COL_NAME_QUESTION_LIST_ID, QuestionListID.ToByteArray)
+        QuestionListParams = New DBHelper.DBHelperParameter(COL_NAME_QUESTION_LIST_ID, QuestionListID.ToByteArray)
 
         Try
             Return DBHelper.Fetch(ds, selectStmt, IssueQuestionListDAL.TABLE_NAME, New DBHelper.DBHelperParameter() {QuestionListParams})
@@ -117,83 +117,83 @@ Public Class IssueQuestionListDAL
 
     End Function
 
-    Public Function GetQuestionList(ByVal questionListId As Guid, ByVal companyIds As ArrayList, ByVal languageId As Guid) As DataSet
+    Public Function GetQuestionList(questionListId As Guid, companyIds As ArrayList, languageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/QUESTION_IN_LIST")
+        Dim selectStmt As String = Config("/SQL/QUESTION_IN_LIST")
         Dim whereClauseConditions As String = String.Empty
         Dim ds As New DataSet
         Dim QuestionListIdParam As DBHelper.DBHelperParameter
         Try
-            QuestionListIdParam = New DBHelper.DBHelperParameter(Me.COL_NAME_QUESTION_LIST_ID, questionListId.ToByteArray)
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {QuestionListIdParam})
+            QuestionListIdParam = New DBHelper.DBHelperParameter(COL_NAME_QUESTION_LIST_ID, questionListId.ToByteArray)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {QuestionListIdParam})
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetQuestionInList(ByVal questionListId As Guid, ByVal companyIds As ArrayList, ByVal languageId As Guid) As DataSet
+    Public Function GetQuestionInList(questionListId As Guid, companyIds As ArrayList, languageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/QUESTION_LIST")
+        Dim selectStmt As String = Config("/SQL/QUESTION_LIST")
         Dim whereClauseConditions As String = String.Empty
         Dim ds As New DataSet
         Dim QuestionListIdParam As DBHelper.DBHelperParameter
         Try
-            QuestionListIdParam = New DBHelper.DBHelperParameter(Me.COL_NAME_QUESTION_LIST_ID, questionListId.ToByteArray)
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {QuestionListIdParam})
+            QuestionListIdParam = New DBHelper.DBHelperParameter(COL_NAME_QUESTION_LIST_ID, questionListId.ToByteArray)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {QuestionListIdParam})
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetDealerInList(ByVal QuestionListCode As String, ByVal companyIds As ArrayList, ByVal languageId As Guid) As DataSet
+    Public Function GetDealerInList(QuestionListCode As String, companyIds As ArrayList, languageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/DEALER_LIST")
+        Dim selectStmt As String = Config("/SQL/DEALER_LIST")
         Dim whereClauseConditions As String = String.Empty
         Dim ds As New DataSet
         Dim QuestionListCodeParam As DBHelper.DBHelperParameter
 
         Try
-            QuestionListCodeParam = New DBHelper.DBHelperParameter(Me.COL_NAME_QUESTION_LIST_CODE, QuestionListCode)
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {QuestionListCodeParam})
+            QuestionListCodeParam = New DBHelper.DBHelperParameter(COL_NAME_QUESTION_LIST_CODE, QuestionListCode)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {QuestionListCodeParam})
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function SaveDealerList(ByVal DealerID As Guid, ByVal QuestionListCode As String, ByVal companyIds As ArrayList, ByVal languageId As Guid) As DataSet
+    Public Function SaveDealerList(DealerID As Guid, QuestionListCode As String, companyIds As ArrayList, languageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/SAVE_DEALER_LIST")
+        Dim selectStmt As String = Config("/SQL/SAVE_DEALER_LIST")
         Dim whereClauseConditions As String = String.Empty
         Dim ds As New DataSet
         Dim QuestionListCodeParam As DBHelper.DBHelperParameter
         Dim DealerIdParam As DBHelper.DBHelperParameter
 
         Try
-            QuestionListCodeParam = New DBHelper.DBHelperParameter(Me.COL_NAME_QUESTION_LIST_CODE, QuestionListCode)
-            DealerIdParam = New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, DealerID.ToByteArray)
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {QuestionListCodeParam, DealerIdParam})
+            QuestionListCodeParam = New DBHelper.DBHelperParameter(COL_NAME_QUESTION_LIST_CODE, QuestionListCode)
+            DealerIdParam = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, DealerID.ToByteArray)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {QuestionListCodeParam, DealerIdParam})
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetQuestionExpiration(ByVal IssueQuestionListId As Guid, ByVal companyIds As ArrayList, ByVal languageId As Guid) As DataSet
+    Public Function GetQuestionExpiration(IssueQuestionListId As Guid, companyIds As ArrayList, languageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/ISSUE_QUESTION_EXPIRATION")
+        Dim selectStmt As String = Config("/SQL/ISSUE_QUESTION_EXPIRATION")
         Dim whereClauseConditions As String = String.Empty
         Dim ds As New DataSet
         Dim IssueQuestionListIdParam As DBHelper.DBHelperParameter
         Try
-            IssueQuestionListIdParam = New DBHelper.DBHelperParameter(Me.COL_NAME_ISSUE_QUESTION_ID, IssueQuestionListId.ToByteArray)
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {IssueQuestionListIdParam})
+            IssueQuestionListIdParam = New DBHelper.DBHelperParameter(COL_NAME_ISSUE_QUESTION_ID, IssueQuestionListId.ToByteArray)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {IssueQuestionListIdParam})
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
 
-    Public Function UpdateDropdown(ByVal listId As Guid, ByVal code As String, ByVal maintainable_by_user As String, ByVal englishTranslation As String, ByVal userId As String) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_DROPDOWN")
+    Public Function UpdateDropdown(listId As Guid, code As String, maintainable_by_user As String, englishTranslation As String, userId As String) As Integer
+        Dim selectStmt As String = Config("/SQL/UPDATE_DROPDOWN")
 
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                             New DBHelper.DBHelperParameter("p_list_id", listId.ToByteArray), _
@@ -212,8 +212,8 @@ Public Class IssueQuestionListDAL
         Return retVal
     End Function
 
-    Public Function UpdateTranslation(ByVal DictItemTranslationId As Guid, ByVal Translation As String, ByVal userId As String) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_TRANSLATION")
+    Public Function UpdateTranslation(DictItemTranslationId As Guid, Translation As String, userId As String) As Integer
+        Dim selectStmt As String = Config("/SQL/UPDATE_TRANSLATION")
 
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                             New DBHelper.DBHelperParameter("p_dict_item_translation_id", DictItemTranslationId.ToByteArray), _

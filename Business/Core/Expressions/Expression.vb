@@ -11,6 +11,8 @@
 Option Strict Off
 Option Explicit On
 
+Imports System.CodeDom.Compiler
+Imports System.ComponentModel
 Imports System.Xml.Serialization
 
 '
@@ -18,25 +20,25 @@ Imports System.Xml.Serialization
 '
 
 '''<remarks/>
-<System.Xml.Serialization.XmlIncludeAttribute(GetType(ConstantToken)),
- System.Xml.Serialization.XmlIncludeAttribute(GetType(ComplexExpression)),
- System.Xml.Serialization.XmlIncludeAttribute(GetType(VariableToken)),
- System.Xml.Serialization.XmlIncludeAttribute(GetType(SwitchExpression)),
- System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440"),
- System.SerializableAttribute(),
- System.Diagnostics.DebuggerStepThroughAttribute(),
- System.ComponentModel.DesignerCategoryAttribute("code"),
- System.Xml.Serialization.XmlTypeAttribute([Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd"),
- System.Xml.Serialization.XmlRootAttribute("Expression", [Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd", IsNullable:=False)>
+<XmlInclude(GetType(ConstantToken)),
+ XmlInclude(GetType(ComplexExpression)),
+ XmlInclude(GetType(VariableToken)),
+ XmlInclude(GetType(SwitchExpression)),
+ GeneratedCode("xsd", "4.0.30319.33440"),
+ Serializable(),
+ DebuggerStepThrough(),
+ DesignerCategory("code"),
+ XmlType([Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd"),
+ XmlRoot("Expression", [Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd", IsNullable:=False)>
 Partial Public MustInherit Class BaseExpression
 End Class
 
 '''<remarks/>
-<System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440"),
- System.SerializableAttribute(),
- System.Diagnostics.DebuggerStepThroughAttribute(),
- System.ComponentModel.DesignerCategoryAttribute("code"),
- System.Xml.Serialization.XmlTypeAttribute([Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd")>
+<GeneratedCode("xsd", "4.0.30319.33440"),
+ Serializable(),
+ DebuggerStepThrough(),
+ DesignerCategory("code"),
+ XmlType([Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd")>
 Partial Public Class SwitchCaseExpression
 
     Private caseValueField As String
@@ -65,11 +67,11 @@ Partial Public Class SwitchCaseExpression
 End Class
 
 '''<remarks/>
-<System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440"),
- System.SerializableAttribute(),
- System.Diagnostics.DebuggerStepThroughAttribute(),
- System.ComponentModel.DesignerCategoryAttribute("code"),
- System.Xml.Serialization.XmlTypeAttribute([Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd")>
+<GeneratedCode("xsd", "4.0.30319.33440"),
+ Serializable(),
+ DebuggerStepThrough(),
+ DesignerCategory("code"),
+ XmlType([Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd")>
 Partial Public Class ConstantToken
     Inherits BaseExpression
 
@@ -87,11 +89,11 @@ Partial Public Class ConstantToken
 End Class
 
 '''<remarks/>
-<System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440"),
- System.SerializableAttribute(),
- System.Diagnostics.DebuggerStepThroughAttribute(),
- System.ComponentModel.DesignerCategoryAttribute("code"),
- System.Xml.Serialization.XmlTypeAttribute([Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd")>
+<GeneratedCode("xsd", "4.0.30319.33440"),
+ Serializable(),
+ DebuggerStepThrough(),
+ DesignerCategory("code"),
+ XmlType([Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd")>
 Partial Public Class ComplexExpression
     Inherits BaseExpression
 
@@ -110,7 +112,7 @@ Partial Public Class ComplexExpression
     End Property
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlElementAttribute("Expression")>
+    <XmlElement("Expression")>
     Public Property Expression() As BaseExpression()
         Get
             Return Me.expressionField
@@ -122,9 +124,9 @@ Partial Public Class ComplexExpression
 End Class
 
 '''<remarks/>
-<System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440"),
- System.SerializableAttribute(),
- System.Xml.Serialization.XmlTypeAttribute([Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd")>
+<GeneratedCode("xsd", "4.0.30319.33440"),
+ Serializable(),
+ XmlType([Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd")>
 Public Enum OperationType
 
     '''<remarks/>
@@ -144,11 +146,11 @@ Public Enum OperationType
 End Enum
 
 '''<remarks/>
-<System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440"),
- System.SerializableAttribute(),
- System.Diagnostics.DebuggerStepThroughAttribute(),
- System.ComponentModel.DesignerCategoryAttribute("code"),
- System.Xml.Serialization.XmlTypeAttribute([Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd")>
+<GeneratedCode("xsd", "4.0.30319.33440"),
+ Serializable(),
+ DebuggerStepThrough(),
+ DesignerCategory("code"),
+ XmlType([Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd")>
 Partial Public Class VariableToken
     Inherits BaseExpression
 
@@ -166,11 +168,11 @@ Partial Public Class VariableToken
 End Class
 
 '''<remarks/>
-<System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440"),
- System.SerializableAttribute(),
- System.Diagnostics.DebuggerStepThroughAttribute(),
- System.ComponentModel.DesignerCategoryAttribute("code"),
- System.Xml.Serialization.XmlTypeAttribute([Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd")>
+<GeneratedCode("xsd", "4.0.30319.33440"),
+ Serializable(),
+ DebuggerStepThrough(),
+ DesignerCategory("code"),
+ XmlType([Namespace]:="http://Assurant.com/Elita/2016/Expression.xsd")>
 Partial Public Class SwitchExpression
     Inherits BaseExpression
 
@@ -191,7 +193,7 @@ Partial Public Class SwitchExpression
     End Property
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlElementAttribute("Case")>
+    <XmlElement("Case")>
     Public Property [Case]() As SwitchCaseExpression()
         Get
             Return Me.caseField

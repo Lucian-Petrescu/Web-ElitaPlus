@@ -11,30 +11,30 @@ Public Class UserControlAttrtibutes
 
 #Region "Page Events"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
     End Sub
 
     Public Sub BindBoProperties()
         Dim attributeValues As IEnumerable(Of AttributeValue) = ParentBusinessObject.AttributeValues
         For Each av As AttributeValue In attributeValues
-            Me.Page.BindBOPropertyToGridHeader(av, "AttributeId", Me.AttributeValueGridView.Columns(GRID_COL_UI_PROG_CODE_IDX))
-            Me.Page.BindBOPropertyToGridHeader(av, "Value", Me.AttributeValueGridView.Columns(GRID_COL_ATTRIBUTE_VALUE_IDX))
-            Me.Page.BindBOPropertyToGridHeader(av, "EffectiveDate", Me.AttributeValueGridView.Columns(GRID_COL_EFFECTIVE_DATE_IDX))
-            Me.Page.BindBOPropertyToGridHeader(av, "ExpirationDate", Me.AttributeValueGridView.Columns(GRID_COL_EXPIRATION_DATE_IDX))
+            Page.BindBOPropertyToGridHeader(av, "AttributeId", AttributeValueGridView.Columns(GRID_COL_UI_PROG_CODE_IDX))
+            Page.BindBOPropertyToGridHeader(av, "Value", AttributeValueGridView.Columns(GRID_COL_ATTRIBUTE_VALUE_IDX))
+            Page.BindBOPropertyToGridHeader(av, "EffectiveDate", AttributeValueGridView.Columns(GRID_COL_EFFECTIVE_DATE_IDX))
+            Page.BindBOPropertyToGridHeader(av, "ExpirationDate", AttributeValueGridView.Columns(GRID_COL_EXPIRATION_DATE_IDX))
         Next
 
-        If (Me.State.IsNew = True) Then
-            Me.Page.BindBOPropertyToGridHeader(Me.State.MyBO, "AttributeId", Me.AttributeValueGridView.Columns(GRID_COL_UI_PROG_CODE_IDX))
-            Me.Page.BindBOPropertyToGridHeader(Me.State.MyBO, "Value", Me.AttributeValueGridView.Columns(GRID_COL_ATTRIBUTE_VALUE_IDX))
-            Me.Page.BindBOPropertyToGridHeader(Me.State.MyBO, "EffectiveDate", Me.AttributeValueGridView.Columns(GRID_COL_EFFECTIVE_DATE_IDX))
-            Me.Page.BindBOPropertyToGridHeader(Me.State.MyBO, "ExpirationDate", Me.AttributeValueGridView.Columns(GRID_COL_EXPIRATION_DATE_IDX))
+        If (State.IsNew = True) Then
+            Page.BindBOPropertyToGridHeader(State.MyBO, "AttributeId", AttributeValueGridView.Columns(GRID_COL_UI_PROG_CODE_IDX))
+            Page.BindBOPropertyToGridHeader(State.MyBO, "Value", AttributeValueGridView.Columns(GRID_COL_ATTRIBUTE_VALUE_IDX))
+            Page.BindBOPropertyToGridHeader(State.MyBO, "EffectiveDate", AttributeValueGridView.Columns(GRID_COL_EFFECTIVE_DATE_IDX))
+            Page.BindBOPropertyToGridHeader(State.MyBO, "ExpirationDate", AttributeValueGridView.Columns(GRID_COL_EXPIRATION_DATE_IDX))
         End If
 
     End Sub
 
     Public Sub TranslateHeaders()
-        Me.Page.TranslateGridHeader(Me.AttributeValueGridView)
+        Page.TranslateGridHeader(AttributeValueGridView)
     End Sub
 
 #End Region
@@ -95,10 +95,10 @@ Public Class UserControlAttrtibutes
 
     Private ReadOnly Property State() As MyState
         Get
-            If Me.Page.StateSession.Item(Me.UniqueID) Is Nothing Then
-                Me.Page.StateSession.Item(Me.UniqueID) = New MyState
+            If Page.StateSession.Item(UniqueID) Is Nothing Then
+                Page.StateSession.Item(UniqueID) = New MyState
             End If
-            Return CType(Me.Page.StateSession.Item(Me.UniqueID), MyState)
+            Return CType(Page.StateSession.Item(UniqueID), MyState)
         End Get
     End Property
 
@@ -117,7 +117,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property YesNoIdFromCode(ByVal code As String) As Guid
+    Private ReadOnly Property YesNoIdFromCode(code As String) As Guid
         Get
             Return (From YesNoList In YesNoDataView
                     Where YesNoList.Code = code
@@ -125,7 +125,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property YesNoDescriptionFromCode(ByVal code As String) As String
+    Private ReadOnly Property YesNoDescriptionFromCode(code As String) As String
         Get
             Return (From YesNoList In YesNoDataView
                     Where YesNoList.Code = code
@@ -133,7 +133,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property YesNoCodeFromId(ByVal id As Guid) As String
+    Private ReadOnly Property YesNoCodeFromId(id As Guid) As String
         Get
             Return (From YesNoList In YesNoDataView
                     Where YesNoList.ListItemId = id
@@ -161,7 +161,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property ReInsStatusIdFromCode(ByVal code As String) As Guid
+    Private ReadOnly Property ReInsStatusIdFromCode(code As String) As Guid
         Get
             Return (From ReInsStatusList In ReInsStatusDataView
                     Where ReInsStatusList.Code = code
@@ -169,7 +169,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property ReInsStatusDescriptionFromCode(ByVal code As String) As String
+    Private ReadOnly Property ReInsStatusDescriptionFromCode(code As String) As String
         Get
             Return (From ReInsStatusList In ReInsStatusDataView
                     Where ReInsStatusList.Code = code
@@ -177,7 +177,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property ReInsStatusCodeFromId(ByVal id As Guid) As String
+    Private ReadOnly Property ReInsStatusCodeFromId(id As Guid) As String
         Get
             Return (From ReInsStatusList In ReInsStatusDataView
                     Where ReInsStatusList.ListItemId = id
@@ -203,7 +203,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property PostMigCndIdFromCode(ByVal code As String) As Guid
+    Private ReadOnly Property PostMigCndIdFromCode(code As String) As Guid
         Get
             Return (From PostMigCndList In PostMigCndDataView
                     Where PostMigCndList.Code = code
@@ -211,7 +211,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property PostMigCndDescriptionFromCode(ByVal code As String) As String
+    Private ReadOnly Property PostMigCndDescriptionFromCode(code As String) As String
         Get
             Return (From PostMigCndList In PostMigCndDataView
                     Where PostMigCndList.Code = code
@@ -219,7 +219,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property PostMigCndCodeFromId(ByVal id As Guid) As String
+    Private ReadOnly Property PostMigCndCodeFromId(id As Guid) As String
         Get
             Return (From PostMigCndList In PostMigCndDataView
                     Where PostMigCndList.ListItemId = id
@@ -236,7 +236,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
     
-    Private ReadOnly Property AcctProrateIdFromCode(ByVal code As String) As Guid
+    Private ReadOnly Property AcctProrateIdFromCode(code As String) As Guid
         Get
             Return (From AcctProrateList In AcctProrateDataView
                 Where AcctProrateList.Code = code
@@ -244,7 +244,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property AcctProrateDescriptionFromCode(ByVal code As String) As String
+    Private ReadOnly Property AcctProrateDescriptionFromCode(code As String) As String
         Get
             Return (From AcctProrateList In AcctProrateDataView
                 Where AcctProrateList.Code = code
@@ -252,7 +252,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property AcctProrateCodeFromId(ByVal id As Guid) As String
+    Private ReadOnly Property AcctProrateCodeFromId(id As Guid) As String
         Get
             Return (From AcctProrateList In AcctProrateDataView
                 Where AcctProrateList.ListItemId = id
@@ -267,7 +267,7 @@ Public Class UserControlAttrtibutes
             Return AutoRenewCovLimitDataView
         End Get
     End Property
-    Private ReadOnly Property AutoRenewCovLimitIdFromCode(ByVal code As String) As Guid
+    Private ReadOnly Property AutoRenewCovLimitIdFromCode(code As String) As Guid
         Get
             Return (From AutoRenewCovLimitList In AutoRenewCovLimitDataView
                 Where AutoRenewCovLimitList.Code = code
@@ -275,7 +275,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property AutoRenewCovLimitDescriptionFromCode(ByVal code As String) As String
+    Private ReadOnly Property AutoRenewCovLimitDescriptionFromCode(code As String) As String
         Get
             Return (From AutoRenewCovLimitList In AutoRenewCovLimitDataView
                 Where AutoRenewCovLimitList.Code = code
@@ -283,7 +283,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property AutoRenewCovLimitCodeFromId(ByVal id As Guid) As String
+    Private ReadOnly Property AutoRenewCovLimitCodeFromId(id As Guid) As String
         Get
             Return (From AutoRenewCovLimitList In AutoRenewCovLimitDataView
                 Where AutoRenewCovLimitList.ListItemId = id
@@ -309,7 +309,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property AttributeCodeIdFromCode(ByVal code As String) As Guid
+    Private ReadOnly Property AttributeCodeIdFromCode(code As String) As Guid
         Get
             Return (From AttributeCodeList In AttributeCodeDataView
                     Where AttributeCodeList.Code = code
@@ -317,7 +317,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property AttributeCodeDescriptionFromCode(ByVal code As String) As String
+    Private ReadOnly Property AttributeCodeDescriptionFromCode(code As String) As String
         Get
             Return (From AttributeCodeList In AttributeCodeDataView
                     Where AttributeCodeList.Code = code
@@ -343,7 +343,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property DataTypeCodeFromId(ByVal id As Guid) As String
+    Private ReadOnly Property DataTypeCodeFromId(id As Guid) As String
         Get
             Return (From DataTypeList In DataTypeDataView
                     Where DataTypeList.ListItemId = id
@@ -385,13 +385,13 @@ Public Class UserControlAttrtibutes
             avl.Add(dummyAttributeValue)
             attributeValues = avl
             AttributeValueGridView.EditIndex = 0
-            Me.State.IsNew = True
+            State.IsNew = True
         Else
             ' Find Index of Item when being Added or Edited
-            If (Me.State.MyBO Is Nothing) Then
-                AttributeValueGridView.EditIndex = Me.Page.NO_ITEM_SELECTED_INDEX
+            If (State.MyBO Is Nothing) Then
+                AttributeValueGridView.EditIndex = Page.NO_ITEM_SELECTED_INDEX
             Else
-                AttributeValueGridView.EditIndex = DataSourceExtensions.GetSelectedRowIndex(Of AttributeValue)(attributeValues, Function(av) av.Id = Me.State.MyBO.Id)
+                AttributeValueGridView.EditIndex = DataSourceExtensions.GetSelectedRowIndex(Of AttributeValue)(attributeValues, Function(av) av.Id = State.MyBO.Id)
             End If
 
         End If
@@ -401,16 +401,16 @@ Public Class UserControlAttrtibutes
         AttributeValueGridView.DataBind()
 
         ' Hide Dummy Object Row
-        If (Not dummyAttributeValue Is Nothing) Then
+        If (dummyAttributeValue IsNot Nothing) Then
             AttributeValueGridView.Rows(0).Visible = False
             dummyAttributeValue.Delete()
-            Me.State.IsNew = False
+            State.IsNew = False
         End If
 
     End Sub
 
     Public Sub PopulateAttributeValuesGrid(attributeValues As List(Of AttributeValue))
-        AttributeValueGridView.EditIndex = Me.Page.NO_ITEM_SELECTED_INDEX
+        AttributeValueGridView.EditIndex = Page.NO_ITEM_SELECTED_INDEX
         AttributeValueGridView.DataSource = attributeValues
         AttributeValueGridView.DataBind()
     End Sub
@@ -418,25 +418,25 @@ Public Class UserControlAttrtibutes
 
 #Region "Grid Events"
 
-    Public Sub UiProgCodeDropDown_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Public Sub UiProgCodeDropDown_SelectedIndexChanged(sender As Object, e As EventArgs)
         Dim row As GridViewRow = DirectCast(DirectCast(sender, System.Web.UI.WebControls.DropDownList).Parent.Parent, GridViewRow)
-        Me.Page.PopulateBOProperty(Me.State.MyBO, "AttributeId", DirectCast(sender, System.Web.UI.WebControls.DropDownList))
-        ShowHideEditRowControls(row, Me.State.MyBO)
+        Page.PopulateBOProperty(State.MyBO, "AttributeId", DirectCast(sender, System.Web.UI.WebControls.DropDownList))
+        ShowHideEditRowControls(row, State.MyBO)
     End Sub
 
-    Private Sub ShowHideEditRowControls(ByVal pGridViewRow As GridViewRow, ByVal oAttributeValue As AttributeValue)
+    Private Sub ShowHideEditRowControls(pGridViewRow As GridViewRow, oAttributeValue As AttributeValue)
 
-        Dim attributeValueDropDown As DropDownList = CType(pGridViewRow.FindControl(Me.ATTRIBUTE_VALUE_DROPDOWN_NAME), DropDownList)
-        Dim attributeValueTextBox As TextBox = CType(pGridViewRow.FindControl(Me.ATTRIBUTE_VALUE_TEXTBOX_NAME), TextBox)
-        Dim attributeValueImageButton As ImageButton = CType(pGridViewRow.FindControl(Me.ATTRIBUTE_VALUE_IMAGEBUTTON_NAME), ImageButton)
-        Dim effectiveDateTextBox As TextBox = CType(pGridViewRow.FindControl(Me.EFFECTIVE_DATE_TEXTBOX_NAME), TextBox)
-        Dim effectiveDateImageButton As ImageButton = CType(pGridViewRow.FindControl(Me.EFFECTIVE_DATE_IMAGEBUTTON_NAME), ImageButton)
-        Dim effectiveDateLabel As Label = CType(pGridViewRow.FindControl(Me.EFFECTIVE_DATE_LABEL_NAME), Label)
-        Dim expirationDateTextBox As TextBox = CType(pGridViewRow.FindControl(Me.EXPIRATION_DATE_TEXTBOX_NAME), TextBox)
-        Dim expirationDateImageButton As ImageButton = CType(pGridViewRow.FindControl(Me.EXPIRATION_DATE_IMAGEBUTTON_NAME), ImageButton)
-        Dim expirationDateLabel As Label = CType(pGridViewRow.FindControl(Me.EXPIRATION_DATE_LABEL_NAME), Label)
-        Dim saveImageButton As Button = CType(pGridViewRow.FindControl(Me.SAVE_BUTTON_NAME), Button)
-        Dim cancelImageButton As LinkButton = CType(pGridViewRow.FindControl(Me.CANCEL_BUTTON_NAME), LinkButton)
+        Dim attributeValueDropDown As DropDownList = CType(pGridViewRow.FindControl(ATTRIBUTE_VALUE_DROPDOWN_NAME), DropDownList)
+        Dim attributeValueTextBox As TextBox = CType(pGridViewRow.FindControl(ATTRIBUTE_VALUE_TEXTBOX_NAME), TextBox)
+        Dim attributeValueImageButton As ImageButton = CType(pGridViewRow.FindControl(ATTRIBUTE_VALUE_IMAGEBUTTON_NAME), ImageButton)
+        Dim effectiveDateTextBox As TextBox = CType(pGridViewRow.FindControl(EFFECTIVE_DATE_TEXTBOX_NAME), TextBox)
+        Dim effectiveDateImageButton As ImageButton = CType(pGridViewRow.FindControl(EFFECTIVE_DATE_IMAGEBUTTON_NAME), ImageButton)
+        Dim effectiveDateLabel As Label = CType(pGridViewRow.FindControl(EFFECTIVE_DATE_LABEL_NAME), Label)
+        Dim expirationDateTextBox As TextBox = CType(pGridViewRow.FindControl(EXPIRATION_DATE_TEXTBOX_NAME), TextBox)
+        Dim expirationDateImageButton As ImageButton = CType(pGridViewRow.FindControl(EXPIRATION_DATE_IMAGEBUTTON_NAME), ImageButton)
+        Dim expirationDateLabel As Label = CType(pGridViewRow.FindControl(EXPIRATION_DATE_LABEL_NAME), Label)
+        Dim saveImageButton As Button = CType(pGridViewRow.FindControl(SAVE_BUTTON_NAME), Button)
+        Dim cancelImageButton As LinkButton = CType(pGridViewRow.FindControl(CANCEL_BUTTON_NAME), LinkButton)
 
         If (oAttributeValue.AttributeId = Guid.Empty) Then
             attributeValueDropDown.Visible = False
@@ -451,16 +451,16 @@ Public Class UserControlAttrtibutes
             Return
         End If
 
-        Select Case Me.DataTypeCodeFromId(oAttributeValue.Attribute.DataTypeId)
+        Select Case DataTypeCodeFromId(oAttributeValue.Attribute.DataTypeId)
         'Select Case LookupListNew.GetCodeFromId(Me.DataTypeDataView, oAttributeValue.Attribute.DataTypeId)
             Case Codes.ATTRIBUTE_DATE_TYPE__DATE
                 attributeValueDropDown.Visible = False
                 attributeValueTextBox.Visible = True
                 attributeValueImageButton.Visible = True
-                Me.Page.AddCalendarwithTime_New(attributeValueImageButton, attributeValueTextBox)
+                Page.AddCalendarwithTime_New(attributeValueImageButton, attributeValueTextBox)
                 Dim dateValue As Date
                 If (Date.TryParse(oAttributeValue.Value, dateValue)) Then
-                    Me.Page.PopulateControlFromBOProperty(attributeValueTextBox, dateValue)
+                    Page.PopulateControlFromBOProperty(attributeValueTextBox, dateValue)
                 Else
                     attributeValueTextBox.Text = String.Empty
                 End If
@@ -474,7 +474,7 @@ Public Class UserControlAttrtibutes
                 attributeValueDropDown.Visible = True
                 attributeValueTextBox.Visible = False
                 attributeValueImageButton.Visible = False
-                Me.Page.SetSelectedItem(attributeValueDropDown, Me.YesNoIdFromCode(oAttributeValue.Value))
+                Page.SetSelectedItem(attributeValueDropDown, YesNoIdFromCode(oAttributeValue.Value))
                 'Me.Page.SetSelectedItem(attributeValueDropDown, LookupListNew.GetIdFromCode(Me.YesNoDataView, oAttributeValue.Value))
 
             Case Codes.ATTRIBUTE_DATE_TYPE__REINSURANCESTATUS
@@ -486,7 +486,7 @@ Public Class UserControlAttrtibutes
                 attributeValueDropDown.Visible = True
                 attributeValueTextBox.Visible = False
                 attributeValueImageButton.Visible = False
-                Me.Page.SetSelectedItem(attributeValueDropDown, Me.ReInsStatusIdFromCode(oAttributeValue.Value))
+                Page.SetSelectedItem(attributeValueDropDown, ReInsStatusIdFromCode(oAttributeValue.Value))
                 'Me.Page.SetSelectedItem(attributeValueDropDown, LookupListNew.GetIdFromCode(Me.ReInsStatusDataView, oAttributeValue.Value))
 
             Case Codes.ATTRIBUTE_DATE_TYPE__ACCT_PRORATE
@@ -498,7 +498,7 @@ Public Class UserControlAttrtibutes
                 attributeValueDropDown.Visible = True
                 attributeValueTextBox.Visible = False
                 attributeValueImageButton.Visible = False
-                Me.Page.SetSelectedItem(attributeValueDropDown, Me.AcctProrateIdFromCode(oAttributeValue.Value))
+                Page.SetSelectedItem(attributeValueDropDown, AcctProrateIdFromCode(oAttributeValue.Value))
 
             Case Codes.ATTRIBUTE_DATE_TYPE__AUTO_RENEW_COV_LIMIT
                 attributeValueDropDown.Populate(AutoRenewCovLimitDataView.ToArray(), New PopulateOptions() With
@@ -509,7 +509,7 @@ Public Class UserControlAttrtibutes
                 attributeValueDropDown.Visible = True
                 attributeValueTextBox.Visible = False
                 attributeValueImageButton.Visible = False
-                Me.Page.SetSelectedItem(attributeValueDropDown, Me.AutoRenewCovLimitIdFromCode(oAttributeValue.Value))
+                Page.SetSelectedItem(attributeValueDropDown, AutoRenewCovLimitIdFromCode(oAttributeValue.Value))
 
 
             Case Codes.ATTRIBUTE_DATE_TYPE__POST_MIGRATION_CONDITION
@@ -521,26 +521,26 @@ Public Class UserControlAttrtibutes
                 attributeValueDropDown.Visible = True
                 attributeValueTextBox.Visible = False
                 attributeValueImageButton.Visible = False
-                Me.Page.SetSelectedItem(attributeValueDropDown, Me.PostMigCndIdFromCode(oAttributeValue.Value))
+                Page.SetSelectedItem(attributeValueDropDown, PostMigCndIdFromCode(oAttributeValue.Value))
                 'Me.Page.SetSelectedItem(attributeValueDropDown, LookupListNew.GetIdFromCode(Me.PostMigCndDataView, oAttributeValue.Value))
 
             Case Codes.ATTRIBUTE_DATE_TYPE__HEXADECIMAL
                 attributeValueDropDown.Visible = False
                 attributeValueTextBox.Visible = True
                 attributeValueImageButton.Visible = False
-                Me.Page.PopulateControlFromBOProperty(attributeValueTextBox, oAttributeValue.Value)
+                Page.PopulateControlFromBOProperty(attributeValueTextBox, oAttributeValue.Value)
 
             Case Codes.ATTRIBUTE_DATE_TYPE__NUMBER
                 attributeValueDropDown.Visible = False
                 attributeValueTextBox.Visible = True
                 attributeValueImageButton.Visible = False
-                Me.Page.PopulateControlFromBOProperty(attributeValueTextBox, oAttributeValue.Value)
+                Page.PopulateControlFromBOProperty(attributeValueTextBox, oAttributeValue.Value)
 
             Case Codes.ATTRIBUTE_DATE_TYPE__TEXT
                 attributeValueDropDown.Visible = False
                 attributeValueTextBox.Visible = True
                 attributeValueImageButton.Visible = False
-                Me.Page.PopulateControlFromBOProperty(attributeValueTextBox, oAttributeValue.Value)
+                Page.PopulateControlFromBOProperty(attributeValueTextBox, oAttributeValue.Value)
         End Select
 
         If (oAttributeValue.Attribute.UseEffectiveDate = Codes.YESNO_Y) Then
@@ -548,17 +548,17 @@ Public Class UserControlAttrtibutes
             effectiveDateTextBox.Visible = True
             effectiveDateImageButton.Visible = True
             effectiveDateLabel.Visible = False
-            Me.Page.PopulateControlFromBOProperty(effectiveDateTextBox, oAttributeValue.EffectiveDate)
+            Page.PopulateControlFromBOProperty(effectiveDateTextBox, oAttributeValue.EffectiveDate)
             ' Date Calendars
-            Me.Page.AddCalendar_New(effectiveDateImageButton, effectiveDateTextBox)
+            Page.AddCalendar_New(effectiveDateImageButton, effectiveDateTextBox)
 
             ' Expiration Date is available and in past
             expirationDateTextBox.Visible = True
             expirationDateImageButton.Visible = True
             expirationDateLabel.Visible = False
-            Me.Page.PopulateControlFromBOProperty(expirationDateTextBox, oAttributeValue.ExpirationDate)
+            Page.PopulateControlFromBOProperty(expirationDateTextBox, oAttributeValue.ExpirationDate)
             ' Date Calendars
-            Me.Page.AddCalendar_New(expirationDateImageButton, expirationDateTextBox)
+            Page.AddCalendar_New(expirationDateImageButton, expirationDateTextBox)
         Else
             '''TODO: Transalations for N/A
             effectiveDateTextBox.Visible = False
@@ -572,54 +572,54 @@ Public Class UserControlAttrtibutes
         End If
     End Sub
 
-    Public Sub AttributeValueGridView_OnRowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles AttributeValueGridView.RowDataBound
+    Public Sub AttributeValueGridView_OnRowDataBound(sender As Object, e As GridViewRowEventArgs) Handles AttributeValueGridView.RowDataBound
         Try
 
             Dim rowType As DataControlRowType = CType(e.Row.RowType, DataControlRowType)
-            If (rowType = DataControlRowType.DataRow) AndAlso (Not e.Row.DataItem Is Nothing) Then
+            If (rowType = DataControlRowType.DataRow) AndAlso (e.Row.DataItem IsNot Nothing) Then
                 Dim oAttributeValue As AttributeValue = CType(e.Row.DataItem, AttributeValue)
                 Dim rowState As DataControlRowState = CType(e.Row.RowState, DataControlRowState)
 
                 If (rowState And DataControlRowState.Edit) = DataControlRowState.Edit Then
 
-                    Dim uiProgCodeDropDown As DropDownList = CType(e.Row.FindControl(Me.UI_PROG_CODE_DROPDOWN_NAME), DropDownList)
-                    Dim uiProgCodeLabel As Label = CType(e.Row.FindControl(Me.UI_PROG_CODE_LABEL_NAME), Label)
-                    Dim attributeValueDropDown As DropDownList = CType(e.Row.FindControl(Me.ATTRIBUTE_VALUE_DROPDOWN_NAME), DropDownList)
-                    Dim attributeValueTextBox As TextBox = CType(e.Row.FindControl(Me.ATTRIBUTE_VALUE_TEXTBOX_NAME), TextBox)
-                    Dim attributeValueImageButton As ImageButton = CType(e.Row.FindControl(Me.ATTRIBUTE_VALUE_IMAGEBUTTON_NAME), ImageButton)
-                    Dim effectiveDateTextBox As TextBox = CType(e.Row.FindControl(Me.EFFECTIVE_DATE_TEXTBOX_NAME), TextBox)
-                    Dim effectiveDateImageButton As ImageButton = CType(e.Row.FindControl(Me.EFFECTIVE_DATE_IMAGEBUTTON_NAME), ImageButton)
-                    Dim effectiveDateLabel As Label = CType(e.Row.FindControl(Me.EFFECTIVE_DATE_LABEL_NAME), Label)
-                    Dim expirationDateTextBox As TextBox = CType(e.Row.FindControl(Me.EXPIRATION_DATE_TEXTBOX_NAME), TextBox)
-                    Dim expirationDateImageButton As ImageButton = CType(e.Row.FindControl(Me.EXPIRATION_DATE_IMAGEBUTTON_NAME), ImageButton)
-                    Dim expirationDateLabel As Label = CType(e.Row.FindControl(Me.EXPIRATION_DATE_LABEL_NAME), Label)
-                    Dim saveImageButton As Button = CType(e.Row.FindControl(Me.SAVE_BUTTON_NAME), Button)
-                    Dim cancelImageButton As LinkButton = CType(e.Row.FindControl(Me.CANCEL_BUTTON_NAME), LinkButton)
+                    Dim uiProgCodeDropDown As DropDownList = CType(e.Row.FindControl(UI_PROG_CODE_DROPDOWN_NAME), DropDownList)
+                    Dim uiProgCodeLabel As Label = CType(e.Row.FindControl(UI_PROG_CODE_LABEL_NAME), Label)
+                    Dim attributeValueDropDown As DropDownList = CType(e.Row.FindControl(ATTRIBUTE_VALUE_DROPDOWN_NAME), DropDownList)
+                    Dim attributeValueTextBox As TextBox = CType(e.Row.FindControl(ATTRIBUTE_VALUE_TEXTBOX_NAME), TextBox)
+                    Dim attributeValueImageButton As ImageButton = CType(e.Row.FindControl(ATTRIBUTE_VALUE_IMAGEBUTTON_NAME), ImageButton)
+                    Dim effectiveDateTextBox As TextBox = CType(e.Row.FindControl(EFFECTIVE_DATE_TEXTBOX_NAME), TextBox)
+                    Dim effectiveDateImageButton As ImageButton = CType(e.Row.FindControl(EFFECTIVE_DATE_IMAGEBUTTON_NAME), ImageButton)
+                    Dim effectiveDateLabel As Label = CType(e.Row.FindControl(EFFECTIVE_DATE_LABEL_NAME), Label)
+                    Dim expirationDateTextBox As TextBox = CType(e.Row.FindControl(EXPIRATION_DATE_TEXTBOX_NAME), TextBox)
+                    Dim expirationDateImageButton As ImageButton = CType(e.Row.FindControl(EXPIRATION_DATE_IMAGEBUTTON_NAME), ImageButton)
+                    Dim expirationDateLabel As Label = CType(e.Row.FindControl(EXPIRATION_DATE_LABEL_NAME), Label)
+                    Dim saveImageButton As Button = CType(e.Row.FindControl(SAVE_BUTTON_NAME), Button)
+                    Dim cancelImageButton As LinkButton = CType(e.Row.FindControl(CANCEL_BUTTON_NAME), LinkButton)
 
                     ' Populate Attributes
-                    If (Me.State.IsNew) Then
+                    If (State.IsNew) Then
                         Dim attributeList As New List(Of ListItem)
-                        For Each ea As ElitaAttribute In Me.ParentBusinessObject.AttributeValues.Attribues
+                        For Each ea As ElitaAttribute In ParentBusinessObject.AttributeValues.Attribues
                             If (ea.UseEffectiveDate = "Y") OrElse (ea.AllowDuplicates = "Y") OrElse (ea.Id = oAttributeValue.AttributeId) Then
-                                attributeList.Add(New ListItem() With {.Value = ea.Id.ToString(), .Text = Me.AttributeCodeDescriptionFromCode(ea.UiProgCode)})
+                                attributeList.Add(New ListItem() With {.Value = ea.Id.ToString(), .Text = AttributeCodeDescriptionFromCode(ea.UiProgCode)})
                                 'attributeList.Add(New ListItem() With {.Value = ea.Id.ToString(), .Text = LookupListNew.GetDescriptionFromId(Me.AttributeCodeDataView, LookupListNew.GetIdFromCode(Me.AttributeCodeDataView, ea.UiProgCode))})
                             Else
-                                If (Me.ParentBusinessObject.AttributeValues.Where(Function(av) av.AttributeId = ea.Id).Count() = 0) Then
-                                    attributeList.Add(New ListItem() With {.Value = ea.Id.ToString(), .Text = Me.AttributeCodeDescriptionFromCode(ea.UiProgCode)})
+                                If (ParentBusinessObject.AttributeValues.Where(Function(av) av.AttributeId = ea.Id).Count() = 0) Then
+                                    attributeList.Add(New ListItem() With {.Value = ea.Id.ToString(), .Text = AttributeCodeDescriptionFromCode(ea.UiProgCode)})
                                     'attributeList.Add(New ListItem() With {.Value = ea.Id.ToString(), .Text = LookupListNew.GetDescriptionFromId(Me.AttributeCodeDataView, LookupListNew.GetIdFromCode(Me.AttributeCodeDataView, ea.UiProgCode))})
                                 End If
                             End If
                         Next
-                        Me.Page.BindListControlToArray(uiProgCodeDropDown, attributeList.ToArray(), , , Guid.Empty.ToString)
+                        Page.BindListControlToArray(uiProgCodeDropDown, attributeList.ToArray(), , , Guid.Empty.ToString)
                         If (oAttributeValue.AttributeId <> Guid.Empty) Then
-                            Me.Page.SetSelectedItem(uiProgCodeDropDown, Me.AttributeCodeIdFromCode(oAttributeValue.Attribute.UiProgCode))
+                            Page.SetSelectedItem(uiProgCodeDropDown, AttributeCodeIdFromCode(oAttributeValue.Attribute.UiProgCode))
                             'Me.Page.SetSelectedItem(uiProgCodeDropDown, LookupListNew.GetIdFromCode(Me.AttributeCodeDataView, oAttributeValue.Attribute.UiProgCode))
                         End If
                         uiProgCodeLabel.Visible = False
                         uiProgCodeDropDown.Visible = True
                     Else
                         ' Edit Flow
-                        uiProgCodeLabel.Text = Me.AttributeCodeDescriptionFromCode(oAttributeValue.Attribute.UiProgCode)
+                        uiProgCodeLabel.Text = AttributeCodeDescriptionFromCode(oAttributeValue.Attribute.UiProgCode)
                         'uiProgCodeLabel.Text = LookupListNew.GetDescriptionFromId(Me.AttributeCodeDataView, LookupListNew.GetIdFromCode(Me.AttributeCodeDataView, oAttributeValue.Attribute.UiProgCode))
                         uiProgCodeLabel.Visible = True
                         uiProgCodeDropDown.Visible = False
@@ -629,14 +629,14 @@ Public Class UserControlAttrtibutes
 
                 Else
 
-                    Dim uiProgCodeLabel As Label = CType(e.Row.FindControl(Me.UI_PROG_CODE_LABEL_NAME), Label)
-                    Dim attributeValueLabel As Label = CType(e.Row.FindControl(Me.ATTRIBUTE_VALUE_LABEL_NAME), Label)
-                    Dim effectiveDateLabel As Label = CType(e.Row.FindControl(Me.EFFECTIVE_DATE_LABEL_NAME), Label)
-                    Dim expirationDateLabel As Label = CType(e.Row.FindControl(Me.EXPIRATION_DATE_LABEL_NAME), Label)
-                    Dim editButton As ImageButton = CType(e.Row.FindControl(Me.EDIT_BUTTON_NAME), ImageButton)
-                    Dim deleteButton As ImageButton = CType(e.Row.FindControl(Me.DELETE_BUTTON_NAME), ImageButton)
+                    Dim uiProgCodeLabel As Label = CType(e.Row.FindControl(UI_PROG_CODE_LABEL_NAME), Label)
+                    Dim attributeValueLabel As Label = CType(e.Row.FindControl(ATTRIBUTE_VALUE_LABEL_NAME), Label)
+                    Dim effectiveDateLabel As Label = CType(e.Row.FindControl(EFFECTIVE_DATE_LABEL_NAME), Label)
+                    Dim expirationDateLabel As Label = CType(e.Row.FindControl(EXPIRATION_DATE_LABEL_NAME), Label)
+                    Dim editButton As ImageButton = CType(e.Row.FindControl(EDIT_BUTTON_NAME), ImageButton)
+                    Dim deleteButton As ImageButton = CType(e.Row.FindControl(DELETE_BUTTON_NAME), ImageButton)
 
-                    If (Not Me.State.MyBO Is Nothing) Then
+                    If (State.MyBO IsNot Nothing) Then
                         editButton.Visible = False
                         deleteButton.Visible = False
                     Else
@@ -646,37 +646,37 @@ Public Class UserControlAttrtibutes
                         'deleteButton.Attributes.Add("onclick1", Me.Page.ClientScript.GetPostBackEventReference(DirectCast(sender, GridView), String.Format("{0}${1}", DELETE_COMMAND_NAME, oAttributeValue.Id.ToString())))
                     End If
 
-                    uiProgCodeLabel.Text = Me.AttributeCodeDescriptionFromCode(oAttributeValue.Attribute.UiProgCode)
+                    uiProgCodeLabel.Text = AttributeCodeDescriptionFromCode(oAttributeValue.Attribute.UiProgCode)
                     'uiProgCodeLabel.Text = LookupListNew.GetDescriptionFromId(Me.AttributeCodeDataView, LookupListNew.GetIdFromCode(Me.AttributeCodeDataView, oAttributeValue.Attribute.UiProgCode))
-                    Select Case Me.DataTypeCodeFromId(oAttributeValue.Attribute.DataTypeId)
+                    Select Case DataTypeCodeFromId(oAttributeValue.Attribute.DataTypeId)
                     'Select Case LookupListNew.GetCodeFromId(Me.DataTypeDataView, oAttributeValue.Attribute.DataTypeId)
                         Case Codes.ATTRIBUTE_DATE_TYPE__DATE
-                            Me.Page.PopulateControlFromBOProperty(attributeValueLabel, Date.Parse(oAttributeValue.Value))
+                            Page.PopulateControlFromBOProperty(attributeValueLabel, Date.Parse(oAttributeValue.Value))
                         Case Codes.ATTRIBUTE_DATE_TYPE__YESNO
-                            Me.Page.PopulateControlFromBOProperty(attributeValueLabel, Me.YesNoDescriptionFromCode(oAttributeValue.Value))
+                            Page.PopulateControlFromBOProperty(attributeValueLabel, YesNoDescriptionFromCode(oAttributeValue.Value))
                             'Me.Page.PopulateControlFromBOProperty(attributeValueLabel, LookupListNew.GetDescriptionFromId(Me.YesNoDataView, LookupListNew.GetIdFromCode(Me.YesNoDataView, oAttributeValue.Value)))
                         Case Codes.ATTRIBUTE_DATE_TYPE__REINSURANCESTATUS
-                            Me.Page.PopulateControlFromBOProperty(attributeValueLabel, ReInsStatusDescriptionFromCode(oAttributeValue.Value))
+                            Page.PopulateControlFromBOProperty(attributeValueLabel, ReInsStatusDescriptionFromCode(oAttributeValue.Value))
                             'Me.Page.PopulateControlFromBOProperty(attributeValueLabel, LookupListNew.GetDescriptionFromId(Me.ReInsStatusDataView, LookupListNew.GetIdFromCode(Me.ReInsStatusDataView, oAttributeValue.Value)))
                         Case Codes.ATTRIBUTE_DATE_TYPE__POST_MIGRATION_CONDITION
-                            Me.Page.PopulateControlFromBOProperty(attributeValueLabel, Me.PostMigCndDescriptionFromCode(oAttributeValue.Value))
+                            Page.PopulateControlFromBOProperty(attributeValueLabel, PostMigCndDescriptionFromCode(oAttributeValue.Value))
                             
                             'Me.Page.PopulateControlFromBOProperty(attributeValueLabel, LookupListNew.GetDescriptionFromId(Me.PostMigCndDataView, LookupListNew.GetIdFromCode(Me.PostMigCndDataView, oAttributeValue.Value)))
                         Case Codes.ATTRIBUTE_DATE_TYPE__ACCT_PRORATE
-                            Me.Page.PopulateControlFromBOProperty(attributeValueLabel, Me.AcctProrateDescriptionFromCode(oAttributeValue.Value))
+                            Page.PopulateControlFromBOProperty(attributeValueLabel, AcctProrateDescriptionFromCode(oAttributeValue.Value))
                         Case Codes.ATTRIBUTE_DATE_TYPE__AUTO_RENEW_COV_LIMIT
-                            Me.Page.PopulateControlFromBOProperty(attributeValueLabel, Me.AutoRenewCovLimitDescriptionFromCode(oAttributeValue.Value))                       
+                            Page.PopulateControlFromBOProperty(attributeValueLabel, AutoRenewCovLimitDescriptionFromCode(oAttributeValue.Value))                       
                         Case Codes.ATTRIBUTE_DATE_TYPE__HEXADECIMAL
-                            Me.Page.PopulateControlFromBOProperty(attributeValueLabel, oAttributeValue.Value)
+                            Page.PopulateControlFromBOProperty(attributeValueLabel, oAttributeValue.Value)
                         Case Codes.ATTRIBUTE_DATE_TYPE__NUMBER
-                            Me.Page.PopulateControlFromBOProperty(attributeValueLabel, oAttributeValue.Value)
+                            Page.PopulateControlFromBOProperty(attributeValueLabel, oAttributeValue.Value)
                         Case Codes.ATTRIBUTE_DATE_TYPE__TEXT
-                            Me.Page.PopulateControlFromBOProperty(attributeValueLabel, oAttributeValue.Value)
+                            Page.PopulateControlFromBOProperty(attributeValueLabel, oAttributeValue.Value)
                     End Select
 
                     If (oAttributeValue.Attribute.UseEffectiveDate = Codes.YESNO_Y) Then
-                        Me.Page.PopulateControlFromBOProperty(effectiveDateLabel, oAttributeValue.EffectiveDate)
-                        Me.Page.PopulateControlFromBOProperty(expirationDateLabel, oAttributeValue.ExpirationDate)
+                        Page.PopulateControlFromBOProperty(effectiveDateLabel, oAttributeValue.EffectiveDate)
+                        Page.PopulateControlFromBOProperty(expirationDateLabel, oAttributeValue.ExpirationDate)
                     Else
                         '''TODO: Transalations for N/A
                         effectiveDateLabel.Text = "N/A"
@@ -686,13 +686,13 @@ Public Class UserControlAttrtibutes
                     End If
             End If
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.Page.MasterPage.MessageController)
+            Page.HandleErrors(ex, Page.MasterPage.MessageController)
         End Try
     End Sub
 
-    Sub PopulateBOFromForm(ByVal pGridView As GridView)
+    Sub PopulateBOFromForm(pGridView As GridView)
         Dim row As GridViewRow = pGridView.Rows(pGridView.EditIndex)
-        With Me.State.MyBO
+        With State.MyBO
             If (.AttributeId = Guid.Empty) Then
                 .EffectiveDate = Nothing
                 .ExpirationDate = Nothing
@@ -718,66 +718,66 @@ Public Class UserControlAttrtibutes
                 .ExpirationDate = Nothing
             End If
 
-            Select Case Me.DataTypeCodeFromId(.Attribute.DataTypeId)
+            Select Case DataTypeCodeFromId(.Attribute.DataTypeId)
             'Select Case LookupListNew.GetCodeFromId(Me.DataTypeDataView, .Attribute.DataTypeId)
                 Case Codes.ATTRIBUTE_DATE_TYPE__TEXT
-                    Me.State.MyBO.Value = CType(row.FindControl(ATTRIBUTE_VALUE_TEXTBOX_NAME), TextBox).Text
+                    State.MyBO.Value = CType(row.FindControl(ATTRIBUTE_VALUE_TEXTBOX_NAME), TextBox).Text
                 Case Codes.ATTRIBUTE_DATE_TYPE__HEXADECIMAL
-                    Me.State.MyBO.Value = CType(row.FindControl(ATTRIBUTE_VALUE_TEXTBOX_NAME), TextBox).Text
+                    State.MyBO.Value = CType(row.FindControl(ATTRIBUTE_VALUE_TEXTBOX_NAME), TextBox).Text
                 Case Codes.ATTRIBUTE_DATE_TYPE__DATE
                     Dim dateValue As Date
                     If (dateValue.TryParse(CType(row.FindControl(ATTRIBUTE_VALUE_TEXTBOX_NAME), TextBox).Text, dateValue)) Then
-                        Me.State.MyBO.Value = dateValue.ToString("MM/dd/yyyyy HH:mm:ss")
+                        State.MyBO.Value = dateValue.ToString("MM/dd/yyyyy HH:mm:ss")
                     Else
-                        Me.State.MyBO.Value = Nothing
+                        State.MyBO.Value = Nothing
                     End If
                 Case Codes.ATTRIBUTE_DATE_TYPE__NUMBER
                     Dim numberValue As Double
                     If (Double.TryParse(CType(row.FindControl(ATTRIBUTE_VALUE_TEXTBOX_NAME), TextBox).Text, numberValue)) Then
-                        Me.State.MyBO.Value = numberValue.ToString()
+                        State.MyBO.Value = numberValue.ToString()
                     Else
-                        Me.State.MyBO.Value = Nothing
+                        State.MyBO.Value = Nothing
                     End If
                 Case Codes.ATTRIBUTE_DATE_TYPE__YESNO
                     Dim attributeValueDropDown As DropDownList = CType(row.FindControl(ATTRIBUTE_VALUE_DROPDOWN_NAME), DropDownList)
                     If (attributeValueDropDown.SelectedIndex <> -1) Then
-                        Me.State.MyBO.Value = Me.YesNoCodeFromId(New Guid(attributeValueDropDown.SelectedValue))
+                        State.MyBO.Value = YesNoCodeFromId(New Guid(attributeValueDropDown.SelectedValue))
                         'Me.State.MyBO.Value = LookupListNew.GetCodeFromId(Me.YesNoDataView, New Guid(attributeValueDropDown.SelectedValue))
                     Else
-                        Me.State.MyBO.Value = Nothing
+                        State.MyBO.Value = Nothing
                     End If
                 Case Codes.ATTRIBUTE_DATE_TYPE__REINSURANCESTATUS
                     Dim attributeValueDropDown As DropDownList = CType(row.FindControl(ATTRIBUTE_VALUE_DROPDOWN_NAME), DropDownList)
                     If (attributeValueDropDown.SelectedIndex <> -1) Then
-                        Me.State.MyBO.Value = Me.ReInsStatusCodeFromId(New Guid(attributeValueDropDown.SelectedValue))
+                        State.MyBO.Value = ReInsStatusCodeFromId(New Guid(attributeValueDropDown.SelectedValue))
                         'Me.State.MyBO.Value = LookupListNew.GetCodeFromId(Me.ReInsStatusDataView, New Guid(attributeValueDropDown.SelectedValue))
                     Else
-                        Me.State.MyBO.Value = Nothing
+                        State.MyBO.Value = Nothing
                     End If
                 Case Codes.ATTRIBUTE_DATE_TYPE__POST_MIGRATION_CONDITION
                     Dim attributeValueDropDown As DropDownList = CType(row.FindControl(ATTRIBUTE_VALUE_DROPDOWN_NAME), DropDownList)
                     If (attributeValueDropDown.SelectedIndex <> -1) Then
-                        Me.State.MyBO.Value = Me.PostMigCndCodeFromId(New Guid(attributeValueDropDown.SelectedValue))
+                        State.MyBO.Value = PostMigCndCodeFromId(New Guid(attributeValueDropDown.SelectedValue))
                         'Me.State.MyBO.Value = LookupListNew.GetCodeFromId(Me.PostMigCndDataView, New Guid(attributeValueDropDown.SelectedValue))
                     Else
-                        Me.State.MyBO.Value = Nothing
+                        State.MyBO.Value = Nothing
                     End If
 
                 Case Codes.ATTRIBUTE_DATE_TYPE__ACCT_PRORATE
                     Dim attributeValueDropDown As DropDownList = CType(row.FindControl(ATTRIBUTE_VALUE_DROPDOWN_NAME), DropDownList)
                     If (attributeValueDropDown.SelectedIndex <> -1) Then
-                        Me.State.MyBO.Value = Me.AcctProrateCodeFromId(New Guid(attributeValueDropDown.SelectedValue))
+                        State.MyBO.Value = AcctProrateCodeFromId(New Guid(attributeValueDropDown.SelectedValue))
                         'Me.State.MyBO.Value = LookupListNew.GetCodeFromId(Me.PostMigCndDataView, New Guid(attributeValueDropDown.SelectedValue))
                     Else
-                        Me.State.MyBO.Value = Nothing
+                        State.MyBO.Value = Nothing
                     End If
                 Case Codes.ATTRIBUTE_DATE_TYPE__AUTO_RENEW_COV_LIMIT
                     Dim attributeValueDropDown As DropDownList = CType(row.FindControl(ATTRIBUTE_VALUE_DROPDOWN_NAME), DropDownList)
                     If (attributeValueDropDown.SelectedIndex <> -1) Then
-                        Me.State.MyBO.Value = Me.AutoRenewCovLimitCodeFromId(New Guid(attributeValueDropDown.SelectedValue))
+                        State.MyBO.Value = AutoRenewCovLimitCodeFromId(New Guid(attributeValueDropDown.SelectedValue))
                         'Me.State.MyBO.Value = LookupListNew.GetCodeFromId(Me.PostMigCndDataView, New Guid(attributeValueDropDown.SelectedValue))
                     Else
-                        Me.State.MyBO.Value = Nothing
+                        State.MyBO.Value = Nothing
                     End If
 
             End Select
@@ -786,75 +786,75 @@ Public Class UserControlAttrtibutes
 
     End Sub
 
-    Public Sub moAttributeGridView_OnRowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles AttributeValueGridView.RowCommand
+    Public Sub moAttributeGridView_OnRowCommand(sender As Object, e As GridViewCommandEventArgs) Handles AttributeValueGridView.RowCommand
         Try
             Select Case e.CommandName
                 Case CANCEL_BUTTON_NAME
                 Case CANCEL_COMMAND_NAME
-                    If (Me.State.IsNew) Then
-                        Me.State.MyBO.Delete()
+                    If (State.IsNew) Then
+                        State.MyBO.Delete()
                         If (e.CommandName.Equals(CANCEL_BUTTON_NAME)) Then
-                            Me.State.MyBO.Save()
+                            State.MyBO.Save()
                         End If
-                        Me.State.MyBO = Nothing
-                        Me.State.IsNew = False
+                        State.MyBO = Nothing
+                        State.IsNew = False
                     Else
-                        Me.State.MyBO.cancelEdit()
-                        Me.State.MyBO = Nothing
+                        State.MyBO.cancelEdit()
+                        State.MyBO = Nothing
                     End If
-                    Me.NewButton.Enabled = True
+                    NewButton.Enabled = True
 
                 Case EDIT_COMMAND_NAME
-                    Me.State.MyBO = Me.ParentBusinessObject.AttributeValues.Where(Function(av) av.Id = New Guid(e.CommandArgument.ToString())).First()
-                    Me.State.MyBO.BeginEdit()
-                    Me.NewButton.Enabled = False
+                    State.MyBO = ParentBusinessObject.AttributeValues.Where(Function(av) av.Id = New Guid(e.CommandArgument.ToString())).First()
+                    State.MyBO.BeginEdit()
+                    NewButton.Enabled = False
 
                 Case DELETE_COMMAND_NAME
-                    Me.State.MyBO = Me.ParentBusinessObject.AttributeValues.Where(Function(av) av.Id = New Guid(e.CommandArgument.ToString())).First()
-                    Me.State.MyBO.Delete()
-                    Me.State.MyBO.Save()
+                    State.MyBO = ParentBusinessObject.AttributeValues.Where(Function(av) av.Id = New Guid(e.CommandArgument.ToString())).First()
+                    State.MyBO.Delete()
+                    State.MyBO.Save()
 
-                    Me.State.MyBO = Nothing
-                    Me.NewButton.Enabled = True
+                    State.MyBO = Nothing
+                    NewButton.Enabled = True
 
                 Case SAVE_COMMAND_NAME
                     PopulateBOFromForm(CType(sender, GridView))
-                    Me.State.MyBO.EndEdit()
-                    Me.State.MyBO.Save()
-                    Me.State.MyBO = Nothing
-                    Me.State.IsNew = False
-                    Me.NewButton.Enabled = True
+                    State.MyBO.EndEdit()
+                    State.MyBO.Save()
+                    State.MyBO = Nothing
+                    State.IsNew = False
+                    NewButton.Enabled = True
             End Select
 
             PopulateGrid()
 
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.Page.MasterPage.MessageController)
+            Page.HandleErrors(ex, Page.MasterPage.MessageController)
         End Try
     End Sub
 
-    Public Sub moAttributeGridView_OnRowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles AttributeValueGridView.RowCreated
+    Public Sub moAttributeGridView_OnRowCreated(sender As Object, e As GridViewRowEventArgs) Handles AttributeValueGridView.RowCreated
         Try
-            Me.Page.BaseItemCreated(sender, e)
+            Page.BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.Page.MasterPage.MessageController)
+            Page.HandleErrors(ex, Page.MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "Button Events"
 
-    Public Sub NewButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles NewButton.Click
+    Public Sub NewButton_Click(sender As Object, e As EventArgs) Handles NewButton.Click
         Try
-            Me.State.MyBO = Me.ParentBusinessObject.AttributeValues.GetNewAttributeChild()
-            Me.State.IsNew = True
-            Me.NewButton.Enabled = False
+            State.MyBO = ParentBusinessObject.AttributeValues.GetNewAttributeChild()
+            State.IsNew = True
+            NewButton.Enabled = False
 
             ' Request Re-Population of Grid
             PopulateGrid()
 
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.Page.MasterPage.MessageController)
+            Page.HandleErrors(ex, Page.MasterPage.MessageController)
         End Try
     End Sub
 

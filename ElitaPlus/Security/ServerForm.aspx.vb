@@ -56,16 +56,16 @@ Namespace Security
             End Get
         End Property
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Me.State.MyBO = New Servers(CType(Me.CallingParameters, Guid))
+                    State.MyBO = New Servers(CType(CallingParameters, Guid))
                 Else
-                    Me.State.IsNew = True
+                    State.IsNew = True
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -78,9 +78,9 @@ Namespace Security
             Public EditingBo As Servers
             Public HasDataChanged As Boolean
 
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Servers, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As Servers, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
@@ -90,37 +90,37 @@ Namespace Security
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrControllerMaster.Clear_Hide()
+            ErrControllerMaster.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     ' Me.MenuEnabled = False
-                    Me.AddConfirmation(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New Servers
+                    AddConfirmation(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New Servers
                     End If
 
-                    If Me.State.IsNew = True Then
+                    If State.IsNew = True Then
                         CreateNew()
                     End If
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
                 End If
                 BindBoPropertiesToLabels()
                 CheckIfComingFromSaveConfirm()
-                If Not Me.IsPostBack Then
-                    Me.AddLabelDecorations(Me.State.MyBO)
+                If Not IsPostBack Then
+                    AddLabelDecorations(State.MyBO)
                 End If
-                Me.DisplayProgressBarOnClick(CType(Me.btnExecuteCurrent, WebControl), "Running Test")
+                DisplayProgressBarOnClick(CType(btnExecuteCurrent, WebControl), "Running Test")
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region
@@ -128,103 +128,103 @@ Namespace Security
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click, btnBack2.Click
+        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click, btnBack2.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
                     Dim iDirtyCols As Integer
-                    iDirtyCols = Me.State.MyBO.DirtyColumns.Count
+                    iDirtyCols = State.MyBO.DirtyColumns.Count
                     If iDirtyCols > SERVER_DIRTY_COLUMNS_COUNT Then
-                        Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenDeletePromptResponse)
-                        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                        AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenDeletePromptResponse)
+                        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                     Else
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     End If
                 Else
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
-                Me.AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, Me.HiddenDeletePromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = Me.ErrControllerMaster.Text
+                HandleErrors(ex, ErrControllerMaster)
+                AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, HiddenDeletePromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.LastErrMsg = ErrControllerMaster.Text
             End Try
         End Sub
-        Private Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
-                    Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenDeletePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
+                    AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenDeletePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
-        Private Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Dim addressDeleted As Boolean
             Try
                 'Delete the Address
-                Me.State.MyBO.DeleteAndSave()
-                Me.State.HasDataChanged = True
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+                State.MyBO.DeleteAndSave()
+                State.HasDataChanged = True
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If (Me.State.MyBO.IsDirty) Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenDeletePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
-                Else
-                    Me.CreateNew()
-                End If
-            Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
-            End Try
-        End Sub
-
-        Private Sub btnApply_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
-            Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = True
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    'PopulateAll()
-                Else
-                    Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
-                End If
-            Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
-            End Try
-        End Sub
-
-        Private Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
-            Try
-                If Not Me.State.MyBO.IsNew Then
-                    'Reload from the DB
-                    Me.State.MyBO = New Servers(Me.State.MyBO.Id)
-                ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
-                    'It was a new with copy
-                    Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                PopulateBOsFromForm()
+                If (State.MyBO.IsDirty) Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
+            End Try
+        End Sub
+
+        Private Sub btnApply_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnApply_WRITE.Click
+            Try
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
+                    State.HasDataChanged = True
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    'PopulateAll()
+                Else
+                    AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
+                End If
+            Catch ex As Exception
+                HandleErrors(ex, ErrControllerMaster)
+            End Try
+        End Sub
+
+        Private Sub btnUndo_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
+            Try
+                If Not State.MyBO.IsNew Then
+                    'Reload from the DB
+                    State.MyBO = New Servers(State.MyBO.Id)
+                ElseIf State.ScreenSnapShotBO IsNot Nothing Then
+                    'It was a new with copy
+                    State.MyBO.Clone(State.ScreenSnapShotBO)
+                Else
+                    CreateNew()
+                End If
+                PopulateFormFromBOs()
+                EnableDisableFields()
+            Catch ex As Exception
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -246,7 +246,7 @@ Namespace Security
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, True)
 
-            If Me.State.MyBO.IsNew Then
+            If State.MyBO.IsNew Then
                 ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
@@ -256,39 +256,39 @@ Namespace Security
 
 
         Protected Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Description", Me.DescriptionLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "HubRegion", Me.HubRegionLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Environment", Me.EnvironmentLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "MachinePrefix", Me.MachinePrefixLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "FtpHostname", Me.FtpHostNameLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "FtpHostPath", Me.FtpHostPathLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "FtpTriggerExtension", Me.FtpTriggerExtensionLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "FtpSplitPath", Me.FtpSplitPathLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "CrystalSdk", Me.CrystalSdkLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "CrystalViewer", Me.CrystalViewerLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "FelitaFtpHostname", Me.FelitaFtpHostNameLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "LdapIp", Me.LdapIpLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "SmartStreamHostName", Me.SmartStreamHostNameLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "ServiceOrderImageHost", Me.ServiceOrderImageHostNameLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "EuropeanPrivacy", Me.EuropeanPrivacyLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "DatabaseName", Me.DatabaseNameLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "BatchHostname", Me.BatchHostnameLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "AcctBalanceHostname", Me.AcctBalHostnameLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "SmartStreamAPUpload", Me.SmartStreamAPUploadLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "SmartStreamGLStatus", Me.SmartStreamGLStatusLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "SmartStreamGLUpload", Me.SmartStreamGLUploadLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "DBUniqueName", Me.UniqueDBLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "NoOfParallelProcesses", Me.NoOfParallelProcessesLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "CommitFrequency", Me.CommitFrequencyLabel)
+            BindBOPropertyToLabel(State.MyBO, "Description", DescriptionLabel)
+            BindBOPropertyToLabel(State.MyBO, "HubRegion", HubRegionLabel)
+            BindBOPropertyToLabel(State.MyBO, "Environment", EnvironmentLabel)
+            BindBOPropertyToLabel(State.MyBO, "MachinePrefix", MachinePrefixLabel)
+            BindBOPropertyToLabel(State.MyBO, "FtpHostname", FtpHostNameLabel)
+            BindBOPropertyToLabel(State.MyBO, "FtpHostPath", FtpHostPathLabel)
+            BindBOPropertyToLabel(State.MyBO, "FtpTriggerExtension", FtpTriggerExtensionLabel)
+            BindBOPropertyToLabel(State.MyBO, "FtpSplitPath", FtpSplitPathLabel)
+            BindBOPropertyToLabel(State.MyBO, "CrystalSdk", CrystalSdkLabel)
+            BindBOPropertyToLabel(State.MyBO, "CrystalViewer", CrystalViewerLabel)
+            BindBOPropertyToLabel(State.MyBO, "FelitaFtpHostname", FelitaFtpHostNameLabel)
+            BindBOPropertyToLabel(State.MyBO, "LdapIp", LdapIpLabel)
+            BindBOPropertyToLabel(State.MyBO, "SmartStreamHostName", SmartStreamHostNameLabel)
+            BindBOPropertyToLabel(State.MyBO, "ServiceOrderImageHost", ServiceOrderImageHostNameLabel)
+            BindBOPropertyToLabel(State.MyBO, "EuropeanPrivacy", EuropeanPrivacyLabel)
+            BindBOPropertyToLabel(State.MyBO, "DatabaseName", DatabaseNameLabel)
+            BindBOPropertyToLabel(State.MyBO, "BatchHostname", BatchHostnameLabel)
+            BindBOPropertyToLabel(State.MyBO, "AcctBalanceHostname", AcctBalHostnameLabel)
+            BindBOPropertyToLabel(State.MyBO, "SmartStreamAPUpload", SmartStreamAPUploadLabel)
+            BindBOPropertyToLabel(State.MyBO, "SmartStreamGLStatus", SmartStreamGLStatusLabel)
+            BindBOPropertyToLabel(State.MyBO, "SmartStreamGLUpload", SmartStreamGLUploadLabel)
+            BindBOPropertyToLabel(State.MyBO, "DBUniqueName", UniqueDBLabel)
+            BindBOPropertyToLabel(State.MyBO, "NoOfParallelProcesses", NoOfParallelProcessesLabel)
+            BindBOPropertyToLabel(State.MyBO, "CommitFrequency", CommitFrequencyLabel)
 
 
-            Me.ClearGridHeadersAndLabelsErrSign()
+            ClearGridHeadersAndLabelsErrSign()
         End Sub
 
         Protected Sub PopulateFormFromBOs()
             Dim yesNoList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
             Dim yesNoId As Guid
-            Me.EuropeanPrivacyDrop.Populate(yesNoList, New PopulateOptions() With
+            EuropeanPrivacyDrop.Populate(yesNoList, New PopulateOptions() With
                 {
                     .AddBlankItem = False
                 })
@@ -297,21 +297,21 @@ Namespace Security
             'Dim yesNoLkL As DataView = LookupListNew.GetYesNoLookupList(langId, False)
             'Me.BindListControlToDataView(Me.EuropeanPrivacyDrop, yesNoLkL, , , False)
 
-            With Me.State.MyBO
-                Me.PopulateControlFromBOProperty(Me.DescriptionTextBox, .Description)
-                Me.PopulateControlFromBOProperty(Me.HubRegionTextBox, .HubRegion)
-                Me.PopulateControlFromBOProperty(Me.MachinePrefixTextBox, .MachinePrefix)
-                Me.PopulateControlFromBOProperty(Me.EnvironmentextBox, .Environment)
-                Me.PopulateControlFromBOProperty(Me.FtpHostNameTextBox, .FtpHostname)
-                Me.PopulateControlFromBOProperty(Me.FelitaFtpHostNameTextBox, .FelitaFtpHostname)
-                Me.PopulateControlFromBOProperty(Me.LdapIpTextBox, .LdapIp)
-                Me.PopulateControlFromBOProperty(Me.FtpHostPathTextBox, .FtpHostPath)
-                Me.PopulateControlFromBOProperty(Me.FtpTriggerExtensionTextBox, .FtpTriggerExtension)
-                Me.PopulateControlFromBOProperty(Me.FtpSplitPathTextBox, .FtpSplitPath)
-                Me.PopulateControlFromBOProperty(Me.SmartstreamHostnameTextBox, .SmartStreamHostName)
-                Me.PopulateControlFromBOProperty(Me.ServiceorderImageHostnameTextBox, .ServiceOrderImageHost)
-                Me.PopulateControlFromBOProperty(Me.BatchHostnameTextBox, .BatchHostname)
-                Me.PopulateControlFromBOProperty(Me.AcctBalHostnameTextBox, .AcctBalanceHostname)
+            With State.MyBO
+                PopulateControlFromBOProperty(DescriptionTextBox, .Description)
+                PopulateControlFromBOProperty(HubRegionTextBox, .HubRegion)
+                PopulateControlFromBOProperty(MachinePrefixTextBox, .MachinePrefix)
+                PopulateControlFromBOProperty(EnvironmentextBox, .Environment)
+                PopulateControlFromBOProperty(FtpHostNameTextBox, .FtpHostname)
+                PopulateControlFromBOProperty(FelitaFtpHostNameTextBox, .FelitaFtpHostname)
+                PopulateControlFromBOProperty(LdapIpTextBox, .LdapIp)
+                PopulateControlFromBOProperty(FtpHostPathTextBox, .FtpHostPath)
+                PopulateControlFromBOProperty(FtpTriggerExtensionTextBox, .FtpTriggerExtension)
+                PopulateControlFromBOProperty(FtpSplitPathTextBox, .FtpSplitPath)
+                PopulateControlFromBOProperty(SmartstreamHostnameTextBox, .SmartStreamHostName)
+                PopulateControlFromBOProperty(ServiceorderImageHostnameTextBox, .ServiceOrderImageHost)
+                PopulateControlFromBOProperty(BatchHostnameTextBox, .BatchHostname)
+                PopulateControlFromBOProperty(AcctBalHostnameTextBox, .AcctBalanceHostname)
 
                 If .PrivacyLevelXCD Is Nothing Then
                     .PrivacyLevelXCD = Codes.YESNO_N
@@ -322,16 +322,16 @@ Namespace Security
                            Where yn.Code = .PrivacyLevelXCD
                            Select yn.ListItemId).FirstOrDefault()
 
-                Me.SetSelectedItem(Me.EuropeanPrivacyDrop, yesNoId)
-                Me.PopulateControlFromBOProperty(Me.DatabaNameTextBox, .DatabaseName)
+                SetSelectedItem(EuropeanPrivacyDrop, yesNoId)
+                PopulateControlFromBOProperty(DatabaNameTextBox, .DatabaseName)
 
-                Me.PopulateControlFromBOProperty(Me.SmartStreamAPUploadTextBox, .SmartStreamAPUpload)
-                Me.PopulateControlFromBOProperty(Me.SmartStreamGLStatusTextBox, .SmartStreamGLStatus)
-                Me.PopulateControlFromBOProperty(Me.SmartStreamGLUploadTextBox, .SmartStreamGLUpload)
+                PopulateControlFromBOProperty(SmartStreamAPUploadTextBox, .SmartStreamAPUpload)
+                PopulateControlFromBOProperty(SmartStreamGLStatusTextBox, .SmartStreamGLStatus)
+                PopulateControlFromBOProperty(SmartStreamGLUploadTextBox, .SmartStreamGLUpload)
 
-                Me.PopulateControlFromBOProperty(Me.UniqueDBTextBox, .DBUniqueName)
-                Me.PopulateControlFromBOProperty(Me.NoOfParallelProcessesTextBox, .NoOfParallelProcesses)
-                Me.PopulateControlFromBOProperty(Me.CommitFrequencyTextBox, .CommitFrequency)
+                PopulateControlFromBOProperty(UniqueDBTextBox, .DBUniqueName)
+                PopulateControlFromBOProperty(NoOfParallelProcessesTextBox, .NoOfParallelProcesses)
+                PopulateControlFromBOProperty(CommitFrequencyTextBox, .CommitFrequency)
 
             End With
 
@@ -349,162 +349,162 @@ Namespace Security
             Dim yesNoId As Guid
             Dim yesNoCode As String
 
-            With Me.State.MyBO
-                Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.DescriptionTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "HubRegion", Me.HubRegionTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "MachinePrefix", Me.MachinePrefixTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "Environment", Me.EnvironmentextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "FtpHostname", Me.FtpHostNameTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "CrystalSdk", Me.CrystalSdkTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "CrystalViewer", Me.CrystalViewerTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "FelitaFtpHostname", Me.FelitaFtpHostNameTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "LdapIp", Me.LdapIpTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "FtpHostPath", Me.FtpHostPathTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "FtpTriggerExtension", Me.FtpTriggerExtensionTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "FtpSplitPath", Me.FtpSplitPathTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "SmartStreamHostName", Me.SmartstreamHostnameTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "ServiceOrderImageHost", Me.ServiceorderImageHostnameTextBox)
-                yesNoId = Me.GetSelectedItem(Me.EuropeanPrivacyDrop)
+            With State.MyBO
+                PopulateBOProperty(State.MyBO, "Description", DescriptionTextBox)
+                PopulateBOProperty(State.MyBO, "HubRegion", HubRegionTextBox)
+                PopulateBOProperty(State.MyBO, "MachinePrefix", MachinePrefixTextBox)
+                PopulateBOProperty(State.MyBO, "Environment", EnvironmentextBox)
+                PopulateBOProperty(State.MyBO, "FtpHostname", FtpHostNameTextBox)
+                PopulateBOProperty(State.MyBO, "CrystalSdk", CrystalSdkTextBox)
+                PopulateBOProperty(State.MyBO, "CrystalViewer", CrystalViewerTextBox)
+                PopulateBOProperty(State.MyBO, "FelitaFtpHostname", FelitaFtpHostNameTextBox)
+                PopulateBOProperty(State.MyBO, "LdapIp", LdapIpTextBox)
+                PopulateBOProperty(State.MyBO, "FtpHostPath", FtpHostPathTextBox)
+                PopulateBOProperty(State.MyBO, "FtpTriggerExtension", FtpTriggerExtensionTextBox)
+                PopulateBOProperty(State.MyBO, "FtpSplitPath", FtpSplitPathTextBox)
+                PopulateBOProperty(State.MyBO, "SmartStreamHostName", SmartstreamHostnameTextBox)
+                PopulateBOProperty(State.MyBO, "ServiceOrderImageHost", ServiceorderImageHostnameTextBox)
+                yesNoId = GetSelectedItem(EuropeanPrivacyDrop)
                 yesNoCode = LookupListNew.GetCodeFromId(yesNoLkL, yesNoId)
-                Me.PopulateBOProperty(Me.State.MyBO, "EuropeanPrivacy", yesNoCode)
-                Me.PopulateBOProperty(Me.State.MyBO, "DatabaseName", Me.DatabaNameTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "BatchHostname", Me.BatchHostnameTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "AcctBalanceHostname", Me.AcctBalHostnameTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "SmartStreamAPUpload", Me.SmartStreamAPUploadTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "SmartStreamGLStatus", Me.SmartStreamGLStatusTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "SmartStreamGLUpload", Me.SmartStreamGLUploadTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "DBUniqueName", Me.UniqueDBTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "NoOfParallelProcesses", Me.NoOfParallelProcessesTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "CommitFrequency", Me.CommitFrequencyTextBox)
+                PopulateBOProperty(State.MyBO, "EuropeanPrivacy", yesNoCode)
+                PopulateBOProperty(State.MyBO, "DatabaseName", DatabaNameTextBox)
+                PopulateBOProperty(State.MyBO, "BatchHostname", BatchHostnameTextBox)
+                PopulateBOProperty(State.MyBO, "AcctBalanceHostname", AcctBalHostnameTextBox)
+                PopulateBOProperty(State.MyBO, "SmartStreamAPUpload", SmartStreamAPUploadTextBox)
+                PopulateBOProperty(State.MyBO, "SmartStreamGLStatus", SmartStreamGLStatusTextBox)
+                PopulateBOProperty(State.MyBO, "SmartStreamGLUpload", SmartStreamGLUploadTextBox)
+                PopulateBOProperty(State.MyBO, "DBUniqueName", UniqueDBTextBox)
+                PopulateBOProperty(State.MyBO, "NoOfParallelProcesses", NoOfParallelProcessesTextBox)
+                PopulateBOProperty(State.MyBO, "CommitFrequency", CommitFrequencyTextBox)
 
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
 
         Protected Sub CreateNew()
-            Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-            Me.State.MyBO = New Servers
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+            State.MyBO = New Servers
+            PopulateFormFromBOs()
+            EnableDisableFields()
             'PopulateAll()
         End Sub
 
         Protected Sub CreateNewWithCopy()
 
-            Me.PopulateBOsFromForm()
+            PopulateBOsFromForm()
 
             Dim newObj As New Servers
-            newObj.Copy(Me.State.MyBO)
+            newObj.Copy(State.MyBO)
 
-            Me.State.MyBO = newObj
+            State.MyBO = newObj
             'Me.State.MyBO.BranchCode = Nothing
             'Me.State.MyBO.BranchName = Nothing
 
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
 
             'create the backup copy
-            Me.State.ScreenSnapShotBO = New Servers
-            Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
+            State.ScreenSnapShotBO = New Servers
+            State.ScreenSnapShotBO.Clone(State.MyBO)
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenDeletePromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_OK Then
-                If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                    Me.State.MyBO.Save()
+            Dim confResponse As String = HiddenDeletePromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_OK Then
+                If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                    State.MyBO.Save()
                 End If
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                        Me.CreateNew()
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                        Me.CreateNewWithCopy()
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_CANCEL Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_CANCEL Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.CreateNew()
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.CreateNewWithCopy()
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ErrControllerMaster.AddErrorAndShow(Me.State.LastErrMsg)
+                        ErrControllerMaster.AddErrorAndShow(State.LastErrMsg)
                 End Select
             End If
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenDeletePromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenDeletePromptResponse.Value = ""
         End Sub
 
 #End Region
 
 #Region "DIAGNOSTICS"
 
-        Private Sub grdBatch_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles grdBatch.RowCommand
+        Private Sub grdBatch_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles grdBatch.RowCommand
 
             Try
                 If Not CheckBatchCredentials() Then Exit Sub
-                Me.statusResult_LABEL.Text = Servers.TestBatchService(Me.batchUser_TEXT.Text, Me.batchPass_TEXT.Text, Me.batchGroup_TEXT.Text, e.CommandArgument.ToString)
+                statusResult_LABEL.Text = Servers.TestBatchService(batchUser_TEXT.Text, batchPass_TEXT.Text, batchGroup_TEXT.Text, e.CommandArgument.ToString)
 
             Catch ex As Exception
                 ErrControllerMaster.AddErrorAndShow(ex.StackTrace, False)
-                Me.statusResult_LABEL.Text = "Error Calling the Batch Service.  Please check the server log in AIM"
+                statusResult_LABEL.Text = "Error Calling the Batch Service.  Please check the server log in AIM"
             End Try
 
         End Sub
 
         'The Binding Logic is here
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdBatch.RowDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdBatch.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-            If Not dvRow Is Nothing Then
+            If dvRow IsNot Nothing Then
 
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
 
                     If dvRow(Servers.SearchDV.COL_BATCH_HOSTNAME) Is DBNull.Value OrElse dvRow(Servers.SearchDV.COL_BATCH_HOSTNAME).ToString.Trim.Length = 0 Then
-                        CType(e.Row.Cells(0).FindControl(Me.GRID_SERVERS_TEST_BUTTON), ImageButton).ImageUrl = "../Navigation/images/icons/no_icon2.gif"
-                        CType(e.Row.Cells(0).FindControl(Me.GRID_SERVERS_TEST_BUTTON), ImageButton).Enabled = False
+                        CType(e.Row.Cells(0).FindControl(GRID_SERVERS_TEST_BUTTON), ImageButton).ImageUrl = "../Navigation/images/icons/no_icon2.gif"
+                        CType(e.Row.Cells(0).FindControl(GRID_SERVERS_TEST_BUTTON), ImageButton).Enabled = False
                     Else
-                        Me.DisplayProgressBarOnClick(CType(e.Row.Cells(0).FindControl(Me.GRID_SERVERS_TEST_BUTTON), WebControl), "Running Test")
-                        CType(e.Row.Cells(0).FindControl(Me.GRID_SERVERS_TEST_BUTTON), ImageButton).CommandArgument = dvRow(Servers.SearchDV.COL_BATCH_HOSTNAME).ToString
+                        DisplayProgressBarOnClick(CType(e.Row.Cells(0).FindControl(GRID_SERVERS_TEST_BUTTON), WebControl), "Running Test")
+                        CType(e.Row.Cells(0).FindControl(GRID_SERVERS_TEST_BUTTON), ImageButton).CommandArgument = dvRow(Servers.SearchDV.COL_BATCH_HOSTNAME).ToString
                     End If
                 End If
             End If
         End Sub
 
-        Protected Sub ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles grdBatch.RowDataBound
+        Protected Sub ItemBound(source As Object, e As GridViewRowEventArgs) Handles grdBatch.RowDataBound
 
             Try
                 BaseItemBound(source, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub btnExecuteCurrent_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnExecuteCurrent.Click
+        Private Sub btnExecuteCurrent_Click(sender As Object, e As System.Web.UI.ImageClickEventArgs) Handles btnExecuteCurrent.Click
 
             Try
                 If Not CheckBatchCredentials() Then Exit Sub
-                Me.statusResult_LABEL.Text = Servers.TestCurrentBatchService(Me.batchUser_TEXT.Text, Me.batchPass_TEXT.Text, Me.batchGroup_TEXT.Text)
+                statusResult_LABEL.Text = Servers.TestCurrentBatchService(batchUser_TEXT.Text, batchPass_TEXT.Text, batchGroup_TEXT.Text)
 
             Catch ex As Exception
                 ErrControllerMaster.AddErrorAndShow(ex.StackTrace, False)
-                Me.statusResult_LABEL.Text = "Error Calling the Batch Service.  Please check the server log in AIM"
+                statusResult_LABEL.Text = "Error Calling the Batch Service.  Please check the server log in AIM"
             End Try
         End Sub
 
@@ -514,11 +514,11 @@ Namespace Security
 
             If batchUser_TEXT.Text.Trim.Length = 0 Then
                 ret = False
-                Me.ErrControllerMaster.AddErrorAndShow("Username is required.", False)
+                ErrControllerMaster.AddErrorAndShow("Username is required.", False)
             End If
             If batchGroup_TEXT.Text.Trim.Length = 0 Then
                 ret = False
-                Me.ErrControllerMaster.AddErrorAndShow("LDAP Group is required.", False)
+                ErrControllerMaster.AddErrorAndShow("LDAP Group is required.", False)
             End If
 
             Return ret

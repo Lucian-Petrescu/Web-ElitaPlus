@@ -16,7 +16,7 @@ Public Class BestReplacementListForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -72,44 +72,44 @@ Public Class BestReplacementListForm
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.ErrorCtrl.Clear_Hide()
-        Me.SetStateProperties()
+        ErrorCtrl.Clear_Hide()
+        SetStateProperties()
 
         Try
-            If Not Me.IsPostBack Then
-                Me.SortDirection = Me.State.SortExpression
-                Me.SetDefaultButton(Me.SearchCodeTextBox, btnSearch)
-                Me.SetDefaultButton(Me.SearchDescriptionTextBox, btnSearch)
+            If Not IsPostBack Then
+                SortDirection = State.SortExpression
+                SetDefaultButton(SearchCodeTextBox, btnSearch)
+                SetDefaultButton(SearchDescriptionTextBox, btnSearch)
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                        Grid.PageSize = Me.State.selectedPageSize
+                If State.IsGridVisible Then
+                    If Not (State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                        Grid.PageSize = State.selectedPageSize
                     End If
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
-                Me.SetGridItemStyleColor(Me.Grid)
+                SetGridItemStyleColor(Grid)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnParameter As Object) Handles MyBase.PageReturn
-        Me.MenuEnabled = True
-        Me.IsReturningFromChild = True
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnParameter As Object) Handles MyBase.PageReturn
+        MenuEnabled = True
+        IsReturningFromChild = True
         Dim retObj As BestReplacementForm.ReturnType = CType(ReturnParameter, BestReplacementForm.ReturnType)
-        Me.State.HasDataChanged = retObj.HasDataChanged
+        State.HasDataChanged = retObj.HasDataChanged
         Select Case retObj.LastOperation
             Case ElitaPlusPage.DetailPageCommand.Back
-                If Not retObj Is Nothing Then
-                    Me.State.IsGridVisible = True
+                If retObj IsNot Nothing Then
+                    State.IsGridVisible = True
                 End If
             Case ElitaPlusPage.DetailPageCommand.Delete
-                Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
         End Select
     End Sub
 
@@ -118,46 +118,46 @@ Public Class BestReplacementListForm
 #Region "Controlling Logic"
 
     Public Sub PopulateGrid()
-        If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-            Me.State.searchDV = BestReplacementGroup.GetList(Me.State.CodeMask, Me.State.DescriptionMask)
+        If ((State.searchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+            State.searchDV = BestReplacementGroup.GetList(State.CodeMask, State.DescriptionMask)
         End If
-        Me.State.searchDV.Sort = Me.SortDirection
+        State.searchDV.Sort = SortDirection
 
-        Me.Grid.AutoGenerateColumns = False
+        Grid.AutoGenerateColumns = False
 
-        SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.BestReplacementId, Me.Grid, Me.State.PageIndex)
-        Me.SortAndBindGrid()
+        SetPageAndSelectedIndexFromGuid(State.searchDV, State.BestReplacementId, Grid, State.PageIndex)
+        SortAndBindGrid()
     End Sub
 
     Private Sub SortAndBindGrid()
-        Me.State.PageIndex = Me.Grid.PageIndex
-        If (Me.State.searchDV.Count = 0) Then
+        State.PageIndex = Grid.PageIndex
+        If (State.searchDV.Count = 0) Then
 
-            Me.State.bnoRow = True
-            CreateHeaderForEmptyGrid(Grid, Me.SortDirection)
+            State.bnoRow = True
+            CreateHeaderForEmptyGrid(Grid, SortDirection)
         Else
-            Me.State.bnoRow = False
-            Me.Grid.Enabled = True
-            Me.Grid.DataSource = Me.State.searchDV
-            HighLightSortColumn(Grid, Me.SortDirection)
-            Me.Grid.DataBind()
+            State.bnoRow = False
+            Grid.Enabled = True
+            Grid.DataSource = State.searchDV
+            HighLightSortColumn(Grid, SortDirection)
+            Grid.DataBind()
         End If
         If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
-        If Me.State.searchDV.Count > 0 Then
+        If State.searchDV.Count > 0 Then
 
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         Else
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
     End Sub
@@ -169,108 +169,108 @@ Public Class BestReplacementListForm
         Get
             Return ViewState("SortDirection").ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
     'The Binding Logic is here
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-        If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+        If dvRow IsNot Nothing And Not State.bnoRow Then
             If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                e.Row.Cells(Me.GRID_COL_CODE_IDX).Text = dvRow(BestReplacementGroup.BestReplacementGroupSearchDV.COL_NAME_CODE).ToString
-                e.Row.Cells(Me.GRID_COL_DESCRIPTION_IDX).Text = dvRow(BestReplacementGroup.BestReplacementGroupSearchDV.COL_NAME_DESCRIPTION).ToString
-                e.Row.Cells(Me.GRID_COL_MIGRATION_PATH_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(BestReplacementGroup.BestReplacementGroupSearchDV.COL_NAME_MIGRATION_PATH_ID), Byte()))
+                e.Row.Cells(GRID_COL_CODE_IDX).Text = dvRow(BestReplacementGroup.BestReplacementGroupSearchDV.COL_NAME_CODE).ToString
+                e.Row.Cells(GRID_COL_DESCRIPTION_IDX).Text = dvRow(BestReplacementGroup.BestReplacementGroupSearchDV.COL_NAME_DESCRIPTION).ToString
+                e.Row.Cells(GRID_COL_MIGRATION_PATH_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(BestReplacementGroup.BestReplacementGroupSearchDV.COL_NAME_MIGRATION_PATH_ID), Byte()))
             End If
         End If
     End Sub
 
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" Then
                 Dim index As Integer = CInt(e.CommandArgument)
-                Me.State.BestReplacementId = New Guid(Me.Grid.Rows(index).Cells(Me.GRID_COL_MIGRATION_PATH_IDX).Text.ToString())
-                Me.callPage(BestReplacementForm.URL, Me.State.BestReplacementId)
+                State.BestReplacementId = New Guid(Grid.Rows(index).Cells(GRID_COL_MIGRATION_PATH_IDX).Text.ToString())
+                callPage(BestReplacementForm.URL, State.BestReplacementId)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+            Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
 
-            If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                If Me.SortDirection.EndsWith(" ASC") Then
-                    Me.SortDirection = e.SortExpression + " DESC"
+            If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If SortDirection.EndsWith(" ASC") Then
+                    SortDirection = e.SortExpression + " DESC"
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
             Else
-                Me.SortDirection = e.SortExpression + " ASC"
+                SortDirection = e.SortExpression + " ASC"
             End If
-            Me.State.SortExpression = Me.SortDirection
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.SortExpression = SortDirection
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
 
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.BestReplacementId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.BestReplacementId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region
 
 #Region " Button Clicks "
     Private Sub SetStateProperties()
-        Me.State.DescriptionMask = SearchDescriptionTextBox.Text
-        Me.State.CodeMask = SearchCodeTextBox.Text
+        State.DescriptionMask = SearchDescriptionTextBox.Text
+        State.CodeMask = SearchCodeTextBox.Text
     End Sub
 
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.BestReplacementId = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.HasDataChanged = False
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            State.BestReplacementId = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.HasDataChanged = False
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
-        Me.callPage(BestReplacementForm.URL)
+    Private Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
+        callPage(BestReplacementForm.URL)
     End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
         ClearSearchCriteria()
     End Sub
     Private Sub ClearSearchCriteria()
@@ -280,12 +280,12 @@ Public Class BestReplacementListForm
             SearchCodeTextBox.Text = String.Empty
 
             'Update Page State
-            With Me.State
+            With State
                 .DescriptionMask = SearchDescriptionTextBox.Text
                 .CodeMask = SearchCodeTextBox.Text
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub

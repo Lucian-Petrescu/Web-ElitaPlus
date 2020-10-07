@@ -14,7 +14,7 @@ Friend Module EnvironmentConstants
     ''' </summary>
     ''' <param name="pAssureNetEnvironment">AssureNet Environment Variable</param>
     ''' <returns></returns>
-    Friend Function ToEnvironments(ByVal pAssureNetEnvironment As String) As Environments
+    Friend Function ToEnvironments(pAssureNetEnvironment As String) As Environments
 
         Select Case pAssureNetEnvironment.ToUpperInvariant()
             Case Production

@@ -110,78 +110,78 @@ Public Class VSCQuoteDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("quote_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function GetQuote(ByVal oQuoteEngineData As QuoteEngineData) As DataSet
+    Public Function GetQuote(oQuoteEngineData As QuoteEngineData) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_VSC_QUOTE")
+        Dim selectStmt As String = Config("/SQL/GET_VSC_QUOTE")
         Dim inputQuoteInfoParameters() As DBHelper.DBHelperParameter
-        Dim outputQuoteInfoParameter(Me.TOTAL_OUTPUT_PARAM_INFO) As DBHelper.DBHelperParameter
+        Dim outputQuoteInfoParameter(TOTAL_OUTPUT_PARAM_INFO) As DBHelper.DBHelperParameter
 
         With oQuoteEngineData
 
             inputQuoteInfoParameters = New DBHelper.DBHelperParameter() _
-                    {SetParameter(Me.SP_PARAM_NAME_P_COMPANY_GROUP_ID, .CompanyGroupID.ToByteArray), _
-                     SetParameter(Me.SP_PARAM_NAME_P_USER_ID, .UserId.ToByteArray), _
-                     SetParameter(Me.SP_PARAM_NAME_P_DEALER, .Dealer), _
-                     SetParameter(Me.SP_PARAM_NAME_P_MANUFACTURER, .Manufacturer), _
-                     SetParameter(Me.SP_PARAM_NAME_P_MODEL, .Model), _
-                     SetParameter(Me.SP_PARAM_NAME_P_VIN, .VIN), _
-                     SetParameter(Me.SP_PARAM_NAME_P_YEAR, .Year), _
-                     SetParameter(Me.SP_PARAM_NAME_P_ODOMETER, .Odometer), _
-                     SetParameter(Me.SP_PARAM_NAME_P_VEHICLE_LICENSE_TAG, .VehicleLicenseTag), _
-                     SetParameter(Me.SP_PARAM_NAME_P_ENGINE_VERSION, .EngineVersion), _
-                     SetParameter(Me.SP_PARAM_NAME_P_NEW_USED, .NewUsed), _
-                     SetParameter(Me.SP_PARAM_NAME_P_IN_SERVICE_DATE, .InServiceDate), _
-                     SetParameter(Me.SP_PARAM_NAME_P_OPTIONS, .Options), _
-                     SetParameter(Me.SP_PARAM_NAME_P_WARRANTY_DATE, .WarrantyDate), _
-                     SetParameter(Me.SP_PARAM_NAME_P_EXTERNAL_CAR_CODE, .ExternalCarCode), _
-                     SetParameter(Me.SP_PARAM_NAME_P_VEHICLE_VALUE, IIf(.VehicleValue > 0, .VehicleValue, System.DBNull.Value))}
+                    {SetParameter(SP_PARAM_NAME_P_COMPANY_GROUP_ID, .CompanyGroupID.ToByteArray), _
+                     SetParameter(SP_PARAM_NAME_P_USER_ID, .UserId.ToByteArray), _
+                     SetParameter(SP_PARAM_NAME_P_DEALER, .Dealer), _
+                     SetParameter(SP_PARAM_NAME_P_MANUFACTURER, .Manufacturer), _
+                     SetParameter(SP_PARAM_NAME_P_MODEL, .Model), _
+                     SetParameter(SP_PARAM_NAME_P_VIN, .VIN), _
+                     SetParameter(SP_PARAM_NAME_P_YEAR, .Year), _
+                     SetParameter(SP_PARAM_NAME_P_ODOMETER, .Odometer), _
+                     SetParameter(SP_PARAM_NAME_P_VEHICLE_LICENSE_TAG, .VehicleLicenseTag), _
+                     SetParameter(SP_PARAM_NAME_P_ENGINE_VERSION, .EngineVersion), _
+                     SetParameter(SP_PARAM_NAME_P_NEW_USED, .NewUsed), _
+                     SetParameter(SP_PARAM_NAME_P_IN_SERVICE_DATE, .InServiceDate), _
+                     SetParameter(SP_PARAM_NAME_P_OPTIONS, .Options), _
+                     SetParameter(SP_PARAM_NAME_P_WARRANTY_DATE, .WarrantyDate), _
+                     SetParameter(SP_PARAM_NAME_P_EXTERNAL_CAR_CODE, .ExternalCarCode), _
+                     SetParameter(SP_PARAM_NAME_P_VEHICLE_VALUE, IIf(.VehicleValue > 0, .VehicleValue, System.DBNull.Value))}
 
         End With
-        outputQuoteInfoParameter(Me.P_RETURN) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME_P_RETURN, GetType(Integer))
-        outputQuoteInfoParameter(Me.P_EXCEPTION_MSG) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME_P_EXCEPTION_MSG, GetType(String), 50)
-        outputQuoteInfoParameter(Me.P_CURSOR) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME_P_CURSOR, GetType(DataSet))
-        Dim ds As New DataSet(Me.TABLE_NAME_QUOTE_ENGINE)
+        outputQuoteInfoParameter(P_RETURN) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_P_RETURN, GetType(Integer))
+        outputQuoteInfoParameter(P_EXCEPTION_MSG) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_P_EXCEPTION_MSG, GetType(String), 50)
+        outputQuoteInfoParameter(P_CURSOR) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_P_CURSOR, GetType(DataSet))
+        Dim ds As New DataSet(TABLE_NAME_QUOTE_ENGINE)
         ' Call DBHelper Store Procedure
-        DBHelper.FetchSp(selectStmt, inputQuoteInfoParameters, outputQuoteInfoParameter, ds, Me.TABLE_NAME_QUOTE_HEADER)
+        DBHelper.FetchSp(selectStmt, inputQuoteInfoParameters, outputQuoteInfoParameter, ds, TABLE_NAME_QUOTE_HEADER)
 
-        If outputQuoteInfoParameter(Me.P_RETURN).Value <> 0 Then
+        If outputQuoteInfoParameter(P_RETURN).Value <> 0 Then
             Throw New StoredProcedureGeneratedException("Quote Engine Generated Error: ", outputQuoteInfoParameter(P_EXCEPTION_MSG).Value)
         Else
             ' Get the Quote Item(s)
-            Dim inputQuoteItemsParameters(Me.TOTAL_INPUT_PARAM_Q_IITEMS) As DBHelper.DBHelperParameter
-            Dim outputQuoteItemsParameter(Me.TOTAL_OUTPUT_PARAM_ITEMS) As DBHelper.DBHelperParameter
-            Dim quote_id As Guid = New Guid(CType(ds.Tables(Me.TABLE_NAME_QUOTE_HEADER).Rows(0).Item(VSCQuoteDAL.COL_NAME_QUOTE_ID), Byte()))
-            inputQuoteItemsParameters(Me.P_QOUTE_ID) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME_P_QUOTE_ID, quote_id.ToByteArray)
+            Dim inputQuoteItemsParameters(TOTAL_INPUT_PARAM_Q_IITEMS) As DBHelper.DBHelperParameter
+            Dim outputQuoteItemsParameter(TOTAL_OUTPUT_PARAM_ITEMS) As DBHelper.DBHelperParameter
+            Dim quote_id As Guid = New Guid(CType(ds.Tables(TABLE_NAME_QUOTE_HEADER).Rows(0).Item(VSCQuoteDAL.COL_NAME_QUOTE_ID), Byte()))
+            inputQuoteItemsParameters(P_QOUTE_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_P_QUOTE_ID, quote_id.ToByteArray)
 
-            selectStmt = Me.Config("/SQL/GET_VSC_QUOTE_ITEM")
+            selectStmt = Config("/SQL/GET_VSC_QUOTE_ITEM")
 
-            outputQuoteItemsParameter(Me.P_RETURN) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME_P_RETURN, GetType(Integer))
-            outputQuoteItemsParameter(Me.P_EXCEPTION_MSG) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME_P_EXCEPTION_MSG, GetType(String), 50)
-            outputQuoteItemsParameter(Me.P_CURSOR) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME_P_CURSOR, GetType(DataSet))
+            outputQuoteItemsParameter(P_RETURN) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_P_RETURN, GetType(Integer))
+            outputQuoteItemsParameter(P_EXCEPTION_MSG) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_P_EXCEPTION_MSG, GetType(String), 50)
+            outputQuoteItemsParameter(P_CURSOR) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_P_CURSOR, GetType(DataSet))
 
             ' Call DBHelper Store Procedure
-            DBHelper.FetchSp(selectStmt, inputQuoteItemsParameters, outputQuoteItemsParameter, ds, Me.TABLE_NAME_QUOTE_ITEM)
+            DBHelper.FetchSp(selectStmt, inputQuoteItemsParameters, outputQuoteItemsParameter, ds, TABLE_NAME_QUOTE_ITEM)
 
-            If outputQuoteInfoParameter(Me.P_RETURN).Value <> 0 Then
+            If outputQuoteInfoParameter(P_RETURN).Value <> 0 Then
                 Throw New StoredProcedureGeneratedException("Quote Engine Generated Error: ", outputQuoteItemsParameter(P_EXCEPTION_MSG).Value)
             Else
                 Return ds
@@ -193,19 +193,19 @@ Public Class VSCQuoteDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "Private Methods"
 
-    Function SetParameter(ByVal name As String, ByVal value As Object) As DBHelper.DBHelperParameter
+    Function SetParameter(name As String, value As Object) As DBHelper.DBHelperParameter
 
         name = name.Trim
         If value Is Nothing Then value = DBNull.Value
@@ -215,7 +215,7 @@ Public Class VSCQuoteDAL
 
     End Function
 
-    Function Base64ToGuid(ByVal strGuid As String) As Guid
+    Function Base64ToGuid(strGuid As String) As Guid
 
         Return New Guid(Convert.FromBase64String(strGuid))
 

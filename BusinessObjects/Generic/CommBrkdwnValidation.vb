@@ -70,8 +70,8 @@ Public Class CommBrkdwnValidation
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -82,8 +82,8 @@ Public Class CommBrkdwnValidation
     Private Sub Load(ByVal ds As CommBrkdwnValidationDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
             'Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
@@ -102,7 +102,7 @@ Public Class CommBrkdwnValidation
         Try
             If ds.CommBrkdwnValidation.Count = 0 Then Exit Sub
             With ds.CommBrkdwnValidation.Item(0)
-                Me.UploadSessionId = .UPLOAD_SESSION_ID
+                UploadSessionId = .UPLOAD_SESSION_ID
             End With
 
         Catch ex As Exception
@@ -133,7 +133,7 @@ Public Class CommBrkdwnValidation
     Public Overrides Function ProcessWSRequest() As String
         Try
             'Load the pre-validated Dealer level Commission Entry Breakdown records
-            Dim dsPreValidatedDealerCommBrkdwnRecords As DataSet = CommEntyBrkdwnUpload.GetPreValidatedCommEntyBrkdwnsForDealer(Me.UploadSessionId)
+            Dim dsPreValidatedDealerCommBrkdwnRecords As DataSet = CommEntyBrkdwnUpload.GetPreValidatedCommEntyBrkdwnsForDealer(UploadSessionId)
 
             If Not dsPreValidatedDealerCommBrkdwnRecords Is Nothing AndAlso Not dsPreValidatedDealerCommBrkdwnRecords.Tables(0) Is Nothing AndAlso dsPreValidatedDealerCommBrkdwnRecords.Tables(0).Rows.Count > 0 Then
                 Dim preValidatedDealerCommBrkdwnRow As DataRow
@@ -225,7 +225,7 @@ Public Class CommBrkdwnValidation
                     objCommPeriod.AttachTolerance(objCommTolerance)
 
                     'Load the pre-validated Commission Entry Breakdown records
-                    Dim dsPreValidatedCommBrkdwnRecords As DataSet = CommEntyBrkdwnUpload.GetPreValidatedCommEntyBrkdwnsForUpload(Me.UploadSessionId, objCommPeriod.DealerId)
+                    Dim dsPreValidatedCommBrkdwnRecords As DataSet = CommEntyBrkdwnUpload.GetPreValidatedCommEntyBrkdwnsForUpload(UploadSessionId, objCommPeriod.DealerId)
 
                     If Not dsPreValidatedCommBrkdwnRecords Is Nothing AndAlso Not dsPreValidatedCommBrkdwnRecords.Tables(0) Is Nothing AndAlso dsPreValidatedCommBrkdwnRecords.Tables(0).Rows.Count > 0 Then
 

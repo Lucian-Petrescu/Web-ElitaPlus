@@ -6,48 +6,48 @@ Public Class ClaimEquipment
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ClaimEquipmentDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class ClaimEquipment
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ClaimEquipmentDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -82,9 +82,9 @@ Public Class ClaimEquipment
     Public Sub SaveClaimDeviceInfo()
         Try
             MyBase.Save()
-            If Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ClaimEquipmentDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
@@ -121,9 +121,9 @@ Public Class ClaimEquipment
                 Return New DateType(CType(Row(ClaimEquipmentDAL.COL_NAME_CLAIM_EQUIPMENT_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_CLAIM_EQUIPMENT_DATE, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_CLAIM_EQUIPMENT_DATE, Value)
         End Set
     End Property
 
@@ -137,9 +137,9 @@ Public Class ClaimEquipment
                 Return New Guid(CType(Row(ClaimEquipmentDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_CLAIM_ID, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
 
@@ -153,9 +153,9 @@ Public Class ClaimEquipment
                 Return New Guid(CType(Row(ClaimEquipmentDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_MANUFACTURER_ID, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
     End Property
 
@@ -168,9 +168,9 @@ Public Class ClaimEquipment
                 Return New Guid(CType(Row(ClaimEquipmentDAL.COL_NAME_DEVICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_DEVICE_TYPE_ID, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_DEVICE_TYPE_ID, Value)
         End Set
     End Property
 
@@ -183,16 +183,16 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_COMMENTS).ToString
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_COMMENTS, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_COMMENTS, Value)
         End Set
     End Property
 
     Public ReadOnly Property Manufacturer As String
         Get
             CheckDeleted()
-            Return LookupListNew.GetDescriptionFromId(LookupListNew.LK_MANUFACTURERS, Me.ManufacturerId)
+            Return LookupListNew.GetDescriptionFromId(LookupListNew.LK_MANUFACTURERS, ManufacturerId)
         End Get
     End Property
 
@@ -206,9 +206,9 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_MODEL).ToString
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_MODEL, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
     Public Property Color() As String
@@ -220,9 +220,9 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_COLOR).ToString
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_COLOR, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_COLOR, Value)
         End Set
     End Property
     Public Property Memory() As String
@@ -234,9 +234,9 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_MEMORY).ToString
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_MEMORY, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_MEMORY, Value)
         End Set
     End Property
     Public Property SKU() As String
@@ -248,9 +248,9 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_SKU).ToString
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_SKU, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_SKU, Value)
         End Set
     End Property
 
@@ -263,9 +263,9 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_SERIAL_NUMBER).ToString
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_SERIAL_NUMBER, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_SERIAL_NUMBER, Value)
         End Set
     End Property
 
@@ -278,9 +278,9 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_IMEI_NUMBER).ToString
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_IMEI_NUMBER, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_IMEI_NUMBER, Value)
         End Set
     End Property
     Public Property Price() As DecimalType
@@ -292,9 +292,9 @@ Public Class ClaimEquipment
                 Return New DecimalType(CType(Row(ClaimEquipmentDAL.COL_NAME_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_PRICE, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_PRICE, Value)
         End Set
     End Property
 
@@ -307,10 +307,10 @@ Public Class ClaimEquipment
                 Return New Guid(CType(Row(ClaimEquipmentDAL.COL_NAME_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_EQUIPMENT_ID, Value)
-            Me._EquipmentBO = Nothing
+            SetValue(ClaimEquipmentDAL.COL_NAME_EQUIPMENT_ID, Value)
+            _EquipmentBO = Nothing
         End Set
     End Property
 
@@ -318,11 +318,11 @@ Public Class ClaimEquipment
     Public ReadOnly Property EquipmentDescription As String
         Get
             CheckDeleted()
-            If (Not IsNothing(Me.EquipmentId)) Then
-                If Me._EquipmentBO Is Nothing Then
-                    Me._EquipmentBO = New Equipment(Me.EquipmentId, Me.Dataset)
+            If (Not IsNothing(EquipmentId)) Then
+                If _EquipmentBO Is Nothing Then
+                    _EquipmentBO = New Equipment(EquipmentId, Dataset)
                 End If
-                Return Me._EquipmentBO.Description
+                Return _EquipmentBO.Description
             Else
                 Return String.Empty
             End If
@@ -332,11 +332,11 @@ Public Class ClaimEquipment
     Public ReadOnly Property EquipmentBO As Equipment
         Get
             CheckDeleted()
-            If (Not IsNothing(Me.EquipmentId)) Then
-                If Me._EquipmentBO Is Nothing Then
-                    Me._EquipmentBO = New Equipment(Me.EquipmentId, Me.Dataset)
+            If (Not IsNothing(EquipmentId)) Then
+                If _EquipmentBO Is Nothing Then
+                    _EquipmentBO = New Equipment(EquipmentId, Dataset)
                 End If
-                Return Me._EquipmentBO
+                Return _EquipmentBO
             Else
                 Return Nothing
             End If
@@ -352,16 +352,16 @@ Public Class ClaimEquipment
                 Return New Guid(CType(Row(ClaimEquipmentDAL.COL_NAME_CLAIM_EQUIPMENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_CLAIM_EQUIPMENT_TYPE_ID, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_CLAIM_EQUIPMENT_TYPE_ID, Value)
         End Set
     End Property
 
     Public ReadOnly Property ClaimEquipmentType As String
         Get
             CheckDeleted()
-            LookupListNew.GetDescriptionFromId(LookupListNew.GetEquipmentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.ClaimEquipmentTypeId)
+            LookupListNew.GetDescriptionFromId(LookupListNew.GetEquipmentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), ClaimEquipmentTypeId)
         End Get
     End Property
 
@@ -375,9 +375,9 @@ Public Class ClaimEquipment
                 Return New LongType(CType(Row(ClaimEquipmentDAL.COL_NAME_PRIORITY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set(Value As LongType)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_PRIORITY, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_PRIORITY, Value)
         End Set
     End Property
 
@@ -385,13 +385,13 @@ Public Class ClaimEquipment
     Public Property Claim() As ClaimBase
         Get
             If (_claim Is Nothing) Then
-                If Not Me.ClaimId.Equals(Guid.Empty) Then
-                    Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.ClaimId, Me.Dataset)
+                If Not ClaimId.Equals(Guid.Empty) Then
+                    Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ClaimId, Dataset)
                 End If
             End If
             Return _claim
         End Get
-        Private Set(ByVal value As ClaimBase)
+        Private Set(value As ClaimBase)
             _claim = value
         End Set
     End Property
@@ -399,7 +399,7 @@ Public Class ClaimEquipment
 
     Private ReadOnly Property OriginalModel() As String
         Get
-            Return CType(Me.Row(ClaimEquipmentDAL.COL_NAME_MODEL, DataRowVersion.Original), String)
+            Return CType(Row(ClaimEquipmentDAL.COL_NAME_MODEL, DataRowVersion.Original), String)
         End Get
     End Property
 
@@ -412,9 +412,9 @@ Public Class ClaimEquipment
                 Return New Guid(CType(Row(ClaimEquipmentDAL.COL_NAME_CLAIM_AUTHORIZATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
         End Set
     End Property
 
@@ -427,9 +427,9 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_SHIPPINGFROMNAME).ToString
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_SHIPPINGFROMNAME, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_SHIPPINGFROMNAME, Value)
         End Set
     End Property
     Public Property shippingFromDescription() As String
@@ -441,9 +441,9 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_SHIPPINGFROMDESCRIPTION).ToString
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_SHIPPINGFROMDESCRIPTION, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_SHIPPINGFROMDESCRIPTION, Value)
         End Set
     End Property
 
@@ -456,9 +456,9 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_DEVICE_TYPE).ToString
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_DEVICE_TYPE, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_DEVICE_TYPE, Value)
         End Set
     End Property
 
@@ -471,9 +471,9 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_EQUIPMENT_TYPE).ToString
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_EQUIPMENT_TYPE, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_EQUIPMENT_TYPE, Value)
         End Set
     End Property
     Public Property PurchasedDate() As DateType
@@ -485,9 +485,9 @@ Public Class ClaimEquipment
                 Return New DateType(CType(Row(ClaimEquipmentDAL.COL_NAME_PURCHASED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_PURCHASED_DATE, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_PURCHASED_DATE, Value)
         End Set
     End Property
     Public Property PurchasedPrice() As DecimalType
@@ -499,9 +499,9 @@ Public Class ClaimEquipment
                 Return New DecimalType(CType(Row(ClaimEquipmentDAL.COL_NAME_PURCHASE_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_PURCHASE_PRICE, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_PURCHASE_PRICE, Value)
         End Set
     End Property
     Public Property RegisteredItemName() As String
@@ -513,9 +513,9 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_REGISTERED_ITEM_NAME).ToString
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimEquipmentDAL.COL_NAME_REGISTERED_ITEM_NAME, Value)
+            SetValue(ClaimEquipmentDAL.COL_NAME_REGISTERED_ITEM_NAME, Value)
         End Set
     End Property
 
@@ -525,15 +525,15 @@ Public Class ClaimEquipment
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ClaimEquipmentDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -541,8 +541,8 @@ Public Class ClaimEquipment
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As ClaimEquipment)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As ClaimEquipment)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Claim Equipment.")
         End If
         MyBase.CopyFrom(original)
@@ -550,15 +550,15 @@ Public Class ClaimEquipment
 
     Public Function ValidateForClaimProcess(ByRef msgList As List(Of String)) As Boolean
         Dim flag As Boolean = True
-        If Me.ManufacturerId.Equals(Guid.Empty) Then
+        If ManufacturerId.Equals(Guid.Empty) Then
             flag = flag And False
             msgList.Add("CLAIMED_DEVICE_MANUFACTURER_IS_EMPTY")
         End If
-        If String.IsNullOrEmpty(Me.Model) Then
+        If String.IsNullOrEmpty(Model) Then
             flag = flag And False
             msgList.Add("CLAIMED_DEVICE_MODEL_IS_EMPTY")
         End If
-        If String.IsNullOrEmpty(Me.SerialNumber) Then
+        If String.IsNullOrEmpty(SerialNumber) Then
             flag = flag And False
             msgList.Add("CLAIMED_DEVICE_SERIAL_NUMBER_IS_EMPTY")
         End If
@@ -567,7 +567,7 @@ Public Class ClaimEquipment
 
 
 
-    Public Shared Function GetLatestClaimEquipmentInfo(ByVal claimId As Guid, ByVal equipTypeId As Guid) As ClaimEquipmentDV
+    Public Shared Function GetLatestClaimEquipmentInfo(claimId As Guid, equipTypeId As Guid) As ClaimEquipmentDV
         Try
             Dim dal As New ClaimEquipmentDAL
             
@@ -581,12 +581,12 @@ Public Class ClaimEquipment
     End Function
 
 
-    Public Shared Sub UpdateClaimEquipmentInfo(ByVal claimEquipmentId As Guid, ByVal comments As String)
+    Public Shared Sub UpdateClaimEquipmentInfo(claimEquipmentId As Guid, comments As String)
         Dim dal As New ClaimEquipmentDAL
         dal.UpdateClaimEquipmentInfo(claimEquipmentId, comments)
     End Sub
 
-    Public Shared Function GetReplacementItemInfo(ByVal claimId As Guid) As ReplacementEquipmentDV
+    Public Shared Function GetReplacementItemInfo(claimId As Guid) As ReplacementEquipmentDV
         Try
             Dim dal As New ClaimEquipmentDAL
 
@@ -598,7 +598,7 @@ Public Class ClaimEquipment
         End Try
     End Function
 
-    Public Shared Function GetReplacementItemStatus(ByVal claimId As Guid, ByVal equipTypeId As Guid) As ReplacementItemStatusDV
+    Public Shared Function GetReplacementItemStatus(claimId As Guid, equipTypeId As Guid) As ReplacementItemStatusDV
         Try
             Dim dal As New ClaimEquipmentDAL
 
@@ -629,7 +629,7 @@ Public Class ClaimEquipment
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -637,15 +637,15 @@ Public Class ClaimEquipment
     Public Class ClaimEquipmentList
         Inherits BusinessObjectListEnumerableBase(Of ClaimBase, ClaimEquipment)
 
-        Public Sub New(ByVal parent As ClaimBase)
+        Public Sub New(parent As ClaimBase)
             MyBase.New(LoadTable(parent), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, ClaimEquipment).ClaimId.Equals(CType(Parent, ClaimBase).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As ClaimBase) As DataTable
+        Private Shared Function LoadTable(parent As ClaimBase) As DataTable
             Try
                 'If Not parent.IsChildrenCollectionLoaded(GetType(ClaimEquipmentList)) Then
                 Dim dal As New ClaimEquipmentDAL
@@ -678,7 +678,7 @@ Public Class ClaimEquipment
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -696,7 +696,7 @@ Public Class ClaimEquipment
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -708,11 +708,11 @@ Public Class ClaimEquipment
     Public NotInheritable Class ValidateModelConditionally
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim objclaimEquip As ClaimEquipment = CType(objectToValidate, ClaimEquipment)
             Dim objClaim As ClaimBase = objclaimEquip.Claim
 
@@ -724,7 +724,7 @@ Public Class ClaimEquipment
             ((objclaimEquip.IsNew OrElse
             (Not objclaimEquip.IsNew AndAlso
             Not String.IsNullOrEmpty(objclaimEquip.OriginalModel))))) Then
-                Return New ValueMandatoryAttribute(Me.DisplayName).IsValid(valueToCheck, objectToValidate)
+                Return New ValueMandatoryAttribute(DisplayName).IsValid(valueToCheck, objectToValidate)
             End If
 
             Return True

@@ -11,6 +11,6 @@ Public Interface ICertCustomerInfoService
             FaultContract(GetType(DuplicateCertFound)),
             FaultContract(GetType(InvalidCertificateNumber)),
             FaultContract(GetType(ValidationFault))>
-    Function GetCertCustomerInfo(ByVal request As GetCertificateRequest) As CertCustomerInfoResponse
+    Function GetCertCustomerInfo(request As GetCertificateRequest) As CertCustomerInfoResponse
 
 End Interface

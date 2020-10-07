@@ -32,7 +32,7 @@ Partial Class ServiceOrderPreview
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -42,7 +42,7 @@ Partial Class ServiceOrderPreview
 
 #Region "Page Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         Dim oServiceOrder As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder
         'this mechanism is used when there are two serviceorders and we want to show the first one in the
         'back ground if we need to show the email prompt
@@ -54,7 +54,7 @@ Partial Class ServiceOrderPreview
             nvc.NavController.FlowSession(FlowSessionKeys.SESSION_PREV_SERVICEORDER) = Nothing
         End If
 
-        If Not oServiceOrder Is Nothing Then
+        If oServiceOrder IsNot Nothing Then
             '08/24/2006 - ALR - Added to create the PDF if it does not exist
             Dim pdfImg() As Byte
             Dim soController As New ServiceOrderController
@@ -67,9 +67,9 @@ Partial Class ServiceOrderPreview
                 xmlSource.TransformSource = strReportName
                 xmlSource.Document = xdoc
 
-            ElseIf Not oServiceOrder.ServiceOrderImage Is Nothing Then 'If the pdf image exists, then print it directly to the screen
+            ElseIf oServiceOrder.ServiceOrderImage IsNot Nothing Then 'If the pdf image exists, then print it directly to the screen
 
-                Me.Controls.Remove(xmlSource)
+                Controls.Remove(xmlSource)
 
                 pdfImg = oServiceOrder.ServiceOrderImage
                 Response.ClearHeaders()
@@ -83,7 +83,7 @@ Partial Class ServiceOrderPreview
 
                 Dim xdoc As New System.Xml.XmlDocument
                 xdoc.LoadXml(oServiceOrder.ServiceOrderImageData)
-                xmlSource.TransformSource = Me.DEFAULT_SERVICE_ORDER
+                xmlSource.TransformSource = DEFAULT_SERVICE_ORDER
                 xmlSource.Document = xdoc
 
             End If

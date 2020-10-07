@@ -89,9 +89,9 @@ Public Class WorkQueueItem
 
     Public Function Process()
         Try
-            Me.WorkQueueItem.ModifiedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
-            Me.WorkQueueItem.WorkQueueItemStatusReasonId = Me.WorkQueue.DefaultCompletedReason.Id
-            WorkQueueClientProxy.ProcessWorkQueueItem(Me.WorkQueueItem, String.Empty, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+            WorkQueueItem.ModifiedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
+            WorkQueueItem.WorkQueueItemStatusReasonId = WorkQueue.DefaultCompletedReason.Id
+            WorkQueueClientProxy.ProcessWorkQueueItem(WorkQueueItem, String.Empty, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
         Catch ex As FaultException(Of WrkQueue.NotAuthorizedFault)
             Throw New UnauthorizedException("WorkQueue", "ProcessWorkQueueItem", ex)
         Catch ex As FaultException(Of WrkQueue.ItemNotLockedForEditFault)
@@ -104,14 +104,14 @@ Public Class WorkQueueItem
             Throw New ServiceException("WorkQueue", "ProcessWorkQueueItem", ex)
         End Try
 
-        Me.AddWorkQueueHistoryItem(Me.WorkQueue.DefaultCompletedReason.Reason, Codes.WQ_HISTORY_ACTION_PROCESS_CODE)
+        AddWorkQueueHistoryItem(WorkQueue.DefaultCompletedReason.Reason, Codes.WQ_HISTORY_ACTION_PROCESS_CODE)
     End Function
 
     Public Function ReQueue(ByVal reasonId As Guid, ByVal reason As String)
         Try
-            Me.WorkQueueItem.ModifiedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
-            Me.WorkQueueItem.WorkQueueItemStatusReasonId = reasonId
-            WorkQueueClientProxy.ProcessWorkQueueItem(Me.WorkQueueItem, String.Empty, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+            WorkQueueItem.ModifiedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
+            WorkQueueItem.WorkQueueItemStatusReasonId = reasonId
+            WorkQueueClientProxy.ProcessWorkQueueItem(WorkQueueItem, String.Empty, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
         Catch ex As FaultException(Of WrkQueue.NotAuthorizedFault)
             Throw New UnauthorizedException("WorkQueue", "ProcessWorkQueueItem", ex)
         Catch ex As FaultException(Of WrkQueue.MaxItemRequeueCountExceededFault)
@@ -126,14 +126,14 @@ Public Class WorkQueueItem
             Throw New ServiceException("WorkQueue", "ProcessWorkQueueItem", ex)
         End Try
 
-        Me.AddWorkQueueHistoryItem(reason, Codes.WQ_HISTORY_ACTION_REQUEUE_CODE)
+        AddWorkQueueHistoryItem(reason, Codes.WQ_HISTORY_ACTION_REQUEUE_CODE)
     End Function
 
     Public Function ReDirect(ByVal queueName As String, ByVal reasonId As Guid, ByVal reason As String)
         Try
-            Me.WorkQueueItem.ModifiedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
-            Me.WorkQueueItem.WorkQueueItemStatusReasonId = reasonId
-            WorkQueueClientProxy.ProcessWorkQueueItem(Me.WorkQueueItem, queueName, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+            WorkQueueItem.ModifiedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
+            WorkQueueItem.WorkQueueItemStatusReasonId = reasonId
+            WorkQueueClientProxy.ProcessWorkQueueItem(WorkQueueItem, queueName, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
         Catch ex As FaultException(Of WrkQueue.NotAuthorizedFault)
             Throw New UnauthorizedException("WorkQueue", "ProcessWorkQueueItem", ex)
         Catch ex As FaultException(Of WrkQueue.ItemNotLockedForEditFault)
@@ -146,23 +146,23 @@ Public Class WorkQueueItem
             Throw New ServiceException("WorkQueue", "ProcessWorkQueueItem", ex)
         End Try
 
-        Me.AddWorkQueueHistoryItem(reason, Codes.WQ_HISTORY_ACTION_REDIRECT_CODE)
+        AddWorkQueueHistoryItem(reason, Codes.WQ_HISTORY_ACTION_REDIRECT_CODE)
     End Function
 
     Private Function AddWorkQueueHistoryItem(ByVal reason As String, ByVal action As String)
 
         Dim itemDesc As String
-        Select Case Me.WorkQueueItemType
+        Select Case WorkQueueItemType
             Case ItemType.Issue
-                Dim claimNumber As String = ClaimFacade.Instance.GetClaim(Of Claim)(Me.WorkQueueItem.ClaimId).ClaimNumber
+                Dim claimNumber As String = ClaimFacade.Instance.GetClaim(Of Claim)(WorkQueueItem.ClaimId).ClaimNumber
                 Dim claimIssueDesc As String
-                claimIssueDesc = If(Me.WorkQueueItem.ClaimIssueId <> Nothing, New ClaimIssue(Me.WorkQueueItem.ClaimIssueId).IssueDescription, String.Empty)
+                claimIssueDesc = If(WorkQueueItem.ClaimIssueId <> Nothing, New ClaimIssue(WorkQueueItem.ClaimIssueId).IssueDescription, String.Empty)
                 itemDesc = String.Format("{0}-{1}", claimNumber, claimIssueDesc)
             Case ItemType.Image
-                itemDesc = Me.WorkQueueItem.ImageId.ToString
+                itemDesc = WorkQueueItem.ImageId.ToString
         End Select
 
-        WorkqueueHistory.AddItem(Me.WorkQueueItem.Id, Me.WorkQueueItem.WorkQueueId, reason, action, itemDesc)
+        WorkqueueHistory.AddItem(WorkQueueItem.Id, WorkQueueItem.WorkQueueId, reason, action, itemDesc)
     End Function
 
 
@@ -170,15 +170,15 @@ Public Class WorkQueueItem
 
 #Region "Constructor"
     Public Sub New()
-        Me._isNew = True
-        Me._isDeleted = False
-        Me._workQueueItem = New WrkQueue.WorkQueueItem()
+        _isNew = True
+        _isDeleted = False
+        _workQueueItem = New WrkQueue.WorkQueueItem()
     End Sub
 
     Private Sub New(ByVal pWorkQueueItem As WrkQueue.WorkQueueItem)
-        Me._workQueueItem = pWorkQueueItem
-        Me._isNew = False
-        Me._isDeleted = False
+        _workQueueItem = pWorkQueueItem
+        _isNew = False
+        _isDeleted = False
     End Sub
 #End Region
 
@@ -198,7 +198,7 @@ Public Class WorkQueueItem
 #Region "Instance Properties"
     Public ReadOnly Property WorkQueueItem As WrkQueue.WorkQueueItem
         Get
-            Return Me._workQueueItem
+            Return _workQueueItem
         End Get
     End Property
 
@@ -225,19 +225,19 @@ Public Class WorkQueueItem
 
     Public Property Id As Guid
         Get
-            Return Me._workQueueItem.Id
+            Return _workQueueItem.Id
         End Get
         Set(ByVal value As Guid)
-            Me._workQueueItem.Id = value
+            _workQueueItem.Id = value
         End Set
     End Property
 
     Public ReadOnly Property WorkQueue As WorkQueue
         Get
             If (_workQueue Is Nothing) Then
-                SyncLock Me._syncRoot
+                SyncLock _syncRoot
                     If (_workQueue Is Nothing) Then
-                        _workQueue = New WorkQueue(Me.WorkQueueItem.WorkQueueId)
+                        _workQueue = New WorkQueue(WorkQueueItem.WorkQueueId)
                     End If
                 End SyncLock
             End If
@@ -249,7 +249,7 @@ Public Class WorkQueueItem
         Get
             Dim itemType As ItemType
 
-            Select Case Me.WorkQueue.WorkQueue.ActionCode
+            Select Case WorkQueue.WorkQueue.ActionCode
                 Case Codes.WORK_QUEUE_ACTION__WORK_ON_CLAIM
                     itemType = itemType.Issue
                 Case Codes.WORK_QUEUE_ACTION__INDEX_IMAGE
@@ -263,18 +263,18 @@ Public Class WorkQueueItem
 
     Public ReadOnly Property StartDate As Nullable(Of Date)
         Get
-            Return Me.WorkQueue.ConvertTimeFromUtc(Me.WorkQueueItem.StartDate)
+            Return WorkQueue.ConvertTimeFromUtc(WorkQueueItem.StartDate)
         End Get
     End Property
 
     Public ReadOnly Property ImageScanDate As Nullable(Of Date)
         Get
             Dim d As Nullable(Of Date) = Nothing
-            If (Not String.IsNullOrEmpty(Me.WorkQueueItem.ImageScanDate)) Then
-                d = Convert.ToDateTime(Me.WorkQueueItem.ImageScanDate)
+            If (Not String.IsNullOrEmpty(WorkQueueItem.ImageScanDate)) Then
+                d = Convert.ToDateTime(WorkQueueItem.ImageScanDate)
             End If
 
-            Return Me.WorkQueue.ConvertTimeFromUtc(d)
+            Return WorkQueue.ConvertTimeFromUtc(d)
         End Get
     End Property
 #End Region
@@ -310,7 +310,7 @@ Public Class WorkQueueItem
 
     Public Sub Save()
         Try
-            WorkQueueClientProxy.AddWorkQueueItem(Me.WorkQueueItem, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+            WorkQueueClientProxy.AddWorkQueueItem(WorkQueueItem, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
         Catch ex As FaultException(Of WrkQueue.NotAuthorizedFault)
             Throw New UnauthorizedException("WorkQueue", "AddWorkQueueItem", ex)
         Catch ex As FaultException(Of WrkQueue.ValidationFault)
@@ -375,7 +375,7 @@ Namespace WrkQueue
         Default Friend Property Metadata(ByVal metadataName As String) As String
             Get
                 Dim oWqid As WorkQueueItemData
-                oWqid = (From wqid In Me.WorkQueueItemDataList Where wqid.WorkQueueDataTypeId = Assurant.ElitaPlus.BusinessObjectsNew.WorkQueueItem.GetDataTypeId(metadataName) Select wqid).FirstOrDefault()
+                oWqid = (From wqid In WorkQueueItemDataList Where wqid.WorkQueueDataTypeId = Assurant.ElitaPlus.BusinessObjectsNew.WorkQueueItem.GetDataTypeId(metadataName) Select wqid).FirstOrDefault()
                 If (oWqid Is Nothing) Then
                     Return Nothing
                 Else
@@ -385,18 +385,18 @@ Namespace WrkQueue
             Set(ByVal value As String)
                 Dim oWorkQueueItemData As WorkQueueItemData = Nothing
                 Dim length As Integer
-                If (Me.WorkQueueItemDataList Is Nothing) Then
+                If (WorkQueueItemDataList Is Nothing) Then
                     length = 0
                 Else
-                    oWorkQueueItemData = (From wqid In Me.WorkQueueItemDataList Where wqid.WorkQueueDataTypeId = Assurant.ElitaPlus.BusinessObjectsNew.WorkQueueItem.GetDataTypeId(metadataName) Select wqid).FirstOrDefault()
-                    length = Me.WorkQueueItemDataList.Length
+                    oWorkQueueItemData = (From wqid In WorkQueueItemDataList Where wqid.WorkQueueDataTypeId = Assurant.ElitaPlus.BusinessObjectsNew.WorkQueueItem.GetDataTypeId(metadataName) Select wqid).FirstOrDefault()
+                    length = WorkQueueItemDataList.Length
                 End If
                 If (oWorkQueueItemData Is Nothing) Then
                     oWorkQueueItemData = New WorkQueueItemData()
                     oWorkQueueItemData.WorkQueueDataTypeId = Assurant.ElitaPlus.BusinessObjectsNew.WorkQueueItem.GetDataTypeId(metadataName)
                     oWorkQueueItemData.CreatedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
-                    ReDim Preserve Me.WorkQueueItemDataList(length)
-                    Me.WorkQueueItemDataList(Me.WorkQueueItemDataList.Length - 1) = oWorkQueueItemData
+                    ReDim Preserve WorkQueueItemDataList(length)
+                    WorkQueueItemDataList(WorkQueueItemDataList.Length - 1) = oWorkQueueItemData
                 Else
                     oWorkQueueItemData.UpdatedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                 End If

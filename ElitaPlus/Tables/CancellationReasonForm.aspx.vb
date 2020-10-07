@@ -26,7 +26,7 @@ Partial Class CancellationReasonForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -56,9 +56,9 @@ Partial Class CancellationReasonForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As CancellationReason
         Public BoChanged As Boolean = False
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As CancellationReason, Optional ByVal boChanged As Boolean = False)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As CancellationReason, Optional ByVal boChanged As Boolean = False)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.BoChanged = boChanged
         End Sub
     End Class
@@ -87,15 +87,15 @@ Partial Class CancellationReasonForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Me.State.MyBO = New CancellationReason(CType(Me.CallingParameters, Guid))
-                Me.State.cancellationReasonChanged = False
+                State.MyBO = New CancellationReason(CType(CallingParameters, Guid))
+                State.cancellationReasonChanged = False
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -103,25 +103,25 @@ Partial Class CancellationReasonForm
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.MasterPage.MessageController.Clear_Hide()
+        MasterPage.MessageController.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
-                Me.MasterPage.MessageController.Clear()
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                MasterPage.MessageController.Clear()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                 UpdateBreadCrum()
-                Me.MenuEnabled = False
-                Me.AddConfirmation(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New CancellationReason
-                    Me.State.cancellationReasonChanged = False
+                MenuEnabled = False
+                AddConfirmation(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New CancellationReason
+                    State.cancellationReasonChanged = False
                 End If
-                SetButtonsState(Me.State.MyBO.IsNew)
+                SetButtonsState(State.MyBO.IsNew)
                 PopulateAll()
-                If GetSelectedItem(Me.cboRefundDestination).Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_REFUND_DESTINATION, Codes.REFUND_DESTINATION__CUSTOMER)) Then
+                If GetSelectedItem(cboRefundDestination).Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_REFUND_DESTINATION, Codes.REFUND_DESTINATION__CUSTOMER)) Then
                     ControlMgr.SetEnableControl(Me, labelDefRefPaymentMethod, True)
                     ControlMgr.SetEnableControl(Me, cboDefRefPaymentMethod, True)
                 End If
@@ -130,18 +130,18 @@ Partial Class CancellationReasonForm
             CheckIfComingFromSaveConfirm()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 #End Region
 
 #Region "Controlling Logic"
 
     Private Sub PopulateCompanyDropDowns()
-        Me.UserCompanyMultipleDrop.SetControl(False, Me.UserCompanyMultipleDrop.MODES.NEW_MODE, True, Nothing, , True)
-        If Not Me.State.MyBO Is Nothing Then
-            Me.UserCompanyMultipleDrop.SelectedGuid = Me.State.MyBO.CompanyId
+        UserCompanyMultipleDrop.SetControl(False, UserCompanyMultipleDrop.MODES.NEW_MODE, True, Nothing, , True)
+        If State.MyBO IsNot Nothing Then
+            UserCompanyMultipleDrop.SelectedGuid = State.MyBO.CompanyId
         End If
     End Sub
 
@@ -153,7 +153,7 @@ Partial Class CancellationReasonForm
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, True)
 
         'New With Copy Button
-        If Me.State.MyBO.IsNew Then
+        If State.MyBO.IsNew Then
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
@@ -161,56 +161,56 @@ Partial Class CancellationReasonForm
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Code", Me.lblCancCode)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Description", Me.lblCancDesc)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "RefundComputeMethodId", Me.labelRefundComputeMethod)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "RefundDestinationId", Me.labelRefundDestination)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "InputAmtReqId", Me.labelInputAmtReq)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "DisplayCodeId", Me.labelDisplayCode)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "DefRefundPaymentMethodId", Me.labelDefRefPaymentMethod)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "IsLawful", Me.labelIsLawful)
+        BindBOPropertyToLabel(State.MyBO, "Code", lblCancCode)
+        BindBOPropertyToLabel(State.MyBO, "Description", lblCancDesc)
+        BindBOPropertyToLabel(State.MyBO, "RefundComputeMethodId", labelRefundComputeMethod)
+        BindBOPropertyToLabel(State.MyBO, "RefundDestinationId", labelRefundDestination)
+        BindBOPropertyToLabel(State.MyBO, "InputAmtReqId", labelInputAmtReq)
+        BindBOPropertyToLabel(State.MyBO, "DisplayCodeId", labelDisplayCode)
+        BindBOPropertyToLabel(State.MyBO, "DefRefundPaymentMethodId", labelDefRefPaymentMethod)
+        BindBOPropertyToLabel(State.MyBO, "IsLawful", labelIsLawful)
         BindBOPropertyToLabel(State.MyBO, "BenefitCancelReasonCode", lblBenefitCancelCode)
-        Me.ClearGridHeadersAndLabelsErrSign()
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
 
     Protected Sub PopulateFormFromBOs()
-        With Me.State.MyBO
-            Me.PopulateControlFromBOProperty(Me.TextboxCode, .Code)
-            Me.PopulateControlFromBOProperty(Me.TextboxDescription, .Description)
+        With State.MyBO
+            PopulateControlFromBOProperty(TextboxCode, .Code)
+            PopulateControlFromBOProperty(TextboxDescription, .Description)
 
-            Me.SetSelectedItem(Me.cboRefundComputeMethod, .RefundComputeMethodId)
-            Me.SetSelectedItem(Me.cboRefundDestination, .RefundDestinationId)
-            Me.SetSelectedItem(Me.cboInputAmtReq, .InputAmtReqId)
-            Me.SetSelectedItem(Me.cboDisplayCode, .DisplayCodeId)
-            Me.SetSelectedItem(Me.cboDefRefPaymentMethod, .DefRefundPaymentMethodId)
-            If Not .IsLawful Is Nothing Then
-                Me.SetSelectedItem(Me.cboIsLawful, .IsLawful)
+            SetSelectedItem(cboRefundComputeMethod, .RefundComputeMethodId)
+            SetSelectedItem(cboRefundDestination, .RefundDestinationId)
+            SetSelectedItem(cboInputAmtReq, .InputAmtReqId)
+            SetSelectedItem(cboDisplayCode, .DisplayCodeId)
+            SetSelectedItem(cboDefRefPaymentMethod, .DefRefundPaymentMethodId)
+            If .IsLawful IsNot Nothing Then
+                SetSelectedItem(cboIsLawful, .IsLawful)
             Else
-                Me.SetSelectedItem(Me.cboIsLawful, "YESNO-N")
+                SetSelectedItem(cboIsLawful, "YESNO-N")
             End If
-            Me.PopulateControlFromBOProperty(Me.txtBenefitCancelCode, .BenefitCancelReasonCode)
+            PopulateControlFromBOProperty(txtBenefitCancelCode, .BenefitCancelReasonCode)
         End With
 
     End Sub
 
     Protected Sub PopulateBOsFormFrom()
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO, "Code", Me.TextboxCode)
-            Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.TextboxDescription)
-            Me.PopulateBOProperty(Me.State.MyBO, "RefundComputeMethodId", Me.cboRefundComputeMethod)
-            Me.PopulateBOProperty(Me.State.MyBO, "RefundDestinationId", Me.cboRefundDestination)
-            Me.PopulateBOProperty(Me.State.MyBO, "InputAmtReqId", Me.cboInputAmtReq)
-            Me.PopulateBOProperty(Me.State.MyBO, "DisplayCodeId", Me.cboDisplayCode)
-            Me.PopulateBOProperty(Me.State.MyBO, "DefRefundPaymentMethodId", Me.cboDefRefPaymentMethod)
-            Me.PopulateBOProperty(Me.State.MyBO, "IsLawful", Me.cboIsLawful, False, True)
-            PopulateBOProperty(Me.State.MyBO, "BenefitCancelReasonCode", Me.txtBenefitCancelCode)
+        With State.MyBO
+            PopulateBOProperty(State.MyBO, "Code", TextboxCode)
+            PopulateBOProperty(State.MyBO, "Description", TextboxDescription)
+            PopulateBOProperty(State.MyBO, "RefundComputeMethodId", cboRefundComputeMethod)
+            PopulateBOProperty(State.MyBO, "RefundDestinationId", cboRefundDestination)
+            PopulateBOProperty(State.MyBO, "InputAmtReqId", cboInputAmtReq)
+            PopulateBOProperty(State.MyBO, "DisplayCodeId", cboDisplayCode)
+            PopulateBOProperty(State.MyBO, "DefRefundPaymentMethodId", cboDefRefPaymentMethod)
+            PopulateBOProperty(State.MyBO, "IsLawful", cboIsLawful, False, True)
+            PopulateBOProperty(State.MyBO, "BenefitCancelReasonCode", txtBenefitCancelCode)
 
-            If Me.State.MyBO.IsNew And ElitaPlusIdentity.Current.ActiveUser.Companies.Count > 1 Then
-                Me.State.MyBO.CompanyId = Me.UserCompanyMultipleDrop.SelectedGuid
+            If State.MyBO.IsNew And ElitaPlusIdentity.Current.ActiveUser.Companies.Count > 1 Then
+                State.MyBO.CompanyId = UserCompanyMultipleDrop.SelectedGuid
             End If
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
@@ -218,180 +218,180 @@ Partial Class CancellationReasonForm
 
     Protected Sub CreateNew()
 
-        Me.State.ScreenSnapShotBO = Nothing
-        Me.State.MyBO = New CancellationReason
+        State.ScreenSnapShotBO = Nothing
+        State.MyBO = New CancellationReason
         ClearAll()
-        Me.State.cancellationReasonChanged = False
-        Me.SetButtonsState(Me.State.MyBO.IsNew)
-        Me.PopulateAll()
+        State.cancellationReasonChanged = False
+        SetButtonsState(State.MyBO.IsNew)
+        PopulateAll()
         'Me.PopulateFormFromBOs()
         'Me.EnableDisableFields()
     End Sub
 
     Protected Sub CreateNewWithCopy()
-        Me.PopulateBOsFormFrom()
+        PopulateBOsFormFrom()
         'Me.State.MyBO = New CancellationReason
 
         Dim newObj As New CancellationReason
-        newObj.Copy(Me.State.MyBO)
+        newObj.Copy(State.MyBO)
 
-        Me.State.MyBO = newObj
+        State.MyBO = newObj
 
         'Me.State.MyBO.Id = Guid.Empty
         'Me.State.MyBO.IsNew = True
 
-        With Me.State.MyBO '(newObj)
+        With State.MyBO '(newObj)
             .Code = Nothing
         End With
 
         ' Me.EnableDisableFields()
-        Me.SetButtonsState(Me.State.MyBO.IsNew)
+        SetButtonsState(State.MyBO.IsNew)
         'create the backup copy for undo
-        Me.State.ScreenSnapShotBO = New CancellationReason
-        Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
+        State.ScreenSnapShotBO = New CancellationReason
+        State.ScreenSnapShotBO.Clone(State.MyBO)
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
         'If Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_OK Then
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-            Select Case Me.State.actionInProgress
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            Select Case State.actionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.State.MyBO.Save()
-                    Me.State.cancellationReasonChanged = True
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.cancellationReasonChanged))
+                    State.MyBO.Save()
+                    State.cancellationReasonChanged = True
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.cancellationReasonChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.State.MyBO.Save()
-                    Me.State.cancellationReasonChanged = True
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNew()
+                    State.MyBO.Save()
+                    State.cancellationReasonChanged = True
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.State.MyBO.Save()
-                    Me.State.cancellationReasonChanged = True
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNewWithCopy()
+                    State.MyBO.Save()
+                    State.cancellationReasonChanged = True
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNewWithCopy()
             End Select
             'ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_CANCEL Then
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.actionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.actionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.cancellationReasonChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.cancellationReasonChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
             End Select
         End If
 
         'Clean after consuming the action
-        Me.State.actionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.actionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
 #End Region
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
                 'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.actionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.actionInProgress = ElitaPlusPage.DetailPageCommand.Back
 
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-                                               Me.HiddenSaveChangesPromptResponse)
-                Me.State.actionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                               HiddenSaveChangesPromptResponse)
+                State.actionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.cancellationReasonChanged))
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.cancellationReasonChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                If Me.State.MyBO.IsNew Then
-                    Me.State.MyBO.CompanyId = Me.UserCompanyMultipleDrop.SelectedGuid
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                If State.MyBO.IsNew Then
+                    State.MyBO.CompanyId = UserCompanyMultipleDrop.SelectedGuid
                 End If
-                Me.State.MyBO.Save()
-                Me.State.cancellationReasonChanged = False
-                Me.PopulateAll()
-                Me.EnableDisableFields()
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                State.MyBO.Save()
+                State.cancellationReasonChanged = False
+                PopulateAll()
+                EnableDisableFields()
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
             Else
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+    Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New CancellationReason(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New CancellationReason(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
-                Me.State.MyBO = New CancellationReason
+                State.MyBO = New CancellationReason
             End If
             PopulateAll()
-            Me.EnableDisableFields()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            Me.State.MyBO.Delete()
-            Me.State.MyBO.Save()
-            Me.State.cancellationReasonChanged = True
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.cancellationReasonChanged))
+            State.MyBO.Delete()
+            State.MyBO.Save()
+            State.cancellationReasonChanged = True
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.cancellationReasonChanged))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.State.MyBO.RejectChanges()
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            State.MyBO.RejectChanges()
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
             'Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.actionInProgress = ElitaPlusPage.DetailPageCommand.New_
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.actionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.CreateNew()
+                CreateNew()
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 
-    Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.State.actionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                State.actionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
-                Me.CreateNewWithCopy()
+                CreateNewWithCopy()
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -400,7 +400,7 @@ Partial Class CancellationReasonForm
 
 #Region "Gui-Validation"
 
-    Private Sub SetButtonsState(ByVal bIsNew As Boolean)
+    Private Sub SetButtonsState(bIsNew As Boolean)
         ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
         ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
@@ -415,24 +415,24 @@ Partial Class CancellationReasonForm
 
 #Region "Regions: Attach - Detach Event Handlers"
 
-    Private Sub UserControlAvailableExcludeRoles_Attach(ByVal aSrc As Generic.UserControlAvailableSelected_New, ByVal attachedList As System.Collections.ArrayList) Handles UserControlAvailableExcludeRoles.Attach
+    Private Sub UserControlAvailableExcludeRoles_Attach(aSrc As Generic.UserControlAvailableSelected_New, attachedList As System.Collections.ArrayList) Handles UserControlAvailableExcludeRoles.Attach
         Try
             If attachedList.Count > 0 Then
-                Me.State.MyBO.AttachRoles(attachedList)
+                State.MyBO.AttachRoles(attachedList)
                 'Me.PopulateDetailMfgGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub UserControlAvailableExcludeRoles_Detach(ByVal aSrc As Generic.UserControlAvailableSelected_New, ByVal detachedList As System.Collections.ArrayList) Handles UserControlAvailableExcludeRoles.Detach
+    Private Sub UserControlAvailableExcludeRoles_Detach(aSrc As Generic.UserControlAvailableSelected_New, detachedList As System.Collections.ArrayList) Handles UserControlAvailableExcludeRoles.Detach
         Try
             If detachedList.Count > 0 Then
-                Me.State.MyBO.DetachRoles(detachedList)
+                State.MyBO.DetachRoles(detachedList)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -442,26 +442,26 @@ Partial Class CancellationReasonForm
 
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("CancellationReason_List")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CancellationReason_List")
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("CancellationReason_List")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CancellationReason_List")
             End If
         End If
     End Sub
     Sub PopulateUserControlAvailableSelectedRoles()
-        Me.UserControlAvailableExcludeRoles.BackColor = "#d5d6e4"
+        UserControlAvailableExcludeRoles.BackColor = "#d5d6e4"
         ControlMgr.SetVisibleControl(Me, UserControlAvailableExcludeRoles, False)
         Dim oDealer As Dealer
         Dim CountryId As Guid
 
-        With Me.State.MyBO
+        With State.MyBO
             If Not .Id.Equals(Guid.Empty) Then
 
                 Dim availableDv As DataView = .GetAvailableRoles
                 Dim selectedDv As DataView = .GetSelectedRoles
-                Me.UserControlAvailableExcludeRoles.SetAvailableData(availableDv, LookupListNew.COL_CODE_AND_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
-                Me.UserControlAvailableExcludeRoles.SetSelectedData(selectedDv, LookupListNew.COL_CODE_AND_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
+                UserControlAvailableExcludeRoles.SetAvailableData(availableDv, LookupListNew.COL_CODE_AND_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
+                UserControlAvailableExcludeRoles.SetSelectedData(selectedDv, LookupListNew.COL_CODE_AND_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
                 ControlMgr.SetVisibleControl(Me, UserControlAvailableExcludeRoles, True)
 
             End If
@@ -474,27 +474,27 @@ Partial Class CancellationReasonForm
         'Dim yesNoLkL As DataView = LookupListNew.DropdownLookupList("YESNO", langId, True)
         Dim yesNoLkL As ListItem() = CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode())
         ' Me.BindListControlToDataView(Me.cboInputAmtReq, yesNoLkL)
-        Me.cboInputAmtReq.Populate(yesNoLkL, New PopulateOptions() With
+        cboInputAmtReq.Populate(yesNoLkL, New PopulateOptions() With
            {
               .AddBlankItem = True
            })
         'Me.BindListControlToDataView(Me.cboDisplayCode, yesNoLkL)
-        Me.cboDisplayCode.Populate(yesNoLkL, New PopulateOptions() With
+        cboDisplayCode.Populate(yesNoLkL, New PopulateOptions() With
            {
               .AddBlankItem = True
            })
         ' Me.BindListControlToDataView(Me.cboRefundComputeMethod, LookupListNew.GetRefundComputeMethodLookupList(langId, True)) 'RMETH
-        Me.cboRefundComputeMethod.Populate(CommonConfigManager.Current.ListManager.GetList("RMETH", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+        cboRefundComputeMethod.Populate(CommonConfigManager.Current.ListManager.GetList("RMETH", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
            {
               .AddBlankItem = True
            })
         '  Me.BindListControlToDataView(Me.cboRefundDestination, LookupListNew.GetRefundDestinationLookupList(langId, True)) 'REFDS
-        Me.cboRefundDestination.Populate(CommonConfigManager.Current.ListManager.GetList("REFDS", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+        cboRefundDestination.Populate(CommonConfigManager.Current.ListManager.GetList("REFDS", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
            {
               .AddBlankItem = True
            })
         'Me.cboIsLawful.PopulateOld("YESNO", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.None, String.Empty, ListValueType.Description)
-        Me.cboIsLawful.Populate(yesNoLkL, New PopulateOptions() With
+        cboIsLawful.Populate(yesNoLkL, New PopulateOptions() With
         {
            .ValueFunc = AddressOf .GetExtendedCode
         })
@@ -507,21 +507,21 @@ Partial Class CancellationReasonForm
         'PaymentMethodDV.RowFilter = condition
         'Me.BindListControlToDataView(Me.cboDefRefPaymentMethod, PaymentMethodDV, "DESCRIPTION", "ID", True)
         Dim listcontext As ListContext = New ListContext()
-        listcontext.CompanyId = Me.State.MyBO.CompanyId
+        listcontext.CompanyId = State.MyBO.CompanyId
         listcontext.LanguageId = ElitaPlusIdentity.Current.ActiveUser.LanguageId
         listcontext.UserId = ElitaPlusIdentity.Current.ActiveUser.Id
         Dim paymentLKL As ListItem() = CommonConfigManager.Current.ListManager.GetList("PaymentMethodByRoleCompany", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
         Dim filteredList As ListItem() = (From x In paymentLKL
                                           Where Not x.Code = "CTT" Or Not x.Code = "PYO"
                                           Select x).ToArray()
-        Me.cboDefRefPaymentMethod.Populate(filteredList, New PopulateOptions() With
+        cboDefRefPaymentMethod.Populate(filteredList, New PopulateOptions() With
              {
             .AddBlankItem = True
              })
     End Sub
 
     Private Sub PopulateAll()
-        If Me.State.cancellationReasonChanged = True Then
+        If State.cancellationReasonChanged = True Then
             PopulateDropdowns()
             PopulateCompanyDropDowns()
             PopulateUserControlAvailableSelectedRoles()
@@ -562,7 +562,7 @@ Partial Class CancellationReasonForm
     Private Sub cboRefundDestination_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboRefundDestination.SelectedIndexChanged
         Try
 
-            If GetSelectedItem(Me.cboRefundDestination).Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_REFUND_DESTINATION, Codes.REFUND_DESTINATION__CUSTOMER)) Then
+            If GetSelectedItem(cboRefundDestination).Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_REFUND_DESTINATION, Codes.REFUND_DESTINATION__CUSTOMER)) Then
                 ControlMgr.SetEnableControl(Me, labelDefRefPaymentMethod, True)
                 ControlMgr.SetEnableControl(Me, cboDefRefPaymentMethod, True)
 

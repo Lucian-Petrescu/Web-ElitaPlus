@@ -88,9 +88,9 @@ Public NotInheritable Class OverlapValidatorAttribute
         End If
         oLhsRow = CType(oPropertyInfo.GetValue(context, Nothing), DataRow)
 
-        If (Not Me.KeyColumns Is Nothing AndAlso Me.KeyColumns.Length > 0) Then
+        If (Not KeyColumns Is Nothing AndAlso KeyColumns.Length > 0) Then
             expression = New StringBuilder()
-            For Each key As String In Me.KeyColumns
+            For Each key As String In KeyColumns
                 If (expression.Length > 0) Then
                     expression.Append(" AND ")
                 End If

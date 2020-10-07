@@ -1,4 +1,4 @@
-﻿Imports Assurant.ElitaPlus.Business
+﻿
 Imports Assurant.ElitaPlus.DataAccessInterface
 Imports Assurant.ElitaPlus.DataEntities
 
@@ -89,7 +89,7 @@ Public Class SpecializedClaimManager
         Throw New NotImplementedException()
     End Function
 
-    Public Function GetCertificateClaimInfo(pCompanyCode As String, pCertificateNumber As String, ByVal pSerialNumber As String, ByVal pPhoneNumber As String, pUserId As Guid, pLanguageId As Guid, ByRef pErrorCode As String, ByRef pErrorMessage As String) As DataSet Implements IClaimManager.GetCertificateClaimInfo
+    Public Function GetCertificateClaimInfo(pCompanyCode As String, pCertificateNumber As String, pSerialNumber As String, pPhoneNumber As String, pUserId As Guid, pLanguageId As Guid, ByRef pErrorCode As String, ByRef pErrorMessage As String) As DataSet Implements IClaimManager.GetCertificateClaimInfo
         If (ClaimRepository Is Nothing) Then
             Throw New ArgumentNullException("ClaimRepository")
         End If

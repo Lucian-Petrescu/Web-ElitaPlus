@@ -10,53 +10,53 @@ Public Class Dealer
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'Exiting BO
     Public Sub New(ByVal Company_id As Guid, ByVal Dealer As String)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(Company_id, Dealer)
+        Dataset = New DataSet
+        Load(Company_id, Dealer)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New DealerDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Dim noGuid As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, "N")
             SetValue(dal.COL_NAME_USE_EQUIPMENT_ID, noGuid)
@@ -69,20 +69,20 @@ Public Class Dealer
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New DealerDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -93,20 +93,20 @@ Public Class Dealer
     Protected Sub Load(ByVal Company_id As Guid, ByVal Dealer As String)
         Try
             Dim dal As New DealerDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(Company_id, dal.COL_NAME_COMPANY_ID, Dealer, dal.COL_NAME_DEALER, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(Company_id, dal.COL_NAME_COMPANY_ID, Dealer, dal.COL_NAME_DEALER, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, Company_id, Dealer)
-                Me.Row = Me.FindRow(Company_id, dal.COL_NAME_COMPANY_ID, Dealer, dal.COL_NAME_DEALER, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, Company_id, Dealer)
+                Row = FindRow(Company_id, dal.COL_NAME_COMPANY_ID, Dealer, dal.COL_NAME_DEALER, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -120,34 +120,34 @@ Public Class Dealer
     Private _address As Address = Nothing
     Public ReadOnly Property Address() As Address
         Get
-            If Me._address Is Nothing Then
-                If Me.AddressId.Equals(Guid.Empty) Then
-                    Me._address = New Address(Me.Dataset, Nothing)
+            If _address Is Nothing Then
+                If AddressId.Equals(Guid.Empty) Then
+                    _address = New Address(Dataset, Nothing)
                     _address.CountryId = Company.BusinessCountryId
                     '   Me.AddressId = Me._address.Id
                 Else
-                    Me._address = New Address(Me.AddressId, Me.Dataset, Nothing)
+                    _address = New Address(AddressId, Dataset, Nothing)
                 End If
             End If
-            Return Me._address
+            Return _address
         End Get
     End Property
 
     Private _MailingAddress As Address = Nothing
     Public ReadOnly Property MailingAddress() As Address
         Get
-            If Me._MailingAddress Is Nothing Then
-                If Me.MailingAddressId.Equals(Guid.Empty) Then
+            If _MailingAddress Is Nothing Then
+                If MailingAddressId.Equals(Guid.Empty) Then
                     'If Me.IsNew Then
-                    Me._MailingAddress = New Address(Me.Dataset, Nothing)
+                    _MailingAddress = New Address(Dataset, Nothing)
                     _MailingAddress.CountryId = Company.BusinessCountryId
                     '   Me.MailingAddressId = Me._MailingAddress.Id
                     'End If
                 Else
-                    Me._MailingAddress = New Address(Me.MailingAddressId, Me.Dataset, Nothing)
+                    _MailingAddress = New Address(MailingAddressId, Dataset, Nothing)
                 End If
             End If
-            Return Me._MailingAddress
+            Return _MailingAddress
         End Get
     End Property
 
@@ -164,14 +164,14 @@ Public Class Dealer
     Private _SvcOrdersAddress As ServiceOrdersAddress = Nothing
     Public ReadOnly Property SvcOrdersAddress() As ServiceOrdersAddress
         Get
-            If Me._SvcOrdersAddress Is Nothing Then
-                Me._SvcOrdersAddress = New ServiceOrdersAddress(Me.Dataset, Me.Id)
-                If Me._SvcOrdersAddress.Row Is Nothing Then
-                    Me._SvcOrdersAddress = New ServiceOrdersAddress(Me.Dataset)
+            If _SvcOrdersAddress Is Nothing Then
+                _SvcOrdersAddress = New ServiceOrdersAddress(Dataset, Id)
+                If _SvcOrdersAddress.Row Is Nothing Then
+                    _SvcOrdersAddress = New ServiceOrdersAddress(Dataset)
                 End If
             End If
 
-            Return Me._SvcOrdersAddress
+            Return _SvcOrdersAddress
 
         End Get
     End Property
@@ -181,27 +181,27 @@ Public Class Dealer
     'Initialization code for new objects
     Private Sub Initialize()
         'default the STAT compute mthd to GAAP and that for LAE to NO while creating a new dealer
-        Me.STATIBNRComputationMethodId = LookupListNew.GetIdFromCode(LookupListNew.LK_STAT_IBNR_COMPUTE_METHODS, STATCOMPUTMTHD)
-        Me.LAEIBNRComputationMethodId = LookupListNew.GetIdFromCode(LookupListNew.LK_LAE_IBNR_COMPUTE_METHODS, LAECOMPUTMTHD)
-        Me.CertCancelById = LookupListNew.GetIdFromCode(LookupListNew.LK_CERT_CANCEL_BY, Codes.CCANBY_CERTNO)
-        Me.ClaimSystemId = LookupListNew.GetIdFromDescription(LookupListNew.LK_CLAIM_SYSTEM, CLMSYS_ELITA)
-        Me.ValidateBillingCycleId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        Me.ValidateSerialNumberId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        Me.UseNewBillForm = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+        STATIBNRComputationMethodId = LookupListNew.GetIdFromCode(LookupListNew.LK_STAT_IBNR_COMPUTE_METHODS, STATCOMPUTMTHD)
+        LAEIBNRComputationMethodId = LookupListNew.GetIdFromCode(LookupListNew.LK_LAE_IBNR_COMPUTE_METHODS, LAECOMPUTMTHD)
+        CertCancelById = LookupListNew.GetIdFromCode(LookupListNew.LK_CERT_CANCEL_BY, Codes.CCANBY_CERTNO)
+        ClaimSystemId = LookupListNew.GetIdFromDescription(LookupListNew.LK_CLAIM_SYSTEM, CLMSYS_ELITA)
+        ValidateBillingCycleId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+        ValidateSerialNumberId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+        UseNewBillForm = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
         'REQ-1294
         'Me.CustInfoMandatoryId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        Me.BankInfoMandatoryId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        Me.DeductibleCollectionId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        Me.ClaimExtendedStatusEntryId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_EXTENDED_STATUS_ENTRY, USER_SYSTEM_SELECT)
+        BankInfoMandatoryId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+        DeductibleCollectionId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+        ClaimExtendedStatusEntryId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_EXTENDED_STATUS_ENTRY, USER_SYSTEM_SELECT)
 
         'New device sku required added for TIMS
-        Me.NewDeviceSkuRequiredId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        Me.UseClaimAuthorizationId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        Me.ReuseSerialNumberId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
-        Me.AutoGenerateRejectedPaymentFileId = LookupListNew.GetIdFromCode(LookupListNew.LK_AUTO_GEN_REJ_PYMT_FILE, Codes.AUOT_GEN_REJ_PYMT_FILE__NONE)
-        Me.PaymentRejectedRecordReconcileId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+        NewDeviceSkuRequiredId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+        UseClaimAuthorizationId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+        ReuseSerialNumberId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
+        AutoGenerateRejectedPaymentFileId = LookupListNew.GetIdFromCode(LookupListNew.LK_AUTO_GEN_REJ_PYMT_FILE, Codes.AUOT_GEN_REJ_PYMT_FILE__NONE)
+        PaymentRejectedRecordReconcileId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
         Dim DvClaimRecording As DataView = LookupListNew.DropdownLookupList("CLMREC", Authentication.LangId)
-        Me.ClaimRecordingXcd = "CLMREC-" + LookupListNew.GetCodeFromDescription(DvClaimRecording, CLMREC_ELITA)
+        ClaimRecordingXcd = "CLMREC-" + LookupListNew.GetCodeFromDescription(DvClaimRecording, CLMREC_ELITA)
     End Sub
 #End Region
 
@@ -254,7 +254,7 @@ Public Class Dealer
     Public ReadOnly Property AttributeValues As AttributeValueList(Of IAttributable) Implements IAttributable.AttributeValues
         Get
             If (_AttributeValueList Is Nothing) Then
-                _AttributeValueList = New AttributeValueList(Of IAttributable)(Me.Dataset, Me)
+                _AttributeValueList = New AttributeValueList(Of IAttributable)(Dataset, Me)
             End If
             Return _AttributeValueList
         End Get
@@ -297,7 +297,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_DEALER, Value)
+            SetValue(DealerDAL.COL_NAME_DEALER, Value)
         End Set
     End Property
 
@@ -313,7 +313,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CLIENT_DEALER_CODE, Value)
+            SetValue(DealerDAL.COL_NAME_CLIENT_DEALER_CODE, Value)
         End Set
     End Property
 
@@ -329,7 +329,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_DEALER_NAME, Value)
+            SetValue(DealerDAL.COL_NAME_DEALER_NAME, Value)
         End Set
     End Property
 
@@ -346,7 +346,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_TAX_ID_NUMBER, MiscUtil.ConvertToUpper(Value))
+            SetValue(DealerDAL.COL_NAME_TAX_ID_NUMBER, MiscUtil.ConvertToUpper(Value))
         End Set
     End Property
 
@@ -363,7 +363,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(DealerDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
@@ -378,7 +378,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_ADDRESS_ID, Value)
+            SetValue(DealerDAL.COL_NAME_ADDRESS_ID, Value)
         End Set
     End Property
 
@@ -395,7 +395,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CONTACT_NAME, Value)
+            SetValue(DealerDAL.COL_NAME_CONTACT_NAME, Value)
         End Set
     End Property
 
@@ -412,7 +412,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CONTACT_PHONE, Value)
+            SetValue(DealerDAL.COL_NAME_CONTACT_PHONE, Value)
         End Set
     End Property
 
@@ -429,7 +429,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CONTACT_EXT, Value)
+            SetValue(DealerDAL.COL_NAME_CONTACT_EXT, Value)
         End Set
     End Property
 
@@ -446,7 +446,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CONTACT_FAX, Value)
+            SetValue(DealerDAL.COL_NAME_CONTACT_FAX, Value)
         End Set
     End Property
 
@@ -463,7 +463,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CONTACT_EMAIL, Value)
+            SetValue(DealerDAL.COL_NAME_CONTACT_EMAIL, Value)
         End Set
     End Property
 
@@ -479,7 +479,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_RETAILER_ID, Value)
+            SetValue(DealerDAL.COL_NAME_RETAILER_ID, Value)
         End Set
     End Property
 
@@ -495,7 +495,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_REUSE_SERIAL_NUMBER_ID, Value)
+            SetValue(DealerDAL.COL_NAME_REUSE_SERIAL_NUMBER_ID, Value)
         End Set
     End Property
 
@@ -510,7 +510,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_DEALER_GROUP_ID, Value)
+            SetValue(DealerDAL.COL_NAME_DEALER_GROUP_ID, Value)
         End Set
     End Property
 
@@ -526,7 +526,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_ACTIVE_FLAG, Value)
+            SetValue(DealerDAL.COL_NAME_ACTIVE_FLAG, Value)
         End Set
     End Property
 
@@ -541,7 +541,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_SERVICE_NETWORK_ID, Value)
+            SetValue(DealerDAL.COL_NAME_SERVICE_NETWORK_ID, Value)
         End Set
     End Property
 
@@ -557,7 +557,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_DEALER_TYPE_ID, Value)
+            SetValue(DealerDAL.COL_NAME_DEALER_TYPE_ID, Value)
         End Set
     End Property
 
@@ -572,7 +572,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_PAY_DEDUCTIBLE_ID, Value)
+            SetValue(DealerDAL.COL_NAME_PAY_DEDUCTIBLE_ID, Value)
         End Set
     End Property
 
@@ -605,7 +605,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_BANK_INFO_MANDATORY_ID, Value)
+            SetValue(DealerDAL.COL_NAME_BANK_INFO_MANDATORY_ID, Value)
         End Set
     End Property
     <ValueMandatory("")>
@@ -620,7 +620,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_VALIDATE_SKU_ID, Value)
+            SetValue(DealerDAL.COL_NAME_VALIDATE_SKU_ID, Value)
         End Set
     End Property
 
@@ -636,7 +636,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_IBNR_COMPUTE_METHOD_ID, Value)
+            SetValue(DealerDAL.COL_NAME_IBNR_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
     <ValueMandatory("")>
@@ -651,7 +651,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_STATIBNR_COMPUTE_METHOD_ID, Value)
+            SetValue(DealerDAL.COL_NAME_STATIBNR_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
     <ValueMandatory("")>
@@ -666,7 +666,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_LAEIBNR_COMPUTE_METHOD_ID, Value)
+            SetValue(DealerDAL.COL_NAME_LAEIBNR_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
@@ -682,7 +682,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As DoubleType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_IBNR_FACTOR, Value)
+            SetValue(DealerDAL.COL_NAME_IBNR_FACTOR, Value)
         End Set
     End Property
     <ValueMandatory(""), Valid_STAT_IBNR_Factor(""), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=DEALER_IBNRFACTOR)>
@@ -697,7 +697,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As DoubleType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_STAT_IBNR_FACTOR, Value)
+            SetValue(DealerDAL.COL_NAME_STAT_IBNR_FACTOR, Value)
         End Set
     End Property
     <ValueMandatory(""), Valid_LAE_IBNR_Factor(""), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=DEALER_IBNRFACTOR)>
@@ -712,7 +712,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As DoubleType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_LAE_IBNR_FACTOR, Value)
+            SetValue(DealerDAL.COL_NAME_LAE_IBNR_FACTOR, Value)
         End Set
     End Property
 
@@ -728,7 +728,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CONVERT_PRODUCT_CODE_ID, Value)
+            SetValue(DealerDAL.COL_NAME_CONVERT_PRODUCT_CODE_ID, Value)
         End Set
     End Property
 
@@ -744,7 +744,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_BRANCH_VALIDATION_ID, Value)
+            SetValue(DealerDAL.COL_NAME_BRANCH_VALIDATION_ID, Value)
         End Set
     End Property
 
@@ -759,7 +759,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_BANK_INFO_ID, Value)
+            SetValue(DealerDAL.COL_NAME_BANK_INFO_ID, Value)
         End Set
     End Property
 
@@ -775,7 +775,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_BUSINESS_NAME, Value)
+            SetValue(DealerDAL.COL_NAME_BUSINESS_NAME, Value)
         End Set
     End Property
 
@@ -791,7 +791,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_STATE_TAX_ID_NUMBER, Value)
+            SetValue(DealerDAL.COL_NAME_STATE_TAX_ID_NUMBER, Value)
         End Set
     End Property
 
@@ -807,7 +807,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CITY_TAX_ID_NUMBER, Value)
+            SetValue(DealerDAL.COL_NAME_CITY_TAX_ID_NUMBER, Value)
         End Set
     End Property
 
@@ -823,7 +823,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_WEB_ADDRESS, Value)
+            SetValue(DealerDAL.COL_NAME_WEB_ADDRESS, Value)
         End Set
     End Property
 
@@ -838,7 +838,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_MAILING_ADDRESS_ID, Value)
+            SetValue(DealerDAL.COL_NAME_MAILING_ADDRESS_ID, Value)
         End Set
     End Property
 
@@ -853,7 +853,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_NUMBER_OF_OTHER_LOCATIONS, Value)
+            SetValue(DealerDAL.COL_NAME_NUMBER_OF_OTHER_LOCATIONS, Value)
         End Set
     End Property
 
@@ -869,7 +869,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_PRICE_MATRIX_USES_WP_ID, Value)
+            SetValue(DealerDAL.COL_NAME_PRICE_MATRIX_USES_WP_ID, Value)
         End Set
     End Property
     <ValueMandatory(""), ExpectedPremiumIsWPValidation("")>
@@ -884,27 +884,27 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_EXPECTED_PREMIUM_IS_WP_ID, Value)
+            SetValue(DealerDAL.COL_NAME_EXPECTED_PREMIUM_IS_WP_ID, Value)
         End Set
     End Property
 
     Dim _DealerGroupName As String
     Public ReadOnly Property DealerGroupName() As String
         Get
-            If Not (Me.DealerGroupId.Equals(Guid.Empty)) Then
-                Me._DealerGroupName = LookupListNew.GetDescriptionFromId(LookupListNew.LK_DEALER_GROUPS, Me.DealerGroupId)
+            If Not (DealerGroupId.Equals(Guid.Empty)) Then
+                _DealerGroupName = LookupListNew.GetDescriptionFromId(LookupListNew.LK_DEALER_GROUPS, DealerGroupId)
             Else
-                Me._DealerGroupName = String.Empty
+                _DealerGroupName = String.Empty
             End If
-            Return Me._DealerGroupName
+            Return _DealerGroupName
         End Get
     End Property
 
     Dim _DealerTypeDesc As String
     Public ReadOnly Property DealerTypeDesc() As String
         Get
-            Me._DealerTypeDesc = LookupListNew.GetDescriptionFromId(LookupListNew.LK_DEALER_TYPE, Me.DealerTypeId)
-            Return Me._DealerTypeDesc
+            _DealerTypeDesc = LookupListNew.GetDescriptionFromId(LookupListNew.LK_DEALER_TYPE, DealerTypeId)
+            Return _DealerTypeDesc
         End Get
     End Property
 
@@ -914,7 +914,7 @@ Public Class Dealer
             Return _constrVoilation
         End Get
         Set(ByVal Value As Boolean)
-            Me._constrVoilation = Value
+            _constrVoilation = Value
         End Set
     End Property
 
@@ -930,7 +930,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_INVOICE_BY_BRANCH_ID, Value)
+            SetValue(DealerDAL.COL_NAME_INVOICE_BY_BRANCH_ID, Value)
         End Set
     End Property
 
@@ -946,7 +946,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_SEPARATED_CREDIT_NOTES_ID, Value)
+            SetValue(DealerDAL.COL_NAME_SEPARATED_CREDIT_NOTES_ID, Value)
         End Set
     End Property
     <ValueMandatory("")>
@@ -961,7 +961,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CERT_CANCEL_BY_ID, Value)
+            SetValue(DealerDAL.COL_NAME_CERT_CANCEL_BY_ID, Value)
         End Set
     End Property
 
@@ -972,7 +972,7 @@ Public Class Dealer
             Return _UseSvcOrderAddress
         End Get
         Set(ByVal Value As Boolean)
-            Me._UseSvcOrderAddress = Value
+            _UseSvcOrderAddress = Value
         End Set
     End Property
 
@@ -988,7 +988,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_MANUAL_ENROLLMENT_ALLOWED_ID, Value)
+            SetValue(DealerDAL.COL_NAME_MANUAL_ENROLLMENT_ALLOWED_ID, Value)
         End Set
     End Property
     'REQ-5761
@@ -1003,7 +1003,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_USE_NEWBILLFORM, Value)
+            SetValue(DealerDAL.COL_NAME_USE_NEWBILLFORM, Value)
         End Set
     End Property
 
@@ -1020,7 +1020,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_SHARE_CUSTOMERS, Value)
+            SetValue(DealerDAL.COL_NAME_SHARE_CUSTOMERS, Value)
         End Set
     End Property
 
@@ -1035,7 +1035,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CUSTOMER_IDENTITY_LOOKUP, Value)
+            SetValue(DealerDAL.COL_NAME_CUSTOMER_IDENTITY_LOOKUP, Value)
         End Set
     End Property
 
@@ -1051,7 +1051,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_EDIT_BRANCH_ID, Value)
+            SetValue(DealerDAL.COL_NAME_EDIT_BRANCH_ID, Value)
         End Set
     End Property
 
@@ -1067,7 +1067,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_OLITA_SEARCH, Value)
+            SetValue(DealerDAL.COL_NAME_OLITA_SEARCH, Value)
         End Set
     End Property
 
@@ -1083,7 +1083,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_DELAY_FACTOR_FLAG_ID, Value)
+            SetValue(DealerDAL.COL_NAME_DELAY_FACTOR_FLAG_ID, Value)
         End Set
     End Property
 
@@ -1099,7 +1099,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_INSTALLMENT_FACTOR_FLAG_ID, Value)
+            SetValue(DealerDAL.COL_NAME_INSTALLMENT_FACTOR_FLAG_ID, Value)
         End Set
     End Property
 
@@ -1115,7 +1115,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_REGISTRATION_PROCESS_FLAG_ID, Value)
+            SetValue(DealerDAL.COL_NAME_REGISTRATION_PROCESS_FLAG_ID, Value)
         End Set
     End Property
 
@@ -1131,7 +1131,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_REGISTRATION_EMAIL_FROM, Value)
+            SetValue(DealerDAL.COL_NAME_REGISTRATION_EMAIL_FROM, Value)
         End Set
     End Property
 
@@ -1148,7 +1148,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_USE_WARRANTY_MASTER_ID, Value)
+            SetValue(DealerDAL.COL_NAME_USE_WARRANTY_MASTER_ID, Value)
         End Set
     End Property
 
@@ -1164,7 +1164,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_INSERT_MAKE_IF_NOT_EXISTS_ID, Value)
+            SetValue(DealerDAL.COL_NAME_INSERT_MAKE_IF_NOT_EXISTS_ID, Value)
         End Set
     End Property
 
@@ -1181,7 +1181,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_USE_INCOMING_SALES_TAX_ID, Value)
+            SetValue(DealerDAL.COL_NAME_USE_INCOMING_SALES_TAX_ID, Value)
         End Set
     End Property
 
@@ -1197,7 +1197,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_AUTO_PROCESS_FILE_ID, Value)
+            SetValue(DealerDAL.COL_NAME_AUTO_PROCESS_FILE_ID, Value)
         End Set
     End Property
 
@@ -1212,7 +1212,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_AUTO_REJ_ERR_TYPE_ID, Value)
+            SetValue(DealerDAL.COL_NAME_AUTO_REJ_ERR_TYPE_ID, Value)
         End Set
     End Property
 
@@ -1227,7 +1227,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_RECON_REJ_REC_TYPE_ID, Value)
+            SetValue(DealerDAL.COL_NAME_RECON_REJ_REC_TYPE_ID, Value)
         End Set
     End Property
 
@@ -1242,7 +1242,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_DEALER_EXTRACT_PERIOD_ID, Value)
+            SetValue(DealerDAL.COL_NAME_DEALER_EXTRACT_PERIOD_ID, Value)
         End Set
     End Property
 
@@ -1258,7 +1258,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_ROUND_COMM_FLAG_ID, Value)
+            SetValue(DealerDAL.COL_NAME_ROUND_COMM_FLAG_ID, Value)
         End Set
     End Property
 
@@ -1274,7 +1274,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_USE_INSTALLMENT_DEFN_ID, Value)
+            SetValue(DealerDAL.COL_NAME_USE_INSTALLMENT_DEFN_ID, Value)
         End Set
     End Property
 
@@ -1290,7 +1290,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_PROGRAM_NAME, Value)
+            SetValue(DealerDAL.COL_NAME_PROGRAM_NAME, Value)
         End Set
     End Property
 
@@ -1306,7 +1306,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_SERVICE_LINE_PHONE, Value)
+            SetValue(DealerDAL.COL_NAME_SERVICE_LINE_PHONE, Value)
         End Set
     End Property
 
@@ -1323,7 +1323,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_SERVICE_LINE_FAX, Value)
+            SetValue(DealerDAL.COL_NAME_SERVICE_LINE_FAX, Value)
         End Set
     End Property
 
@@ -1340,7 +1340,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_SERVICE_LINE_EMAIL, Value)
+            SetValue(DealerDAL.COL_NAME_SERVICE_LINE_EMAIL, Value)
         End Set
     End Property
 
@@ -1357,7 +1357,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_ESC_INSURANCE_LABEL, Value)
+            SetValue(DealerDAL.COL_NAME_ESC_INSURANCE_LABEL, Value)
         End Set
     End Property
     <ValueMandatory("")>
@@ -1372,7 +1372,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CLAIM_SYSTEM_ID, Value)
+            SetValue(DealerDAL.COL_NAME_CLAIM_SYSTEM_ID, Value)
         End Set
     End Property
 
@@ -1388,7 +1388,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_ASSURANT_IS_OBLIGOR_ID, Value)
+            SetValue(DealerDAL.COL_NAME_ASSURANT_IS_OBLIGOR_ID, Value)
         End Set
     End Property
 
@@ -1404,7 +1404,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_MAX_MAN_WARR, Value)
+            SetValue(DealerDAL.COL_NAME_MAX_MAN_WARR, Value)
         End Set
     End Property
 
@@ -1420,7 +1420,7 @@ Public Class Dealer
         End Get
         Set(ByVal value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_MIN_MAN_WARR, value)
+            SetValue(DealerDAL.COL_NAME_MIN_MAN_WARR, value)
         End Set
     End Property
 
@@ -1436,7 +1436,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_USE_EQUIPMENT_ID, Value)
+            SetValue(DealerDAL.COL_NAME_USE_EQUIPMENT_ID, Value)
         End Set
     End Property
     <ValueMandatory("")>
@@ -1451,7 +1451,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CANCEL_REQUEST_FLAG_ID, Value)
+            SetValue(DealerDAL.COL_NAME_CANCEL_REQUEST_FLAG_ID, Value)
         End Set
     End Property
 
@@ -1466,7 +1466,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_MIGRATION_PATH_ID, Value)
+            SetValue(DealerDAL.COL_NAME_MIGRATION_PATH_ID, Value)
         End Set
     End Property
 
@@ -1481,7 +1481,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_VALIDATE_BILLING_CYCLE_ID, Value)
+            SetValue(DealerDAL.COL_NAME_VALIDATE_BILLING_CYCLE_ID, Value)
         End Set
     End Property
 
@@ -1497,7 +1497,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_VALIDATE_SERIAL_NUMBER_ID, Value)
+            SetValue(DealerDAL.COL_VALIDATE_SERIAL_NUMBER_ID, Value)
         End Set
     End Property
 
@@ -1513,7 +1513,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_DEDUCTIBLE_COLLECTION_ID, Value)
+            SetValue(DealerDAL.COL_DEDUCTIBLE_COLLECTION_ID, Value)
         End Set
     End Property
 
@@ -1528,7 +1528,7 @@ Public Class Dealer
         End Get
         Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_EQUIPMENT_LIST_CODE, value)
+            SetValue(DealerDAL.COL_NAME_EQUIPMENT_LIST_CODE, value)
         End Set
     End Property
 
@@ -1560,7 +1560,7 @@ Public Class Dealer
         End Get
         Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_QUESTION_LIST_CODE, value)
+            SetValue(DealerDAL.COL_NAME_QUESTION_LIST_CODE, value)
         End Set
     End Property
 
@@ -1576,7 +1576,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_PRODUCT_BY_REGION_ID, Value)
+            SetValue(DealerDAL.COL_NAME_PRODUCT_BY_REGION_ID, Value)
         End Set
     End Property
 
@@ -1591,7 +1591,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CLAIM_VERIFICATION_NUM_LENGTH, Value)
+            SetValue(DealerDAL.COL_NAME_CLAIM_VERIFICATION_NUM_LENGTH, Value)
         End Set
     End Property
 
@@ -1608,7 +1608,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_MAX_NC_RECORDS, Value)
+            SetValue(DealerDAL.COL_NAME_MAX_NC_RECORDS, Value)
         End Set
     End Property
     'Req-1297 End
@@ -1626,7 +1626,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CLAIM_EXTENDED_STATUS_ENTRY_ID, Value)
+            SetValue(DealerDAL.COL_NAME_CLAIM_EXTENDED_STATUS_ENTRY_ID, Value)
         End Set
     End Property
 
@@ -1643,7 +1643,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_ALLOW_UPDATE_CANCELLATION_ID, Value)
+            SetValue(DealerDAL.COL_NAME_ALLOW_UPDATE_CANCELLATION_ID, Value)
         End Set
     End Property
     'Req-1000
@@ -1659,7 +1659,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_REJECT_AFTER_CANCELLATION_ID, Value)
+            SetValue(DealerDAL.COL_NAME_REJECT_AFTER_CANCELLATION_ID, Value)
         End Set
     End Property
 
@@ -1676,7 +1676,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_ALLOW_FUTURE_CANCEL_DATE_ID, Value)
+            SetValue(DealerDAL.COL_NAME_ALLOW_FUTURE_CANCEL_DATE_ID, Value)
         End Set
     End Property
 
@@ -1692,7 +1692,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_IS_LAWSUIT_MANDATORY_ID, Value)
+            SetValue(DealerDAL.COL_NAME_IS_LAWSUIT_MANDATORY_ID, Value)
         End Set
     End Property
 
@@ -1710,7 +1710,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_DEALER_SUPPORT_WEB_CLAIMS_ID, Value)
+            SetValue(DealerDAL.COL_NAME_DEALER_SUPPORT_WEB_CLAIMS_ID, Value)
         End Set
     End Property
 
@@ -1728,7 +1728,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_LICENSE_TAG_VALIDATION, Value)
+            SetValue(DealerDAL.COL_NAME_LICENSE_TAG_VALIDATION, Value)
         End Set
     End Property  'REQ-1142 end
 
@@ -1744,7 +1744,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_VSC_VIN_RESTRIC_ID, Value)
+            SetValue(DealerDAL.COL_NAME_VSC_VIN_RESTRIC_ID, Value)
         End Set
     End Property
 
@@ -1760,7 +1760,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_PLAN_CODE_IN_QUOTE_OUTPUT_ID, Value)
+            SetValue(DealerDAL.COL_NAME_PLAN_CODE_IN_QUOTE_OUTPUT_ID, Value)
         End Set
     End Property
     'REQ-5723 END
@@ -1777,7 +1777,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_USE_CLAIM_AUTHORIZATION_ID, Value)
+            SetValue(DealerDAL.COL_NAME_USE_CLAIM_AUTHORIZATION_ID, Value)
         End Set
     End Property
 
@@ -1793,7 +1793,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CLAIM_STATUS_FOR_EXT_SYSTEM_ID, Value)
+            SetValue(DealerDAL.COL_NAME_CLAIM_STATUS_FOR_EXT_SYSTEM_ID, Value)
         End Set
     End Property
     'REQ-1153 end
@@ -1810,7 +1810,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_NEW_DEVICE_SKU_REQUIRED_ID, Value)
+            SetValue(DealerDAL.COL_NAME_NEW_DEVICE_SKU_REQUIRED_ID, Value)
         End Set
     End Property
     'REQ 1157
@@ -1828,7 +1828,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_ENROLLFILEPREPROCESSPROC_ID, Value)
+            SetValue(DealerDAL.COL_NAME_ENROLLFILEPREPROCESSPROC_ID, Value)
         End Set
     End Property
 
@@ -1844,7 +1844,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_USEFULLFILEPROCESS_ID, Value)
+            SetValue(DealerDAL.COL_NAME_USEFULLFILEPROCESS_ID, Value)
         End Set
     End Property
     'Req-1297 End
@@ -1861,7 +1861,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CERTNUMLOOKUPBY_ID, Value)
+            SetValue(DealerDAL.COL_NAME_CERTNUMLOOKUPBY_ID, Value)
         End Set
     End Property
     'REQ-1190 END 
@@ -1879,7 +1879,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_REPLACECLAIMDEDTOLERANCEPCT, Value)
+            SetValue(DealerDAL.COL_NAME_REPLACECLAIMDEDTOLERANCEPCT, Value)
         End Set
     End Property
 
@@ -1895,7 +1895,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_BILLING_PROCESS_CODE_ID, Value)
+            SetValue(DealerDAL.COL_NAME_BILLING_PROCESS_CODE_ID, Value)
         End Set
     End Property
 
@@ -1910,7 +1910,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_BILLRESULT_EXCEPTION_DEST_ID, Value)
+            SetValue(DealerDAL.COL_NAME_BILLRESULT_EXCEPTION_DEST_ID, Value)
         End Set
     End Property
 
@@ -1927,7 +1927,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_BILLRESULT_NOTIFICATION_EMAIL, Value)
+            SetValue(DealerDAL.COL_NAME_BILLRESULT_NOTIFICATION_EMAIL, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=250)>
@@ -1942,7 +1942,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_POLICY_EVENT_NOTIFY_EMAIL, Value)
+            SetValue(DealerDAL.COL_POLICY_EVENT_NOTIFY_EMAIL, Value)
         End Set
     End Property
     'REQ-1274 end
@@ -1959,7 +1959,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CERTIFICATES_AUTONUMBER_PREFIX, Value)
+            SetValue(DealerDAL.COL_NAME_CERTIFICATES_AUTONUMBER_PREFIX, Value)
         End Set
     End Property
     <ValueMandatory("")>
@@ -1974,7 +1974,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CERTIFICATES_AUTONUMBER_ID, Value)
+            SetValue(DealerDAL.COL_NAME_CERTIFICATES_AUTONUMBER_ID, Value)
         End Set
     End Property
 
@@ -1990,7 +1990,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_FILE_LOAD_NOTIFICATION_EMAIL, Value)
+            SetValue(DealerDAL.COL_NAME_FILE_LOAD_NOTIFICATION_EMAIL, Value)
         End Set
     End Property
 
@@ -2006,7 +2006,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_MAX_CERTNUM_LENGTH_ALLOWED, Value)
+            SetValue(DealerDAL.COL_NAME_MAX_CERTNUM_LENGTH_ALLOWED, Value)
         End Set
     End Property
 
@@ -2021,7 +2021,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_AUTO_SELECT_SERVICE_CENTER, Value)
+            SetValue(DealerDAL.COL_NAME_AUTO_SELECT_SERVICE_CENTER, Value)
         End Set
     End Property
 
@@ -2036,7 +2036,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_DEF_SALVAGE_CENTER_ID, Value)
+            SetValue(DealerDAL.COL_NAME_DEF_SALVAGE_CENTER_ID, Value)
         End Set
     End Property
 
@@ -2052,7 +2052,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CLAIM_AUTO_APPROVE_ID, Value)
+            SetValue(DealerDAL.COL_NAME_CLAIM_AUTO_APPROVE_ID, Value)
         End Set
     End Property
 
@@ -2086,7 +2086,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_REQUIRE_CUSTOMER_AML_INFO_ID, Value)
+            SetValue(DealerDAL.COL_NAME_REQUIRE_CUSTOMER_AML_INFO_ID, Value)
         End Set
     End Property
 
@@ -2102,7 +2102,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_AUTO_PROCESS_PYMT_FILE_ID, Value)
+            SetValue(DealerDAL.COL_NAME_AUTO_PROCESS_PYMT_FILE_ID, Value)
         End Set
     End Property
 
@@ -2118,7 +2118,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_MAX_COMMISSION_PERCENT, Value)
+            SetValue(DealerDAL.COL_NAME_MAX_COMMISSION_PERCENT, Value)
         End Set
     End Property
 
@@ -2134,7 +2134,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_GRACE_PERIOD_MONTHS, Value)
+            SetValue(DealerDAL.COL_NAME_GRACE_PERIOD_MONTHS, Value)
         End Set
     End Property
 
@@ -2150,7 +2150,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_GRACE_PERIOD_DAYS, Value)
+            SetValue(DealerDAL.COL_NAME_GRACE_PERIOD_DAYS, Value)
         End Set
     End Property
 
@@ -2177,7 +2177,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_AUTO_GEN_REJ_PYMT_FILE_ID, Value)
+            SetValue(DealerDAL.COL_NAME_AUTO_GEN_REJ_PYMT_FILE_ID, Value)
         End Set
     End Property
 
@@ -2192,20 +2192,20 @@ Public Class Dealer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_PYMT_REJ_REC_RECON_ID, Value)
+            SetValue(DealerDAL.COL_NAME_PYMT_REJ_REC_RECON_ID, Value)
         End Set
     End Property
 
     Public ReadOnly Property Company() As Company
         Get
-            If Me._company Is Nothing Then
-                If Not (Me.CompanyId.Equals(Guid.Empty)) Then
-                    Me._company = New Company(Me.CompanyId)
+            If _company Is Nothing Then
+                If Not (CompanyId.Equals(Guid.Empty)) Then
+                    _company = New Company(CompanyId)
                 Else
                     Return Nothing
                 End If
             End If
-            Return Me._company
+            Return _company
         End Get
     End Property
     Public Property IdentificationNumberType() As String
@@ -2219,7 +2219,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_IDENTIFICATION_NUMBER_TYPE, Value)
+            SetValue(DealerDAL.COL_NAME_IDENTIFICATION_NUMBER_TYPE, Value)
         End Set
     End Property
 
@@ -2235,7 +2235,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_USE_QUOTE, Value)
+            SetValue(DealerDAL.COL_NAME_USE_QUOTE, Value)
         End Set
     End Property
 
@@ -2250,7 +2250,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CONTRACT_MANUAL_VERIFICATION, Value)
+            SetValue(DealerDAL.COL_NAME_CONTRACT_MANUAL_VERIFICATION, Value)
         End Set
     End Property
 
@@ -2265,7 +2265,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_ACCEPT_PAYMENT_BY_CHECK, Value)
+            SetValue(DealerDAL.COL_NAME_ACCEPT_PAYMENT_BY_CHECK, Value)
         End Set
     End Property
 
@@ -2281,7 +2281,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CLAIM_RECORDING_XCD, Value)
+            SetValue(DealerDAL.COL_NAME_CLAIM_RECORDING_XCD, Value)
         End Set
     End Property
 
@@ -2296,7 +2296,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_USE_FRAUD_MONITORING_XCD, Value)
+            SetValue(DealerDAL.COL_NAME_USE_FRAUD_MONITORING_XCD, Value)
         End Set
     End Property
 
@@ -2311,18 +2311,18 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_IMEI_USE_XCD, Value)
+            SetValue(DealerDAL.COL_NAME_IMEI_USE_XCD, Value)
         End Set
     End Property
 
     Private _DealerFulfillmentProviderClassCode As String
     Public ReadOnly Property DealerFulfillmentProviderClassCode() As String
         Get
-            If Me._DealerFulfillmentProviderClassCode Is Nothing Then
+            If _DealerFulfillmentProviderClassCode Is Nothing Then
                 Dim dal As New DealerDAL
-                Me._DealerFulfillmentProviderClassCode = dal.dealerProviderClassCode(Me.Dealer, Codes.PROVIDER_TYPE__FULFILLMENT)
+                _DealerFulfillmentProviderClassCode = dal.dealerProviderClassCode(Dealer, Codes.PROVIDER_TYPE__FULFILLMENT)
             End If
-            Return Me._DealerFulfillmentProviderClassCode
+            Return _DealerFulfillmentProviderClassCode
         End Get
     End Property
     <ValueMandatory("")>
@@ -2337,7 +2337,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CLAIM_RECORDING_CHECK_INVENTORY_XCD, Value)
+            SetValue(DealerDAL.COL_NAME_CLAIM_RECORDING_CHECK_INVENTORY_XCD, Value)
         End Set
     End Property
 
@@ -2352,7 +2352,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_SUSPEND_APPLIES_XCD, Value)
+            SetValue(DealerDAL.COL_NAME_SUSPEND_APPLIES_XCD, Value)
         End Set
     End Property
  
@@ -2367,7 +2367,7 @@ Public Class Dealer
         End Get
         Set(ByVal value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_VOID_DURATION, value)
+            SetValue(DealerDAL.COL_NAME_VOID_DURATION, value)
         End Set
     End Property
 
@@ -2382,7 +2382,7 @@ Public Class Dealer
         End Get
         Set(ByVal value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_SUSPEND_PERIOD, value)
+            SetValue(DealerDAL.COL_NAME_SUSPEND_PERIOD, value)
         End Set
     End Property
     <ValidNumericRange("", Max:=28, Min:=1)>
@@ -2397,7 +2397,7 @@ Public Class Dealer
         End Get
         Set(ByVal value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_INVOICE_CUTOFF_DAY, value)
+            SetValue(DealerDAL.COL_NAME_INVOICE_CUTOFF_DAY, value)
         End Set
     End Property
 
@@ -2412,7 +2412,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_SOURCE_SYSTEM_XCD, Value)
+            SetValue(DealerDAL.COL_NAME_SOURCE_SYSTEM_XCD, Value)
         End Set
     End Property
 
@@ -2427,7 +2427,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_BENEFIT_CARRIER_CODE, Value)
+            SetValue(DealerDAL.COL_NAME_BENEFIT_CARRIER_CODE, Value)
         End Set
     End Property
 
@@ -2443,7 +2443,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_BENEFIT_SOLD_TO_ACCOUNT, Value)
+            SetValue(DealerDAL.COL_NAME_BENEFIT_SOLD_TO_ACCOUNT, Value)
         End Set
     End Property
 
@@ -2460,7 +2460,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_IS_CANCEL_SHIPMENT_ALLOWED, Value)
+            SetValue(DealerDAL.COL_NAME_IS_CANCEL_SHIPMENT_ALLOWED, Value)
         End Set
     End Property
 
@@ -2475,7 +2475,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_SHOW_PREV_CALLER_INFO, Value)
+            SetValue(DealerDAL.COL_NAME_SHOW_PREV_CALLER_INFO, Value)
         End Set
     End Property
     Public Property UseTurnaroundTimeNotification() As String
@@ -2489,7 +2489,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_USE_TAT_NOTIFICATION, Value)
+            SetValue(DealerDAL.COL_NAME_USE_TAT_NOTIFICATION, Value)
         End Set
     End Property
     Public Property DisplayDobXcd() As String
@@ -2503,7 +2503,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_DISPLAY_DOB, Value)
+            SetValue(DealerDAL.COL_NAME_DISPLAY_DOB, Value)
         End Set
     End Property
 
@@ -2519,7 +2519,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_ALLOW_CERT_CNL_WITH_CLAIM_XCD, Value)
+            SetValue(DealerDAL.COL_NAME_ALLOW_CERT_CNL_WITH_CLAIM_XCD, Value)
         End Set
     End Property
     <ValidateBasedOnCancelShipment("")>
@@ -2534,7 +2534,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_VALIDATE_ADDRESS, Value)
+            SetValue(DealerDAL.COL_NAME_VALIDATE_ADDRESS, Value)
         End Set
     End Property
 
@@ -2549,7 +2549,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_IS_RESHIPMENT_ALLOWED, Value)
+            SetValue(DealerDAL.COL_NAME_IS_RESHIPMENT_ALLOWED, Value)
         End Set
     End Property
 
@@ -2566,7 +2566,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.CANCEL_SHIPMENT_GRACE_PERIOD, Value)
+            SetValue(DealerDAL.CANCEL_SHIPMENT_GRACE_PERIOD, Value)
         End Set
     End Property
     Public Property CaseProfileCode() As String
@@ -2580,7 +2580,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CASE_PROFILE_CODE, Value)
+            SetValue(DealerDAL.COL_NAME_CASE_PROFILE_CODE, Value)
         End Set
     End Property
 
@@ -2595,7 +2595,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_CLOSE_CASE_GRACE_PERIOD_DAYS, Value)
+            SetValue(DealerDAL.COL_NAME_CLOSE_CASE_GRACE_PERIOD_DAYS, Value)
         End Set
     End Property
 
@@ -2612,7 +2612,7 @@ Public Class Dealer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerDAL.COL_NAME_ACCT_BUCKETS_WITH_SOURCE_XCD, Value)
+            SetValue(DealerDAL.COL_NAME_ACCT_BUCKETS_WITH_SOURCE_XCD, Value)
         End Set
     End Property
 #End Region
@@ -2621,17 +2621,17 @@ Public Class Dealer
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso (Me.IsDirty OrElse Me.IsFamilyDirty) AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso (IsDirty OrElse IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New DealerDAL
-                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
+                dal.UpdateFamily(Dataset) 'New Code Added Manually
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
-                    Me._address = Nothing
-                    Me._SvcOrdersAddress = Nothing
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
+                    _address = Nothing
+                    _SvcOrdersAddress = Nothing
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -2642,7 +2642,7 @@ Public Class Dealer
     Public Sub CreateExternalTable()
         Try
             Dim dal As New DealerDAL
-            dal.CreateExternalTable(Me.Id, Me.UseFullFileProcessId)
+            dal.CreateExternalTable(Id, UseFullFileProcessId)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
@@ -2651,7 +2651,7 @@ Public Class Dealer
     Public Sub UpdateClaimsAsyncForLawsuit()
         Try
             Dim dal As New DealerDAL
-            dal.UpdateClaimsAsync(Me.Id, ClaimUpdateAsyncTask.MakeLawsuitMandatoryChanged)
+            dal.UpdateClaimsAsync(Id, ClaimUpdateAsyncTask.MakeLawsuitMandatoryChanged)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
@@ -2660,14 +2660,14 @@ Public Class Dealer
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
             Dim blnIsDirty As Boolean = False
-            If MyBase.IsDirty OrElse Me.IsChildrenDirty Then
+            If MyBase.IsDirty OrElse IsChildrenDirty Then
                 blnIsDirty = True
-            ElseIf (Not Me.Address.IsNew AndAlso Me.Address.IsDirty) OrElse (Me.Address.IsNew AndAlso Not Me.Address.IsEmpty) Then
+            ElseIf (Not Address.IsNew AndAlso Address.IsDirty) OrElse (Address.IsNew AndAlso Not Address.IsEmpty) Then
                 blnIsDirty = True
-            ElseIf (Not Me.MailingAddress.IsNew AndAlso Me.MailingAddress.IsDirty) OrElse (Me.MailingAddress.IsNew AndAlso Not Me.MailingAddress.IsEmpty) Then
+            ElseIf (Not MailingAddress.IsNew AndAlso MailingAddress.IsDirty) OrElse (MailingAddress.IsNew AndAlso Not MailingAddress.IsEmpty) Then
                 blnIsDirty = True
             ElseIf (Not _SvcOrdersAddress Is Nothing) Then
-                If ((Not Me.SvcOrdersAddress.IsNew) AndAlso Me.SvcOrdersAddress.IsDirty) OrElse (Me.SvcOrdersAddress.IsNew AndAlso Not Me.SvcOrdersAddress.IsEmpty) Then
+                If ((Not SvcOrdersAddress.IsNew) AndAlso SvcOrdersAddress.IsDirty) OrElse (SvcOrdersAddress.IsNew AndAlso Not SvcOrdersAddress.IsEmpty) Then
                     blnIsDirty = True
                 End If
             End If
@@ -2677,20 +2677,20 @@ Public Class Dealer
     End Property
 
     Public Sub Copy(ByVal original As Dealer)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Dealer")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
 
         'copy the children       
 
-        Me.AddressId = Guid.Empty
-        Me.Address.CopyFrom(original.Address)
-        Me.MailingAddressId = Guid.Empty
-        Me.MailingAddress.CopyFrom(original.MailingAddress)
+        AddressId = Guid.Empty
+        Address.CopyFrom(original.Address)
+        MailingAddressId = Guid.Empty
+        MailingAddress.CopyFrom(original.MailingAddress)
         If original.UseSvcOrderAddress Then
-            Me.SvcOrdersAddress.Copy(original.SvcOrdersAddress)
+            SvcOrdersAddress.Copy(original.SvcOrdersAddress)
         End If
 
 
@@ -2699,17 +2699,17 @@ Public Class Dealer
 
 
     Public Sub DeleteAndSave()
-        Me.CheckDeleted()
-        Dim addr As Address = Me.Address
-        Dim mailingaddr As Address = Me.MailingAddress
+        CheckDeleted()
+        Dim addr As Address = Address
+        Dim mailingaddr As Address = MailingAddress
 
-        Me.BeginEdit()
+        BeginEdit()
         addr.BeginEdit()
         mailingaddr.BeginEdit()
 
-        If Me.UseSvcOrderAddress Then
+        If UseSvcOrderAddress Then
             Try
-                Dim ServOrderAddress As ServiceOrdersAddress = Me.SvcOrdersAddress
+                Dim ServOrderAddress As ServiceOrdersAddress = SvcOrdersAddress
                 Dim ServOrdersAddrAddress As Address = SvcOrdersAddress.Address
                 ServOrderAddress.Address.BeginEdit()
                 ServOrderAddress.BeginEdit()
@@ -2722,15 +2722,15 @@ Public Class Dealer
 
         Try
 
-            Me.Delete()
+            Delete()
             addr.Delete()
             mailingaddr.Delete()
-            Me.Save()
+            Save()
         Catch ex As Exception
             If ex.Message = "Integrity Constraint Violation" Then
-                Me.ConstrVoilation = True
+                ConstrVoilation = True
             End If
-            Me.cancelEdit()
+            cancelEdit()
             addr.cancelEdit()
             mailingaddr.cancelEdit()
             Throw ex
@@ -2839,7 +2839,7 @@ Public Class Dealer
             Dim dal As New DealerDAL
             Dim ds As DataSet
 
-            ds = dal.GetDealerProductCodesCount(Me.Id)
+            ds = dal.GetDealerProductCodesCount(Id)
             Return CType((ds.Tables(DealerDAL.DEALER_PRODUCT_CODES_COUNT_TABLE).Rows(0).Item(DealerDAL.COL_NAME_DEALER_PRODUCT_CODES_COUNT)), Integer)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
@@ -2852,7 +2852,7 @@ Public Class Dealer
             Dim dal As New DealerDAL
             Dim ds As DataSet
 
-            ds = dal.GetDealerCoveragesCount(Me.Id)
+            ds = dal.GetDealerCoveragesCount(Id)
             Return CType((ds.Tables(DealerDAL.DEALER_COVERAGES_COUNT_TABLE).Rows(0).Item(DealerDAL.COL_NAME_DEALER_COVERAGES_COUNT)), Integer)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
@@ -2860,7 +2860,7 @@ Public Class Dealer
 
     End Function
     Public Function DealerHasValidContract() As Boolean
-        Dim dealerContractsView As DataView = Contract.getList(Me.Id)
+        Dim dealerContractsView As DataView = Contract.getList(Id)
         Dim blnValidContract As Boolean
         If dealerContractsView.Count <= 0 Then
             Return False
@@ -2883,11 +2883,11 @@ Public Class Dealer
     Public Function IsLastContractPolicyAutoGenerated() As Boolean
 
         Dim dealerContract As Contract
-        dealerContract = Contract.GetCurrentContract(Me.Id)
+        dealerContract = Contract.GetCurrentContract(Id)
 
         ' if no active contract as per current date then get last expired contract.
         If dealerContract Is Nothing Then
-            dealerContract = Contract.GetMaxExpirationContract(Me.Id)
+            dealerContract = Contract.GetMaxExpirationContract(Id)
         End If
 
         If dealerContract Is Nothing Then
@@ -2903,7 +2903,7 @@ Public Class Dealer
 
     End Function
     Public Function DealerHasSameRecurringPremiumSetting(ByVal objOtherDealer As Dealer) As Boolean
-        Dim dealerContract As Contract = Contract.GetCurrentContract(Me.Id)
+        Dim dealerContract As Contract = Contract.GetCurrentContract(Id)
         Dim otherDealerContract As Contract = Contract.GetCurrentContract(objOtherDealer.Id)
         Dim blnHasSameRecurringPremiumSetting As Boolean
         If dealerContract.RecurringPremiumId.Equals(otherDealerContract.RecurringPremiumId) Then
@@ -2918,7 +2918,7 @@ Public Class Dealer
     Public Function EnteredDateWithinContract(ByVal EnteredEffectiveDate As String, ByVal EnteredExpirationDate As String) As Boolean
         ' to check the entered dates for coverage are within the date range of the contract which has highest expiration date for one dealer
         Dim oContract As Contract
-        oContract = Contract.GetMaxExpirationContract(Me.Id)
+        oContract = Contract.GetMaxExpirationContract(Id)
         Dim blnDateWithinContract As Boolean
         Dim contractEffective As Date = oContract.Effective.Value
         Dim contractExpiration As Date = oContract.Expiration.Value
@@ -2937,7 +2937,7 @@ Public Class Dealer
             Dim dal As New DealerDAL
             Dim ds As DataSet
 
-            ds = dal.GetDealerCertificatesCount(Me.Id)
+            ds = dal.GetDealerCertificatesCount(Id)
             Return CType((ds.Tables(DealerDAL.DEALER_CERTIFICATES_COUNT_TABLE).Rows(0).Item(DealerDAL.COL_NAME_DEALER_CERTIFICATES_COUNT)), Integer)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
@@ -2949,8 +2949,8 @@ Public Class Dealer
             Dim dal As New DealerDAL
             Dim ds As DataSet
 
-            If Not Me.Dealer Is Nothing AndAlso Not business_country.Equals(Guid.Empty) AndAlso company_type_id.Equals(Guid.Empty) Then
-                ds = dal.GetDupicateDealerCount(Me.Dealer, business_country, company_type_id)
+            If Not Dealer Is Nothing AndAlso Not business_country.Equals(Guid.Empty) AndAlso company_type_id.Equals(Guid.Empty) Then
+                ds = dal.GetDupicateDealerCount(Dealer, business_country, company_type_id)
             Else
                 Return False
             End If
@@ -2971,8 +2971,8 @@ Public Class Dealer
             Dim dal As New DealerDAL
             Dim ds As DataSet
 
-            If Not Me.Dealer Is Nothing Then
-                ds = dal.LoadDealerCountByCode(Me.Dealer)
+            If Not Dealer Is Nothing Then
+                ds = dal.LoadDealerCountByCode(Dealer)
             Else
                 Return False
             End If
@@ -3240,9 +3240,9 @@ Public Class Dealer
         Dim dealerClmApproveClmtypeIdStr As String
         For Each dealerClmApproveClmtypeIdStr In selectedClaimTypeGuidStrCollection
             'update to new DealerClmAproveClmtype GUID
-            Dim newBO As DealerClmAproveClmtype = New DealerClmAproveClmtype(Me.Dataset)
+            Dim newBO As DealerClmAproveClmtype = New DealerClmAproveClmtype(Dataset)
             If Not newBO Is Nothing Then
-                newBO.DealerId = Me.Id
+                newBO.DealerId = Id
                 newBO.ClaimTypeId = New Guid(dealerClmApproveClmtypeIdStr)
                 newBO.Save()
             End If
@@ -3253,7 +3253,7 @@ Public Class Dealer
         Dim dealerClmApproveClmtypeIdStr As String
         For Each dealerClmApproveClmtypeIdStr In selectedClaimTypeGuidStrCollection
             'update to new DealerClmAproveClmtype GUID
-            Dim newBO As DealerClmAproveClmtype = New DealerClmAproveClmtype(Me.Dataset, Me.Id, New Guid(dealerClmApproveClmtypeIdStr))
+            Dim newBO As DealerClmAproveClmtype = New DealerClmAproveClmtype(Dataset, Id, New Guid(dealerClmApproveClmtypeIdStr))
             If Not newBO Is Nothing Then
                 newBO.Delete()
                 newBO.Save()
@@ -3265,9 +3265,9 @@ Public Class Dealer
         Dim dealerClmAproveCovtypeIdStr As String
         For Each dealerClmAproveCovtypeIdStr In selectedCoverageTypeGuidStrCollection
             'update to new DealerClmAproveCovtype GUID
-            Dim newBO As DealerClmAproveCovtype = New DealerClmAproveCovtype(Me.Dataset)
+            Dim newBO As DealerClmAproveCovtype = New DealerClmAproveCovtype(Dataset)
             If Not newBO Is Nothing Then
-                newBO.DealerId = Me.Id
+                newBO.DealerId = Id
                 newBO.CoverageTypeId = New Guid(dealerClmAproveCovtypeIdStr)
                 newBO.Save()
             End If
@@ -3278,7 +3278,7 @@ Public Class Dealer
         Dim dealerClmAproveCovtypeIdStr As String
         For Each dealerClmAproveCovtypeIdStr In selectedCoverageTypeGuidStrCollection
             'update to new DealerClmAproveCovtype GUID
-            Dim newBO As DealerClmAproveCovtype = New DealerClmAproveCovtype(Me.Dataset, Me.Id, New Guid(dealerClmAproveCovtypeIdStr))
+            Dim newBO As DealerClmAproveCovtype = New DealerClmAproveCovtype(Dataset, Id, New Guid(dealerClmAproveCovtypeIdStr))
             If Not newBO Is Nothing Then
                 newBO.Delete()
                 newBO.Save()
@@ -3412,7 +3412,7 @@ Public Class Dealer
             Dim obj As Dealer = CType(objectToValidate, Dealer)
 
             If obj.DealerTypeDesc = obj.DEALER_TYPE_DESC Then
-                Dim mandatAttr As New ValueMandatoryAttribute(Me.DisplayName)
+                Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
                 Return True
@@ -3454,7 +3454,7 @@ Public Class Dealer
 
             sVal = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, obj.RegistrationProcessFlagId)
             If sVal = Codes.YESNO_Y Then
-                Dim mandatAttr As New ValueMandatoryAttribute(Me.DisplayName)
+                Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
                 Return True

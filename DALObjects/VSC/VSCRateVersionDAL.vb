@@ -34,28 +34,28 @@ Public Class VSCRateVersionDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("vsc_rate_version_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal SearchBy As SearchByType, ByVal CompanyGroupID As Guid, _
-                            ByVal PlanID As Guid, _
-                            ByVal Code As String, _
-                            ByVal Name As String, _
-                            ByVal EffectiveDate As Date, _
+    Public Function LoadList(SearchBy As SearchByType, CompanyGroupID As Guid, _
+                            PlanID As Guid, _
+                            Code As String, _
+                            Name As String, _
+                            EffectiveDate As Date, _
                             Optional ByVal HighestVersionOnly As Boolean = True, _
                             Optional ByVal iVersionNumber As Integer = 0) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
         Dim whereClauseConditions As String = ""
 
@@ -65,18 +65,18 @@ Public Class VSCRateVersionDAL
 
         If SearchBy = SearchByType.Dealer Then
             whereClauseConditions &= Environment.NewLine & " AND dg.dealer_group_id is null and d.dealer_id is not null"
-            If Me.FormatSearchMask(Code) Then
+            If FormatSearchMask(Code) Then
                 whereClauseConditions &= Environment.NewLine & " AND " & "UPPER(d.dealer) " & Code.ToUpper
             End If
-            If Me.FormatSearchMask(Name) Then
+            If FormatSearchMask(Name) Then
                 whereClauseConditions &= Environment.NewLine & " AND " & "UPPER(d.Dealer_Name) " & Name.ToUpper
             End If
         ElseIf SearchBy = SearchByType.DealerGroup Then
             whereClauseConditions &= Environment.NewLine & " AND dg.dealer_group_id is not null and d.dealer_id is null"
-            If Me.FormatSearchMask(Code) Then
+            If FormatSearchMask(Code) Then
                 whereClauseConditions &= Environment.NewLine & " AND " & "UPPER(dg.CODE) " & Code.ToUpper
             End If
-            If Me.FormatSearchMask(Name) Then
+            If FormatSearchMask(Name) Then
                 whereClauseConditions &= Environment.NewLine & " AND " & "UPPER(dg.DESCRIPTION) " & Name.ToUpper
             End If
         ElseIf SearchBy = SearchByType.CompanyGroup Then
@@ -96,27 +96,27 @@ Public Class VSCRateVersionDAL
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("company_group_id", CompanyGroupID.ToByteArray)}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadListByDealerGroup(ByVal CompanyGroupID As Guid, _
-                                            ByVal PlanID As Guid, _
-                                            ByVal DealerGroupID As Guid, _
+    Public Function LoadListByDealerGroup(CompanyGroupID As Guid, _
+                                            PlanID As Guid, _
+                                            DealerGroupID As Guid, _
                                             Optional ByVal HighestVersionOnly As Boolean = True) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
         Dim whereClauseConditions As String = ""
 
@@ -131,15 +131,15 @@ Public Class VSCRateVersionDAL
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("company_group_id", CompanyGroupID.ToByteArray)}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -150,7 +150,7 @@ Public Class VSCRateVersionDAL
 
     Public Function validateEffectiveDate(RateVersionId As Guid, EffectiveDate As Date) As String
         Dim sqlStmt As String
-        sqlStmt = Me.Config("/SQL/VALIDATE_VSC_PLAN_RATE")
+        sqlStmt = Config("/SQL/VALIDATE_VSC_PLAN_RATE")
 
         Try
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
@@ -175,12 +175,12 @@ Public Class VSCRateVersionDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

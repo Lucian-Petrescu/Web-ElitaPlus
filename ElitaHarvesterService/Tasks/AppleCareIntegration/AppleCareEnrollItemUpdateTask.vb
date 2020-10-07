@@ -19,7 +19,7 @@ Public Class AppleCareEnrollItemUpdateTask
 
 #Region "Constructors"
 
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 
@@ -30,7 +30,7 @@ Public Class AppleCareEnrollItemUpdateTask
         Get
             Return _certificateId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _certificateId = value
         End Set
     End Property
@@ -39,7 +39,7 @@ Public Class AppleCareEnrollItemUpdateTask
         Get
             Return _oCertificate
         End Get
-        Set(ByVal value As Certificate)
+        Set(value As Certificate)
             _oCertificate = value
         End Set
     End Property
@@ -92,8 +92,8 @@ Public Class AppleCareEnrollItemUpdateTask
 
                     If failedLogs.Length > 0 Then
                         failedLogs.AppendLine("Successfully processed " + countSuccessFull.ToString() + " out of " + oCertificateItems.Count.ToString())
-                        Me.FailReason = failedLogs.ToString()
-                        Throw New Exception(Me.FailReason)
+                        FailReason = failedLogs.ToString()
+                        Throw New Exception(FailReason)
                     End If
                 End If
             End If
@@ -101,7 +101,7 @@ Public Class AppleCareEnrollItemUpdateTask
         Catch ex As Exception
             If failedLogs Is Nothing Then
                 failedLogs.AppendLine(ex.Message)
-                Me.FailReason = failedLogs.ToString()
+                FailReason = failedLogs.ToString()
             End If
 
             Logger.AddError(ex)

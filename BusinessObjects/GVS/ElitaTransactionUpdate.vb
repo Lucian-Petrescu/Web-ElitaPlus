@@ -53,8 +53,8 @@ Public Class ElitaTransactionUpdate
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -65,10 +65,10 @@ Public Class ElitaTransactionUpdate
     Private Sub Load(ByVal ds As ElitaTransactionUpdateDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -87,23 +87,23 @@ Public Class ElitaTransactionUpdate
         Try
             If ds.TRANSACTION_HEADER.Count = 0 Or ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
             With ds.TRANSACTION_HEADER.Item(0)
-                Me.OriginalTransLogHdrID = New Guid(GuidControl.HexToByteArray(.ELITA_ORGINAL_TRANS_ID))
-                Me.GVSoriginalTransNo = .TRANSACTION_ID
-                Me.FunctionTypeCode = .FUNCTION_TYPE
+                OriginalTransLogHdrID = New Guid(GuidControl.HexToByteArray(.ELITA_ORGINAL_TRANS_ID))
+                GVSoriginalTransNo = .TRANSACTION_ID
+                FunctionTypeCode = .FUNCTION_TYPE
             End With
 
-            If Not (Me.FunctionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_TRANSACTION_UPDATE) Then
+            If Not (FunctionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_TRANSACTION_UPDATE) Then
                 Throw New BOValidationException("ElitaTransactionUpdate Error: ", Common.ErrorCodes.ERR_FUNCTION_TYPE_CODE)
             Else
-                Me.FunctionTypeId = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.FunctionTypeCode)
+                FunctionTypeId = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), FunctionTypeCode)
 
-                If Me.FunctionTypeId.Equals(Guid.Empty) Then
+                If FunctionTypeId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("ElitaTransactionUpdate Error: ", Common.ErrorCodes.ERR_FUNCTION_TYPE_CODE)
                 End If
             End If
 
             OriginalTransLogHdrIDExist = False
-            Dim logHeader As TransactionLogHeader = New TransactionLogHeader(Me.OriginalTransLogHdrID)
+            Dim logHeader As TransactionLogHeader = New TransactionLogHeader(OriginalTransLogHdrID)
             OriginalTransLogHdrIDExist = True
 
         Catch ex As BOValidationException
@@ -167,11 +167,11 @@ Public Class ElitaTransactionUpdate
     Public Overrides Function ProcessWSRequest() As String
         Try
             Dim logHeader As TransactionLogHeader = New TransactionLogHeader
-            logHeader.OriginalTransLogHdrID = Me.OriginalTransLogHdrID
-            logHeader.GVSoriginalTransNo = Me.GVSoriginalTransNo
+            logHeader.OriginalTransLogHdrID = OriginalTransLogHdrID
+            logHeader.GVSoriginalTransNo = GVSoriginalTransNo
             logHeader.TransactionStatusID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSTransactionStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), DALObjects.TransactionLogHeaderDAL.TRANSACTION_STATUS_NEW)
             logHeader.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-            logHeader.FunctionTypeID = Me.FunctionTypeId
+            logHeader.FunctionTypeID = FunctionTypeId
             logHeader.TransactionXml = XMLHelper.FromDatasetToXML(dsMyTransactionUpdate, Nothing, True).Replace("<ElitaTransactionUpdateDs>", "").Replace("</ElitaTransactionUpdateDs>", "")
             logHeader.Save()
 

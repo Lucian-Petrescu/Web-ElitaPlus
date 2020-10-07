@@ -1,6 +1,6 @@
 Public Class GuidControl
 
-    Public Shared Function GuidToHexString(ByVal Value As Guid) As String
+    Public Shared Function GuidToHexString(Value As Guid) As String
         Dim byteArray As Byte() = Value.ToByteArray
         Dim i As Integer
         Dim result As New System.Text.StringBuilder("")
@@ -14,13 +14,13 @@ Public Class GuidControl
         Return result.ToString
     End Function
 
-    Public Shared Function ByteArrayToGuid(ByVal Value As Object) As Guid
+    Public Shared Function ByteArrayToGuid(Value As Object) As Guid
         Dim byteArray As Byte() = CType(Value, Byte())
         Return New Guid(CType(byteArray, Byte()))
     End Function
 
     'Returns a byte Array from an oracle formatted Hex String
-    Public Shared Function HexToByteArray(ByVal hexString As String) As Byte()
+    Public Shared Function HexToByteArray(hexString As String) As Byte()
 
         Dim intNumChars As Integer = hexString.Length
         Dim _bytes((intNumChars / 2) - 1) As Byte

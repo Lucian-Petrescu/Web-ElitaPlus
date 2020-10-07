@@ -27,38 +27,38 @@ Public Class CodeMappingDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("code_mapping_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function AdminLoadListItems(ByVal LanguageId As Guid, ByVal ListId As Guid, ByVal companyId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function AdminLoadListItems(LanguageId As Guid, ListId As Guid, companyId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As New DataSet
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
             {New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, companyId.ToByteArray), _
              New DBHelper.DBHelperParameter(COL_NAME_LANG_ID, LanguageId.ToByteArray), _
              New DBHelper.DBHelperParameter(COL_NAME_LIST_ID, ListId.ToByteArray)}
-        Return (DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters))
+        Return (DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters))
     End Function
 
-    Public Function LoadCovertedCode(ByVal companyID As Guid, ByVal ListCode As String, ByVal ListItemCode As String) As String
+    Public Function LoadCovertedCode(companyID As Guid, ListCode As String, ListItemCode As String) As String
         Dim strResult As String = String.Empty
-        Dim selectStmt As String = Me.Config("/SQL/GET_CONVERTED_CODE")
+        Dim selectStmt As String = Config("/SQL/GET_CONVERTED_CODE")
         Try
             Dim ds As New DataSet
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
@@ -66,7 +66,7 @@ Public Class CodeMappingDAL
                  New DBHelper.DBHelperParameter("list_code", ListCode), _
                  New DBHelper.DBHelperParameter("list_item_code", ListItemCode)}
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             If ds.Tables(0).Rows.Count > 0 Then
                 strResult = ds.Tables(0).Rows(0).Item(0)
             End If
@@ -78,17 +78,17 @@ Public Class CodeMappingDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
@@ -96,10 +96,10 @@ Public Class CodeMappingDAL
         End If
         Try
             'First Pass updates Deletions
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 
             If Transaction Is Nothing Then
                 'We are the creator of the transaction we shoul commit it  and close the connection

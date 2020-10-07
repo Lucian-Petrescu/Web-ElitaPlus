@@ -36,7 +36,7 @@ Public Class NavigationHistory
     End Function
 
 
-    Private Shared Sub SavePageHistory(ByVal oStack As Stack)
+    Private Shared Sub SavePageHistory(oStack As Stack)
         'Save the stack into memory using the session.
         HttpContext.Current.Session(PAGE_HISTORY) = oStack
     End Sub
@@ -52,7 +52,7 @@ Public Class NavigationHistory
     End Function
 
 
-    Public Shared Sub AddPageToHistory(ByVal sPageName As String)
+    Public Shared Sub AddPageToHistory(sPageName As String)
 
         Dim sLastPageInHistory As String
         Dim sNextPageToAddToHistory As String
@@ -96,7 +96,7 @@ Public Class NavigationHistory
     End Sub
 
 
-    Public Shared Function LastPageByNumber(ByVal nCount As Int16) As String
+    Public Shared Function LastPageByNumber(nCount As Int16) As String
 
         'return the top item in the stack and save it into memory.
         Dim oStack As Stack
@@ -128,7 +128,7 @@ Public Class NavigationHistory
     End Function
 
 
-    Private Shared Function KeepHomePageInHistory(ByVal sLastPage As String, ByVal oStack As Stack) As Stack
+    Private Shared Function KeepHomePageInHistory(sLastPage As String, oStack As Stack) As Stack
 
         '  Dim CFG_HOME_PAGE As String = ConfigurationMgr.ConfigValue(ELPWebConstants.HOME_PAGE)
         Dim CFG_HOME_PAGE As String = ELPWebConstants.HOME_PAGE

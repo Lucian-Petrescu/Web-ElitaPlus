@@ -49,23 +49,23 @@ Public Class TransAllMappingDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("transall_mapping_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal DealerId As Guid, ByVal CompanyIds As ArrayList) As DataSet
+    Public Function LoadList(DealerId As Guid, CompanyIds As ArrayList) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
         Dim whereClauseConditions As String = ""
 
@@ -74,26 +74,26 @@ Public Class TransAllMappingDAL
         End If
 
         If Not CompanyIds Is Nothing Then
-            whereClauseConditions &= MiscUtil.BuildListForSql(" AND d." & Me.PAR_COMPANY_ID, CompanyIds, True)
+            whereClauseConditions &= MiscUtil.BuildListForSql(" AND d." & PAR_COMPANY_ID, CompanyIds, True)
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
-            Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            Return DBHelper.Fetch(selectStmt, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadList(ByVal FileName As String, ByVal CompanyIds As ArrayList) As DataSet
+    Public Function LoadList(FileName As String, CompanyIds As ArrayList) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_FILE")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_FILE")
         Dim parameters As DBHelper.DBHelperParameter()
         Dim whereClauseConditions As String = ""
 
@@ -101,28 +101,28 @@ Public Class TransAllMappingDAL
                        New DBHelper.DBHelperParameter(PAR_FILE_NAME, FileName)}
 
         If Not CompanyIds Is Nothing Then
-            whereClauseConditions &= MiscUtil.BuildListForSql("elp_dealer." & Me.PAR_COMPANY_ID, CompanyIds, True)
+            whereClauseConditions &= MiscUtil.BuildListForSql("elp_dealer." & PAR_COMPANY_ID, CompanyIds, True)
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim ds As New DataSet
 
         Try
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadListByDirectory(ByVal DirectoryName As String, ByVal CompanyIds As ArrayList) As DataSet
+    Public Function LoadListByDirectory(DirectoryName As String, CompanyIds As ArrayList) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_DIRECTORY")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_DIRECTORY")
         Dim parameters As DBHelper.DBHelperParameter()
         Dim whereClauseConditions As String = ""
 
@@ -130,27 +130,27 @@ Public Class TransAllMappingDAL
                        New DBHelper.DBHelperParameter(PAR_OUTPUT_PATH, DirectoryName)}
 
         If Not CompanyIds Is Nothing Then
-            whereClauseConditions &= MiscUtil.BuildListForSql("elp_dealer." & Me.PAR_COMPANY_ID, CompanyIds, True)
+            whereClauseConditions &= MiscUtil.BuildListForSql("elp_dealer." & PAR_COMPANY_ID, CompanyIds, True)
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim ds As New DataSet
 
         Try
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
-    Public Function LoadListByDirectoryAndFileName(ByVal DirectoryName As String, ByVal partialFileName As String, ByVal CompanyIds As ArrayList) As DataSet
+    Public Function LoadListByDirectoryAndFileName(DirectoryName As String, partialFileName As String, CompanyIds As ArrayList) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_DIRECTORY_FILENAME")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_DIRECTORY_FILENAME")
         Dim parameters As DBHelper.DBHelperParameter()
         Dim whereClauseConditions As String = ""
         partialFileName = partialFileName & "%"
@@ -159,28 +159,28 @@ Public Class TransAllMappingDAL
                        New DBHelper.DBHelperParameter("inbound_filename", partialFileName.ToUpper().ToString())}
 
         If Not CompanyIds Is Nothing Then
-            whereClauseConditions &= MiscUtil.BuildListForSql("elp_dealer." & Me.PAR_COMPANY_ID, CompanyIds, True)
+            whereClauseConditions &= MiscUtil.BuildListForSql("elp_dealer." & PAR_COMPANY_ID, CompanyIds, True)
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim ds As New DataSet
 
         Try
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadListByOutputDirectoryAndFileName(ByVal DirectoryName As String, ByVal FileName As String, ByVal CompanyIds As ArrayList) As DataSet
+    Public Function LoadListByOutputDirectoryAndFileName(DirectoryName As String, FileName As String, CompanyIds As ArrayList) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_OUTPUT_DIRECTORY_FILENAME")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_OUTPUT_DIRECTORY_FILENAME")
         Dim parameters As DBHelper.DBHelperParameter()
         Dim whereClauseConditions As String = ""
 
@@ -189,28 +189,28 @@ Public Class TransAllMappingDAL
                        New DBHelper.DBHelperParameter("inbound_filename", FileName.ToUpper().ToString())}
 
         If Not CompanyIds Is Nothing Then
-            whereClauseConditions &= MiscUtil.BuildListForSql("elp_dealer." & Me.PAR_COMPANY_ID, CompanyIds, True)
+            whereClauseConditions &= MiscUtil.BuildListForSql("elp_dealer." & PAR_COMPANY_ID, CompanyIds, True)
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim ds As New DataSet
 
         Try
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadListByOutputDirectory(ByVal DirectoryName As String, ByVal CompanyIds As ArrayList) As DataSet
+    Public Function LoadListByOutputDirectory(DirectoryName As String, CompanyIds As ArrayList) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_OUTPUT_DIRECTORY")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_OUTPUT_DIRECTORY")
         Dim parameters As DBHelper.DBHelperParameter()
         Dim whereClauseConditions As String = ""
 
@@ -218,19 +218,19 @@ Public Class TransAllMappingDAL
                        New DBHelper.DBHelperParameter(PAR_OUTPUT_PATH, DirectoryName)}
 
         If Not CompanyIds Is Nothing Then
-            whereClauseConditions &= MiscUtil.BuildListForSql("elp_dealer." & Me.PAR_COMPANY_ID, CompanyIds, True)
+            whereClauseConditions &= MiscUtil.BuildListForSql("elp_dealer." & PAR_COMPANY_ID, CompanyIds, True)
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim ds As New DataSet
 
         Try
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -240,8 +240,8 @@ Public Class TransAllMappingDAL
 
 
 
-    Public Sub LogTransallErrors(ByVal region As String, ByVal filename As String, ByVal code As String, ByVal log_details As String, ByVal created_by As String)
-        Dim sqlStmt As String = Me.Config("/SQL/TRANSALL_LOG")
+    Public Sub LogTransallErrors(region As String, filename As String, code As String, log_details As String, created_by As String)
+        Dim sqlStmt As String = Config("/SQL/TRANSALL_LOG")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                           New DBHelper.DBHelperParameter("p_region", region), _
                           New DBHelper.DBHelperParameter("p_file_name", filename), _
@@ -259,12 +259,12 @@ Public Class TransAllMappingDAL
    
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

@@ -4,7 +4,7 @@ Imports System.Collections.Generic
 Public Module DataSourceExtensions
 
     <Extension()> _
-    Public Function GetSelectedRowIndex(ByVal pDataView As DataView, ByVal pCondition As Func(Of DataRowView, Boolean)) As Integer
+    Public Function GetSelectedRowIndex(pDataView As DataView, pCondition As Func(Of DataRowView, Boolean)) As Integer
 
         For i As Integer = 0 To pDataView.Count - 1
             If (pCondition(pDataView(i))) Then
@@ -17,7 +17,7 @@ Public Module DataSourceExtensions
     End Function
 
     <Extension()> _
-    Public Function GetSelectedRowIndex(Of TType)(ByVal pEnumerable As IEnumerable(Of TType), ByVal pCondition As Func(Of TType, Boolean)) As Integer
+    Public Function GetSelectedRowIndex(Of TType)(pEnumerable As IEnumerable(Of TType), pCondition As Func(Of TType, Boolean)) As Integer
 
         Dim i As Integer = 0
 
@@ -34,7 +34,7 @@ Public Module DataSourceExtensions
 
 
     <Extension()> _
-    Public Function GetSelectedRowIndex(ByVal pDataView As DataTable, ByVal pCondition As Func(Of DataRow, Boolean)) As Integer
+    Public Function GetSelectedRowIndex(pDataView As DataTable, pCondition As Func(Of DataRow, Boolean)) As Integer
 
         For i As Integer = 0 To pDataView.Rows.Count - 1
             If (pCondition(pDataView(i))) Then

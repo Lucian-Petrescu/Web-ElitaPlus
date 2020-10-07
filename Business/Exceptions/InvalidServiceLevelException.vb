@@ -6,10 +6,10 @@ Public Class InvalidServiceLevelException
 
     Public ReadOnly ServiceLevel As String
 
-    Public Sub New(ByVal pServiceLevel As String)
+    Public Sub New(pServiceLevel As String)
         ServiceLevel = pServiceLevel
     End Sub
-    Public Sub New(ByVal pServiceLevel As String, pMessage As String)
+    Public Sub New(pServiceLevel As String, pMessage As String)
         MyBase.New(pMessage)
         ServiceLevel = pServiceLevel
     End Sub

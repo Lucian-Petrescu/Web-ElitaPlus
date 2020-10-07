@@ -56,18 +56,18 @@ Namespace Tables
             End Get
         End Property
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     Dim CalPar As ReturnType = CType(CallingPar, ReturnType)
                     If Not CalPar.SelectedGuid.Equals(Guid.Empty) Then
-                        Me.State.MyBO = New AcctCompany(CalPar.SelectedGuid)
+                        State.MyBO = New AcctCompany(CalPar.SelectedGuid)
                         Exit Sub
                     End If
                 End If
-                Me.State.IsNew = True
+                State.IsNew = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -80,8 +80,8 @@ Namespace Tables
             Public EditingBo As AcctCompany
             Public SelectedGuid As Guid = Guid.Empty
 
-            Public Sub New(ByVal AcctCompanyId As Guid, ByVal curEditingBo As AcctCompany)
-                Me.EditingBo = curEditingBo
+            Public Sub New(AcctCompanyId As Guid, curEditingBo As AcctCompany)
+                EditingBo = curEditingBo
                 SelectedGuid = AcctCompanyId
             End Sub
 
@@ -91,38 +91,38 @@ Namespace Tables
 
 #Region "Page Events"
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
-            Me.ErrControllerMaster.Clear_Hide()
+            ErrControllerMaster.Clear_Hide()
 
-            Me.SetFormTitle(PAGETITLE)
-            Me.SetFormTab(PAGETAB)
+            SetFormTitle(PAGETITLE)
+            SetFormTab(PAGETAB)
 
             Try
-                If Not Me.IsPostBack Then
-                    Me.MenuEnabled = False
-                    Me.AddConfirmation(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
+                If Not IsPostBack Then
+                    MenuEnabled = False
+                    AddConfirmation(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
 
                     PopulateAll()
 
-                    If Me.State.IsNew = True Then
+                    If State.IsNew = True Then
                         CreateNew()
                     End If
 
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
 
                 End If
                 BindBoPropertiesToLabels()
                 CheckIfComingFromSaveConfirm()
-                If Not Me.IsPostBack Then
-                    Me.AddLabelDecorations(Me.State.MyBO)
+                If Not IsPostBack Then
+                    AddLabelDecorations(State.MyBO)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 
@@ -135,7 +135,7 @@ Namespace Tables
         Private Sub PopulateAll()
 
             Dim YESNOdv As DataView = LookupListNew.DropdownLookupList(YesNo, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
-            Me.State.YESNOdv = YESNOdv
+            State.YESNOdv = YESNOdv
 
             'Me.BindListControlToDataView(Me.UseAccountingDropdown, YESNOdv)
             'Me.BindListControlToDataView(Me.RptCommissionDropDown, YESNOdv)
@@ -154,48 +154,48 @@ Namespace Tables
                CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO",
                                                                languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
 
-            Me.UseAccountingDropdown.Populate(YesNoList.ToArray(), populateOptions)
-            Me.RptCommissionDropDown.Populate(YesNoList.ToArray(), populateOptions)
-            Me.UseElitaBankInfoDropdown.Populate(YesNoList.ToArray(), populateOptions)
-            Me.CoverageEntityByRegionDropdown.Populate(YesNoList.ToArray(), populateOptions)
-            Me.UseCoverageEntityDropdown.Populate(YesNoList.ToArray(), populateOptions)
+            UseAccountingDropdown.Populate(YesNoList.ToArray(), populateOptions)
+            RptCommissionDropDown.Populate(YesNoList.ToArray(), populateOptions)
+            UseElitaBankInfoDropdown.Populate(YesNoList.ToArray(), populateOptions)
+            CoverageEntityByRegionDropdown.Populate(YesNoList.ToArray(), populateOptions)
+            UseCoverageEntityDropdown.Populate(YesNoList.ToArray(), populateOptions)
 
             Dim AccountingSystem As DataElements.ListItem() =
                CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTSYS",
                                                                languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
 
-            Me.AccountingSystemDropDown.Populate(AccountingSystem.ToArray(), populateOptions)
+            AccountingSystemDropDown.Populate(AccountingSystem.ToArray(), populateOptions)
 
             Dim ProcessMethod As DataElements.ListItem() =
                CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTPROC",
                                                                languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
 
-            Me.ProcessMethodDropDown.Populate(ProcessMethod.ToArray(), populateOptions)
+            ProcessMethodDropDown.Populate(ProcessMethod.ToArray(), populateOptions)
 
         End Sub
 
         Protected Sub PopulateFormFromBOs()
 
-            Dim YesNodv As DataView = Me.State.YESNOdv
+            Dim YesNodv As DataView = State.YESNOdv
 
-            With Me.State.MyBO
+            With State.MyBO
 
                 'fill text boxes
-                Me.PopulateControlFromBOProperty(Me.DescriptionTextBox, .Description)
-                Me.PopulateControlFromBOProperty(Me.CodeTextBox, .Code)
-                Me.PopulateControlFromBOProperty(Me.ftpDirectoryTextBox, .FTPDirectory)
-                Me.PopulateControlFromBOProperty(Me.balanceDirectoryTextBox, .BalanceDirectory)
-                Me.PopulateControlFromBOProperty(Me.notifyEmailTextBox, .NotifyEmail)
+                PopulateControlFromBOProperty(DescriptionTextBox, .Description)
+                PopulateControlFromBOProperty(CodeTextBox, .Code)
+                PopulateControlFromBOProperty(ftpDirectoryTextBox, .FTPDirectory)
+                PopulateControlFromBOProperty(balanceDirectoryTextBox, .BalanceDirectory)
+                PopulateControlFromBOProperty(notifyEmailTextBox, .NotifyEmail)
 
                 'fill dropdowns
-                Me.PopulateControlFromBOProperty(Me.AccountingSystemDropDown, .AcctSystemId)
-                Me.PopulateControlFromBOProperty(Me.UseAccountingDropdown, LookupListNew.GetIdFromCode(YesNodv, .UseAccounting))
+                PopulateControlFromBOProperty(AccountingSystemDropDown, .AcctSystemId)
+                PopulateControlFromBOProperty(UseAccountingDropdown, LookupListNew.GetIdFromCode(YesNodv, .UseAccounting))
 
-                Me.PopulateControlFromBOProperty(Me.ProcessMethodDropDown, .ProcessMethodId)
-                Me.PopulateControlFromBOProperty(Me.UseElitaBankInfoDropdown, .UseElitaBankInfoId)
-                Me.PopulateControlFromBOProperty(Me.RptCommissionDropDown, LookupListNew.GetIdFromCode(YesNodv, .ReportCommissionBreakdown))
-                Me.PopulateControlFromBOProperty(Me.UseCoverageEntityDropdown, .UseCoverageEntityId)
-                Me.PopulateControlFromBOProperty(Me.CoverageEntityByRegionDropdown, .CoverageEntityByRegion)
+                PopulateControlFromBOProperty(ProcessMethodDropDown, .ProcessMethodId)
+                PopulateControlFromBOProperty(UseElitaBankInfoDropdown, .UseElitaBankInfoId)
+                PopulateControlFromBOProperty(RptCommissionDropDown, LookupListNew.GetIdFromCode(YesNodv, .ReportCommissionBreakdown))
+                PopulateControlFromBOProperty(UseCoverageEntityDropdown, .UseCoverageEntityId)
+                PopulateControlFromBOProperty(CoverageEntityByRegionDropdown, .CoverageEntityByRegion)
 
             End With
 
@@ -203,26 +203,26 @@ Namespace Tables
 
         Protected Sub PopulateBOsFromForm()
 
-            With Me.State
+            With State
 
                 'fill text boxes
-                Me.PopulateBOProperty(.MyBO, Me.DESCRIPTION_PROPERTY, Me.DescriptionTextBox)
-                Me.PopulateBOProperty(.MyBO, Me.CODE_PROPERTY, Me.CodeTextBox)
-                Me.PopulateBOProperty(.MyBO, Me.FTPDIRECTORY_PROPERTY, Me.ftpDirectoryTextBox)
-                Me.PopulateBOProperty(.MyBO, Me.BALANCEDIRECTORY_PROPERTY, Me.balanceDirectoryTextBox)
-                Me.PopulateBOProperty(.MyBO, Me.NOTIFYEMAIL_PROPERTY, Me.notifyEmailTextBox)
+                PopulateBOProperty(.MyBO, DESCRIPTION_PROPERTY, DescriptionTextBox)
+                PopulateBOProperty(.MyBO, CODE_PROPERTY, CodeTextBox)
+                PopulateBOProperty(.MyBO, FTPDIRECTORY_PROPERTY, ftpDirectoryTextBox)
+                PopulateBOProperty(.MyBO, BALANCEDIRECTORY_PROPERTY, balanceDirectoryTextBox)
+                PopulateBOProperty(.MyBO, NOTIFYEMAIL_PROPERTY, notifyEmailTextBox)
 
                 'fill dropdowns
-                Me.PopulateBOProperty(.MyBO, Me.ACCOUNTING_SYSTEM_PROPERTY, Me.AccountingSystemDropDown)
+                PopulateBOProperty(.MyBO, ACCOUNTING_SYSTEM_PROPERTY, AccountingSystemDropDown)
 
-                Me.PopulateBOProperty(.MyBO, Me.PROCESSMETHOD_PROPERTY, Me.ProcessMethodDropDown)
-                Me.PopulateBOProperty(.MyBO, Me.USE_BANK_INFO_PROPERTY, Me.UseElitaBankInfoDropdown)
-                Me.PopulateBOProperty(.MyBO, Me.USE_CVG_ENTITY_PROPERTY, Me.UseCoverageEntityDropdown)
-                Me.PopulateBOProperty(.MyBO, Me.CVG_ENTITY_BY_REGION_PROPERTY, Me.CoverageEntityByRegionDropdown)
+                PopulateBOProperty(.MyBO, PROCESSMETHOD_PROPERTY, ProcessMethodDropDown)
+                PopulateBOProperty(.MyBO, USE_BANK_INFO_PROPERTY, UseElitaBankInfoDropdown)
+                PopulateBOProperty(.MyBO, USE_CVG_ENTITY_PROPERTY, UseCoverageEntityDropdown)
+                PopulateBOProperty(.MyBO, CVG_ENTITY_BY_REGION_PROPERTY, CoverageEntityByRegionDropdown)
 
 
-                Me.PopulateBOProperty(.MyBO, Me.USE_ACCOUNTING_PROPERTY, LookupListNew.GetCodeFromId(.YESNOdv, New Guid(Me.UseAccountingDropdown.SelectedItem.Value)))
-                Me.PopulateBOProperty(.MyBO, Me.RPT_COMMISSION_PROPERTY, LookupListNew.GetCodeFromId(.YESNOdv, New Guid(Me.RptCommissionDropDown.SelectedItem.Value)))
+                PopulateBOProperty(.MyBO, USE_ACCOUNTING_PROPERTY, LookupListNew.GetCodeFromId(.YESNOdv, New Guid(UseAccountingDropdown.SelectedItem.Value)))
+                PopulateBOProperty(.MyBO, RPT_COMMISSION_PROPERTY, LookupListNew.GetCodeFromId(.YESNOdv, New Guid(RptCommissionDropDown.SelectedItem.Value)))
 
 
             End With
@@ -231,20 +231,20 @@ Namespace Tables
 
         Protected Sub BindBoPropertiesToLabels()
 
-            With Me.State
+            With State
 
-                Me.BindBOPropertyToLabel(.MyBO, Me.DESCRIPTION_PROPERTY, Me.DescriptionLabel)
-                Me.BindBOPropertyToLabel(.MyBO, Me.CODE_PROPERTY, Me.CodeLabel)
-                Me.BindBOPropertyToLabel(.MyBO, Me.FTPDIRECTORY_PROPERTY, Me.ftpDirectoryLabel)
-                Me.BindBOPropertyToLabel(.MyBO, Me.BALANCEDIRECTORY_PROPERTY, Me.balanceDirectoryLabel)
-                Me.BindBOPropertyToLabel(.MyBO, Me.NOTIFYEMAIL_PROPERTY, Me.notifyEmailLabel)
-                Me.BindBOPropertyToLabel(.MyBO, Me.ACCOUNTING_SYSTEM_PROPERTY, Me.AccountingSystemLabel)
-                Me.BindBOPropertyToLabel(.MyBO, Me.PROCESSMETHOD_PROPERTY, Me.ProcessMethodLabel)
-                Me.BindBOPropertyToLabel(.MyBO, Me.USE_BANK_INFO_PROPERTY, Me.UseElitaBankInfoLabel)
-                Me.BindBOPropertyToLabel(.MyBO, Me.USE_CVG_ENTITY_PROPERTY, Me.UseCoverageEntityLabel)
-                Me.BindBOPropertyToLabel(.MyBO, Me.CVG_ENTITY_BY_REGION_PROPERTY, Me.CoverageEntityByRegionLabel)
-                Me.BindBOPropertyToLabel(.MyBO, Me.USE_ACCOUNTING_PROPERTY, Me.UseAccountingLabel)
-                Me.BindBOPropertyToLabel(.MyBO, Me.RPT_COMMISSION_PROPERTY, Me.RptCommissionLabel)
+                BindBOPropertyToLabel(.MyBO, DESCRIPTION_PROPERTY, DescriptionLabel)
+                BindBOPropertyToLabel(.MyBO, CODE_PROPERTY, CodeLabel)
+                BindBOPropertyToLabel(.MyBO, FTPDIRECTORY_PROPERTY, ftpDirectoryLabel)
+                BindBOPropertyToLabel(.MyBO, BALANCEDIRECTORY_PROPERTY, balanceDirectoryLabel)
+                BindBOPropertyToLabel(.MyBO, NOTIFYEMAIL_PROPERTY, notifyEmailLabel)
+                BindBOPropertyToLabel(.MyBO, ACCOUNTING_SYSTEM_PROPERTY, AccountingSystemLabel)
+                BindBOPropertyToLabel(.MyBO, PROCESSMETHOD_PROPERTY, ProcessMethodLabel)
+                BindBOPropertyToLabel(.MyBO, USE_BANK_INFO_PROPERTY, UseElitaBankInfoLabel)
+                BindBOPropertyToLabel(.MyBO, USE_CVG_ENTITY_PROPERTY, UseCoverageEntityLabel)
+                BindBOPropertyToLabel(.MyBO, CVG_ENTITY_BY_REGION_PROPERTY, CoverageEntityByRegionLabel)
+                BindBOPropertyToLabel(.MyBO, USE_ACCOUNTING_PROPERTY, UseAccountingLabel)
+                BindBOPropertyToLabel(.MyBO, RPT_COMMISSION_PROPERTY, RptCommissionLabel)
 
             End With
 
@@ -252,83 +252,83 @@ Namespace Tables
 
         Protected Sub EnableDisableFields()
             'Enabled by Default
-            ControlMgr.SetEnableControl(Me, Me.btnDelete_WRITE, True)
-            ControlMgr.SetEnableControl(Me, Me.btnBack, True)
-            ControlMgr.SetEnableControl(Me, Me.btnSave_WRITE, True)
-            ControlMgr.SetEnableControl(Me, Me.btnUndo_Write, True)
-            ControlMgr.SetEnableControl(Me, Me.btnCopy_WRITE, True)
-            ControlMgr.SetEnableControl(Me, Me.btnNew_WRITE, True)
+            ControlMgr.SetEnableControl(Me, btnDelete_WRITE, True)
+            ControlMgr.SetEnableControl(Me, btnBack, True)
+            ControlMgr.SetEnableControl(Me, btnSave_WRITE, True)
+            ControlMgr.SetEnableControl(Me, btnUndo_Write, True)
+            ControlMgr.SetEnableControl(Me, btnCopy_WRITE, True)
+            ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
 
-            If Me.State.MyBO.IsNew Then
-                ControlMgr.SetEnableControl(Me, Me.btnDelete_WRITE, False)
-                ControlMgr.SetEnableControl(Me, Me.btnUndo_Write, False)
-                ControlMgr.SetEnableControl(Me, Me.btnCopy_WRITE, False)
-                ControlMgr.SetEnableControl(Me, Me.btnNew_WRITE, False)
+            If State.MyBO.IsNew Then
+                ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
+                ControlMgr.SetEnableControl(Me, btnUndo_Write, False)
+                ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
+                ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
             End If
 
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_OK Then
-                If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                    Me.State.MyBO.Save()
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_OK Then
+                If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                    State.MyBO.Save()
                 End If
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New AccountingCompanyForm.ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New AccountingCompanyForm.ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                        Me.CreateNew()
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                        Me.CreateNewWithCopy()
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ReturnToCallingPage(New AccountingCompanyForm.ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New AccountingCompanyForm.ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_CANCEL Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_CANCEL Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New AccountingCompanyForm.ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New AccountingCompanyForm.ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.CreateNew()
+                        CreateNew()
                         'Case ElitaPlusPage.DetailPageCommand.NewAndCopy
                         '    Me.CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ErrControllerMaster.AddErrorAndShow(Me.State.LastErrMsg)
+                        ErrControllerMaster.AddErrorAndShow(State.LastErrMsg)
                 End Select
             End If
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = ""
         End Sub
 
 
         Protected Sub CreateNew()
 
-            Me.State.ScreenSnapShotBO = Nothing
-            Me.State.MyBO = New AcctCompany
-            Me.State.IsNew = True
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            State.ScreenSnapShotBO = Nothing
+            State.MyBO = New AcctCompany
+            State.IsNew = True
+            PopulateFormFromBOs()
+            EnableDisableFields()
 
         End Sub
 
         Protected Sub CreateNewWithCopy()
 
             Dim newBO As New AcctCompany
-            Me.State.MyBO = newBO
+            State.MyBO = newBO
 
-            Me.State.IsNew = True
-            Me.EnableDisableFields()
-            Me.PopulateBOsFromForm()
+            State.IsNew = True
+            EnableDisableFields()
+            PopulateBOsFromForm()
 
-            Me.State.MyBO.Description = Nothing
+            State.MyBO.Description = Nothing
             DescriptionTextBox.Text = String.Empty
 
             'create the backup copy
-            Me.State.ScreenSnapShotBO = New AcctCompany
-            Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
+            State.ScreenSnapShotBO = New AcctCompany
+            State.ScreenSnapShotBO.Clone(State.MyBO)
 
         End Sub
 
@@ -337,99 +337,99 @@ Namespace Tables
 
 #Region "Button Clicks"
 
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
-                    Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
+                    AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ReturnToCallingPage(New AccountingCompanyForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New AccountingCompanyForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
-                Me.AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = Me.ErrControllerMaster.Text
+                HandleErrors(ex, ErrControllerMaster)
+                AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.LastErrMsg = ErrControllerMaster.Text
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+        Private Sub btnUndo_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndo_Write.Click
             Try
-                If Not Me.State.MyBO.IsNew Then
+                If Not State.MyBO.IsNew Then
                     'Reload from the DB
-                    Me.State.MyBO = New AcctCompany(Me.State.MyBO.Id)
-                ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                    State.MyBO = New AcctCompany(State.MyBO.Id)
+                ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                     'It was a new with copy
-                    Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                    State.MyBO.Clone(State.ScreenSnapShotBO)
                 Else
                     CreateNew()
                 End If
                 PopulateAll()
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                PopulateFormFromBOs()
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub btnApply_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnApply_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = True
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
+                    State.HasDataChanged = True
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                 Else
-                    Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
+                    AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
-                Me.State.MyBO.Delete()
-                Me.State.MyBO.Save()
-                Me.State.HasDataChanged = True
-                Me.ReturnToCallingPage(New AccountingCompanyForm.ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                State.MyBO.Delete()
+                State.MyBO.Save()
+                State.HasDataChanged = True
+                ReturnToCallingPage(New AccountingCompanyForm.ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 'undo the delete
-                Me.State.MyBO.RejectChanges()
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                State.MyBO.RejectChanges()
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Protected Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
-                    Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
+                    AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If (Me.State.MyBO.IsDirty) Then
-                    Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                PopulateBOsFromForm()
+                If (State.MyBO.IsDirty) Then
+                    AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
-                    Me.CreateNew()
+                    CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region

@@ -41,12 +41,12 @@ Partial Class ProducerForm
     End Property
 
     Private Sub SetStateProperties()
-        Me.State.moIsNewProducerLabel = CType(Me.CallingParameters, Guid)
-        If Me.State.moIsNewProducerLabel.Equals(Guid.Empty) Then
-            Me.State.IsNewProducerNew = True
+        State.moIsNewProducerLabel = CType(CallingParameters, Guid)
+        If State.moIsNewProducerLabel.Equals(Guid.Empty) Then
+            State.IsNewProducerNew = True
             ClearAll()
         Else
-            Me.State.IsNewProducerNew = False
+            State.IsNewProducerNew = False
         End If
     End Sub
 
@@ -71,9 +71,9 @@ Partial Class ProducerForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As Producer
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Producer, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As Producer, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -92,18 +92,18 @@ Partial Class ProducerForm
     Private ReadOnly Property TheProducer As Producer
 
         Get
-            If Me.State.MyBO Is Nothing Then
-                If Me.State.IsNewProducerNew = True Then
+            If State.MyBO Is Nothing Then
+                If State.IsNewProducerNew = True Then
                     ' For creating, inserting
-                    Me.State.MyBO = New Producer
-                    Me.State.moIsNewProducerLabel = Me.State.MyBO.Id
+                    State.MyBO = New Producer
+                    State.moIsNewProducerLabel = State.MyBO.Id
                 Else
                     ' For updating, deleting
-                    Me.State.MyBO = New Producer(Me.State.moIsNewProducerLabel)
+                    State.MyBO = New Producer(State.moIsNewProducerLabel)
                 End If
             End If
 
-            Return Me.State.MyBO
+            Return State.MyBO
         End Get
     End Property
 
@@ -133,7 +133,7 @@ Partial Class ProducerForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -141,64 +141,64 @@ Partial Class ProducerForm
 
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         'Put user code to initialize the page here
         Try
-            Me.MasterPage.MessageController.Clear_Hide()
+            MasterPage.MessageController.Clear_Hide()
             ClearLabelsErrSign()
             If Not Page.IsPostBack Then
-                Me.MasterPage.MessageController.Clear()
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                MasterPage.MessageController.Clear()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                 UpdateBreadCrum()
-                Me.SetStateProperties()
-                Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, True)
+                SetStateProperties()
+                AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, True)
 
-                If Me.State.IsNewProducerNew = True Then
+                If State.IsNewProducerNew = True Then
                     CreateNew()
                 Else
-                    If Me.State.MyBO.AddressId.Equals(Guid.Empty) Then
-                        Me.AddressCtr.MyBO = New Address
+                    If State.MyBO.AddressId.Equals(Guid.Empty) Then
+                        AddressCtr.MyBO = New Address
                     End If
                 End If
                 PopulateDropDowns()
                 PopulateAddressFields()
                 PopulateFormFromBOs()
-                Me.moAddressController.ReAssignTabIndex(AddressInfoStartIndex)
+                moAddressController.ReAssignTabIndex(AddressInfoStartIndex)
                 AddressCtr.EnableControls(False, True)
             End If
 
             BindBoPropertiesToLabels()
             CheckIfComingFromConfirm()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
 
         End Try
         If Me.State.LastOperation = DetailPageCommand.Redirect_ Then
-            Me.MasterPage.MessageController.Clear_Hide()
+            MasterPage.MessageController.Clear_Hide()
             'ClearLabelsErrSign()
-            Me.State.LastOperation = DetailPageCommand.Nothing_
+            State.LastOperation = DetailPageCommand.Nothing_
         Else
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End If
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
 
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Me.State.MyBO = New Producer(CType(Me.CallingParameters, Guid))
+                State.MyBO = New Producer(CType(CallingParameters, Guid))
             Else
-                Me.State.IsNewProducerNew = True
+                State.IsNewProducerNew = True
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -207,137 +207,137 @@ Partial Class ProducerForm
 
 #Region "Handlers-Buttons"
 
-    Private Sub btnApply_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+    Private Sub btnApply_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
         ApplyChanges()
         AddressCtr.EnableControls(False, True)
     End Sub
 
     Private Sub GoBack()
         Dim retType As New ProducerForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back,
-                                                                Me.State.MyBO, Me.State.boChanged)
-        Me.ReturnToCallingPage(retType)
+                                                                State.MyBO, State.boChanged)
+        ReturnToCallingPage(retType)
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            If Me.State.MyBO.IsDirty() Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
-                                                Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            If State.MyBO.IsDirty() Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                                HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
 
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+    Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
         Try
-            If Not Me.State.IsNewProducerNew Then
+            If Not State.IsNewProducerNew Then
                 'Reload from the DB
-                Me.State.MyBO = New Producer(Me.State.MyBO.Id)
-                If Me.State.MyBO.AddressId.Equals(Guid.Empty) Then
+                State.MyBO = New Producer(State.MyBO.Id)
+                If State.MyBO.AddressId.Equals(Guid.Empty) Then
                     AddressCtr.ClearAll()
                 End If
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
                 CreateNew()
             End If
             PopulateDropDowns()
             PopulateFormFromBOs()
-            Me.SetButtonsState(Me.State.IsNewProducerNew)
+            SetButtonsState(State.IsNewProducerNew)
             AddressCtr.EnableControls(False, True)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing
-        Me.State.IsNewProducerNew = True
-        Me.State.MyBO = New Producer
-        Me.State.MyBO.CompanyId = moMultipleColumnDrop.SelectedGuid
-        Me.AddressCtr.MyBO = New Address
+        State.ScreenSnapShotBO = Nothing
+        State.IsNewProducerNew = True
+        State.MyBO = New Producer
+        State.MyBO.CompanyId = moMultipleColumnDrop.SelectedGuid
+        AddressCtr.MyBO = New Address
         ClearAll()
         AddressCtr.ClearAll()
-        Me.SetButtonsState(True)
+        SetButtonsState(True)
         AddressCtr.EnableControls(False, True)
-        Me.PopulateDropDowns()
+        PopulateDropDowns()
         PopulateFormFromBOs()
         TheCompanyControl.ChangeEnabledControlProperty(True)
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
             If IsDirtyBO() = True Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
                 CreateNew()
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
     Private Sub CreateNewCopy()
 
-        Me.PopulateBOsFromForm()
+        PopulateBOsFromForm()
 
         Dim newObj As New Producer
-        Me.AddressCtr.MyBO = New Address
-        newObj.Copy(Me.State.MyBO)
-        newObj.Address.CopyFrom(Me.State.MyBO.Address)
-        Me.State.MyBO = newObj
-        Me.State.moIsNewProducerLabel = Guid.Empty
-        Me.State.IsNewProducerNew = True
+        AddressCtr.MyBO = New Address
+        newObj.Copy(State.MyBO)
+        newObj.Address.CopyFrom(State.MyBO.Address)
+        State.MyBO = newObj
+        State.moIsNewProducerLabel = Guid.Empty
+        State.IsNewProducerNew = True
         AddressCtr.EnableControls(False, True)
-        With Me.State.MyBO
+        With State.MyBO
             .Code = Nothing
             .Description = Nothing
         End With
 
-        Me.SetButtonsState(True)
+        SetButtonsState(True)
         PopulateFormFromBOs()
         TheCompanyControl.ChangeEnabledControlProperty(True)
         'create the backup copy
-        Me.State.ScreenSnapShotBO = New Producer
-        Me.State.ScreenSnapShotBO.Copy(Me.State.MyBO)
+        State.ScreenSnapShotBO = New Producer
+        State.ScreenSnapShotBO.Copy(State.MyBO)
 
     End Sub
 
-    Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
         Try
             If IsDirtyBO() = True Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
                 CreateNewCopy()
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+            HandleErrors(ex, MasterPage.MessageController)
+            DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
         End Try
     End Sub
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            Me.State.MyBO.DeleteAndSave()
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
-            Me.State.HasDataChanged = True
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+            State.MyBO.DeleteAndSave()
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+            State.HasDataChanged = True
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -363,10 +363,10 @@ Partial Class ProducerForm
 #Region "Populate"
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("Producer")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Producer")
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("Producer")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Producer")
             End If
         End If
     End Sub
@@ -377,12 +377,12 @@ Partial Class ProducerForm
     Private Sub PopulateCompanyDropDown()
         Dim dv As DataView = LookupListNew.GetUserCompaniesLookupList()
         TheCompanyControl.SetControl(True, TheCompanyControl.MODES.NEW_MODE, True, dv, "*" + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True, True)
-        If Me.State.IsNewProducerNew = True Then
+        If State.IsNewProducerNew = True Then
             TheCompanyControl.SelectedGuid = Guid.Empty
             TheCompanyControl.ChangeEnabledControlProperty(True)
         Else
             TheCompanyControl.ChangeEnabledControlProperty(False)
-            TheCompanyControl.SelectedGuid = Me.State.MyBO.CompanyId
+            TheCompanyControl.SelectedGuid = State.MyBO.CompanyId
         End If
 
     End Sub
@@ -399,60 +399,60 @@ Partial Class ProducerForm
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub PopulateFormFromBOs()
         Try
-            With Me.State.MyBO
-                Me.PopulateControlFromBOProperty(Me.txtCode, .Code)
-                Me.PopulateControlFromBOProperty(Me.txtDescription, .Description)
+            With State.MyBO
+                PopulateControlFromBOProperty(txtCode, .Code)
+                PopulateControlFromBOProperty(txtDescription, .Description)
                 BindSelectItem(.ProducerTypeXcd, ddlProducerType)
-                Me.PopulateControlFromBOProperty(Me.txtRegulatorRegistrationId, .RegulatorRegistrationId)
-                Me.PopulateControlFromBOProperty(Me.txtTaxIdNumber, .TaxIdNumber)
+                PopulateControlFromBOProperty(txtRegulatorRegistrationId, .RegulatorRegistrationId)
+                PopulateControlFromBOProperty(txtTaxIdNumber, .TaxIdNumber)
                 If Not .AddressId.Equals(Guid.Empty) Then
-                    AddressCtr.Bind(Me.State.MyBO.Address)
+                    AddressCtr.Bind(State.MyBO.Address)
                 End If
             End With
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub PopulateBOsFromForm()
 
-        Me.State.MyBO.CompanyId = TheCompanyControl.SelectedGuid
-        Me.PopulateBOProperty(Me.State.MyBO, "Code", Me.txtCode)
-        Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.txtDescription)
-        Me.PopulateBOProperty(Me.State.MyBO, "RegulatorRegistrationId", Me.txtRegulatorRegistrationId)
-        Me.PopulateBOProperty(Me.State.MyBO, "ProducerTypeXcd", Me.ddlProducerType, False, True)
-        Me.PopulateBOProperty(Me.State.MyBO, "TaxIdNumber", Me.txtTaxIdNumber)
+        State.MyBO.CompanyId = TheCompanyControl.SelectedGuid
+        PopulateBOProperty(State.MyBO, "Code", txtCode)
+        PopulateBOProperty(State.MyBO, "Description", txtDescription)
+        PopulateBOProperty(State.MyBO, "RegulatorRegistrationId", txtRegulatorRegistrationId)
+        PopulateBOProperty(State.MyBO, "ProducerTypeXcd", ddlProducerType, False, True)
+        PopulateBOProperty(State.MyBO, "TaxIdNumber", txtTaxIdNumber)
 
-        Me.AddressCtr.PopulateBOFromControl(True)
-        If Not AddressCtr.MyBO Is Nothing Then
+        AddressCtr.PopulateBOFromControl(True)
+        If AddressCtr.MyBO IsNot Nothing Then
             If ((AddressCtr.MyBO.IsDeleted = False) AndAlso
-                (AddressCtr.MyBO.IsEmpty = False)) AndAlso Not Me.State.MyBO.AddressId = Me.AddressCtr.MyBO.Id Then
-                Me.State.MyBO.AddressId = Me.AddressCtr.MyBO.Id
+                (AddressCtr.MyBO.IsEmpty = False)) AndAlso Not State.MyBO.AddressId = AddressCtr.MyBO.Id Then
+                State.MyBO.AddressId = AddressCtr.MyBO.Id
             End If
         End If
 
 
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
 
     End Sub
-    Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl_New) _
+    Private Sub OnFromDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl_New) _
             Handles moMultipleColumnDrop.SelectedDropChanged
         Try
-            Me.State.MyBO.CompanyId = moMultipleColumnDrop.SelectedGuid
+            State.MyBO.CompanyId = moMultipleColumnDrop.SelectedGuid
             'PopulateDropDowns()
             PopulateAddressFields()
 
         Catch ex As Exception
-            HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
     Private Sub PopulateAddressFields()
@@ -463,31 +463,31 @@ Partial Class ProducerForm
 
         ' If Me.State.IsNewProducerNew Then
         'Set country to the country of selected company
-        If Not Me.State.MyBO.CompanyId.Equals(Guid.Empty) Then
+        If Not State.MyBO.CompanyId.Equals(Guid.Empty) Then
             Dim oListContext As New ListContext
             oListContext.UserId = ElitaPlusIdentity.Current.ActiveUser.Id
             ' Dim countryList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
             Dim countryList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="UserCountries", context:=oListContext)
-            CType(Me.AddressCtr.FindControl("moCountryDrop_WRITE"), DropDownList).Populate(countryList, populateOptions)
+            CType(AddressCtr.FindControl("moCountryDrop_WRITE"), DropDownList).Populate(countryList, populateOptions)
 
             Dim ListContext1 As New ListContext
-            ListContext1.CompanyId = Me.State.MyBO.CompanyId
+            ListContext1.CompanyId = State.MyBO.CompanyId
             Dim countryListForCompany As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CountryByCompany", context:=ListContext1)
 
             If countryListForCompany.Count > 0 Then
-                Me.State.MyBO.Address.CountryId = countryListForCompany.FirstOrDefault().ListItemId
-                SetSelectedItem(CType(Me.AddressCtr.FindControl("moCountryDrop_WRITE"), DropDownList), Me.State.MyBO.Address.CountryId)
+                State.MyBO.Address.CountryId = countryListForCompany.FirstOrDefault().ListItemId
+                SetSelectedItem(CType(AddressCtr.FindControl("moCountryDrop_WRITE"), DropDownList), State.MyBO.Address.CountryId)
             End If
 
-            If Not Me.State.MyBO.Address.CountryId.Equals(Guid.Empty) Then
-                CType(Me.AddressCtr.FindControl("moCountryText"), TextBox).Text = (From lst In countryList
-                                                                                   Where lst.ListItemId = Me.State.MyBO.Address.CountryId
+            If Not State.MyBO.Address.CountryId.Equals(Guid.Empty) Then
+                CType(AddressCtr.FindControl("moCountryText"), TextBox).Text = (From lst In countryList
+                                                                                   Where lst.ListItemId = State.MyBO.Address.CountryId
                                                                                    Select lst.Translation).FirstOrDefault()
             End If
 
             Dim listcontext2 As ListContext = New ListContext()
-            listcontext2.CountryId = Me.State.MyBO.Address.CountryId
-            CType(Me.AddressCtr.FindControl("moRegionDrop_WRITE"), DropDownList).Populate(CommonConfigManager.Current.ListManager.GetList("RegionsByCountry", Thread.CurrentPrincipal.GetLanguageCode(), listcontext2), populateOptions)
+            listcontext2.CountryId = State.MyBO.Address.CountryId
+            CType(AddressCtr.FindControl("moRegionDrop_WRITE"), DropDownList).Populate(CommonConfigManager.Current.ListManager.GetList("RegionsByCountry", Thread.CurrentPrincipal.GetLanguageCode(), listcontext2), populateOptions)
         End If
 
         'End If
@@ -496,7 +496,7 @@ Partial Class ProducerForm
 
 #Region "Gui-Validation"
 
-    Private Sub SetButtonsState(ByVal bIsNew As Boolean)
+    Private Sub SetButtonsState(bIsNew As Boolean)
         ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
         ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
@@ -515,11 +515,11 @@ Partial Class ProducerForm
         Try
 
             PopulateBOsFromForm()
-            bIsDirty = Me.State.MyBO.IsDirty
+            bIsDirty = State.MyBO.IsDirty
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
         Return bIsDirty
     End Function
@@ -527,24 +527,24 @@ Partial Class ProducerForm
     Private Function ApplyChanges() As Boolean
 
         Try
-            Me.PopulateBOsFromForm()
+            PopulateBOsFromForm()
 
-            If Me.State.MyBO.IsDirty() Then
-                Me.State.MyBO.Save()
-                Me.State.boChanged = True
-                If Me.State.IsNewProducerNew = True Then
-                    Me.State.IsNewProducerNew = False
+            If State.MyBO.IsDirty() Then
+                State.MyBO.Save()
+                State.boChanged = True
+                If State.IsNewProducerNew = True Then
+                    State.IsNewProducerNew = False
                 End If
                 PopulateDropDowns()
                 PopulateFormFromBOs()
-                Me.SetButtonsState(Me.State.IsNewProducerNew)
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                SetButtonsState(State.IsNewProducerNew)
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
             Else
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Function
@@ -554,7 +554,7 @@ Partial Class ProducerForm
 #Region "State-Management"
 
     Protected Sub ComingFromBack()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
         If Not confResponse = String.Empty Then
             ' Return from the Back Button
@@ -563,7 +563,7 @@ Partial Class ProducerForm
                 Case MSG_VALUE_YES
                     ' Save and go back to Search Page
                     If ApplyChanges() = True Then
-                        Me.State.boChanged = True
+                        State.boChanged = True
                         GoBack()
                     End If
                 Case MSG_VALUE_NO
@@ -574,7 +574,7 @@ Partial Class ProducerForm
     End Sub
 
     Protected Sub ComingFromNewCopy()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
         If Not confResponse = String.Empty Then
             ' Return from the New Copy Button
@@ -583,7 +583,7 @@ Partial Class ProducerForm
                 Case MSG_VALUE_YES
                     ' Save and create a new Copy BO
                     If ApplyChanges() = True Then
-                        Me.State.boChanged = True
+                        State.boChanged = True
                         CreateNewCopy()
                     End If
                 Case MSG_VALUE_NO
@@ -594,7 +594,7 @@ Partial Class ProducerForm
 
     End Sub
     Protected Sub ComingFromNew()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
         If Not confResponse = String.Empty Then
             ' Return from the New Copy Button
@@ -603,7 +603,7 @@ Partial Class ProducerForm
                 Case MSG_VALUE_YES
                     ' Save and create a new Copy BO
                     If ApplyChanges() = True Then
-                        Me.State.boChanged = True
+                        State.boChanged = True
                         CreateNew()
                     End If
                 Case MSG_VALUE_NO
@@ -617,7 +617,7 @@ Partial Class ProducerForm
 
     Protected Sub CheckIfComingFromConfirm()
         Try
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                     ' Period
                 Case ElitaPlusPage.DetailPageCommand.Back
                     ComingFromBack()
@@ -628,10 +628,10 @@ Partial Class ProducerForm
             End Select
 
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = String.Empty
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -640,24 +640,24 @@ Partial Class ProducerForm
 #Region "Handlers-Labels"
 
     Private Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, COMPANYID_PROPERTY, TheCompanyControl.CaptionLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, CODE_PROPERTY, Me.lblCode)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, DESCRIPTION_PROPERTY, Me.lblDescription)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, PRODUCER_TYPE_PROPERTY, Me.lblProducerType)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, REGULATOR_REGISTRATION_ID_PROPERTY, Me.lblRegulatorRegistrationId)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, TAXIDNUMBER_PROPERTY, Me.lblTaxIdNumber)
+        BindBOPropertyToLabel(State.MyBO, COMPANYID_PROPERTY, TheCompanyControl.CaptionLabel)
+        BindBOPropertyToLabel(State.MyBO, CODE_PROPERTY, lblCode)
+        BindBOPropertyToLabel(State.MyBO, DESCRIPTION_PROPERTY, lblDescription)
+        BindBOPropertyToLabel(State.MyBO, PRODUCER_TYPE_PROPERTY, lblProducerType)
+        BindBOPropertyToLabel(State.MyBO, REGULATOR_REGISTRATION_ID_PROPERTY, lblRegulatorRegistrationId)
+        BindBOPropertyToLabel(State.MyBO, TAXIDNUMBER_PROPERTY, lblTaxIdNumber)
     End Sub
 
     Private Sub ClearLabelsErrSign()
-        Me.ClearLabelErrSign(lblCode)
-        Me.ClearLabelErrSign(lblDescription)
-        Me.ClearLabelErrSign(lblProducerType)
-        Me.ClearLabelErrSign(lblRegulatorRegistrationId)
-        Me.ClearLabelErrSign(lblTaxIdNumber)
-        Me.ClearLabelErrSign(TheCompanyControl.CaptionLabel)
+        ClearLabelErrSign(lblCode)
+        ClearLabelErrSign(lblDescription)
+        ClearLabelErrSign(lblProducerType)
+        ClearLabelErrSign(lblRegulatorRegistrationId)
+        ClearLabelErrSign(lblTaxIdNumber)
+        ClearLabelErrSign(TheCompanyControl.CaptionLabel)
     End Sub
 
-    Public Shared Sub SetLabelColor(ByVal lbl As Label)
+    Public Shared Sub SetLabelColor(lbl As Label)
         lbl.ForeColor = Color.Black
     End Sub
 

@@ -47,62 +47,62 @@ Namespace Tables
             Public LastOperation As DetailPageCommand
             Public EditingBo As EventTask
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As EventTask, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As EventTask, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
 
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
             'Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(SUMMARYTITLE)
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End Sub
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             If mbIsFirstPass = True Then
                 mbIsFirstPass = False
             Else
                 ' Do not load again the Page that was already loaded
                 Return
             End If
-            Me.MasterPage.MessageController.Clear()
-            Me.UpdateBreadCrum()
+            MasterPage.MessageController.Clear()
+            UpdateBreadCrum()
 
             Try
-                If Not Me.IsPostBack Then
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New EventTask
+                If Not IsPostBack Then
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New EventTask
                     End If
 
                     PopulateDropdowns()
                     PopulateFormFromBOs()
                     EnableDisableFields()
-                    AddLabelDecorations(Me.State.MyBO)
+                    AddLabelDecorations(State.MyBO)
                 End If
                 BindBoPropertiesToLabels()
                 CheckIfComingFromSaveConfirm()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 CleanPopupInput()
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Dim objID As Guid = CType(Me.CallingParameters, Guid)
+                    Dim objID As Guid = CType(CallingParameters, Guid)
                     If objID <> Guid.Empty Then
-                        Me.State.MyBO = New EventTask(objID)
+                        State.MyBO = New EventTask(objID)
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -112,17 +112,17 @@ Namespace Tables
 
         Private Sub CleanPopupInput()
             Try
-                If Not Me.State Is Nothing Then
+                If State IsNot Nothing Then
                     'Clean after consuming the action 
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                    Me.HiddenSaveChangesPromptResponse.Value = ""
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                    HiddenSaveChangesPromptResponse.Value = ""
                 End If
             Catch ex As Exception
 
             End Try
         End Sub
 
-        Private Function GetEventArgumentBasedOnEventType(ByVal EventTypeCode As String) As DataView
+        Private Function GetEventArgumentBasedOnEventType(EventTypeCode As String) As DataView
             If (EventTypeCode = "ISSUE_OPENED" _
                     Or EventTypeCode = "ISSUE_RESOLVED" _
                     Or EventTypeCode = "ISSUE_REJECTED" _
@@ -140,69 +140,69 @@ Namespace Tables
 
         Protected Sub BindBoPropertiesToLabels()
             Try
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "CompanyGroupId", Me.lblCompnayGrp)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "CompanyId", Me.lblCompany)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "CountryId", Me.lblCountry)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "DealerGroupId", Me.lblDealerGroup)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "DealerId", Me.lblDealer)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "ProductCode", Me.lblProdCode)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "EventTypeId", Me.lblEventType)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "TimeoutSeconds", Me.lblTimeout)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "TaskId", Me.lblTask)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "RetryCount", Me.lblRetryCount)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "RetryDelaySeconds", Me.lblRetryDelay)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "CoverageTypeId", Me.lblCoverageType)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "EventTaskParameters", Me.lblEventTaskParameters)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "EventArgumentId", Me.lblEventArgument)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "InitDelayMinutes", Me.lblInitDelayMinutes)
-                Me.ClearGridHeadersAndLabelsErrSign()
+                BindBOPropertyToLabel(State.MyBO, "CompanyGroupId", lblCompnayGrp)
+                BindBOPropertyToLabel(State.MyBO, "CompanyId", lblCompany)
+                BindBOPropertyToLabel(State.MyBO, "CountryId", lblCountry)
+                BindBOPropertyToLabel(State.MyBO, "DealerGroupId", lblDealerGroup)
+                BindBOPropertyToLabel(State.MyBO, "DealerId", lblDealer)
+                BindBOPropertyToLabel(State.MyBO, "ProductCode", lblProdCode)
+                BindBOPropertyToLabel(State.MyBO, "EventTypeId", lblEventType)
+                BindBOPropertyToLabel(State.MyBO, "TimeoutSeconds", lblTimeout)
+                BindBOPropertyToLabel(State.MyBO, "TaskId", lblTask)
+                BindBOPropertyToLabel(State.MyBO, "RetryCount", lblRetryCount)
+                BindBOPropertyToLabel(State.MyBO, "RetryDelaySeconds", lblRetryDelay)
+                BindBOPropertyToLabel(State.MyBO, "CoverageTypeId", lblCoverageType)
+                BindBOPropertyToLabel(State.MyBO, "EventTaskParameters", lblEventTaskParameters)
+                BindBOPropertyToLabel(State.MyBO, "EventArgumentId", lblEventArgument)
+                BindBOPropertyToLabel(State.MyBO, "InitDelayMinutes", lblInitDelayMinutes)
+                ClearGridHeadersAndLabelsErrSign()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
             Try
-                Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-                Dim actionInProgress As ElitaPlusPage.DetailPageCommand = Me.State.ActionInProgress
-                If Not confResponse Is Nothing AndAlso (confResponse = Me.MSG_VALUE_YES OrElse confResponse.ToUpper = "OK") Then
+                Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+                Dim actionInProgress As ElitaPlusPage.DetailPageCommand = State.ActionInProgress
+                If confResponse IsNot Nothing AndAlso (confResponse = MSG_VALUE_YES OrElse confResponse.ToUpper = "OK") Then
                     If actionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                        Me.State.MyBO.Save()
+                        State.MyBO.Save()
                         State.HasDataChanged = True
                     End If
-                    Select Case Me.State.ActionInProgress
+                    Select Case State.ActionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                         Case ElitaPlusPage.DetailPageCommand.New_
                             'Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                            Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
-                            Me.CreateNew()
+                            MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                            CreateNew()
                         Case ElitaPlusPage.DetailPageCommand.NewAndCopy
                             'Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                            Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
-                            Me.CreateNewWithCopy()
+                            MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                            CreateNewWithCopy()
                         Case ElitaPlusPage.DetailPageCommand.Delete
                             DoDelete()
                         Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                            Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                            ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                     End Select
-                ElseIf Not confResponse Is Nothing AndAlso (confResponse = Me.MSG_VALUE_NO OrElse confResponse.ToUpper = "CANCEL") Then
-                    Select Case Me.State.ActionInProgress
+                ElseIf confResponse IsNot Nothing AndAlso (confResponse = MSG_VALUE_NO OrElse confResponse.ToUpper = "CANCEL") Then
+                    Select Case State.ActionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                         Case ElitaPlusPage.DetailPageCommand.New_
-                            Me.CreateNew()
+                            CreateNew()
                         Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                            Me.CreateNewWithCopy()
+                            CreateNewWithCopy()
                         Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                            Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                            MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
                     End Select
                 End If
                 'Clean after consuming the action
                 CleanPopupInput()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -222,7 +222,7 @@ Namespace Tables
                                                   Where list.Contains(x.ListItemId)
                                                   Select x).ToArray()
 
-                Me.ddlCompany.Populate(filteredList, New PopulateOptions() With
+                ddlCompany.Populate(filteredList, New PopulateOptions() With
                   {
                    .AddBlankItem = True
                   })
@@ -234,13 +234,13 @@ Namespace Tables
                                                          Where cList.Contains(x.ListItemId)
                                                          Select x).ToArray()
 
-                Me.ddlCountry.Populate(filteredcountryList, New PopulateOptions() With
+                ddlCountry.Populate(filteredcountryList, New PopulateOptions() With
                   {
                    .AddBlankItem = True
                   })
 
                 Dim oDealerGroupList = GetDealerGroupListByCompanyForUser()
-                Me.ddlDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
+                ddlDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
                                                      {
                                                      .AddBlankItem = True,
                                                      .SortFunc = AddressOf .GetCode
@@ -248,17 +248,17 @@ Namespace Tables
 
                 'Me.BindListControlToDataView(Me.ddlDealer, LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "Code"), , , True)
                 Dim oDealerList = GetDealerListByCompanyForUser()
-                Me.ddlDealer.Populate(oDealerList, New PopulateOptions() With
+                ddlDealer.Populate(oDealerList, New PopulateOptions() With
                                            {
                                             .AddBlankItem = True
                                            })
                 'Me.BindListControlToDataView(Me.ddlEventType, LookupListNew.DropdownLookupList("EVNT_TYP", ElitaPlusIdentity.Current.ActiveUser.LanguageId), , , True)
-                Me.ddlEventType.Populate(CommonConfigManager.Current.ListManager.GetList("EVNT_TYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                ddlEventType.Populate(CommonConfigManager.Current.ListManager.GetList("EVNT_TYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                           {
                                            .AddBlankItem = True
                                           })
                 ' Me.BindListControlToDataView(Me.ddlCoverageType, LookupListNew.DropdownLookupList("CTYP", ElitaPlusIdentity.Current.ActiveUser.LanguageId), , , True)
-                Me.ddlCoverageType.Populate(CommonConfigManager.Current.ListManager.GetList("CTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                ddlCoverageType.Populate(CommonConfigManager.Current.ListManager.GetList("CTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                           {
                                            .AddBlankItem = True
                                           })
@@ -275,7 +275,7 @@ Namespace Tables
                                          })
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
@@ -291,7 +291,7 @@ Namespace Tables
                 oListContext.CompanyId = UserCompanies(Index)
                 Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
-                    If Not oDealerList Is Nothing Then
+                    If oDealerList IsNot Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
                     Else
                         oDealerList = oDealerListForCompany.Clone()
@@ -331,46 +331,46 @@ Namespace Tables
         End Function
 
         Protected Sub CreateNew()
-            Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-            Me.State.MyBO = New EventTask
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+            State.MyBO = New EventTask
+            PopulateFormFromBOs()
+            EnableDisableFields()
         End Sub
 
         Protected Sub CreateNewWithCopy()
 
-            Me.PopulateBOsFromForm()
+            PopulateBOsFromForm()
 
             'create the backup copy
-            Me.State.ScreenSnapShotBO = New EventTask
-            Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
+            State.ScreenSnapShotBO = New EventTask
+            State.ScreenSnapShotBO.Clone(State.MyBO)
 
             Dim newObj As New EventTask
 
-            newObj.CopyFrom(Me.State.MyBO)
+            newObj.CopyFrom(State.MyBO)
 
-            Me.State.MyBO = newObj
+            State.MyBO = newObj
 
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
         End Sub
 
         Protected Sub PopulateFormFromBOs()
-            With Me.State.MyBO
-                Me.PopulateControlFromBOProperty(Me.ddlCompanyGroup, .CompanyGroupId)
-                Me.PopulateControlFromBOProperty(Me.ddlCompany, .CompanyId)
-                Me.PopulateControlFromBOProperty(Me.ddlCountry, .CountryId)
-                Me.PopulateControlFromBOProperty(Me.ddlDealerGroup, .DealerGroupId)
-                Me.PopulateControlFromBOProperty(Me.ddlDealer, .DealerId)
-                Me.PopulateControlFromBOProperty(Me.ddlEventType, .EventTypeId)
-                Me.PopulateControlFromBOProperty(Me.txtProdCode, .ProductCode)
-                Me.PopulateControlFromBOProperty(Me.txtTimeout, .TimeoutSeconds)
-                Me.PopulateControlFromBOProperty(Me.txtRetryCount, .RetryCount)
-                Me.PopulateControlFromBOProperty(Me.txtRetryDelay, .RetryDelaySeconds)
-                Me.PopulateControlFromBOProperty(Me.ddlTask, .TaskId)
-                Me.PopulateControlFromBOProperty(Me.ddlCoverageType, .CoverageTypeId)
-                Me.PopulateControlFromBOProperty(Me.txtEventTaskParameters, .EventTaskParameters)
-                Me.PopulateControlFromBOProperty(Me.txtInitiDelayMinutes, .InitDelayMinutes)
+            With State.MyBO
+                PopulateControlFromBOProperty(ddlCompanyGroup, .CompanyGroupId)
+                PopulateControlFromBOProperty(ddlCompany, .CompanyId)
+                PopulateControlFromBOProperty(ddlCountry, .CountryId)
+                PopulateControlFromBOProperty(ddlDealerGroup, .DealerGroupId)
+                PopulateControlFromBOProperty(ddlDealer, .DealerId)
+                PopulateControlFromBOProperty(ddlEventType, .EventTypeId)
+                PopulateControlFromBOProperty(txtProdCode, .ProductCode)
+                PopulateControlFromBOProperty(txtTimeout, .TimeoutSeconds)
+                PopulateControlFromBOProperty(txtRetryCount, .RetryCount)
+                PopulateControlFromBOProperty(txtRetryDelay, .RetryDelaySeconds)
+                PopulateControlFromBOProperty(ddlTask, .TaskId)
+                PopulateControlFromBOProperty(ddlCoverageType, .CoverageTypeId)
+                PopulateControlFromBOProperty(txtEventTaskParameters, .EventTaskParameters)
+                PopulateControlFromBOProperty(txtInitiDelayMinutes, .InitDelayMinutes)
 
                 ' Populating Event Argument List based on Event Type
                 Dim EventTypeCode As String = LookupListNew.GetCodeFromId(Codes.EVNT_TYP, .EventTypeId)
@@ -387,19 +387,19 @@ Namespace Tables
                   Or EventTypeCode = "ISSUE_PENDING" _
                   Or EventTypeCode = "ISSUE_WAIVED" _
                   Or EventTypeCode = "ISSUE_REOPENED") Then
-                    Me.ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList(ListCodes.GetIssue, Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                    ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList(ListCodes.GetIssue, Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                       {
                                        .AddBlankItem = True
                                       })
-                    Me.PopulateControlFromBOProperty(Me.ddlEventArgument, .EventArgumentId)
+                    PopulateControlFromBOProperty(ddlEventArgument, .EventArgumentId)
                 ElseIf (EventTypeCode = "CLM_EXT_STATUS") Then
                     Dim ocListContext As New ListContext
                     ocListContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                    Me.ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList(ListCodes.ExtendedStatusByCompanyGroup, languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=ocListContext), New PopulateOptions() With
+                    ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList(ListCodes.ExtendedStatusByCompanyGroup, languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=ocListContext), New PopulateOptions() With
                                                {
                                                 .AddBlankItem = True
                                                })
-                    Me.PopulateControlFromBOProperty(Me.ddlEventArgument, .EventArgumentId)
+                    PopulateControlFromBOProperty(ddlEventArgument, .EventArgumentId)
                 ElseIf (EventTypeCode = "CRT_CANCEL") Then
                     Dim ocListContext As New ListContext
                     Dim oCancellationList As New List(Of ListItem)
@@ -408,7 +408,7 @@ Namespace Tables
 
                         Dim oCancellationListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.CancellationReasonsByCompany, context:=ocListContext)
                         If oCancellationListForCompany.Count > 0 Then
-                            If Not oCancellationList Is Nothing Then
+                            If oCancellationList IsNot Nothing Then
                                 oCancellationList.AddRange(oCancellationListForCompany)
                             Else
                                 oCancellationList = oCancellationListForCompany.Clone()
@@ -416,22 +416,22 @@ Namespace Tables
                         End If
                     Next
 
-                    Me.ddlEventArgument.Items.Clear()
-                    Me.ddlEventArgument.Populate(oCancellationList.ToArray(), New PopulateOptions() With
+                    ddlEventArgument.Items.Clear()
+                    ddlEventArgument.Populate(oCancellationList.ToArray(), New PopulateOptions() With
                                                 {
                                                 .AddBlankItem = True
                                                 })
-                    Me.PopulateControlFromBOProperty(Me.ddlEventArgument, .EventArgumentId)
+                    PopulateControlFromBOProperty(ddlEventArgument, .EventArgumentId)
                 ElseIf (EventTypeCode = "CLAIM_DENIED") Then
                     Dim ocListContext As New ListContext
                     ocListContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                    Me.ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList("DNDREASON", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=ocListContext), New PopulateOptions() With
+                    ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList("DNDREASON", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=ocListContext), New PopulateOptions() With
                                                     {
                                                     .AddBlankItem = True
                                                     })
-                    Me.PopulateControlFromBOProperty(Me.ddlEventArgument, .EventArgumentId)
+                    PopulateControlFromBOProperty(ddlEventArgument, .EventArgumentId)
                 Else
-                    Me.ddlEventArgument.Items.Clear()
+                    ddlEventArgument.Items.Clear()
 
                 End If
 
@@ -441,7 +441,7 @@ Namespace Tables
 
         Protected Sub EnableDisableFields()
 
-            If Me.State.MyBO.IsNew Then
+            If State.MyBO.IsNew Then
                 ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
@@ -456,140 +456,140 @@ Namespace Tables
         Protected Sub PopulateBOsFromForm()
 
             txtProdCode.Text = txtProdCode.Text.Trim.ToUpper
-            With Me.State.MyBO
-                Me.PopulateBOProperty(Me.State.MyBO, "DealerId", ddlDealer)
-                Me.PopulateBOProperty(Me.State.MyBO, "DealerGroupId", Me.ddlDealerGroup)
-                Me.PopulateBOProperty(Me.State.MyBO, "CompanyGroupId", Me.ddlCompanyGroup)
-                Me.PopulateBOProperty(Me.State.MyBO, "CompanyId", Me.ddlCompany)
-                Me.PopulateBOProperty(Me.State.MyBO, "CountryId", Me.ddlCountry)
-                Me.PopulateBOProperty(Me.State.MyBO, "EventTypeId", Me.ddlEventType)
-                Me.PopulateBOProperty(Me.State.MyBO, "TaskId", Me.ddlTask)
-                Me.PopulateBOProperty(Me.State.MyBO, "ProductCode", Me.txtProdCode)
-                Me.PopulateBOProperty(Me.State.MyBO, "TimeoutSeconds", Me.txtTimeout)
-                Me.PopulateBOProperty(Me.State.MyBO, "RetryCount", Me.txtRetryCount)
-                Me.PopulateBOProperty(Me.State.MyBO, "RetryDelaySeconds", Me.txtRetryDelay)
-                Me.PopulateBOProperty(Me.State.MyBO, "CoverageTypeId", Me.ddlCoverageType)
-                Me.PopulateBOProperty(Me.State.MyBO, "EventTaskParameters", Me.txtEventTaskParameters)
-                Me.PopulateBOProperty(Me.State.MyBO, "EventArgumentId", Me.ddlEventArgument)
-                Me.PopulateBOProperty(Me.State.MyBO, "InitDelayMinutes", Me.txtInitiDelayMinutes)
+            With State.MyBO
+                PopulateBOProperty(State.MyBO, "DealerId", ddlDealer)
+                PopulateBOProperty(State.MyBO, "DealerGroupId", ddlDealerGroup)
+                PopulateBOProperty(State.MyBO, "CompanyGroupId", ddlCompanyGroup)
+                PopulateBOProperty(State.MyBO, "CompanyId", ddlCompany)
+                PopulateBOProperty(State.MyBO, "CountryId", ddlCountry)
+                PopulateBOProperty(State.MyBO, "EventTypeId", ddlEventType)
+                PopulateBOProperty(State.MyBO, "TaskId", ddlTask)
+                PopulateBOProperty(State.MyBO, "ProductCode", txtProdCode)
+                PopulateBOProperty(State.MyBO, "TimeoutSeconds", txtTimeout)
+                PopulateBOProperty(State.MyBO, "RetryCount", txtRetryCount)
+                PopulateBOProperty(State.MyBO, "RetryDelaySeconds", txtRetryDelay)
+                PopulateBOProperty(State.MyBO, "CoverageTypeId", ddlCoverageType)
+                PopulateBOProperty(State.MyBO, "EventTaskParameters", txtEventTaskParameters)
+                PopulateBOProperty(State.MyBO, "EventArgumentId", ddlEventArgument)
+                PopulateBOProperty(State.MyBO, "InitDelayMinutes", txtInitiDelayMinutes)
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
         Private Sub DoDelete()
             Try
-                Me.State.MyBO.DeleteAndSave()
-                Me.State.HasDataChanged = True
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+                State.MyBO.DeleteAndSave()
+                State.HasDataChanged = True
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 #End Region
 
 #Region "Button event handlers"
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
                     If (Not State.MyBO.IsNew) OrElse (State.MyBO.IsNew AndAlso State.MyBO.DirtyColumns.Count > 1) Then
-                        Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                        DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                     Else
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     End If
                 Else
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+                HandleErrors(ex, MasterPage.MessageController)
+                DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.LastErrMsg = MasterPage.MessageController.Text
             End Try
         End Sub
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
                 Try
-                    Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                    DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
                 Catch ex As Threading.ThreadAbortException
                 Catch ex As Exception
-                    Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    HandleErrors(ex, MasterPage.MessageController)
                 End Try
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If (Me.State.MyBO.IsDirty) Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
-                Else
-                    Me.CreateNew()
-                End If
-            Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            End Try
-        End Sub
-
-        Private Sub btnSave_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
-            Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = True
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
-                Else
-                    Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
-                End If
-            Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            End Try
-        End Sub
-
-        Private Sub btnUndo_Write_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
-            Try
-                If Not Me.State.MyBO.IsNew Then
-                    'Reload from the DB
-                    Me.State.MyBO = New EventTask(Me.State.MyBO.Id)
-                ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
-                    'It was a new with copy
-                    Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                PopulateBOsFromForm()
+                If (State.MyBO.IsDirty) Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Private Sub btnSave_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+            Try
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
+                    State.HasDataChanged = True
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                Else
+                    MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                End If
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Private Sub btnUndo_Write_Click(sender As Object, e As System.EventArgs) Handles btnUndo_Write.Click
+            Try
+                If Not State.MyBO.IsNew Then
+                    'Reload from the DB
+                    State.MyBO = New EventTask(State.MyBO.Id)
+                ElseIf State.ScreenSnapShotBO IsNot Nothing Then
+                    'It was a new with copy
+                    State.MyBO.Clone(State.ScreenSnapShotBO)
+                Else
+                    CreateNew()
+                End If
+                PopulateFormFromBOs()
+                EnableDisableFields()
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -612,14 +612,14 @@ Namespace Tables
                   Or EventTypeCode = "ISSUE_PENDING" _
                   Or EventTypeCode = "ISSUE_WAIVED" _
                   Or EventTypeCode = "ISSUE_REOPENED") Then
-                Me.ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList(ListCodes.GetIssue, Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList(ListCodes.GetIssue, Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                           {
                                            .AddBlankItem = True
                                           })
             ElseIf (EventTypeCode = "CLM_EXT_STATUS") Then
                 Dim ocListContext As New ListContext
                 ocListContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                Me.ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList(ListCodes.ExtendedStatusByCompanyGroup, languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=ocListContext), New PopulateOptions() With
+                ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList(ListCodes.ExtendedStatusByCompanyGroup, languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=ocListContext), New PopulateOptions() With
                                            {
                                             .AddBlankItem = True
                                            })
@@ -631,7 +631,7 @@ Namespace Tables
 
                     Dim oCancellationListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.CancellationReasonsByCompany, context:=ocListContext)
                     If oCancellationListForCompany.Count > 0 Then
-                        If Not oCancellationList Is Nothing Then
+                        If oCancellationList IsNot Nothing Then
                             oCancellationList.AddRange(oCancellationListForCompany)
                         Else
                             oCancellationList = oCancellationListForCompany.Clone()
@@ -639,21 +639,21 @@ Namespace Tables
                     End If
                 Next
 
-                Me.ddlEventArgument.Items.Clear()
-                Me.ddlEventArgument.Populate(oCancellationList.ToArray(), New PopulateOptions() With
+                ddlEventArgument.Items.Clear()
+                ddlEventArgument.Populate(oCancellationList.ToArray(), New PopulateOptions() With
                                             {
                                             .AddBlankItem = True
                                             })
             ElseIf (EventTypeCode = "CLAIM_DENIED") Then
                 Dim ocListContext As New ListContext
                 ocListContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                Me.ddlEventArgument.Items.Clear()
-                Me.ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList("DNDREASON", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=ocListContext), New PopulateOptions() With
+                ddlEventArgument.Items.Clear()
+                ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList("DNDREASON", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=ocListContext), New PopulateOptions() With
                                                 {
                                                 .AddBlankItem = True
                                                 })
             Else
-                Me.ddlEventArgument.Items.Clear()
+                ddlEventArgument.Items.Clear()
             End If
             ' End If
             SelectedEventTypeDDL.Focus()

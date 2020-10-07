@@ -103,63 +103,63 @@ Public Class GalaxyUpdateServiceCenter
     Public Overrides Function ProcessWSRequest() As String
 
         Try
-            Me.Validate()
+            Validate()
 
-            Dim serviceCenterBO As New ServiceCenter(Me.ServiceCenterId)
+            Dim serviceCenterBO As New ServiceCenter(ServiceCenterId)
             Dim SaveAddress As Boolean = False
 
-            serviceCenterBO.Code = Me.ServiceCenterCode
+            serviceCenterBO.Code = ServiceCenterCode
 
-            If Not Me._AddressIsNull Then
-                serviceCenterBO.Address.Address1 = Me.Address
+            If Not _AddressIsNull Then
+                serviceCenterBO.Address.Address1 = Address
                 SaveAddress = True
             End If
-            If Not Me._CityIsNull Then
-                serviceCenterBO.Address.City = Me.City
+            If Not _CityIsNull Then
+                serviceCenterBO.Address.City = City
                 SaveAddress = True
             End If
-            If Not Me._PostalCodeIsNull Then
-                serviceCenterBO.Address.PostalCode = Me.PostalCode
+            If Not _PostalCodeIsNull Then
+                serviceCenterBO.Address.PostalCode = PostalCode
                 SaveAddress = True
             End If
-            If Not Me._RegionIdIsNull Then
-                serviceCenterBO.Address.RegionId = Me.RegionId
+            If Not _RegionIdIsNull Then
+                serviceCenterBO.Address.RegionId = RegionId
                 SaveAddress = True
             End If
-            If Not Me._countryIdIsNull Then
-                serviceCenterBO.Address.CountryId = Me.CountryID
+            If Not _countryIdIsNull Then
+                serviceCenterBO.Address.CountryId = CountryID
                 SaveAddress = True
             End If
             'removed by REQ-263
             'If Not Me._ServiceTypeIdIsNull Then serviceCenterBO.ServiceTypeId = Me.ServiceTypeId
 
             'Added by REQ-452
-            If Not Me.ServiceType Is Nothing AndAlso Not Me.ServiceType.Equals(String.Empty) Then
+            If Not ServiceType Is Nothing AndAlso Not ServiceType.Equals(String.Empty) Then
 
                 'delet old MOR if exist
                 serviceCenterBO.DeletAllMethodOfRepairs()
 
                 'add as new
-                serviceCenterBO.AttachMethodOfRepair(Me.GetMethodOfRepairID(Me.ServiceType))
+                serviceCenterBO.AttachMethodOfRepair(GetMethodOfRepairID(ServiceType))
 
             End If
 
 
-            If Not Me._ServiceCenterNameIsNull Then serviceCenterBO.Description = Me.ServiceCenterName
-            If Not Me._PhoneIsNull Then serviceCenterBO.Phone1 = Me.Phone1
-            If Not Me._FaxIsNull Then serviceCenterBO.Fax = Me.Fax
-            If Not Me._StatusCodeIsNull Then serviceCenterBO.StatusCode = Me.StatusCode
-            If Not Me._TaxIdIsNull Then serviceCenterBO.TaxId = Me.TaxId
-            If Not Me._CommentsIsNull Then serviceCenterBO.Comments = Me.Comments
-            If Not Me._DealerIdIsNull Then serviceCenterBO.OriginalDealerId = Me.OriginalDealerId
-            If Not Me._RatingCodeIsNull Then serviceCenterBO.RatingCode = Me.RatingCode
-            If Not Me._PaymentMethodIdIsNull Then serviceCenterBO.PaymentMethodId = Me.PaymentMethodId
+            If Not _ServiceCenterNameIsNull Then serviceCenterBO.Description = ServiceCenterName
+            If Not _PhoneIsNull Then serviceCenterBO.Phone1 = Phone1
+            If Not _FaxIsNull Then serviceCenterBO.Fax = Fax
+            If Not _StatusCodeIsNull Then serviceCenterBO.StatusCode = StatusCode
+            If Not _TaxIdIsNull Then serviceCenterBO.TaxId = TaxId
+            If Not _CommentsIsNull Then serviceCenterBO.Comments = Comments
+            If Not _DealerIdIsNull Then serviceCenterBO.OriginalDealerId = OriginalDealerId
+            If Not _RatingCodeIsNull Then serviceCenterBO.RatingCode = RatingCode
+            If Not _PaymentMethodIdIsNull Then serviceCenterBO.PaymentMethodId = PaymentMethodId
 
             'if me._servicegroup            serviceCenterBO.ServiceGroupId = Me.ServiceGroupId
             ' serviceCenterBO.PriceGroupId = Me.PriceGroupId
 
-            If Not Me._countryIdIsNull Then serviceCenterBO.CountryId = Me.CountryID
-            If Not Me._RegistrationNumberIsNull Then serviceCenterBO.FtpAddress = Me.RegistrationNumber
+            If Not _countryIdIsNull Then serviceCenterBO.CountryId = CountryID
+            If Not _RegistrationNumberIsNull Then serviceCenterBO.FtpAddress = RegistrationNumber
 
             'serviceCenterBO.Address.AddressRequiredServCenter = Me.AddressRequiredServCenter
 
@@ -170,34 +170,34 @@ Public Class GalaxyUpdateServiceCenter
             If bankInfoSave = True Then
                 serviceCenterBO.Add_BankInfo()
 
-                If Not Me._AccountNumberIsNull Then
-                    serviceCenterBO.CurrentBankInfo.Account_Number = Me.Account_Number
+                If Not _AccountNumberIsNull Then
+                    serviceCenterBO.CurrentBankInfo.Account_Number = Account_Number
                 Else
                     serviceCenterBO.CurrentBankInfo.Account_Number = Nothing
                 End If
 
-                If Not Me._BankIdIsNull Then
-                    serviceCenterBO.CurrentBankInfo.Bank_Id = Me.BankId
+                If Not _BankIdIsNull Then
+                    serviceCenterBO.CurrentBankInfo.Bank_Id = BankId
                 Else
                     serviceCenterBO.CurrentBankInfo.Bank_Id = Nothing
                 End If
 
-                If Not Me._AccountNameIsNull Then serviceCenterBO.CurrentBankInfo.Account_Name = Me.AccountName
-                If Not Me._BankCountryCodeIsNull Then serviceCenterBO.CurrentBankInfo.CountryID = Me.BankCountryID
+                If Not _AccountNameIsNull Then serviceCenterBO.CurrentBankInfo.Account_Name = AccountName
+                If Not _BankCountryCodeIsNull Then serviceCenterBO.CurrentBankInfo.CountryID = BankCountryID
 
-                If Not Me._SwiftCodeIsNull Then
-                    serviceCenterBO.CurrentBankInfo.SwiftCode = Me.SwiftCode
+                If Not _SwiftCodeIsNull Then
+                    serviceCenterBO.CurrentBankInfo.SwiftCode = SwiftCode
                 Else
                     serviceCenterBO.CurrentBankInfo.SwiftCode = Nothing
                 End If
 
-                If Not Me._IBANnumberIsNull Then
-                    serviceCenterBO.CurrentBankInfo.IbanNumber = Me.IBANnumber
+                If Not _IBANnumberIsNull Then
+                    serviceCenterBO.CurrentBankInfo.IbanNumber = IBANnumber
                 Else
                     serviceCenterBO.CurrentBankInfo.IbanNumber = Nothing
                 End If
 
-                If Not Me._AccountTypeIdIsNull Then serviceCenterBO.CurrentBankInfo.AccountTypeId = Me.AccountTypeId
+                If Not _AccountTypeIdIsNull Then serviceCenterBO.CurrentBankInfo.AccountTypeId = AccountTypeId
 
                 serviceCenterBO.CurrentBankInfo.SourceCountryID = serviceCenterBO.CountryId
 
@@ -252,8 +252,8 @@ Public Class GalaxyUpdateServiceCenter
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -268,10 +268,10 @@ Public Class GalaxyUpdateServiceCenter
     Private Sub Load(ByVal ds As GalaxyUpdateServiceCenterDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -295,12 +295,12 @@ Public Class GalaxyUpdateServiceCenter
     Public Sub SetAddress(ByVal address1 As String, ByVal address2 As String, ByVal city As String, _
     ByVal regionCode As String, ByVal postalCode As String, ByVal countryID As Guid)
 
-        Me.Address = address1
+        Address = address1
         Me.City = city
         Me.PostalCode = postalCode
-        Me.RegionId = GetRegionID(regionCode, countryID)
+        RegionId = GetRegionID(regionCode, countryID)
         Me.CountryId = countryID
-        Me.AddressRequiredServCenter = True
+        AddressRequiredServCenter = True
 
 
     End Sub
@@ -396,8 +396,8 @@ Public Class GalaxyUpdateServiceCenter
             If ds.GalaxyUpdateServiceCenter.Count = 0 Then Exit Sub
             With ds.GalaxyUpdateServiceCenter.Item(0)
 
-                Me.ServiceCenterCode = .SERVICE_CENTER_CODE 'required
-                ServiceCenterId = ServiceCenter.GetServiceCenterID(Me.ServiceCenterCode)
+                ServiceCenterCode = .SERVICE_CENTER_CODE 'required
+                ServiceCenterId = ServiceCenter.GetServiceCenterID(ServiceCenterCode)
 
                 If ServiceCenterId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("Service Center Invalid Parameters Error", Common.ErrorCodes.INVALID_SERVICE_CENTER_CODE)
@@ -405,109 +405,109 @@ Public Class GalaxyUpdateServiceCenter
 
                 If Not .IsADDRESSNull Then
                     Address = .ADDRESS
-                    Me._AddressIsNull = False
+                    _AddressIsNull = False
                 End If
                 If Not .IsCITYNull Then
                     City = .CITY
-                    Me._CityIsNull = False
+                    _CityIsNull = False
                 End If
                 If Not .IsPOSTAL_CODENull Then
-                    Me.PostalCode = .POSTAL_CODE
-                    Me._PostalCodeIsNull = False
+                    PostalCode = .POSTAL_CODE
+                    _PostalCodeIsNull = False
                 End If
                 If Not .IsSERVICE_CENTER_NAMENull Then
-                    Me.ServiceCenterName = .SERVICE_CENTER_NAME
-                    Me._ServiceCenterNameIsNull = False
+                    ServiceCenterName = .SERVICE_CENTER_NAME
+                    _ServiceCenterNameIsNull = False
                 End If
                 If Not .IsRATING_CODENull Then
-                    Me.RatingCode = .RATING_CODE
-                    Me._RatingCodeIsNull = False
+                    RatingCode = .RATING_CODE
+                    _RatingCodeIsNull = False
                 End If
                 If Not .IsPHONENull Then
-                    Me.Phone1 = .PHONE
-                    Me._PhoneIsNull = False
+                    Phone1 = .PHONE
+                    _PhoneIsNull = False
                 End If
                 If Not .IsFAXNull Then
-                    Me.Fax = .FAX
-                    Me._FaxIsNull = False
+                    Fax = .FAX
+                    _FaxIsNull = False
                 End If
                 If Not .IsREGISTRATION_NUMBERNull Then
-                    Me.RegistrationNumber = .REGISTRATION_NUMBER
-                    Me._RegistrationNumberIsNull = False
+                    RegistrationNumber = .REGISTRATION_NUMBER
+                    _RegistrationNumberIsNull = False
                 End If
                 If Not .IsTAX_IDNull Then
-                    Me.TaxId = .TAX_ID
-                    Me._TaxIdIsNull = False
+                    TaxId = .TAX_ID
+                    _TaxIdIsNull = False
                 End If
                 If Not .IsSTATUS_CODENull Then
-                    Me.StatusCode = .STATUS_CODE
-                    Me._StatusCodeIsNull = False
+                    StatusCode = .STATUS_CODE
+                    _StatusCodeIsNull = False
                 End If
                 If Not .IsCOMMENTSNull Then
-                    Me.Comments = .COMMENTS
-                    Me._CommentsIsNull = False
+                    Comments = .COMMENTS
+                    _CommentsIsNull = False
                 End If
                 If Not .IsACCOUNT_NAMENull Then
-                    Me.AccountName = .ACCOUNT_NAME
-                    Me._AccountNameIsNull = False
+                    AccountName = .ACCOUNT_NAME
+                    _AccountNameIsNull = False
                 End If
                 If Not .IsBANK_IDNull Then
-                    Me.BankId = .BANK_ID
-                    Me._BankIdIsNull = False
+                    BankId = .BANK_ID
+                    _BankIdIsNull = False
                 End If
                 If Not .IsACCOUNT_NUMBERNull Then
-                    Me.Account_Number = .ACCOUNT_NUMBER
-                    Me._AccountNumberIsNull = False
+                    Account_Number = .ACCOUNT_NUMBER
+                    _AccountNumberIsNull = False
                 End If
                 If Not .IsSWIFT_CODENull Then
-                    Me.SwiftCode = .SWIFT_CODE
-                    Me._SwiftCodeIsNull = False
+                    SwiftCode = .SWIFT_CODE
+                    _SwiftCodeIsNull = False
                 End If
                 If Not .IsIBAN_NUMBERNull Then
-                    Me.IBANnumber = .IBAN_NUMBER
-                    Me._IBANnumberIsNull = False
+                    IBANnumber = .IBAN_NUMBER
+                    _IBANnumberIsNull = False
                 End If
                 If Not .IsBANK_COUNTRY_CODENull Then
-                    Me.BankCountryCode = .BANK_COUNTRY_CODE
-                    Me._BankCountryCodeIsNull = False
+                    BankCountryCode = .BANK_COUNTRY_CODE
+                    _BankCountryCodeIsNull = False
                 End If
                 If Not .IsACCOUNT_TYPENull Then
-                    Me.AccountType = .ACCOUNT_TYPE
-                    Me._AccountTypeIsNull = False
+                    AccountType = .ACCOUNT_TYPE
+                    _AccountTypeIsNull = False
 
-                    Me.AccountTypeId = Me.GetAccountTypeID(Me.AccountType)
-                    Me._AccountTypeIdIsNull = False
+                    AccountTypeId = GetAccountTypeID(AccountType)
+                    _AccountTypeIdIsNull = False
                 End If
                 If Not .IsCOUNTRY_CODENull Then
-                    Me.CountryCode = .COUNTRY_CODE
-                    Me._CountryCodeIsNull = False
-                    Me.CountryID = GetCountryID(.COUNTRY_CODE)
-                    If Me.CountryID.Equals(Guid.Empty) Then
+                    CountryCode = .COUNTRY_CODE
+                    _CountryCodeIsNull = False
+                    CountryID = GetCountryID(.COUNTRY_CODE)
+                    If CountryID.Equals(Guid.Empty) Then
                         Throw New BOValidationException("Service Center Invalid Parameters Error", Common.ErrorCodes.BO_ERROR_COUNTRY_ID_NOT_FOUND)
                     Else
-                        Me._countryIdIsNull = False
+                        _countryIdIsNull = False
                     End If
                 End If
 
                 If Not .IsREGION_CODENull Then
-                    Me.RegionCode = .REGION_CODE
-                    Me._RegionCodeIsNull = False
-                    Me.RegionId = GetRegionID(.REGION_CODE, CountryID)
-                    If Me.RegionId.Equals(Guid.Empty) Then
+                    RegionCode = .REGION_CODE
+                    _RegionCodeIsNull = False
+                    RegionId = GetRegionID(.REGION_CODE, CountryID)
+                    If RegionId.Equals(Guid.Empty) Then
                         Throw New BOValidationException("Service Center Invalid Parameters Error", Common.ErrorCodes.INVALID_REGION_CODE)
                     Else
-                        Me._RegionIdIsNull = False
+                        _RegionIdIsNull = False
                     End If
                 End If
 
                 If Not .IsORIGINAL_DEALER_CODENull Then
-                    Me.OriginalDealerCode = .ORIGINAL_DEALER_CODE
-                    Me._OriginalDealerCodeIsNull = False
-                    Me.OriginalDealerId = GetDealerID(.ORIGINAL_DEALER_CODE)
-                    If Me.OriginalDealerId.Equals(Guid.Empty) Then
+                    OriginalDealerCode = .ORIGINAL_DEALER_CODE
+                    _OriginalDealerCodeIsNull = False
+                    OriginalDealerId = GetDealerID(.ORIGINAL_DEALER_CODE)
+                    If OriginalDealerId.Equals(Guid.Empty) Then
                         Throw New BOValidationException("Service Center Invalid Parameters Error", Common.ErrorCodes.INVALID_ORIGINAL_DEALER_CODE)
                     Else
-                        Me._OriginalDealerCodeIsNull = False
+                        _OriginalDealerCodeIsNull = False
                         ' this logic is based on the Service Center form. dealer code can only be assigned to one service center.
                         Dim dv As DataView = LookupListNew.GetOriginalDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyId, Guid.Empty)
                         Dim dealerCode As String = LookupListNew.GetCodeFromId(dv, OriginalDealerId)
@@ -518,23 +518,23 @@ Public Class GalaxyUpdateServiceCenter
                 End If
 
                 If Not .IsPAYMENT_METHODNull Then
-                    Me.PaymentMethod = .PAYMENT_METHOD
-                    Me._PaymentMethodIdIsNull = False
-                    Me.PaymentMethodId = GetPaymentMethodID(.PAYMENT_METHOD)
-                    Me._PaymentMethodIdIsNull = False
+                    PaymentMethod = .PAYMENT_METHOD
+                    _PaymentMethodIdIsNull = False
+                    PaymentMethodId = GetPaymentMethodID(.PAYMENT_METHOD)
+                    _PaymentMethodIdIsNull = False
 
                     If .PAYMENT_METHOD = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
                         If .IsACCOUNT_NAMENull OrElse .IsBANK_COUNTRY_CODENull Then
                             Throw New BOValidationException("Service Center Invalid Parameters Error", Common.ErrorCodes.INVALID_BANK_INFO_REQUIRED)
                         End If
                         If Not .IsBANK_COUNTRY_CODENull Then
-                            Me.BankCountryCode = .BANK_COUNTRY_CODE
-                            Me._BankCountryCodeIsNull = False
-                            Me.BankCountryID = GetCountryID(.BANK_COUNTRY_CODE)
-                            If Me.BankCountryID.Equals(Guid.Empty) Then
+                            BankCountryCode = .BANK_COUNTRY_CODE
+                            _BankCountryCodeIsNull = False
+                            BankCountryID = GetCountryID(.BANK_COUNTRY_CODE)
+                            If BankCountryID.Equals(Guid.Empty) Then
                                 Throw New BOValidationException("Service Center Invalid Parameters Error", Common.ErrorCodes.BO_ERROR_COUNTRY_ID_NOT_FOUND)
                             Else
-                                Me._BankCountryIdIsNull = False
+                                _BankCountryIdIsNull = False
                             End If
                         End If
                         bankInfoSave = True
@@ -562,7 +562,7 @@ Public Class GalaxyUpdateServiceCenter
                 'End If
 
                 'Added by REQ-452
-                If Not .IsSERVICE_TYPENull Then Me.ServiceType = .SERVICE_TYPE
+                If Not .IsSERVICE_TYPENull Then ServiceType = .SERVICE_TYPE
 
             End With
 
@@ -588,7 +588,7 @@ Public Class GalaxyUpdateServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Source_Col_Address, Value)
+            SetValue(Source_Col_Address, Value)
         End Set
     End Property
 
@@ -604,7 +604,7 @@ Public Class GalaxyUpdateServiceCenter
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Source_Col_City, Value)
+            SetValue(Source_Col_City, Value)
         End Set
     End Property
 
@@ -620,7 +620,7 @@ Public Property RegionCode() As String
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_REGION_CODE, MiscUtil.ConvertToUpper(Value))
+            SetValue(SOURCE_COL_REGION_CODE, MiscUtil.ConvertToUpper(Value))
         End Set
     End Property
 
@@ -636,7 +636,7 @@ Public Property RegionCode() As String
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Source_Col_Postal_Code, MiscUtil.ConvertToUpper(Value))
+            SetValue(Source_Col_Postal_Code, MiscUtil.ConvertToUpper(Value))
         End Set
     End Property
 
@@ -652,7 +652,7 @@ Public Property RegionCode() As String
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Source_Col_Country_Code, Value)
+            SetValue(Source_Col_Country_Code, Value)
         End Set
     End Property
     'removed by REQ-263
@@ -683,7 +683,7 @@ Public Property RegionCode() As String
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_SERVICE_TYPE, Value)
+            SetValue(SOURCE_COL_SERVICE_TYPE, Value)
         End Set
     End Property
 
@@ -691,15 +691,15 @@ Public Property RegionCode() As String
     Public Property ServiceCenterCode() As String
         Get
             CheckDeleted()
-            If Row(Me.Source_Col_Service_Center_Code) Is DBNull.Value Then
+            If Row(Source_Col_Service_Center_Code) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.Source_Col_Service_Center_Code), String)
+                Return CType(Row(Source_Col_Service_Center_Code), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.Source_Col_Service_Center_Code, Value)
+            SetValue(Source_Col_Service_Center_Code, Value)
         End Set
     End Property
 
@@ -707,15 +707,15 @@ Public Property RegionCode() As String
     Public Property ServiceCenterName() As String
         Get
             CheckDeleted()
-            If Row(Me.Source_Col_Service_Center_Name) Is DBNull.Value Then
+            If Row(Source_Col_Service_Center_Name) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.Source_Col_Service_Center_Name), String)
+                Return CType(Row(Source_Col_Service_Center_Name), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.Source_Col_Service_Center_Name, Value)
+            SetValue(Source_Col_Service_Center_Name, Value)
         End Set
     End Property
 
@@ -723,15 +723,15 @@ Public Property RegionCode() As String
         Public Property RatingCode() As String
         Get
             CheckDeleted()
-            If Row(Me.SOURCE_COL_RATING_CODE) Is DBNull.Value Then
+            If Row(SOURCE_COL_RATING_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.SOURCE_COL_RATING_CODE), String)
+                Return CType(Row(SOURCE_COL_RATING_CODE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.SOURCE_COL_RATING_CODE, Value)
+            SetValue(SOURCE_COL_RATING_CODE, Value)
         End Set
     End Property
 
@@ -739,15 +739,15 @@ Public Property RegionCode() As String
     Public Property Phone1() As String
         Get
             CheckDeleted()
-            If Row(Me.Source_Col_Phone) Is DBNull.Value Then
+            If Row(Source_Col_Phone) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.Source_Col_Phone), String)
+                Return CType(Row(Source_Col_Phone), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.Source_Col_Phone, Value)
+            SetValue(Source_Col_Phone, Value)
         End Set
     End Property
 
@@ -755,15 +755,15 @@ Public Property RegionCode() As String
     Public Property Fax() As String
         Get
             CheckDeleted()
-            If Row(Me.Source_Col_Fax) Is DBNull.Value Then
+            If Row(Source_Col_Fax) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.Source_Col_Fax), String)
+                Return CType(Row(Source_Col_Fax), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.Source_Col_Fax, Value)
+            SetValue(Source_Col_Fax, Value)
         End Set
     End Property
 
@@ -771,15 +771,15 @@ Public Property RegionCode() As String
 Public Property RegistrationNumber() As String
         Get
             CheckDeleted()
-            If Row(Me.Source_Col_Registration_Number) Is DBNull.Value Then
+            If Row(Source_Col_Registration_Number) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.Source_Col_Registration_Number), String)
+                Return CType(Row(Source_Col_Registration_Number), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.Source_Col_Registration_Number, Value)
+            SetValue(Source_Col_Registration_Number, Value)
         End Set
     End Property
 
@@ -787,15 +787,15 @@ Public Property RegistrationNumber() As String
     Public Property TaxId() As String
         Get
             CheckDeleted()
-            If Row(Me.Source_Col_Tax_Id) Is DBNull.Value Then
+            If Row(Source_Col_Tax_Id) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.Source_Col_Tax_Id), String)
+                Return CType(Row(Source_Col_Tax_Id), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.Source_Col_Tax_Id, Value)
+            SetValue(Source_Col_Tax_Id, Value)
         End Set
     End Property
 
@@ -803,15 +803,15 @@ Public Property RegistrationNumber() As String
     Public Property StatusCode() As String
         Get
             CheckDeleted()
-            If Row(Me.Source_Col_Status_Code) Is DBNull.Value Then
+            If Row(Source_Col_Status_Code) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.Source_Col_Status_Code), String)
+                Return CType(Row(Source_Col_Status_Code), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.Source_Col_Status_Code, Value)
+            SetValue(Source_Col_Status_Code, Value)
         End Set
     End Property
 
@@ -819,15 +819,15 @@ Public Property RegistrationNumber() As String
     Public Property Comments() As String
         Get
             CheckDeleted()
-            If Row(Me.Source_Col_Comments) Is DBNull.Value Then
+            If Row(Source_Col_Comments) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.Source_Col_Comments), String)
+                Return CType(Row(Source_Col_Comments), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.Source_Col_Comments, Value)
+            SetValue(Source_Col_Comments, Value)
         End Set
     End Property
 
@@ -843,7 +843,7 @@ Public Property RegistrationNumber() As String
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Source_Col_Account_Name, Value)
+            SetValue(Source_Col_Account_Name, Value)
         End Set
     End Property
 
@@ -858,7 +858,7 @@ Public Property RegistrationNumber() As String
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Source_Col_Bank_Id, Value)
+            SetValue(Source_Col_Bank_Id, Value)
         End Set
     End Property
 
@@ -873,7 +873,7 @@ Public Property RegistrationNumber() As String
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Source_Col_Account_Number, Value)
+            SetValue(Source_Col_Account_Number, Value)
         End Set
     End Property
 
@@ -889,7 +889,7 @@ Public Property RegistrationNumber() As String
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Source_Col_IBAN_Number, Value)
+            SetValue(Source_Col_IBAN_Number, Value)
         End Set
     End Property
 
@@ -905,7 +905,7 @@ Public Property RegistrationNumber() As String
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Source_Col_Swift_Code, Value)
+            SetValue(Source_Col_Swift_Code, Value)
         End Set
     End Property
 
@@ -921,7 +921,7 @@ Public Property RegistrationNumber() As String
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Source_Col_Bank_Country_Code, Value)
+            SetValue(Source_Col_Bank_Country_Code, Value)
         End Set
     End Property
 
@@ -936,7 +936,7 @@ Public Property RegistrationNumber() As String
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Source_Col_Account_Type, Value)
+            SetValue(Source_Col_Account_Type, Value)
         End Set
     End Property
 
@@ -951,7 +951,7 @@ Public Property RegistrationNumber() As String
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_PAYMENT_METHOD, Value)
+            SetValue(SOURCE_COL_PAYMENT_METHOD, Value)
         End Set
     End Property
 
@@ -966,7 +966,7 @@ Public Property RegistrationNumber() As String
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_ORIGINAL_DEALER_CODE, Value)
+            SetValue(SOURCE_COL_ORIGINAL_DEALER_CODE, Value)
         End Set
     End Property
 

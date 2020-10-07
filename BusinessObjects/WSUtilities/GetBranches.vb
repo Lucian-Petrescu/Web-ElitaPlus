@@ -43,8 +43,8 @@ Public Class GetBranches
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -55,10 +55,10 @@ Public Class GetBranches
     Private Sub Load(ByVal ds As GetBranchesDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -75,7 +75,7 @@ Public Class GetBranches
         Try
             If ds.GetBranches.Count = 0 Then Exit Sub
             With ds.GetBranches.Item(0)
-                Me.DealerCode = .dealer_code
+                DealerCode = .dealer_code
             End With
 
         Catch ex As BOValidationException
@@ -94,15 +94,15 @@ Public Class GetBranches
 
     Public Property DealerCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_DEALER_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_DEALER_CODE), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER_CODE, Value)
+            SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
@@ -115,11 +115,11 @@ Public Class GetBranches
         Dim branchesList As Branch.BranchSearchDV
 
         Try
-            Me.Validate()
+            Validate()
 
             Dim dvDealrs As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
             If Not dvDealrs Is Nothing AndAlso dvDealrs.Count > 0 Then
-                dealerId = LookupListNew.GetIdFromCode(dvDealrs, Me.DealerCode)
+                dealerId = LookupListNew.GetIdFromCode(dvDealrs, DealerCode)
                 If dealerId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("GetBranches Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_CODE)
                 End If

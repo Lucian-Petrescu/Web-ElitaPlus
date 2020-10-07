@@ -19,12 +19,12 @@ Public Class CertificateDataProtectionDAL
 #End Region
 
 #Region "Load Methods"
-    Public Function LoadList(ByVal certId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(certId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_DATA_PROTECTION_HISTORY_ID, certId.ToByteArray)}
         Try
             Dim ds = New DataSet
-            Return (DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -33,13 +33,13 @@ Public Class CertificateDataProtectionDAL
 
 #Region "Overloaded Methods"
     Public Sub SaveForm(ByRef intErrCode As Integer, ByRef strErrMsg As String,
-                         ByVal certId As Guid,
-                           ByVal restricred As String, ByVal comment As String,
-                           ByVal requestId As String)
+                         certId As Guid,
+                           restricred As String, comment As String,
+                           requestId As String)
         Dim sqlStmt As String
         strErrMsg = ""
         intErrCode = 0
-        sqlStmt = Me.Config("/SQL/SAVE_NEW_FORM_PROCEDURE")
+        sqlStmt = Config("/SQL/SAVE_NEW_FORM_PROCEDURE")
         Try
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                             New DBHelper.DBHelperParameter("P_RETURN_CODE", intErrCode.GetType),

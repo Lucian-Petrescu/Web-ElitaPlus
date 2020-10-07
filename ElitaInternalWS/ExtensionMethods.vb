@@ -8,7 +8,7 @@ Imports System.Collections.Generic
 Friend Module ExtensionMethods
 
     <System.Runtime.CompilerServices.Extension()> _
-    Public Function IsNullOrWhiteSpace(ByVal value As String) As Boolean
+    Public Function IsNullOrWhiteSpace(value As String) As Boolean
         If (value Is Nothing) Then Return True
 
         Return String.IsNullOrEmpty(value.Trim())
@@ -16,7 +16,7 @@ Friend Module ExtensionMethods
     End Function
 
     <System.Runtime.CompilerServices.Extension()> _
-    Public Function ToValidationFault(ByVal value As BOValidationException) As ValidationFault
+    Public Function ToValidationFault(value As BOValidationException) As ValidationFault
         Dim returnValue As New ValidationFault
 
         For Each va As ValidationError In value.ValidationErrorList()
@@ -26,7 +26,7 @@ Friend Module ExtensionMethods
         Return returnValue
     End Function
 
-    Public Sub Validate(ByVal objectToValidate As Object)
+    Public Sub Validate(objectToValidate As Object)
         Dim oValidationErrors As New Dictionary(Of String, String)
         Validate(objectToValidate, oValidationErrors)
         If (oValidationErrors.Count > 0) Then
@@ -34,7 +34,7 @@ Friend Module ExtensionMethods
         End If
     End Sub
 
-    Private Sub Validate(ByVal objectToValidate As Object, ByRef pValidationErrors As Dictionary(Of String, String))
+    Private Sub Validate(objectToValidate As Object, ByRef pValidationErrors As Dictionary(Of String, String))
         If (objectToValidate Is Nothing) Then Exit Sub
         For Each pi As PropertyInfo In objectToValidate.GetType().GetProperties()
             If (pi.PropertyType().Equals(GetType(String))) Then

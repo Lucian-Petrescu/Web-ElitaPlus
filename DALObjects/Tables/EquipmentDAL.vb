@@ -59,25 +59,25 @@
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_EQUIPMENT_ID, id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal description As String, ByVal model As String,
-                                        ByVal manufacturerName As String, ByVal equipmentClassName As String,
-                                        ByVal equipmentTypeName As String,
-                                        ByVal companyIds As ArrayList, ByVal languageId As Guid, ByVal sku As String, Optional ByVal EquipmentListCode As String = "",
+    Public Function LoadList(description As String, model As String,
+                                        manufacturerName As String, equipmentClassName As String,
+                                        equipmentTypeName As String,
+                                        companyIds As ArrayList, languageId As Guid, sku As String, Optional ByVal EquipmentListCode As String = "",
                                         Optional ByVal Effective_On_Date As Date = Nothing) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         If Not String.IsNullOrEmpty(EquipmentListCode) Then
-            selectStmt = Me.Config("/SQL/LOAD_LIST_BY_EQUIPMENT_LIST")
+            selectStmt = Config("/SQL/LOAD_LIST_BY_EQUIPMENT_LIST")
         End If
 
         Dim whereClauseConditions As String = ""
@@ -88,48 +88,48 @@
         bIsLikeClause = IsThereALikeClause(description, model,
                                 manufacturerName, sku)
 
-        If ((Not (description Is Nothing)) AndAlso (Me.FormatSearchMask(description))) Then
-            whereClauseConditions &= Environment.NewLine & "UPPER(E." & Me.COL_NAME_DESCRIPTION & ")" & description.ToUpper & " AND"
+        If ((Not (description Is Nothing)) AndAlso (FormatSearchMask(description))) Then
+            whereClauseConditions &= Environment.NewLine & "UPPER(E." & COL_NAME_DESCRIPTION & ")" & description.ToUpper & " AND"
         End If
 
-        If ((Not (manufacturerName Is Nothing)) AndAlso (Me.FormatSearchMask(manufacturerName))) Then
+        If ((Not (manufacturerName Is Nothing)) AndAlso (FormatSearchMask(manufacturerName))) Then
             whereClauseConditions &= Environment.NewLine & "UPPER(M." & ManufacturerDAL.COL_NAME_DESCRIPTION & ")" & manufacturerName.ToUpper & " AND"
         End If
 
-        If ((Not (model Is Nothing)) AndAlso (Me.FormatSearchMask(model))) Then
+        If ((Not (model Is Nothing)) AndAlso (FormatSearchMask(model))) Then
             If (model.Contains(EQUALS_CLAUSE)) Then
                 model = EQUALS_CLAUSE & " GetTextForComparison(" & model.Replace(EQUALS_CLAUSE, String.Empty) & ")"
             End If
-            whereClauseConditions &= Environment.NewLine & "GetTextForComparison(E." & Me.COL_NAME_MODEL & ")" & model.ToUpper & " AND"
+            whereClauseConditions &= Environment.NewLine & "GetTextForComparison(E." & COL_NAME_MODEL & ")" & model.ToUpper & " AND"
         End If
 
-        If ((Not (equipmentClassName Is Nothing)) AndAlso (Me.FormatSearchMask(equipmentClassName))) Then
+        If ((Not (equipmentClassName Is Nothing)) AndAlso (FormatSearchMask(equipmentClassName))) Then
             whereClauseConditions &= Environment.NewLine & "UPPER(DITEC.TRANSLATION)" & equipmentClassName.ToUpper & " AND"
         End If
 
-        If ((Not (equipmentTypeName Is Nothing)) AndAlso (Me.FormatSearchMask(equipmentTypeName))) Then
+        If ((Not (equipmentTypeName Is Nothing)) AndAlso (FormatSearchMask(equipmentTypeName))) Then
             whereClauseConditions &= Environment.NewLine & "UPPER(DITET.TRANSLATION)" & equipmentTypeName.ToUpper & " AND"
         End If
 
-        If ((Not (sku Is Nothing)) AndAlso (Me.FormatSearchMask(sku))) Then
+        If ((Not (sku Is Nothing)) AndAlso (FormatSearchMask(sku))) Then
             whereClauseConditions &= Environment.NewLine & "UPPER(EWM.SKU_NUMBER)" & sku.ToUpper & " AND"
         End If
 
         whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("M." & ManufacturerDAL.COL_NAME_COMPANY_GROUP_ID, companyIds, True) & " AND"
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             If String.IsNullOrEmpty(EquipmentListCode) Then
-                DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
-                                New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, languageId.ToByteArray())})
+                DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
+                                New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())})
             Else
-                DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
-                                New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, languageId.ToByteArray()),
+                DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
+                                New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray()),
                                                                   New DBHelper.DBHelperParameter("EQUIP_LIST_CODE", EquipmentListCode),
                                                                   New DBHelper.DBHelperParameter("EFF_DATE", Effective_On_Date)})
             End If
@@ -138,9 +138,9 @@
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function LoadEquipmentForBenefitsList(ByVal companyIds As ArrayList, ByVal Effective_On_Date As Date, ByVal languageId As Guid) As DataSet
+    Public Function LoadEquipmentForBenefitsList(companyIds As ArrayList, Effective_On_Date As Date, languageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_EQUIPMENT_FOR_BENEFITS_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_EQUIPMENT_FOR_BENEFITS_LIST")
 
         Dim whereClauseConditions As String = ""
         Dim ds As New DataSet
@@ -151,13 +151,13 @@
         whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("M." & ManufacturerDAL.COL_NAME_COMPANY_GROUP_ID, companyIds, True) & " AND"
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("EFF_DATE", Effective_On_Date)})
 
             Return ds
@@ -165,24 +165,24 @@
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Private Function IsThereALikeClause(ByVal description As String, ByVal model As String,
-                                ByVal manufacturerName As String, SKU As String) As Boolean
+    Private Function IsThereALikeClause(description As String, model As String,
+                                manufacturerName As String, SKU As String) As Boolean
         Dim bIsLikeClause As Boolean
 
-        bIsLikeClause = Me.IsLikeClause(description) OrElse Me.IsLikeClause(model) OrElse
-                            Me.IsLikeClause(manufacturerName) OrElse Me.IsLikeClause(SKU)
+        bIsLikeClause = IsLikeClause(description) OrElse IsLikeClause(model) OrElse
+                            IsLikeClause(manufacturerName) OrElse IsLikeClause(SKU)
         Return bIsLikeClause
     End Function
 
-    Public Function LoadEquipmentListForWS(ByVal EquipmentListCode As String, ByVal companyGroupId As Guid) As DataSet
+    Public Function LoadEquipmentListForWS(EquipmentListCode As String, companyGroupId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_EQUIPMENT_LIST_FOR_WS")
+        Dim selectStmt As String = Config("/SQL/LOAD_EQUIPMENT_LIST_FOR_WS")
         Dim parameters() As OracleParameter
 
         parameters = New OracleParameter() _
                                     {New OracleParameter(COL_NAME_EQUIPMENT_CODE, EquipmentListCode)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DATASET_NAME__GET_MAKE_AND_MODEL_RESPONSE, Me.TABLE_NAME_MAKES_AND_MODEL_INFO, parameters))
+            Return (DBHelper.Fetch(selectStmt, DATASET_NAME__GET_MAKE_AND_MODEL_RESPONSE, TABLE_NAME_MAKES_AND_MODEL_INFO, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -192,7 +192,7 @@
 
 #Region "Overloaded Methods"
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim commentDAL As New EquipmentCommentDAL
         Dim imageDAL As New EquipmentImageDAL
         Dim attrbValDAL As New AttributeValueDAL
@@ -210,10 +210,10 @@
             imageDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
             mfgCvgDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
             RelequipDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             commentDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             attrbValDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             imageDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
@@ -233,17 +233,17 @@
         End Try
     End Sub
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "Public Methods"
 
-    Public Function FindEquipment(ByVal dealer As String, ByVal manufacturer As String, ByVal model As String, ByVal lookupDate As Date) As Guid
-        Dim selectStmt As String = Me.Config("/SQL/FIND_EQUIPMENT_BY_MAKE_MODEL_DEALER")
+    Public Function FindEquipment(dealer As String, manufacturer As String, model As String, lookupDate As Date) As Guid
+        Dim selectStmt As String = Config("/SQL/FIND_EQUIPMENT_BY_MAKE_MODEL_DEALER")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                                                          {New DBHelper.DBHelperParameter(PAR_NAME_LOOKUP_DATE, lookupDate, GetType(Date)),
                                                           New DBHelper.DBHelperParameter(PAR_NAME_DEALER, dealer, GetType(String)),
@@ -264,8 +264,8 @@
         End Try
     End Function
 
-    Public Function GetEquipmentClassIdByEquipmentId(ByVal equipmentId As Guid) As Guid
-        Dim selectStmt As String = Me.Config("/SQL/GET_EQUIPMENT_CLASS_ID_BY_EQUIPMENT_ID")
+    Public Function GetEquipmentClassIdByEquipmentId(equipmentId As Guid) As Guid
+        Dim selectStmt As String = Config("/SQL/GET_EQUIPMENT_CLASS_ID_BY_EQUIPMENT_ID")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                                                          {New DBHelper.DBHelperParameter(TABLE_KEY_NAME, equipmentId, GetType(Guid))}
         Try
@@ -282,10 +282,10 @@
         End Try
     End Function
 
-    Public Function ExecuteEquipmentFilter(ByVal CompGrpid As Guid, ByVal makeid As Guid, ByVal equipmentClass As Guid, ByVal equipmentType As Guid, ByVal Model As String, ByVal Description As String, ByVal parentEquipmenttype As Guid) As DataSet
+    Public Function ExecuteEquipmentFilter(CompGrpid As Guid, makeid As Guid, equipmentClass As Guid, equipmentType As Guid, Model As String, Description As String, parentEquipmenttype As Guid) As DataSet
 
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/SEARCH_Equipment_List_detail")
+        Dim selectStmt As String = Config("/SQL/SEARCH_Equipment_List_detail")
         Dim dynamic_Where_Clause As String = String.Empty
         Dim COL_PARENT_EQUIPMENT_TYPE As String = "PARENT_EQUIPMENT_TYPE"
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(ManufacturerDAL.COL_NAME_COMPANY_GROUP_ID, CompGrpid.ToByteArray),
@@ -328,10 +328,10 @@
 
     End Function
 
-    Public Function GetEquipmentIdByEquipmentList(ByVal equipmentListCode As String,
-                                                  ByVal effectiveDate As DateTime, ByVal manufacturer_id As Guid, ByVal model As String) As Guid
+    Public Function GetEquipmentIdByEquipmentList(equipmentListCode As String,
+                                                  effectiveDate As DateTime, manufacturer_id As Guid, model As String) As Guid
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_EQUIPMENT_ID_BY_EQUIPMENTLIST")
+        Dim selectStmt As String = Config("/SQL/GET_EQUIPMENT_ID_BY_EQUIPMENTLIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                                                          {New DBHelper.DBHelperParameter(PAR_NAME_EQUIPMENT_LIST_CODE, equipmentListCode, GetType(String)),
                                                           New DBHelper.DBHelperParameter(PAR_NAME_EFFECTIVE_DATE, effectiveDate, GetType(DateTime)),

@@ -8,15 +8,15 @@ Public Class ClaimStage
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'Exiting BO
     Public Sub New(ByVal id As Guid, ByVal languageid As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
         If Me.LanguageId = Guid.Empty Then
             Me.LanguageId = languageid
         End If
@@ -25,39 +25,39 @@ Public Class ClaimStage
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ClaimStageDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -68,20 +68,20 @@ Public Class ClaimStage
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New ClaimStageDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -96,15 +96,15 @@ Public Class ClaimStage
 
         Try
             If reloadData Then
-                Dim tableIdx As Integer = Me.Dataset.Tables.IndexOf(StageEndStatusDAL.TABLE_NAME)
+                Dim tableIdx As Integer = Dataset.Tables.IndexOf(StageEndStatusDAL.TABLE_NAME)
                 If tableIdx <> -1 Then
-                    Me.Dataset.Tables.Remove(StageEndStatusDAL.TABLE_NAME)
+                    Dataset.Tables.Remove(StageEndStatusDAL.TABLE_NAME)
                 End If
             End If
 
-            If Me.Dataset.Tables.IndexOf(StageEndStatusDAL.TABLE_NAME) < 0 Then
+            If Dataset.Tables.IndexOf(StageEndStatusDAL.TABLE_NAME) < 0 Then
                 Dim _claimstageDAL As New ClaimStageDAL
-                _claimstageDAL.LoadEndStatusList(Me.Dataset, StageEndStatusDAL.TABLE_NAME, Me.Id, languageid)
+                _claimstageDAL.LoadEndStatusList(Dataset, StageEndStatusDAL.TABLE_NAME, Id, languageid)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -145,7 +145,7 @@ Public Class ClaimStage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_STAGE_NAME_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_STAGE_NAME_ID, Value)
         End Set
     End Property
 
@@ -161,7 +161,7 @@ Public Class ClaimStage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_START_STATUS_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_START_STATUS_ID, Value)
         End Set
     End Property
 
@@ -176,7 +176,7 @@ Public Class ClaimStage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_COMPANY_GROUP_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
@@ -191,7 +191,7 @@ Public Class ClaimStage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
@@ -206,7 +206,7 @@ Public Class ClaimStage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
@@ -222,7 +222,7 @@ Public Class ClaimStage
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_PRODUCT_CODE, Value)
+            SetValue(ClaimStageDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
@@ -238,7 +238,7 @@ Public Class ClaimStage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
@@ -255,7 +255,7 @@ Public Class ClaimStage
         Set(ByVal Value As DateTime?)
             If Value.HasValue Then
                 CheckDeleted()
-                Me.SetValue(ClaimStageDAL.COL_NAME_EFFECTIVE_DATE, Value)
+                SetValue(ClaimStageDAL.COL_NAME_EFFECTIVE_DATE, Value)
             End If
         End Set
     End Property
@@ -273,7 +273,7 @@ Public Class ClaimStage
         Set(ByVal Value As DateTime?)
             If Value.HasValue Then
                 CheckDeleted()
-                Me.SetValue(ClaimStageDAL.COL_NAME_EXPIRATION_DATE, Value)
+                SetValue(ClaimStageDAL.COL_NAME_EXPIRATION_DATE, Value)
             End If
         End Set
     End Property
@@ -290,7 +290,7 @@ Public Class ClaimStage
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_SEQUENCE, Value)
+            SetValue(ClaimStageDAL.COL_NAME_SEQUENCE, Value)
         End Set
     End Property
 
@@ -306,7 +306,7 @@ Public Class ClaimStage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_SCREEN_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_SCREEN_ID, Value)
         End Set
     End Property
 
@@ -322,19 +322,19 @@ Public Class ClaimStage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_PORTAL_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_PORTAL_ID, Value)
         End Set
     End Property
 
     Public ReadOnly Property OriginalEffectiveDate() As DateType
         Get
-            Return New DateType(CType(Me.Row(AFAInvoiceRateDAL.COL_NAME_EFFECTIVE_DATE, DataRowVersion.Original), Date))
+            Return New DateType(CType(Row(AFAInvoiceRateDAL.COL_NAME_EFFECTIVE_DATE, DataRowVersion.Original), Date))
         End Get
     End Property
 
     Public ReadOnly Property OriginalExpirationDate() As DateType
         Get
-            Return New DateType(CType(Me.Row(AFAInvoiceRateDAL.COL_NAME_EXPIRATION_DATE, DataRowVersion.Original), Date))
+            Return New DateType(CType(Row(AFAInvoiceRateDAL.COL_NAME_EXPIRATION_DATE, DataRowVersion.Original), Date))
         End Get
     End Property
 
@@ -353,14 +353,14 @@ Public Class ClaimStage
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ClaimStageDAL
                 'dal.Update(Me.Row)
-                dal.UpdateFamily(Me.Dataset) ' changed to take care of join table
+                dal.UpdateFamily(Dataset) ' changed to take care of join table
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Me.Load(Me.Id)
-                    Me.LoadChildren(True, Me.LanguageId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Load(Id)
+                    LoadChildren(True, LanguageId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -369,27 +369,27 @@ Public Class ClaimStage
     End Sub
 
     Public Sub AttachStageEndStatus(ByVal stageEndStatusGuidStr As String, ByVal _languageid As Guid)
-        Me.LoadChildren(False, _languageid)
+        LoadChildren(False, _languageid)
 
         If Not stageEndStatusGuidStr Is Nothing AndAlso stageEndStatusGuidStr.Length > 0 Then
             Dim i As Integer
             Dim StgEndStatusId As Guid = New Guid(stageEndStatusGuidStr)
-            Dim stgEndStatus As StageEndStatus = StageEndStatus.Find(Me.Dataset, Me.Id, StgEndStatusId)
+            Dim stgEndStatus As StageEndStatus = StageEndStatus.Find(Dataset, Id, StgEndStatusId)
             If stgEndStatus Is Nothing Then
-                stgEndStatus = New StageEndStatus(Me.Dataset)
+                stgEndStatus = New StageEndStatus(Dataset)
                 stgEndStatus.EndStatusId = StgEndStatusId
-                stgEndStatus.StageId = Me.Id
+                stgEndStatus.StageId = Id
                 stgEndStatus.Save()
             End If
         End If
     End Sub
 
     Public Sub DetachStageEndStatus(ByVal stageEndStatusGuidStr As String, ByVal _languageid As Guid)
-        Me.LoadChildren(False, _languageid)
+        LoadChildren(False, _languageid)
 
         If Not stageEndStatusGuidStr Is Nothing AndAlso stageEndStatusGuidStr.Length > 0 Then
             Dim i As Integer
-            Dim stgEndStatus As StageEndStatus = StageEndStatus.Find(Me.Dataset, Me.Id, New Guid(stageEndStatusGuidStr))
+            Dim stgEndStatus As StageEndStatus = StageEndStatus.Find(Dataset, Id, New Guid(stageEndStatusGuidStr))
 
             If Not stgEndStatus Is Nothing Then
                 stgEndStatus.Delete()
@@ -758,7 +758,7 @@ Public Class ClaimStage
     End Function
 
     Public Function GetAvailableStageEndStatusList(ByVal company_group_id As Guid, ByVal language_id As Guid) As DataView
-        Me.LoadChildren(False, language_id)
+        LoadChildren(False, language_id)
         Dim dal As New ClaimStageDAL
         Return dal.GetAvailableStageEndStatusList(company_group_id, language_id)
     End Function

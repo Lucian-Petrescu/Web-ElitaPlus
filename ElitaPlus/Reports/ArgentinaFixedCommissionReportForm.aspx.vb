@@ -63,7 +63,7 @@ Namespace Reports
         End Sub
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -71,43 +71,43 @@ Namespace Reports
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear_Hide()
-            Me.ClearLabelsErrSign()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            MasterPage.MessageController.Clear_Hide()
+            ClearLabelsErrSign()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
+                    MasterPage.UsePageTabTitleInBreadCrum = False
                     UpdateBreadCrum()
 
                     InitializeForm()
-                    Me.AddCalendar(Me.BtnBeginDate, Me.txtBeginDate)
-                    Me.AddCalendar(Me.BtnEndDate, Me.txtEndDate)
+                    AddCalendar(BtnBeginDate, txtBeginDate)
+                    AddCalendar(BtnEndDate, txtEndDate)
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(lblEndDate)
-                Me.ClearLabelErrSign(lblBeginDate)
-                Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
-                If Me.rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
+                ClearLabelErrSign(lblEndDate)
+                ClearLabelErrSign(lblBeginDate)
+                ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+                If rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Sub populateDealersList()
             Dim dv As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "CODE")
 
-            Me.UsercontrolAvailableSelectedDealers.SetAvailableData(dv, LookupListNew.COL_CODE_NAME, LookupListNew.COL_ID_NAME)
+            UsercontrolAvailableSelectedDealers.SetAvailableData(dv, LookupListNew.COL_CODE_NAME, LookupListNew.COL_ID_NAME)
             ControlMgr.SetVisibleControl(Me, UsercontrolAvailableSelectedDealers, True)
         End Sub
 
@@ -130,7 +130,7 @@ Namespace Reports
                                                                   .CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                                                                 })
 
-            Me.moDealerGroupList.Populate(DealerGroups.ToArray(),
+            moDealerGroupList.Populate(DealerGroups.ToArray(),
                                         New PopulateOptions() With
                                         {
                                          .AddBlankItem = True
@@ -143,16 +143,16 @@ Namespace Reports
             TheReportCeInputControl.populateReportLanguages(RPT_FILENAME)
         End Sub
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End Sub
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -185,11 +185,11 @@ Namespace Reports
                 'End If
             End If
 
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             End If
 
-            dealerGroup = New Guid(Me.moDealerGroupList.SelectedValue)
+            dealerGroup = New Guid(moDealerGroupList.SelectedValue)
 
             If UsercontrolAvailableSelectedDealers.SelectedList.Count > 0 Then
                 Dim arrDealerList As String() = UsercontrolAvailableSelectedDealers.SelectedListwithCommaSep.Split(New Char() {","c})
@@ -205,9 +205,9 @@ Namespace Reports
             Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
         End Sub
 
-        Function SetParameters(ByVal oUserId As String, ByVal dealerCode As String, _
-                               ByVal beginDate As String, ByVal endDate As String, _
-                               ByVal dealerGroup As String, ByVal dealerList As String) As ReportCeBaseForm.Params
+        Function SetParameters(oUserId As String, dealerCode As String, _
+                               beginDate As String, endDate As String, _
+                               dealerGroup As String, dealerList As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim culturecode As String = TheReportCeInputControl.getCultureValue(False)

@@ -15,7 +15,7 @@ Namespace Tables
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -55,9 +55,9 @@ Namespace Tables
             Public LastOperation As DetailPageCommand
             Public EditingBo As Issue
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Issue, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As Issue, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
@@ -126,296 +126,296 @@ Namespace Tables
             End Get
         End Property
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Dim Issue As IssueSearchForm.MyState
 
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Issue = CType(Me.CallingParameters, IssueSearchForm.MyState)
-                    Me.State.MyBO = New Issue(CType(Issue.SelectedIssueId, Guid))
+                    Issue = CType(CallingParameters, IssueSearchForm.MyState)
+                    State.MyBO = New Issue(CType(Issue.SelectedIssueId, Guid))
                     If Not DateHelper.GetDateValue(Issue.ActiveOnDate) = Nothing Then
-                        Me.State.MyBO.ActiveOn = DateHelper.GetDateValue(Issue.ActiveOnDate)
-                        Me.State.ActiveOn = DateHelper.GetDateValue(Issue.ActiveOnDate)
+                        State.MyBO.ActiveOn = DateHelper.GetDateValue(Issue.ActiveOnDate)
+                        State.ActiveOn = DateHelper.GetDateValue(Issue.ActiveOnDate)
                     Else
-                        Me.State.MyBO.ActiveOn = DateTime.Now
-                        Me.State.ActiveOn = DateTime.Now
+                        State.MyBO.ActiveOn = DateTime.Now
+                        State.ActiveOn = DateTime.Now
                     End If
-                    Me.State.IsEditMode = True
+                    State.IsEditMode = True
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
+                MenuEnabled = True
+                IsReturningFromChild = True
                 Dim retObj As EquipmentListDetailForm.ReturnType = CType(ReturnPar, EquipmentListDetailForm.ReturnType)
-                Me.State.HasDataChanged = retObj.HasDataChanged
+                State.HasDataChanged = retObj.HasDataChanged
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                        If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
-                                Me.State.EquipmentListDetailId = retObj.EditingBo.Id
+                                State.EquipmentListDetailId = retObj.EditingBo.Id
                             End If
                         End If
                     Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                        DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
         Private Sub SaveGuiState()
-            Me.State.Code = Me.moCodeText.Text
-            Me.State.Description = Me.moDescriptionText.Text
-            If Not Me.moEffectiveDateText.Text Is String.Empty Then
-                Me.State.EffectiveDate = DateHelper.GetDateValue(Me.moEffectiveDateText.Text)
+            State.Code = moCodeText.Text
+            State.Description = moDescriptionText.Text
+            If moEffectiveDateText.Text IsNot String.Empty Then
+                State.EffectiveDate = DateHelper.GetDateValue(moEffectiveDateText.Text)
             End If
-            If Not Me.moExpirationDateText.Text Is String.Empty Then
-                Me.State.ExpirationDate = DateHelper.GetDateValue(Me.moExpirationDateText.Text)
+            If moExpirationDateText.Text IsNot String.Empty Then
+                State.ExpirationDate = DateHelper.GetDateValue(moExpirationDateText.Text)
             End If
         End Sub
 
         Private Sub RestoreGuiState()
-            Me.moCodeText.Text = Me.State.MyBO.Code
-            Me.moDescriptionText.Text = Me.State.MyBO.Description
-            Me.moPreConditionsTextBox.Text = Me.State.MyBO.PreConditions
-            Me.cboIssueTypeText.SelectedValue = Me.State.MyBO.IssueTypeId.ToString
-            If Not Me.State.MyBO.Effective Is Nothing Then
-                Me.moEffectiveDateText.Text = ElitaPlusPage.GetLongDate12FormattedString(CDate(Me.State.MyBO.Effective))
+            moCodeText.Text = State.MyBO.Code
+            moDescriptionText.Text = State.MyBO.Description
+            moPreConditionsTextBox.Text = State.MyBO.PreConditions
+            cboIssueTypeText.SelectedValue = State.MyBO.IssueTypeId.ToString
+            If State.MyBO.Effective IsNot Nothing Then
+                moEffectiveDateText.Text = ElitaPlusPage.GetLongDate12FormattedString(CDate(State.MyBO.Effective))
             Else
-                Me.moEffectiveDateText.Text = String.Empty
+                moEffectiveDateText.Text = String.Empty
             End If
-            If Not Me.State.MyBO.Expiration Is Nothing Then
-                Me.moExpirationDateText.Text = ElitaPlusPage.GetLongDate12FormattedString(CDate(Me.State.MyBO.Expiration))
+            If State.MyBO.Expiration IsNot Nothing Then
+                moExpirationDateText.Text = ElitaPlusPage.GetLongDate12FormattedString(CDate(State.MyBO.Expiration))
             Else
-                Me.moExpirationDateText.Text = String.Empty
+                moExpirationDateText.Text = String.Empty
             End If
         End Sub
 #End Region
 
 #Region "Page_Events"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                Me.ErrorCtrl.Clear_Hide()
-                Me.ValidateDates()
+                ErrorCtrl.Clear_Hide()
+                ValidateDates()
 
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
 
                     'If Assurant.Elita.Configuration.ElitaConfig.Current.General.IntegrateWorkQueueImagingServices = False Then
                     '    ControlMgr.SetEnableTabStrip(Me, tsQuestions.Items(3), False)
                     'End If
-                    Me.AddCalendarwithTime(Me.imgEffectiveDate, Me.moEffectiveDateText)
-                    Me.AddCalendarwithTime(Me.imgExpirationDate, Me.moExpirationDateText)
+                    AddCalendarwithTime(imgEffectiveDate, moEffectiveDateText)
+                    AddCalendarwithTime(imgExpirationDate, moExpirationDateText)
 
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New Issue
-                        Me.State.MyBO.ActiveOn = System.DateTime.Now()
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New Issue
+                        State.MyBO.ActiveOn = System.DateTime.Now()
                     Else
-                        Me.EnableHeaderControls(False)
+                        EnableHeaderControls(False)
                     End If
 
-                    Me.PopulateDropdown()
+                    PopulateDropdown()
 
-                    Me.ErrorCtrl.Clear_Hide()
-                    If Not Me.IsPostBack Then
-                        Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
-                        If Me.State.MyBO Is Nothing Then
-                            Me.State.MyBO = New Issue
+                    ErrorCtrl.Clear_Hide()
+                    If Not IsPostBack Then
+                        AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, True)
+                        If State.MyBO Is Nothing Then
+                            State.MyBO = New Issue
                         End If
                         UC_QUEUE_AVASEL.BackColor = "#d5d6e4"
-                        Me.PopulateChildern()
-                        Me.PopulateFormFromBOs()
-                        Me.EnableDisableFields()
+                        PopulateChildern()
+                        PopulateFormFromBOs()
+                        EnableDisableFields()
                     End If
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.RestoreGuiState()
+                    RestoreGuiState()
                     PopulateWorkQueue()
-                    If Me.State.IsEditMode Then
+                    If State.IsEditMode Then
                         EnableDisableNotesButtons(False)
                     End If
                 Else
-                    Me.SaveGuiState()
+                    SaveGuiState()
                 End If
-                Me.CheckIfComingFromSaveConfirm()
-                Me.BindBoPropertiesToLabels()
-                Me.AddLabelDecorations(Me.State.MyBO)
+                CheckIfComingFromSaveConfirm()
+                BindBoPropertiesToLabels()
+                AddLabelDecorations(State.MyBO)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 #End Region
 
 #Region "Button Clicks"
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
 
-                Me.PopulateBOsFormFrom()
-                If Me.State.MyBO.IsDirty Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                PopulateBOsFormFrom()
+                If State.MyBO.IsDirty Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
-                Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = Me.ErrorCtrl.Text
+                HandleErrors(ex, ErrorCtrl)
+                DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.LastErrMsg = ErrorCtrl.Text
             End Try
         End Sub
 
-        Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
-                Me.IsBackdated()
-                Me.PopulateBOsFormFrom()
-                Me.IsDateValidated()
-                Me.EditModeValidation()
+                IsBackdated()
+                PopulateBOsFormFrom()
+                IsDateValidated()
+                EditModeValidation()
                 '#5 - Expiration date lies between Effective and Expiration of earlier list code and there is no future list code available
-                If (IsListCodeOverlapped(Me.State.Code, Me.State.EffectiveDate, Me.State.ExpirationDate, Me.State.MyBO.Id)) Then
-                    Me.DisplayMessage(Message.MSG_EXPIRE_PREVIOUS_ISSUE, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+                If (IsListCodeOverlapped(State.Code, State.EffectiveDate, State.ExpirationDate, State.MyBO.Id)) Then
+                    DisplayMessage(Message.MSG_EXPIRE_PREVIOUS_ISSUE, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
                     Return
                 End If
 
                 '#6 - Expiration/Expiration date lies between any other Effective and Expiration range of earlier list code
-                If (IsListCodeDurationOverlapped(Me.State.Code, Me.State.EffectiveDate, Me.State.ExpirationDate, Me.State.MyBO.Id)) Then
+                If (IsListCodeDurationOverlapped(State.Code, State.EffectiveDate, State.ExpirationDate, State.MyBO.Id)) Then
                     Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_LIST_CODE_OVERLAPPED)
                 End If
 
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = True
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
-                    Me.EnableHeaderControls(False)
-                    If Not Me.State.IsChildCreated Then
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
+                    State.HasDataChanged = True
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
+                    EnableHeaderControls(False)
+                    If Not State.IsChildCreated Then
                         EnableDisableUserControlTab(PanelQuestionsEditDetail, True)
                         EnableDisableUserControlTab(PanelRulesEditDetail, True)
                         EnableDisableUserControlTab(PanelNotesEditDetail, True)
                     End If
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+        Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
             Try
-                If Not Me.State.MyBO.IsNew Then
+                If Not State.MyBO.IsNew Then
                     'Reload from the DB
-                    Me.State.MyBO = New Issue(Me.State.MyBO.Id)
-                ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                    State.MyBO = New Issue(State.MyBO.Id)
+                ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                     'It was a new with copy
-                    Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                    State.MyBO.Clone(State.ScreenSnapShotBO)
                 Else
-                    Me.State.MyBO = New Issue
+                    State.MyBO = New Issue
                 End If
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
-                Me.EnableDisableUserControlTab(PanelQuestionsEditDetail, False)
-                Me.EnableDisableUserControlTab(PanelRulesEditDetail, False)
+                PopulateFormFromBOs()
+                EnableDisableFields()
+                EnableDisableUserControlTab(PanelQuestionsEditDetail, False)
+                EnableDisableUserControlTab(PanelRulesEditDetail, False)
                 EnableDisableUserControlTab(PanelNotesEditDetail, False)
-                Me.EnableUserControl(True)
+                EnableUserControl(True)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
-                If (Me.State.MyBO.CheckIfIssueIsAssignedToQuestionNoteOrRule(Me.State.MyBO.Id)) Then
+                If (State.MyBO.CheckIfIssueIsAssignedToQuestionNoteOrRule(State.MyBO.Id)) Then
                     Throw New GUIException(Message.MSG_GUI_LIST_CODE_ASSIGNED_TO_DEALER_NO_DELETE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_GUI_ISSUE_IS_ASSIGNED_TO_QUESTION_OR_RULE_OR_NOTE)
                 Else
-                    Me.PopulateChildern()
-                    Me.State.MyBO.Delete()
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = True
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+                    PopulateChildern()
+                    State.MyBO.Delete()
+                    State.MyBO.Save()
+                    State.HasDataChanged = True
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 'undo the delete
-                Me.State.MyBO.RejectChanges()
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                State.MyBO.RejectChanges()
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.PopulateBOsFormFrom()
-                If Me.State.MyBO.IsDirty Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                PopulateBOsFormFrom()
+                If State.MyBO.IsDirty Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
-                    Me.CreateNew()
-                    Me.ClearGridHeadersAndLabelsErrSign()
+                    CreateNew()
+                    ClearGridHeadersAndLabelsErrSign()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
-                If Me.State.MyBO.IsDirty Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                If State.MyBO.IsDirty Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 End If
-                Me.PopulateBOsFormFrom()
+                PopulateBOsFormFrom()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnNew_Comment_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_Comment.Click
+        Private Sub btnNew_Comment_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_Comment.Click
 
             Try
-                Me.State.IsEditMode = True
-                Me.State.IsGridVisible = True
-                Me.State.AddingNewRow = True
+                State.IsEditMode = True
+                State.IsGridVisible = True
+                State.AddingNewRow = True
                 AddNew()
                 EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
 
         End Sub
 
-        Private Sub btnCancel_Comment_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCancel_Comment.Click
+        Private Sub btnCancel_Comment_Click(sender As Object, e As System.EventArgs) Handles btnCancel_Comment.Click
 
             Try
-                Me.SetGridControls(GVNotes, False)
-                Me.EndNotesChildEdit(ElitaPlusPage.DetailPageCommand.Cancel)
+                SetGridControls(GVNotes, False)
+                EndNotesChildEdit(ElitaPlusPage.DetailPageCommand.Cancel)
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
 
         End Sub
 
-        Private Sub btnSave_Comment_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSave_Comment.Click
+        Private Sub btnSave_Comment_Click(sender As Object, e As System.EventArgs) Handles btnSave_Comment.Click
             Try
                 PopulateCommentBOFromForm()
-                Me.EndNotesChildEdit(ElitaPlusPage.DetailPageCommand.OK)
-                Me.State.IsNotesEditing = False
+                EndNotesChildEdit(ElitaPlusPage.DetailPageCommand.OK)
+                State.IsNotesEditing = False
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -445,7 +445,7 @@ Namespace Tables
                                             .AddBlankItem = True
                                         })
 
-            Me.State.NoteDV = LookupListNew.GetIssueCommentTypeLookupList(Authentication.LangId)
+            State.NoteDV = LookupListNew.GetIssueCommentTypeLookupList(Authentication.LangId)
 
             Dim PopulateOption = New PopulateOptions() With
                                     {
@@ -494,8 +494,8 @@ Namespace Tables
         Sub IsBackdated()
 
             '#1 - Restrict to save backdated list in edit mode
-            If Not Me.State.EffectiveDate Is Nothing And Me.State.MyBO.IsNew = False Then
-                If DateHelper.GetDateValue(Me.State.MyBO.Effective.ToString) <> DateHelper.GetDateValue(moEffectiveDateText.Text.ToString) Then
+            If State.EffectiveDate IsNot Nothing And State.MyBO.IsNew = False Then
+                If DateHelper.GetDateValue(State.MyBO.Effective.ToString) <> DateHelper.GetDateValue(moEffectiveDateText.Text.ToString) Then
                     If DateHelper.GetDateValue(moEffectiveDateText.Text.ToString) < EquipmentListDetail.GetCurrentDateTime() Then
                         Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_INVALID_EFFECIVE_DATE)
                     End If
@@ -503,10 +503,10 @@ Namespace Tables
             End If
 
             '#2 - Restrict to save backdated list in edit mode
-            If Not Me.State.ExpirationDate Is Nothing And Me.State.MyBO.IsNew = False Then
-                If DateHelper.GetDateValue(Me.State.MyBO.Expiration.ToString) <> DateHelper.GetDateValue(moExpirationDateText.Text.ToString) Then
-                    If (Me.State.MyBO.CheckIfIssueIsAssignedToQuestionNoteOrRule(Me.State.MyBO.Id)) Then
-                        If DateHelper.GetDateValue(Me.State.ExpirationDate.ToString) < EquipmentListDetail.GetCurrentDateTime() Then
+            If State.ExpirationDate IsNot Nothing And State.MyBO.IsNew = False Then
+                If DateHelper.GetDateValue(State.MyBO.Expiration.ToString) <> DateHelper.GetDateValue(moExpirationDateText.Text.ToString) Then
+                    If (State.MyBO.CheckIfIssueIsAssignedToQuestionNoteOrRule(State.MyBO.Id)) Then
+                        If DateHelper.GetDateValue(State.ExpirationDate.ToString) < EquipmentListDetail.GetCurrentDateTime() Then
                             Throw New GUIException(Message.MSG_GUI_INVALID_EXPIRATION_DATE_SMALLER_THAN_SYSDATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_INVALID_EXPIRATION_DATE_LESSTHAN_SYSDATE)
                         End If
                     End If
@@ -518,8 +518,8 @@ Namespace Tables
         Sub IsDateValidated()
 
             '#3 - Effective date should be greater than Expiration Date
-            If Not Me.State.EffectiveDate Is Nothing And Not Me.State.ExpirationDate Is Nothing Then
-                If DateHelper.GetDateValue(Me.State.EffectiveDate.ToString) > DateHelper.GetDateValue(Me.State.ExpirationDate.ToString) Then
+            If State.EffectiveDate IsNot Nothing And State.ExpirationDate IsNot Nothing Then
+                If DateHelper.GetDateValue(State.EffectiveDate.ToString) > DateHelper.GetDateValue(State.ExpirationDate.ToString) Then
                     Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_INVALID_EXPIRATION_DATE)
                 End If
             End If
@@ -528,21 +528,21 @@ Namespace Tables
 
         Sub EditModeValidation()
             '#4 - For new records, check for no backdated List code and no duplicate List code - Effective Date Combination
-            If Not Me.State.IsEditMode Then
-                If Not Me.State.EffectiveDate Is Nothing And Not Me.State.ExpirationDate Is Nothing Then
-                    If DateHelper.GetDateValue(Me.State.EffectiveDate.ToString) < EquipmentListDetail.GetCurrentDateTime().Today Then
+            If Not State.IsEditMode Then
+                If State.EffectiveDate IsNot Nothing And State.ExpirationDate IsNot Nothing Then
+                    If DateHelper.GetDateValue(State.EffectiveDate.ToString) < EquipmentListDetail.GetCurrentDateTime().Today Then
                         Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_INVALID_EFFECIVE_DATE)
                     End If
                 End If
 
-                If (IsListCodeDuplicate(Me.State.Code, Me.State.EffectiveDate.ToString, Me.State.MyBO.Id)) Then
+                If (IsListCodeDuplicate(State.Code, State.EffectiveDate.ToString, State.MyBO.Id)) Then
                     Throw New GUIException(Message.MSG_GUI_INVALID_LIST_CODE_WITH_SAME_EFFECIVE_DATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_DUPLICATE_CODE_EFFECTIVE)
                 End If
             End If
         End Sub
 
-        Protected Function IsListCodeDuplicate(ByVal code As String, ByVal effective As String,
-                                        ByVal id As Guid) As Boolean
+        Protected Function IsListCodeDuplicate(code As String, effective As String,
+                                        id As Guid) As Boolean
 
             If (Issue.CheckDuplicateEquipmentListCode(code, DateHelper.GetDateValue(effective).ToString(ElitaPlusPage.DATE_TIME_FORMAT, System.Globalization.CultureInfo.CreateSpecificCulture("en-US")), id)) Then
                 Return True
@@ -550,8 +550,8 @@ Namespace Tables
             Return False
         End Function
 
-        Protected Function IsListCodeOverlapped(ByVal code As String, ByVal effective As DateType,
-                                        ByVal expiration As DateType, ByVal id As Guid) As Boolean
+        Protected Function IsListCodeOverlapped(code As String, effective As DateType,
+                                        expiration As DateType, id As Guid) As Boolean
 
             If (Issue.CheckListCodeForOverlap(code, effective, expiration, id)) Then
                 Return True
@@ -559,8 +559,8 @@ Namespace Tables
             Return False
         End Function
 
-        Protected Function IsListCodeDurationOverlapped(ByVal code As String, ByVal effective As DateType,
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+        Protected Function IsListCodeDurationOverlapped(code As String, effective As DateType,
+                                        expiration As DateType, listId As Guid) As Boolean
 
             If (Issue.CheckListCodeDurationOverlap(code, effective, expiration, listId)) Then
                 Return True
@@ -568,8 +568,8 @@ Namespace Tables
             Return False
         End Function
 
-        Protected Function ExpirePreviousList(ByVal code As String, ByVal effective As DateType,
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+        Protected Function ExpirePreviousList(code As String, effective As DateType,
+                                        expiration As DateType, listId As Guid) As Boolean
 
             If (Issue.ExpirePreviousList(code, effective, expiration, listId)) Then
                 Return True
@@ -577,19 +577,19 @@ Namespace Tables
             Return False
         End Function
 
-        Protected Sub EnableUserControl(ByVal bVisible As Boolean)
+        Protected Sub EnableUserControl(bVisible As Boolean)
             UserControlQuestionsAvailable.ShowCancelButton = True
             UserControlRulesAvailable.ShowCancelButton = True
-            UserControlQuestionsAvailable.dvSelectedQuestions = Issue.GetSelectedQuestionsList(Me.State.MyBO.Id)
-            UserControlRulesAvailable.dvSelectedDealer = Issue.GetSelectedRulesList(Me.State.MyBO.Id)
+            UserControlQuestionsAvailable.dvSelectedQuestions = Issue.GetSelectedQuestionsList(State.MyBO.Id)
+            UserControlRulesAvailable.dvSelectedDealer = Issue.GetSelectedRulesList(State.MyBO.Id)
         End Sub
 
         Public Sub ValidateDates()
             Dim tempDate As DateTime = New DateTime
 
-            If Not moEffectiveDateText.Text Is String.Empty Then
+            If moEffectiveDateText.Text IsNot String.Empty Then
                 If (DateHelper.IsDate(moEffectiveDateText.Text.ToString()) = False) Then
-                    ElitaPlusPage.SetLabelError(Me.moEffectiveDateLabel)
+                    ElitaPlusPage.SetLabelError(moEffectiveDateLabel)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Message.MSG_INVALID_DATE)
                 Else
                     tempDate = DateHelper.GetDateValue(moEffectiveDateText.Text.ToString())
@@ -597,9 +597,9 @@ Namespace Tables
             End If
 
 
-            If Not moExpirationDateText.Text Is String.Empty Then
+            If moExpirationDateText.Text IsNot String.Empty Then
                 If (DateHelper.IsDate(moExpirationDateText.Text.ToString()) = False) Then
-                    ElitaPlusPage.SetLabelError(Me.moExpirationDateLabel)
+                    ElitaPlusPage.SetLabelError(moExpirationDateLabel)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Message.MSG_INVALID_DATE)
                 Else
                     tempDate = DateHelper.GetDateValue(moExpirationDateText.Text.ToString())
@@ -609,77 +609,77 @@ Namespace Tables
         End Sub
 
         Protected Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Code", Me.moCodeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Description", Me.moDescriptionLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Effective", Me.moEffectiveDateLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Expiration", Me.moExpirationDateLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "IssueTypeId", Me.moIssueTypeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "ActiveOn", Me.moAsOfDateLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "PreConditions", Me.moPreConditionsLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "IssueProcessor", Me.moIssueProcessorLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "DeniedReason", Me.moClaimDeniedRsnLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "SPClaimValue", Me.moClaimValueLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "SPClaimType", Me.moClaimTypeLabel)
+            BindBOPropertyToLabel(State.MyBO, "Code", moCodeLabel)
+            BindBOPropertyToLabel(State.MyBO, "Description", moDescriptionLabel)
+            BindBOPropertyToLabel(State.MyBO, "Effective", moEffectiveDateLabel)
+            BindBOPropertyToLabel(State.MyBO, "Expiration", moExpirationDateLabel)
+            BindBOPropertyToLabel(State.MyBO, "IssueTypeId", moIssueTypeLabel)
+            BindBOPropertyToLabel(State.MyBO, "ActiveOn", moAsOfDateLabel)
+            BindBOPropertyToLabel(State.MyBO, "PreConditions", moPreConditionsLabel)
+            BindBOPropertyToLabel(State.MyBO, "IssueProcessor", moIssueProcessorLabel)
+            BindBOPropertyToLabel(State.MyBO, "DeniedReason", moClaimDeniedRsnLabel)
+            BindBOPropertyToLabel(State.MyBO, "SPClaimValue", moClaimValueLabel)
+            BindBOPropertyToLabel(State.MyBO, "SPClaimType", moClaimTypeLabel)
         End Sub
 
         Protected Sub PopulateBOsFormFrom()
-            With Me.State.MyBO
-                Me.PopulateBOProperty(Me.State.MyBO, "Code", Me.moCodeText)
-                Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.moDescriptionText)
-                Me.PopulateBOProperty(Me.State.MyBO, "PreConditions", Me.moPreConditionsTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "Effective", Me.moEffectiveDateText)
-                Me.PopulateBOProperty(Me.State.MyBO, "Expiration", Me.moExpirationDateText)
-                Me.PopulateBOProperty(Me.State.MyBO, "IssueTypeId", Me.cboIssueTypeText)
-                Me.PopulateBOProperty(Me.State.MyBO, "ActiveOn", Me.moAsOfDateText)
-                Me.PopulateBOProperty(Me.State.MyBO, "IssueProcessor", Me.cboIssueProcessor, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "DeniedReason", Me.cboClaimDeniedRsn, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "SPClaimValue", Me.moClaimValueTextBox)
-                Me.PopulateBOProperty(Me.State.MyBO, "SPClaimType", Me.cboClaimType, False, True)
-                If Me.State.MyBO.IssueProcessor = String.Empty Then
-                    Me.State.MyBO.IssueProcessor = Nothing
+            With State.MyBO
+                PopulateBOProperty(State.MyBO, "Code", moCodeText)
+                PopulateBOProperty(State.MyBO, "Description", moDescriptionText)
+                PopulateBOProperty(State.MyBO, "PreConditions", moPreConditionsTextBox)
+                PopulateBOProperty(State.MyBO, "Effective", moEffectiveDateText)
+                PopulateBOProperty(State.MyBO, "Expiration", moExpirationDateText)
+                PopulateBOProperty(State.MyBO, "IssueTypeId", cboIssueTypeText)
+                PopulateBOProperty(State.MyBO, "ActiveOn", moAsOfDateText)
+                PopulateBOProperty(State.MyBO, "IssueProcessor", cboIssueProcessor, False, True)
+                PopulateBOProperty(State.MyBO, "DeniedReason", cboClaimDeniedRsn, False, True)
+                PopulateBOProperty(State.MyBO, "SPClaimValue", moClaimValueTextBox)
+                PopulateBOProperty(State.MyBO, "SPClaimType", cboClaimType, False, True)
+                If State.MyBO.IssueProcessor = String.Empty Then
+                    State.MyBO.IssueProcessor = Nothing
                 End If
-                If Me.State.MyBO.SPClaimType = String.Empty Then
-                    Me.State.MyBO.SPClaimType = Nothing
+                If State.MyBO.SPClaimType = String.Empty Then
+                    State.MyBO.SPClaimType = Nothing
                 End If
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
         Protected Sub PopulateChildern()
-            Dim CommentChildren As IssueNotesChildrenList = Me.State.MyBO.IssueNotesChildren
-            Dim QuestionChildren As IssueQuestionsChildrenList = Me.State.MyBO.IssueQuestionsChildren
-            Dim RuleChildren As IssueRulesChildrenList = Me.State.MyBO.IssueRulesChildren
+            Dim CommentChildren As IssueNotesChildrenList = State.MyBO.IssueNotesChildren
+            Dim QuestionChildren As IssueQuestionsChildrenList = State.MyBO.IssueQuestionsChildren
+            Dim RuleChildren As IssueRulesChildrenList = State.MyBO.IssueRulesChildren
         End Sub
 
         Protected Sub PopulateFormFromBOs()
-            Me.PopulateGrid()
-            With Me.State.MyBO
-                Me.PopulateControlFromBOProperty(Me.moCodeText, .Code)
-                Me.PopulateControlFromBOProperty(Me.moDescriptionText, .Description)
-                Me.PopulateControlFromBOProperty(Me.moPreConditionsTextBox, .PreConditions)
-                If Not Me.State.MyBO.Effective Is Nothing Then
-                    Me.moEffectiveDateText.Text = ElitaPlusPage.GetLongDate12FormattedString(CDate(Me.State.MyBO.Effective))
+            PopulateGrid()
+            With State.MyBO
+                PopulateControlFromBOProperty(moCodeText, .Code)
+                PopulateControlFromBOProperty(moDescriptionText, .Description)
+                PopulateControlFromBOProperty(moPreConditionsTextBox, .PreConditions)
+                If State.MyBO.Effective IsNot Nothing Then
+                    moEffectiveDateText.Text = ElitaPlusPage.GetLongDate12FormattedString(CDate(State.MyBO.Effective))
                 Else
-                    Me.moEffectiveDateText.Text = String.Empty
+                    moEffectiveDateText.Text = String.Empty
                 End If
-                If Not Me.State.MyBO.Expiration Is Nothing Then
-                    Me.moExpirationDateText.Text = ElitaPlusPage.GetLongDate12FormattedString(CDate(Me.State.MyBO.Expiration))
+                If State.MyBO.Expiration IsNot Nothing Then
+                    moExpirationDateText.Text = ElitaPlusPage.GetLongDate12FormattedString(CDate(State.MyBO.Expiration))
                 Else
-                    Me.moExpirationDateText.Text = String.Empty
+                    moExpirationDateText.Text = String.Empty
                 End If
-                Me.PopulateControlFromBOProperty(Me.moAsOfDateText, .ActiveOn)
-                Me.SetSelectedItem(Me.cboIssueTypeText, .IssueTypeId)
-                BindSelectItem(.SPClaimType, Me.cboClaimType)
-                BindSelectItem(.IssueProcessor, Me.cboIssueProcessor)
-                BindSelectItem(.DeniedReason, Me.cboClaimDeniedRsn)
-                Me.PopulateControlFromBOProperty(Me.moClaimValueTextBox, .SPClaimValue)
+                PopulateControlFromBOProperty(moAsOfDateText, .ActiveOn)
+                SetSelectedItem(cboIssueTypeText, .IssueTypeId)
+                BindSelectItem(.SPClaimType, cboClaimType)
+                BindSelectItem(.IssueProcessor, cboIssueProcessor)
+                BindSelectItem(.DeniedReason, cboClaimDeniedRsn)
+                PopulateControlFromBOProperty(moClaimValueTextBox, .SPClaimValue)
             End With
 
         End Sub
         Private Sub cboissueprocessor_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboIssueProcessor.SelectedIndexChanged
-            If (GetSelectedValue(Me.cboIssueProcessor) = Codes.ISSUE_PROCESSOR__CUST Or GetSelectedValue(Me.cboIssueProcessor) = String.Empty) Then
+            If (GetSelectedValue(cboIssueProcessor) = Codes.ISSUE_PROCESSOR__CUST Or GetSelectedValue(cboIssueProcessor) = String.Empty) Then
                 ControlMgr.SetVisibleControl(Me, moClaimTypeLabel, False)
                 ControlMgr.SetVisibleControl(Me, moClaimValueLabel, False)
                 ControlMgr.SetVisibleControl(Me, moClaimValueTextBox, False)
@@ -694,9 +694,9 @@ Namespace Tables
             End If
         End Sub
 
-        Sub EnableHeaderControls(ByVal enableToggle As Boolean)
+        Sub EnableHeaderControls(enableToggle As Boolean)
             ControlMgr.SetEnableControl(Me, moCodeText, enableToggle)
-            If (Me.State.MyBO.CheckIfIssueIsAssignedToQuestionNoteOrRule(Me.State.MyBO.Id)) Then
+            If (State.MyBO.CheckIfIssueIsAssignedToQuestionNoteOrRule(State.MyBO.Id)) Then
                 ControlMgr.SetEnableControl(Me, moDescriptionText, enableToggle)
                 ControlMgr.SetEnableControl(Me, moEffectiveDateText, enableToggle)
             Else
@@ -705,7 +705,7 @@ Namespace Tables
             End If
         End Sub
 
-        Sub EnableDisableParentControls(ByVal enableToggle As Boolean)
+        Sub EnableDisableParentControls(enableToggle As Boolean)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, enableToggle)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enableToggle)
             ControlMgr.SetEnableControl(Me, btnSave_WRITE, enableToggle)
@@ -714,34 +714,34 @@ Namespace Tables
             ControlMgr.SetEnableControl(Me, btnBack, enableToggle)
         End Sub
 
-        Sub EnableDisableNotesButtons(ByVal enableToggle As Boolean)
+        Sub EnableDisableNotesButtons(enableToggle As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_Comment, Not enableToggle)
             ControlMgr.SetEnableControl(Me, btnSave_Comment, enableToggle)
             ControlMgr.SetEnableControl(Me, btnCancel_Comment, enableToggle)
         End Sub
 
-        Sub EnableDisableUserControlTab(ByVal panel As WebControls.Panel, ByVal enableToggle As Boolean)
+        Sub EnableDisableUserControlTab(panel As WebControls.Panel, enableToggle As Boolean)
             ControlMgr.SetEnableControl(Me, panel, enableToggle)
         End Sub
 
         Protected Sub EnableDisableFields()
-            If Me.State.IsNotesEditing Then
-                Me.EnableHeaderControls(False)
-                Me.EnableDisableParentControls(False)
-                Me.EnableUserControl(True)
-                Me.EnableDisableNotesButtons(True)
-            ElseIf Me.State.IsQuestionsEditing Then
-            ElseIf Me.State.IsRulesEditing Then
+            If State.IsNotesEditing Then
+                EnableHeaderControls(False)
+                EnableDisableParentControls(False)
+                EnableUserControl(True)
+                EnableDisableNotesButtons(True)
+            ElseIf State.IsQuestionsEditing Then
+            ElseIf State.IsRulesEditing Then
             Else
-                Me.EnableDisableParentControls(True)
-                Me.EnableUserControl(False)
+                EnableDisableParentControls(True)
+                EnableUserControl(False)
             End If
 
             'ControlMgr.SetEnableControl(Me, btnDelete_WRITE, True)
             'ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
             'ControlMgr.SetEnableControl(Me, btnCopy_WRITE, True)
 
-            If Me.State.MyBO.IsNew Then
+            If State.MyBO.IsNew Then
                 ControlMgr.SetEnableControl(Me, moCodeText, True)
                 ControlMgr.SetEnableControl(Me, moDescriptionText, True)
                 ControlMgr.SetEnableControl(Me, moEffectiveDateText, True)
@@ -753,13 +753,13 @@ Namespace Tables
                 EnableDisableUserControlTab(PanelRulesEditDetail, False)
                 EnableDisableUserControlTab(PanelNotesEditDetail, False)
 
-                Me.EnableDisableNotesButtons(False)
+                EnableDisableNotesButtons(False)
             End If
             If Assurant.Elita.Configuration.ElitaConfig.Current.General.IntegrateWorkQueueImagingServices = False Then
                 EnableDisableUserControlTab(plnQueue, False)
             End If
 
-            If (GetSelectedValue(Me.cboIssueProcessor) = Codes.ISSUE_PROCESSOR__CUST Or GetSelectedValue(Me.cboIssueProcessor) = String.Empty) Then
+            If (GetSelectedValue(cboIssueProcessor) = Codes.ISSUE_PROCESSOR__CUST Or GetSelectedValue(cboIssueProcessor) = String.Empty) Then
                 ControlMgr.SetVisibleControl(Me, moClaimTypeLabel, False)
                 ControlMgr.SetVisibleControl(Me, moClaimValueLabel, False)
                 ControlMgr.SetVisibleControl(Me, moClaimValueTextBox, False)
@@ -775,121 +775,121 @@ Namespace Tables
         End Sub
 
         Protected Sub CreateNew()
-            Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-            Me.State.MyBO = New Issue
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
-            Me.State.IsEditMode = False
+            State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+            State.MyBO = New Issue
+            PopulateFormFromBOs()
+            EnableDisableFields()
+            State.IsEditMode = False
         End Sub
 
         Protected Sub CreateNewWithCopy()
-            Me.State.IsACopy = True
+            State.IsACopy = True
             Dim newObj As New Issue
-            newObj.Copy(Me.State.MyBO)
+            newObj.Copy(State.MyBO)
 
-            Me.State.MyBO = newObj
-            Me.State.MyBO.Effective = EquipmentListDetail.GetCurrentDateTime()
-            Me.State.MyBO.Expiration = New DateTime(2499, 12, 31, 23, 59, 59)
-            Me.State.MyBO.Code = Nothing
-            Me.State.MyBO.Description = Nothing
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
-            Me.State.ScreenSnapShotBO = New Issue
-            Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
-            Me.State.IsACopy = False
-            Me.State.IsEditMode = False
+            State.MyBO = newObj
+            State.MyBO.Effective = EquipmentListDetail.GetCurrentDateTime()
+            State.MyBO.Expiration = New DateTime(2499, 12, 31, 23, 59, 59)
+            State.MyBO.Code = Nothing
+            State.MyBO.Description = Nothing
+            PopulateFormFromBOs()
+            EnableDisableFields()
+            State.ScreenSnapShotBO = New Issue
+            State.ScreenSnapShotBO.Clone(State.MyBO)
+            State.IsACopy = False
+            State.IsEditMode = False
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-                If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
-                    Me.BindBoPropertiesToLabels()
-                    Me.IsBackdated()
-                    Me.PopulateBOsFormFrom()
-                    Me.IsDateValidated()
-                    Me.EditModeValidation()
-                    Me.PopulateWorkQueue()
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+                If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
+                    BindBoPropertiesToLabels()
+                    IsBackdated()
+                    PopulateBOsFormFrom()
+                    IsDateValidated()
+                    EditModeValidation()
+                    PopulateWorkQueue()
                     '#5 - Expiration date lies between Effective and Expiration of earlier list code and there is no future list code available
-                    If (IsListCodeOverlapped(Me.State.Code, Me.State.EffectiveDate, Me.State.ExpirationDate, Me.State.MyBO.Id)) Then
-                        Me.DisplayMessage(Message.MSG_EXPIRE_PREVIOUS_ISSUE, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+                    If (IsListCodeOverlapped(State.Code, State.EffectiveDate, State.ExpirationDate, State.MyBO.Id)) Then
+                        DisplayMessage(Message.MSG_EXPIRE_PREVIOUS_ISSUE, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
                         Return
                     End If
 
                     '#6 - Expiration/Expiration date lies between any other Effective and Expiration range of earlier list code
-                    If (IsListCodeDurationOverlapped(Me.State.Code, Me.State.EffectiveDate, Me.State.ExpirationDate, Me.State.MyBO.Id)) Then
+                    If (IsListCodeDurationOverlapped(State.Code, State.EffectiveDate, State.ExpirationDate, State.MyBO.Id)) Then
                         Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_LIST_CODE_OVERLAPPED)
                     End If
 
-                    Me.State.MyBO.Save()
+                    State.MyBO.Save()
                 End If
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                        Me.CreateNew()
+                        DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                        Me.CreateNewWithCopy()
+                        DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.Accept
-                        If Me.State.MyBO.IsDirty Then
-                            Me.State.MyBO.Save()
-                            Issue.ExpirePreviousList(Me.State.Code, Me.State.EffectiveDate, Me.State.ExpirationDate, Me.State.MyBO.Id)
-                            Me.State.HasDataChanged = True
-                            Me.PopulateFormFromBOs()
-                            Me.EnableDisableFields()
-                            Me.EnableDisableUserControlTab(PanelQuestionsEditDetail, True)
-                            Me.EnableDisableUserControlTab(PanelRulesEditDetail, True)
-                            Me.EnableHeaderControls(False)
-                            Me.PopulateWorkQueue()
-                            Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                        If State.MyBO.IsDirty Then
+                            State.MyBO.Save()
+                            Issue.ExpirePreviousList(State.Code, State.EffectiveDate, State.ExpirationDate, State.MyBO.Id)
+                            State.HasDataChanged = True
+                            PopulateFormFromBOs()
+                            EnableDisableFields()
+                            EnableDisableUserControlTab(PanelQuestionsEditDetail, True)
+                            EnableDisableUserControlTab(PanelRulesEditDetail, True)
+                            EnableHeaderControls(False)
+                            PopulateWorkQueue()
+                            DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                         Else
-                            Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                            DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                         End If
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.CreateNew()
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.CreateNewWithCopy()
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ErrorCtrl.AddErrorAndShow(Me.State.LastErrMsg)
+                        ErrorCtrl.AddErrorAndShow(State.LastErrMsg)
                     Case ElitaPlusPage.DetailPageCommand.Accept
-                        Me.EnableDisableFields()
+                        EnableDisableFields()
                 End Select
             End If
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = ""
         End Sub
 
         Private Sub AddNew()
             Dim dv As DataView
 
-            Me.BeginNotesChildEdit(Guid.Empty, False)
-            Me.State.MyNotesChildBO.IssueId = Me.State.MyBO.Id
-            Me.State.MyNotesChildBO.IssueCommentTypeId = Guid.Empty
-            Me.State.MyNotesChildBO.Code = String.Empty
-            Me.State.MyNotesChildBO.Text = String.Empty
-            Me.State.MyNotesChildBO.DisplayOnWeb = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
-            Me.State.SearchDV = Me.State.MyBO.GetNotesSelectionView()
+            BeginNotesChildEdit(Guid.Empty, False)
+            State.MyNotesChildBO.IssueId = State.MyBO.Id
+            State.MyNotesChildBO.IssueCommentTypeId = Guid.Empty
+            State.MyNotesChildBO.Code = String.Empty
+            State.MyNotesChildBO.Text = String.Empty
+            State.MyNotesChildBO.DisplayOnWeb = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
+            State.SearchDV = State.MyBO.GetNotesSelectionView()
 
-            GVNotes.DataSource = Me.State.SearchDV
-            Me.GVNotes.AutoGenerateColumns = False
+            GVNotes.DataSource = State.SearchDV
+            GVNotes.AutoGenerateColumns = False
 
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.SearchDV, Me.State.MyNotesChildBO.Id, Me.GVNotes, Me.State.PageIndex, Me.State.IsEditMode)
+            SetPageAndSelectedIndexFromGuid(State.SearchDV, State.MyNotesChildBO.Id, GVNotes, State.PageIndex, State.IsEditMode)
             GVNotes.DataBind()
-            Me.State.PageIndex = GVNotes.CurrentPageIndex
+            State.PageIndex = GVNotes.CurrentPageIndex
 
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.SearchDV, Me.State.MyNotesChildBO.Id, GVNotes, GVNotes.CurrentPageIndex, True)
-            SetGridControls(Me.GVNotes, False)
-            Me.EnableDisableFields()
+            SetPageAndSelectedIndexFromGuid(State.SearchDV, State.MyNotesChildBO.Id, GVNotes, GVNotes.CurrentPageIndex, True)
+            SetGridControls(GVNotes, False)
+            EnableDisableFields()
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, GVNotes)
         End Sub
 
@@ -899,10 +899,10 @@ Namespace Tables
 
 
 
-        Sub BeginNotesChildEdit(ByVal IssueCommentId As Guid, ByVal expireNow As Boolean)
-            Me.State.IsNotesEditing = True
-            Me.State.SelectedNotesChildId = IssueCommentId
-            With Me.State
+        Sub BeginNotesChildEdit(IssueCommentId As Guid, expireNow As Boolean)
+            State.IsNotesEditing = True
+            State.SelectedNotesChildId = IssueCommentId
+            With State
                 If Not .SelectedNotesChildId = Guid.Empty Then
                     .MyNotesChildBO = .MyBO.GetNotesChild(.SelectedNotesChildId)
                 Else
@@ -912,11 +912,11 @@ Namespace Tables
             End With
         End Sub
 
-        Sub BeginQuestionsChildEdit(ByVal SoftQuestionId As Guid, ByVal expireNow As Boolean, ByVal DisplayOrder As Integer)
-            Me.State.IsQuestionsEditing = True
-            Me.State.SelectedQuestionsChildId = Guid.Empty
-            Me.State.SelectedQuestionsChildId = New Guid(Me.State.MyQuestionsChildBO.IsChild(Me.State.MyBO.Id, SoftQuestionId))
-            With Me.State
+        Sub BeginQuestionsChildEdit(SoftQuestionId As Guid, expireNow As Boolean, DisplayOrder As Integer)
+            State.IsQuestionsEditing = True
+            State.SelectedQuestionsChildId = Guid.Empty
+            State.SelectedQuestionsChildId = New Guid(State.MyQuestionsChildBO.IsChild(State.MyBO.Id, SoftQuestionId))
+            With State
                 If Not .SelectedQuestionsChildId = Guid.Empty Then
                     .MyQuestionsChildBO = .MyBO.GetQuestionsChild(.SelectedQuestionsChildId)
                 Else
@@ -933,11 +933,11 @@ Namespace Tables
             End With
         End Sub
 
-        Sub BeginRulesChildEdit(ByVal RuleIssueId As Guid, ByVal expireNow As Boolean)
-            Me.State.IsRulesEditing = True
-            Me.State.SelectedRulesChildId = Guid.Empty
-            Me.State.SelectedRulesChildId = New Guid(Me.State.MyRulesChildBO.IsChild(Me.State.MyBO.Id, RuleIssueId))
-            With Me.State
+        Sub BeginRulesChildEdit(RuleIssueId As Guid, expireNow As Boolean)
+            State.IsRulesEditing = True
+            State.SelectedRulesChildId = Guid.Empty
+            State.SelectedRulesChildId = New Guid(State.MyRulesChildBO.IsChild(State.MyBO.Id, RuleIssueId))
+            With State
                 If Not .SelectedRulesChildId = Guid.Empty Then
                     .MyRulesChildBO = .MyBO.GetRulesChild(.SelectedRulesChildId)
                 Else
@@ -962,20 +962,20 @@ Namespace Tables
         ''' <param name="equipmentId">Equipment GUID</param>
         ''' <remarks></remarks>
 
-        Sub PopulateQuestionChildBOFrom(ByVal SoftQuestionId As Guid)
+        Sub PopulateQuestionChildBOFrom(SoftQuestionId As Guid)
             Dim NewQuestionExpiration As DateTime
             Dim SelectedQuestionExpiration As DateTime
             Dim QuestionOldExpiraitonDate As DateTime
 
-            With Me.State.MyQuestionsChildBO
-                SelectedQuestionExpiration = Issue.GetQuestionExpiration(Me.State.MyBO.Id, SoftQuestionId)
+            With State.MyQuestionsChildBO
+                SelectedQuestionExpiration = Issue.GetQuestionExpiration(State.MyBO.Id, SoftQuestionId)
                 QuestionOldExpiraitonDate = CDate("#" & .Expiration.ToString & "#")
 
-                If Not Me.State.MyBO.Expiration Is Nothing Then
-                    NewQuestionExpiration = CDate("#" & Me.State.MyBO.Expiration.ToString & "#")
+                If State.MyBO.Expiration IsNot Nothing Then
+                    NewQuestionExpiration = CDate("#" & State.MyBO.Expiration.ToString & "#")
                 End If
                 ''#1 
-                .IssueId = Me.State.MyBO.Id
+                .IssueId = State.MyBO.Id
                 .SoftQuestionId = SoftQuestionId
                 ''#2
                 If Not SelectedQuestionExpiration = Nothing And SelectedQuestionExpiration < NewQuestionExpiration Then
@@ -988,25 +988,25 @@ Namespace Tables
                     .Effective = EquipmentListDetail.GetCurrentDateTime()
                 End If
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
-        Sub PopulateRuleChildBOFrom(ByVal RuleId As Guid)
+        Sub PopulateRuleChildBOFrom(RuleId As Guid)
             Dim NewRuleExpiration As DateTime
             Dim SelectedRuleExpiration As DateTime
             Dim RuleOldExpiraitonDate As DateTime
 
-            With Me.State.MyRulesChildBO
-                SelectedRuleExpiration = Issue.GetRuleExpiration(Me.State.MyBO.Id, RuleId)
+            With State.MyRulesChildBO
+                SelectedRuleExpiration = Issue.GetRuleExpiration(State.MyBO.Id, RuleId)
                 RuleOldExpiraitonDate = CDate("#" & .Expiration.ToString & "#")
 
-                If Not Me.State.MyBO.Expiration Is Nothing Then
-                    NewRuleExpiration = CDate("#" & Me.State.MyBO.Expiration.ToString & "#")
+                If State.MyBO.Expiration IsNot Nothing Then
+                    NewRuleExpiration = CDate("#" & State.MyBO.Expiration.ToString & "#")
                 End If
                 ''#1 
-                .IssueId = Me.State.MyBO.Id
+                .IssueId = State.MyBO.Id
                 .RuleId = RuleId
                 ''#2
                 If Not SelectedRuleExpiration = Nothing And SelectedRuleExpiration < NewRuleExpiration Then
@@ -1019,32 +1019,32 @@ Namespace Tables
                     .Effective = EquipmentListDetail.GetCurrentDateTime()
                 End If
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
-        Sub SetQuestionsExpiration(ByVal IssueQuestionId As Guid)
-            With Me.State.MyQuestionsChildBO
-                Me.State.MyQuestionsChildBO.Expiration = EquipmentListDetail.GetCurrentDateTime().AddSeconds(-1)
+        Sub SetQuestionsExpiration(IssueQuestionId As Guid)
+            With State.MyQuestionsChildBO
+                State.MyQuestionsChildBO.Expiration = EquipmentListDetail.GetCurrentDateTime().AddSeconds(-1)
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
-        Sub SetRulesExpiration(ByVal RuleIssueId As Guid)
-            With Me.State.MyRulesChildBO
-                Me.State.MyRulesChildBO.Expiration = EquipmentListDetail.GetCurrentDateTime().AddSeconds(-1)
+        Sub SetRulesExpiration(RuleIssueId As Guid)
+            With State.MyRulesChildBO
+                State.MyRulesChildBO.Expiration = EquipmentListDetail.GetCurrentDateTime().AddSeconds(-1)
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
-        Sub EndNotesChildEdit(ByVal lastop As ElitaPlusPage.DetailPageCommand)
+        Sub EndNotesChildEdit(lastop As ElitaPlusPage.DetailPageCommand)
 
-            With Me.State
+            With State
                 Select Case lastop
                     Case ElitaPlusPage.DetailPageCommand.OK
                         .MyNotesChildBO.Save()
@@ -1068,16 +1068,16 @@ Namespace Tables
                         .SelectedNotesChildId = Guid.Empty
                 End Select
             End With
-            Me.State.IsNotesEditing = False
-            Me.EnableDisableFields()
+            State.IsNotesEditing = False
+            EnableDisableFields()
             EnableDisableNotesButtons(False)
             PopulateGrid()
 
         End Sub
 
-        Sub EndQuestionsChildEdit(ByVal lastop As ElitaPlusPage.DetailPageCommand)
+        Sub EndQuestionsChildEdit(lastop As ElitaPlusPage.DetailPageCommand)
             Try
-                With Me.State
+                With State
                     Select Case lastop
                         Case ElitaPlusPage.DetailPageCommand.OK
                             .MyQuestionsChildBO.Save()
@@ -1101,17 +1101,17 @@ Namespace Tables
                             .SelectedQuestionsChildId = Guid.Empty
                     End Select
                 End With
-                Me.State.IsQuestionsEditing = False
-                Me.EnableDisableFields()
+                State.IsQuestionsEditing = False
+                EnableDisableFields()
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Sub EndRulesChildEdit(ByVal lastop As ElitaPlusPage.DetailPageCommand)
+        Sub EndRulesChildEdit(lastop As ElitaPlusPage.DetailPageCommand)
             Try
-                With Me.State
+                With State
                     Select Case lastop
                         Case ElitaPlusPage.DetailPageCommand.OK
                             .MyRulesChildBO.Save()
@@ -1135,11 +1135,11 @@ Namespace Tables
                             .SelectedRulesChildId = Guid.Empty
                     End Select
                 End With
-                Me.State.IsRulesEditing = False
-                Me.EnableDisableFields()
+                State.IsRulesEditing = False
+                EnableDisableFields()
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
         'Def-26680:Added try catch block to display message when work queue details not found.
@@ -1153,7 +1153,7 @@ Namespace Tables
                 UC_QUEUE_AVASEL.SetAvailableData(AvailableWQ, "DESCRIPTION", "WORKQUEUE_ID")
 
                 'populate selected work queue
-                SelectedWQ = Me.State.MyBO.GetWorkQyueueSelectionView()
+                SelectedWQ = State.MyBO.GetWorkQyueueSelectionView()
                 UC_QUEUE_AVASEL.SetSelectedData(SelectedWQ, "DESCRIPTION", "WORKQUEUE_ID")
 
                 UC_QUEUE_AVASEL.RemoveSelectedFromAvailable()
@@ -1169,33 +1169,33 @@ Namespace Tables
 
 #Region "Questions"
 
-        Protected Sub ExecuteSearchFilter(ByVal sender As Object, ByVal args As SearchAvailableQuestionsEventArgs) Handles UserControlQuestionsAvailable.ExecuteSearchFilter
+        Protected Sub ExecuteSearchFilter(sender As Object, args As SearchAvailableQuestionsEventArgs) Handles UserControlQuestionsAvailable.ExecuteSearchFilter
             Dim issues As New Issue
             Try
-                If Not Me.State.ActiveOn = Nothing Then
-                    args.dvAvailableQuestions = issues.ExecuteQuestionsListFilter(args.Issue, args.QuestionList, args.SearchTags, Me.State.MyBO.ActiveOn.ToString)
+                If Not State.ActiveOn = Nothing Then
+                    args.dvAvailableQuestions = issues.ExecuteQuestionsListFilter(args.Issue, args.QuestionList, args.SearchTags, State.MyBO.ActiveOn.ToString)
                 End If
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Protected Sub SaveClicked(ByVal sender As Object, ByVal args As SearchAvailableQuestionsEventArgs) Handles UserControlQuestionsAvailable.EventSaveQuestionsListDetail
+        Protected Sub SaveClicked(sender As Object, args As SearchAvailableQuestionsEventArgs) Handles UserControlQuestionsAvailable.EventSaveQuestionsListDetail
             Dim oQuestionList As ArrayList
             Dim oDisplayOrder As Integer = 1
             Dim dictQuestions As Hashtable
 
             Try
                 oQuestionList = New ArrayList()
-                Me.PopulateBOsFormFrom()
+                PopulateBOsFormFrom()
                 dictQuestions = New Hashtable()
                 For Each argQuestion As String In args.listSelectedQuestions
                     dictQuestions.Add(argQuestion, oDisplayOrder)
                     oDisplayOrder += 1
                 Next
 
-                oQuestionList = IssueQuestionList.GetQuestionList(Me.State.MyBO.Id)
+                oQuestionList = IssueQuestionList.GetQuestionList(State.MyBO.Id)
                 For Each argQuestion As String In args.listSelectedQuestions
                     For Each questionRaw As Byte() In oQuestionList
                         If New Guid(questionRaw).ToString = argQuestion Then
@@ -1203,28 +1203,28 @@ Namespace Tables
                             Exit For
                         End If
                     Next
-                    Me.BeginQuestionsChildEdit(New Guid(argQuestion), False, CInt(dictQuestions.Item(argQuestion)))
-                    Me.EndQuestionsChildEdit(ElitaPlusPage.DetailPageCommand.OK)
+                    BeginQuestionsChildEdit(New Guid(argQuestion), False, CInt(dictQuestions.Item(argQuestion)))
+                    EndQuestionsChildEdit(ElitaPlusPage.DetailPageCommand.OK)
                 Next
                 For Each Question As Byte() In oQuestionList
-                    Me.BeginQuestionsChildEdit(New Guid(Question), True, CInt(dictQuestions.Item(Question)))
-                    Me.EndQuestionsChildEdit(ElitaPlusPage.DetailPageCommand.OK)
+                    BeginQuestionsChildEdit(New Guid(Question), True, CInt(dictQuestions.Item(Question)))
+                    EndQuestionsChildEdit(ElitaPlusPage.DetailPageCommand.OK)
                 Next
-                Me.State.HasDataChanged = True
-                Me.State.IsQuestionsEditing = False
-                Me.EnableDisableFields()
-                Me.EnableDisableParentControls(True)
-                Me.EnableDisableUserControlTab(PanelQuestionsEditDetail, False)
+                State.HasDataChanged = True
+                State.IsQuestionsEditing = False
+                EnableDisableFields()
+                EnableDisableParentControls(True)
+                EnableDisableUserControlTab(PanelQuestionsEditDetail, False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Protected Sub CancelButtonClicked(ByVal sender As Object, ByVal args As SearchAvailableQuestionsEventArgs) Handles UserControlQuestionsAvailable.EventCancelButtonClicked
+        Protected Sub CancelButtonClicked(sender As Object, args As SearchAvailableQuestionsEventArgs) Handles UserControlQuestionsAvailable.EventCancelButtonClicked
             Try
-                UserControlQuestionsAvailable.dvSelectedQuestions = Issue.GetSelectedQuestionsList(Me.State.MyBO.Id)
+                UserControlQuestionsAvailable.dvSelectedQuestions = Issue.GetSelectedQuestionsList(State.MyBO.Id)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -1232,23 +1232,23 @@ Namespace Tables
 
 #Region "Rules"
 
-        Protected Sub ExecuteDealerSearchFilter(ByVal sender As Object, ByVal args As SearchAvailableDealerEventArgs) Handles UserControlRulesAvailable.ExecuteDealerSearchFilter
+        Protected Sub ExecuteDealerSearchFilter(sender As Object, args As SearchAvailableDealerEventArgs) Handles UserControlRulesAvailable.ExecuteDealerSearchFilter
             Dim issues As New Issue
             Try
-                args.dvAvailableDealer = issues.ExecuteRulesListFilter(Me.State.MyBO.Id)
+                args.dvAvailableDealer = issues.ExecuteRulesListFilter(State.MyBO.Id)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Protected Sub SaveClicked(ByVal sender As Object, ByVal args As SearchAvailableDealerEventArgs) Handles UserControlRulesAvailable.EventSaveDealerListDetail
+        Protected Sub SaveClicked(sender As Object, args As SearchAvailableDealerEventArgs) Handles UserControlRulesAvailable.EventSaveDealerListDetail
             Dim oRuleList As ArrayList
 
             Try
                 oRuleList = New ArrayList()
-                Me.PopulateBOsFormFrom()
+                PopulateBOsFormFrom()
 
-                oRuleList = RuleIssue.GetRulesInList(Me.State.MyBO.Id)
+                oRuleList = RuleIssue.GetRulesInList(State.MyBO.Id)
                 For Each argQuestion As String In args.listSelectedDealer
                     For Each questionRaw As Byte() In oRuleList
                         If New Guid(questionRaw).ToString = argQuestion Then
@@ -1256,29 +1256,29 @@ Namespace Tables
                             Exit For
                         End If
                     Next
-                    Me.BeginRulesChildEdit(New Guid(argQuestion), False)
-                    Me.EndRulesChildEdit(ElitaPlusPage.DetailPageCommand.OK)
+                    BeginRulesChildEdit(New Guid(argQuestion), False)
+                    EndRulesChildEdit(ElitaPlusPage.DetailPageCommand.OK)
                 Next
                 For Each Question As Byte() In oRuleList
-                    Me.BeginRulesChildEdit(New Guid(Question), True)
-                    Me.EndRulesChildEdit(ElitaPlusPage.DetailPageCommand.OK)
+                    BeginRulesChildEdit(New Guid(Question), True)
+                    EndRulesChildEdit(ElitaPlusPage.DetailPageCommand.OK)
                 Next
-                Me.State.HasDataChanged = True
-                Me.State.IsRulesEditing = False
-                Me.EnableDisableFields()
-                Me.EnableDisableParentControls(True)
-                Me.EnableDisableUserControlTab(PanelRulesEditDetail, False)
+                State.HasDataChanged = True
+                State.IsRulesEditing = False
+                EnableDisableFields()
+                EnableDisableParentControls(True)
+                EnableDisableUserControlTab(PanelRulesEditDetail, False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Protected Sub CancelButtonClicked(ByVal sender As Object, ByVal args As SearchAvailableDealerEventArgs) Handles UserControlRulesAvailable.EventCancelButtonClicked
+        Protected Sub CancelButtonClicked(sender As Object, args As SearchAvailableDealerEventArgs) Handles UserControlRulesAvailable.EventCancelButtonClicked
             Try
                 Dim Issue As New Issue
-                UserControlRulesAvailable.dvSelectedDealer = Issue.GetSelectedRulesList(Me.State.MyBO.Id)
+                UserControlRulesAvailable.dvSelectedDealer = Issue.GetSelectedRulesList(State.MyBO.Id)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -1292,37 +1292,37 @@ Namespace Tables
 
         Private Sub PopulateCommentBOFromForm()
             Try
-                With Me.State.MyNotesChildBO
-                    .IssueCommentTypeId = GetSelectedItem(CType(Me.GVNotes.Items(Me.GVNotes.EditItemIndex).Cells(GRID_COL_NOTE_TYPE_IDX).FindControl(COMBO_NOTE_TYPE), DropDownList))
-                    .Code = CType(Me.GVNotes.Items(Me.GVNotes.EditItemIndex).Cells(GRID_COL_CODE_IDX).FindControl(TEXT_CODE), TextBox).Text
+                With State.MyNotesChildBO
+                    .IssueCommentTypeId = GetSelectedItem(CType(GVNotes.Items(GVNotes.EditItemIndex).Cells(GRID_COL_NOTE_TYPE_IDX).FindControl(COMBO_NOTE_TYPE), DropDownList))
+                    .Code = CType(GVNotes.Items(GVNotes.EditItemIndex).Cells(GRID_COL_CODE_IDX).FindControl(TEXT_CODE), TextBox).Text
                     .Text = CType(GVNotes.Items(GVNotes.EditItemIndex).Cells(GRID_COL_NOTE_IDX).FindControl(TEXT_NOTE), TextBox).Text
                     .DisplayOnWeb = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub ReturnFromEditing()
             GVNotes.EditItemIndex = NO_ROW_SELECTED_INDEX
             SetGridControls(GVNotes, True)
-            Me.State.IsEditMode = False
-            Me.PopulateGrid()
-            Me.State.PageIndex = GVNotes.CurrentPageIndex
+            State.IsEditMode = False
+            PopulateGrid()
+            State.PageIndex = GVNotes.CurrentPageIndex
             EnableDisableFields()
         End Sub
 
         Private Sub SortAndBindGrid()
-            Me.State.PageIndex = Me.GVNotes.CurrentPageIndex
-            Me.GVNotes.DataSource = Me.State.SearchDV
-            HighLightSortColumn(GVNotes, Me.State.SortExpression)
-            Me.GVNotes.DataBind()
-            Session("recCount") = Me.State.SearchDV.Count
-            If Me.GVNotes.Visible Then
-                If (Me.State.AddingNewRow) Then
-                    Me.lblRecordCount.Text = (Me.State.SearchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            State.PageIndex = GVNotes.CurrentPageIndex
+            GVNotes.DataSource = State.SearchDV
+            HighLightSortColumn(GVNotes, State.SortExpression)
+            GVNotes.DataBind()
+            Session("recCount") = State.SearchDV.Count
+            If GVNotes.Visible Then
+                If (State.AddingNewRow) Then
+                    lblRecordCount.Text = (State.SearchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 Else
-                    Me.lblRecordCount.Text = Me.State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    lblRecordCount.Text = State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, GVNotes)
@@ -1331,56 +1331,56 @@ Namespace Tables
         Private Sub PopulateGrid()
             Dim oIssueComment As IssueComment = New IssueComment()
             Try
-                Me.State.Code = moCodeText.Text
-                Me.State.Description = moDescriptionText.Text
-                Me.State.SearchDV = Me.State.MyBO.GetNotesSelectionView()
+                State.Code = moCodeText.Text
+                State.Description = moDescriptionText.Text
+                State.SearchDV = State.MyBO.GetNotesSelectionView()
 
-                Me.State.SearchDV.Sort = Me.State.SortExpression
-                Me.SetGridItemStyleColor(Me.GVNotes)
+                State.SearchDV.Sort = State.SortExpression
+                SetGridItemStyleColor(GVNotes)
 
-                If (Me.State.IsAfterSave) Then
-                    Me.State.IsAfterSave = False
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.SearchDV, Me.State.SelectedNotesChildId, Me.GVNotes, Me.State.PageIndex)
-                ElseIf (Me.State.IsNotesEditing) Then
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.SearchDV, Me.State.SelectedNotesChildId, Me.GVNotes, Me.State.PageIndex, Me.State.IsEditMode)
+                If (State.IsAfterSave) Then
+                    State.IsAfterSave = False
+                    SetPageAndSelectedIndexFromGuid(State.SearchDV, State.SelectedNotesChildId, GVNotes, State.PageIndex)
+                ElseIf (State.IsNotesEditing) Then
+                    SetPageAndSelectedIndexFromGuid(State.SearchDV, State.SelectedNotesChildId, GVNotes, State.PageIndex, State.IsEditMode)
                 Else
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.SearchDV, Me.State.SelectedNotesChildId, Me.GVNotes, Me.State.PageIndex)
+                    SetPageAndSelectedIndexFromGuid(State.SearchDV, State.SelectedNotesChildId, GVNotes, State.PageIndex)
                 End If
-                Me.State.PageIndex = Me.GVNotes.CurrentPageIndex
+                State.PageIndex = GVNotes.CurrentPageIndex
 
-                If Me.State.SearchDV.Count > 0 Then
-                    Me.GVNotes.AutoGenerateColumns = False
-                    Me.ValidSearchResultCount(Me.State.SearchDV.Count, True)
-                    Me.SortAndBindGrid()
+                If State.SearchDV.Count > 0 Then
+                    GVNotes.AutoGenerateColumns = False
+                    ValidSearchResultCount(State.SearchDV.Count, True)
+                    SortAndBindGrid()
                 Else
-                    If Me.State.MyNotesChildBO Is Nothing Then
-                        Me.State.MyNotesChildBO = New IssueComment()
+                    If State.MyNotesChildBO Is Nothing Then
+                        State.MyNotesChildBO = New IssueComment()
                     End If
-                    Me.State.SearchDV = Me.State.MyNotesChildBO.GetNewDataViewRow(Me.State.SearchDV, Me.State.MyBO.Id, Me.State.MyNotesChildBO)
-                    Me.SortAndBindGrid()
+                    State.SearchDV = State.MyNotesChildBO.GetNewDataViewRow(State.SearchDV, State.MyBO.Id, State.MyNotesChildBO)
+                    SortAndBindGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Function GetGridDataView() As DataView
             With State
-                Return IssueComment.GetList(Me.State.MyBO.Id)
+                Return IssueComment.GetList(State.MyBO.Id)
             End With
 
         End Function
 
-        Protected Sub Notes_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Protected Sub Notes_ItemCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
             Try
                 MyBase.BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
         'The Binding Logic is here
-        Private Sub GridItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles GVNotes.ItemDataBound
+        Private Sub GridItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles GVNotes.ItemDataBound
             Dim itemType As ListItemType = e.Item.ItemType
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
@@ -1390,7 +1390,7 @@ Namespace Tables
                 e.Item.Cells(GRID_COL_CODE_IDX).Text = dvRow(IssueComment.IssueCommentGridDV.COL_NAME_CODE).ToString
                 e.Item.Cells(GRID_COL_NOTE_IDX).Text = dvRow(IssueComment.IssueCommentGridDV.COL_NAME_TEXT).ToString
                 dRow = FilterDatasetRowById(CType(dvRow(IssueComment.IssueCommentGridDV.COL_NAME_ISSUE_COMMENT_TYPE_ID), Byte()), GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
-                If (Not dRow Is Nothing) Then
+                If (dRow IsNot Nothing) Then
                     e.Item.Cells(GRID_COL_NOTE_TYPE_IDX).Text = CType(dRow.Item(DESCRIPTION), String).ToString
                 End If
             ElseIf (itemType = ListItemType.EditItem) Then
@@ -1407,57 +1407,57 @@ Namespace Tables
 
                 'BindListControlToDataView(CType(e.Item.Cells(GRID_COL_NOTE_TYPE_IDX).FindControl(COMBO_NOTE_TYPE), DropDownList), LookupListNew.GetIssueCommentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), , , True)
 
-                If Not Me.State.MyNotesChildBO.IssueCommentTypeId.Equals(Guid.Empty) Then
-                    SetSelectedItem(CType(e.Item.Cells(GRID_COL_NOTE_TYPE_IDX).FindControl(COMBO_NOTE_TYPE), DropDownList), Me.State.MyNotesChildBO.IssueCommentTypeId)
+                If Not State.MyNotesChildBO.IssueCommentTypeId.Equals(Guid.Empty) Then
+                    SetSelectedItem(CType(e.Item.Cells(GRID_COL_NOTE_TYPE_IDX).FindControl(COMBO_NOTE_TYPE), DropDownList), State.MyNotesChildBO.IssueCommentTypeId)
                 End If
-                CType(e.Item.Cells(GRID_COL_CODE_IDX).FindControl(TEXT_CODE), TextBox).Text = Me.State.MyNotesChildBO.Code
-                CType(e.Item.Cells(GRID_COL_NOTE_IDX).FindControl(TEXT_NOTE), TextBox).Text = Me.State.MyNotesChildBO.Text
+                CType(e.Item.Cells(GRID_COL_CODE_IDX).FindControl(TEXT_CODE), TextBox).Text = State.MyNotesChildBO.Code
+                CType(e.Item.Cells(GRID_COL_NOTE_IDX).FindControl(TEXT_NOTE), TextBox).Text = State.MyNotesChildBO.Text
             End If
 
         End Sub
 
-        Public Function FilterDatasetRowById(ByVal id As Byte(), ByVal lang As String) As System.Data.DataRow
-            For Each row As DataRow In Me.State.NoteDV.Table.Rows
+        Public Function FilterDatasetRowById(id As Byte(), lang As String) As System.Data.DataRow
+            For Each row As DataRow In State.NoteDV.Table.Rows
                 If CType(row("ID"), Byte()).SequenceEqual(id) Then
                     Return row
                 End If
             Next
         End Function
 
-        Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
             Try
                 If (e.CommandName = EDIT_COMMAND) Then
-                    Me.State.IsNotesEditing = True
+                    State.IsNotesEditing = True
                     Try
-                        Me.State.SelectedNotesChildId = GetGuidFromString(Me.GVNotes.Items(e.Item.ItemIndex).Cells(GRID_COL_NOTE_ID_IDX).Text)
-                        Me.BeginNotesChildEdit(Me.State.SelectedNotesChildId, False)
-                        Me.State.PageIndex = GVNotes.CurrentPageIndex
-                        Me.PopulateGrid()
-                        Me.SetGridControls(Me.GVNotes, False)
-                        Me.SetFocusOnEditableFieldInGrid(Me.GVNotes, GRID_COL_CODE_IDX, TEXT_CODE, e.Item.ItemIndex)
-                        Me.EnableDisableFields()
+                        State.SelectedNotesChildId = GetGuidFromString(GVNotes.Items(e.Item.ItemIndex).Cells(GRID_COL_NOTE_ID_IDX).Text)
+                        BeginNotesChildEdit(State.SelectedNotesChildId, False)
+                        State.PageIndex = GVNotes.CurrentPageIndex
+                        PopulateGrid()
+                        SetGridControls(GVNotes, False)
+                        SetFocusOnEditableFieldInGrid(GVNotes, GRID_COL_CODE_IDX, TEXT_CODE, e.Item.ItemIndex)
+                        EnableDisableFields()
                     Catch ex As Exception
-                        Me.State.MyBO.RejectChanges()
+                        State.MyBO.RejectChanges()
                         Throw ex
                     End Try
                 ElseIf (e.CommandName = DELETE_COMMAND) Then
                     GVNotes.SelectedIndex = NO_ROW_SELECTED_INDEX
                     Try
-                        Me.State.SelectedNotesChildId = GetGuidFromString(Me.GVNotes.Items(e.Item.ItemIndex).Cells(GRID_COL_NOTE_ID_IDX).Text)
-                        Me.State.MyNotesChildBO = New IssueComment(Me.State.SelectedNotesChildId, Me.State.MyBO.MyDataset)
-                        Me.BeginNotesChildEdit(Me.State.SelectedNotesChildId, False)
-                        Me.EndNotesChildEdit(ElitaPlusPage.DetailPageCommand.Delete)
-                        Me.State.PageIndex = GVNotes.CurrentPageIndex
-                        Me.PopulateGrid()
+                        State.SelectedNotesChildId = GetGuidFromString(GVNotes.Items(e.Item.ItemIndex).Cells(GRID_COL_NOTE_ID_IDX).Text)
+                        State.MyNotesChildBO = New IssueComment(State.SelectedNotesChildId, State.MyBO.MyDataset)
+                        BeginNotesChildEdit(State.SelectedNotesChildId, False)
+                        EndNotesChildEdit(ElitaPlusPage.DetailPageCommand.Delete)
+                        State.PageIndex = GVNotes.CurrentPageIndex
+                        PopulateGrid()
                     Catch ex As Exception
-                        Me.State.MyBO.RejectChanges()
+                        State.MyBO.RejectChanges()
                         Throw ex
                     End Try
-                    Me.State.PageIndex = GVNotes.CurrentPageIndex
+                    State.PageIndex = GVNotes.CurrentPageIndex
                 End If
             Catch ex As Exception
 
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -1465,57 +1465,57 @@ Namespace Tables
         '    BaseItemBound(source, e)
         'End Sub
 
-        Protected Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Protected Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub GridPageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles GVNotes.PageIndexChanged
+        Private Sub GridPageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles GVNotes.PageIndexChanged
             Try
-                Me.State.PageIndex = e.NewPageIndex
-                Me.GVNotes.CurrentPageIndex = Me.State.PageIndex
-                Me.PopulateGrid()
-                Me.GVNotes.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                State.PageIndex = e.NewPageIndex
+                GVNotes.CurrentPageIndex = State.PageIndex
+                PopulateGrid()
+                GVNotes.SelectedIndex = NO_ITEM_SELECTED_INDEX
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub GridPageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub GridPageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 GVNotes.CurrentPageIndex = NewCurrentPageIndex(GVNotes, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.SelectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-                Me.PopulateGrid()
+                State.SelectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub GridSortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles GVNotes.SortCommand
+        Private Sub GridSortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles GVNotes.SortCommand
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Protected Sub BindBoPropertiesToGridHeaders()
-            Me.BindBOPropertyToGridHeader(Me.State.MyNotesChildBO, "IssueCommentTypeId", Me.GVNotes.Columns(GRID_COL_NOTE_TYPE_IDX))
-            Me.BindBOPropertyToGridHeader(Me.State.MyNotesChildBO, "CODE", Me.GVNotes.Columns(GRID_COL_CODE_IDX))
-            Me.BindBOPropertyToGridHeader(Me.State.MyNotesChildBO, "TEXT", Me.GVNotes.Columns(GRID_COL_NOTE_IDX))
-            Me.ClearGridHeadersAndLabelsErrSign()
+            BindBOPropertyToGridHeader(State.MyNotesChildBO, "IssueCommentTypeId", GVNotes.Columns(GRID_COL_NOTE_TYPE_IDX))
+            BindBOPropertyToGridHeader(State.MyNotesChildBO, "CODE", GVNotes.Columns(GRID_COL_CODE_IDX))
+            BindBOPropertyToGridHeader(State.MyNotesChildBO, "TEXT", GVNotes.Columns(GRID_COL_NOTE_IDX))
+            ClearGridHeadersAndLabelsErrSign()
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal thisGrid As DataGrid, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(thisGrid As DataGrid, cellPosition As Integer, controlName As String, itemIndex As Integer)
             Dim desc As TextBox = CType(thisGrid.Items(itemIndex).Cells(cellPosition).FindControl(controlName), TextBox)
             SetFocus(desc)
         End Sub
@@ -1528,15 +1528,15 @@ Namespace Tables
             Try
                 PopulateWorkQueue()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
         Private Sub btnSave_WQ_Click(sender As Object, e As System.EventArgs) Handles btnSave_WQ.Click
             Try
-                Me.State.MyBO.SaveWorkQueueIssue(UC_QUEUE_AVASEL.SelectedList)
+                State.MyBO.SaveWorkQueueIssue(UC_QUEUE_AVASEL.SelectedList)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
     End Class

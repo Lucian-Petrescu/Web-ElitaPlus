@@ -9,12 +9,12 @@ Namespace Security
     Public Class PasswordSecurityTokenAuthenticator
         Inherits CustomUserNameSecurityTokenAuthenticator
 
-        Public Sub New(ByVal validator As UserNamePasswordValidator)
+        Public Sub New(validator As UserNamePasswordValidator)
             MyBase.New(validator)
         End Sub
 
         Protected Overrides Function ValidateUserNamePasswordCore( _
-                ByVal userName As String, ByVal password As String) As  _
+                userName As String, password As String) As  _
                                         ReadOnlyCollection(Of IAuthorizationPolicy)
             ' Get the existing policies
             Dim currentPolicies As ReadOnlyCollection(Of IAuthorizationPolicy) = _

@@ -7,6 +7,6 @@ Public Interface IFVSTMobileApplicationService
     <OperationContract(Name:="GetCertificateInfo"),
         ElitaPermission(PermissionCodes.WS_FVSTMobileApplicationService_GetCertificateInfo),
         FaultContract(GetType(ElitaInternalWS.SpecializedServices.CertificateNotFoundFault))>
-    Function GetCertificateInfo(ByVal request As GetCertificateInfoRequest) As GetCertificateInfoResponse
+    Function GetCertificateInfo(request As GetCertificateInfoRequest) As GetCertificateInfoResponse
 
 End Interface

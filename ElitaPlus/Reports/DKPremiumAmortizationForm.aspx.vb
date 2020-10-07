@@ -121,7 +121,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -131,22 +131,22 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
-            Me.ClearLabelsErrSign()
+            ErrorCtrl.Clear_Hide()
+            ClearLabelsErrSign()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 Else
                     ClearLabelsErrSign()
                     EnableOrDisableControls()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
 
         End Sub
 
@@ -154,12 +154,12 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -167,7 +167,7 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
             Handles moUserCompanyMultipleDrop.SelectedDropChanged
             Try
                 PopulateDealerGroup()
@@ -193,7 +193,7 @@ Namespace Reports
 
 
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -210,7 +210,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, "* " & TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 HideHtmlElement("ddSeparator")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
 
                 EnableOrDisableControls()
@@ -239,7 +239,7 @@ Namespace Reports
                                                                   .CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                                                                 })
 
-            Me.cboDealerGroup.Populate(DealerGroups.ToArray(),
+            cboDealerGroup.Populate(DealerGroups.ToArray(),
                                         New PopulateOptions() With
                                         {
                                          .AddBlankItem = True
@@ -277,7 +277,7 @@ Namespace Reports
                                                                 {
                                                                   .CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyId
                                                                 })
-            Me.YearDropDownList.Populate(YearList.ToArray(),
+            YearDropDownList.Populate(YearList.ToArray(),
                                          New PopulateOptions() With
                                          {
                                            .AddBlankItem = True,
@@ -295,7 +295,7 @@ Namespace Reports
                 CommonConfigManager.Current.ListManager.GetList(listCode:="MONTH",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-            Me.MonthDropDownList.Populate(MonthList.ToArray(),
+            MonthDropDownList.Populate(MonthList.ToArray(),
                                          New PopulateOptions() With
                                          {
                                            .AddBlankItem = True,
@@ -311,21 +311,21 @@ Namespace Reports
             PopulateYearsDropdown()
             PopulateMonthsDropdown()
             PopulateDealerDropDown()
-            Me.rdealer.Checked = True
-            Me.RadiobuttonTotalsOnly.Checked = True
+            rdealer.Checked = True
+            RadiobuttonTotalsOnly.Checked = True
             ControlMgr.SetEnableControl(Me, chkTotalsPageByCov, False)
             ControlMgr.SetEnableControl(Me, lblTotalsByCov, False)
         End Sub
 
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(MonthYearLabel)
-                Me.ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
-                Me.ClearLabelErrSign(UserDealerMultipleDrop.CaptionLabel)
-                Me.ClearLabelErrSign(GroupLabel)
+                ClearLabelErrSign(MonthYearLabel)
+                ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(UserDealerMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(GroupLabel)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -350,18 +350,18 @@ Namespace Reports
             DAC_CODE = LookupListNew.GetCodeFromId(LookupListNew.LK_ADDL_DAC, oCompany.AddlDACId)
             hidden_dacvalue.Value = DAC_CODE
             If (DAC_CODE <> Codes.ADDL_DAC__NONE) Then
-                Me.chkTotalsPageByCov.Visible = True
-                Me.lblTotalsByCov.Visible = True
-                If rGroup.Checked = True Or Me.GetSelectedItem(Me.cboDealerGroup) <> Guid.Empty Then ' cboDealerGroup.SelectedItem.ToString <> String.Empty Then
-                    Me.chkTotalsPageByCov.Enabled = True
-                    Me.lblTotalsByCov.Enabled = True
+                chkTotalsPageByCov.Visible = True
+                lblTotalsByCov.Visible = True
+                If rGroup.Checked = True Or GetSelectedItem(cboDealerGroup) <> Guid.Empty Then ' cboDealerGroup.SelectedItem.ToString <> String.Empty Then
+                    chkTotalsPageByCov.Enabled = True
+                    lblTotalsByCov.Enabled = True
                 Else
-                    Me.chkTotalsPageByCov.Enabled = False
-                    Me.lblTotalsByCov.Enabled = False
+                    chkTotalsPageByCov.Enabled = False
+                    lblTotalsByCov.Enabled = False
                 End If
             Else
-                Me.chkTotalsPageByCov.Visible = False
-                Me.lblTotalsByCov.Visible = False
+                chkTotalsPageByCov.Visible = False
+                lblTotalsByCov.Visible = False
             End If
         End Sub
 
@@ -369,8 +369,8 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal companyCode As String, ByVal selectedYearMonth As String, ByVal dealerCode As String,
-                               ByVal detailCode As String, ByVal selectedGroupId As String, ByVal addlDACCode As String, ByVal langCode As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, selectedYearMonth As String, dealerCode As String,
+                               detailCode As String, selectedGroupId As String, addlDACCode As String, langCode As String) As ReportCeBaseForm.Params
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim params As New ReportCeBaseForm.Params
             Dim repParams(TOTAL_PARAMS) As ReportCeBaseForm.RptParam
@@ -397,7 +397,7 @@ Namespace Reports
 
             SetReportParams(rptParams, repParams, "Summary", PARAMS_PER_REPORT * 1)  ' Summary (Sub Report)
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             With params
                 .msRptName = reportName
@@ -411,8 +411,8 @@ Namespace Reports
         End Function
 
 
-        Function SetTotalByCovParameters(ByVal companyCode As String, ByVal selectedYearMonth As String, ByVal dealerCode As String,
-                               ByVal detailCode As String, ByVal selectedGroupId As String, ByVal addlDACCode As String, ByVal langCode As String) As ReportCeBaseForm.Params
+        Function SetTotalByCovParameters(companyCode As String, selectedYearMonth As String, dealerCode As String,
+                               detailCode As String, selectedGroupId As String, addlDACCode As String, langCode As String) As ReportCeBaseForm.Params
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim params As New ReportCeBaseForm.Params
             Dim repParams(TOTAL_PARAMS_BY_COV) As ReportCeBaseForm.RptParam
@@ -444,7 +444,7 @@ Namespace Reports
             SetReportParams(rptParams, repParams, "SummaryByCov", PARAMS_PER_REPORT * 2)  ' Summary (Sub Report)
 
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             With params
                 .msRptName = reportName
@@ -463,8 +463,8 @@ Namespace Reports
             'Dim companyId As Guid = Me.GetApplicationUser.CompanyID
             'Dim compCode As String = LookupListNew.GetCodeFromId("COMPANIES", companyId)
             Dim compCode As String = UserCompanyMultipleDrop.SelectedCode
-            Dim selectedYear As String = Me.GetSelectedDescription(Me.YearDropDownList)
-            Dim selectedMonthID As Guid = Me.GetSelectedItem(Me.MonthDropDownList)
+            Dim selectedYear As String = GetSelectedDescription(YearDropDownList)
+            Dim selectedMonthID As Guid = GetSelectedItem(MonthDropDownList)
             Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
             Dim selectedYearMonth As String = selectedYear & selectedMonth
             Dim selectedDealerId As Guid = UserDealerMultipleDrop.SelectedGuid
@@ -473,13 +473,13 @@ Namespace Reports
             Dim detailCode As String
             Dim addlDACCode As String
             Dim selectByGroup As String
-            Dim selectedGroupId As Guid = Me.GetSelectedItem(Me.cboDealerGroup)
+            Dim selectedGroupId As Guid = GetSelectedItem(cboDealerGroup)
             Dim params As ReportCeBaseForm.Params
             Dim compid As Guid = UserCompanyMultipleDrop.SelectedGuid
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Dim langCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_LANGUAGES, langId)
 
-            If Me.RadiobuttonTotalsOnly.Checked Then
+            If RadiobuttonTotalsOnly.Checked Then
                 detailCode = NO
             Else
                 detailCode = YES
@@ -487,7 +487,7 @@ Namespace Reports
 
             'Validating the Year-Month selection
             If selectedMonthID.Equals(Guid.Empty) OrElse selectedYear.Equals(String.Empty) Then
-                ElitaPlusPage.SetLabelError(Me.MonthYearLabel)
+                ElitaPlusPage.SetLabelError(MonthYearLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_YEARMONTH_MUST_BE_SELECTED_ERR)
             End If
 
@@ -499,9 +499,9 @@ Namespace Reports
 
             'Validating the Dealer selection
             selectByGroup = NO
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
-            ElseIf Me.rGroup.Checked Then
+            ElseIf rGroup.Checked Then
                 selectByGroup = ALL
                 dealerCode = ALL
             ElseIf selectedDealerId.Equals(Guid.Empty) And selectedGroupId.Equals(Guid.Empty) Then
@@ -510,7 +510,7 @@ Namespace Reports
             End If
 
             'Validating the Dealer_Group selection
-            If Not Me.rdealer.Checked AndAlso Not Me.rGroup.Checked AndAlso selectedDealerId.Equals(Guid.Empty) AndAlso selectedGroupId.Equals(Guid.Empty) Then
+            If Not rdealer.Checked AndAlso Not rGroup.Checked AndAlso selectedDealerId.Equals(Guid.Empty) AndAlso selectedGroupId.Equals(Guid.Empty) Then
                 ElitaPlusPage.SetLabelError(GroupLabel)
                 Throw New GUIException(Message.MSG_INVALID_DEALER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_GROUP_MUST_BE_SELECTED_ERR)
             End If
@@ -558,8 +558,8 @@ Namespace Reports
             Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
         End Sub
 
-        Function SetExpParameters(ByVal companyCode As String, ByVal selectedYearMonth As String, ByVal dealerCode As String,
-                                ByVal detailCode As String, ByVal selectedGroupId As String, ByVal addlDACCode As String, ByVal langCode As String) As ReportCeBaseForm.Params
+        Function SetExpParameters(companyCode As String, selectedYearMonth As String, dealerCode As String,
+                                detailCode As String, selectedGroupId As String, addlDACCode As String, langCode As String) As ReportCeBaseForm.Params
 
             'Dim reportName As String = RPT_FILENAME_EXPORT
             Dim params As New ReportCeBaseForm.Params
@@ -582,7 +582,7 @@ Namespace Reports
 
             SetReportParams(rptParams, repParams, String.Empty, PARAMS_PER_REPORT * 0)     ' Main Report
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
             With params
                 .msRptName = reportName
                 .msRptWindowName = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
@@ -594,8 +594,8 @@ Namespace Reports
             Return params
         End Function
 
-        Sub SetReportParams(ByVal rptParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam, _
-                            ByVal rptName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(rptParams As ReportParams, repParams() As ReportCeBaseForm.RptParam, _
+                            rptName As String, startIndex As Integer)
 
             With rptParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_COMPANY_KEY", .companyCode, rptName)

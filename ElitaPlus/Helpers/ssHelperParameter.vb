@@ -42,7 +42,7 @@ Public Structure ssHelperParameter
     Public Value As String
     Public subReportName As String
 
-    Public Sub New(ByVal parmName As String, ByVal parmValue As String,
+    Public Sub New(parmName As String, parmValue As String,
                           Optional ByVal parmSubReportName As String = EMPTY_SSPARAM)
         Name = parmName
         Value = parmValue
@@ -60,7 +60,7 @@ Public Class ssSchedule
     Public uDisk As ssUDisk
     Public email As ssEMAIL
 
-    Public Sub New(ByVal oStartDateTime As DateTime)
+    Public Sub New(oStartDateTime As DateTime)
         startDateTime = oStartDateTime
     End Sub
 End Class

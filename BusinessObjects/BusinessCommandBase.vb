@@ -30,7 +30,7 @@ Public MustInherit Class BusinessCommandBase(Of TType)
     End Property
 
     Public Overridable Sub Execute() Implements IBusinessCommand.Execute
-        If (Not Me.CanExecute) Then
+        If (Not CanExecute) Then
             Throw New InvalidOperationException
         End If
     End Sub

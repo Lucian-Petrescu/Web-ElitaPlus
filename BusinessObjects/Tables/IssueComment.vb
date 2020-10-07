@@ -9,46 +9,46 @@ Public Class IssueComment
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New IssueCommentDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -59,20 +59,20 @@ Public Class IssueComment
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New IssueCommentDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -91,12 +91,12 @@ Public Class IssueComment
         Dim issueCommentTable As DataTable
         Dim issueCommentObj As IssueComment
         Dim issueCommentId As Guid
-        If Me.Dataset.Tables.Contains(IssueCommentDAL.TABLE_NAME) Then
-            issueCommentTable = Me.Dataset.Tables(IssueCommentDAL.TABLE_NAME)
+        If Dataset.Tables.Contains(IssueCommentDAL.TABLE_NAME) Then
+            issueCommentTable = Dataset.Tables(IssueCommentDAL.TABLE_NAME)
             For Each issueCommentRow As DataRow In issueCommentTable.Rows
                 issueCommentId = New Guid(CType(issueCommentRow(IssueCommentDAL.COL_NAME_ISSUE_COMMENT_ID), Byte()))
-                issueCommentObj = New IssueComment(issueCommentId, Me.Dataset)
-                If (Not issueCommentObj.Id.Equals(Me.Id) AndAlso issueCommentObj.IssueCommentTypeId.Equals(Me.IssueCommentTypeId)) Then
+                issueCommentObj = New IssueComment(issueCommentId, Dataset)
+                If (Not issueCommentObj.Id.Equals(Id) AndAlso issueCommentObj.IssueCommentTypeId.Equals(IssueCommentTypeId)) Then
                     returnValue = False
                     Exit For
                 End If
@@ -131,7 +131,7 @@ Public Class IssueComment
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(IssueCommentDAL.COL_NAME_ISSUE_ID, Value)
+            SetValue(IssueCommentDAL.COL_NAME_ISSUE_ID, Value)
         End Set
     End Property
 
@@ -147,7 +147,7 @@ Public Class IssueComment
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(IssueCommentDAL.COL_NAME_ISSUE_COMMENT_TYPE_ID, Value)
+            SetValue(IssueCommentDAL.COL_NAME_ISSUE_COMMENT_TYPE_ID, Value)
         End Set
     End Property
 
@@ -163,7 +163,7 @@ Public Class IssueComment
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(IssueCommentDAL.COL_NAME_CODE, Value)
+            SetValue(IssueCommentDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
@@ -179,7 +179,7 @@ Public Class IssueComment
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(IssueCommentDAL.COL_NAME_TEXT, Value)
+            SetValue(IssueCommentDAL.COL_NAME_TEXT, Value)
         End Set
     End Property
 
@@ -195,7 +195,7 @@ Public Class IssueComment
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(IssueCommentDAL.COL_NAME_DISPLAY_ON_WEB, Value)
+            SetValue(IssueCommentDAL.COL_NAME_DISPLAY_ON_WEB, Value)
         End Set
     End Property
 
@@ -205,15 +205,15 @@ Public Class IssueComment
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New IssueCommentDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -227,7 +227,7 @@ Public Class IssueComment
 #Region "Public Methods"
 
     Public Sub Copy(ByVal original As IssueComment)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Issue Comment.")
         End If
         MyBase.CopyFrom(original)

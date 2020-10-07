@@ -13,8 +13,8 @@ Namespace SpecializedServices.Tisa
         Private Property CertificateManager As ICertificateManager
         Private Property DealerManager As IDealerManager
 
-        Public Sub New(ByVal pCertificateManager As ICertificateManager,
-                       ByVal pDealerManager As IDealerManager)
+        Public Sub New(pCertificateManager As ICertificateManager,
+                       pDealerManager As IDealerManager)
 
             If (pCertificateManager Is Nothing) Then
                 Throw New ArgumentNullException("pCertificateManager")
@@ -23,8 +23,8 @@ Namespace SpecializedServices.Tisa
                 Throw New ArgumentNullException("pDealerManager")
             End If
 
-            Me.CertificateManager = pCertificateManager
-            Me.DealerManager = pDealerManager
+            CertificateManager = pCertificateManager
+            DealerManager = pDealerManager
 
         End Sub
 
@@ -47,7 +47,7 @@ Namespace SpecializedServices.Tisa
 
 
             ''''Locate Certificate
-            Dim oCert As Certificate = Me.CertificateManager.GetCertificate(request.DealerCode, request.CertificateNumber)
+            Dim oCert As Certificate = CertificateManager.GetCertificate(request.DealerCode, request.CertificateNumber)
             If (oCert Is Nothing) Then
                 'Throw New FaultException(Of ElitaFault)(New ElitaFault(ElitaFault.EnumFaultType.CertificateNotFound), "Certificate Not found")
                 Throw New FaultException(Of CertificateNotFoundFault)(New CertificateNotFoundFault(), "Certificate not found")

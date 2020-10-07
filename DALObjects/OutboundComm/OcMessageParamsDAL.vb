@@ -22,44 +22,44 @@
 #End Region
 
 #Region "Load Methods"
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
         {
         New DBHelper.DBHelperParameter("oc_message_params_id", id.ToByteArray)
         }
 
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal messageId As Guid) As DataSet
+    Public Function LoadList(messageId As Guid) As DataSet
         Dim ds As New DataSet
         LoadList(ds, messageId)
         Return ds
     End Function
 
-    Public Sub LoadList(ByVal ds As DataSet, ByVal messageId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_MESSAGE_ID")
+    Public Sub LoadList(ds As DataSet, messageId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_MESSAGE_ID")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
             {
             New DBHelper.DBHelperParameter(COL_NAME_OC_MESSAGE_ID, messageId.ToByteArray)
             }
 
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Sub
 #End Region
 

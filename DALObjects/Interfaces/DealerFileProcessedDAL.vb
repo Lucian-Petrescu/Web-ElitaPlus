@@ -100,7 +100,7 @@ Public Class DealerFileProcessedDAL
 
 #Region "Signatures"
 
-    Public Delegate Sub AsyncCaller(ByVal oDealerFileProcessedData As DealerFileProcessedData, ByVal selectStmt As String)
+    Public Delegate Sub AsyncCaller(oDealerFileProcessedData As DealerFileProcessedData, selectStmt As String)
 
 #End Region
 
@@ -113,36 +113,36 @@ Public Class DealerFileProcessedDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealerfile_processed_id", id.ToByteArray),
                                                                                            New DBHelper.DBHelperParameter("dealerfile_processed_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid, ByVal parentfile As Boolean)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PARENT_CHILDS")
+    Public Sub Load(familyDS As DataSet, id As Guid, parentfile As Boolean)
+        Dim selectStmt As String = Config("/SQL/LOAD_PARENT_CHILDS")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealerfile_processed_id", id.ToByteArray),
                                                                                            New DBHelper.DBHelperParameter("file_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public Function DealerFilesLoadBtwnDateRange(ByVal companyId As Guid, ByVal dealercode As String, ByVal BeginDate As String,
-                                           ByVal EndDate As String, ByVal FileType As String, ByVal rejectionType As String) As DataSet
+    Public Function DealerFilesLoadBtwnDateRange(companyId As Guid, dealercode As String, BeginDate As String,
+                                           EndDate As String, FileType As String, rejectionType As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/DEALER_FILES_LOADED_BETWEEN_DATE_RANGE")
+        Dim selectStmt As String = Config("/SQL/DEALER_FILES_LOADED_BETWEEN_DATE_RANGE")
 
         Dim dealer As String
         If dealercode = ALL Then
@@ -158,16 +158,16 @@ Public Class DealerFileProcessedDAL
                                                                                           New DBHelper.DBHelperParameter("file_type_code", rejectionType)}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function PaymentFilesLoadBtwnDateRange(ByVal companyId As Guid, ByVal dealercode As String, ByVal BeginDate As String,
-                                           ByVal EndDate As String, ByVal FileType As String, ByVal rejectionType As String) As DataSet
+    Public Function PaymentFilesLoadBtwnDateRange(companyId As Guid, dealercode As String, BeginDate As String,
+                                           EndDate As String, FileType As String, rejectionType As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/PAYMENT_FILES_LOADED_BETWEEN_DATE_RANGE")
+        Dim selectStmt As String = Config("/SQL/PAYMENT_FILES_LOADED_BETWEEN_DATE_RANGE")
 
         Dim dealer As String
         If dealercode = ALL Then
@@ -183,14 +183,14 @@ Public Class DealerFileProcessedDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadList(ByVal compIds As ArrayList, ByVal oDealerFileProcessedData As DealerFileProcessedData) As DataSet
+    Public Function LoadList(compIds As ArrayList, oDealerFileProcessedData As DealerFileProcessedData) As DataSet
         Dim selectStmt As String
         'Dim parameters(TOTAL_PARAM) As DBHelperParameter
         Dim parameter() As DBHelper.DBHelperParameter
@@ -205,7 +205,7 @@ Public Class DealerFileProcessedDAL
 
         With oDealerFileProcessedData
             If .parentFile = YESNO_N Then
-                selectStmt = Me.Config("/SQL/LOAD_LIST")
+                selectStmt = Config("/SQL/LOAD_LIST")
                 If Not Trim(.dealerCode).Equals(String.Empty) Then
                     ' parameters(DEALER_CODE) = New DBHelperParameter(COL_NAME_DEALER_CODE, .dealerCode)
                     whereClauseConditions &= " AND dfp." + COL_NAME_DEALER_ID + " = '" & GuidControl.GuidToHexString(.dealerId) & "'"
@@ -224,8 +224,8 @@ Public Class DealerFileProcessedDAL
                 parameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealerfile_processed_id", oDealerFileProcessedData.dealerfile_processed_id),
                                                              New DBHelper.DBHelperParameter(COL_NAME_FILE_TYPE_CODE, sFileTypeCode)}
             Else
-                selectStmt = Me.Config("/SQL/LOAD_PARENT_LIST")
-                whereClauseConditions &= MiscUtil.BuildListForSql("AND D." & Me.COL_NAME_COMPANY_ID, compIds, True)
+                selectStmt = Config("/SQL/LOAD_PARENT_LIST")
+                whereClauseConditions &= MiscUtil.BuildListForSql("AND D." & COL_NAME_COMPANY_ID, compIds, True)
                 sFileTypeCode = .InterfaceTypeCode.GetName(GetType(DealerFileProcessedData.InterfaceTypeCode), .fileTypeCode)
                 parameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealerfile_processed_id", oDealerFileProcessedData.dealerfile_processed_id),
                                                              New DBHelper.DBHelperParameter(COL_NAME_FILE_TYPE_CODE, sFileTypeCode)}
@@ -235,14 +235,14 @@ Public Class DealerFileProcessedDAL
 
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameter)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameter)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -252,8 +252,8 @@ Public Class DealerFileProcessedDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
     End Sub
 #End Region
 
@@ -278,7 +278,7 @@ Public Class DealerFileProcessedDAL
     '    End If
     'End Sub
 
-    Private Sub AsyncExecuteSP(ByVal oDealerFileProcessedData As DealerFileProcessedData, ByVal selectStmt As String)
+    Private Sub AsyncExecuteSP(oDealerFileProcessedData As DealerFileProcessedData, selectStmt As String)
         If (oDealerFileProcessedData.fileTypeCode = DealerFileProcessedData.InterfaceTypeCode.PAYM) Then
 
             Dim inputParameters(TOTAL_PARAM_SP) As DBHelperParameter
@@ -409,7 +409,7 @@ Public Class DealerFileProcessedDAL
 
     End Sub
 
-    Private Sub AsyncExecuteSP_VSC(ByVal oDealerFileProcessedData As DealerFileProcessedData, ByVal selectStmt As String)
+    Private Sub AsyncExecuteSP_VSC(oDealerFileProcessedData As DealerFileProcessedData, selectStmt As String)
         Dim inputParameters(TOTAL_PARAM_SP_VSC) As DBHelperParameter
         Dim outputParameter(1) As DBHelperParameter
 
@@ -441,7 +441,7 @@ Public Class DealerFileProcessedDAL
     End Sub
 
 
-    Private Sub AsyncExecuteDelSP(ByVal oDealerFileProcessedData As DealerFileProcessedData, ByVal selectStmt As String)
+    Private Sub AsyncExecuteDelSP(oDealerFileProcessedData As DealerFileProcessedData, selectStmt As String)
         If (oDealerFileProcessedData.fileTypeCode = DealerFileProcessedData.InterfaceTypeCode.RINS) Then
             Dim inputParameters(3) As DBHelperParameter
             Dim outputParameter(0) As DBHelperParameter
@@ -489,7 +489,7 @@ Public Class DealerFileProcessedDAL
             End If
         End If
     End Sub
-    Private Sub AsyncExecuteDelSP_VSC(ByVal oDealerFileProcessedData As DealerFileProcessedData, ByVal selectStmt As String)
+    Private Sub AsyncExecuteDelSP_VSC(oDealerFileProcessedData As DealerFileProcessedData, selectStmt As String)
         Dim inputParameters(TOTAL_PARAM_SP_VSC) As DBHelperParameter
         Dim outputParameter(1) As DBHelperParameter
 
@@ -517,7 +517,7 @@ Public Class DealerFileProcessedDAL
         End If
     End Sub
 
-    Private Sub ExecuteSP(ByVal oDealerFileProcessedData As DealerFileProcessedData, ByVal selectStmt As String, Optional ByVal blnVscPolicyLoad As Boolean = False)
+    Private Sub ExecuteSP(oDealerFileProcessedData As DealerFileProcessedData, selectStmt As String, Optional ByVal blnVscPolicyLoad As Boolean = False)
         If oDealerFileProcessedData.DealerType.Equals("VSC") AndAlso oDealerFileProcessedData.oSP.Equals(1) AndAlso blnVscPolicyLoad = True Then
             Dim aSyncHandler As New AsyncCaller(AddressOf AsyncExecuteSP_VSC)
             aSyncHandler.BeginInvoke(oDealerFileProcessedData, selectStmt, Nothing, Nothing)
@@ -528,7 +528,7 @@ Public Class DealerFileProcessedDAL
 
     End Sub
 
-    Private Sub ExecuteDelSP(ByVal oDealerFileProcessedData As DealerFileProcessedData, ByVal selectStmt As String)
+    Private Sub ExecuteDelSP(oDealerFileProcessedData As DealerFileProcessedData, selectStmt As String)
         If oDealerFileProcessedData.DealerType.Equals("VSC") AndAlso oDealerFileProcessedData.oSP.Equals(1) Then
             Dim aSyncHandler As New AsyncCaller(AddressOf AsyncExecuteDelSP_VSC)
             aSyncHandler.BeginInvoke(oDealerFileProcessedData, selectStmt, Nothing, Nothing)
@@ -539,7 +539,7 @@ Public Class DealerFileProcessedDAL
 
     End Sub
 
-    Private Sub AsyncExecuteDownloadSP(ByVal oDealerFileProcessedData As DealerFileProcessedData, ByVal selectStmt As String)
+    Private Sub AsyncExecuteDownloadSP(oDealerFileProcessedData As DealerFileProcessedData, selectStmt As String)
         Dim inputParameters(TOTAL_PARAM) As DBHelperParameter
 
         With oDealerFileProcessedData
@@ -550,26 +550,26 @@ Public Class DealerFileProcessedDAL
         DBHelper.ExecuteSp(selectStmt, inputParameters, Nothing)
     End Sub
 
-    Private Sub ExecuteDownloadSP(ByVal oDealerFileProcessedData As DealerFileProcessedData, ByVal selectStmt As String)
+    Private Sub ExecuteDownloadSP(oDealerFileProcessedData As DealerFileProcessedData, selectStmt As String)
         Dim aSyncHandler As New AsyncCaller(AddressOf AsyncExecuteDownloadSP)
         aSyncHandler.BeginInvoke(oDealerFileProcessedData, selectStmt, Nothing, Nothing)
     End Sub
 
-    Public Sub ValidateFile(ByVal oData As Object)
+    Public Sub ValidateFile(oData As Object)
         Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
         Dim selectStmt As String
 
         Select Case oDealerFileProcessedData.fileTypeCode
             Case oDealerFileProcessedData.InterfaceTypeCode.CERT
-                selectStmt = Me.Config("/SQL/VALIDATE_FILE")
+                selectStmt = Config("/SQL/VALIDATE_FILE")
             Case oDealerFileProcessedData.InterfaceTypeCode.PAYM
-                selectStmt = Me.Config("/SQL/VALIDATE_PAYMENT")
+                selectStmt = Config("/SQL/VALIDATE_PAYMENT")
             Case oDealerFileProcessedData.InterfaceTypeCode.RINS
-                selectStmt = Me.Config("/SQL/VALIDATE_REINSURANCE")
+                selectStmt = Config("/SQL/VALIDATE_REINSURANCE")
             Case oDealerFileProcessedData.InterfaceTypeCode.INVC
-                selectStmt = Me.Config("/SQL/VALIDATE_INVOICE")
+                selectStmt = Config("/SQL/VALIDATE_INVOICE")
             Case oDealerFileProcessedData.InterfaceTypeCode.PYMT
-                selectStmt = Me.Config("/SQL/VALIDATE_INVOICE_PAYMENT")
+                selectStmt = Config("/SQL/VALIDATE_INVOICE_PAYMENT")
         End Select
 
         Try
@@ -579,13 +579,13 @@ Public Class DealerFileProcessedDAL
         End Try
     End Sub
 
-    Public Sub GenerateResponseFile(ByVal oData As Object)
+    Public Sub GenerateResponseFile(oData As Object)
         Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
         Dim selectStmt As String
 
         Select Case oDealerFileProcessedData.fileTypeCode
             Case oDealerFileProcessedData.InterfaceTypeCode.CERT
-                selectStmt = Me.Config("/SQL/GENERATE_RESPONSE_FILE")
+                selectStmt = Config("/SQL/GENERATE_RESPONSE_FILE")
             Case oDealerFileProcessedData.InterfaceTypeCode.PAYM
                 Throw New NotSupportedException
         End Select
@@ -597,25 +597,25 @@ Public Class DealerFileProcessedDAL
         End Try
     End Sub
 
-    Public Sub ProcessFileRecords(ByVal oData As Object)
+    Public Sub ProcessFileRecords(oData As Object)
         Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
         Dim selectStmt As String
 
         Select Case oDealerFileProcessedData.fileTypeCode
             Case oDealerFileProcessedData.InterfaceTypeCode.CERT
                 If oDealerFileProcessedData.DealerType.Equals("VSC") Then
-                    selectStmt = Me.Config("/SQL/PROCESS_FILE_VSC")
+                    selectStmt = Config("/SQL/PROCESS_FILE_VSC")
                 Else
-                    selectStmt = Me.Config("/SQL/PROCESS_FILE")
+                    selectStmt = Config("/SQL/PROCESS_FILE")
                 End If
             Case oDealerFileProcessedData.InterfaceTypeCode.PAYM
-                selectStmt = Me.Config("/SQL/PROCESS_PAYMENT")
+                selectStmt = Config("/SQL/PROCESS_PAYMENT")
             Case oDealerFileProcessedData.InterfaceTypeCode.RINS
-                selectStmt = Me.Config("/SQL/PROCESS_REINSURANCE")
+                selectStmt = Config("/SQL/PROCESS_REINSURANCE")
             Case oDealerFileProcessedData.InterfaceTypeCode.PYMT
-                selectStmt = Me.Config("/SQL/PROCESS_INVOICE_PAYMENT")
+                selectStmt = Config("/SQL/PROCESS_INVOICE_PAYMENT")
             Case oDealerFileProcessedData.InterfaceTypeCode.INVC
-                selectStmt = Me.Config("/SQL/PROCESS_INVOICE")
+                selectStmt = Config("/SQL/PROCESS_INVOICE")
 
         End Select
 
@@ -631,19 +631,19 @@ Public Class DealerFileProcessedDAL
         End Try
     End Sub
 
-    Public Sub DeleteFile(ByVal oData As Object)
+    Public Sub DeleteFile(oData As Object)
         Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
         Dim selectStmt As String
 
         Select Case oDealerFileProcessedData.fileTypeCode
             Case oDealerFileProcessedData.InterfaceTypeCode.CERT
-                selectStmt = Me.Config("/SQL/DELETE_FILE")
+                selectStmt = Config("/SQL/DELETE_FILE")
                 oDealerFileProcessedData.oSP = SP_DEALER
             Case oDealerFileProcessedData.InterfaceTypeCode.PAYM
-                selectStmt = Me.Config("/SQL/DELETE_PAYMENT")
+                selectStmt = Config("/SQL/DELETE_PAYMENT")
                 oDealerFileProcessedData.oSP = SP_DEALERPAY
             Case oDealerFileProcessedData.InterfaceTypeCode.RINS
-                selectStmt = Me.Config("/SQL/DELETE_REINSURANCE")
+                selectStmt = Config("/SQL/DELETE_REINSURANCE")
         End Select
 
         Try
@@ -653,15 +653,15 @@ Public Class DealerFileProcessedDAL
         End Try
     End Sub
 
-    Public Sub DownloadFile(ByVal oData As Object)
+    Public Sub DownloadFile(oData As Object)
         Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
         Dim selectStmt As String
 
         Select Case oDealerFileProcessedData.fileTypeCode
             Case oDealerFileProcessedData.InterfaceTypeCode.CERT
-                selectStmt = Me.Config("/SQL/DOWNLOAD_FILE")
+                selectStmt = Config("/SQL/DOWNLOAD_FILE")
             Case oDealerFileProcessedData.InterfaceTypeCode.PAYM
-                selectStmt = Me.Config("/SQL/DOWNLOAD_PAYMENT")
+                selectStmt = Config("/SQL/DOWNLOAD_PAYMENT")
         End Select
 
         Try

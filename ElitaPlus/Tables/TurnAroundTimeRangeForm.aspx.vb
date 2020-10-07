@@ -33,7 +33,7 @@ Partial Class TurnAroundTimeRangeForm
 
     Public ReadOnly Property IsEditing() As Boolean
         Get
-            IsEditing = (Me.Grid.EditIndex > NO_ROW_SELECTED_INDEX)
+            IsEditing = (Grid.EditIndex > NO_ROW_SELECTED_INDEX)
         End Get
     End Property
 
@@ -80,7 +80,7 @@ Partial Class TurnAroundTimeRangeForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -122,66 +122,66 @@ Partial Class TurnAroundTimeRangeForm
 
 #Region "Button Click Handlers"
 
-    Private Sub SearchButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SearchButton.Click
+    Private Sub SearchButton_Click(sender As System.Object, e As System.EventArgs) Handles SearchButton.Click
         Try
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
+            State.IsGridVisible = True
+            State.searchDV = Nothing
             PopulateGrid()
             'Me.State.PageIndex = Grid.CurrentPageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
-    Private Sub NewButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NewButton_WRITE.Click
+    Private Sub NewButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles NewButton_WRITE.Click
 
         Try
-            Me.State.IsEditMode = True
-            Me.State.IsGridVisible = True
-            Me.State.AddingNewRow = True
+            State.IsEditMode = True
+            State.IsGridVisible = True
+            State.AddingNewRow = True
             AddNewTurnAroundTimeRange()
-            Me.SetGridControls(Me.Grid, False)
+            SetGridControls(Grid, False)
             SetButtonsState()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
-    Private Sub SaveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+    Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
 
         Try
             PopulateBOFromForm()
-            If (Me.State.TurnAroundTimeRange.IsDirty) Then
-                Me.State.TurnAroundTimeRange.Save()
-                Me.State.IsAfterSave = True
-                Me.State.AddingNewRow = False
-                Me.AddInfoMsg(Me.MSG_RECORD_SAVED_OK)
-                Me.State.searchDV = Nothing
-                Me.ReturnFromEditing()
+            If (State.TurnAroundTimeRange.IsDirty) Then
+                State.TurnAroundTimeRange.Save()
+                State.IsAfterSave = True
+                State.AddingNewRow = False
+                AddInfoMsg(MSG_RECORD_SAVED_OK)
+                State.searchDV = Nothing
+                ReturnFromEditing()
             Else
-                Me.AddInfoMsg(Me.MSG_RECORD_NOT_SAVED)
-                Me.ReturnFromEditing()
+                AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                ReturnFromEditing()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
-    Private Sub CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CancelButton.Click
+    Private Sub CancelButton_Click(sender As System.Object, e As System.EventArgs) Handles CancelButton.Click
 
         Try
-            Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
-            Me.State.Canceling = True
-            If (Me.State.AddingNewRow) Then
-                Me.State.AddingNewRow = False
-                Me.State.searchDV = Nothing
+            Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+            State.Canceling = True
+            If (State.AddingNewRow) Then
+                State.AddingNewRow = False
+                State.searchDV = Nothing
             End If
             ReturnFromEditing()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
@@ -191,51 +191,51 @@ Partial Class TurnAroundTimeRangeForm
 
 #Region "Private Methods"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
         'Put user code to initialize the page here
         Try
             ErrController.Clear_Hide()
             If Not Page.IsPostBack Then
-                Me.SortDirection = Me.State.SortExpression
+                SortDirection = State.SortExpression
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                Me.TranslateGridHeader(Me.Grid)
-                Me.TranslateGridControls(Me.Grid)
-                Me.SetGridItemStyleColor(Grid)
-                Me.State.PageIndex = 0
+                TranslateGridHeader(Grid)
+                TranslateGridControls(Grid)
+                SetGridItemStyleColor(Grid)
+                State.PageIndex = 0
                 SetButtonsState()
             End If
             BindBoPropertiesToGridHeaders()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
-        Me.ShowMissingTranslations(ErrController)
+        ShowMissingTranslations(ErrController)
     End Sub
 
     Private Sub PopulateGrid()
 
         Dim dv As DataView
         Try
-            If (Me.State.searchDV Is Nothing) Then
-                Me.State.searchDV = GetDV()
+            If (State.searchDV Is Nothing) Then
+                State.searchDV = GetDV()
             End If
 
-            Me.State.searchDV.Sort = Me.State.SortExpression
-            If (Me.State.IsAfterSave) Then
-                Me.State.IsAfterSave = False
-                Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.TurnAroundTimeRangeId, Me.Grid, Me.State.PageIndex)
-            ElseIf (Me.State.IsEditMode) Then
-                Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.TurnAroundTimeRangeId, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+            State.searchDV.Sort = State.SortExpression
+            If (State.IsAfterSave) Then
+                State.IsAfterSave = False
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.TurnAroundTimeRangeId, Grid, State.PageIndex)
+            ElseIf (State.IsEditMode) Then
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.TurnAroundTimeRangeId, Grid, State.PageIndex, State.IsEditMode)
             Else
-                Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.Grid, Me.State.PageIndex)
+                SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, State.PageIndex)
             End If
 
-            Me.Grid.AutoGenerateColumns = False
-            Me.SortAndBindGrid()
+            Grid.AutoGenerateColumns = False
+            SortAndBindGrid()
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
@@ -244,10 +244,10 @@ Partial Class TurnAroundTimeRangeForm
 
         Dim dv As DataView
 
-        Me.State.searchDV = Assurant.ElitaPlus.BusinessObjectsNew.TurnAroundTimeRange.LoadList()
-        Me.State.searchDV.Sort = Grid.DataMember()
+        State.searchDV = Assurant.ElitaPlus.BusinessObjectsNew.TurnAroundTimeRange.LoadList()
+        State.searchDV.Sort = Grid.DataMember()
 
-        Return (Me.State.searchDV)
+        Return (State.searchDV)
 
     End Function
 
@@ -255,21 +255,21 @@ Partial Class TurnAroundTimeRangeForm
 
     Private Sub AddNewTurnAroundTimeRange()
 
-        Me.State.searchDV = Assurant.ElitaPlus.BusinessObjectsNew.TurnAroundTimeRange.LoadList()
+        State.searchDV = Assurant.ElitaPlus.BusinessObjectsNew.TurnAroundTimeRange.LoadList()
 
-        Me.State.TurnAroundTimeRange = New Assurant.ElitaPlus.BusinessObjectsNew.TurnAroundTimeRange
-        Me.State.TurnAroundTimeRangeId = Me.State.TurnAroundTimeRange.Id
+        State.TurnAroundTimeRange = New Assurant.ElitaPlus.BusinessObjectsNew.TurnAroundTimeRange
+        State.TurnAroundTimeRangeId = State.TurnAroundTimeRange.Id
 
-        Me.State.searchDV = Me.State.TurnAroundTimeRange.GetNewDataViewRow(Me.State.searchDV, Me.State.TurnAroundTimeRangeId)
+        State.searchDV = State.TurnAroundTimeRange.GetNewDataViewRow(State.searchDV, State.TurnAroundTimeRangeId)
 
-        Grid.DataSource = Me.State.searchDV
-        SetGridControls(Me.Grid, False)
-        Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.TurnAroundTimeRangeId, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+        Grid.DataSource = State.searchDV
+        SetGridControls(Grid, False)
+        SetPageAndSelectedIndexFromGuid(State.searchDV, State.TurnAroundTimeRangeId, Grid, State.PageIndex, State.IsEditMode)
 
-        Me.Grid.AutoGenerateColumns = False
-        Me.Grid.Columns(Me.CODE_COL).SortExpression = TurnAroundTimeRange.COL_NAME_CODE
-        Me.Grid.Columns(Me.DESCRIPTION_COL).SortExpression = TurnAroundTimeRange.COL_NAME_DESCRIPTION
-        Me.SortAndBindGrid()
+        Grid.AutoGenerateColumns = False
+        Grid.Columns(CODE_COL).SortExpression = TurnAroundTimeRange.COL_NAME_CODE
+        Grid.Columns(DESCRIPTION_COL).SortExpression = TurnAroundTimeRange.COL_NAME_DESCRIPTION
+        SortAndBindGrid()
 
         'Grid.DataBind()
 
@@ -289,40 +289,40 @@ Partial Class TurnAroundTimeRangeForm
 
     Private Sub SortAndBindGrid()
         Dim dv As New DataView
-        Me.State.PageIndex = Me.Grid.PageIndex
+        State.PageIndex = Grid.PageIndex
 
-        If (Me.State.searchDV.Count = 0) Then
+        If (State.searchDV.Count = 0) Then
 
             dv = Assurant.ElitaPlus.BusinessObjectsNew.TurnAroundTimeRange.LoadList()
 
-            Me.State.bnoRow = True
+            State.bnoRow = True
             dv = TurnAroundTimeRange.getEmptyList(dv)
-            Me.Grid.DataSource = dv
-            Me.Grid.DataBind()
-            Me.Grid.Rows(0).Visible = False
+            Grid.DataSource = dv
+            Grid.DataBind()
+            Grid.Rows(0).Visible = False
 
 
         Else
-            Me.State.bnoRow = False
-            Me.Grid.Enabled = True
-            Me.Grid.DataSource = Me.State.searchDV
-            HighLightSortColumn(Grid, Me.SortDirection)
-            Me.Grid.DataBind()
+            State.bnoRow = False
+            Grid.Enabled = True
+            Grid.DataSource = State.searchDV
+            HighLightSortColumn(Grid, SortDirection)
+            Grid.DataBind()
         End If
 
         If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
-        If Me.Grid.Visible Then
-            If (Me.State.AddingNewRow) Then
-                Me.lblRecordCount.Text = (Me.State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        If Grid.Visible Then
+            If (State.AddingNewRow) Then
+                lblRecordCount.Text = (State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             Else
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
         ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
@@ -331,27 +331,27 @@ Partial Class TurnAroundTimeRangeForm
     Private Sub PopulateBOFromForm()
 
         Try
-            With Me.State.TurnAroundTimeRange
+            With State.TurnAroundTimeRange
 
 
-                .Code = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.CODE_COL).FindControl(Me.CODE_CONTROL_NAME), TextBox).Text
-                .Description = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.CODE_COL).FindControl(Me.DESCRIPTION_CONTROL_NAME), TextBox).Text
+                .Code = CType(Grid.Rows(Grid.EditIndex).Cells(CODE_COL).FindControl(CODE_CONTROL_NAME), TextBox).Text
+                .Description = CType(Grid.Rows(Grid.EditIndex).Cells(CODE_COL).FindControl(DESCRIPTION_CONTROL_NAME), TextBox).Text
 
-                Dim minDaysString As String = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.MIN_DAYS_COL).FindControl(Me.MIN_DAYS_CONTROL_NAME), TextBox).Text
+                Dim minDaysString As String = CType(Grid.Rows(Grid.EditIndex).Cells(MIN_DAYS_COL).FindControl(MIN_DAYS_CONTROL_NAME), TextBox).Text
                 Try
                     .MinDays = CType(minDaysString, LongType)
                 Catch ex As Exception
                     Throw New GUIException(Message.MSG_INVALID_MIN_MAX_VALUE, Assurant.ElitaPlus.Common.ErrorCodes.MIN_VALUE_MUST_BE_FROM_0_TO_9998)
                 End Try
 
-                Dim MaxDaysString As String = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.MAX_DAYS_COL).FindControl(Me.MAX_DAYS_CONTROL_NAME), TextBox).Text
+                Dim MaxDaysString As String = CType(Grid.Rows(Grid.EditIndex).Cells(MAX_DAYS_COL).FindControl(MAX_DAYS_CONTROL_NAME), TextBox).Text
                 Try
                     .MaxDays = CType(MaxDaysString, LongType)
                 Catch ex As Exception
                     Throw New GUIException(Message.MSG_INVALID_MIN_MAX_VALUE, Assurant.ElitaPlus.Common.ErrorCodes.MAX_VALUE_MUST_BE_FROM_1_TO_9999)
                 End Try
 
-                .ColorId = Me.GetSelectedItem(CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.COLOR_COL).FindControl(Me.COLOR_CONTROL_NAME), DropDownList))
+                .ColorId = GetSelectedItem(CType(Grid.Rows(Grid.EditIndex).Cells(COLOR_COL).FindControl(COLOR_CONTROL_NAME), DropDownList))
                 .CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
 
             End With
@@ -363,19 +363,19 @@ Partial Class TurnAroundTimeRangeForm
 
     Private Sub PopulateFormFromBO()
 
-        Dim gridRowIdx As Integer = Me.Grid.EditIndex
+        Dim gridRowIdx As Integer = Grid.EditIndex
         Try
-            With Me.State.TurnAroundTimeRange
-                If Not .Description Is Nothing Then
-                    CType(Me.Grid.Rows(gridRowIdx).Cells(Me.DESCRIPTION_COL).FindControl(Me.DESCRIPTION_CONTROL_NAME), TextBox).Text = .Description
+            With State.TurnAroundTimeRange
+                If .Description IsNot Nothing Then
+                    CType(Grid.Rows(gridRowIdx).Cells(DESCRIPTION_COL).FindControl(DESCRIPTION_CONTROL_NAME), TextBox).Text = .Description
                 End If
                 'If Not .Code Is Nothing Then
                 '    CType(Me.Grid.Items(gridRowIdx).Cells(Me.CODE_COL).FindControl(Me.CODE_CONTROL_NAME), TextBox).Text = .Code
                 'End If
-                CType(Me.Grid.Rows(gridRowIdx).Cells(Me.ID_COL).FindControl(Me.ID_CONTROL_NAME), Label).Text = .Id.ToString
+                CType(Grid.Rows(gridRowIdx).Cells(ID_COL).FindControl(ID_CONTROL_NAME), Label).Text = .Id.ToString
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
@@ -384,29 +384,29 @@ Partial Class TurnAroundTimeRangeForm
 
         Grid.EditIndex = NO_ROW_SELECTED_INDEX
 
-        If Me.Grid.PageCount = 0 Then
+        If Grid.PageCount = 0 Then
             'if returning to the "1st time in" screen
             ControlMgr.SetVisibleControl(Me, Grid, False)
         Else
             ControlMgr.SetVisibleControl(Me, Grid, True)
         End If
 
-        Me.State.IsEditMode = False
-        Me.PopulateGrid()
-        Me.State.PageIndex = Grid.PageIndex
+        State.IsEditMode = False
+        PopulateGrid()
+        State.PageIndex = Grid.PageIndex
         SetButtonsState()
 
     End Sub
 
     Private Sub SetButtonsState()
 
-        If (Me.State.IsEditMode) Then
+        If (State.IsEditMode) Then
             ControlMgr.SetVisibleControl(Me, SaveButton_WRITE, True)
             ControlMgr.SetVisibleControl(Me, CancelButton, True)
             ControlMgr.SetVisibleControl(Me, NewButton_WRITE, False)
             ControlMgr.SetEnableControl(Me, SearchButton, False)
-            Me.MenuEnabled = False
-            If (Me.cboPageSize.Visible) Then
+            MenuEnabled = False
+            If (cboPageSize.Visible) Then
                 ControlMgr.SetEnableControl(Me, cboPageSize, False)
             End If
         Else
@@ -414,21 +414,21 @@ Partial Class TurnAroundTimeRangeForm
             ControlMgr.SetVisibleControl(Me, CancelButton, False)
             ControlMgr.SetVisibleControl(Me, NewButton_WRITE, True)
             ControlMgr.SetEnableControl(Me, SearchButton, True)
-            Me.MenuEnabled = True
-            If (Me.cboPageSize.Visible) Then
+            MenuEnabled = True
+            If (cboPageSize.Visible) Then
                 ControlMgr.SetEnableControl(Me, cboPageSize, True)
             End If
         End If
 
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.PopulateGrid()
+            State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
@@ -440,186 +440,186 @@ Partial Class TurnAroundTimeRangeForm
         Get
             Return ViewState("SortDirection").ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
 
         Try
-            If (Not (Me.State.IsEditMode)) Then
-                Me.State.PageIndex = e.NewPageIndex
-                Me.Grid.PageIndex = Me.State.PageIndex
-                Me.PopulateGrid()
-                Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+            If (Not (State.IsEditMode)) Then
+                State.PageIndex = e.NewPageIndex
+                Grid.PageIndex = State.PageIndex
+                PopulateGrid()
+                Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
-    Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
 
         Try
             Dim index As Integer
 
-            If (e.CommandName = Me.EDIT_COMMAND) Then
+            If (e.CommandName = EDIT_COMMAND) Then
                 'Do the Edit here
                 index = CInt(e.CommandArgument)
                 'Set the IsEditMode flag to TRUE
-                Me.State.IsEditMode = True
+                State.IsEditMode = True
 
-                Me.State.TurnAroundTimeRangeId = New Guid(CType(Me.Grid.Rows(index).Cells(Me.ID_COL).FindControl(Me.ID_CONTROL_NAME), Label).Text)
+                State.TurnAroundTimeRangeId = New Guid(CType(Grid.Rows(index).Cells(ID_COL).FindControl(ID_CONTROL_NAME), Label).Text)
 
-                Me.State.TurnAroundTimeRange = New Assurant.ElitaPlus.BusinessObjectsNew.TurnAroundTimeRange(Me.State.TurnAroundTimeRangeId)
+                State.TurnAroundTimeRange = New Assurant.ElitaPlus.BusinessObjectsNew.TurnAroundTimeRange(State.TurnAroundTimeRangeId)
 
-                Me.PopulateGrid()
+                PopulateGrid()
 
-                Me.State.PageIndex = Grid.PageIndex
+                State.PageIndex = Grid.PageIndex
 
                 'Disable all Edit and Delete icon buttons on the Grid
-                SetGridControls(Me.Grid, False)
+                SetGridControls(Grid, False)
 
                 'Set focus on the Description TextBox for the EditItemIndex row
-                Me.SetFocusOnEditableFieldInGrid(Me.Grid, Me.DESCRIPTION_COL, Me.DESCRIPTION_CONTROL_NAME, index)
+                SetFocusOnEditableFieldInGrid(Grid, DESCRIPTION_COL, DESCRIPTION_CONTROL_NAME, index)
 
-                Me.PopulateFormFromBO()
+                PopulateFormFromBO()
 
-                Me.SetButtonsState()
+                SetButtonsState()
 
-            ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+            ElseIf (e.CommandName = DELETE_COMMAND) Then
                 'Do the delete here
                 index = CInt(e.CommandArgument)
                 'Clear the SelectedItemStyle to remove the highlight from the previously saved row
-                Grid.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
+                Grid.SelectedIndex = NO_ROW_SELECTED_INDEX
 
                 'Save the Id in the Session
 
-                Me.State.TurnAroundTimeRangeId = New Guid(CType(Me.Grid.Rows(index).Cells(Me.ID_COL).FindControl(Me.ID_CONTROL_NAME), Label).Text)
+                State.TurnAroundTimeRangeId = New Guid(CType(Grid.Rows(index).Cells(ID_COL).FindControl(ID_CONTROL_NAME), Label).Text)
 
-                Me.State.TurnAroundTimeRange = New Assurant.ElitaPlus.BusinessObjectsNew.TurnAroundTimeRange(Me.State.TurnAroundTimeRangeId)
+                State.TurnAroundTimeRange = New Assurant.ElitaPlus.BusinessObjectsNew.TurnAroundTimeRange(State.TurnAroundTimeRangeId)
                 Try
-                    Me.State.TurnAroundTimeRange.Delete()
+                    State.TurnAroundTimeRange.Delete()
                     'Call the Save() method in the TurnAroundTimeRange Business Object here
-                    Me.State.TurnAroundTimeRange.Save()
+                    State.TurnAroundTimeRange.Save()
                 Catch ex As Exception
-                    Me.State.TurnAroundTimeRange.RejectChanges()
+                    State.TurnAroundTimeRange.RejectChanges()
                     Throw ex
                 End Try
 
-                Me.State.PageIndex = Grid.PageIndex
+                State.PageIndex = Grid.PageIndex
 
                 'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-                Me.State.IsAfterSave = True
-                Me.State.searchDV = Nothing
+                State.IsAfterSave = True
+                State.searchDV = Nothing
                 PopulateGrid()
-                Me.State.PageIndex = Grid.PageIndex
+                State.PageIndex = Grid.PageIndex
 
-            ElseIf ((e.CommandName = Me.SORT_COMMAND) AndAlso Not (Me.IsEditing)) Then
+            ElseIf ((e.CommandName = SORT_COMMAND) AndAlso Not (IsEditing)) Then
 
 
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
-    Protected Sub ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles Grid.RowDataBound
+    Protected Sub ItemBound(source As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
 
         Try
             BaseItemBound(source, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
     'The Binding Logic is here
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-        If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+        If dvRow IsNot Nothing And Not State.bnoRow Then
 
             If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                CType(e.Row.Cells(Me.ID_COL).FindControl(Me.ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow("turn_around_time_range_id"), Byte()))
+                CType(e.Row.Cells(ID_COL).FindControl(ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow("turn_around_time_range_id"), Byte()))
 
 
-                If (Me.State.IsEditMode = True _
-                        AndAlso Me.State.TurnAroundTimeRangeId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow("turn_around_time_range_id"), Byte())))) Then
-                    CType(e.Row.Cells(Me.CODE_COL).FindControl(Me.CODE_CONTROL_NAME), TextBox).Text = dvRow("Code").ToString
-                    CType(e.Row.Cells(Me.DESCRIPTION_COL).FindControl(Me.DESCRIPTION_CONTROL_NAME), TextBox).Text = dvRow("DESCRIPTION").ToString
-                    CType(e.Row.Cells(Me.MIN_DAYS_COL).FindControl(Me.MIN_DAYS_CONTROL_NAME), TextBox).Text = dvRow("Min_Days").ToString
-                    CType(e.Row.Cells(Me.MAX_DAYS_COL).FindControl(Me.MAX_DAYS_CONTROL_NAME), TextBox).Text = dvRow("Max_Days").ToString
+                If (State.IsEditMode = True _
+                        AndAlso State.TurnAroundTimeRangeId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow("turn_around_time_range_id"), Byte())))) Then
+                    CType(e.Row.Cells(CODE_COL).FindControl(CODE_CONTROL_NAME), TextBox).Text = dvRow("Code").ToString
+                    CType(e.Row.Cells(DESCRIPTION_COL).FindControl(DESCRIPTION_CONTROL_NAME), TextBox).Text = dvRow("DESCRIPTION").ToString
+                    CType(e.Row.Cells(MIN_DAYS_COL).FindControl(MIN_DAYS_CONTROL_NAME), TextBox).Text = dvRow("Min_Days").ToString
+                    CType(e.Row.Cells(MAX_DAYS_COL).FindControl(MAX_DAYS_CONTROL_NAME), TextBox).Text = dvRow("Max_Days").ToString
 
                     ' Me.BindListControlToDataView(CType(e.Row.Cells(Me.COLOR_COL).FindControl(Me.COLOR_CONTROL_NAME), DropDownList), LookupListNew.GetColorLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
-                    CType(e.Row.Cells(Me.COLOR_COL).FindControl(Me.COLOR_CONTROL_NAME), DropDownList).Populate(CommonConfigManager.Current.ListManager.GetList("COLORS", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                    CType(e.Row.Cells(COLOR_COL).FindControl(COLOR_CONTROL_NAME), DropDownList).Populate(CommonConfigManager.Current.ListManager.GetList("COLORS", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                     {
                      .AddBlankItem = True
                    })
-                    Me.SetSelectedItem(CType(e.Row.Cells(Me.COLOR_COL).FindControl(Me.COLOR_CONTROL_NAME), DropDownList), Me.State.TurnAroundTimeRange.ColorId)
+                    SetSelectedItem(CType(e.Row.Cells(COLOR_COL).FindControl(COLOR_CONTROL_NAME), DropDownList), State.TurnAroundTimeRange.ColorId)
 
-                    If Me.State.AddingNewRow Then
-                        CType(e.Row.Cells(Me.MIN_DAYS_COL).FindControl(Me.MIN_DAYS_CONTROL_NAME), TextBox).Enabled = True
-                        CType(e.Row.Cells(Me.MAX_DAYS_COL).FindControl(Me.MAX_DAYS_CONTROL_NAME), TextBox).Enabled = True
+                    If State.AddingNewRow Then
+                        CType(e.Row.Cells(MIN_DAYS_COL).FindControl(MIN_DAYS_CONTROL_NAME), TextBox).Enabled = True
+                        CType(e.Row.Cells(MAX_DAYS_COL).FindControl(MAX_DAYS_CONTROL_NAME), TextBox).Enabled = True
                     ElseIf e.Row.RowIndex = 0 Then 'allow only the min value on the first record and the max value value of the last record to be editied.
-                        CType(e.Row.Cells(Me.MIN_DAYS_COL).FindControl(Me.MIN_DAYS_CONTROL_NAME), TextBox).Enabled = True
-                    ElseIf e.Row.RowIndex = Me.State.searchDV.Count - 1 Then
-                        CType(e.Row.Cells(Me.MAX_DAYS_COL).FindControl(Me.MAX_DAYS_CONTROL_NAME), TextBox).Enabled = True
+                        CType(e.Row.Cells(MIN_DAYS_COL).FindControl(MIN_DAYS_CONTROL_NAME), TextBox).Enabled = True
+                    ElseIf e.Row.RowIndex = State.searchDV.Count - 1 Then
+                        CType(e.Row.Cells(MAX_DAYS_COL).FindControl(MAX_DAYS_CONTROL_NAME), TextBox).Enabled = True
                     End If
 
                 Else
-                    CType(e.Row.Cells(Me.CODE_COL).FindControl("CodeLabel"), Label).Text = dvRow("Code").ToString
-                    CType(e.Row.Cells(Me.DESCRIPTION_COL).FindControl("DescriptionLabel"), Label).Text = dvRow("DESCRIPTION").ToString
-                    CType(e.Row.Cells(Me.MIN_DAYS_COL).FindControl("MinDaysLabel"), Label).Text = dvRow("Min_Days").ToString
-                    CType(e.Row.Cells(Me.MAX_DAYS_COL).FindControl("MaxDaysLabel"), Label).Text = dvRow("Max_days").ToString
-                    CType(e.Row.Cells(Me.COLOR_COL).FindControl("ColorLabel"), Label).Text = dvRow("color").ToString
+                    CType(e.Row.Cells(CODE_COL).FindControl("CodeLabel"), Label).Text = dvRow("Code").ToString
+                    CType(e.Row.Cells(DESCRIPTION_COL).FindControl("DescriptionLabel"), Label).Text = dvRow("DESCRIPTION").ToString
+                    CType(e.Row.Cells(MIN_DAYS_COL).FindControl("MinDaysLabel"), Label).Text = dvRow("Min_Days").ToString
+                    CType(e.Row.Cells(MAX_DAYS_COL).FindControl("MaxDaysLabel"), Label).Text = dvRow("Max_days").ToString
+                    CType(e.Row.Cells(COLOR_COL).FindControl("ColorLabel"), Label).Text = dvRow("color").ToString
                 End If
             End If
         End If
     End Sub
 
-    Protected Sub ItemCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+    Protected Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
         BaseItemCreated(sender, e)
 
 
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+            Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
 
-            If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                If Me.SortDirection.EndsWith(" ASC") Then
-                    Me.SortDirection = e.SortExpression + " DESC"
+            If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If SortDirection.EndsWith(" ASC") Then
+                    SortDirection = e.SortExpression + " DESC"
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
             Else
-                Me.SortDirection = e.SortExpression + " ASC"
+                SortDirection = e.SortExpression + " ASC"
             End If
-            Me.State.SortExpression = Me.SortDirection
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.SortExpression = SortDirection
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
     Protected Sub BindBoPropertiesToGridHeaders()
-        Me.BindBOPropertyToGridHeader(Me.State.TurnAroundTimeRange, "Code", Me.Grid.Columns(Me.CODE_COL))
-        Me.BindBOPropertyToGridHeader(Me.State.TurnAroundTimeRange, "Description", Me.Grid.Columns(Me.DESCRIPTION_COL))
-        Me.BindBOPropertyToGridHeader(Me.State.TurnAroundTimeRange, "MinDays", Me.Grid.Columns(Me.MIN_DAYS_COL))
-        Me.BindBOPropertyToGridHeader(Me.State.TurnAroundTimeRange, "MaxDays", Me.Grid.Columns(Me.MAX_DAYS_COL))
-        Me.BindBOPropertyToGridHeader(Me.State.TurnAroundTimeRange, "ColorId", Me.Grid.Columns(Me.COLOR_COL))
+        BindBOPropertyToGridHeader(State.TurnAroundTimeRange, "Code", Grid.Columns(CODE_COL))
+        BindBOPropertyToGridHeader(State.TurnAroundTimeRange, "Description", Grid.Columns(DESCRIPTION_COL))
+        BindBOPropertyToGridHeader(State.TurnAroundTimeRange, "MinDays", Grid.Columns(MIN_DAYS_COL))
+        BindBOPropertyToGridHeader(State.TurnAroundTimeRange, "MaxDays", Grid.Columns(MAX_DAYS_COL))
+        BindBOPropertyToGridHeader(State.TurnAroundTimeRange, "ColorId", Grid.Columns(COLOR_COL))
 
-        Me.ClearGridViewHeadersAndLabelsErrSign()
+        ClearGridViewHeadersAndLabelsErrSign()
     End Sub
 
-    Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As GridView, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+    Private Sub SetFocusOnEditableFieldInGrid(grid As GridView, cellPosition As Integer, controlName As String, itemIndex As Integer)
         'Set focus on the Description TextBox for the EditItemIndex row
         Dim desc As TextBox = CType(grid.Rows(itemIndex).Cells(cellPosition).FindControl(controlName), TextBox)
         SetFocus(desc)

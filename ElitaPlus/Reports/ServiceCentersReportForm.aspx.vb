@@ -82,7 +82,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -92,26 +92,26 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(ServiceCenterMultipleDrop.CaptionLabel)
-            Me.ClearLabelErrSign(moCountryLabel)
+            ClearLabelErrSign(ServiceCenterMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(moCountryLabel)
             If moCountryLabel.Visible = False Then
-                Me.ddRowHide.Visible = False
+                ddRowHide.Visible = False
             End If
 
         End Sub
@@ -119,12 +119,12 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -132,9 +132,9 @@ Namespace Reports
 
 #Region "Handlers-DropDowns"
 
-        Private Sub cboCountry_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboCountry.SelectedIndexChanged
+        Private Sub cboCountry_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboCountry.SelectedIndexChanged
             Try
-                selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
+                selectedCountryId = GetSelectedItem(cboCountry)
                 If selectedCountryId.Equals(Guid.Empty) Then
                     'ElitaPlusPage.SetLabelError(moCountryLabel)
                     Throw New GUIException(Message.MSG_INVALID_COUNTRY, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COUNTRY_MUST_BE_SELECTED_ERR)
@@ -142,7 +142,7 @@ Namespace Reports
                     PopulateServiceCenterDropDown()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -161,7 +161,7 @@ Namespace Reports
             Dim filteredList As ListItem() = (From x In countryLkl
                                               Where list.Contains(x.ListItemId)
                                               Select x).ToArray()
-            Me.cboCountry.Populate(filteredList, New PopulateOptions() With
+            cboCountry.Populate(filteredList, New PopulateOptions() With
              {
                .AddBlankItem = True
              })
@@ -170,7 +170,7 @@ Namespace Reports
                 ControlMgr.SetVisibleControl(Me, moCountryLabel, False)
                 'ControlMgr.SetVisibleControl(Me, moCountryColonLabel_NO_TRANSLATE, False)
                 ControlMgr.SetVisibleControl(Me, cboCountry, False)
-                Me.cboCountry.Items(DEFAULTSELECT).Selected = True
+                cboCountry.Items(DEFAULTSELECT).Selected = True
                 ' selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
             End If
         End Sub
@@ -191,7 +191,7 @@ Namespace Reports
             '''End If
 
             Dim dv As DataView
-            If cboCountry.Visible = True And cboCountry.SelectedIndex > Me.BLANK_ITEM_SELECTED Then
+            If cboCountry.Visible = True And cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
                 dv = LookupListNew.GetServiceCenterLookupList(selectedCountryId)
             Else
                 dv = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID).Id)
@@ -206,14 +206,14 @@ Namespace Reports
             PopulateCountryDropDown()
             PopulateServiceCenterDropDown()
             'Me.rCountry.Checked = True
-            Me.rServiceCenters.Checked = True
+            rServiceCenters.Checked = True
         End Sub
 
 #End Region
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal companyCode As String, ByVal countryCode As String, ByVal serviceCenter As String, ByVal languageCode As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, countryCode As String, serviceCenter As String, languageCode As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim params As New ReportCeBaseForm.Params
@@ -230,7 +230,7 @@ Namespace Reports
 
             Dim exportData As String = NO
 
-            reportName = Me.RPT_FILENAME
+            reportName = RPT_FILENAME
             If (reportFormat = ReportCeBase.RptFormat.TEXT_TAB) OrElse (reportFormat = ReportCeBase.RptFormat.TEXT_CSV) Then
                 exportData = YES
                 reportName = RPT_FILENAME_EXPORT
@@ -269,12 +269,12 @@ Namespace Reports
             Dim dvCountry As DataView = LookupListNew.GetUserCountriesLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
             Dim countryCode As String
 
-            If Me.cboCountry.Visible = False Then
-                selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
+            If cboCountry.Visible = False Then
+                selectedCountryId = GetSelectedItem(cboCountry)
                 countryCode = LookupListNew.GetCodeFromId(dvCountry, selectedCountryId)
             Else
                 'countryCode = ALL
-                selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
+                selectedCountryId = GetSelectedItem(cboCountry)
                 countryCode = LookupListNew.GetCodeFromId(dvCountry, selectedCountryId)
                 If selectedCountryId.Equals(Guid.Empty) Then
                     ElitaPlusPage.SetLabelError(moCountryLabel)
@@ -282,7 +282,7 @@ Namespace Reports
                 End If
             End If
 
-            If Me.rServiceCenters.Checked Then
+            If rServiceCenters.Checked Then
                 serviceCenter = ALL
             Else
                 selectedServiceCenterId = ServiceCenterMultipleDrop.SelectedGuid 'Me.GetSelectedItem(Me.cboServiceCentersCode)

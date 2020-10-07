@@ -110,11 +110,11 @@ Namespace Tables
             Public CompanyBo As Company
             Public HasDataChanged As Boolean
 
-            Public Sub New(ByVal lastOp As DetailPageCommand, ByVal hasDataChanged As Boolean)
+            Public Sub New(lastOp As DetailPageCommand, hasDataChanged As Boolean)
                 Me.New(lastOp, Nothing, hasDataChanged)
             End Sub
 
-            Public Sub New(ByVal lastOp As DetailPageCommand, ByVal companyBo As Company, ByVal hasDataChanged As Boolean)
+            Public Sub New(lastOp As DetailPageCommand, companyBo As Company, hasDataChanged As Boolean)
                 LastOperation = lastOp
                 Me.CompanyBo = companyBo
                 Me.HasDataChanged = hasDataChanged
@@ -124,9 +124,9 @@ Namespace Tables
 
 #Region "Page_Events"
 
-        Private Sub Page_PageCall(ByVal callFromUrl As String, ByVal callingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(callFromUrl As String, callingPar As Object) Handles MyBase.PageCall
             Try
-                If Not CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     State.DepreciationScheduleId = CType(CallingParameters, Guid)
                     If State.DepreciationScheduleId.Equals(Guid.Empty) Then
                         State.IsDepreciationScheduleNew = True
@@ -137,7 +137,7 @@ Namespace Tables
             End Try
 
         End Sub
-        Private Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
             'Put user code to initialize the page here
             Try
@@ -223,7 +223,7 @@ Namespace Tables
 
             'ddlDepreciationScheduleActive.PopulateOld("YESNO", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.None, String.Empty, ListValueType.Description)
 
-            If Not TheDepreciationSchedule.ActiveXcd Is Nothing AndAlso Not String.IsNullOrEmpty(TheDepreciationSchedule.ActiveXcd) Then
+            If TheDepreciationSchedule.ActiveXcd IsNot Nothing AndAlso Not String.IsNullOrEmpty(TheDepreciationSchedule.ActiveXcd) Then
                 SetSelectedItem(ddlDepreciationScheduleActive, TheDepreciationSchedule.ActiveXcd)
             Else
                 SetSelectedItem(ddlDepreciationScheduleActive, "YESNO-Y")
@@ -271,7 +271,7 @@ Namespace Tables
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, DepSchDetailsGridView)
         End Sub
 
-        Private Sub DisableDelControl(ByVal grid As GridView, ByVal maxHighMonth As Long)
+        Private Sub DisableDelControl(grid As GridView, maxHighMonth As Long)
             Dim i As Integer
             Dim del As ImageButton
             Dim highMonth As Label
@@ -279,7 +279,7 @@ Namespace Tables
             For i = 0 To (grid.Rows.Count - 1)
                 del = CType(grid.Rows(i).Cells(DELETE_COL).FindControl(DELETE_CONTROL_NAME), ImageButton)
                 highMonth = CType(grid.Rows(i).Cells(HighMonthCol).FindControl("moHighMonthLabel"), Label)
-                If Not del Is Nothing And Not highMonth Is Nothing Then
+                If del IsNot Nothing And highMonth IsNot Nothing Then
                     If CType(highMonth.Text, Long) <> maxHighMonth Then
                         del.Enabled = False
                         del.Visible = False
@@ -339,16 +339,16 @@ Namespace Tables
             Dim gridRowIdx As Integer = DepSchDetailsGridView.EditIndex
             Try
                 With State.MyBo
-                    If Not .LowMonth Is Nothing Then
+                    If .LowMonth IsNot Nothing Then
                         CType(DepSchDetailsGridView.Rows(gridRowIdx).Cells(LowMonthCol).FindControl(LowMonthControlName), TextBox).Text = .LowMonth.ToString()
                     End If
-                    If Not .HighMonth Is Nothing Then
+                    If .HighMonth IsNot Nothing Then
                         CType(DepSchDetailsGridView.Rows(gridRowIdx).Cells(HighMonthCol).FindControl(HighMonthControlName), TextBox).Text = .HighMonth.ToString()
                     End If
-                    If Not .Percent Is Nothing Then
+                    If .Percent IsNot Nothing Then
                         CType(DepSchDetailsGridView.Rows(gridRowIdx).Cells(PercentCol).FindControl(PercentControlName), TextBox).Text = .Percent.ToString()
                     End If
-                    If Not .Amount Is Nothing Then
+                    If .Amount IsNot Nothing Then
                         CType(DepSchDetailsGridView.Rows(gridRowIdx).Cells(AmountCol).FindControl(AmountControlName), TextBox).Text = .Amount.ToString()
                     End If
                     If Not .DepreciationScheduleId.Equals(Guid.Empty) Then
@@ -430,7 +430,7 @@ Namespace Tables
 
 #Region "Button Click Handlers"
 
-        Private Sub btnNewDepScheduleItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNewDepScheduleItem.Click
+        Private Sub btnNewDepScheduleItem_Click(sender As Object, e As EventArgs) Handles btnNewDepScheduleItem.Click
             Try
                 State.IsEditMode = True
                 State.AddingNewRow = True
@@ -441,7 +441,7 @@ Namespace Tables
             End Try
         End Sub
 
-        Private Sub btnSaveDepScheduleItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSaveDepScheduleItem.Click
+        Private Sub btnSaveDepScheduleItem_Click(sender As Object, e As EventArgs) Handles btnSaveDepScheduleItem.Click
 
             Try
                 AssignBoFromSelectedRecord()
@@ -465,7 +465,7 @@ Namespace Tables
 
         End Sub
 
-        Private Sub btnCancelDepScheduleItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancelDepScheduleItem.Click
+        Private Sub btnCancelDepScheduleItem_Click(sender As Object, e As EventArgs) Handles btnCancelDepScheduleItem.Click
 
             Try
                 DepSchDetailsGridView.SelectedIndex = NO_ITEM_SELECTED_INDEX
@@ -481,7 +481,7 @@ Namespace Tables
 
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
                 ReturnToCallingPage(New PageReturnType(Of Object)(DetailPageCommand.Back, Nothing, True))
             Catch ex As ThreadAbortException
@@ -490,7 +490,7 @@ Namespace Tables
             End Try
         End Sub
 
-        Private Sub btnNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew.Click
+        Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
             Try
                 State.IsDepreciationScheduleNew = True
                 State.DepreciationScheduleId = Guid.Empty
@@ -510,7 +510,7 @@ Namespace Tables
             End Try
         End Sub
 
-        Private Sub btnCopy_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCopy.Click
+        Private Sub btnCopy_Click(sender As Object, e As EventArgs) Handles btnCopy.Click
             Try
                 Dim copyCompanyId As Guid = State.CompanyId
 
@@ -532,7 +532,7 @@ Namespace Tables
             End Try
         End Sub
 
-        Private Sub btnApply_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnApply.Click
+        Private Sub btnApply_Click(sender As Object, e As EventArgs) Handles btnApply.Click
             Try
 
                 Dim copyId As Guid = State.DepreciationScheduleId
@@ -601,7 +601,7 @@ Namespace Tables
             ClearLabelErrSign(lblDepreciationScheduleActive)
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(cellPosition As Integer, controlName As String, itemIndex As Integer)
             'Set focus on the Low Month TextBox for the EditItemIndex row
             Dim lowMonth As TextBox = CType(DepSchDetailsGridView.Rows(itemIndex).Cells(cellPosition).FindControl(controlName), TextBox)
             SetFocus(lowMonth)
@@ -622,7 +622,7 @@ Namespace Tables
 #End Region
 
 #Region " Datagrid Related "
-        Protected Sub DepSchDetailsGridView_RowCommand(ByVal source As Object, ByVal e As GridViewCommandEventArgs)
+        Protected Sub DepSchDetailsGridView_RowCommand(source As Object, e As GridViewCommandEventArgs)
 
             Try
                 Dim index As Integer = CInt(e.CommandArgument)
@@ -678,7 +678,7 @@ Namespace Tables
 
         End Sub
 
-        Protected Sub DepSchDetailsGridView_RowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles DepSchDetailsGridView.RowCreated
+        Protected Sub DepSchDetailsGridView_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles DepSchDetailsGridView.RowCreated
             BaseItemCreated(sender, e)
         End Sub
 

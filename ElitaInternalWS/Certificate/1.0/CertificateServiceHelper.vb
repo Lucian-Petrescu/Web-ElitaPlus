@@ -8,7 +8,7 @@ Imports System.Runtime.Serialization
 
 Friend Module CertificateServiceHelper
 
-    Friend Function GetSerialNumber(ByVal pCertificateLookupRequest As CertificateLookup) As String
+    Friend Function GetSerialNumber(pCertificateLookupRequest As CertificateLookup) As String
         If (pCertificateLookupRequest.GetType() Is GetType(CertificateSerialTaxLookup)) Then
             Return DirectCast(pCertificateLookupRequest, CertificateSerialTaxLookup).SerialNumber
         ElseIf (pCertificateLookupRequest.GetType() Is GetType(CertificateAccountNumberLookup)) Then
@@ -21,7 +21,7 @@ Friend Module CertificateServiceHelper
 
     End Function
 
-    Friend Function GetCertificate(ByVal CertificateLookupRequest As CertificateLookup, Optional ByVal ReqDetails As CertificateDetailTypes = CertificateDetailTypes.None) As Certificate
+    Friend Function GetCertificate(CertificateLookupRequest As CertificateLookup, Optional ByVal ReqDetails As CertificateDetailTypes = CertificateDetailTypes.None) As Certificate
         Dim certificateId As Nullable(Of Guid)
 
 
@@ -159,14 +159,14 @@ Friend Module CertificateServiceHelper
 
         Public Property CertificateSearch As CertificateLookup
 
-        Public Sub New(ByVal pCertificateSearch As CertificateLookup)
+        Public Sub New(pCertificateSearch As CertificateLookup)
             CertificateSearch = pCertificateSearch
         End Sub
-        Public Sub New(ByVal pCertificateSearch As CertificateLookup, pMessage As String)
+        Public Sub New(pCertificateSearch As CertificateLookup, pMessage As String)
             MyBase.New(pMessage)
             CertificateSearch = pCertificateSearch
         End Sub
-        Public Sub New(ByVal pCertificateSearch As CertificateLookup, pMessage As String, pInner As Exception)
+        Public Sub New(pCertificateSearch As CertificateLookup, pMessage As String, pInner As Exception)
             MyBase.New(pMessage, pInner)
             CertificateSearch = pCertificateSearch
         End Sub

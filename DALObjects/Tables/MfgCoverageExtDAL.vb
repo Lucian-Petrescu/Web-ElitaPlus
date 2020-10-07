@@ -29,29 +29,29 @@ Public Class MfgCoverageExtDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("mfg_coverage_ext_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal MfgCoverageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(MfgCoverageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(COL_NAME_MFG_COVERAGE_ID, MfgCoverageId.ToByteArray)}
 
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME, TABLE_NAME, parameters)
     End Function
 
-    Public Function GetAvailableDealers(ByVal MfgCoverageId As Guid, ByVal CompanyGroupId As Guid, ByVal DealerId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_AVAILABLE_DEALERS")
+    Public Function GetAvailableDealers(MfgCoverageId As Guid, CompanyGroupId As Guid, DealerId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_AVAILABLE_DEALERS")
         Dim parameters() As OracleParameter = New OracleParameter() { New OracleParameter(PARAM_NAME_COMPANY_GROUP_ID, CompanyGroupId.ToByteArray), _
                                                                     New OracleParameter(COL_NAME_MFG_COVERAGE_ID, MfgCoverageId.ToByteArray)}
 
@@ -60,19 +60,19 @@ Public Class MfgCoverageExtDAL
             selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, strQry)
         End If
 
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME, TABLE_NAME, parameters)
     End Function
 
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

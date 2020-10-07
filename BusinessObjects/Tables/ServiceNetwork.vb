@@ -8,46 +8,46 @@ Public Class ServiceNetwork
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ServiceNetworkDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -58,20 +58,20 @@ Public Class ServiceNetwork
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New ServiceNetworkDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -112,7 +112,7 @@ Public Class ServiceNetwork
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ServiceNetworkDAL.COL_NAME_COMPANY_GROUP_ID, Value)
+            SetValue(ServiceNetworkDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
@@ -129,7 +129,7 @@ Public Class ServiceNetwork
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceNetworkDAL.COL_NAME_SHORT_DESC, Value)
+            SetValue(ServiceNetworkDAL.COL_NAME_SHORT_DESC, Value)
         End Set
     End Property
 
@@ -146,7 +146,7 @@ Public Class ServiceNetwork
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ServiceNetworkDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(ServiceNetworkDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -154,7 +154,7 @@ Public Class ServiceNetwork
     Public ReadOnly Property moRoute() As Route
         Get
             If (_Route Is Nothing) Then
-                _Route = New Route(Me.Id, Nothing)
+                _Route = New Route(Id, Nothing)
             End If
 
             Return (_Route)
@@ -168,15 +168,15 @@ Public Class ServiceNetwork
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ServiceNetworkDAL
-                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
+                dal.UpdateFamily(Dataset) 'New Code Added Manually
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -186,16 +186,16 @@ Public Class ServiceNetwork
 
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty 
+            Return MyBase.IsDirty OrElse IsChildrenDirty 
         End Get
     End Property
 
     Public Sub Copy(ByVal original As ServiceNetwork)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Service Center")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
 
         'copy the children       
         'Manufacturers
@@ -205,7 +205,7 @@ Public Class ServiceNetwork
         For i = 0 To selSvrDv.Count - 1
             selSvrList.Add(New Guid(CType(selSvrDv(i)(LookupListNew.COL_ID_NAME), Byte())).ToString)
         Next
-        Me.AttachServiceCenters(selSvrList)
+        AttachServiceCenters(selSvrList)
 
     End Sub
 
@@ -222,9 +222,9 @@ Public Class ServiceNetwork
     Public Sub AttachServiceCenters(ByVal selectedServiceCenterGuidStrCollection As ArrayList)
         Dim snSrvIdStr As String
         For Each snSrvIdStr In selectedServiceCenterGuidStrCollection
-            Dim snSrvBO As ServiceNetworkSvc = Me.ServiceNetworkSvcChildren.GetNewChild
+            Dim snSrvBO As ServiceNetworkSvc = ServiceNetworkSvcChildren.GetNewChild
             snSrvBO.ServiceCenterId = New Guid(snSrvIdStr)
-            snSrvBO.ServiceNetworkId = Me.Id
+            snSrvBO.ServiceNetworkId = Id
             snSrvBO.Save()
         Next
     End Sub
@@ -232,11 +232,11 @@ Public Class ServiceNetwork
     Public Sub DetachServiceCenters(ByVal selectedServiceCenterGuidStrCollection As ArrayList)
         Dim snSrvIdStr As String
         For Each snSrvIdStr In selectedServiceCenterGuidStrCollection
-            Dim snSrvBO As ServiceNetworkSvc = Me.ServiceNetworkSvcChildren.Find(New Guid(snSrvIdStr))
-            Dim servCenter As New ServiceCenter(snSrvBO.ServiceCenterId, Me.Dataset)
+            Dim snSrvBO As ServiceNetworkSvc = ServiceNetworkSvcChildren.Find(New Guid(snSrvIdStr))
+            Dim servCenter As New ServiceCenter(snSrvBO.ServiceCenterId, Dataset)
             If Not servCenter.RouteId.Equals(Guid.Empty) Then
                 Dim moRoute As New Route(servCenter.RouteId)
-                If moRoute.ServiceNetworkId = Me.Id Then
+                If moRoute.ServiceNetworkId = Id Then
                     servCenter.RouteId = Guid.Empty
                     servCenter.Save()
                 End If
@@ -273,7 +273,7 @@ Public Class ServiceNetwork
 
         Dim snSrvBO As ServiceNetworkSvc
         Dim inClause As String = "(-1"
-        For Each snSrvBO In Me.ServiceNetworkSvcChildren
+        For Each snSrvBO In ServiceNetworkSvcChildren
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, snSrvBO.ServiceCenterId)
         Next
         inClause &= ")"

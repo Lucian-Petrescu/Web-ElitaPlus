@@ -66,28 +66,28 @@
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("comm_brkdwn_upload_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadPreValidatedCommEntyBrkdwnsForDealer(ByVal UploadSessionId As String) As DataSet
+    Public Function LoadPreValidatedCommEntyBrkdwnsForDealer(UploadSessionId As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PREVALIDATED_COMM_ENTY_BRKDWNS_FOR_DEALER")
+        Dim selectStmt As String = Config("/SQL/LOAD_PREVALIDATED_COMM_ENTY_BRKDWNS_FOR_DEALER")
 
         Try
             Dim ds As New DataSet
@@ -95,16 +95,16 @@
             Dim parameter1 As DBHelper.DBHelperParameter
             parameter1 = New DBHelper.DBHelperParameter(COL_NAME_UPLOAD_SESSION_ID, UploadSessionId)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {parameter1})
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {parameter1})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadPreValidatedCommEntyBrkdwnsForUpload(ByVal UploadSessionId As String, ByVal Dealer_Id As Guid) As DataSet
+    Public Function LoadPreValidatedCommEntyBrkdwnsForUpload(UploadSessionId As String, Dealer_Id As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PREVALIDATED_COMM_ENTY_BRKDWNS_FOR_UPLOAD")
+        Dim selectStmt As String = Config("/SQL/LOAD_PREVALIDATED_COMM_ENTY_BRKDWNS_FOR_UPLOAD")
 
         Try
             Dim ds As New DataSet
@@ -115,26 +115,26 @@
             Dim parameter2 As DBHelper.DBHelperParameter
             parameter2 = New DBHelper.DBHelperParameter(COL_NAME_UPLOAD_SESSION_ID, UploadSessionId)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {parameter1, parameter2})
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {parameter1, parameter2})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function UpdatePreValidatedCommEntyBrkdwnRecord(preValidatedCommEntyBrkdwnId As Guid, ByVal strValidationErrors As String) As DataSet
+    Public Function UpdatePreValidatedCommEntyBrkdwnRecord(preValidatedCommEntyBrkdwnId As Guid, strValidationErrors As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_PREVALIDATED_COMM_ENTY_BRKDWN_RECORD")
+        Dim selectStmt As String = Config("/SQL/UPDATE_PREVALIDATED_COMM_ENTY_BRKDWN_RECORD")
 
         Try
             Dim ds As New DataSet
             Dim parameter As DBHelper.DBHelperParameter
 
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(Me.TABLE_KEY_NAME, preValidatedCommEntyBrkdwnId.ToByteArray),
-                         New DBHelper.DBHelperParameter(Me.COL_NAME_VALIDATION_ERRORS, strValidationErrors)}
+                        {New DBHelper.DBHelperParameter(TABLE_KEY_NAME, preValidatedCommEntyBrkdwnId.ToByteArray),
+                         New DBHelper.DBHelperParameter(COL_NAME_VALIDATION_ERRORS, strValidationErrors)}
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -145,12 +145,12 @@
 
 #Region "Overloaded Methods"
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 

@@ -57,12 +57,12 @@ Partial Public Class TeleMrktInterfaceForm
 #End Region
 
 #Region "Page events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrControllerMaster.Clear_Hide()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        ErrControllerMaster.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
                 TranslateGridHeader(Grid)
                 PopulateDealer()
                 If IsReturningFromChild = True Then
@@ -71,20 +71,20 @@ Partial Public Class TeleMrktInterfaceForm
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
         InstallDisplayProgressBar()
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 
 #Region "Page Return"
     Private IsReturningFromChild As Boolean = False
-    Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object, Optional ByVal DealerCode As String = "") Handles Me.PageReturn
-        Me.IsReturningFromChild = True
+    Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object, Optional ByVal DealerCode As String = "") Handles Me.PageReturn
+        IsReturningFromChild = True
         Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
         Select Case retObj.LastOperation
             Case ElitaPlusPage.DetailPageCommand.Back
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
                     Try
                         State.selectedFildID = retObj.SelectedFileID
                         State.selectedFileName = retObj.SelectedFileName
@@ -104,7 +104,7 @@ Partial Public Class TeleMrktInterfaceForm
 
                         Grid.PageIndex = State.PageIndex
                     Catch ex As Exception
-                        HandleErrors(ex, Me.ErrControllerMaster)
+                        HandleErrors(ex, ErrControllerMaster)
                     End Try
                 End If
         End Select
@@ -115,16 +115,16 @@ Partial Public Class TeleMrktInterfaceForm
         Public SelectedFileName As String
         Public SelectedFileID As Guid
         Public SelectedDealerCode As String = ""
-        Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal selFileName As String)
-            Me.LastOperation = LastOp
-            Me.SelectedFileName = selFileName
-            Me.SelectedFileID = Guid.Empty
+        Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, selFileName As String)
+            LastOperation = LastOp
+            SelectedFileName = selFileName
+            SelectedFileID = Guid.Empty
         End Sub
 
-        Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal selFileID As Guid)
-            Me.LastOperation = LastOp
-            Me.SelectedFileName = String.Empty
-            Me.SelectedFileID = selFileID
+        Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, selFileID As Guid)
+            LastOperation = LastOp
+            SelectedFileName = String.Empty
+            SelectedFileID = selFileID
         End Sub
     End Class
 
@@ -149,10 +149,10 @@ Partial Public Class TeleMrktInterfaceForm
     Protected ReadOnly Property TheState() As MyState
         Get
             Try
-                If Me.moState Is Nothing Then
-                    Me.moState = CType(Session(SESSION_LOCALSTATE_KEY), MyState)
+                If moState Is Nothing Then
+                    moState = CType(Session(SESSION_LOCALSTATE_KEY), MyState)
                 End If
-                Return Me.moState
+                Return moState
             Catch ex As Exception
                 'When we are in design mode there is no session object
                 Return Nothing
@@ -179,7 +179,7 @@ Partial Public Class TeleMrktInterfaceForm
 #End Region
 
 #Region "Button event handlers and helper functions"
-    Function SetParameters(ByVal intStatusId As Guid, ByVal baseController As String) As Interfaces.InterfaceBaseForm.Params
+    Function SetParameters(intStatusId As Guid, baseController As String) As Interfaces.InterfaceBaseForm.Params
         Dim params As New Interfaces.InterfaceBaseForm.Params
         With params
             .intStatusId = intStatusId
@@ -193,7 +193,7 @@ Partial Public Class TeleMrktInterfaceForm
         DisplayMessage(Message.MSG_INTERFACES_HAS_COMPLETED, "", MSG_BTN_OK, MSG_TYPE_INFO)
     End Sub
 
-    Private Sub ExecuteAndWait(ByVal oSP As Integer)
+    Private Sub ExecuteAndWait(oSP As Integer)
         Dim intStatus As InterfaceStatusWrk
         Dim params As Interfaces.InterfaceBaseForm.Params
 
@@ -204,7 +204,7 @@ Partial Public Class TeleMrktInterfaceForm
             TheInterfaceProgress.EnableInterfaceProgress(ProgressBarBaseController)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
     Private Sub SetExpectedFile()
@@ -256,14 +256,14 @@ Partial Public Class TeleMrktInterfaceForm
             objUnixFTP.UploadFile(webServerFile)
             objUnixFTP.UploadFile(layoutFileName)
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         Finally
             '' ''objUnixFTP.CloseConnection()
         End Try
 
     End Sub
 
-    Private Sub ExecuteSp(ByVal oSP As Integer)
+    Private Sub ExecuteSp(oSP As Integer)
         If State.selectedFileName <> String.Empty Then
             If InterfaceStatusWrk.IsfileBeingProcessed(State.selectedFileName) Then
                 Select Case oSP
@@ -282,34 +282,34 @@ Partial Public Class TeleMrktInterfaceForm
         End If
     End Sub
 
-    Private Sub btnCopyDealerFile_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCopyDealerFile_WRITE.Click
+    Private Sub btnCopyDealerFile_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCopyDealerFile_WRITE.Click
         Try
             uploadTeleMrktFile()
             DisplayMessage(Message.MSG_THE_FILE_TRANSFER_HAS_COMPLETED, "", MSG_BTN_OK, MSG_TYPE_INFO)
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub BtnDelete_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnDelete_WRITE.Click
+    Private Sub BtnDelete_WRITE_Click(sender As Object, e As System.EventArgs) Handles BtnDelete_WRITE.Click
         ExecuteAndWait(SP_DELETE)
     End Sub
 
-    Private Sub BtnProcess_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnProcess_WRITE.Click
+    Private Sub BtnProcess_WRITE_Click(sender As Object, e As System.EventArgs) Handles BtnProcess_WRITE.Click
         'ExecuteAndWait(SP_PROCESS)
     End Sub
 
-    Private Sub BtnValidate_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnValidate_WRITE.Click
+    Private Sub BtnValidate_WRITE_Click(sender As Object, e As System.EventArgs) Handles BtnValidate_WRITE.Click
         ExecuteAndWait(SP_VALIDATE)
     End Sub
 
-    Private Sub btnAfterProgressBar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAfterProgressBar.Click
+    Private Sub btnAfterProgressBar_Click(sender As Object, e As System.EventArgs) Handles btnAfterProgressBar.Click
         AfterProgressBar()
     End Sub
 
-    Private Function GetFileIDByFileName(ByVal strFileName As String) As Guid
+    Private Function GetFileIDByFileName(strFileName As String) As Guid
         Dim fileID As Guid = Guid.Empty
-        If (Not State.searchDV Is Nothing) AndAlso (strFileName <> String.Empty) Then
+        If (State.searchDV IsNot Nothing) AndAlso (strFileName <> String.Empty) Then
             For i As Integer = 0 To State.searchDV.Count
                 If State.searchDV.Item(i)(DealerFileProcessedDAL.COL_NAME_FILENAME).ToString = strFileName Then
                     fileID = New Guid(CType(State.searchDV.Item(i)(DealerFileProcessedDAL.COL_NAME_DEALERFILE_PROCESSED_ID), Byte()))
@@ -322,7 +322,7 @@ Partial Public Class TeleMrktInterfaceForm
 #End Region
 
 #Region "Helper functions"
-    Public Shared Function AddNewRowToEmptySearchDV(ByVal dv As DataView) As DataView
+    Public Shared Function AddNewRowToEmptySearchDV(dv As DataView) As DataView
         If dv.Count > 0 Then
             AddNewRowToEmptySearchDV = dv
         Else
@@ -361,12 +361,12 @@ Partial Public Class TeleMrktInterfaceForm
 
             Dim oDealerview As DataView = LookupListNew.GetDealerLookupList(oCompanyIds, False, "Code", "CODE")
             TheDealerControl.SetControl(True, TheDealerControl.MODES.NEW_MODE, True, oDealerview, "* " & TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_DEALERCODE), True)
-            If Not Me.State.SelectedDealerId.Equals(Guid.Empty) Then
-                TheDealerControl.SelectedGuid = Me.State.SelectedDealerId
+            If Not State.SelectedDealerId.Equals(Guid.Empty) Then
+                TheDealerControl.SelectedGuid = State.SelectedDealerId
                 PopulateGrid()
             End If
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -388,11 +388,11 @@ Partial Public Class TeleMrktInterfaceForm
                     ControlMgr.SetVisibleControl(Me, pnlPagesize, False)
                     Dim dt As DataTable = State.searchDV.Table.Clone()
                     Dim dv As DataView = AddNewRowToEmptySearchDV(State.searchDV)
-                    SetPageAndSelectedIndexFromGuid(dv, Nothing, Me.Grid, Me.State.PageIndex, False)
+                    SetPageAndSelectedIndexFromGuid(dv, Nothing, Grid, State.PageIndex, False)
                     SortAndBindGrid(dv, True)
                 Else
                     ControlMgr.SetVisibleControl(Me, pnlPagesize, True)
-                    SetPageAndSelectedIndexFromGuid(Me.State.searchDV, State.selectedFildID, Me.Grid, Me.State.PageIndex, False)
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedFildID, Grid, State.PageIndex, False)
                     SortAndBindGrid(State.searchDV)
                     SetGridSeletedIndex()
                 End If
@@ -400,28 +400,28 @@ Partial Public Class TeleMrktInterfaceForm
                 If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
             End If
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
-    Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl) _
+    Private Sub OnFromDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl) _
             Handles multipleDropControl.SelectedDropChanged
         Try
             PopulateGrid()
             EnableDisableAllButtons(False)
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
-    Private Sub SortAndBindGrid(ByVal dvBinding As DataView, Optional ByVal blnEmptyList As Boolean = False)
-        Me.Grid.DataSource = dvBinding
-        Me.Grid.DataBind()
-        If Me.State.searchDV.Count > 0 Then
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+    Private Sub SortAndBindGrid(dvBinding As DataView, Optional ByVal blnEmptyList As Boolean = False)
+        Grid.DataSource = dvBinding
+        Grid.DataBind()
+        If State.searchDV.Count > 0 Then
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         Else
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
 
@@ -439,10 +439,10 @@ Partial Public Class TeleMrktInterfaceForm
         State.selectedRow = -1
         State.selectedFileName = String.Empty
         State.searchDV = Nothing
-        Me.PopulateGrid()
+        PopulateGrid()
     End Sub
 
-    Private Sub EnableDisableAllButtons(ByVal blnEnabled As Boolean)
+    Private Sub EnableDisableAllButtons(blnEnabled As Boolean)
         ControlMgr.SetEnableControl(Me, BtnValidate_WRITE, blnEnabled)
         ControlMgr.SetEnableControl(Me, BtnProcess_WRITE, blnEnabled)
         ControlMgr.SetEnableControl(Me, BtnDelete_WRITE, blnEnabled)
@@ -451,7 +451,7 @@ Partial Public Class TeleMrktInterfaceForm
     Private Sub EnableDisableButtons()
         Dim drv As DataRowView, blnFound As Boolean = False
         Dim intReceived, intRejected, intValidated, intLoaded, intCounted As Integer
-        If (Not State.selectedFileName = String.Empty) AndAlso (Not State.searchDV Is Nothing) Then
+        If (Not State.selectedFileName = String.Empty) AndAlso (State.searchDV IsNot Nothing) Then
             For i As Integer = 0 To State.searchDV.Count
                 drv = State.searchDV.Item(i)
                 If drv(DealerFileProcessedDAL.COL_NAME_FILENAME).ToString = State.selectedFileName Then
@@ -495,50 +495,50 @@ Partial Public Class TeleMrktInterfaceForm
                 Next
             End If
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region
 
 #Region "Grid related"
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = Grid.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
 
             If e.CommandName = "EditAction" OrElse e.CommandName = "SelectRecord" Then
@@ -550,14 +550,14 @@ Partial Public Class TeleMrktInterfaceForm
                 State.selectedFildID = GetFileIDByFileName(State.selectedFileName)
                 If e.CommandName = "EditAction" Then
                     State.PageIndex = Grid.PageIndex
-                    Me.callPage("TeleMrktFileForm.aspx", State.selectedFildID)
+                    callPage("TeleMrktFileForm.aspx", State.selectedFildID)
                 ElseIf e.CommandName = "SelectRecord" Then
                     Grid.SelectedIndex = RowInd
                     EnableDisableButtons()
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region

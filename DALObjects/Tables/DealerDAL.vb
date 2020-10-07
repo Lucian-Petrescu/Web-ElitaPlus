@@ -300,84 +300,84 @@ Public Class DealerDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal Company_id As Guid, ByVal Dealer As String)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BY_COMPANY_DEALER")
+    Public Sub Load(familyDS As DataSet, Company_id As Guid, Dealer As String)
+        Dim selectStmt As String = Config("/SQL/LOAD_BY_COMPANY_DEALER")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("Company_id", Company_id.ToByteArray),
                                                                                            New DBHelper.DBHelperParameter("Dealer", Dealer)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadFirstDealerByDealerGrp(ByVal Dealer_Group_id As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_FIRST_DEALER_BY_DEALER_GROUP")
+    Public Function LoadFirstDealerByDealerGrp(Dealer_Group_id As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_FIRST_DEALER_BY_DEALER_GROUP")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("Dealer_Group_Id", Dealer_Group_id.ToByteArray)}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetDealerIDbyCodeAndDealerGroup(ByVal Dealer_Group_id As Guid, ByVal Dealer As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEALERID_BY_CODE_AND_DEALERGROUP")
+    Public Function GetDealerIDbyCodeAndDealerGroup(Dealer_Group_id As Guid, Dealer As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_DEALERID_BY_CODE_AND_DEALERGROUP")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("Dealer_Group_Id", Dealer_Group_id.ToByteArray),
                                                                                            New DBHelper.DBHelperParameter("Dealer", Dealer)}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetCertAutoGenFlag(ByVal dealerId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_CERT_AUTO_GEN_FLAG")
+    Public Function GetCertAutoGenFlag(dealerId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_CERT_AUTO_GEN_FLAG")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("Dealer_id", dealerId)}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetRejRecReconFlag(ByVal dealerId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_REJ_REC_RECON_FLAG")
+    Public Function GetRejRecReconFlag(dealerId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_REJ_REC_RECON_FLAG")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("Dealer_id", dealerId)}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Private Function IsThereALikeClause(ByVal descriptionMask As String, ByVal codeMask As String) As Boolean
+    Private Function IsThereALikeClause(descriptionMask As String, codeMask As String) As Boolean
         Dim bIsLikeClause As Boolean
 
-        bIsLikeClause = Me.IsLikeClause(descriptionMask) OrElse Me.IsLikeClause(codeMask)
+        bIsLikeClause = IsLikeClause(descriptionMask) OrElse IsLikeClause(codeMask)
         Return bIsLikeClause
     End Function
 
@@ -420,9 +420,9 @@ Public Class DealerDAL
     '    End Try
 
     'End Function
-    Public Function LoadList(ByVal descriptionMask As String, ByVal codeMask As String, ByVal dealer_group_id As Guid, ByVal compIds As ArrayList) As DataSet
+    Public Function LoadList(descriptionMask As String, codeMask As String, dealer_group_id As Guid, compIds As ArrayList) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
         Dim inCausecondition As String = ""
         Dim bIsLikeClause As Boolean = False
@@ -431,56 +431,56 @@ Public Class DealerDAL
 
         If bIsLikeClause = True Then
             ' hextoraw
-            inCausecondition &= MiscUtil.BuildListForSql("d." & Me.COL_NAME_COMPANY_ID, compIds, True)
+            inCausecondition &= MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
         Else
             ' not HextoRaw
-            inCausecondition &= MiscUtil.BuildListForSql("d." & Me.COL_NAME_COMPANY_ID, compIds, False)
+            inCausecondition &= MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, False)
         End If
 
 
-        If Not Me.IsNothing(dealer_group_id) Then
-            whereClauseConditions &= " AND g.dealer_group_id = '" & Me.GuidToSQLString(dealer_group_id) & "'"
+        If Not IsNothing(dealer_group_id) Then
+            whereClauseConditions &= " AND g.dealer_group_id = '" & GuidToSQLString(dealer_group_id) & "'"
         End If
 
-        If ((Not (descriptionMask Is Nothing)) AndAlso (Me.FormatSearchMask(descriptionMask))) Then
-            whereClauseConditions &= " AND UPPER(" & Me.COL_NAME_DEALER_NAME & ")" & descriptionMask.ToUpper
+        If ((Not (descriptionMask Is Nothing)) AndAlso (FormatSearchMask(descriptionMask))) Then
+            whereClauseConditions &= " AND UPPER(" & COL_NAME_DEALER_NAME & ")" & descriptionMask.ToUpper
         End If
 
-        If ((Not (codeMask Is Nothing)) AndAlso (Me.FormatSearchMask(codeMask))) Then
-            whereClauseConditions &= Environment.NewLine & " AND UPPER(" & Me.COL_NAME_DEALER & ")" & codeMask.ToUpper
+        If ((Not (codeMask Is Nothing)) AndAlso (FormatSearchMask(codeMask))) Then
+            whereClauseConditions &= Environment.NewLine & " AND UPPER(" & COL_NAME_DEALER & ")" & codeMask.ToUpper
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
+        selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY " & Me.COL_NAME_DEALER_NAME & ", " & Me.COL_NAME_DEALER)
+        selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY " & COL_NAME_DEALER_NAME & ", " & COL_NAME_DEALER)
         Try
             'Dim ds = New DataSet
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Sub LoadListChild(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, id.ToByteArray)}
+    Public Sub LoadListChild(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     '8/2/06 - ALR Modified function to accept a user guid (as a string) rather than a company id
-    Public Function GetDealersWithMonthlyBilling(ByVal userId As String, ByVal todayDate As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_CONTRACT_MONTHLY_BILLING")
+    Public Function GetDealersWithMonthlyBilling(userId As String, todayDate As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_CONTRACT_MONTHLY_BILLING")
         Dim parameters(TOTAL_PARAM) As DBHelper.DBHelperParameter
 
 
@@ -488,53 +488,53 @@ Public Class DealerDAL
         parameters(TODAY_DATE) = New DBHelper.DBHelperParameter("today_date", todayDate)
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadList(ByVal DealerId As Guid, ByVal dealer_group_id As Guid, ByVal compIds As ArrayList) As DataSet
+    Public Function LoadList(DealerId As Guid, dealer_group_id As Guid, compIds As ArrayList) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
         Dim inCausecondition As String = ""
         Dim bIsLikeClause As Boolean = False
 
         ' hextoraw
-        inCausecondition &= MiscUtil.BuildListForSql("d." & Me.COL_NAME_COMPANY_ID, compIds, True)
+        inCausecondition &= MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
 
 
-        If Not Me.IsNothing(dealer_group_id) Then
-            whereClauseConditions &= " AND g.dealer_group_id = '" & Me.GuidToSQLString(dealer_group_id) & "'"
+        If Not IsNothing(dealer_group_id) Then
+            whereClauseConditions &= " AND g.dealer_group_id = '" & GuidToSQLString(dealer_group_id) & "'"
         End If
 
-        If Not Me.IsNothing(DealerId) Then
-            whereClauseConditions &= " AND d.dealer_id = '" & Me.GuidToSQLString(DealerId) & "'"
+        If Not IsNothing(DealerId) Then
+            whereClauseConditions &= " AND d.dealer_id = '" & GuidToSQLString(DealerId) & "'"
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
+        selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY " & Me.COL_NAME_DEALER_NAME & ", " & Me.COL_NAME_DEALER)
+        selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY " & COL_NAME_DEALER_NAME & ", " & COL_NAME_DEALER)
         Try
             'Dim ds = New DataSet
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function GetDealerTypeId(ByVal dealerId As Guid) As DataSet
+    Public Function GetDealerTypeId(dealerId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEALER_TYPE_ID")
+        Dim selectStmt As String = Config("/SQL/GET_DEALER_TYPE_ID")
 
         Try
             Dim ds As New DataSet
@@ -542,17 +542,17 @@ Public Class DealerDAL
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("Dealer_id", dealerId)}
             ' Dim dealerIdPar As New DBHelper.DBHelperParameter(dealerId)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadDealerListCertAddEnabled(ByVal companyIds As ArrayList) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/CERT_ADD_ENABLED_DEALER_LIST")
+    Public Function LoadDealerListCertAddEnabled(companyIds As ArrayList) As DataSet
+        Dim selectStmt As String = Config("/SQL/CERT_ADD_ENABLED_DEALER_LIST")
         Dim WhereClause As String = " and " & MiscUtil.BuildListForSql("c.company_id ", companyIds, False)
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, WhereClause)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, WhereClause)
         Dim dsDealer As DataSet
         Try
             dsDealer = ElitaPlus.DALObjects.DBHelper.Fetch(selectStmt, "Dealer")
@@ -570,14 +570,14 @@ Public Class DealerDAL
 
 
 
-    Public Function GetDealerCountry(ByVal dealerId As Guid) As DataSet
+    Public Function GetDealerCountry(dealerId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/DEALER_COUNTRY")
+        Dim selectStmt As String = Config("/SQL/DEALER_COUNTRY")
 
         Try
             Dim ds As New DataSet
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("Dealer_id", dealerId)}
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -589,7 +589,7 @@ Public Class DealerDAL
 #Region "Overloaded Methods"
 
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         Dim addressDAL As New AddressDAL
         Dim ScvOrderByDealerDAL As New ServiceOrdersAddressDAL
@@ -606,12 +606,12 @@ Public Class DealerDAL
             ScvOrderByDealerDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
             DlrClmAproveClmtypeDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
             DlrClmAproveCovtypeDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
             oAttributeValueDAL.Update(familyDataset.GetChanges(), tr)
             addressDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             ScvOrderByDealerDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             DlrClmAproveClmtypeDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             DlrClmAproveCovtypeDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
@@ -634,12 +634,12 @@ Public Class DealerDAL
     End Sub
 
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
@@ -647,7 +647,7 @@ Public Class DealerDAL
 #Region "StoreProcedures Control"
 
     ' Execute Store Procedure
-    Public Function ExecuteSP(ByVal docType As String, ByVal IdentificationNumber As String) As String
+    Public Function ExecuteSP(docType As String, IdentificationNumber As String) As String
         Dim dal As New CertificateDAL
         Return dal.ExecuteSP(docType, IdentificationNumber)
     End Function
@@ -655,8 +655,8 @@ Public Class DealerDAL
 #End Region
 
 #Region "Extended Functionality: New Dealer Definitions"
-    Public Function dealerProviderClassCode(ByVal dealerCode As String, ByVal providerType As String) As String
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEALER_PROVIDER_CLASS_CODE")
+    Public Function dealerProviderClassCode(dealerCode As String, providerType As String) As String
+        Dim selectStmt As String = Config("/SQL/GET_DEALER_PROVIDER_CLASS_CODE")
         Dim providerClassCode As String = String.Empty
 
         Using command As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure)
@@ -674,51 +674,51 @@ Public Class DealerDAL
             End Try
         End Using
     End Function
-    Public Function GetDealerProductCodesCount(ByVal dealerID As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEALER_PRODUCT_CODES_COUNT")
+    Public Function GetDealerProductCodesCount(dealerID As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_DEALER_PRODUCT_CODES_COUNT")
         Dim parameters(TOTAL_PARAM_DEALER_PRODUCTCODES_COUNT) As DBHelper.DBHelperParameter
 
         parameters(DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerID.ToByteArray())
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.DEALER_PRODUCT_CODES_COUNT_TABLE, parameters)
+            DBHelper.Fetch(ds, selectStmt, DEALER_PRODUCT_CODES_COUNT_TABLE, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function GetDealerCoveragesCount(ByVal dealerID As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEALER_COVERAGES_COUNT")
+    Public Function GetDealerCoveragesCount(dealerID As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_DEALER_COVERAGES_COUNT")
         Dim parameters(TOTAL_PARAM_DEALER_COVERAGES_COUNT) As DBHelper.DBHelperParameter
 
         parameters(DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerID.ToByteArray())
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.DEALER_COVERAGES_COUNT_TABLE, parameters)
+            DBHelper.Fetch(ds, selectStmt, DEALER_COVERAGES_COUNT_TABLE, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function GetDealerCertificatesCount(ByVal dealerID As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEALER_CERTIFICATES_COUNT")
+    Public Function GetDealerCertificatesCount(dealerID As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_DEALER_CERTIFICATES_COUNT")
         Dim parameters(TOTAL_PARAM_DEALER_CERTIFICATES_COUNT) As DBHelper.DBHelperParameter
 
         parameters(DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, DALBase.GuidToSQLString(dealerID))
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.DEALER_CERTIFICATES_COUNT_TABLE, parameters)
+            DBHelper.Fetch(ds, selectStmt, DEALER_CERTIFICATES_COUNT_TABLE, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetDupicateDealerCount(ByVal dealer As String, ByVal country As Guid, ByVal company_type_id As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_DUPLICATE_DEALER_COUNT")
+    Public Function GetDupicateDealerCount(dealer As String, country As Guid, company_type_id As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_DUPLICATE_DEALER_COUNT")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                                                                                               New DBHelper.DBHelperParameter(COL_NAME_DEALER, dealer),
@@ -726,15 +726,15 @@ Public Class DealerDAL
                                                                                               New DBHelper.DBHelperParameter(COL_NAME_BUSINESS_COUNTRY_ID, country.ToByteArray())}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.DUPLICATE_DEALER_TABLE, parameters)
+            DBHelper.Fetch(ds, selectStmt, DUPLICATE_DEALER_TABLE, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadDealerCountByCode(ByVal dealer As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEALER_COUNT_BY_CODE")
+    Public Function LoadDealerCountByCode(dealer As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_DEALER_COUNT_BY_CODE")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                                                                                               New DBHelper.DBHelperParameter(COL_NAME_DEALER, dealer)}
@@ -742,15 +742,15 @@ Public Class DealerDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function CopyDealerDefinitions(ByVal fromDealerID As Guid, ByVal toDealerID As Guid, ByVal intCopyLevel As Integer, ByVal effdate As Date, ByVal expdate As Date) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/COPY_DEALER_DEFINITIONS")
+    Public Function CopyDealerDefinitions(fromDealerID As Guid, toDealerID As Guid, intCopyLevel As Integer, effdate As Date, expdate As Date) As Integer
+        Dim selectStmt As String = Config("/SQL/COPY_DEALER_DEFINITIONS")
         Dim inputParameters(TOTAL_PARAM_COPY_DEALER_DEFINITIONS) As DBHelper.DBHelperParameter
         Dim outputParameter(0) As DBHelper.DBHelperParameter
 
@@ -781,11 +781,11 @@ Public Class DealerDAL
     End Function
 
 
-    Public Function CreateExternalTable(ByVal dealerId As Guid, ByRef fullfileprocessId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/CREATE_EXTERNAL_TABLE")
+    Public Function CreateExternalTable(dealerId As Guid, ByRef fullfileprocessId As Guid)
+        Dim selectStmt As String = Config("/SQL/CREATE_EXTERNAL_TABLE")
         Dim inputParameters(1) As DBHelper.DBHelperParameter
-        inputParameters(0) = New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, dealerId.ToByteArray)
-        inputParameters(1) = New DBHelper.DBHelperParameter(Me.COL_NAME_USEFULLFILEPROCESS_ID, fullfileprocessId.ToByteArray)
+        inputParameters(0) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)
+        inputParameters(1) = New DBHelper.DBHelperParameter(COL_NAME_USEFULLFILEPROCESS_ID, fullfileprocessId.ToByteArray)
         Dim outputParameter(0) As DBHelper.DBHelperParameter
         outputParameter(0) = New DBHelper.DBHelperParameter(COL_NAME_RETURN, GetType(Integer))
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
@@ -799,11 +799,11 @@ Public Class DealerDAL
 
     'REQ-5467 : Used following method to Update Claims Asynchronously for when Lawsuit is made Mandatory
     'This Function can be made generic with additional parameters for any specific Task
-    Public Function UpdateClaimsAsync(ByVal dealerId As Guid, ByVal claimUpdateOption As Integer)
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_CLAIMS_ASYNC")
+    Public Function UpdateClaimsAsync(dealerId As Guid, claimUpdateOption As Integer)
+        Dim selectStmt As String = Config("/SQL/UPDATE_CLAIMS_ASYNC")
         Dim inputParameters(1) As DBHelper.DBHelperParameter
-        inputParameters(0) = New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, dealerId.ToByteArray)
-        inputParameters(1) = New DBHelper.DBHelperParameter(Me.COL_CLAIM_UPDATE_OPTION, claimUpdateOption)
+        inputParameters(0) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)
+        inputParameters(1) = New DBHelper.DBHelperParameter(COL_CLAIM_UPDATE_OPTION, claimUpdateOption)
         Dim outputParameter(0) As DBHelper.DBHelperParameter
         outputParameter(0) = New DBHelper.DBHelperParameter(COL_NAME_RETURN, GetType(Integer))
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
@@ -816,8 +816,8 @@ Public Class DealerDAL
     End Function
 
 
-    Public Function RenewCoverage(ByVal fromDealerID As Guid, ByVal contractID As Guid, ByVal effdate As Date) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/RENEW_COVERAGES")
+    Public Function RenewCoverage(fromDealerID As Guid, contractID As Guid, effdate As Date) As Integer
+        Dim selectStmt As String = Config("/SQL/RENEW_COVERAGES")
         Dim inputParameters(TOTAL_PARAM_RENEW_COVERAGES) As DBHelper.DBHelperParameter
         Dim outputParameter(0) As DBHelper.DBHelperParameter
 
@@ -838,7 +838,7 @@ Public Class DealerDAL
 
     End Function
 
-    Public Function DeleteDealerDefinitions(ByVal fromDealerID As Guid, ByVal intDeleteLevel As Integer) As Integer
+    Public Function DeleteDealerDefinitions(fromDealerID As Guid, intDeleteLevel As Integer) As Integer
         'There are 4 Stored Procedures written for this process:
         'Procedure DeleteProductCodes. If called with deletelevel: 
         '                                   1,2,3,4: Product Codes will be deleted
@@ -861,13 +861,13 @@ Public Class DealerDAL
         Dim inputParameters(TOTAL_PARAM_DELETE_DEALER_DEFINITIONS) As DBHelper.DBHelperParameter
         Dim outputParameter(0) As DBHelper.DBHelperParameter
 
-        If intDeleteLevel = Me.DELETE_ALL_DEALER_DEFINITIONS Then
-            selectStmt = Me.Config("/SQL/DELETE_ALL_DEALER_DEFINITIONS")
+        If intDeleteLevel = DELETE_ALL_DEALER_DEFINITIONS Then
+            selectStmt = Config("/SQL/DELETE_ALL_DEALER_DEFINITIONS")
             inputParameters(FROM_DEALER) = New DBHelper.DBHelperParameter(COL_NAME_FROM_DEALER, fromDealerID)
             inputParameters(FROM_COVERAGE) = New DBHelper.DBHelperParameter(COL_NAME_FROM_COVERAGE_ID, System.DBNull.Value)
             inputParameters(DELETE_LEVEL) = New DBHelper.DBHelperParameter(COL_NAME_COPY_LEVEL, DELETE_ALL_DEALER_DEFINITIONS, GetType(Integer))
-        ElseIf intDeleteLevel = Me.DELETE_DEALER_PRODUCTCODES_AND_ITEMS Then
-            selectStmt = Me.Config("/SQL/DELETE_DEALER_PRODUCTCODES_AND_ITEMS")
+        ElseIf intDeleteLevel = DELETE_DEALER_PRODUCTCODES_AND_ITEMS Then
+            selectStmt = Config("/SQL/DELETE_DEALER_PRODUCTCODES_AND_ITEMS")
             inputParameters(FROM_DEALER) = New DBHelper.DBHelperParameter(COL_NAME_FROM_DEALER, fromDealerID)
             inputParameters(FROM_PRODUCT_CODE) = New DBHelper.DBHelperParameter(COL_NAME_FROM_PRODUCT_CODE_ID, System.DBNull.Value)
             inputParameters(DELETE_LEVEL) = New DBHelper.DBHelperParameter(COL_NAME_COPY_LEVEL, DELETE_ALL_DEALER_DEFINITIONS, GetType(Integer))
@@ -886,8 +886,8 @@ Public Class DealerDAL
 
     End Function
 
-    Public Function GetDuplicatePrefixCount(ByVal companyID As Guid, Optional ByVal countLevel As Integer = 1, Optional ByVal certificatesAutonumberPrefix As String = "") As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEALERS_HAVING_DUPLICATE_CERTIFICATES_AUTONUMBER_PREFIX_COUNT")
+    Public Function GetDuplicatePrefixCount(companyID As Guid, Optional ByVal countLevel As Integer = 1, Optional ByVal certificatesAutonumberPrefix As String = "") As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_DEALERS_HAVING_DUPLICATE_CERTIFICATES_AUTONUMBER_PREFIX_COUNT")
         Dim parameters(1) As DBHelper.DBHelperParameter
 
         parameters(COMPANY_ID) = New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, companyID.ToByteArray())
@@ -895,12 +895,12 @@ Public Class DealerDAL
 
         If Not certificatesAutonumberPrefix Is Nothing AndAlso Not certificatesAutonumberPrefix.Equals(String.Empty) Then
             Dim WhereClause As String = " and upper(CERTIFICATES_AUTONUMBER_PREFIX) = '" & certificatesAutonumberPrefix.ToUpper & "'"
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, WhereClause)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, WhereClause)
         End If
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.DUPLICATE_PREFIX_COUNT_TABLE, parameters)
+            DBHelper.Fetch(ds, selectStmt, DUPLICATE_PREFIX_COUNT_TABLE, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -910,11 +910,11 @@ Public Class DealerDAL
 #End Region
 #Region "Children Related"
 
-    Public Function IsSkipActiveClaim(ByVal dealerID As Guid) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/CHECK_SKIP_ACTIVE_CLAIM")
+    Public Function IsSkipActiveClaim(dealerID As Guid) As Boolean
+        Dim selectStmt As String = Config("/SQL/CHECK_SKIP_ACTIVE_CLAIM")
         Dim returnValue As Int16 = 0
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                {New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, dealerID.ToByteArray)}
+                {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerID.ToByteArray)}
         Try
             returnValue = DBHelper.ExecuteScalar(selectStmt, parameters)
             If (returnValue > 0) Then
@@ -927,45 +927,45 @@ Public Class DealerDAL
         End Try
     End Function
 
-    Public Function LoadAvailableClaimTypes(ByVal dealerID As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadAvailableClaimTypes(dealerID As Guid, languageId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_AVAILABLE_CLAIM_TYPES")
+        Dim selectStmt As String = Config("/SQL/GET_AVAILABLE_CLAIM_TYPES")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray),
                                             New OracleParameter(COL_NAME_DEALER_ID, dealerID.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_CLAIM_TYPES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME_CLAIM_TYPES, parameters)
     End Function
 
-    Public Function LoadAvailableCoverageTypes(ByVal dealerID As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadAvailableCoverageTypes(dealerID As Guid, languageId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_AVAILABLE_COVERAGE_TYPES")
+        Dim selectStmt As String = Config("/SQL/GET_AVAILABLE_COVERAGE_TYPES")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray),
                                             New OracleParameter(COL_NAME_DEALER_ID, dealerID.ToByteArray),
                                             New OracleParameter(COL_NAME_DEALER_ID, dealerID.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_COVERAGE_TYPES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME_COVERAGE_TYPES, parameters)
     End Function
 
-    Public Function LoadSelectedClaimTypes(ByVal dealerID As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadSelectedClaimTypes(dealerID As Guid, languageId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_SELECTED_CLAIM_TYPES")
+        Dim selectStmt As String = Config("/SQL/GET_SELECTED_CLAIM_TYPES")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_DEALER_ID, dealerID.ToByteArray),
                                             New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_CLAIM_TYPES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME_CLAIM_TYPES, parameters)
     End Function
 
-    Public Function LoadSelectedCoverageTypes(ByVal dealerID As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadSelectedCoverageTypes(dealerID As Guid, languageId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_SELECTED_COVERAGE_TYPES")
+        Dim selectStmt As String = Config("/SQL/GET_SELECTED_COVERAGE_TYPES")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_DEALER_ID, dealerID.ToByteArray),
                                             New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_COVERAGE_TYPES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME_COVERAGE_TYPES, parameters)
     End Function
 
 

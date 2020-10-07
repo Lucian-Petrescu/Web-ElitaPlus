@@ -61,14 +61,14 @@ Public Class DALBase
 
 
     'Retrieve the node value from the specific descriptor of the object 
-    Public ReadOnly Property Config(ByVal nodeXpath As String) As String
+    Public ReadOnly Property Config(nodeXpath As String) As String
         Get
-            Return ConfigReader.GetNodeValue(Me.GetType, nodeXpath)
+            Return ConfigReader.GetNodeValue([GetType], nodeXpath)
         End Get
     End Property
 
     'Retrieve the node value from the DALBase descriptor
-    Public ReadOnly Property ConfigCommon(ByVal nodeXpath As String) As String
+    Public ReadOnly Property ConfigCommon(nodeXpath As String) As String
         Get
             Return ConfigReader.GetNodeValue(GetType(DALBase), nodeXpath)
         End Get
@@ -76,7 +76,7 @@ Public Class DALBase
 
 #Region "Public Shared Methods"
 
-    Public Shared Function GetOracleDate(ByVal dateColumn As String, Optional ByVal formatStr As String = "") As String
+    Public Shared Function GetOracleDate(dateColumn As String, Optional ByVal formatStr As String = "") As String
 
         If (formatStr Is Nothing) Or (formatStr = String.Empty) Or (formatStr.Length = 0) Then
             formatStr = ORACLE_QUERY_DATEFORMAT
@@ -85,7 +85,7 @@ Public Class DALBase
 
     End Function
 
-    Public Shared Function GuidToSQLString(ByVal Value As Guid) As String
+    Public Shared Function GuidToSQLString(Value As Guid) As String
         Dim byteArray As Byte() = Value.ToByteArray
         Dim i As Integer
         Dim result As New StringBuilder("")
@@ -99,7 +99,7 @@ Public Class DALBase
         Return result.ToString
     End Function
 
-    Protected Shared Sub AddSequenceColumn(ByVal table As DataTable)
+    Protected Shared Sub AddSequenceColumn(table As DataTable)
         table.Columns.Add(SYSTEM_SEQUENCE_COL_NAME, GetType(Long))
         Dim i As Long
         For i = 0 To table.Rows.Count - 1
@@ -175,7 +175,7 @@ Public Class DALBase
 
     End Function
 
-    Protected Function IsLikeClause(ByVal str As String) As Boolean
+    Protected Function IsLikeClause(str As String) As Boolean
         Dim bLikeClause As Boolean = False
 
         If (Not str Is Nothing) AndAlso (Not (str.Equals(String.Empty))) Then
@@ -195,7 +195,7 @@ Public Class DALBase
 
     End Function
 
-    Public Function GetFormattedSearchStringForSQL(ByVal str As String) As String
+    Public Function GetFormattedSearchStringForSQL(str As String) As String
         If (Not IsNothing(str)) Then
             If str.IndexOf(TICKMARK) > -1 Then
                 str = str.Replace(TICKMARK, DOUBLETICKMARK)
@@ -211,7 +211,7 @@ Public Class DALBase
         Return (str)
     End Function
 
-    Public Shared Function IsNothing(ByVal Value As Object) As Boolean
+    Public Shared Function IsNothing(Value As Object) As Boolean
 
         If Value Is Nothing Then
             Return True
@@ -233,13 +233,13 @@ Public Class DALBase
     End Function
 
     'Time Zone Related 
-    Public Function LoadConvertedTime_From_DB_ServerTimeZone(ByVal dateToConvert As DateTime, ByVal toTimeZone As String) As DataView
+    Public Function LoadConvertedTime_From_DB_ServerTimeZone(dateToConvert As DateTime, toTimeZone As String) As DataView
 
         Dim ds As New DataSet
 
 
 
-        Dim selectStmt As String = Me.Config("/SQL/CONVERTED_TIME")
+        Dim selectStmt As String = Config("/SQL/CONVERTED_TIME")
 
 
 
@@ -260,28 +260,28 @@ Public Class DALBase
 
 #Region "Common CRUD Methods"
     'This Method assumes you have the nodes  "/SQL/INSERT", "/SQL/UPDATE", "/SQL/DELETE" in your xml file
-    Public Overridable Sub Update(ByVal row As DataRow, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overridable Sub Update(row As DataRow, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         DBHelper.Execute(row, Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, Transaction, changesFilter)
-        LookupListCache.ClearFromCache(Me.GetType.ToString)
+        LookupListCache.ClearFromCache([GetType].ToString)
     End Sub
 
-    Public Overridable Sub UpdateWithParam(ByVal row As DataRow, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overridable Sub UpdateWithParam(row As DataRow, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         DBHelper.ExecuteWithParam(row, Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, Transaction, changesFilter)
-        LookupListCache.ClearFromCache(Me.GetType.ToString)
+        LookupListCache.ClearFromCache([GetType].ToString)
     End Sub
 
     'This Method assumes you have the nodes  "/SQL/INSERT", "/SQL/UPDATE", "/SQL/DELETE" in your xml file
-    Public Overridable Sub Update(ByVal table As DataTable, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overridable Sub Update(table As DataTable, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         DBHelper.Execute(table, Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, Transaction, changesFilter)
-        LookupListCache.ClearFromCache(Me.GetType.ToString)
+        LookupListCache.ClearFromCache([GetType].ToString)
     End Sub
 
-    Public Overridable Sub UpdateWithParam(ByVal table As DataTable, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overridable Sub UpdateWithParam(table As DataTable, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         DBHelper.ExecuteWithParam(table, Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, Transaction, changesFilter)
-        LookupListCache.ClearFromCache(Me.GetType.ToString)
+        LookupListCache.ClearFromCache([GetType].ToString)
     End Sub
 
-    Public Overridable Sub UpdateFromSP(ByVal table As DataTable,
+    Public Overridable Sub UpdateFromSP(table As DataTable,
                                       Optional ByVal transaction As OracleTransaction = Nothing,
                                       Optional ByVal changesFilter As DataRowState = DataRowState.Added Or DataRowState.Deleted Or DataRowState.Modified)
 
@@ -316,7 +316,7 @@ Public Class DALBase
 
         End Using
 
-        LookupListCache.ClearFromCache(Me.GetType.ToString)
+        LookupListCache.ClearFromCache([GetType].ToString)
     End Sub
 #End Region
 
@@ -330,7 +330,7 @@ Public Class DALBase
     ''' <param name="command"><see cref="OracleCommand" /> to be used for adding <see cref="OracleParameter" />.</param>
     ''' <param name="tableName">Name of table for which <see cref="OracleDataAdapter" /> is being built.</param>
     ''' <remarks></remarks>
-    Protected Overridable Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overridable Sub ConfigureUpdateCommand(ByRef command As OracleCommand, tableName As String)
         Throw New NotImplementedException("Update Commands must be Configured")
     End Sub
 
@@ -342,7 +342,7 @@ Public Class DALBase
     ''' <param name="command"><see cref="OracleCommand" /> to be used for adding <see cref="OracleParameter" />.</param>
     ''' <param name="tableName">Name of table for which <see cref="OracleDataAdapter" /> is being built.</param>
     ''' <remarks></remarks>
-    Protected Overridable Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overridable Sub ConfigureInsertCommand(ByRef command As OracleCommand, tableName As String)
         Throw New NotImplementedException("Insert Commands must be Configured")
     End Sub
 
@@ -354,7 +354,7 @@ Public Class DALBase
     ''' <param name="command"><see cref="OracleCommand" /> to be used for adding <see cref="OracleParameter" />.</param>
     ''' <param name="tableName">Name of table for which <see cref="OracleDataAdapter" /> is being built.</param>
     ''' <remarks></remarks>
-    Protected Overridable Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overridable Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
         Throw New NotImplementedException("Delete Commands must be Configured")
     End Sub
 
@@ -374,7 +374,7 @@ Public Class DALBase
     ''' <param name="changesFilter">Optional. When value is provided; only rows having one of the flag values will be updated.</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function CreateDataAdapter(ByVal tableName As String,
+    Private Function CreateDataAdapter(tableName As String,
                                        Optional ByVal transaction As OracleTransaction = Nothing,
                                        Optional ByVal changesFilter As DataRowState = DataRowState.Added Or DataRowState.Modified Or DataRowState.Deleted)
         Dim da As OracleDataAdapter

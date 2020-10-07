@@ -30,12 +30,12 @@ Public Class DateCompareValidatorAttribute
 
     Public Sub New(ByVal fieldDisplayName As String, ByVal message As String, ByVal pCompareToPropertyName As String, ByVal pComparisionType As CompareType)
         MyBase.New(fieldDisplayName, message)
-        Me.CompareToPropertyName = pCompareToPropertyName
-        Me.ComparisionType = pComparisionType
-        Me.DefaultCompareToValue = DefaultType.MaxDate
-        Me.DefaultCompareValue = DefaultType.MinDate
-        Me.CheckWhenNew = False
-        Me.CompareToType = CompareToPropertyType.Property
+        CompareToPropertyName = pCompareToPropertyName
+        ComparisionType = pComparisionType
+        DefaultCompareToValue = DefaultType.MaxDate
+        DefaultCompareValue = DefaultType.MinDate
+        CheckWhenNew = False
+        CompareToType = CompareToPropertyType.Property
     End Sub
 
     Private _comparisionType As CompareType
@@ -142,7 +142,7 @@ Public Class DateCompareValidatorAttribute
         Dim propInfo As PropertyInfo
         Dim propValue As Object
 
-        If (Me.CheckWhenNew) Then
+        If (CheckWhenNew) Then
             propInfo = context.GetType().GetProperty("IsNew")
 
             If (propInfo Is Nothing) Then
@@ -154,20 +154,20 @@ Public Class DateCompareValidatorAttribute
         End If
 
         If (Me.CompareToType = CompareToPropertyType.Property) Then
-            If (Me.CompareToPropertyName Is Nothing OrElse Me.CompareToPropertyName.Trim().Length = 0) Then
+            If (CompareToPropertyName Is Nothing OrElse CompareToPropertyName.Trim().Length = 0) Then
                 Throw New InvalidOperationException("DateCompareValidatorAttribute::CompareToPropertyName can not be Blank")
             End If
-            propInfo = context.GetType().GetProperty(Me.CompareToPropertyName)
+            propInfo = context.GetType().GetProperty(CompareToPropertyName)
             If (propInfo Is Nothing) Then
-                Throw New InvalidOperationException(String.Format("Propety with Name {0} not found in Object of Type {1}", Me.CompareToPropertyName, context.GetType().FullName))
+                Throw New InvalidOperationException(String.Format("Propety with Name {0} not found in Object of Type {1}", CompareToPropertyName, context.GetType().FullName))
             End If
             propValue = propInfo.GetValue(context, Nothing)
         Else
             propValue = Nothing
         End If
-        valueToCompare = GetDate(propValue, Me.DefaultCompareToValue)
-        value = GetDate(objectToCheck, Me.DefaultCompareValue)
-        Select Case Me.ComparisionType
+        valueToCompare = GetDate(propValue, DefaultCompareToValue)
+        value = GetDate(objectToCheck, DefaultCompareValue)
+        Select Case ComparisionType
             Case CompareType.Equal
                 Return valueToCompare.Equals(value)
             Case CompareType.NotEqual

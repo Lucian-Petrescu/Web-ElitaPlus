@@ -6,7 +6,7 @@ Public Class ClaimIssue
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New(id)
     End Sub
 
@@ -16,16 +16,16 @@ Public Class ClaimIssue
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(id, familyDS)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(familyDS)
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(row)
     End Sub
 
@@ -46,16 +46,16 @@ Public Class ClaimIssue
     <ValueMandatory("")> _
     Public ReadOnly Property ClaimIssueId() As Guid
         Get
-            Return Me.Id
+            Return Id
         End Get
     End Property
 
     Public Property ClaimId() As Guid
         Get
-            Return Me.EntityId
+            Return EntityId
         End Get
-        Set(ByVal Value As Guid)
-            Me.EntityId = Value
+        Set(Value As Guid)
+            EntityId = Value
         End Set
     End Property
 
@@ -64,26 +64,26 @@ Public Class ClaimIssue
     Public Property Claim As ClaimBase
         Get
             If (_claim Is Nothing) Then
-                If Not Me.ClaimId.Equals(Guid.Empty) AndAlso Me.Entity = "AUTH" Then
-                    Dim claimAuth As New ClaimAuthorization(Me.ClaimId)
-                    Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(claimAuth.ClaimId, Me.Dataset)
-                ElseIf Not Me.ClaimId.Equals(Guid.Empty) AndAlso Me.Entity = "CONSEQUENTIALDAMAGE" Then
-                    Dim ClaimConseqDamage As New CaseConseqDamage(Me.ClaimId) ' Here Me.ClaimId will be case_conseq_damage_id
-                    Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ClaimConseqDamage.ClaimId, Me.Dataset)
-                ElseIf Not Me.ClaimId.Equals(Guid.Empty) Then
-                    Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.ClaimId, Me.Dataset)
+                If Not ClaimId.Equals(Guid.Empty) AndAlso Entity = "AUTH" Then
+                    Dim claimAuth As New ClaimAuthorization(ClaimId)
+                    Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(claimAuth.ClaimId, Dataset)
+                ElseIf Not ClaimId.Equals(Guid.Empty) AndAlso Entity = "CONSEQUENTIALDAMAGE" Then
+                    Dim ClaimConseqDamage As New CaseConseqDamage(ClaimId) ' Here Me.ClaimId will be case_conseq_damage_id
+                    Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ClaimConseqDamage.ClaimId, Dataset)
+                ElseIf Not ClaimId.Equals(Guid.Empty) Then
+                    Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ClaimId, Dataset)
                 End If
             End If
             Return _claim
         End Get
-        Private Set(ByVal value As ClaimBase)
+        Private Set(value As ClaimBase)
             _claim = value
         End Set
     End Property
 
     Public ReadOnly Property Issue() As Issue
         Get
-            Dim oIssue As New Issue(Me.IssueId)
+            Dim oIssue As New Issue(IssueId)
             Return oIssue
         End Get
     End Property
@@ -102,15 +102,15 @@ Public Class ClaimIssue
 
     Public ReadOnly Property ClaimIssueQuestionList() As IssueQuestionsChildrenList
         Get
-            Dim claimIssue As New Issue(Me.IssueId)
+            Dim claimIssue As New Issue(IssueId)
             Return claimIssue.IssueQuestionsChildren
         End Get
     End Property
 
     Public ReadOnly Property ClaimIssueQuestionListByDealer(dealerId As Guid) As IssueQuestionsChildrenList
         Get
-            Dim claimIssue As New Issue(Me.IssueId)
-            Return claimIssue.IssueQuestionsChildrenByIssueDealer(Me.IssueId, dealerId)
+            Dim claimIssue As New Issue(IssueId)
+            Return claimIssue.IssueQuestionsChildrenByIssueDealer(IssueId, dealerId)
         End Get
     End Property
 
@@ -135,9 +135,9 @@ Public Class ClaimIssue
                 Return New DateType(CType(Row(ClaimIssue.COL_NAME_PROCESSED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimIssue.COL_NAME_PROCESSED_DATE, Value)
+            SetValue(ClaimIssue.COL_NAME_PROCESSED_DATE, Value)
         End Set
     End Property
 
@@ -150,9 +150,9 @@ Public Class ClaimIssue
                 Return CType(Row(ClaimIssue.COL_NAME_PROCESSED_BY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimIssue.COL_NAME_PROCESSED_BY, Value)
+            SetValue(ClaimIssue.COL_NAME_PROCESSED_BY, Value)
         End Set
     End Property
 
@@ -177,9 +177,9 @@ Public Class ClaimIssue
                 Return CType(Row(ClaimIssue.COL_NAME_STATUS_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimIssue.COL_NAME_STATUS_CODE, Value)
+            SetValue(ClaimIssue.COL_NAME_STATUS_CODE, Value)
         End Set
     End Property
 
@@ -192,9 +192,9 @@ Public Class ClaimIssue
                 Return CType(Row(ClaimIssue.COL_NAME_CREATED_BY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimIssue.COL_NAME_CREATED_BY, Value)
+            SetValue(ClaimIssue.COL_NAME_CREATED_BY, Value)
         End Set
     End Property
 
@@ -204,9 +204,9 @@ Public Class ClaimIssue
             If Row(DALBase.COL_NAME_CREATED_BY) Is DBNull.Value Then Return Nothing
             Return CType(Row(DALBase.COL_NAME_CREATED_BY), String)
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             CheckDeleted()
-            Me.SetValue(DALBase.COL_NAME_CREATED_BY, value)
+            SetValue(DALBase.COL_NAME_CREATED_BY, value)
         End Set
     End Property
 
@@ -220,47 +220,47 @@ Public Class ClaimIssue
                 Return CType(Row(ClaimIssueDAL.COL_NAME_CREATED_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateTime)
+        Set(Value As DateTime)
             CheckDeleted()
-            Me.SetValue(ClaimIssueDAL.COL_NAME_CREATED_DATE, Value)
+            SetValue(ClaimIssueDAL.COL_NAME_CREATED_DATE, Value)
         End Set
     End Property
 
 #End Region
 
 #Region "Public Members"
-    Friend Sub ProcessWorkQueueItem(ByVal wqItem As WorkQueueItem)
+    Friend Sub ProcessWorkQueueItem(wqItem As WorkQueueItem)
         Dim workQueueId As Guid
         Dim dal As CompanyWorkQueueIssueDAL
         Dim wqi As WorkQueueItem
 
-        If (Me.IsDeleted) Then Exit Sub
+        If (IsDeleted) Then Exit Sub
         ' Check if Issue is still Open or Pending
         If (StatusCode = Codes.CLAIMISSUE_STATUS__OPEN OrElse StatusCode = Codes.CLAIMISSUE_STATUS__PENDING) Then
             ' Check if WorkQueueItem is already created
-            If (Me.WorkQueueItemCreatedId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N))) Then
+            If (WorkQueueItemCreatedId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N))) Then
                 ' Get Work Queue ID based on Issue ID and Company ID
                 dal = New CompanyWorkQueueIssueDAL()
-                workQueueId = dal.GetWorkQueueIdByIssueCompany(Me.Issue.Id, Me.Claim.CompanyId)
+                workQueueId = dal.GetWorkQueueIdByIssueCompany(Issue.Id, Claim.CompanyId)
                 ' Check if Work Queue can be identified based on Issue ID and Company ID
                 If (Not workQueueId.Equals(Guid.Empty)) Then
                     ' Create Work Queue Item
                     wqi = New WorkQueueItem()
                     With wqi.WorkQueueItem
-                        .ClaimId = Me.ClaimId
-                        .ClaimIssueId = Me.Id
+                        .ClaimId = ClaimId
+                        .ClaimIssueId = Id
                         .WorkQueueId = workQueueId
                         .ModifiedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                     End With
                     wqi.Save()
 
                     ' Update Data Row
-                    Me.WorkQueueItemCreatedId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
+                    WorkQueueItemCreatedId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
                 End If
             End If
         Else
             If (Not wqItem Is Nothing) Then
-                If (wqItem.WorkQueueItem.ClaimIssueId = Me.ClaimIssueId) Then
+                If (wqItem.WorkQueueItem.ClaimIssueId = ClaimIssueId) Then
                     wqItem.Process()
                 End If
             End If
@@ -270,20 +270,20 @@ Public Class ClaimIssue
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ClaimIssueDAL
-                Me.ProcessWorkQueueItem(Nothing)
-                dal.UpdateFamily(Me.Dataset, New PublishedTaskDAL.PublishTaskData(Of ClaimIssueDAL.PublishTaskClaimData) With
+                ProcessWorkQueueItem(Nothing)
+                dal.UpdateFamily(Dataset, New PublishedTaskDAL.PublishTaskData(Of ClaimIssueDAL.PublishTaskClaimData) With
                                              {
-                                                 .CompanyGroupId = Me.Claim.Company.CompanyGroupId,
-                                                 .CompanyId = Me.Claim.Company.Id,
-                                                 .CountryId = Me.Claim.Company.CountryId,
-                                                 .CoverageTypeId = Me.Claim.CertificateItemCoverage.CoverageTypeId,
-                                                 .DealerId = Me.Claim.Dealer.Id,
-                                                 .ProductCode = Me.Claim.Certificate.ProductCode,
+                                                 .CompanyGroupId = Claim.Company.CompanyGroupId,
+                                                 .CompanyId = Claim.Company.Id,
+                                                 .CountryId = Claim.Company.CountryId,
+                                                 .CoverageTypeId = Claim.CertificateItemCoverage.CoverageTypeId,
+                                                 .DealerId = Claim.Dealer.Id,
+                                                 .ProductCode = Claim.Certificate.ProductCode,
                                                  .Data = New ClaimIssueDAL.PublishTaskClaimData() With
                                                          {
-                                                             .ClaimId = Me.Claim.Id,
+                                                             .ClaimId = Claim.Id,
                                                              .EventTypeLookup = Function(publishTaskStatusId As Guid) As Guid
                                                                                     Dim publishedTaskStatusCode As String = LookupListNew.GetCodeFromId(Codes.CLAIM_ISSUE_STATUS, publishTaskStatusId)
                                                                                     Select Case publishedTaskStatusCode
@@ -307,11 +307,11 @@ Public Class ClaimIssue
                                                              }
                                                  })
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -322,32 +322,32 @@ Public Class ClaimIssue
     'Added manually to the code
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 
-    Public Sub SaveNewIssue(ByVal claimId As Guid, ByVal issueId As Guid, ByVal certId As Guid, ByVal IsCreatedBySytem As Boolean)
+    Public Sub SaveNewIssue(claimId As Guid, issueId As Guid, certId As Guid, IsCreatedBySytem As Boolean)
 
         Me.IssueId = issueId
         Me.ClaimId = claimId
-        Me.Entity = "CLAIM"
+        Entity = "CLAIM"
 
-        Dim claimIssueStatus As ClaimIssueStatus = CType(Me.ClaimIssueStatusList.GetNewChild, BusinessObjectsNew.ClaimIssueStatus)
-        claimIssueStatus.ClaimIssueId = Me.ClaimIssueId
+        Dim claimIssueStatus As ClaimIssueStatus = CType(ClaimIssueStatusList.GetNewChild, BusinessObjectsNew.ClaimIssueStatus)
+        claimIssueStatus.ClaimIssueId = ClaimIssueId
         claimIssueStatus.ClaimIssueStatusCId = LookupListNew.GetIdFromCode("CLMISSUESTATUS", "OPEN")
         If (IsCreatedBySytem) Then
-            Me.CreatedBy = "SYSTEM"
-            Me.CreatedById = "SYSTEM"
+            CreatedBy = "SYSTEM"
+            CreatedById = "SYSTEM"
         Else
-            Me.CreatedBy = ElitaPlusIdentity.Current.ActiveUser.UserName
-            Me.CreatedById = ElitaPlusIdentity.Current.ActiveUser.NetworkId
+            CreatedBy = ElitaPlusIdentity.Current.ActiveUser.UserName
+            CreatedById = ElitaPlusIdentity.Current.ActiveUser.NetworkId
         End If
-        claimIssueStatus.ProcessedBy = Me.CreatedBy
-        claimIssueStatus.CreatedBy = Me.CreatedBy
+        claimIssueStatus.ProcessedBy = CreatedBy
+        claimIssueStatus.CreatedBy = CreatedBy
 
-        Me.CreatedDate = DateTime.Now
-        claimIssueStatus.ProcessedDate = Me.CreatedDate
-        Me.StatusCode = LookupListNew.GetCodeFromId("CLMISSUESTATUS", claimIssueStatus.ClaimIssueStatusCId)
+        CreatedDate = DateTime.Now
+        claimIssueStatus.ProcessedDate = CreatedDate
+        StatusCode = LookupListNew.GetCodeFromId("CLMISSUESTATUS", claimIssueStatus.ClaimIssueStatusCId)
 
         Dim issue As New Issue(Me.IssueId)
         For Each Item As IssueComment In issue.IssueNotesChildren
@@ -358,32 +358,32 @@ Public Class ClaimIssue
         Next
         claimIssueStatus.Save()
 
-        Me.Save()
+        Save()
     End Sub
 
     Public Function GetNewClaimIssueResponseChild() As ClaimIssueResponse
-        Dim newClaimIssueResponse As ClaimIssueResponse = CType(Me.ClaimIssueResponseList.GetNewChild, ClaimIssueResponse)
-        newClaimIssueResponse.ClaimIssueId = Me.Id
+        Dim newClaimIssueResponse As ClaimIssueResponse = CType(ClaimIssueResponseList.GetNewChild, ClaimIssueResponse)
+        newClaimIssueResponse.ClaimIssueId = Id
         Return newClaimIssueResponse
     End Function
 
-    Public Function GetClaimIssueResponseChild(ByVal cirId As Guid) As ClaimIssueResponse
-        Dim oClaimIssueResponse As ClaimIssueResponse = CType(Me.ClaimIssueResponseList.GetChild(cirId), ClaimIssueResponse)
+    Public Function GetClaimIssueResponseChild(cirId As Guid) As ClaimIssueResponse
+        Dim oClaimIssueResponse As ClaimIssueResponse = CType(ClaimIssueResponseList.GetChild(cirId), ClaimIssueResponse)
         Return oClaimIssueResponse
     End Function
 
     Public Function GetNewClaimIssueStatusChild() As ClaimIssueStatus
-        Dim newClaimIssueStatus As ClaimIssueStatus = CType(Me.ClaimIssueStatusList.GetNewChild, ClaimIssueStatus)
-        newClaimIssueStatus.ClaimIssueId = Me.Id
+        Dim newClaimIssueStatus As ClaimIssueStatus = CType(ClaimIssueStatusList.GetNewChild, ClaimIssueStatus)
+        newClaimIssueStatus.ClaimIssueId = Id
         Return newClaimIssueStatus
     End Function
 
-    Public Function GetClaimIssueStatusChild(ByVal cisId As Guid) As ClaimIssueStatus
-        Dim oClaimIssueStatus As ClaimIssueStatus = CType(Me.ClaimIssueStatusList.GetChild(cisId), ClaimIssueStatus)
+    Public Function GetClaimIssueStatusChild(cisId As Guid) As ClaimIssueStatus
+        Dim oClaimIssueStatus As ClaimIssueStatus = CType(ClaimIssueStatusList.GetChild(cisId), ClaimIssueStatus)
         Return oClaimIssueStatus
     End Function
 
-    Public Shared Function ProcessFraudMonitoringIndicatorRule(ByVal claimId As Guid,ByVal certId As Guid, ByVal issueCode As String) As String
+    Public Shared Function ProcessFraudMonitoringIndicatorRule(claimId As Guid,certId As Guid, issueCode As String) As String
         Try
             Dim dal As New ClaimIssueDAL
             Return dal.ProcessFraudMonitoringIndicatorRule(claimId,certId,issueCode)
@@ -397,15 +397,15 @@ Public Class ClaimIssue
     Public Class ClaimIssueList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As ClaimBase)
+        Public Sub New(parent As ClaimBase)
             MyBase.New(LoadTable(parent), GetType(ClaimIssue), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, ClaimIssue).ClaimId.Equals(CType(Parent, ClaimBase).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As ClaimBase) As DataTable
+        Private Shared Function LoadTable(parent As ClaimBase) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ClaimIssueList)) Then
                     Dim dal As New ClaimIssueDAL
@@ -418,7 +418,7 @@ Public Class ClaimIssue
             End Try
         End Function
 
-        Public Function Contains(ByVal issueCode As String) As Boolean
+        Public Function Contains(issueCode As String) As Boolean
             Dim hasIssue As Boolean = False
 
             For Each Item As ClaimIssue In Me
@@ -438,15 +438,15 @@ Public Class ClaimIssue
     Public Class ConseqDamageIssueList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As CaseConseqDamage)
+        Public Sub New(parent As CaseConseqDamage)
             MyBase.New(LoadTable(parent), GetType(ClaimIssue), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, ClaimIssue).ClaimId.Equals(CType(Parent, CaseConseqDamage).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As CaseConseqDamage) As DataTable
+        Private Shared Function LoadTable(parent As CaseConseqDamage) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ConseqDamageIssueList)) Then
                     Dim dal As New ClaimIssueDAL
@@ -459,7 +459,7 @@ Public Class ClaimIssue
             End Try
         End Function
 
-        Public Function Contains(ByVal issueCode As String) As Boolean
+        Public Function Contains(issueCode As String) As Boolean
             Dim hasIssue As Boolean = False
 
             For Each Item As ClaimIssue In Me

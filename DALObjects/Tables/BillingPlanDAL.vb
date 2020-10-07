@@ -29,24 +29,24 @@ Public Class BillingPlanDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("billing_plan_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal DealerId As Guid, ByVal dealer_group_id As Guid, _
-                             ByVal billingPlanMask As String, ByVal compIds As ArrayList, ByVal compGroupId As Guid) As DataSet
+    Public Function LoadList(DealerId As Guid, dealer_group_id As Guid, _
+                             billingPlanMask As String, compIds As ArrayList, compGroupId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
         Dim inCausecondition As String = ""
         Dim bIsLikeClause As Boolean = False
@@ -54,41 +54,41 @@ Public Class BillingPlanDAL
         ' hextoraw
         inCausecondition &= "(" & MiscUtil.BuildListForSql("d.company_id", compIds, True)
 
-        inCausecondition &= " OR g.company_group_id = '" & Me.GuidToSQLString(compGroupId) & "')"
+        inCausecondition &= " OR g.company_group_id = '" & GuidToSQLString(compGroupId) & "')"
 
-        If Not Me.IsNothing(dealer_group_id) Then
-            whereClauseConditions &= " AND g.dealer_group_id = '" & Me.GuidToSQLString(dealer_group_id) & "'"
+        If Not IsNothing(dealer_group_id) Then
+            whereClauseConditions &= " AND g.dealer_group_id = '" & GuidToSQLString(dealer_group_id) & "'"
         End If
 
-        If Not Me.IsNothing(DealerId) Then
-            whereClauseConditions &= " AND d.dealer_id = '" & Me.GuidToSQLString(DealerId) & "'"
+        If Not IsNothing(DealerId) Then
+            whereClauseConditions &= " AND d.dealer_id = '" & GuidToSQLString(DealerId) & "'"
         End If
 
-        If ((Not billingPlanMask Is Nothing) AndAlso (Me.FormatSearchMask(billingPlanMask))) Then
+        If ((Not billingPlanMask Is Nothing) AndAlso (FormatSearchMask(billingPlanMask))) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(bp.code)" & billingPlanMask.ToUpper
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
+        selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY " & Me.COL_NAME_DEALER_GROUP_CODE & ", " & Me.COL_NAME_DEALER_CODE)
+        selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY " & COL_NAME_DEALER_GROUP_CODE & ", " & COL_NAME_DEALER_CODE)
         Try
 
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Sub Delete(ByVal billingPlanId As Guid)
+    Public Sub Delete(billingPlanId As Guid)
         Try
-            Dim deleteStatement As String = Me.Config("/SQL/DELETE")
+            Dim deleteStatement As String = Config("/SQL/DELETE")
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_BILLING_PLAN_ID, billingPlanId.ToByteArray)}
             DBHelper.Execute(deleteStatement, parameters)
         Catch ex As Exception

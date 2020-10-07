@@ -31,26 +31,26 @@ Public Class DataProtectionHistoryDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("data_protection_history_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal certId As Guid, ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(certId As Guid, languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { New DBHelper.DBHelperParameter("language_id", languageid.ToByteArray),New DBHelper.DBHelperParameter(COL_NAME_ENTITY_ID, certId.ToByteArray)}
         Try
             Dim ds = New DataSet
-            Return (DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -59,16 +59,16 @@ Public Class DataProtectionHistoryDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim oCommentDAL As New CommentDAL
         Dim oCertificateDAL As New CertificateDAL
 
@@ -79,12 +79,12 @@ Public Class DataProtectionHistoryDAL
         Try
             'First Pass updates Deletions            
             oCommentDAL.Update(familyDataset, tr, DataRowState.Deleted)
-            Me.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
             'Second Pass updates additions and changes
             oCommentDAL.Update(familyDataset, tr, DataRowState.Added)
             oCertificateDAL.Update(familyDataset, tr, DataRowState.Modified)
             'Generic family update
-            Me.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added)
             If Transaction Is Nothing Then
                 'We are the creator of the transaction we shoul commit it  and close the connection
                 DBHelper.Commit(tr)
@@ -98,8 +98,8 @@ Public Class DataProtectionHistoryDAL
         End Try
     End Sub
 
-    Public Function GetRequestIdUsedInfo(ByVal requestId As String, Optional ByVal restrictionCode As String = Nothing, Optional ByVal certId As Guid = Nothing) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/REQUEST_ID_INFO")
+    Public Function GetRequestIdUsedInfo(requestId As String, Optional ByVal restrictionCode As String = Nothing, Optional ByVal certId As Guid = Nothing) As Boolean
+        Dim selectStmt As String = Config("/SQL/REQUEST_ID_INFO")
         Dim requestIdAlreadyUsed As Boolean = False
         Try
             Dim inputParameters(2) As DBHelper.DBHelperParameter

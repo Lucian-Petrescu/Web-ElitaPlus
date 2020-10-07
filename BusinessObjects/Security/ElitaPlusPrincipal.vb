@@ -30,10 +30,10 @@ Public NotInheritable Class ElitaPlusPrincipal
 
 
     Public Sub New(ByVal identity As ElitaPlusIdentity)
-        Me.Initialize()
+        Initialize()
 
         If (Not identity Is Nothing) Then
-            Me._identity = identity
+            _identity = identity
         End If
 
     End Sub
@@ -47,9 +47,9 @@ Public NotInheritable Class ElitaPlusPrincipal
 
 
     Private Sub Initialize()
-        Me._identity = Nothing
-        Me._roles = Nothing
-        Me._unitCodesManaged = Nothing
+        _identity = Nothing
+        _roles = Nothing
+        _unitCodesManaged = Nothing
     End Sub
 
 
@@ -63,7 +63,7 @@ Public NotInheritable Class ElitaPlusPrincipal
 
     Public ReadOnly Property Identity() As System.Security.Principal.IIdentity Implements System.Security.Principal.IPrincipal.Identity
         Get
-            Return Me._identity
+            Return _identity
         End Get
     End Property
     Public Property WebServiceOffLineMessage() As String
@@ -85,7 +85,7 @@ Public NotInheritable Class ElitaPlusPrincipal
     End Property
     Public Property IdToken() As String
         Get
-            Return Me._idToken
+            Return _idToken
         End Get
         Set(ByVal value As String)
             _idToken = value
@@ -100,11 +100,11 @@ Public NotInheritable Class ElitaPlusPrincipal
 
     <Obsolete("Create/Use one of extension method from Assurant.Elita.Security.IdentityExtensions")>
     Public Function ActiveUser() As User
-        Return CType(Me.Identity, ElitaPlusIdentity).ActiveUser
+        Return CType(Identity, ElitaPlusIdentity).ActiveUser
     End Function
 
     Public Function IsInRole(ByVal role As String) As Boolean Implements System.Security.Principal.IPrincipal.IsInRole
-        Return CType(Me.Identity, ElitaPlusIdentity).ActiveUser.isInRole(role)
+        Return CType(Identity, ElitaPlusIdentity).ActiveUser.isInRole(role)
     End Function
 
 #End Region

@@ -67,74 +67,74 @@ Public Class AuditListForm
 
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
-        Me.MasterPage.MessageController.Clear()
-        Me.Form.DefaultButton = btnSearch.UniqueID
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(ADMIN)
+        MasterPage.MessageController.Clear()
+        Form.DefaultButton = btnSearch.UniqueID
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(ADMIN)
 
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
                 'RestoreGuiState()
                 SetQuerystringValues()
 
                 ' Populate the header and bredcrumb
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.UsePageTabTitleInBreadCrum = False
                 UpdateBreadCrum()
                 TranslateGridHeader(Grid)
 
                 PopulateDropDowns()
 
-                If Me.State.IsGridVisible Then
-                    Me.PopulateGrid()
+                If State.IsGridVisible Then
+                    PopulateGrid()
                 End If
-                cboPageSize.SelectedValue = Me.State.PageSize.ToString()
+                cboPageSize.SelectedValue = State.PageSize.ToString()
 
-                Me.AddCalendarwithTime(Me.BtnAuditBeginDate, Me.txtAuditBeginDate)
-                Me.AddCalendarwithTime(Me.BtnAuditEndDate, Me.txtAuditEndDate)
+                AddCalendarwithTime(BtnAuditBeginDate, txtAuditBeginDate)
+                AddCalendarwithTime(BtnAuditEndDate, txtAuditEndDate)
                 PopulateDefaultDates()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
 
     End Sub
 
     Private Sub SetQuerystringValues()
         Try
-            If Not Request.QueryString("CALLER") Is Nothing Then
-                Me.State.Caller = Request.QueryString("CALLER")
+            If Request.QueryString("CALLER") IsNot Nothing Then
+                State.Caller = Request.QueryString("CALLER")
             End If
         Catch ex As Exception
 
         End Try
     End Sub
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.DisplayRequiredFieldNote = False
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.DisplayRequiredFieldNote = False
 
         Dim strTranslation As String = String.Empty
-        If Me.State.Caller = "APS" Then
+        If State.Caller = "APS" Then
             strTranslation = TranslationBase.TranslateLabelOrMessage(AUDITS)
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & strTranslation
-            Me.MasterPage.PageTitle = strTranslation
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & strTranslation
+            MasterPage.PageTitle = strTranslation
         Else
             strTranslation = TranslationBase.TranslateLabelOrMessage(AUDITS)
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & strTranslation
-            Me.MasterPage.PageTitle = strTranslation
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & strTranslation
+            MasterPage.PageTitle = strTranslation
         End If
 
-        Me.MasterPage.MessageController.Clear()
+        MasterPage.MessageController.Clear()
 
     End Sub
 
@@ -144,25 +144,25 @@ Public Class AuditListForm
             'Me.BindListControlToDataView(Me.ddlAuditSource, AuditSourceDV, "DESCRIPTION", , True)
 
             Dim auditList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="AUDIT_SOURCE", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-            Me.ddlAuditSource.Populate(auditList, New PopulateOptions() With
+            ddlAuditSource.Populate(auditList, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub PopulateDefaultDates()
         'Default begin Date = Today – 1 Month, Default End Date = Today.
         Dim t As Date = Date.Now.AddMonths(-1).AddDays(1)
-        Me.txtAuditBeginDate.Text = GetLongDate12FormattedString(t)
-        Me.txtAuditEndDate.Text = GetLongDate12FormattedString(Date.Now)
+        txtAuditBeginDate.Text = GetLongDate12FormattedString(t)
+        txtAuditEndDate.Text = GetLongDate12FormattedString(Date.Now)
     End Sub
 
-    Public Function IsIpAddressValid(ByVal addrString As String) As Boolean
-        If Me.txtIPAddress.Text.Trim <> String.Empty Then
+    Public Function IsIpAddressValid(addrString As String) As Boolean
+        If txtIPAddress.Text.Trim <> String.Empty Then
             Dim regex As Regex = New Regex("\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b")
             Dim match As Match = regex.Match(addrString)
             Return match.Success
@@ -173,61 +173,61 @@ Public Class AuditListForm
     End Function
 
 
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
         Try
 
 
-            Me.State.PageIndex = 0
-            Me.State.IsGridVisible = True
-            Me.State.SearchClick = True
-            Me.State.AuditLogsSearchDV = Nothing
+            State.PageIndex = 0
+            State.IsGridVisible = True
+            State.SearchClick = True
+            State.AuditLogsSearchDV = Nothing
 
-            Me.PopulateGrid()
+            PopulateGrid()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 #Region "Clear Button Related"
-    Private Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
         Try
             ' Clear all search options typed or selected by the user
-            Me.ClearAllSearchOptions()
+            ClearAllSearchOptions()
 
             ' Update the Bo state properties with the new value
-            Me.ClearStateValues()
+            ClearStateValues()
 
             ' Me.SetStateProperties()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub ClearStateValues()
         Try
             'clear State
-            Me.State.AuditSecurityTypeCode = String.Empty
-            Me.State.AuditSource = String.Empty
-            Me.State.IPAddress = String.Empty
-            Me.State.AuditSource = String.Empty
-            Me.State.UserName = String.Empty
-            Me.State.AuditBeginDate = String.Empty
-            Me.State.AuditEndDate = String.Empty
+            State.AuditSecurityTypeCode = String.Empty
+            State.AuditSource = String.Empty
+            State.IPAddress = String.Empty
+            State.AuditSource = String.Empty
+            State.UserName = String.Empty
+            State.AuditBeginDate = String.Empty
+            State.AuditEndDate = String.Empty
             PopulateDefaultDates()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub ClearAllSearchOptions()
-        Me.txtAuditSecurityTypeCode.Text = String.Empty
-        Me.ddlAuditSource.SelectedIndex = 0
-        Me.txtIPAddress.Text = String.Empty
-        Me.txtUserName.Text = String.Empty
-        Me.txtAuditBeginDate.Text = String.Empty
+        txtAuditSecurityTypeCode.Text = String.Empty
+        ddlAuditSource.SelectedIndex = 0
+        txtIPAddress.Text = String.Empty
+        txtUserName.Text = String.Empty
+        txtAuditBeginDate.Text = String.Empty
 
     End Sub
 #End Region
@@ -263,143 +263,143 @@ Public Class AuditListForm
                 Throw New BOValidationException(Errs, GetType(ApsPublishingLog).FullName)
             End If
 
-            Me.State.AuditBeginDate = DateHelper.GetDateValue(Me.txtAuditBeginDate.Text)
-            Me.State.AuditEndDate = DateHelper.GetDateValue(Me.txtAuditEndDate.Text)
+            State.AuditBeginDate = DateHelper.GetDateValue(txtAuditBeginDate.Text)
+            State.AuditEndDate = DateHelper.GetDateValue(txtAuditEndDate.Text)
 
-            If Me.ddlAuditSource.SelectedIndex = 0 Then
-                Me.State.AuditSource = ""
+            If ddlAuditSource.SelectedIndex = 0 Then
+                State.AuditSource = ""
             Else
-                Me.State.AuditSource = "AUDIT_SOURCE-" & LookupListNew.GetCodeFromId(LookupListNew.LK_AUDIT_SOURCE, ElitaPlusPage.GetSelectedItem(Me.ddlAuditSource))
+                State.AuditSource = "AUDIT_SOURCE-" & LookupListNew.GetCodeFromId(LookupListNew.LK_AUDIT_SOURCE, ElitaPlusPage.GetSelectedItem(ddlAuditSource))
 
             End If
-            Me.State.AuditSecurityTypeCode = Me.txtAuditSecurityTypeCode.Text
+            State.AuditSecurityTypeCode = txtAuditSecurityTypeCode.Text
 
-            If IsIpAddressValid(Me.txtIPAddress.Text) Then
-                Me.State.IPAddress = Me.txtIPAddress.Text
+            If IsIpAddressValid(txtIPAddress.Text) Then
+                State.IPAddress = txtIPAddress.Text
             Else
-                Me.State.IPAddress = ""
+                State.IPAddress = ""
                 Dim Errs() As ValidationError = {New ValidationError("INVALID_IP_ADDRESS", GetType(ApsPublishingLog), Nothing, "Search", Nothing)}
                 ElitaPlusPage.SetLabelError(lblIPAddress)
                 Throw New BOValidationException(Errs, GetType(ApsPublishingLog).FullName)
             End If
 
-            Me.State.UserName = Me.txtUserName.Text
+            State.UserName = txtUserName.Text
 
-            Me.lblDateRange1.ForeColor = Me.lblAuditSource.ForeColor
-            Me.lblIPAddress.ForeColor = Me.lblAuditSource.ForeColor
+            lblDateRange1.ForeColor = lblAuditSource.ForeColor
+            lblIPAddress.ForeColor = lblAuditSource.ForeColor
 
-            If (Me.State.AuditLogsSearchDV Is Nothing) Then
+            If (State.AuditLogsSearchDV Is Nothing) Then
 
-                Me.State.AuditLogsSearchDV = AuditSecurityLogs.GetAuditLogsList(Me.State.AuditBeginDate,
-                                                                                    Me.State.AuditEndDate,
-                                                                                    Me.State.AuditSource,
-                                                                                    Me.State.AuditSecurityTypeCode,
-                                                                                    Me.State.IPAddress,
-                                                                                    Me.State.UserName)
+                State.AuditLogsSearchDV = AuditSecurityLogs.GetAuditLogsList(State.AuditBeginDate,
+                                                                                    State.AuditEndDate,
+                                                                                    State.AuditSource,
+                                                                                    State.AuditSecurityTypeCode,
+                                                                                    State.IPAddress,
+                                                                                    State.UserName)
             End If
 
-            If Me.State.SearchClick Then
-                Me.ValidSearchResultCountNew(Me.State.AuditLogsSearchDV.Count, True)
-                Me.State.SearchClick = False
+            If State.SearchClick Then
+                ValidSearchResultCountNew(State.AuditLogsSearchDV.Count, True)
+                State.SearchClick = False
             End If
-            Me.State.AuditLogsSearchDV.Sort = Me.State.SortExpression
-            Me.SortAndBindGrid()
+            State.AuditLogsSearchDV.Sort = State.SortExpression
+            SortAndBindGrid()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub SortAndBindGrid()
-        Me.State.bnoRow = False
-        Me.Grid.AutoGenerateColumns = False
-        Me.Grid.PageSize = Me.State.PageSize
+        State.bnoRow = False
+        Grid.AutoGenerateColumns = False
+        Grid.PageSize = State.PageSize
 
-        Me.State.PageIndex = Me.Grid.PageIndex
-        Me.Grid.DataSource = Me.State.AuditLogsSearchDV
-        HighLightSortColumn(Grid, Me.State.SortExpression)
-        Me.Grid.DataBind()
+        State.PageIndex = Grid.PageIndex
+        Grid.DataSource = State.AuditLogsSearchDV
+        HighLightSortColumn(Grid, State.SortExpression)
+        Grid.DataBind()
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-        Session("recCount") = Me.State.AuditLogsSearchDV.Count
-        Me.lblRecordCount.Text = Me.State.AuditLogsSearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        Session("recCount") = State.AuditLogsSearchDV.Count
+        lblRecordCount.Text = State.AuditLogsSearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
-            Me.State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.SelectedPageSize = Me.State.PageSize
+            State.PageSize = CType(cboPageSize.SelectedValue, Integer)
+            State.SelectedPageSize = State.PageSize
             'Me.State.PageIndex = NewCurrentPageIndex(Grid, State.SearchDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            Grid.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
+            State.PageIndex = Grid.PageIndex
 
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         'Dim itemType As ListItemType = CType(e.Row.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim btnViewCertificate As ImageButton
 
         Try
             If e.Row.RowType = DataControlRowType.DataRow OrElse (e.Row.RowType = DataControlRowType.Separator) Then
-                If (Not e.Row.Cells(Me.GRID_COL_CERTIFCATE_IMAGE_BUTTON_IDX).FindControl(GRID_COL_CERTIFCATE_IMAGE_BUTTON_CTRL) Is Nothing) Then
+                If (e.Row.Cells(GRID_COL_CERTIFCATE_IMAGE_BUTTON_IDX).FindControl(GRID_COL_CERTIFCATE_IMAGE_BUTTON_CTRL) IsNot Nothing) Then
 
                     '  Dim rowIndex As Integer = TryCast(TryCast(sender, Button).NamingContainer, GridViewRow).RowIndex
 
                     'Get the value of column from the DataKeys.
                     '                    Dim objCertificate As Object = Grid.DataKeys(0).Values(0)
                     If dvRow(AuditSecurityLogs.AuditLogsSearchDV.COL_NAME_X509_CERTIFICATE) Is System.DBNull.Value Then
-                        btnViewCertificate = CType(e.Row.Cells(Me.GRID_COL_CERTIFCATE_IMAGE_BUTTON_IDX).FindControl(GRID_COL_CERTIFCATE_IMAGE_BUTTON_CTRL), ImageButton)
+                        btnViewCertificate = CType(e.Row.Cells(GRID_COL_CERTIFCATE_IMAGE_BUTTON_IDX).FindControl(GRID_COL_CERTIFCATE_IMAGE_BUTTON_CTRL), ImageButton)
                         btnViewCertificate.Visible = False
                     End If
 
@@ -410,11 +410,11 @@ Public Class AuditListForm
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             If e.CommandName = SHOW_CERTIFICATE_CONTENT_COMMAND Then
                 Dim row As GridViewRow = CType(CType(e.CommandSource, Control).Parent.Parent, GridViewRow)
@@ -430,11 +430,11 @@ Public Class AuditListForm
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Sub PopulateCertificateDetail(ByVal rawData As String)
+    Sub PopulateCertificateDetail(rawData As String)
 
         Dim x509 As New X509Certificate2()
         x509.Import(System.Text.Encoding.Unicode.GetBytes(rawData))
@@ -458,11 +458,11 @@ Public Class AuditListForm
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     ''' 
-    Private Sub btnNewItemCancel_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCERTIFICATEPopupCancel.Click
+    Private Sub btnNewItemCancel_Click(sender As Object, e As System.EventArgs) Handles btnCERTIFICATEPopupCancel.Click
         Try
             mdlPopup.Hide()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 

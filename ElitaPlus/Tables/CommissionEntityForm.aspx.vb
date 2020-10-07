@@ -21,7 +21,7 @@ Partial Class CommissionEntityForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -87,21 +87,21 @@ Partial Class CommissionEntityForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Me.State.MyBO = New CommissionEntity(CType(Me.CallingParameters, Guid))
-                If Me.State.MyBO.BankInfoId.Equals(Guid.Empty) Then
-                    Me.State.MyBO.isBankInfoNeedDeletion = False
+                State.MyBO = New CommissionEntity(CType(CallingParameters, Guid))
+                If State.MyBO.BankInfoId.Equals(Guid.Empty) Then
+                    State.MyBO.isBankInfoNeedDeletion = False
                 Else
-                    Me.State.MyBO.isBankInfoNeedDeletion = True
+                    State.MyBO.isBankInfoNeedDeletion = True
                 End If
             Else
-                Me.State.IsNew = True
+                State.IsNew = True
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -114,68 +114,68 @@ Partial Class CommissionEntityForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As CommissionEntity
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As CommissionEntity, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As CommissionEntity, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.UpdateBreadCrum()
-        Me.MasterPage.MessageController.Clear()
+        UpdateBreadCrum()
+        MasterPage.MessageController.Clear()
         Try
-            If Not Me.IsPostBack Then
-                Me.MenuEnabled = False
-                Me.AddConfirmation(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
+            If Not IsPostBack Then
+                MenuEnabled = False
+                AddConfirmation(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
 
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New CommissionEntity
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New CommissionEntity
                 End If
 
                 Dim CompanyGroupId As New CompanyGroup(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
-                Me.State.MyBO.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                Me.State.use_comm_entity_type_id = CompanyGroupId.UseCommEntityTypeId
+                State.MyBO.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
+                State.use_comm_entity_type_id = CompanyGroupId.UseCommEntityTypeId
 
-                If Me.State.IsNew = True Then
+                If State.IsNew = True Then
                     CreateNew()
                 End If
 
-                Me.moBankInfoController.Visible = False
-                Me.moBankInfoController.ReAssignTabIndex(BankInfoStartIndex)
-                Me.moAddressController.ReAssignTabIndex(AddressInfoStartIndex)
-                Me.State.BankInfoBO = Nothing
+                moBankInfoController.Visible = False
+                moBankInfoController.ReAssignTabIndex(BankInfoStartIndex)
+                moAddressController.ReAssignTabIndex(AddressInfoStartIndex)
+                State.BankInfoBO = Nothing
                 PopulateDropdowns()
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                PopulateFormFromBOs()
+                EnableDisableFields()
             End If
             BindBoPropertiesToLabels()
             CheckIfComingFromSaveConfirm()
-            If Me.IsPostBack Then
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.GetSelectedItem(Me.cboPaymentMethodId)) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
-                    If (Not Me.State.BankInfoBO Is Nothing) Then
-                        Me.State.BankInfoBO.SourceCountryID = Me.AddressCtr.GetCountryValue
+            If IsPostBack Then
+                If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, GetSelectedItem(cboPaymentMethodId)) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
+                    If (State.BankInfoBO IsNot Nothing) Then
+                        State.BankInfoBO.SourceCountryID = AddressCtr.GetCountryValue
                     End If
                 End If
             Else
-                Me.AddLabelDecorations(Me.State.MyBO)
+                AddLabelDecorations(State.MyBO)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 #End Region
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("COMMISSION_ENTITY")
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("COMMISSION_ENTITY")
-        Me.MasterPage.MessageController.Clear()
-        Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("TABLES") & ElitaBase.Sperator & Me.MasterPage.PageTab
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("COMMISSION_ENTITY")
+        MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("COMMISSION_ENTITY")
+        MasterPage.MessageController.Clear()
+        MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("TABLES") & ElitaBase.Sperator & MasterPage.PageTab
     End Sub
 
 
@@ -187,7 +187,7 @@ Partial Class CommissionEntityForm
         ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, True)
 
-        If Me.State.MyBO.IsNew Then
+        If State.MyBO.IsNew Then
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
@@ -200,16 +200,16 @@ Partial Class CommissionEntityForm
             lblDisplay.Visible = False
             cboDisplayId.Visible = False
         End If
-        If Me.State.use_comm_entity_type_id.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
-            ControlMgr.SetVisibleControl(Me, Me.lblTaxid, True)
-            ControlMgr.SetVisibleControl(Me, Me.txtTaxid, True)
-            ControlMgr.SetVisibleControl(Me, Me.lblCommissionEntityTypeId, True)
-            ControlMgr.SetVisibleControl(Me, Me.cboCommissionEntityTypeId, True)
+        If State.use_comm_entity_type_id.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
+            ControlMgr.SetVisibleControl(Me, lblTaxid, True)
+            ControlMgr.SetVisibleControl(Me, txtTaxid, True)
+            ControlMgr.SetVisibleControl(Me, lblCommissionEntityTypeId, True)
+            ControlMgr.SetVisibleControl(Me, cboCommissionEntityTypeId, True)
         Else
-            ControlMgr.SetVisibleControl(Me, Me.lblTaxid, False)
-            ControlMgr.SetVisibleControl(Me, Me.txtTaxid, False)
-            ControlMgr.SetVisibleControl(Me, Me.lblCommissionEntityTypeId, False)
-            ControlMgr.SetVisibleControl(Me, Me.cboCommissionEntityTypeId, False)
+            ControlMgr.SetVisibleControl(Me, lblTaxid, False)
+            ControlMgr.SetVisibleControl(Me, txtTaxid, False)
+            ControlMgr.SetVisibleControl(Me, lblCommissionEntityTypeId, False)
+            ControlMgr.SetVisibleControl(Me, cboCommissionEntityTypeId, False)
         End If
 
         AddressCtr.EnableControls(False, True)
@@ -217,20 +217,20 @@ Partial Class CommissionEntityForm
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, PAYMENTMETHOD_PROPERTY, Me.lblPaymentMethod)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, ENTITYNAME_PROPERTY, Me.lblEntityName)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, EMAIL_PROPERTY, Me.lblEmail)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, PHONE_PROPERTY, Me.lblPhone)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, DISPLAY_PROPERTY, Me.lblDisplay)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, TAX_ID, Me.lblTaxid)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, COMMISSION_ENTITY_TYPE_ID, Me.lblCommissionEntityTypeId)
+        BindBOPropertyToLabel(State.MyBO, PAYMENTMETHOD_PROPERTY, lblPaymentMethod)
+        BindBOPropertyToLabel(State.MyBO, ENTITYNAME_PROPERTY, lblEntityName)
+        BindBOPropertyToLabel(State.MyBO, EMAIL_PROPERTY, lblEmail)
+        BindBOPropertyToLabel(State.MyBO, PHONE_PROPERTY, lblPhone)
+        BindBOPropertyToLabel(State.MyBO, DISPLAY_PROPERTY, lblDisplay)
+        BindBOPropertyToLabel(State.MyBO, TAX_ID, lblTaxid)
+        BindBOPropertyToLabel(State.MyBO, COMMISSION_ENTITY_TYPE_ID, lblCommissionEntityTypeId)
 
-        Me.ClearGridHeadersAndLabelsErrSign()
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
     Protected Sub PopulateDropdowns()
         Dim i As Integer
         Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-        With Me.State.MyBO
+        With State.MyBO
 
             'Me.BindListControlToDataView(Me.cboPaymentMethodId, LookupListNew.GetPaymentMethodLookupList(langId), , , True)
             Dim paymentMethod As ListItem() = CommonConfigManager.Current.ListManager.GetList("PMTHD", Thread.CurrentPrincipal.GetLanguageCode())
@@ -266,46 +266,46 @@ Partial Class CommissionEntityForm
                 Exit For
             End If
         Next
-        If Me.State.IsNew = True Then
+        If State.IsNew = True Then
             cboDisplayId.Items.FindByText(oYes_String).Selected = True
         End If
     End Sub
     Protected Sub PopulateFormFromBOs()
-        With Me.State.MyBO
+        With State.MyBO
 
-            Me.PopulateControlFromBOProperty(Me.txtEntityName, .EntityName)
-            Me.PopulateControlFromBOProperty(Me.txtPhone, .Phone)
-            Me.PopulateControlFromBOProperty(Me.txtEmail, .Email)
-            Me.PopulateControlFromBOProperty(Me.txtTaxid, .TaxId)
+            PopulateControlFromBOProperty(txtEntityName, .EntityName)
+            PopulateControlFromBOProperty(txtPhone, .Phone)
+            PopulateControlFromBOProperty(txtEmail, .Email)
+            PopulateControlFromBOProperty(txtTaxid, .TaxId)
 
-            If Not Me.State.IsNew Then
-                Me.SetSelectedItem(Me.cboDisplayId, .DisplayId)
-                Me.SetSelectedItem(Me.cboPaymentMethodId, .PaymentMethodId)
-                Me.SetSelectedItem(Me.cboCommissionEntityTypeId, .CommissionEntityTypeid)
+            If Not State.IsNew Then
+                SetSelectedItem(cboDisplayId, .DisplayId)
+                SetSelectedItem(cboPaymentMethodId, .PaymentMethodId)
+                SetSelectedItem(cboCommissionEntityTypeId, .CommissionEntityTypeid)
             End If
 
-            AddressCtr.Bind(Me.State.MyBO)
+            AddressCtr.Bind(State.MyBO)
 
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.MyBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
-                Me.moBankInfoController.Visible = True
-                Me.State.BankInfoBO = Me.State.MyBO.Add_BankInfo
-                Me.UserBankInfoCtr.SetTheRequiredFields()
-                Me.UserBankInfoCtr.Bind(Me.State.BankInfoBO, Me.MasterPage.MessageController)
-                Me.State.BankInfoBO.SourceCountryID = Me.AddressCtr.GetCountryValue
+            If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, State.MyBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
+                moBankInfoController.Visible = True
+                State.BankInfoBO = State.MyBO.Add_BankInfo
+                UserBankInfoCtr.SetTheRequiredFields()
+                UserBankInfoCtr.Bind(State.BankInfoBO, MasterPage.MessageController)
+                State.BankInfoBO.SourceCountryID = AddressCtr.GetCountryValue
             Else
-                Me.State.BankInfoBO = Nothing
-                Me.moBankInfoController.Visible = False
+                State.BankInfoBO = Nothing
+                moBankInfoController.Visible = False
             End If
 
 
-            If Me.State.MyBO.BankInfoId.Equals(Guid.Empty) Then
-                Me.State.MyBO.IsNewBankInfo = True
+            If State.MyBO.BankInfoId.Equals(Guid.Empty) Then
+                State.MyBO.IsNewBankInfo = True
             Else
-                Me.State.MyBO.IsNewBankInfo = False
+                State.MyBO.IsNewBankInfo = False
             End If
 
         End With
-        If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.MyBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
+        If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, State.MyBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
             pnlLine.Visible = False
         Else
             pnlLine.Visible = True
@@ -314,227 +314,227 @@ Partial Class CommissionEntityForm
 
     Protected Sub PopulateBOsFromForm()
 
-        With Me.State.MyBO
+        With State.MyBO
 
-            Me.PopulateBOProperty(Me.State.MyBO, "EntityName", Me.txtEntityName)
-            Me.PopulateBOProperty(Me.State.MyBO, "Phone", Me.txtPhone)
-            Me.PopulateBOProperty(Me.State.MyBO, "Email", Me.txtEmail)
-            Me.PopulateBOProperty(Me.State.MyBO, "PaymentMethodId", Me.cboPaymentMethodId)
-            Me.PopulateBOProperty(Me.State.MyBO, "DisplayId", Me.cboDisplayId)
-            Me.PopulateBOProperty(Me.State.MyBO, "TaxId", Me.txtTaxid)
-            Me.PopulateBOProperty(Me.State.MyBO, "CommissionEntityTypeid", Me.cboCommissionEntityTypeId)
+            PopulateBOProperty(State.MyBO, "EntityName", txtEntityName)
+            PopulateBOProperty(State.MyBO, "Phone", txtPhone)
+            PopulateBOProperty(State.MyBO, "Email", txtEmail)
+            PopulateBOProperty(State.MyBO, "PaymentMethodId", cboPaymentMethodId)
+            PopulateBOProperty(State.MyBO, "DisplayId", cboDisplayId)
+            PopulateBOProperty(State.MyBO, "TaxId", txtTaxid)
+            PopulateBOProperty(State.MyBO, "CommissionEntityTypeid", cboCommissionEntityTypeId)
 
-            Me.State.MyBO.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-            Me.AddressCtr.PopulateBOFromControl(True)
+            State.MyBO.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
+            AddressCtr.PopulateBOFromControl(True)
             PopulateBankBOFromForm()
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
     Sub PopulateBankBOFromForm()
-        If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.MyBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
-            Me.State.MyBO.BankInfoId = Me.State.BankInfoBO.Id
-            Me.UserBankInfoCtr.PopulateBOFromControl()
+        If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, State.MyBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
+            State.MyBO.BankInfoId = State.BankInfoBO.Id
+            UserBankInfoCtr.PopulateBOFromControl()
         Else
-            Me.State.BankInfoBO = Nothing
-            Me.State.MyBO.BankInfoId = Nothing
+            State.BankInfoBO = Nothing
+            State.MyBO.BankInfoId = Nothing
         End If
     End Sub
 
     Protected Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-        Me.State.MyBO = New CommissionEntity
-        Me.State.IsNew = True
+        State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+        State.MyBO = New CommissionEntity
+        State.IsNew = True
         PopulateDropdowns()
-        Me.PopulateFormFromBOs()
-        Me.cboPaymentMethodId.SelectedIndex = -1
-        Me.EnableDisableFields()
+        PopulateFormFromBOs()
+        cboPaymentMethodId.SelectedIndex = -1
+        EnableDisableFields()
     End Sub
 
     Protected Sub CreateNewWithCopy()
-        Me.PopulateBOsFromForm()
+        PopulateBOsFromForm()
 
         Dim newObj As New CommissionEntity
-        newObj.Copy(Me.State.MyBO)
+        newObj.Copy(State.MyBO)
         If Not newObj.BankInfoId.Equals(Guid.Empty) Then
             ' copy the original bankinfo
             newObj.BankInfoId = Guid.Empty
             newObj.Add_BankInfo()
             newObj.BankInfoId = newObj.CurrentBankInfo.Id
-            newObj.CurrentBankInfo.CopyFrom(Me.State.MyBO.CurrentBankInfo)
-            Me.State.BankInfoBO = newObj.CurrentBankInfo
-            Me.UserBankInfoCtr.Bind(Me.State.BankInfoBO, Me.MasterPage.MessageController)
+            newObj.CurrentBankInfo.CopyFrom(State.MyBO.CurrentBankInfo)
+            State.BankInfoBO = newObj.CurrentBankInfo
+            UserBankInfoCtr.Bind(State.BankInfoBO, MasterPage.MessageController)
         End If
 
-        Me.State.MyBO = newObj
-        Me.State.MyBO.EntityName = Nothing
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        State.MyBO = newObj
+        State.MyBO.EntityName = Nothing
+        PopulateFormFromBOs()
+        EnableDisableFields()
         'Me.State.MyBO.IsNewWithCopy = True
         'create the backup copy
-        Me.State.ScreenSnapShotBO = New CommissionEntity
-        Me.State.ScreenSnapShotBO.Copy(Me.State.MyBO)
+        State.ScreenSnapShotBO = New CommissionEntity
+        State.ScreenSnapShotBO.Copy(State.MyBO)
 
         'Me.PopulateBOsFromForm()
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_OK Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                Me.State.MyBO.Save()
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_OK Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                State.MyBO.Save()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNew()
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNewWithCopy()
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_CANCEL Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_CANCEL Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                    MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
             End Select
         End If
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
-    Private Sub cboPaymentMethodId_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPaymentMethodId.SelectedIndexChanged
+    Private Sub cboPaymentMethodId_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPaymentMethodId.SelectedIndexChanged
         Try
             'Me.PopulateBOProperty(Me.State.MyBO, "PaymentMethodId", Me.cboPaymentMethodId)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.GetSelectedItem(Me.cboPaymentMethodId)) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
+            If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, GetSelectedItem(cboPaymentMethodId)) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
                 ' SHOW THE BANK INFO USER CONTROL HERE -----
-                Me.moBankInfoController.Visible = True
-                Me.State.BankInfoBO = Nothing
-                Me.State.BankInfoBO = Me.State.MyBO.Add_BankInfo
-                Me.UserBankInfoCtr.SetTheRequiredFields()
-                Me.UserBankInfoCtr.Bind(Me.State.BankInfoBO, Me.MasterPage.MessageController)
-                If Not (Me.AddressCtr.GetCountryValue.Equals(Guid.Empty)) Then
-                    Me.UserBankInfoCtr.SetCountryValue(Me.AddressCtr.GetCountryValue)
-                    Me.State.BankInfoBO.SourceCountryID = Me.AddressCtr.GetCountryValue
+                moBankInfoController.Visible = True
+                State.BankInfoBO = Nothing
+                State.BankInfoBO = State.MyBO.Add_BankInfo
+                UserBankInfoCtr.SetTheRequiredFields()
+                UserBankInfoCtr.Bind(State.BankInfoBO, MasterPage.MessageController)
+                If Not (AddressCtr.GetCountryValue.Equals(Guid.Empty)) Then
+                    UserBankInfoCtr.SetCountryValue(AddressCtr.GetCountryValue)
+                    State.BankInfoBO.SourceCountryID = AddressCtr.GetCountryValue
                 End If
                 pnlLine.Visible = False
             Else
-                Me.moBankInfoController.Visible = False
-                Me.State.BankInfoBO = Nothing
+                moBankInfoController.Visible = False
+                State.BankInfoBO = Nothing
                 pnlLine.Visible = True
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFromForm()
-            If Me.State.MyBO.IsDirty Then
-                Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            PopulateBOsFromForm()
+            If State.MyBO.IsDirty Then
+                AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            If Me.State.MyBO.ConstrVoilation = False Then
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+            If State.MyBO.ConstrVoilation = False Then
+                HandleErrors(ex, MasterPage.MessageController)
+                AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.LastErrMsg = MasterPage.MessageController.Text
             Else
-                Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
             End If
         End Try
     End Sub
-    Private Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
         Try
-            Me.PopulateBOsFromForm()
-            If (Me.State.MyBO.IsDirty) Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+            PopulateBOsFromForm()
+            If (State.MyBO.IsDirty) Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
-                Me.CreateNewWithCopy()
+                CreateNewWithCopy()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            Me.State.MyBO.IsDelete = True
-            Me.State.MyBO.DeleteAndSave()
-            Me.State.HasDataChanged = True
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+            State.MyBO.IsDelete = True
+            State.MyBO.DeleteAndSave()
+            State.HasDataChanged = True
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.PopulateBOsFromForm()
-            If (Me.State.MyBO.IsDirty) Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
-            Else
-                Me.CreateNew()
-            End If
-        Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-        End Try
-    End Sub
-
-    Private Sub btnApply_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
-        Try
-            Me.PopulateBOsFromForm()
-            If Me.State.MyBO.IsDirty Then
-                Me.State.MyBO.Save()
-                Me.State.HasDataChanged = True
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
-                Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-            Else
-                Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
-            End If
-        Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-        End Try
-    End Sub
-
-    Private Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
-        Try
-            If Not Me.State.MyBO.IsNew Then
-                'Reload from the DB
-                Me.State.MyBO = New CommissionEntity(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
-                'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+            PopulateBOsFromForm()
+            If (State.MyBO.IsDirty) Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
                 CreateNew()
             End If
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub btnApply_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnApply_WRITE.Click
+        Try
+            PopulateBOsFromForm()
+            If State.MyBO.IsDirty Then
+                State.MyBO.Save()
+                State.HasDataChanged = True
+                PopulateFormFromBOs()
+                EnableDisableFields()
+                AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+            Else
+                AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
+            End If
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub btnUndo_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Try
+            If Not State.MyBO.IsNew Then
+                'Reload from the DB
+                State.MyBO = New CommissionEntity(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
+                'It was a new with copy
+                State.MyBO.Clone(State.ScreenSnapShotBO)
+            Else
+                CreateNew()
+            End If
+            PopulateFormFromBOs()
+            EnableDisableFields()
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region

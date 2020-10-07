@@ -23,20 +23,20 @@ Partial Class DealerInvoiceForm
 
 #Region "Page Events"
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.MasterPage.MessageController.Clear()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        MasterPage.MessageController.Clear()
 
 
-        Me.UpdateBreadCrum()
-        If Not Me.IsPostBack Then
+        UpdateBreadCrum()
+        If Not IsPostBack Then
             PopulateDropdowns()
         End If
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
     Private Sub PopulateDropdowns()
@@ -79,7 +79,7 @@ Partial Class DealerInvoiceForm
             oListContext.CompanyId = UserCompanies(Index)
             Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
-                If Not oDealerList Is Nothing Then
+                If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
                 Else
                     oDealerList = oDealerListForCompany.Clone()
@@ -127,7 +127,7 @@ Partial Class DealerInvoiceForm
             acctPeriodMonth = $"{acctYear.ToString("0000")}{acctMonth.ToString("00")}"
             Dim afaInvoiceData As New AfaInvoiceData(dealerId, acctPeriodMonth)
 
-            If Not afaInvoiceData Is Nothing AndAlso
+            If afaInvoiceData IsNot Nothing AndAlso
                 Not String.IsNullOrEmpty(afaInvoiceData.DirectoryName) AndAlso
                 Not String.IsNullOrEmpty(afaInvoiceData.Filename) Then
 
@@ -138,14 +138,14 @@ Partial Class DealerInvoiceForm
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
 
 
     End Sub
 
-    Private Sub TransferFilesUnixWebServer(ByVal fileName As String, Optional ByVal directoryName As String = "afa_data")
+    Private Sub TransferFilesUnixWebServer(fileName As String, Optional ByVal directoryName As String = "afa_data")
 
         Dim objUnixFTP As New sFtp(AppConfig.UnixServer.HostName, AppConfig.UnixServer.FtpDirectory.Replace("/ftp", $"/{directoryName}"), AppConfig.UnixServer.UserId, AppConfig.UnixServer.Password)
 

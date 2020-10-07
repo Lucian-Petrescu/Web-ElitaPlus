@@ -9,48 +9,48 @@ Public Class ClaimTax
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ClaimTaxDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -58,23 +58,23 @@ Public Class ClaimTax
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ClaimTaxDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -114,9 +114,9 @@ Public Class ClaimTax
                 Return New Guid(CType(row(ClaimTaxDAL.COL_NAME_CLAIM_INVOICE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimTaxDAL.COL_NAME_CLAIM_INVOICE_ID, Value)
+            SetValue(ClaimTaxDAL.COL_NAME_CLAIM_INVOICE_ID, Value)
         End Set
     End Property
 
@@ -131,9 +131,9 @@ Public Class ClaimTax
                 Return New Guid(CType(row(ClaimTaxDAL.COL_NAME_DISBURSEMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimTaxDAL.COL_NAME_DISBURSEMENT_ID, Value)
+            SetValue(ClaimTaxDAL.COL_NAME_DISBURSEMENT_ID, Value)
         End Set
     End Property
 
@@ -148,9 +148,9 @@ Public Class ClaimTax
                 Return New Guid(CType(row(ClaimTaxDAL.COL_NAME_TAX_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimTaxDAL.COL_NAME_TAX_TYPE_ID, Value)
+            SetValue(ClaimTaxDAL.COL_NAME_TAX_TYPE_ID, Value)
         End Set
     End Property
 
@@ -165,9 +165,9 @@ Public Class ClaimTax
                 Return New DecimalType(CType(Row(ClaimTaxDAL.COL_NAME_TAX1_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimTaxDAL.COL_NAME_TAX1_AMOUNT, Value)
+            SetValue(ClaimTaxDAL.COL_NAME_TAX1_AMOUNT, Value)
         End Set
     End Property
 
@@ -182,9 +182,9 @@ Public Class ClaimTax
                 Return CType(row(ClaimTaxDAL.COL_NAME_TAX1_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimTaxDAL.COL_NAME_TAX1_DESCRIPTION, Value)
+            SetValue(ClaimTaxDAL.COL_NAME_TAX1_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -199,9 +199,9 @@ Public Class ClaimTax
                 Return New DecimalType(CType(row(ClaimTaxDAL.COL_NAME_TAX2_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimTaxDAL.COL_NAME_TAX2_AMOUNT, Value)
+            SetValue(ClaimTaxDAL.COL_NAME_TAX2_AMOUNT, Value)
         End Set
     End Property
 
@@ -216,9 +216,9 @@ Public Class ClaimTax
                 Return CType(row(ClaimTaxDAL.COL_NAME_TAX2_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimTaxDAL.COL_NAME_TAX2_DESCRIPTION, Value)
+            SetValue(ClaimTaxDAL.COL_NAME_TAX2_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -233,9 +233,9 @@ Public Class ClaimTax
                 Return New DecimalType(CType(row(ClaimTaxDAL.COL_NAME_TAX3_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimTaxDAL.COL_NAME_TAX3_AMOUNT, Value)
+            SetValue(ClaimTaxDAL.COL_NAME_TAX3_AMOUNT, Value)
         End Set
     End Property
 
@@ -250,9 +250,9 @@ Public Class ClaimTax
                 Return CType(row(ClaimTaxDAL.COL_NAME_TAX3_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimTaxDAL.COL_NAME_TAX3_DESCRIPTION, Value)
+            SetValue(ClaimTaxDAL.COL_NAME_TAX3_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -267,9 +267,9 @@ Public Class ClaimTax
                 Return New DecimalType(CType(row(ClaimTaxDAL.COL_NAME_TAX4_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimTaxDAL.COL_NAME_TAX4_AMOUNT, Value)
+            SetValue(ClaimTaxDAL.COL_NAME_TAX4_AMOUNT, Value)
         End Set
     End Property
 
@@ -284,9 +284,9 @@ Public Class ClaimTax
                 Return CType(row(ClaimTaxDAL.COL_NAME_TAX4_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimTaxDAL.COL_NAME_TAX4_DESCRIPTION, Value)
+            SetValue(ClaimTaxDAL.COL_NAME_TAX4_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -301,9 +301,9 @@ Public Class ClaimTax
                 Return New DecimalType(CType(row(ClaimTaxDAL.COL_NAME_TAX5_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimTaxDAL.COL_NAME_TAX5_AMOUNT, Value)
+            SetValue(ClaimTaxDAL.COL_NAME_TAX5_AMOUNT, Value)
         End Set
     End Property
 
@@ -318,9 +318,9 @@ Public Class ClaimTax
                 Return CType(row(ClaimTaxDAL.COL_NAME_TAX5_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimTaxDAL.COL_NAME_TAX5_DESCRIPTION, Value)
+            SetValue(ClaimTaxDAL.COL_NAME_TAX5_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -335,9 +335,9 @@ Public Class ClaimTax
                 Return New DecimalType(CType(row(ClaimTaxDAL.COL_NAME_TAX6_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimTaxDAL.COL_NAME_TAX6_AMOUNT, Value)
+            SetValue(ClaimTaxDAL.COL_NAME_TAX6_AMOUNT, Value)
         End Set
     End Property
 
@@ -352,9 +352,9 @@ Public Class ClaimTax
                 Return CType(row(ClaimTaxDAL.COL_NAME_TAX6_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimTaxDAL.COL_NAME_TAX6_DESCRIPTION, Value)
+            SetValue(ClaimTaxDAL.COL_NAME_TAX6_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -367,15 +367,15 @@ Public Class ClaimTax
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ClaimTaxDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -383,7 +383,7 @@ Public Class ClaimTax
         End Try
     End Sub
 
-    Public Shared Function GetClaimTaxList(ByVal claimInvoiceID As Guid) As ClaimTaxSearchDV
+    Public Shared Function GetClaimTaxList(claimInvoiceID As Guid) As ClaimTaxSearchDV
 
         Try
             Dim dal As New ClaimTaxDAL
@@ -394,7 +394,7 @@ Public Class ClaimTax
 
     End Function
 
-    Public Shared Function GetClaimTaxCountry(ByVal claimID As Guid) As Guid
+    Public Shared Function GetClaimTaxCountry(claimID As Guid) As Guid
         Try
             Dim dal As New ClaimTaxDAL
             Dim ds As DataSet, guidCountryID As Guid, drResult As DataRow
@@ -441,24 +441,24 @@ Public Class ClaimTax
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property ClaimInvoiceId(ByVal row) As Guid
+        Public Shared ReadOnly Property ClaimInvoiceId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_CLAIM_INVOICE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property TaxTypeId(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property TaxTypeId(row As DataRow) As String
             Get
                 Return row(COL_TAX_TYPE_ID).ToString
             End Get
         End Property
 
 
-        Public Shared ReadOnly Property Desc1(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Desc1(row As DataRow) As String
             Get
                 Return row(COL_TAX1_DESCRIPTION).ToString
             End Get

@@ -70,8 +70,8 @@ Public Class GetSvcClaims
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
     End Sub
 
     'Initialization code for new objects
@@ -81,10 +81,10 @@ Public Class GetSvcClaims
     Private Sub Load(ByVal ds As GetSvcClaimsDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As BOValidationException
             Throw ex
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -97,10 +97,10 @@ Public Class GetSvcClaims
     End Sub
 
     Private Sub BuildMethodOfRepairArrayList()
-        If Me._methodOfRepairIds Is Nothing Then Me._methodOfRepairIds = New ArrayList
+        If _methodOfRepairIds Is Nothing Then _methodOfRepairIds = New ArrayList
 
         ' Split string based on solid pipe
-        Dim oList As String() = Me.MethodOfRepair.Split(New Char() {"|"c})
+        Dim oList As String() = MethodOfRepair.Split(New Char() {"|"c})
 
         ' Use For Each loop over oList to get the method of repair id
         Dim word As String
@@ -109,15 +109,15 @@ Public Class GetSvcClaims
             If oMOR.Equals(Guid.Empty) Then
                 Throw New ElitaPlusException("GetSvcClaims Error: ", Common.ErrorCodes.INVALID_METHOD_OF_REPAIR)
             Else
-                Me._methodOfRepairIds.Add(oMOR)
+                _methodOfRepairIds.Add(oMOR)
             End If
         Next
 
     End Sub
     Private Sub BuildClaimExtendedStatusIDsList()
-        If Me._ClaimExtendedStatusIds Is Nothing Then Me._ClaimExtendedStatusIds = New ArrayList
+        If _ClaimExtendedStatusIds Is Nothing Then _ClaimExtendedStatusIds = New ArrayList
         ' Split string based on solid pipe
-        Dim oList As String() = Me.ClaimExtendedStatusCode.Split(New Char() {"|"c})
+        Dim oList As String() = ClaimExtendedStatusCode.Split(New Char() {"|"c})
 
         ' Use For Each loop over oList to get the claim extended status id
         Dim word As String
@@ -127,17 +127,17 @@ Public Class GetSvcClaims
             If oCES.Equals(Guid.Empty) Then
                 Throw New ElitaPlusException("GetSvcClaims Error: ", Common.ErrorCodes.INVALID_CLAIM_EXTENDED_STATUS_CODE)
             Else
-                Me._ClaimExtendedStatusIds.Add(oCES)
+                _ClaimExtendedStatusIds.Add(oCES)
             End If
         Next
     End Sub
 
     Private Sub BuildClaimTypeList()
 
-        If Me._claimTypeIds Is Nothing Then Me._claimTypeIds = New ArrayList
+        If _claimTypeIds Is Nothing Then _claimTypeIds = New ArrayList
 
         ' Split string based on solid pipe
-        Dim oList As String() = Me.ClaimType.Split(New Char() {"|"c})
+        Dim oList As String() = ClaimType.Split(New Char() {"|"c})
 
         ' Use For Each loop over oList to get the claim typer id
         Dim word As String
@@ -146,19 +146,19 @@ Public Class GetSvcClaims
             If oClaimTypeID.Equals(Guid.Empty) Then
                 Throw New ElitaPlusException("GetSvcClaims Error: ", Common.ErrorCodes.INVALID_CLAIM_TYPE_CODE)
             Else
-                Me._claimTypeIds.Add(oClaimTypeID)
+                _claimTypeIds.Add(oClaimTypeID)
             End If
         Next
 
     End Sub
     Private Sub BuildClaimExtendedStatusOwnerCodeList()
-        If Me._ClaimExtendedStatusOwnerIds Is Nothing Then Me._ClaimExtendedStatusOwnerIds = New ArrayList
+        If _ClaimExtendedStatusOwnerIds Is Nothing Then _ClaimExtendedStatusOwnerIds = New ArrayList
 
         ' We want to split this input string
-        Dim s As String = Me.MethodOfRepair
+        Dim s As String = MethodOfRepair
 
         ' Split string based on solid pipe
-        Dim oList As String() = Me.ClaimExtendedStatusOwnerCode.Split(New Char() {"|"c})
+        Dim oList As String() = ClaimExtendedStatusOwnerCode.Split(New Char() {"|"c})
 
         ' Use For Each loop over oList to get the claim extended status id
         Dim word As String
@@ -167,7 +167,7 @@ Public Class GetSvcClaims
             If oCES.Equals(Guid.Empty) Then
                 Throw New ElitaPlusException("GetSvcClaims Error: ", Common.ErrorCodes.INVALID_CLAIM_EXTENDED_STATUS_OWNER_CODE)
             Else
-                Me._ClaimExtendedStatusOwnerIds.Add(oCES)
+                _ClaimExtendedStatusOwnerIds.Add(oCES)
             End If
         Next
 
@@ -189,45 +189,45 @@ Public Class GetSvcClaims
                 ElseIf .IsService_Center_CodeNull And Not .IsCertificate_NumberNull And .IsCompany_CodeNull Then
                     Throw New BOValidationException("GetSvcClaims Error: ", Common.ErrorCodes.WS_COMPANY_CODE_IS_REQUIRED)
                 End If
-                If Not .IsService_Center_CodeNull Then Me.ServiceCenterCode = .Service_Center_Code
-                If Not .IsClaim_StatusNull Then Me.ClaimStatus = .Claim_Status 'A|C|D|P
+                If Not .IsService_Center_CodeNull Then ServiceCenterCode = .Service_Center_Code
+                If Not .IsClaim_StatusNull Then ClaimStatus = .Claim_Status 'A|C|D|P
                 If Not .IsClaim_TypeNull Then
-                    Me.ClaimType = .Claim_Type     'RT|SVC|RPR
-                    Me.BuildClaimTypeList()
+                    ClaimType = .Claim_Type     'RT|SVC|RPR
+                    BuildClaimTypeList()
                 End If
                 If Not .IsMethod_Of_RepairNull Then
-                    Me.MethodOfRepair = .Method_Of_Repair
+                    MethodOfRepair = .Method_Of_Repair
                     BuildMethodOfRepairArrayList()
                 End If
-                Me.SortBy = .Sort_By
-                Me.SortOrder = .Sort_Order
-                Me.PageSize = .Page_Size
-                Me.PageNumber = .Page_Number
-                If Not .IsClaim_NumberNull Then Me.ClaimNumber = .Claim_Number
-                If Not .IsAuthorization_NumberNull Then Me.AuthorizationNumber = .Authorization_Number
-                If Not .IsCertificate_NumberNull Then Me.CertificateNumber = .Certificate_Number
-                If Not .IsCustomer_NameNull Then Me.CustomerName = .Customer_Name
-                If Not .IsFrom_Claim_Created_DateNull Then Me.FromClaimCreatedDate = .From_Claim_Created_Date
-                If Not .IsTo_Claim_Created_DateNull Then Me.ToClaimCreatedDate = .To_Claim_Created_Date
-                If Not .IsFrom_Visit_DateNull Then Me.FromVisitDate = .From_Visit_Date
-                If Not .IsTo_Visit_DateNull Then Me.ToVisitDate = .To_Visit_Date
+                SortBy = .Sort_By
+                SortOrder = .Sort_Order
+                PageSize = .Page_Size
+                PageNumber = .Page_Number
+                If Not .IsClaim_NumberNull Then ClaimNumber = .Claim_Number
+                If Not .IsAuthorization_NumberNull Then AuthorizationNumber = .Authorization_Number
+                If Not .IsCertificate_NumberNull Then CertificateNumber = .Certificate_Number
+                If Not .IsCustomer_NameNull Then CustomerName = .Customer_Name
+                If Not .IsFrom_Claim_Created_DateNull Then FromClaimCreatedDate = .From_Claim_Created_Date
+                If Not .IsTo_Claim_Created_DateNull Then ToClaimCreatedDate = .To_Claim_Created_Date
+                If Not .IsFrom_Visit_DateNull Then FromVisitDate = .From_Visit_Date
+                If Not .IsTo_Visit_DateNull Then ToVisitDate = .To_Visit_Date
                 If Not .IsClaim_Extended_Status_CodeNull Then
-                    Me.ClaimExtendedStatusCode = .Claim_Extended_Status_Code
+                    ClaimExtendedStatusCode = .Claim_Extended_Status_Code
                     BuildClaimExtendedStatusIDsList()
                 End If
                 If Not .IsClaim_Extended_Status_Owner_CodeNull Then
-                    Me.ClaimExtendedStatusOwnerCode = .Claim_Extended_Status_Owner_Code
+                    ClaimExtendedStatusOwnerCode = .Claim_Extended_Status_Owner_Code
                     BuildClaimExtendedStatusOwnerCodeList()
                 End If
-                If Not .IsTurn_Around_Time_Range_CodeNull Then Me.TurnAroundTimeRangeCode = .Turn_Around_Time_Range_Code
-                If Not .IsBatch_NumberNull Then Me.BatchNumber = .Batch_Number
-                If Not .IsSerial_NumberNull Then Me.SerialNumber = .Serial_Number
-                If Not .IsWork_PhoneNull Then Me.WorkPhone = .Work_Phone
-                If Not .IsCompany_CodeNull Then Me.CompanyCode = .Company_Code
-                If Not .IsHome_PhoneNull Then Me.HomePhone = .Home_Phone
-                If Not .IsLoss_DateNull Then Me.LossDate = .Loss_Date
-                If Not .IsClaim_Paid_AmountNull Then Me.ClaimPaidAmount = .Claim_Paid_Amount
-                If Not .IsBonus_TotalNull Then Me.BonusTotal = .Bonus_Total
+                If Not .IsTurn_Around_Time_Range_CodeNull Then TurnAroundTimeRangeCode = .Turn_Around_Time_Range_Code
+                If Not .IsBatch_NumberNull Then BatchNumber = .Batch_Number
+                If Not .IsSerial_NumberNull Then SerialNumber = .Serial_Number
+                If Not .IsWork_PhoneNull Then WorkPhone = .Work_Phone
+                If Not .IsCompany_CodeNull Then CompanyCode = .Company_Code
+                If Not .IsHome_PhoneNull Then HomePhone = .Home_Phone
+                If Not .IsLoss_DateNull Then LossDate = .Loss_Date
+                If Not .IsClaim_Paid_AmountNull Then ClaimPaidAmount = .Claim_Paid_Amount
+                If Not .IsBonus_TotalNull Then BonusTotal = .Bonus_Total
 
             End With
         Catch ex As BOValidationException
@@ -246,54 +246,54 @@ Public Class GetSvcClaims
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
             Dim oServiceCenterClaimsSearchData As New ClaimDAL.ServiceCenterClaimsSearchData
-            If Not Me.ServiceCenterCode = Nothing Then
-                Dim oServiceCenter As New ServiceCenter(Me.ServiceCenterCode)
+            If Not ServiceCenterCode = Nothing Then
+                Dim oServiceCenter As New ServiceCenter(ServiceCenterCode)
                 If oServiceCenter Is Nothing Then
                     Throw New BOValidationException("GetSvcClaims Error: ", Common.ErrorCodes.INVALID_SERVICE_CENTER_CODE)
                 End If
                 oServiceCenterClaimsSearchData.ServiceCenterId = oServiceCenter.Id
             End If
 
-            If Not Me.CompanyCode = Nothing AndAlso GetCompanyId(Me.CompanyCode) = Nothing Then
+            If Not CompanyCode = Nothing AndAlso GetCompanyId(CompanyCode) = Nothing Then
                 Throw New BOValidationException("GetPreInvoice Error: Invalid Company Code ", Assurant.ElitaPlus.Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
             End If
 
-            If Not Me.ClaimStatus = Nothing Then
-                oServiceCenterClaimsSearchData.ClaimStatus = Me.ClaimStatus.ToUpper
+            If Not ClaimStatus = Nothing Then
+                oServiceCenterClaimsSearchData.ClaimStatus = ClaimStatus.ToUpper
             End If
-            If Not Me.ClaimType = Nothing Then
-                oServiceCenterClaimsSearchData.ClaimTypeIds = Me._claimTypeIds
+            If Not ClaimType = Nothing Then
+                oServiceCenterClaimsSearchData.ClaimTypeIds = _claimTypeIds
             End If
-            If Not Me.MethodOfRepair = Nothing Then
-                oServiceCenterClaimsSearchData.MethodOfRepairIds = Me._methodOfRepairIds
+            If Not MethodOfRepair = Nothing Then
+                oServiceCenterClaimsSearchData.MethodOfRepairIds = _methodOfRepairIds
             End If
-            oServiceCenterClaimsSearchData.SortBy = Me.SortBy
-            oServiceCenterClaimsSearchData.SortOrder = Me.SortOrder
-            oServiceCenterClaimsSearchData.PageSize = Me.PageSize
-            oServiceCenterClaimsSearchData.PageNumber = Me.PageNumber
-            oServiceCenterClaimsSearchData.ClaimNumber = Me.ClaimNumber
-            oServiceCenterClaimsSearchData.AuthorizationNumber = Me.AuthorizationNumber
-            oServiceCenterClaimsSearchData.CertificateNumber = Me.CertificateNumber
-            oServiceCenterClaimsSearchData.CustomerName = Me.CustomerName
-            oServiceCenterClaimsSearchData.FromClaimCreatedDate = Me.FromClaimCreatedDate
-            oServiceCenterClaimsSearchData.ToClaimCreatedDate = Me.ToClaimCreatedDate
-            oServiceCenterClaimsSearchData.FromVisitDate = Me.FromVisitDate
-            oServiceCenterClaimsSearchData.ToVisitDate = Me.ToVisitDate
-            oServiceCenterClaimsSearchData.ClaimExtendedStatusIds = Me._ClaimExtendedStatusIds
-            oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds = Me._ClaimExtendedStatusOwnerIds
-            oServiceCenterClaimsSearchData.TurnAroundTimeRangeCode = Me.TurnAroundTimeRangeCode
-            oServiceCenterClaimsSearchData.BatchNumber = Me.BatchNumber
-            oServiceCenterClaimsSearchData.SerialNumber = Me.SerialNumber
-            oServiceCenterClaimsSearchData.WorkPhone = Me.WorkPhone
-            oServiceCenterClaimsSearchData.CompanyCode = Me.CompanyCode
-            oServiceCenterClaimsSearchData.HomePhone = Me.HomePhone
-            oServiceCenterClaimsSearchData.LossDate = Me.LossDate
-            oServiceCenterClaimsSearchData.ClaimPaidAmount = Me.ClaimPaidAmount
-            oServiceCenterClaimsSearchData.BonusTotal = Me.BonusTotal
+            oServiceCenterClaimsSearchData.SortBy = SortBy
+            oServiceCenterClaimsSearchData.SortOrder = SortOrder
+            oServiceCenterClaimsSearchData.PageSize = PageSize
+            oServiceCenterClaimsSearchData.PageNumber = PageNumber
+            oServiceCenterClaimsSearchData.ClaimNumber = ClaimNumber
+            oServiceCenterClaimsSearchData.AuthorizationNumber = AuthorizationNumber
+            oServiceCenterClaimsSearchData.CertificateNumber = CertificateNumber
+            oServiceCenterClaimsSearchData.CustomerName = CustomerName
+            oServiceCenterClaimsSearchData.FromClaimCreatedDate = FromClaimCreatedDate
+            oServiceCenterClaimsSearchData.ToClaimCreatedDate = ToClaimCreatedDate
+            oServiceCenterClaimsSearchData.FromVisitDate = FromVisitDate
+            oServiceCenterClaimsSearchData.ToVisitDate = ToVisitDate
+            oServiceCenterClaimsSearchData.ClaimExtendedStatusIds = _ClaimExtendedStatusIds
+            oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds = _ClaimExtendedStatusOwnerIds
+            oServiceCenterClaimsSearchData.TurnAroundTimeRangeCode = TurnAroundTimeRangeCode
+            oServiceCenterClaimsSearchData.BatchNumber = BatchNumber
+            oServiceCenterClaimsSearchData.SerialNumber = SerialNumber
+            oServiceCenterClaimsSearchData.WorkPhone = WorkPhone
+            oServiceCenterClaimsSearchData.CompanyCode = CompanyCode
+            oServiceCenterClaimsSearchData.HomePhone = HomePhone
+            oServiceCenterClaimsSearchData.LossDate = LossDate
+            oServiceCenterClaimsSearchData.ClaimPaidAmount = ClaimPaidAmount
+            oServiceCenterClaimsSearchData.BonusTotal = BonusTotal
             Dim dsClaims As DataSet
-            If Not Me.ServiceCenterCode = Nothing Then
+            If Not ServiceCenterCode = Nothing Then
                 dsClaims = Claim.GetActiveClaimsForSvcGeneric(oServiceCenterClaimsSearchData, oServiceCenterClaimsSearchData.PageNumber = 1)
                 dsClaims.DataSetName = "GetSvcClaims"
 
@@ -303,7 +303,7 @@ Public Class GetSvcClaims
                             dsClaims.Tables.Remove(ClaimDAL.TABLE_NAME_SVC_COUNT)
                         End If
                     End If
-                    dsClaims.Tables(Me.TABLE_NAME_SVC).Columns.Remove("COUNT")
+                    dsClaims.Tables(TABLE_NAME_SVC).Columns.Remove("COUNT")
                 End If
             Else
 
@@ -316,7 +316,7 @@ Public Class GetSvcClaims
                             dsClaims.Tables.Remove(ClaimDAL.TABLE_NAME_SVC_COUNT)
                         End If
                     End If
-                    dsClaims.Tables(Me.TABLE_NAME_SVC).Columns.Remove("COUNT")
+                    dsClaims.Tables(TABLE_NAME_SVC).Columns.Remove("COUNT")
                 End If
 
             End If
@@ -373,7 +373,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_SERVICE_CENTER_CODE, Value)
+            SetValue(COL_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
@@ -389,7 +389,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_CLAIM_STATUS, Value)
+            SetValue(COL_CLAIM_STATUS, Value)
         End Set
     End Property
     '<ValueMandatory("")> _
@@ -404,7 +404,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_CLAIM_TYPE, Value)
+            SetValue(COL_CLAIM_TYPE, Value)
         End Set
     End Property
     '<ValueMandatory("")> _
@@ -419,7 +419,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_METHOD_OF_REPAIR, Value)
+            SetValue(COL_METHOD_OF_REPAIR, Value)
         End Set
     End Property
     <ValueMandatory("")> _
@@ -434,7 +434,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As Integer)
             CheckDeleted()
-            Me.SetValue(COL_SORT_BY, Value)
+            SetValue(COL_SORT_BY, Value)
         End Set
     End Property
 
@@ -450,7 +450,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As Integer)
             CheckDeleted()
-            Me.SetValue(COL_SORT_ORDER, Value)
+            SetValue(COL_SORT_ORDER, Value)
         End Set
     End Property
 
@@ -466,7 +466,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As Integer)
             CheckDeleted()
-            Me.SetValue(COL_PAGE_SIZE, Value)
+            SetValue(COL_PAGE_SIZE, Value)
         End Set
     End Property
 
@@ -482,7 +482,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As Integer)
             CheckDeleted()
-            Me.SetValue(COL_PAGE_NUMBER, Value)
+            SetValue(COL_PAGE_NUMBER, Value)
         End Set
     End Property
 
@@ -498,7 +498,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_CLAIM_NUMBER, Value)
+            SetValue(COL_CLAIM_NUMBER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)> _
@@ -513,7 +513,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_AUTHORIZATION_NUMBER, Value)
+            SetValue(COL_AUTHORIZATION_NUMBER, Value)
         End Set
     End Property
 
@@ -529,7 +529,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_CERTIFICATE_NUMBER, Value)
+            SetValue(COL_CERTIFICATE_NUMBER, Value)
         End Set
     End Property
 
@@ -545,7 +545,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_CUSTOMER_NAME, Value)
+            SetValue(COL_CUSTOMER_NAME, Value)
         End Set
     End Property
 
@@ -561,7 +561,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(COL_FROM_CLAIM_CREATED_DATE, Value)
+            SetValue(COL_FROM_CLAIM_CREATED_DATE, Value)
         End Set
     End Property
 
@@ -576,7 +576,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(COL_TO_CLAIM_CREATED_DATE, Value)
+            SetValue(COL_TO_CLAIM_CREATED_DATE, Value)
         End Set
     End Property
 
@@ -591,7 +591,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(COL_FROM_VISIT_DATE, Value)
+            SetValue(COL_FROM_VISIT_DATE, Value)
         End Set
     End Property
 
@@ -606,7 +606,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(COL_TO_VISIT_DATE, Value)
+            SetValue(COL_TO_VISIT_DATE, Value)
         End Set
     End Property
 
@@ -622,7 +622,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_CLAIM_EXTENDED_STATUS_OWNER_CODE, Value)
+            SetValue(COL_CLAIM_EXTENDED_STATUS_OWNER_CODE, Value)
         End Set
     End Property
 
@@ -638,7 +638,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_CLAIM_EXTENDED_STATUS_CODE, Value)
+            SetValue(COL_CLAIM_EXTENDED_STATUS_CODE, Value)
         End Set
     End Property
 
@@ -654,7 +654,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_TURN_AROUND_TIME_RANGE_CODE, Value)
+            SetValue(COL_TURN_AROUND_TIME_RANGE_CODE, Value)
         End Set
     End Property
 
@@ -670,7 +670,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_BATCH_NUMBER, Value)
+            SetValue(COL_BATCH_NUMBER, Value)
         End Set
     End Property
 
@@ -686,7 +686,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_SERIAL_NUMBER, Value)
+            SetValue(COL_SERIAL_NUMBER, Value)
         End Set
     End Property
 
@@ -702,7 +702,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_WORK_PHONE, Value)
+            SetValue(COL_WORK_PHONE, Value)
         End Set
     End Property
 
@@ -718,7 +718,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_COMPANY_CODE, Value)
+            SetValue(COL_COMPANY_CODE, Value)
         End Set
     End Property
 
@@ -734,7 +734,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_HOME_PHONE, Value)
+            SetValue(COL_HOME_PHONE, Value)
         End Set
     End Property
 
@@ -749,7 +749,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(COL_LOSS_DATE, Value)
+            SetValue(COL_LOSS_DATE, Value)
         End Set
     End Property
 
@@ -764,7 +764,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_CLAIM_PAID_AMOUNT, Value)
+            SetValue(COL_CLAIM_PAID_AMOUNT, Value)
         End Set
     End Property
 
@@ -779,7 +779,7 @@ Public Class GetSvcClaims
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_BONUS_TOTAL, Value)
+            SetValue(COL_BONUS_TOTAL, Value)
         End Set
     End Property
 #End Region

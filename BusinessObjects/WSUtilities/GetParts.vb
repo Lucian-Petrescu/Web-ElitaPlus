@@ -42,8 +42,8 @@ Public Class GetParts
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -54,10 +54,10 @@ Public Class GetParts
     Private Sub Load(ByVal ds As GetPartsDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -77,26 +77,26 @@ Public Class GetParts
 
                 'Claim poarameter takes priority over the Risk Group param
                 If Not .IsClaim_IDNull Then
-                    Me.ClaimID = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(.Claim_ID))
-                    Me.LoadRiskGroup()
+                    ClaimID = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(.Claim_ID))
+                    LoadRiskGroup()
                 ElseIf (Not .IsClaim_NumberNull AndAlso .IsCompany_CodeNull) Or (.IsClaim_NumberNull AndAlso Not .IsCompany_CodeNull) Then
                     Throw New BOValidationException("WSUtilities GetParts Error: ", Common.ErrorCodes.WS_XML_INVALID)
                 ElseIf Not .IsClaim_NumberNull AndAlso Not .IsCompany_CodeNull Then
-                    Me.CompanyCode = .Company_Code
-                    Me.ClaimNumber = .Claim_Number
+                    CompanyCode = .Company_Code
+                    ClaimNumber = .Claim_Number
                     ValidateCompany()
-                    Dim objClaim As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(Me.ClaimNumber, Me.CompanyId)
+                    Dim objClaim As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(ClaimNumber, CompanyId)
                     If objClaim Is Nothing Then
                         Throw New BOValidationException("WSUtilities GetParts Error: ", Common.ErrorCodes.INVALID_CLAIM_NOT_FOUND)
                     End If
-                    Me.ClaimID = objClaim.Id
-                    Me.LoadRiskGroup()
+                    ClaimID = objClaim.Id
+                    LoadRiskGroup()
                 Else
                     If Not .IsRisk_Group_CodeNull Then
-                        Me.RiskGroupCode = .Risk_Group_Code
-                        Me.getRiskGroupId(.Risk_Group_Code)
+                        RiskGroupCode = .Risk_Group_Code
+                        getRiskGroupId(.Risk_Group_Code)
                     Else
-                        Me._Risk_Group_id = Nothing
+                        _Risk_Group_id = Nothing
                     End If
                 End If
             End With
@@ -114,7 +114,7 @@ Public Class GetParts
     Private Sub getRiskGroupId(ByVal Code As String)
         Dim dvRiskGroups As DataView = LookupListNew.GetRiskGroupsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         If Not dvRiskGroups Is Nothing AndAlso dvRiskGroups.Count > 0 Then
-            Me._Risk_Group_id = LookupListNew.GetIdFromCode(dvRiskGroups, Code)
+            _Risk_Group_id = LookupListNew.GetIdFromCode(dvRiskGroups, Code)
             If _Risk_Group_id.Equals(Guid.Empty) Then
                 Throw New BOValidationException("WSUtilities GetParts Error: ", Assurant.ElitaPlus.Common.ErrorCodes.ERR_INVALID_RISK_GROUP)
             End If
@@ -126,24 +126,24 @@ Public Class GetParts
 
     Public Property RiskGroupCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_risk_group_code) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_risk_group_code) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_risk_group_code), String))
+                Return (CType(Row(DATA_COL_NAME_risk_group_code), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_risk_group_code, Value)
+            SetValue(DATA_COL_NAME_risk_group_code, Value)
         End Set
     End Property
 
     Public Property ClaimID() As Guid
         Get
-            Return Me._ClaimId
+            Return _ClaimId
         End Get
         Set(ByVal Value As Guid)
-            Me._ClaimId = Value
+            _ClaimId = Value
         End Set
     End Property
 
@@ -157,15 +157,15 @@ Public Class GetParts
     Public Property ClaimNumber() As String
         Get
             CheckDeleted()
-            If Row(Me.DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CLAIM_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CLAIM_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
@@ -173,15 +173,15 @@ Public Class GetParts
     Public Property CompanyCode() As String
         Get
             CheckDeleted()
-            If Row(Me.DATA_COL_NAME_COMPANY_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COMPANY_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_COMPANY_CODE), String)
+                Return CType(Row(DATA_COL_NAME_COMPANY_CODE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_COMPANY_CODE, Value)
+            SetValue(DATA_COL_NAME_COMPANY_CODE, Value)
         End Set
     End Property
     Public Property CompanyId() As Guid
@@ -200,28 +200,28 @@ Public Class GetParts
         Dim i As Integer
         For i = 0 To objCompaniesAL.Count - 1
             Dim objCompany As New Company(CType(objCompaniesAL.Item(i), Guid))
-            If Not objCompany Is Nothing AndAlso objCompany.Code.Equals(Me.CompanyCode.ToUpper) Then
-                Me.CompanyId = objCompany.Id
+            If Not objCompany Is Nothing AndAlso objCompany.Code.Equals(CompanyCode.ToUpper) Then
+                CompanyId = objCompany.Id
             End If
         Next
-        If Me.CompanyId.Equals(Guid.Empty) Then
+        If CompanyId.Equals(Guid.Empty) Then
             Throw New BOValidationException("GetClaimDetail Error: ", Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
         End If
     End Sub
 
     Private Sub LoadRiskGroup()
-        If Me.ClaimID.Equals(Guid.Empty) Then
+        If ClaimID.Equals(Guid.Empty) Then
             Throw New BOValidationException("WSUtilities GetParts Error: ", Common.ErrorCodes.INVALID_CLAIM_NOT_FOUND)
         End If
 
-        Dim objClaim As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(Me.ClaimID)
+        Dim objClaim As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(ClaimID)
 
         If objClaim Is Nothing Then
             Throw New BOValidationException("WSUtilities GetParts Error: ", Common.ErrorCodes.INVALID_CLAIM_NOT_FOUND)
         End If
 
         Dim riskTypeBO As RiskType = New RiskType(objClaim.RiskTypeId)
-        Me._Risk_Group_id = riskTypeBO.RiskGroupId
+        _Risk_Group_id = riskTypeBO.RiskGroupId
     End Sub
 #End Region
 #Region "Public Members"
@@ -230,10 +230,10 @@ Public Class GetParts
 
         Try
             Dim ds As New DataSet("PARTS_LIST")
-            Me.Validate()
+            Validate()
             
                 Dim PartDiscriptionList As DataTable
-                PartDiscriptionList = PartsDescription.getListForWS(Me.RiskGroupId)
+                PartDiscriptionList = PartsDescription.getListForWS(RiskGroupId)
                 If PartDiscriptionList Is Nothing OrElse PartDiscriptionList.Rows.Count <= 0 Then
                     Throw New BOValidationException("WSUtilities GetParts Error: ", Common.ErrorCodes.BO_ERROR_PART_INFO_NOT_FOUND)
                 End If

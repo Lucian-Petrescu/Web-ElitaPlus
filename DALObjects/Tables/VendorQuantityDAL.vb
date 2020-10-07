@@ -46,27 +46,27 @@ Public Class VendorQuantityDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("vendor_quantity_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Sub LoadList(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_SERVICE_CENTER_QUANTITY_LIST")
+    Public Sub LoadList(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_SERVICE_CENTER_QUANTITY_LIST")
         'Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_REFERENCE_ID, id.ToByteArray)}
         'Try
         '    DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
@@ -93,24 +93,24 @@ Public Class VendorQuantityDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "Methods"
-    Public Sub UpdateVendorQuantityForServiceCenter(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Sub UpdateVendorQuantityForServiceCenter(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            DBHelper.Execute(ds.Tables(Me.TABLE_NAME), Config("/SQL/INSERT_QUANTITY_FOR_SERVICE_CENTER"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, Transaction, changesFilter)
-            LookupListCache.ClearFromCache(Me.GetType.ToString)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            DBHelper.Execute(ds.Tables(TABLE_NAME), Config("/SQL/INSERT_QUANTITY_FOR_SERVICE_CENTER"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, Transaction, changesFilter)
+            LookupListCache.ClearFromCache([GetType].ToString)
         End If
     End Sub
 
@@ -118,7 +118,7 @@ Public Class VendorQuantityDAL
 
     'US 224101 - Common call to stored procedures
     Private Function FetchStoredProcedure(methodName As String, storedProc As String, parameters() As OracleParameter, Optional familyDS As DataSet = Nothing) As DataSet
-        Dim tbl As String = Me.TABLE_NAME
+        Dim tbl As String = TABLE_NAME
         Dim ds As DataSet = If(familyDS Is Nothing, New DataSet(), familyDS)
 
         ds.Tables.Add(tbl)
@@ -132,7 +132,7 @@ Public Class VendorQuantityDAL
                     OracleDbHelper.Fetch(cmd, tbl, ds)
                 End Using
             End Using
-            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(Me.PAR_OUT_NAME_RETURN_CODE))
+            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
             If (Not par Is Nothing AndAlso par.Value = 200) Then
                 Throw New ElitaPlusException("VendorQuantity - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
             End If

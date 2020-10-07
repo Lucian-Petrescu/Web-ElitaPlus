@@ -20,7 +20,7 @@ Partial  Class ErrorController
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -28,18 +28,18 @@ Partial  Class ErrorController
 
 #End Region
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
     End Sub
 
-    Public Sub AddError(ByVal err As String, Optional ByVal Translate As Boolean = True) Implements IErrorController.AddError
+    Public Sub AddError(err As String, Optional ByVal Translate As Boolean = True) Implements IErrorController.AddError
         Dim TranslatedError As String
         Dim oPage As ElitaPlusPage
         Dim oTransProcObj As TranslationProcess
         Dim nPrevCount As Integer
 
         If Translate Then
-            oPage = CType(Me.Page, ElitaPlusPage)
+            oPage = CType(Page, ElitaPlusPage)
             oTransProcObj = oPage.GetTranslationProcessReference()
             nPrevCount = oPage.MissingTranslationsCount
             TranslatedError = TranslationBase.TranslateLabelOrMessage(err)
@@ -49,13 +49,13 @@ Partial  Class ErrorController
         Else
             TranslatedError = err
         End If
-        If Not Me.txtErrorMsg.Text.Trim.Length = 0 Then
-            Me.txtErrorMsg.Text &= System.Environment.NewLine
+        If Not txtErrorMsg.Text.Trim.Length = 0 Then
+            txtErrorMsg.Text &= System.Environment.NewLine
         End If
-        Me.txtErrorMsg.Text &= TranslatedError
+        txtErrorMsg.Text &= TranslatedError
     End Sub
 
-    Public Sub AddError(ByVal Err() As String, Optional ByVal Translate As Boolean = True) Implements IErrorController.AddError
+    Public Sub AddError(Err() As String, Optional ByVal Translate As Boolean = True) Implements IErrorController.AddError
         Dim i As Integer
         For i = 0 To Err.Length - 1
             Dim TranslatedError As String
@@ -64,29 +64,29 @@ Partial  Class ErrorController
             Else
                 TranslatedError = Err(i)
             End If
-            If Not Me.txtErrorMsg.Text.Trim.Length = 0 Then
-                Me.txtErrorMsg.Text &= System.Environment.NewLine
+            If Not txtErrorMsg.Text.Trim.Length = 0 Then
+                txtErrorMsg.Text &= System.Environment.NewLine
             End If
-            Me.txtErrorMsg.Text &= TranslatedError
+            txtErrorMsg.Text &= TranslatedError
         Next
     End Sub
 
-    Public Sub AddErrorAndShow(ByVal Err As String, Optional ByVal Translate As Boolean = True) Implements IErrorController.AddErrorAndShow
-        Me.AddError(Err, Translate)
-        Me.Show()
+    Public Sub AddErrorAndShow(Err As String, Optional ByVal Translate As Boolean = True) Implements IErrorController.AddErrorAndShow
+        AddError(Err, Translate)
+        Show()
     End Sub
 
-    Public Sub AddErrorAndShow(ByVal Err() As String, Optional ByVal Translate As Boolean = True) Implements IErrorController.AddErrorAndShow
-        Me.AddError(Err, Translate)
-        Me.Show()
+    Public Sub AddErrorAndShow(Err() As String, Optional ByVal Translate As Boolean = True) Implements IErrorController.AddErrorAndShow
+        AddError(Err, Translate)
+        Show()
     End Sub
 
     Public Sub Clear() Implements IErrorController.Clear
-        Me.txtErrorMsg.Text = ""
+        txtErrorMsg.Text = ""
     End Sub
 
     Public Sub Show() Implements IErrorController.Show
-        If Me.txtErrorMsg.Text Is Nothing OrElse Me.txtErrorMsg.Text.Trim = "" Then
+        If txtErrorMsg.Text Is Nothing OrElse txtErrorMsg.Text.Trim = "" Then
             Return
         End If
         ControlMgr.SetVisibleControl(Page, Me, True)
@@ -95,7 +95,7 @@ Partial  Class ErrorController
     End Sub
 
     Public Sub Hide() Implements IErrorController.Hide
-        If Me.txtErrorMsg.Text Is Nothing OrElse Me.txtErrorMsg.Text.Trim = "" Then
+        If txtErrorMsg.Text Is Nothing OrElse txtErrorMsg.Text.Trim = "" Then
             ControlMgr.SetVisibleControl(Page, Me, False)
         Else
             ControlMgr.SetVisibleControl(Page, Me, True)
@@ -110,8 +110,8 @@ Partial  Class ErrorController
         Hide()
     End Sub
 
-    Private Sub btnShowHide_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnShowHide.Click
-        If Me.txtErrorMsg.Visible Then
+    Private Sub btnShowHide_Click(sender As System.Object, e As System.Web.UI.ImageClickEventArgs) Handles btnShowHide.Click
+        If txtErrorMsg.Visible Then
             Hide()
         Else
             Show()
@@ -120,10 +120,10 @@ Partial  Class ErrorController
 
     Public Property Text() As String Implements IErrorController.Text
         Get
-            Return Me.txtErrorMsg.Text
+            Return txtErrorMsg.Text
         End Get
-        Set(ByVal Value As String)
-            Me.txtErrorMsg.Text = Value
+        Set(Value As String)
+            txtErrorMsg.Text = Value
         End Set
     End Property
 End Class

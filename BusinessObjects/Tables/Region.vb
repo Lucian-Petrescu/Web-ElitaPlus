@@ -10,55 +10,55 @@ Public Class Region
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
         Dim company As New ElitaPlus.BusinessObjectsNew.Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
-        Me.SetValue(RegionDAL.COL_NAME_COUNTRY_ID, company.BusinessCountryId)
+        SetValue(RegionDAL.COL_NAME_COUNTRY_ID, company.BusinessCountryId)
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Dim dal As New RegionDAL
-        If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-            dal.LoadSchema(Me.Dataset)
+        If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+            dal.LoadSchema(Dataset)
         End If
-        Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-        Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-        Me.Row = newRow
+        Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+        Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+        Row = newRow
         setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
     End Sub
 
     Protected Sub Load(ByVal id As Guid)
-        Me.Row = Nothing
+        Row = Nothing
         Dim dal As New RegionDAL
-        If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-            Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+        If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+            Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
         End If
-        If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-            dal.Load(Me.Dataset, id)
-            Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+        If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+            dal.Load(Dataset, id)
+            Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
         End If
-        If Me.Row Is Nothing Then
+        If Row Is Nothing Then
             Throw New DataNotFoundException
         End If
     End Sub
@@ -90,9 +90,9 @@ Public Class Region
         Set(ByVal Value As String)
             CheckDeleted()
             If Not Value Is Nothing Then
-                Me.SetValue(RegionDAL.COL_NAME_DESCRIPTION, Value.Trim())
+                SetValue(RegionDAL.COL_NAME_DESCRIPTION, Value.Trim())
             Else
-                Me.SetValue(RegionDAL.COL_NAME_DESCRIPTION, Value)
+                SetValue(RegionDAL.COL_NAME_DESCRIPTION, Value)
             End If
         End Set
     End Property
@@ -109,7 +109,7 @@ Public Class Region
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(RegionDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(RegionDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
@@ -126,9 +126,9 @@ Public Class Region
         Set(ByVal Value As String)
             CheckDeleted()
             If Not Value Is Nothing Then
-                Me.SetValue(RegionDAL.COL_NAME_SHORT_DESC, Value.Trim())
+                SetValue(RegionDAL.COL_NAME_SHORT_DESC, Value.Trim())
             Else
-                Me.SetValue(RegionDAL.COL_NAME_SHORT_DESC, Value)
+                SetValue(RegionDAL.COL_NAME_SHORT_DESC, Value)
             End If
 
         End Set
@@ -147,9 +147,9 @@ Public Class Region
         Set(ByVal Value As String)
             CheckDeleted()
             If Not Value Is Nothing Then
-                Me.SetValue(RegionDAL.COL_NAME_ACCOUNTING_CODE, Value.Trim())
+                SetValue(RegionDAL.COL_NAME_ACCOUNTING_CODE, Value.Trim())
             Else
-                Me.SetValue(RegionDAL.COL_NAME_ACCOUNTING_CODE, Value)
+                SetValue(RegionDAL.COL_NAME_ACCOUNTING_CODE, Value)
             End If
 
         End Set
@@ -168,9 +168,9 @@ Public Class Region
         Set(ByVal Value As String)
             CheckDeleted()
             If Not Value Is Nothing Then
-                Me.SetValue(RegionDAL.COL_NAME_INVOICE_TAX_GL, Value.Trim())
+                SetValue(RegionDAL.COL_NAME_INVOICE_TAX_GL, Value.Trim())
             Else
-                Me.SetValue(RegionDAL.COL_NAME_INVOICE_TAX_GL, Value)
+                SetValue(RegionDAL.COL_NAME_INVOICE_TAX_GL, Value)
             End If
 
         End Set
@@ -189,9 +189,9 @@ Public Class Region
         Set(ByVal Value As String)
             CheckDeleted()
             If Not Value Is Nothing Then
-                Me.SetValue(RegionDAL.COL_NAME_EXTENDED_CODE, Value.Trim())
+                SetValue(RegionDAL.COL_NAME_EXTENDED_CODE, Value.Trim())
             Else
-                Me.SetValue(RegionDAL.COL_NAME_EXTENDED_CODE, Value)
+                SetValue(RegionDAL.COL_NAME_EXTENDED_CODE, Value)
             End If
 
         End Set
@@ -203,11 +203,11 @@ Public Class Region
     Public Overrides Sub Save()
         MyBase.Save()
         Dim dal As New RegionDAL
-        dal.Update(Me.Dataset)
+        dal.Update(Dataset)
         'Reload the Data
-        If Me._isDSCreator AndAlso Me.Row.RowState <> DataRowState.Detached Then
+        If _isDSCreator AndAlso Row.RowState <> DataRowState.Detached Then
             'Reload the Data from the DB
-            Me.Load(Me.Id)
+            Load(Id)
         End If
     End Sub
 #End Region

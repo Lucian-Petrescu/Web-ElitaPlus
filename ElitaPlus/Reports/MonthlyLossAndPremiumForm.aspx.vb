@@ -82,7 +82,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -92,40 +92,40 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl) _
                         Handles moUserCompanyMultipleDrop.SelectedDropChanged
             Try
                 PopulateDealerDropDown()
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
-            Me.ClearLabelsErrSign()
+            ErrorCtrl.Clear_Hide()
+            ClearLabelsErrSign()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
 
         End Sub
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(MonthYearLabel)
-                Me.ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
-                Me.ClearLabelErrSign(DealerLabel)
+                ClearLabelErrSign(MonthYearLabel)
+                ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(DealerLabel)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -143,7 +143,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 HideHtmlElement("ddSeparator")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
             End If
         End Sub
@@ -153,7 +153,7 @@ Namespace Reports
             Dim listcontext As ListContext = New ListContext()
             listcontext.CompanyId = UserCompanyMultipleDrop.SelectedGuid
             Dim countyLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("DealerListByCompany", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.cboDealer.Populate(countyLkl, New PopulateOptions() With
+            cboDealer.Populate(countyLkl, New PopulateOptions() With
                      {
                   .AddBlankItem = True
                     })
@@ -167,7 +167,7 @@ Namespace Reports
             Dim listcontext As ListContext = New ListContext()
             listcontext.CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyId
             Dim YearListLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ClosingYearsByCompany", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.YearDropDownList.Populate(YearListLkl, New PopulateOptions() With
+            YearDropDownList.Populate(YearListLkl, New PopulateOptions() With
            {
           .AddBlankItem = True,
           .ValueFunc = AddressOf PopulateOptions.GetCode,
@@ -181,7 +181,7 @@ Namespace Reports
             ' dv.Sort = "CODE"
             'Me.BindListControlToDataView(Me.MonthDropDownList, dv, , , True)
             Dim monthLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("MONTH", Thread.CurrentPrincipal.GetLanguageCode())
-            Me.MonthDropDownList.Populate(monthLkl, New PopulateOptions() With
+            MonthDropDownList.Populate(monthLkl, New PopulateOptions() With
            {
               .AddBlankItem = True
            })
@@ -194,27 +194,27 @@ Namespace Reports
             PopulateMonthsDropdown()
             PopulateDealerDropDown()
             TheRptCeInputControl.SetExportOnly()
-            Me.rdealer.Checked = True
+            rdealer.Checked = True
             ' Me.RadiobuttonLossReport.Checked = True
         End Sub
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
 
             Try
                 'Dim companyId As Guid = Me.GetApplicationUser.CompanyID
                 'Dim compCode As String = LookupListNew.GetCodeFromId("COMPANIES", companyId)
                 Dim compCode As String = UserCompanyMultipleDrop.SelectedCode
-                Dim selectedYear As String = Me.GetSelectedDescription(Me.YearDropDownList)
-                Dim selectedMonthID As Guid = Me.GetSelectedItem(Me.MonthDropDownList)
+                Dim selectedYear As String = GetSelectedDescription(YearDropDownList)
+                Dim selectedMonthID As Guid = GetSelectedItem(MonthDropDownList)
                 Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
                 Dim selectedYearMonth As String = selectedYear & selectedMonth
-                Dim selectedDealerId As Guid = Me.GetSelectedItem(Me.cboDealer)
+                Dim selectedDealerId As Guid = GetSelectedItem(cboDealer)
                 Dim dvDealer As DataView = LookupListNew.GetDealerLookupList(UserCompanyMultipleDrop.SelectedGuid)
                 Dim dealerCode As String = LookupListNew.GetCodeFromId(dvDealer, selectedDealerId)
 
                 'Validating the Year-Month selection
                 If selectedMonthID.Equals(Guid.Empty) OrElse selectedYear.Equals(String.Empty) Then
-                    ElitaPlusPage.SetLabelError(Me.MonthYearLabel)
+                    ElitaPlusPage.SetLabelError(MonthYearLabel)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_YEARMONTH_MUST_BE_SELECTED_ERR)
                 End If
 
@@ -225,7 +225,7 @@ Namespace Reports
                 End If
 
                 'Validating the Dealer selection
-                If Me.rdealer.Checked Then
+                If rdealer.Checked Then
                     dealerCode = ALL
                 Else
                     If selectedDealerId.Equals(Guid.Empty) Then
@@ -240,12 +240,12 @@ Namespace Reports
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
 
         End Sub
 
-        Function SetParameters(ByVal companyCode As String, ByVal selectedYearMonth As String, ByVal dealerCode As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, selectedYearMonth As String, dealerCode As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim params As New ReportCeBaseForm.Params

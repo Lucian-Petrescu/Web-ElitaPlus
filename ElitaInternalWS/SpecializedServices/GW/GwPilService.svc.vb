@@ -19,16 +19,16 @@ Namespace SpecializedServices.GW
         Private Property CompanyManager As ICompanyManager
         Private Property ClaimManager As IClaimManager
 
-        Public Sub New(ByVal pCertificateManager As ICertificateManager,
-                       ByVal pCommonManager As ICommonManager,
-                       ByVal pDealerManager As IDealerManager,
-                       ByVal pCountryManager As ICountryManager,
-                       ByVal pAddressManager As IAddressManager,
-                       ByVal pCompGroupManager As ICompanyGroupManager,
-                       ByVal pEquipmentManager As IEquipmentManager,
-                       ByVal pCurrencyManager As ICurrencyManager,
-                       ByVal pCompanyManager As ICompanyManager,
-                       ByVal pClaimManager As IClaimManager)
+        Public Sub New(pCertificateManager As ICertificateManager,
+                       pCommonManager As ICommonManager,
+                       pDealerManager As IDealerManager,
+                       pCountryManager As ICountryManager,
+                       pAddressManager As IAddressManager,
+                       pCompGroupManager As ICompanyGroupManager,
+                       pEquipmentManager As IEquipmentManager,
+                       pCurrencyManager As ICurrencyManager,
+                       pCompanyManager As ICompanyManager,
+                       pClaimManager As IClaimManager)
 
             If (pCertificateManager Is Nothing) Then
                 Throw New ArgumentNullException("pCertificateManager")
@@ -196,7 +196,7 @@ Namespace SpecializedServices.GW
                     Throw New FaultException(Of CompanyNotFoundFault)(New CompanyNotFoundFault(), "Company Code Is Empty")
                 Else
                     Try
-                        oCompany = Me.CompanyManager.GetCompanyForGwPil(s)
+                        oCompany = CompanyManager.GetCompanyForGwPil(s)
                     Catch conf As CompanyNotFoundException
                         Throw New FaultException(Of CompanyNotFoundFault)(New CompanyNotFoundFault(conf), "Company Not Found")
                     End Try
@@ -280,7 +280,7 @@ Namespace SpecializedServices.GW
             Else
                 strWorkPhone = request.WorkPhone
             End If
-            CertList = Me.CertificateManager.GetCertificateByTaxId(request.CountryCodes, request.IdentificationNumber, strWorkPhone, 200, totalrecordFound) 'Get max 200 certs before applying filters
+            CertList = CertificateManager.GetCertificateByTaxId(request.CountryCodes, request.IdentificationNumber, strWorkPhone, 200, totalrecordFound) 'Get max 200 certs before applying filters
 
             Dim searchResult As Collections.Generic.List(Of DBSearchResultCertRecord) = DBSearchResultCertRecord.GetCertList(CertList)
 

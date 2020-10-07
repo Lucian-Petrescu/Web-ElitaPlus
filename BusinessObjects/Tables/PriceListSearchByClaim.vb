@@ -9,17 +9,17 @@
     End Sub
     Public Sub New(ByVal oSearch As PriceListSearchDC)
         MyBase.New()
-        Me.InForceDate = oSearch.In_Force_Date
-        Me.ClaimNumber = oSearch.Claim_Number
-        Me.CompanyCode = oSearch.Company_Code
-        Me.ServiceClassCode = oSearch.Service_Class_Code
-        Me.ServiceTypeCode = oSearch.Service_Type_Code
-        Me.Make = oSearch.Make
-        Me.Model = oSearch.Model
-        Me.LowPrice = oSearch.Low_Price
-        Me.HighPrice = oSearch.High_Price
-        Me.ServiceLevelCode = oSearch.Service_Level_Code
-        Me.Validate()
+        InForceDate = oSearch.In_Force_Date
+        ClaimNumber = oSearch.Claim_Number
+        CompanyCode = oSearch.Company_Code
+        ServiceClassCode = oSearch.Service_Class_Code
+        ServiceTypeCode = oSearch.Service_Type_Code
+        Make = oSearch.Make
+        Model = oSearch.Model
+        LowPrice = oSearch.Low_Price
+        HighPrice = oSearch.High_Price
+        ServiceLevelCode = oSearch.Service_Level_Code
+        Validate()
     End Sub
 
 #End Region
@@ -27,10 +27,10 @@
 #Region "Public Members"
 
     Public Sub Validate()
-        If Me.InForceDate = Nothing Or Me.CompanyCode = Nothing Or Me.ClaimNumber = Nothing Then
+        If InForceDate = Nothing Or CompanyCode = Nothing Or ClaimNumber = Nothing Then
             Throw New BOValidationException("GetPriceList Error: Must provide In Force Date, Company Code and Claim Number", Assurant.ElitaPlus.Common.ErrorCodes.WS_PRICELIST_INVALID_CLAIM_DTLS_INPUT)
         End If
-        If GetCompanyId(Me.CompanyCode).Equals(Guid.Empty) Then
+        If GetCompanyId(CompanyCode).Equals(Guid.Empty) Then
             Throw New BOValidationException("GetPriceList Error: Invalid Company Code ", Assurant.ElitaPlus.Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
         End If
     End Sub
@@ -57,7 +57,7 @@
     Public Function GetPriceList(ByVal oPriceListSearch As PriceListSearchDC) As DataSet Implements IPriceListSearch.GetPriceList
         Try
             Dim dal As New PriceListDetailDAL
-            Return dal.GetPriceList(Me.InForceDate, Me.ClaimNumber, Me.CompanyCode, "", "", "", "", Me.ServiceClassCode, Me.ServiceTypeCode, Make, Model, LowPrice, HighPrice, ServiceLevelCode)
+            Return dal.GetPriceList(InForceDate, ClaimNumber, CompanyCode, "", "", "", "", ServiceClassCode, ServiceTypeCode, Make, Model, LowPrice, HighPrice, ServiceLevelCode)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try

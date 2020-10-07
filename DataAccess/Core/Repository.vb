@@ -18,12 +18,12 @@ Public MustInherit Class Repository(Of TEntity As {BaseEntity, IRecordCreateModi
             Throw New ArgumentNullException("context")
         End If
 
-        Me.m_context = context
+        m_context = context
     End Sub
 
     Protected ReadOnly Property Context() As TContext
         Get
-            Return Me.m_context.Value
+            Return m_context.Value
         End Get
     End Property
 
@@ -60,7 +60,7 @@ Public MustInherit Class Repository(Of TEntity As {BaseEntity, IRecordCreateModi
     Public Function GetById(id As Guid) As TEntity Implements IRepository(Of TEntity).GetById
         Dim entity As TEntity
         Using New TransactionScope(TransactionScopeOption.Suppress)
-            entity = Me.DbSet.Find(id)
+            entity = DbSet.Find(id)
         End Using
 
         Return entity
@@ -73,7 +73,7 @@ Public MustInherit Class Repository(Of TEntity As {BaseEntity, IRecordCreateModi
 
     Protected Sub Dispose(disposing As Boolean)
         If disposing Then
-            Me.Context.Dispose()
+            Context.Dispose()
         End If
     End Sub
 
@@ -87,7 +87,7 @@ Public MustInherit Class Repository(Of TEntity As {BaseEntity, IRecordCreateModi
 
     Public Sub Delete(id As Guid) Implements IRepository(Of TEntity).Delete
         Try
-            Dim entityToDelete As TEntity = Me.DbSet.Find(id)
+            Dim entityToDelete As TEntity = DbSet.Find(id)
             Delete(entityToDelete)
         Catch ex As DbUpdateException
             Throw TryCast(ex.InnerException, DataException)
@@ -96,11 +96,11 @@ Public MustInherit Class Repository(Of TEntity As {BaseEntity, IRecordCreateModi
 
     Protected Sub Delete(entity As TEntity)
         If Context.Entry(entity).State = EntityState.Detached Then
-            Me.DbSet.Attach(entity)
+            DbSet.Attach(entity)
         End If
-        Me.DbSet.Remove(entity)
+        DbSet.Remove(entity)
 
-        Me.Save()
+        Save()
     End Sub
 
     ''' <summary>
@@ -110,18 +110,18 @@ Public MustInherit Class Repository(Of TEntity As {BaseEntity, IRecordCreateModi
     ''' <param name="stageChanges">When true changes are applied to datastore immediately, when false changes are applied when overload of Save method with no parameters is called</param>
     Public Sub Save(entity As TEntity, Optional stageChanges As Boolean = False) Implements IRepository(Of TEntity).Save
         Try
-            Me.Context.Configuration.ValidateOnSaveEnabled = False
+            Context.Configuration.ValidateOnSaveEnabled = False
 
             Dim dbEntity = GetById(entity.Id)
 
             If dbEntity Is Nothing Then
-                Me.Insert(entity)
+                Insert(entity)
             Else
-                Me.Update(entity)
+                Update(entity)
             End If
 
             If Not stageChanges Then
-                Me.Save()
+                Save()
             End If
         Catch ex As DbUpdateException
             Throw TryCast(ex.InnerException, DataException)
@@ -144,17 +144,17 @@ Public MustInherit Class Repository(Of TEntity As {BaseEntity, IRecordCreateModi
 
     Protected Sub Insert(entity As TEntity)
         SetCreateModifyInfo(entity, EntityState.Added)
-        Me.DbSet.Add(entity)
+        DbSet.Add(entity)
     End Sub
 
     Protected Sub Update(Of TEntityType As {BaseEntity, IRecordCreateModifyInfo})(entity As TEntityType)
-        Dim dbEntity = Me.Context.[Set](Of TEntityType)().Find(entity.Id)
+        Dim dbEntity = Context.[Set](Of TEntityType)().Find(entity.Id)
 
         entity.CreatedBy = dbEntity.CreatedBy
         entity.CreatedDate = dbEntity.CreatedDate
         SetCreateModifyInfo(entity, EntityState.Modified)
 
-        Me.Context.Entry(dbEntity).CurrentValues.SetValues(entity)
+        Context.Entry(dbEntity).CurrentValues.SetValues(entity)
     End Sub
 
     Protected Sub Update(Of TChildEntity As {BaseEntity, IRecordCreateModifyInfo})(incomingEntities As ICollection(Of TChildEntity), databaseEntities As ICollection(Of TChildEntity))
@@ -163,11 +163,11 @@ Public MustInherit Class Repository(Of TEntity As {BaseEntity, IRecordCreateModi
         For Each item As TChildEntity In incomingEntities
             If databaseEntities.[Select](Function(x) x.Id).Contains(item.Id) Then
                 ' Modify
-                Me.Update(Of TChildEntity)(item)
+                Update(Of TChildEntity)(item)
             Else
                 ' Add
                 SetCreateModifyInfo(item, EntityState.Added)
-                Me.Context.[Set](Of TChildEntity)().Add(item)
+                Context.[Set](Of TChildEntity)().Add(item)
             End If
 
             notDeletedIds.Add(item.Id)
@@ -177,7 +177,7 @@ Public MustInherit Class Repository(Of TEntity As {BaseEntity, IRecordCreateModi
 
         For i As Integer = childEntities.Count() - 1 To 0 Step -1
 
-            Me.Context.[Set](Of TChildEntity)().Remove(childEntities(i))
+            Context.[Set](Of TChildEntity)().Remove(childEntities(i))
         Next
 
     End Sub
@@ -190,6 +190,6 @@ Public MustInherit Class Repository(Of TEntity As {BaseEntity, IRecordCreateModi
     ''' Commits Staged changes to Data Source
     ''' </summary>
     Public Sub Save() Implements IRepository(Of TEntity).Save
-        Me.Context.SaveChanges()
+        Context.SaveChanges()
     End Sub
 End Class

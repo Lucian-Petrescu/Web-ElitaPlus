@@ -15,17 +15,17 @@ Namespace Documents
         'New BO attaching to a BO family
         Friend Sub New(ByVal pDataTable As DataTable)
             MyBase.New(False)
-            Me.Dataset = pDataTable.DataSet
+            Dataset = pDataTable.DataSet
             Dim newRow As DataRow = pDataTable.NewRow
             pDataTable.Rows.Add(newRow)
-            Me.Row = newRow
+            Row = newRow
             SetValue(FileTypeDAL.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         End Sub
 
         Public Sub New(ByVal row As DataRow)
             MyBase.New(False)
-            Me.Dataset = row.Table.DataSet
+            Dataset = row.Table.DataSet
             Me.Row = row
         End Sub
 
@@ -63,7 +63,7 @@ Namespace Documents
             End Get
             Set(ByVal Value As String)
                 CheckDeleted()
-                Me.SetValue(FileTypeDAL.COL_NAME_CODE, Value)
+                SetValue(FileTypeDAL.COL_NAME_CODE, Value)
             End Set
         End Property
 
@@ -80,7 +80,7 @@ Namespace Documents
             End Get
             Set(ByVal Value As String)
                 CheckDeleted()
-                Me.SetValue(FileTypeDAL.COL_NAME_DESCRIPTION, Value)
+                SetValue(FileTypeDAL.COL_NAME_DESCRIPTION, Value)
             End Set
         End Property
 
@@ -97,7 +97,7 @@ Namespace Documents
             End Get
             Set(ByVal Value As String)
                 CheckDeleted()
-                Me.SetValue(FileTypeDAL.COL_NAME_EXTENSION, Value)
+                SetValue(FileTypeDAL.COL_NAME_EXTENSION, Value)
             End Set
         End Property
 
@@ -113,7 +113,7 @@ Namespace Documents
             End Get
             Set(ByVal Value As String)
                 CheckDeleted()
-                Me.SetValue(FileTypeDAL.COL_NAME_MIME_TYPE, Value)
+                SetValue(FileTypeDAL.COL_NAME_MIME_TYPE, Value)
             End Set
         End Property
 
@@ -125,14 +125,14 @@ Namespace Documents
         Public Overrides Sub Save()
             Try
                 MyBase.Save()
-                If Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+                If IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                     Dim dal As New FileTypeDAL
-                    dal.Update(Me.Row)
+                    dal.Update(Row)
                     'Reload the Data from the DB
-                    If Me.Row.RowState <> DataRowState.Detached Then
-                        Dim objId As Guid = Me.Id
-                        Me.Dataset = New DataSet
-                        Me.Row = Nothing
+                    If Row.RowState <> DataRowState.Detached Then
+                        Dim objId As Guid = Id
+                        Dataset = New DataSet
+                        Row = Nothing
                     End If
                 End If
             Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

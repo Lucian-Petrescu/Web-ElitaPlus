@@ -17,9 +17,9 @@ Public Class CoverageInfo
 
     End Sub
 
-    Public Sub New(ByVal pCertItemCoverage As CertItemCoverage)
-        Me.BeginDate = pCertItemCoverage.BeginDate
-        Me.EndDate = pCertItemCoverage.EndDate
-        Me.CoverageType = pCertItemCoverage.CoverageTypeCode
+    Public Sub New(pCertItemCoverage As CertItemCoverage)
+        BeginDate = pCertItemCoverage.BeginDate
+        EndDate = pCertItemCoverage.EndDate
+        CoverageType = pCertItemCoverage.CoverageTypeCode
     End Sub
 End Class

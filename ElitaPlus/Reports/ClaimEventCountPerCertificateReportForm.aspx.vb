@@ -33,20 +33,20 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
         End Sub
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl_New) Handles ddlcDealerGroup.SelectedDropChanged
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl_New) Handles ddlcDealerGroup.SelectedDropChanged
             Try
                 ucDealerAvaSel.ClearLists()
                 If Not ddlcDealerGroup.SelectedGuid = Guid.Empty Then
                     BindAvailableDealers(ddlcDealerGroup.SelectedGuid)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 #End Region
@@ -78,10 +78,10 @@ Namespace Reports
 #End Region
 
 #Region "Helper Functions"
-        Private Sub BindAvailableDealers(ByVal dealerGroupId As Guid)
+        Private Sub BindAvailableDealers(dealerGroupId As Guid)
             Dim dvSelected As DataView = Dealer.getList(Guid.Empty, ddlcDealerGroup.SelectedGuid, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
-            If Not dvSelected Is Nothing Then
-                With Me.ucDealerAvaSel
+            If dvSelected IsNot Nothing Then
+                With ucDealerAvaSel
                     .SetAvailableData(dvSelected, UC_DEALER_AVASEL_AVA_TEXT_COLUMN, UC_DEALER_AVASEL_AVA_GUID_COLUMN)
                 End With
             End If
@@ -89,25 +89,25 @@ Namespace Reports
 #End Region
 
 #Region "Handlers-Init"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear_Hide()
+            MasterPage.MessageController.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     TheReportExtractInputControl.ViewVisible = False
                     TheReportExtractInputControl.PdfVisible = False
                     TheReportExtractInputControl.ExportDataVisible = False
                     TheReportExtractInputControl.DestinationVisible = False
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.SetFormTab(PAGETAB)
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    SetFormTab(PAGETAB)
                     UpdateBreadCrum()
                     InitializeForm()
                 End If
-                Me.InstallDisplayNewReportProgressBar()
+                InstallDisplayNewReportProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
 #End Region
@@ -115,15 +115,15 @@ Namespace Reports
 
         Private Sub InitializeForm()
             'Set Calendar
-            Me.AddCalendar_New(Me.BtnDate, moDateText)
+            AddCalendar_New(BtnDate, moDateText)
             PopulateDealerGroupDropDown()
         End Sub
 
 
 #Region "Pupulate"
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End Sub
 
         Protected Sub PopulateDealerGroupDropDown()
@@ -135,12 +135,12 @@ Namespace Reports
 #Region "Handlers-Buttons"
 
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -150,19 +150,19 @@ Namespace Reports
 #Region "Clear"
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(lblDate)
-                Me.ClearLabelErrSign(lblDealers)
-                Me.ClearLabelErrSign(lblRepairedClaims)
-                Me.ClearLabelErrSign(lblReplacedClaims)
+                ClearLabelErrSign(lblDate)
+                ClearLabelErrSign(lblDealers)
+                ClearLabelErrSign(lblRepairedClaims)
+                ClearLabelErrSign(lblReplacedClaims)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
 
 
         Private Sub GenerateReport()
-            Me.ClearLabelsErrSign()
+            ClearLabelsErrSign()
             Dim runReport As Boolean = True
 
             If ucDealerAvaSel.SelectedList.Count = 0 Then
@@ -171,7 +171,7 @@ Namespace Reports
                 Try
                     Throw New GUIException(Message.MSG_SELECT_DEALERS, Assurant.ElitaPlus.Common.ErrorCodes.GUI_SELECT_DEALER)
                 Catch ex As Exception
-                    Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    HandleErrors(ex, MasterPage.MessageController)
                     runReport = False
                 End Try
             End If
@@ -184,7 +184,7 @@ Namespace Reports
                 Try
                     Throw New GUIException(Message.MSG_DATE_MANDATORY, Assurant.ElitaPlus.Common.ErrorCodes.GUI_EMPTY_DATE)
                 Catch ex As Exception
-                    Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    HandleErrors(ex, MasterPage.MessageController)
                     runReport = False
                 End Try
             Else
@@ -196,7 +196,7 @@ Namespace Reports
                     Try
                         Throw New GUIException(Message.MSG_INVALID_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR)
                     Catch ex As Exception
-                        Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                        HandleErrors(ex, MasterPage.MessageController)
                         runReport = False
                     End Try
                 End Try
@@ -207,7 +207,7 @@ Namespace Reports
                     Try
                         Throw New GUIException(Message.MSG_FUTURE_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_FUTURE_DATE)
                     Catch ex As Exception
-                        Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                        HandleErrors(ex, MasterPage.MessageController)
                         runReport = False
                     End Try
                 End If
@@ -219,7 +219,7 @@ Namespace Reports
                 Try
                     Throw New GUIException(Message.MSG_CLAIM_NUMBERS_MANDATORY, Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_NUMBERS_MANDATORY)
                 Catch ex As Exception
-                    Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    HandleErrors(ex, MasterPage.MessageController)
                     runReport = False
                 End Try
             End If
@@ -231,7 +231,7 @@ Namespace Reports
                     Try
                         Throw New GUIException(Message.MSG_INVALID_NUMBER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER)
                     Catch ex As Exception
-                        Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                        HandleErrors(ex, MasterPage.MessageController)
                         runReport = False
                     End Try
                 End If
@@ -243,7 +243,7 @@ Namespace Reports
                         Try
                             Throw New GUIException(Message.MSG_NUMBER_NEGATIVE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER)
                         Catch ex As Exception
-                            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                            HandleErrors(ex, MasterPage.MessageController)
                             runReport = False
                         End Try
                     End If
@@ -253,7 +253,7 @@ Namespace Reports
                         SetLabelError(lblRepairedClaims)
                         Throw New GUIException(Message.MSG_NUMBER_TOO_LONG, Assurant.ElitaPlus.Common.ErrorCodes.GUI_NUMBER_TOO_LONG)
                     Catch ex1 As Exception
-                        Me.HandleErrors(ex1, Me.MasterPage.MessageController)
+                        HandleErrors(ex1, MasterPage.MessageController)
                         runReport = False
                     End Try
                 End Try
@@ -266,7 +266,7 @@ Namespace Reports
                     Try
                         Throw New GUIException(Message.MSG_INVALID_NUMBER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER)
                     Catch ex As Exception
-                        Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                        HandleErrors(ex, MasterPage.MessageController)
                         runReport = False
                     End Try
                 End If
@@ -278,7 +278,7 @@ Namespace Reports
                         Try
                             Throw New GUIException(Message.MSG_NUMBER_NEGATIVE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER)
                         Catch ex As Exception
-                            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                            HandleErrors(ex, MasterPage.MessageController)
                             runReport = False
                         End Try
                     End If
@@ -288,7 +288,7 @@ Namespace Reports
                         ElitaPlusPage.SetLabelError(lblRepairedClaims)
                         Throw New GUIException(Message.MSG_NUMBER_TOO_LONG, Assurant.ElitaPlus.Common.ErrorCodes.GUI_NUMBER_TOO_LONG)
                     Catch ex1 As Exception
-                        Me.HandleErrors(ex1, Me.MasterPage.MessageController)
+                        HandleErrors(ex1, MasterPage.MessageController)
                         runReport = False
                     End Try
                 End Try
@@ -311,12 +311,12 @@ Namespace Reports
                     reportParams.AppendFormat("pi_expected_replacement => '{0}'", moReplacedClaimsText.Text)
                 End If
 
-                Me.State.MyBO = New ReportRequests
-                Me.State.ForEdit = True
-                Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "CLAIMCOUNTREPORT")
-                Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "R_DealerClaimEvents.Report")
-                Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
-                Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
+                State.MyBO = New ReportRequests
+                State.ForEdit = True
+                PopulateBOProperty(State.MyBO, "ReportType", "CLAIMCOUNTREPORT")
+                PopulateBOProperty(State.MyBO, "ReportProc", "R_DealerClaimEvents.Report")
+                PopulateBOProperty(State.MyBO, "ReportParameters", reportParams.ToString())
+                PopulateBOProperty(State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
 
                 ScheduleReport()
             End If
@@ -325,17 +325,17 @@ Namespace Reports
         Private Sub ScheduleReport()
             Try
                 Dim scheduleDate As DateTime = TheReportExtractInputControl.GetSchedDate()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
 
-                    Me.State.IsNew = False
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.CreateJob(scheduleDate)
+                    State.IsNew = False
+                    State.HasDataChanged = True
+                    State.MyBO.CreateJob(scheduleDate)
 
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
 
                     btnGenRpt.Enabled = False
@@ -344,7 +344,7 @@ Namespace Reports
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
     End Class

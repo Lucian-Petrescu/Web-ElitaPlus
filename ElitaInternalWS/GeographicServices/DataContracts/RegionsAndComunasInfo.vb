@@ -20,11 +20,11 @@ Namespace GeographicServices
 
         End Sub
 
-        Friend Sub New(ByVal RegionsAndComunasDV As DataView)
+        Friend Sub New(RegionsAndComunasDV As DataView)
 
             If RegionsAndComunasDV IsNot Nothing AndAlso RegionsAndComunasDV.Count > 0 Then
-                Me.RegionCode = RegionsAndComunasDV.Item(0).Item("region_code")
-                Me.RegionDescription = RegionsAndComunasDV.Item(0).Item("region_description")
+                RegionCode = RegionsAndComunasDV.Item(0).Item("region_code")
+                RegionDescription = RegionsAndComunasDV.Item(0).Item("region_description")
 
                 Dim Comunas As New List(Of ComunasInfo)
                 For Each rowView As DataRowView In RegionsAndComunasDV

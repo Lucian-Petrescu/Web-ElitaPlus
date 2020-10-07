@@ -30,29 +30,29 @@ Public Class MfgModelDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("mfg_model_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal description As String, ByVal dealerId As Guid, _
-                             ByVal manufacturerId As Guid, ByVal CompanyGroupId As Guid) As DataSet
+    Public Function LoadList(description As String, dealerId As Guid, _
+                             manufacturerId As Guid, CompanyGroupId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As OracleParameter
 
         description = GetFormattedSearchStringForSQL(description)
@@ -84,27 +84,27 @@ Public Class MfgModelDAL
         End If
 
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing)
-        DBHelper.Execute(ds.Tables(Me.TABLE_NAME), Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, transaction)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing)
+        DBHelper.Execute(ds.Tables(TABLE_NAME), Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, transaction)
     End Sub
 
-    Public Function GetMakeAndModelForDealer(ByVal ManufacturerId As Guid, Model As String, ByVal DealerID As Guid) As DataSet
+    Public Function GetMakeAndModelForDealer(ManufacturerId As Guid, Model As String, DealerID As Guid) As DataSet
 
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/WS_GETMAKEMODELFORDEALER")
+        Dim selectStmt As String = Config("/SQL/WS_GETMAKEMODELFORDEALER")
 
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_MANUFACTURER_ID, ManufacturerId.ToByteArray), _
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_MANUFACTURER_ID, ManufacturerId.ToByteArray), _
                                             New OracleParameter(COL_NAME_DEALER_ID, DealerID.ToByteArray), _
-                                            New OracleParameter(Me.COL_NAME_DESCRIPTION, Model)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+                                            New OracleParameter(COL_NAME_DESCRIPTION, Model)}
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 #End Region
 

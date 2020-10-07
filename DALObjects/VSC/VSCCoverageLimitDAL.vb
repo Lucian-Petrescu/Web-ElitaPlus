@@ -29,23 +29,23 @@ Public Class VSCCoverageLimitDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("vsc_coverage_limit_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal LimitCodeMask As String, ByVal CoverageTypeMask As Guid, ByVal MonthMask As String, ByVal KmMask As String, ByVal company_group_id As Guid, ByVal LanguageId As Guid) As DataSet
+    Public Function LoadList(LimitCodeMask As String, CoverageTypeMask As Guid, MonthMask As String, KmMask As String, company_group_id As Guid, LanguageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
         Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
@@ -55,31 +55,31 @@ Public Class VSCCoverageLimitDAL
         '  inCausecondition &= "AND " & MiscUtil.BuildListForSql(Me.COL_COMPANY_GROUP_ID, compIds, False)
 
         If Not CoverageTypeMask.Equals(Guid.Empty) Then
-            whereClauseConditions &= Environment.NewLine & "AND UPPER(C." & Me.COL_NAME_COVERAGE_TYPE_ID & ") ='" & Me.GuidToSQLString(CoverageTypeMask) & "'"
+            whereClauseConditions &= Environment.NewLine & "AND UPPER(C." & COL_NAME_COVERAGE_TYPE_ID & ") ='" & GuidToSQLString(CoverageTypeMask) & "'"
         End If
-        If ((Not (LimitCodeMask Is Nothing)) AndAlso (Me.FormatSearchMask(LimitCodeMask))) Then
-            whereClauseConditions &= Environment.NewLine & " AND UPPER(" & Me.COL_NAME_COVERAGE_LIMIT_CODE & ")" & LimitCodeMask.ToUpper
+        If ((Not (LimitCodeMask Is Nothing)) AndAlso (FormatSearchMask(LimitCodeMask))) Then
+            whereClauseConditions &= Environment.NewLine & " AND UPPER(" & COL_NAME_COVERAGE_LIMIT_CODE & ")" & LimitCodeMask.ToUpper
         End If
-        If ((Not (MonthMask Is Nothing)) AndAlso (Me.FormatSearchMask(MonthMask))) Then
-            whereClauseConditions &= Environment.NewLine & " AND UPPER(" & Me.COL_NAME_COVERAGE_MONTHS & ")" & MonthMask.ToUpper
+        If ((Not (MonthMask Is Nothing)) AndAlso (FormatSearchMask(MonthMask))) Then
+            whereClauseConditions &= Environment.NewLine & " AND UPPER(" & COL_NAME_COVERAGE_MONTHS & ")" & MonthMask.ToUpper
         End If
-        If ((Not (KmMask Is Nothing)) AndAlso (Me.FormatSearchMask(KmMask))) Then
-            whereClauseConditions &= Environment.NewLine & " AND UPPER(" & Me.COL_NAME_COVERAGE_KM_MI & ")" & KmMask.ToUpper
+        If ((Not (KmMask Is Nothing)) AndAlso (FormatSearchMask(KmMask))) Then
+            whereClauseConditions &= Environment.NewLine & " AND UPPER(" & COL_NAME_COVERAGE_KM_MI & ")" & KmMask.ToUpper
         End If
 
 
         If Not inCausecondition = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
         End If
 
 
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
 
@@ -92,7 +92,7 @@ Public Class VSCCoverageLimitDAL
         '  selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY " & Me.COL_NAME_POLICE_STATION_NAME & ", " & Me.COL_NAME_POLICE_STATION_CODE)
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -100,14 +100,14 @@ Public Class VSCCoverageLimitDAL
 
     End Function
 
-    Function GetOptionalCoverage(ByVal coveragelimitid As Guid, ByVal company_group_id As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_COVERAGE_OPT")
+    Function GetOptionalCoverage(coveragelimitid As Guid, company_group_id As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_COVERAGE_OPT")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_COMPANY_GROUP_ID, company_group_id.ToByteArray), _
                                                                                             New DBHelper.DBHelperParameter(COL_NAME_VSC_COVERAGE_LIMIT_ID, coveragelimitid.ToByteArray), _
                                                                                             New DBHelper.DBHelperParameter(COL_NAME_COMPANY_GROUP_ID, company_group_id.ToByteArray)}
         Try
             Dim ds As New DataSet
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -117,13 +117,13 @@ Public Class VSCCoverageLimitDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
 
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
 
     End Sub

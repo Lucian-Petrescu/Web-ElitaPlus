@@ -44,8 +44,8 @@ Public Class GetClaimDetail
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -69,10 +69,10 @@ Public Class GetClaimDetail
     Private Sub Load(ByVal ds As GetClaimDetailDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As BOValidationException
             Throw ex
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -88,17 +88,17 @@ Public Class GetClaimDetail
         Try
             If ds.GetClaimDetail.Count = 0 Then Exit Sub
             With ds.GetClaimDetail.Item(0)
-                If Not .IsClaim_IDNull Then Me.ClaimStringId = .Claim_ID
-                Me.ForSvcUse = .For_SVC_Use
+                If Not .IsClaim_IDNull Then ClaimStringId = .Claim_ID
+                ForSvcUse = .For_SVC_Use
                 If Not .IsInclude_Part_DescriptionsNull Then
-                    Me.IncludePartDescription = .Include_Part_Descriptions
+                    IncludePartDescription = .Include_Part_Descriptions
                 Else
-                    Me.IncludePartDescription = "N" 'Default
+                    IncludePartDescription = "N" 'Default
                 End If
 
-                If Not .IsClaim_NumberNull Then Me.ClaimNumber = .Claim_Number
+                If Not .IsClaim_NumberNull Then ClaimNumber = .Claim_Number
                 If Not .IsCompany_CodeNull Then
-                    Me.CompanyCode = .Company_Code
+                    CompanyCode = .Company_Code
                     ValidateCompany()
                 End If
 
@@ -120,45 +120,45 @@ Public Class GetClaimDetail
     <ValidStringLength("", Max:=32)> _
     Public Property ClaimStringId() As String
         Get
-            If Row(Me.DATA_COL_NAME_CLAIM_ID) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CLAIM_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_CLAIM_ID), String))
+                Return (CType(Row(DATA_COL_NAME_CLAIM_ID), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CLAIM_ID, Value)
+            SetValue(DATA_COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)> _
     Public Property IncludePartDescription() As String
         Get
-            If Row(Me.DATA_COL_NAME_INCLUDE_PART_DESCRIPTIONS) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_INCLUDE_PART_DESCRIPTIONS) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_INCLUDE_PART_DESCRIPTIONS), String))
+                Return (CType(Row(DATA_COL_NAME_INCLUDE_PART_DESCRIPTIONS), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_INCLUDE_PART_DESCRIPTIONS, Value)
+            SetValue(DATA_COL_NAME_INCLUDE_PART_DESCRIPTIONS, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
     Public Property ForSvcUse() As String
         Get
-            If Row(Me.DATA_COL_NAME_FOR_SVC_USE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_FOR_SVC_USE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_FOR_SVC_USE), String))
+                Return (CType(Row(DATA_COL_NAME_FOR_SVC_USE), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_FOR_SVC_USE, Value)
+            SetValue(DATA_COL_NAME_FOR_SVC_USE, Value)
         End Set
     End Property
 
@@ -167,15 +167,15 @@ Public Class GetClaimDetail
     Public Property ClaimNumber() As String
         Get
             CheckDeleted()
-            If Row(Me.DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CLAIM_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CLAIM_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
@@ -183,15 +183,15 @@ Public Class GetClaimDetail
     Public Property CompanyCode() As String
         Get
             CheckDeleted()
-            If Row(Me.DATA_COL_NAME_COMPANY_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COMPANY_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_COMPANY_CODE), String)
+                Return CType(Row(DATA_COL_NAME_COMPANY_CODE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_COMPANY_CODE, Value)
+            SetValue(DATA_COL_NAME_COMPANY_CODE, Value)
         End Set
     End Property
     Public Property CompanyId() As Guid
@@ -210,9 +210,9 @@ Public Class GetClaimDetail
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
             'Get Claim detail
-            Dim dsClaim As DataSet = Claim.GetClaimDetailForWS(Me.ClaimStringId, Me.ClaimNumber, Me.CompanyId)
+            Dim dsClaim As DataSet = Claim.GetClaimDetailForWS(ClaimStringId, ClaimNumber, CompanyId)
             dsClaim.DataSetName = "GET_CLAIM_DETAIL"
             If dsClaim Is Nothing Or dsClaim.Tables.Count <= 0 Or dsClaim.Tables(0).Rows.Count = 0 Then
                 Throw New BOValidationException("GetClaimDetail Error: ", Common.ErrorCodes.INVALID_CLAIM_NOT_FOUND)
@@ -223,7 +223,7 @@ Public Class GetClaimDetail
                 Dim oRiskTypeId As Guid = New Guid(CType(dsClaim.Tables(0).Rows(0)(DALObjects.ClaimDAL.COL_NAME_RISK_TYPE_ID), Byte()))
                 dsClaim.Tables(ClaimDAL.TABLE_NAME_WS).Columns.Remove(ClaimDAL.COL_NAME_RISK_TYPE_ID)
                 dsClaim.Tables(ClaimDAL.TABLE_NAME_WS).Columns.Remove(ClaimDAL.COL_NAME_CLAIMID)
-                If Me.ForSvcUse.ToUpper.Equals("N") Then
+                If ForSvcUse.ToUpper.Equals("N") Then
                     'Get Claim comments list
                     Dim dsComments As DataSet = Comment.GetCommentsForClaim(ClaimIdGuid)
                     If Not dsComments Is Nothing AndAlso dsComments.Tables.Count > 0 AndAlso dsComments.Tables(CommentDAL.TABLE_NAME).Rows.Count <> 0 Then
@@ -269,7 +269,7 @@ Public Class GetClaimDetail
                 End If
 
                 'ClaimFacade.Instance.GetClaim(Of Claim)DetailForWS(Me.ClaimId, Me.ClaimNumber, Me.CompanyId)
-                If Not Me.IncludePartDescription Is Nothing AndAlso Me.IncludePartDescription.ToUpper = "Y" Then
+                If Not IncludePartDescription Is Nothing AndAlso IncludePartDescription.ToUpper = "Y" Then
                     Dim riskTypeBO As RiskType = New RiskType(oRiskTypeId)
                     Dim partsDataTable As DataTable = PartsDescription.getListForWS(riskTypeBO.RiskGroupId).Copy
                     If Not partsDataTable Is Nothing AndAlso partsDataTable.Rows.Count > 0 Then
@@ -304,11 +304,11 @@ Public Class GetClaimDetail
         Dim i As Integer
         For i = 0 To objCompaniesAL.Count - 1
             Dim objCompany As New Company(CType(objCompaniesAL.Item(i), Guid))
-            If Not objCompany Is Nothing AndAlso objCompany.Code.Equals(Me.CompanyCode.ToUpper) Then
-                Me.CompanyId = objCompany.Id
+            If Not objCompany Is Nothing AndAlso objCompany.Code.Equals(CompanyCode.ToUpper) Then
+                CompanyId = objCompany.Id
             End If
         Next
-        If Me.CompanyId.Equals(Guid.Empty) Then
+        If CompanyId.Equals(Guid.Empty) Then
             Throw New BOValidationException("GetClaimDetail Error: ", Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
         End If
 

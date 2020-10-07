@@ -35,7 +35,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -74,21 +74,21 @@ Namespace Reports
 #Region "Handlers-Init"
 
        
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear_Hide()
-            Me.ClearLabelsErrSign()
+            MasterPage.MessageController.Clear_Hide()
+            ClearLabelsErrSign()
            
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
 
 
                     TheReportExtractInputControl.ViewVisible = False
                     TheReportExtractInputControl.PdfVisible = False
                     TheReportExtractInputControl.ExportDataVisible = False
                     TheReportExtractInputControl.DestinationVisible = False
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.SetFormTab(PAGETAB)
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    SetFormTab(PAGETAB)
                     UpdateBreadCrum()
 
                     InitializeForm()
@@ -98,26 +98,26 @@ Namespace Reports
                 If rDealer.Checked Then cboDealer.SelectedIndex = NOTHING_SELECTED
                 If rbStages.Checked Then moStageList.SelectedIndex = NOTHING_SELECTED
                 If rbStageStatus.Checked Then moStageStatusList.SelectedIndex = NOTHING_SELECTED
-                Me.InstallDisplayNewReportProgressBar()
+                InstallDisplayNewReportProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
 #End Region
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(Label2)
-                Me.ClearLabelErrSign(moDealerLabel)
-                Me.ClearLabelErrSign(lblAllStages)
-                Me.ClearLabelErrSign(lblStageName)
-                Me.ClearLabelErrSign(lblAllStageStatus)
-                Me.ClearLabelErrSign(lblStageStatus)
-                Me.ClearLabelErrSign(lblNoofDayssincestageopened)
+                ClearLabelErrSign(Label2)
+                ClearLabelErrSign(moDealerLabel)
+                ClearLabelErrSign(lblAllStages)
+                ClearLabelErrSign(lblStageName)
+                ClearLabelErrSign(lblAllStageStatus)
+                ClearLabelErrSign(lblStageStatus)
+                ClearLabelErrSign(lblNoofDayssincestageopened)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Private Sub InitializeForm()
@@ -125,17 +125,17 @@ Namespace Reports
             PopulateStagesDropDown()
             PopulateStageStatusDropDown()
 
-            Me.rDealer.Checked = True
-            Me.rbStages.Checked = True
-            Me.rbStageStatus.Checked = True
+            rDealer.Checked = True
+            rbStages.Checked = True
+            rbStageStatus.Checked = True
 
         End Sub
 
 
 
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End Sub
 
         Protected Sub PopulateDealerDropDown()
@@ -146,7 +146,7 @@ Namespace Reports
                 oListContext.CompanyId = company_id
                 Dim oDealerListForCompany As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
-                    If Not oDealerList Is Nothing Then
+                    If oDealerList IsNot Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
                     Else
                         oDealerList = oDealerListForCompany.Clone()
@@ -178,7 +178,7 @@ Namespace Reports
                                                     .SortFunc = AddressOf .GetDescription
                                                    })
 
-            Me.BindListControlToDataView(moStageList, LookupListNew.GetStagesByGroupLookupList())
+            BindListControlToDataView(moStageList, LookupListNew.GetStagesByGroupLookupList())
         End Sub
         Private Sub PopulateStageStatusDropDown()
             moStageStatusList.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="CLM_STAGE_STATUS", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()).ToArray(), New PopulateOptions() With
@@ -194,12 +194,12 @@ Namespace Reports
 #Region "Handlers-Buttons"
 
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -212,17 +212,17 @@ Namespace Reports
             Dim userId As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.Id)
             Dim langId As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
-            Dim selectedDealerId As Guid = Me.GetSelectedItem(Me.cboDealer)
+            Dim selectedDealerId As Guid = GetSelectedItem(cboDealer)
             Dim dvDealer As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "CODE")
             Dim dealerCode As String = LookupListNew.GetCodeFromId(dvDealer, selectedDealerId)
 
             Dim NoofDayssincestageopened As String = tbdayssincestageopened.Text
 
-            Dim SelectedStageNameId As Guid = Me.GetSelectedItem(Me.moStageList)
+            Dim SelectedStageNameId As Guid = GetSelectedItem(moStageList)
             Dim dvStageName As DataView = LookupListNew.GetStagesByGroupLookupList()
             Dim stagenamecode As String = LookupListNew.GetDescriptionFromId(dvStageName, SelectedStageNameId)
 
-            Dim SelectedStageStatusId As Guid = Me.GetSelectedItem(Me.moStageStatusList)
+            Dim SelectedStageStatusId As Guid = GetSelectedItem(moStageStatusList)
             Dim dvStageStatus As DataView = LookupListNew.GetOpenClosedLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
             Dim StageStatus As String = LookupListNew.GetDescriptionFromId(dvStageStatus, SelectedStageStatusId)
 
@@ -230,7 +230,7 @@ Namespace Reports
             reportParams.AppendFormat("pi_user_key => '{0}',", userId)
             reportParams.AppendFormat("pi_language => '{0}',", langId)
 
-            If Me.rDealer.Checked Then
+            If rDealer.Checked Then
                 dealerCode = ALL
                 reportParams.AppendFormat("pi_dealer => '{0}',", "*")
             Else
@@ -241,7 +241,7 @@ Namespace Reports
                 reportParams.AppendFormat("pi_dealer => '{0}',", dealerCode)
             End If
 
-            If Me.rbStages.Checked Then
+            If rbStages.Checked Then
                 stagenamecode = ALL
                 reportParams.AppendFormat("pi_stage_name => '{0}',", "*")
             Else
@@ -252,7 +252,7 @@ Namespace Reports
                 reportParams.AppendFormat("pi_stage_name => '{0}',", GuidControl.GuidToHexString(SelectedStageNameId))
             End If
 
-            If Me.rbStageStatus.Checked Then
+            If rbStageStatus.Checked Then
                 StageStatus = ALL
                 reportParams.AppendFormat("pi_stage_status => '{0}',", "*")
             Else
@@ -281,12 +281,12 @@ Namespace Reports
 
             reportParams.AppendFormat("pi_number_of_days_stage_open => '{0}'", NoofDayssincestageopened)
 
-            Me.State.MyBO = New ReportRequests
-            Me.State.ForEdit = True
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "EXTENDED_STATUS_AGING_DETAIL")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "r_extendedstatusagingdetail.Report")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
-            Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
+            State.MyBO = New ReportRequests
+            State.ForEdit = True
+            PopulateBOProperty(State.MyBO, "ReportType", "EXTENDED_STATUS_AGING_DETAIL")
+            PopulateBOProperty(State.MyBO, "ReportProc", "r_extendedstatusagingdetail.Report")
+            PopulateBOProperty(State.MyBO, "ReportParameters", reportParams.ToString())
+            PopulateBOProperty(State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
 
             ScheduleReport()
         End Sub
@@ -294,17 +294,17 @@ Namespace Reports
         Private Sub ScheduleReport()
             Try
                 Dim scheduleDate As DateTime = TheReportExtractInputControl.GetSchedDate()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
 
-                    Me.State.IsNew = False
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.CreateJob(scheduleDate)
+                    State.IsNew = False
+                    State.HasDataChanged = True
+                    State.MyBO.CreateJob(scheduleDate)
 
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
 
                     btnGenRpt.Enabled = False
@@ -313,7 +313,7 @@ Namespace Reports
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -321,7 +321,7 @@ Namespace Reports
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Try
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub

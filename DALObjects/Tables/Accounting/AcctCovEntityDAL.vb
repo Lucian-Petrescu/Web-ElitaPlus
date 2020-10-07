@@ -32,66 +32,66 @@ Public Class AcctCovEntityDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("acct_cov_entity_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal AcctcompanyMask As Guid, ByVal RegionIdMask As Guid, ByVal CoverageTypeIdMask As Guid, ByVal BusinessUnitIdMask As Guid, ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(AcctcompanyMask As Guid, RegionIdMask As Guid, CoverageTypeIdMask As Guid, BusinessUnitIdMask As Guid, languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
         Dim inCausecondition As String = ""
         Dim bIsLikeClause As Boolean = False
         Dim strAcctcompanyMask, strRegionIdMask, strCoverageTypeIdMask, strBusinessUnitIdMask, languageIdMask As String
 
         If (Not (AcctcompanyMask.Equals(Guid.Empty))) Then
-            strAcctcompanyMask = Me.GuidToSQLString(AcctcompanyMask)
-            Me.FormatSearchMask(strAcctcompanyMask)
+            strAcctcompanyMask = GuidToSQLString(AcctcompanyMask)
+            FormatSearchMask(strAcctcompanyMask)
             whereClauseConditions &= " AND " & AcctCompanyDAL.TABLE_NAME & "." & AcctCompanyDAL.COL_NAME_ACCT_COMPANY_ID & strAcctcompanyMask.ToUpper
         Else
             Return Nothing
         End If
 
         If (Not (RegionIdMask.Equals(Guid.Empty))) Then
-            strRegionIdMask = Me.GuidToSQLString(RegionIdMask)
+            strRegionIdMask = GuidToSQLString(RegionIdMask)
         End If
-        If ((Not (strRegionIdMask Is Nothing)) AndAlso (Me.FormatSearchMask(strRegionIdMask))) Then
-            whereClauseConditions &= " AND " & Me.COL_NAME_REGION_ID & strRegionIdMask.ToUpper
+        If ((Not (strRegionIdMask Is Nothing)) AndAlso (FormatSearchMask(strRegionIdMask))) Then
+            whereClauseConditions &= " AND " & COL_NAME_REGION_ID & strRegionIdMask.ToUpper
         End If
 
         If (Not (CoverageTypeIdMask.Equals(Guid.Empty))) Then
-            strCoverageTypeIdMask = Me.GuidToSQLString(CoverageTypeIdMask)
+            strCoverageTypeIdMask = GuidToSQLString(CoverageTypeIdMask)
         End If
-        If ((Not (strCoverageTypeIdMask Is Nothing)) AndAlso (Me.FormatSearchMask(strCoverageTypeIdMask))) Then
-            whereClauseConditions &= " AND " & Me.COL_NAME_COVERAGE_TYPE_ID & strCoverageTypeIdMask.ToUpper
+        If ((Not (strCoverageTypeIdMask Is Nothing)) AndAlso (FormatSearchMask(strCoverageTypeIdMask))) Then
+            whereClauseConditions &= " AND " & COL_NAME_COVERAGE_TYPE_ID & strCoverageTypeIdMask.ToUpper
         End If
 
         If (Not (BusinessUnitIdMask.Equals(Guid.Empty))) Then
-            strBusinessUnitIdMask = Me.GuidToSQLString(BusinessUnitIdMask)
+            strBusinessUnitIdMask = GuidToSQLString(BusinessUnitIdMask)
         End If
-        If ((Not (strBusinessUnitIdMask Is Nothing)) AndAlso (Me.FormatSearchMask(strBusinessUnitIdMask))) Then
-            whereClauseConditions &= " AND  " & Me.COL_NAME_ACCT_BUSINESS_UNIT_ID & strBusinessUnitIdMask.ToUpper
+        If ((Not (strBusinessUnitIdMask Is Nothing)) AndAlso (FormatSearchMask(strBusinessUnitIdMask))) Then
+            whereClauseConditions &= " AND  " & COL_NAME_ACCT_BUSINESS_UNIT_ID & strBusinessUnitIdMask.ToUpper
         End If
 
         If (Not (languageId.Equals(Guid.Empty))) Then
-            languageIdMask = Me.GuidToSQLString(languageId)
+            languageIdMask = GuidToSQLString(languageId)
         End If
-        If ((Not (languageIdMask Is Nothing)) AndAlso (Me.FormatSearchMask(languageIdMask))) Then
-            whereClauseConditions &= " AND  " & Me.PARAM_NAME_LANGUAGE_ID & languageIdMask.ToUpper
+        If ((Not (languageIdMask Is Nothing)) AndAlso (FormatSearchMask(languageIdMask))) Then
+            whereClauseConditions &= " AND  " & PARAM_NAME_LANGUAGE_ID & languageIdMask.ToUpper
         End If
 
         If (whereClauseConditions <> "") Then
@@ -99,7 +99,7 @@ Public Class AcctCovEntityDAL
         End If
 
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -110,12 +110,12 @@ Public Class AcctCovEntityDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

@@ -19,7 +19,7 @@ Public Class RoleDetailForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -59,30 +59,30 @@ Public Class RoleDetailForm
 
 #Region "Page Events"
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingParameters As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingParameters As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                Me.State.RoleReturnObject = CType(CallingParameters, Tables.RoleListForm.RoleReturnType)
-                If (Not Me.State.RoleReturnObject.RoleId.Equals(Guid.Empty)) Then
-                    Me.State.MyBO = New Role(Me.State.RoleReturnObject.RoleId)
+            If Me.CallingParameters IsNot Nothing Then
+                State.RoleReturnObject = CType(CallingParameters, Tables.RoleListForm.RoleReturnType)
+                If (Not State.RoleReturnObject.RoleId.Equals(Guid.Empty)) Then
+                    State.MyBO = New Role(State.RoleReturnObject.RoleId)
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
-            Me.MasterPage.MessageController.Clear()
-            If (Not Me.IsPostBack) Then
+            MasterPage.MessageController.Clear()
+            If (Not IsPostBack) Then
                 'TODO Popup Configuration for Delete Message Box
                 'lblCancelMessage.Text = TranslationBase.TranslateLabelOrMessage("MSG_CONFIRM_PROMPT")
                 'btnModalCancelYes.Attributes.Add("onclick", "YesButtonClick();")
 
-                If (Me.State.MyBO Is Nothing) Then
-                    Me.State.MyBO = New Role()
+                If (State.MyBO Is Nothing) Then
+                    State.MyBO = New Role()
                 End If
 
                 ' Populate Bread Crum
@@ -90,126 +90,126 @@ Public Class RoleDetailForm
 
                 ' Populate Drop Downs
                 PopulateDropdowns()
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                PopulateFormFromBOs()
+                EnableDisableFields()
 
             End If
             BindBoPropertiesToLabels()
             CheckIfComingFromSaveConfirm()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 #End Region
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFormFrom()
-            Me.State.RoleReturnObject.RoleId = Me.State.MyBO.Id
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            PopulateBOsFormFrom()
+            State.RoleReturnObject.RoleId = State.MyBO.Id
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New PageReturnType(Of Tables.RoleListForm.RoleReturnType)(ElitaPlusPage.DetailPageCommand.Back, Me.State.RoleReturnObject, Me.State.HasDataChanged))
+                ReturnToCallingPage(New PageReturnType(Of Tables.RoleListForm.RoleReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.RoleReturnObject, State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+            HandleErrors(ex, MasterPage.MessageController)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = MasterPage.MessageController.Text
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsFamilyDirty Then
-                Me.State.MyBO.Save()
-                Me.State.MyBO = New Role(Me.State.MyBO.Id)
-                Me.State.HasDataChanged = True
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+            PopulateBOsFormFrom()
+            If State.MyBO.IsFamilyDirty Then
+                State.MyBO.Save()
+                State.MyBO = New Role(State.MyBO.Id)
+                State.HasDataChanged = True
+                PopulateFormFromBOs()
+                EnableDisableFields()
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
             Else
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New Role(Me.State.MyBO.Id)
+                State.MyBO = New Role(State.MyBO.Id)
             Else
-                Me.State.MyBO = New Role()
+                State.MyBO = New Role()
             End If
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub DoDelete()
-        Me.State.MyBO.RolePermission.RevokeAll()
-        Me.State.MyBO.Delete()
-        Me.State.MyBO.Save()
-        Me.State.HasDataChanged = True
-        Me.ReturnToCallingPage(New PageReturnType(Of Tables.RoleListForm.RoleReturnType)(ElitaPlusPage.DetailPageCommand.Delete, Me.State.RoleReturnObject, Me.State.HasDataChanged))
+        State.MyBO.RolePermission.RevokeAll()
+        State.MyBO.Delete()
+        State.MyBO.Save()
+        State.HasDataChanged = True
+        ReturnToCallingPage(New PageReturnType(Of Tables.RoleListForm.RoleReturnType)(ElitaPlusPage.DetailPageCommand.Delete, State.RoleReturnObject, State.HasDataChanged))
     End Sub
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+            DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.CreateNew()
+                CreateNew()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnRemovePermission_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePermission.Click
+    Private Sub btnRemovePermission_Click(sender As System.Object, e As System.EventArgs) Handles btnRemovePermission.Click
         Try
             If lstSelectedPermission.SelectedItem Is Nothing Then Exit Sub
-            Me.State.MyBO.RolePermission.Revoke(New Guid(lstSelectedPermission.SelectedItem.Value))
+            State.MyBO.RolePermission.Revoke(New Guid(lstSelectedPermission.SelectedItem.Value))
             RefreshPermissions()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnAddPermissionToSelected_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddPermissionToSelected.Click
+    Private Sub btnAddPermissionToSelected_Click(sender As System.Object, e As System.EventArgs) Handles btnAddPermissionToSelected.Click
         Try
             If lstAvailablePermission.SelectedItem Is Nothing Then Exit Sub
-            Me.State.MyBO.RolePermission.Grant(New Guid(lstAvailablePermission.SelectedItem.Value))
+            State.MyBO.RolePermission.Grant(New Guid(lstAvailablePermission.SelectedItem.Value))
             RefreshPermissions()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
@@ -217,44 +217,44 @@ Public Class RoleDetailForm
 #Region "Controlling Logic"
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Delete _
-                AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Expire Then
-                Me.State.MyBO.Save()
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Delete _
+                AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Expire Then
+                State.MyBO.Save()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New PageReturnType(Of Tables.RoleListForm.RoleReturnType)(ElitaPlusPage.DetailPageCommand.Back, Me.State.RoleReturnObject, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New PageReturnType(Of Tables.RoleListForm.RoleReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.RoleReturnObject, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNew()
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New PageReturnType(Of Tables.RoleListForm.RoleReturnType)(ElitaPlusPage.DetailPageCommand.Back, Me.State.RoleReturnObject, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New PageReturnType(Of Tables.RoleListForm.RoleReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.RoleReturnObject, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.Delete
                     DoDelete()
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New PageReturnType(Of Tables.RoleListForm.RoleReturnType)(ElitaPlusPage.DetailPageCommand.Back, Me.State.RoleReturnObject, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New PageReturnType(Of Tables.RoleListForm.RoleReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.RoleReturnObject, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                    MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
             End Select
         End If
 
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) & ElitaBase.Sperator
-        Me.MasterPage.BreadCrum = Me.MasterPage.BreadCrum & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) & ElitaBase.Sperator
+        MasterPage.BreadCrum = MasterPage.BreadCrum & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.UsePageTabTitleInBreadCrum = False
     End Sub
 
     Private Sub PopulateDropdowns()
@@ -272,27 +272,27 @@ Public Class RoleDetailForm
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Code", Me.moRoleCodeLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Description", Me.moRoleDescriptionLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "IhqOnly", Me.moIhqOnlyLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "RoleProviderId", Me.moRoleProviderLabel)
+        BindBOPropertyToLabel(State.MyBO, "Code", moRoleCodeLabel)
+        BindBOPropertyToLabel(State.MyBO, "Description", moRoleDescriptionLabel)
+        BindBOPropertyToLabel(State.MyBO, "IhqOnly", moIhqOnlyLabel)
+        BindBOPropertyToLabel(State.MyBO, "RoleProviderId", moRoleProviderLabel)
     End Sub
 
     Protected Sub PopulateFormFromBOs()
-        With Me.State.MyBO
-            Me.PopulateControlFromBOProperty(Me.moRoleCode, .Code)
-            Me.PopulateControlFromBOProperty(Me.moRoleDescription, .Description)
-            Me.PopulateControlFromBOProperty(Me.moRoleProvider, .RoleProviderId)
-            Me.PopulateControlFromBOProperty(Me.moIhqOnly, LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, .IhqOnly))
+        With State.MyBO
+            PopulateControlFromBOProperty(moRoleCode, .Code)
+            PopulateControlFromBOProperty(moRoleDescription, .Description)
+            PopulateControlFromBOProperty(moRoleProvider, .RoleProviderId)
+            PopulateControlFromBOProperty(moIhqOnly, LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, .IhqOnly))
 
             RefreshPermissions()
         End With
     End Sub
 
     Private Sub RefreshPermissions()
-        With Me.State.MyBO
-            ElitaPlusPage.BindListControlToDataView(Me.lstSelectedPermission, .RolePermission.GetSelectedPermissions(), DALObjects.DALBase.COL_NAME_DESCRIPTION, DALObjects.DALBase.COL_NAME_ID, False)
-            ElitaPlusPage.BindListControlToDataView(Me.lstAvailablePermission, .RolePermission.GetAvailablePermissions(), DALObjects.DALBase.COL_NAME_DESCRIPTION, DALObjects.DALBase.COL_NAME_ID, False)
+        With State.MyBO
+            ElitaPlusPage.BindListControlToDataView(lstSelectedPermission, .RolePermission.GetSelectedPermissions(), DALObjects.DALBase.COL_NAME_DESCRIPTION, DALObjects.DALBase.COL_NAME_ID, False)
+            ElitaPlusPage.BindListControlToDataView(lstAvailablePermission, .RolePermission.GetAvailablePermissions(), DALObjects.DALBase.COL_NAME_DESCRIPTION, DALObjects.DALBase.COL_NAME_ID, False)
         End With
     End Sub
 
@@ -303,7 +303,7 @@ Public Class RoleDetailForm
         ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
 
         'Now disable depebding on the object state
-        If Me.State.MyBO.IsNew Then
+        If State.MyBO.IsNew Then
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
         End If
@@ -311,19 +311,19 @@ Public Class RoleDetailForm
     End Sub
 
     Protected Sub CreateNew()
-        Me.State.MyBO = New Role()
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        State.MyBO = New Role()
+        PopulateFormFromBOs()
+        EnableDisableFields()
     End Sub
 
     Protected Sub PopulateBOsFormFrom()
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO, "Code", Me.moRoleCode)
-            Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.moRoleDescription)
-            Me.PopulateBOProperty(Me.State.MyBO, "RoleProviderId", Me.moRoleProvider)
-            Me.PopulateBOProperty(Me.State.MyBO, "IhqOnly", LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, New Guid(GetSelectedValue(Me.moIhqOnly))))
+        With State.MyBO
+            PopulateBOProperty(State.MyBO, "Code", moRoleCode)
+            PopulateBOProperty(State.MyBO, "Description", moRoleDescription)
+            PopulateBOProperty(State.MyBO, "RoleProviderId", moRoleProvider)
+            PopulateBOProperty(State.MyBO, "IhqOnly", LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, New Guid(GetSelectedValue(moIhqOnly))))
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub

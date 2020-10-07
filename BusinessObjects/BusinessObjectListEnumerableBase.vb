@@ -11,9 +11,9 @@ Public MustInherit Class BusinessObjectListEnumerableBase(Of TParent As Business
     Public Function GetEnumerator() As IEnumerator(Of TChild) Implements IEnumerable(Of TChild).GetEnumerator
         Dim list As New List(Of TChild)
         Dim row As DataRow
-        For Each row In Me.Table.Rows
+        For Each row In Table.Rows
             If Not (row.RowState = DataRowState.Deleted Or row.RowState = DataRowState.Detached) Then
-                Dim bo As BusinessObjectBase = Me.GetChild(row)
+                Dim bo As BusinessObjectBase = GetChild(row)
                 If Belong(bo) Then
                     list.Add(DirectCast(bo, TChild))
                 End If

@@ -25,7 +25,7 @@ Namespace Certificates
         'Private Const ServiceFabricParam = "DiagnosticsManagement_Mexico/api/Warranty?altDeviceId="
 
 
-        Public Function GetCertificate(ByVal request As GetCertificateRequest) As GetCertificateResponse _
+        Public Function GetCertificate(request As GetCertificateRequest) As GetCertificateResponse _
             Implements ICertificateServiceV1.GetCertificate
             Dim oCertificate As Certificate
 
@@ -60,7 +60,7 @@ Namespace Certificates
 
         End Function
 
-        Friend Shared Function BuildCertificateResponse(ByVal oRequest As GetCertificateRequest, ByVal oCertificate As Certificate) As GetCertificateResponse
+        Friend Shared Function BuildCertificateResponse(oRequest As GetCertificateRequest, oCertificate As Certificate) As GetCertificateResponse
             Dim strUpgradeFlag As String = Codes.YESNO_N
             Dim dtUpgradeDate As Date
             ' Validate Serial Number and other members not used in Lookup
@@ -126,7 +126,7 @@ Namespace Certificates
             Return response
         End Function
 
-        Private Shared Sub AppleCareCheckAndReplacedImeiLookUp(ByVal strImei As String, ByVal strUserDetails As String, ByRef blnHasAppleCare As Boolean, ByRef strReplacedImei As String)
+        Private Shared Sub AppleCareCheckAndReplacedImeiLookUp(strImei As String, strUserDetails As String, ByRef blnHasAppleCare As Boolean, ByRef strReplacedImei As String)
             blnHasAppleCare = False
             strReplacedImei = String.Empty
 
@@ -198,7 +198,7 @@ Namespace Certificates
             Return response
         End Function
 
-        Private Function GetStringFromDataRow(ByVal row As DataRow, strColName As String) As String
+        Private Function GetStringFromDataRow(row As DataRow, strColName As String) As String
             If row(strColName) Is DBNull.Value Then
                 Return String.Empty
             Else
@@ -206,7 +206,7 @@ Namespace Certificates
             End If
         End Function
 
-        Private Function GetDateFromDataRow(ByVal row As DataRow, strColName As String) As Date
+        Private Function GetDateFromDataRow(row As DataRow, strColName As String) As Date
             If row(strColName) Is DBNull.Value Then
                 Return Nothing
             Else
@@ -214,7 +214,7 @@ Namespace Certificates
             End If
         End Function
 
-        Private Function GetGuidDataRow(ByVal row As DataRow, strColName As String) As Guid
+        Private Function GetGuidDataRow(row As DataRow, strColName As String) As Guid
             If row(strColName) Is DBNull.Value Then
                 Return Guid.Empty
             Else
@@ -222,7 +222,7 @@ Namespace Certificates
             End If
         End Function
 
-        Private Sub PopulateAppleCertResponse(ByRef response As SearchAppleCertificateByImeiResponse, ByVal drSearchResult As DataRow)
+        Private Sub PopulateAppleCertResponse(ByRef response As SearchAppleCertificateByImeiResponse, drSearchResult As DataRow)
             response.CertificateNumber = GetStringFromDataRow(drSearchResult, "cert_number")
             response.CustomerName = GetStringFromDataRow(drSearchResult, "customer_name")
             response.Imei = GetStringFromDataRow(drSearchResult, "IMEI_number")

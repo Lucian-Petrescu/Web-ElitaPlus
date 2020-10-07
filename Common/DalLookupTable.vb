@@ -30,10 +30,10 @@ Public Class DalLookupTable
 
 #Region "Private Methods"
 
-    Private Sub addLookupList(ByVal DALName As String, ByVal LookuplistName As String)
+    Private Sub addLookupList(DALName As String, LookuplistName As String)
 
         Dim fulDALName = DAL_ITEM_PREFIX & DALName
-        Dim lkList As ArrayList = Me.GetLookupList(fulDALName)
+        Dim lkList As ArrayList = GetLookupList(fulDALName)
 
         If lkList Is Nothing Then
             ' First item in the list
@@ -82,18 +82,18 @@ Public Class DalLookupTable
 
 #Region "Class Methods"
 
-    Public Function GetLookupList(ByVal DALName As String) As ArrayList
+    Public Function GetLookupList(DALName As String) As ArrayList
         'Returns a list of LookupLists associated to the given DAL
 
-        Return Me.DalLookupTable(DALName)
+        Return DalLookupTable(DALName)
 
     End Function
 
-    Public Function ContainsList(ByVal LookupListName As String) As Boolean
+    Public Function ContainsList(LookupListName As String) As Boolean
         ' Returns true if Lookuplist is associated to any DAL, false otherwise
 
         Dim entry As Object
-        For Each entry In Me.DalLookupTable
+        For Each entry In DalLookupTable
             If entry.Value.Contains(LookupListName) Then
                 Return True
             End If
@@ -101,10 +101,10 @@ Public Class DalLookupTable
         Return False
     End Function
 
-    Public Function ContainsDal(ByVal DalName As String) As Boolean
+    Public Function ContainsDal(DalName As String) As Boolean
         'Returns true if there is an entry for the given Dal
 
-        Return Me.DalLookupTable.ContainsKey(DalName)
+        Return DalLookupTable.ContainsKey(DalName)
 
     End Function
 

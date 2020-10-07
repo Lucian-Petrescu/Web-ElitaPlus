@@ -33,22 +33,22 @@ Public Class ProductGroupDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("product_group_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_PRODUCT_GROUP_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_PRODUCT_GROUP_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal compIds As ArrayList, ByVal dealerId As Guid, ByVal groupName As String, ByVal productCodeId As String, ByVal riskTypeId As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(compIds As ArrayList, dealerId As Guid, groupName As String, productCodeId As String, riskTypeId As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim inClausecondition As String = ""
         Dim whereClauseConditions As String = ""
         Dim bIsLikeClause As Boolean = False
@@ -71,13 +71,13 @@ Public Class ProductGroupDAL
         End If
 
         If Not inClausecondition = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
         End If
 
         groupName = groupName.Trim()
-        If (Not groupName.Equals(String.Empty) Or Not groupName = "") AndAlso (Me.FormatSearchMask(groupName)) Then
+        If (Not groupName.Equals(String.Empty) Or Not groupName = "") AndAlso (FormatSearchMask(groupName)) Then
             whereClauseConditions &= Environment.NewLine & "AND " & "Upper(pg.PRODUCT_GROUP_NAME)" & groupName.ToUpper
         End If
 
@@ -96,14 +96,14 @@ Public Class ProductGroupDAL
         whereClauseConditions &= MiscUtil.BuildListForSql(" AND c." & "company_id", compIds, False)
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim ds As New DataSet
         Try
-            Return DBHelper.Fetch(selectStmt, Me.TABLE_PRODUCT_GROUP_NAME)
+            Return DBHelper.Fetch(selectStmt, TABLE_PRODUCT_GROUP_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -111,54 +111,54 @@ Public Class ProductGroupDAL
     End Function
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_PRODUCT_GROUP_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_PRODUCT_GROUP_NAME)
     End Function
 
-    Private Function IsThereALikeClause(ByVal descriptionMask As String, ByVal codeMask As String) As Boolean
+    Private Function IsThereALikeClause(descriptionMask As String, codeMask As String) As Boolean
         Dim bIsLikeClause As Boolean
 
-        bIsLikeClause = Me.IsLikeClause(descriptionMask) OrElse Me.IsLikeClause(codeMask)
+        bIsLikeClause = IsLikeClause(descriptionMask) OrElse IsLikeClause(codeMask)
         Return bIsLikeClause
     End Function
 
-    Public Function LoadProductCode(ByVal oDealerIds As ArrayList) As DataSet
+    Public Function LoadProductCode(oDealerIds As ArrayList) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PRODUCT_CODES")
+        Dim selectStmt As String = Config("/SQL/LOAD_PRODUCT_CODES")
         Dim parameters() As OracleParameter
 
         Dim whereClauseConditions As String = ""
 
-        whereClauseConditions &= MiscUtil.BuildListForSql("sc." & Me.COL_NAME_DEALER_ID, oDealerIds, False)
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        whereClauseConditions &= MiscUtil.BuildListForSql("sc." & COL_NAME_DEALER_ID, oDealerIds, False)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         'parameters = New OracleParameter() _
         '                            {New OracleParameter(COL_NAME_COUNTRY_ID, oCountryIds)}
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.DSNAME))
+            Return (DBHelper.Fetch(selectStmt, DSNAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Sub LoadSelectedProductCodes(ByVal ds As DataSet, ByVal dealerID As Guid)
+    Public Sub LoadSelectedProductCodes(ds As DataSet, dealerID As Guid)
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_SELECTED_PRODUCTCODES_LIST")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, dealerID)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_PRODUCT_GROUP_NAME, parameters)
+        Dim selectStmt As String = Config("/SQL/LOAD_SELECTED_PRODUCTCODES_LIST")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerID)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_PRODUCT_GROUP_NAME, parameters)
 
     End Sub
 
-    Public Sub LoadAvailableProductCodes(ByVal ds As DataSet, ByVal dealerID As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_AVAILABLE_PRODUCTCODES_LIST")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, dealerID)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_PRODUCT_GROUP_NAME, parameters)
+    Public Sub LoadAvailableProductCodes(ds As DataSet, dealerID As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_AVAILABLE_PRODUCTCODES_LIST")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerID)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_PRODUCT_GROUP_NAME, parameters)
     End Sub
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         Dim prodGrpDetDAL As New ProductGroupPrcDAL
 
@@ -169,10 +169,10 @@ Public Class ProductGroupDAL
         Try
             'First Pass updates Deletions
             prodGrpDetDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
-            MyBase.Update(familyDataset.Tables(Me.TABLE_PRODUCT_GROUP_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_PRODUCT_GROUP_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            Update(familyDataset.Tables(Me.TABLE_PRODUCT_GROUP_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_PRODUCT_GROUP_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             prodGrpDetDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 
 
@@ -191,12 +191,12 @@ Public Class ProductGroupDAL
 
     End Sub
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_PRODUCT_GROUP_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_PRODUCT_GROUP_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_PRODUCT_GROUP_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_PRODUCT_GROUP_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

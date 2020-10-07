@@ -21,21 +21,21 @@ Public Class SuspendedReasons
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     Public Sub New(ByVal id As Guid, ByVal inDv As DataSet)
         MyBase.New(False)
-        Me.Dataset = New DataSet
-        Me.Load(id, inDv)
+        Dataset = New DataSet
+        Load(id, inDv)
     End Sub
 
     'Exiting BO attaching to a BO family
@@ -56,7 +56,7 @@ Public Class SuspendedReasons
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
   
@@ -80,25 +80,25 @@ Public Class SuspendedReasons
     'End Sub
     Protected Sub Load(ByVal Id As System.Guid, ByVal inDv As DataSet)
 
-        If Me.Dataset Is Nothing OrElse Me.Dataset.Tables.Count() = 0 Then
+        If Dataset Is Nothing OrElse Dataset.Tables.Count() = 0 Then
             Dim dal As New SuspendedReasonsDAL
-            dal.LoadSchema(Me.Dataset)
+            dal.LoadSchema(Dataset)
         End If
 
-        Dim newRow As DataRow = Me.Dataset.Tables(0).NewRow
+        Dim newRow As DataRow = Dataset.Tables(0).NewRow
 
         For Each drv As DataRow In inDv.Tables(0).Rows
             Dim cguid As Guid = New Guid(CType(drv.Item(SuspendedReasons.COL_NAME_ID), Byte()))
 
             If cguid = Id Then
-                Me.Dataset.Tables(0).Rows.Add(newRow)
-                Me.Row = newRow
+                Dataset.Tables(0).Rows.Add(newRow)
+                Row = newRow
 
                 For Each col As DataColumn In drv.Table.Columns
                     newRow(col.ColumnName) = drv(col.ColumnName)
                 Next
 
-                Me.Row.AcceptChanges()  '** Remove the isNew from the BO Row
+                Row.AcceptChanges()  '** Remove the isNew from the BO Row
 
                 Exit For
             End If
@@ -108,14 +108,14 @@ Public Class SuspendedReasons
         Try
             Dim dal As New SuspendedReasonsDAL
 
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
 
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
 
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
 
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
 
@@ -129,24 +129,24 @@ Public Class SuspendedReasons
         Try
             Dim dal As New SuspendedReasonsDAL
 
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
 
-            Me.Row = Nothing
+            Row = Nothing
 
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
 
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
 
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -175,7 +175,7 @@ Public Class SuspendedReasons
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(SuspendedReasonsDAL.COL_NAME_ID, Value)
+            SetValue(SuspendedReasonsDAL.COL_NAME_ID, Value)
         End Set
     End Property
 
@@ -191,7 +191,7 @@ Public Class SuspendedReasons
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(SuspendedReasonsDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(SuspendedReasonsDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
     Public Property Dealer_Name() As String
@@ -205,7 +205,7 @@ Public Class SuspendedReasons
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SuspendedReasonsDAL.COL_NAME_DEALER_NAME, Value)
+            SetValue(SuspendedReasonsDAL.COL_NAME_DEALER_NAME, Value)
         End Set
     End Property
 
@@ -220,7 +220,7 @@ Public Class SuspendedReasons
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED_STR, Value)
+            SetValue(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED_STR, Value)
         End Set
     End Property
 
@@ -237,7 +237,7 @@ Public Class SuspendedReasons
         Set(ByVal Value As String)
             CheckDeleted()
 
-            Me.SetValue(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED, Value.Replace("0", ""))
+            SetValue(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED, Value.Replace("0", ""))
         End Set
 
     End Property
@@ -267,7 +267,7 @@ Public Class SuspendedReasons
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SuspendedReasonsDAL.COL_NAME_CODE, Value)
+            SetValue(SuspendedReasonsDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
@@ -284,7 +284,7 @@ Public Class SuspendedReasons
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SuspendedReasonsDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(SuspendedReasonsDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -296,18 +296,18 @@ Public Class SuspendedReasons
         Try
             MyBase.Save()
 
-            If (Me._isDSCreator OrElse Me.IsDirty) AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If (_isDSCreator OrElse IsDirty) AndAlso Row.RowState <> DataRowState.Detached Then
 
                 Dim dal As New SuspendedReasonsDAL
                 Dim RowId As Guid
 
                 If NewRec Then
-                    dal.InserRow(Me.Row, ElitaPlusIdentity.Current.ActiveUser.NetworkId, RowId)
+                    dal.InserRow(Row, ElitaPlusIdentity.Current.ActiveUser.NetworkId, RowId)
                 Else
-                    dal.UpdateRow(Me.Row, RowId)
+                    dal.UpdateRow(Row, RowId)
                 End If
 
-                Me.Row.AcceptChanges()
+                Row.AcceptChanges()
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)

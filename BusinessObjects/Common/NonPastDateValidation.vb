@@ -25,7 +25,7 @@ Public NotInheritable Class NonPastDateValidation
                 End If
             End If
             'For Old records Expiration date must be greater or equal to todays date(with out time)
-            If Iface.IsNew = False And Me.DisplayName = Codes.EXPIRATION Then
+            If Iface.IsNew = False And DisplayName = Codes.EXPIRATION Then
                 If Iface.Expiration < Date.Today.Date Then Return False
             End If
 

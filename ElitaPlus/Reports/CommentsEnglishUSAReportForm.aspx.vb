@@ -68,7 +68,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -78,35 +78,35 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
 
         End Sub
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -117,12 +117,12 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moCertNumberLabel)
-            Me.ClearLabelErrSign(moBeginDateLabel)
-            Me.ClearLabelErrSign(moEndDateLabel)
-            Me.ClearLabelErrSign(moCommentTypeLabel)
-            Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
-            If Me.rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
+            ClearLabelErrSign(moCertNumberLabel)
+            ClearLabelErrSign(moBeginDateLabel)
+            ClearLabelErrSign(moEndDateLabel)
+            ClearLabelErrSign(moCommentTypeLabel)
+            ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+            If rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
         End Sub
 
 #End Region
@@ -152,22 +152,22 @@ Namespace Reports
         Private Sub InitializeForm()
             PopulateDealerDropDown()
             PopulateCommentTypeDropdown()
-            Me.moBeginDateText.Text = GetDateFormattedString(Date.Now.AddDays(-1))
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Now)
-            Me.rdealer.Checked = True
-            Me.rcommentType.Checked = True
-            Me.rcerts.Checked = True
-            Me.RadiobuttonAllRecords.Checked = True
-            Me.RadiobuttonAllComments.Checked = True
+            moBeginDateText.Text = GetDateFormattedString(Date.Now.AddDays(-1))
+            moEndDateText.Text = GetDateFormattedString(Date.Now)
+            rdealer.Checked = True
+            rcommentType.Checked = True
+            rcerts.Checked = True
+            RadiobuttonAllRecords.Checked = True
+            RadiobuttonAllComments.Checked = True
         End Sub
 
 #End Region
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal userId As String, ByVal dealerCode As String, ByVal certNumber As String,
-                               ByVal commentType As String, ByVal excludeClosedClaims As String, ByVal claimsCommentsOnly As String, ByVal beginDate As String,
-                                  ByVal endDate As String, ByVal sortBy As String, ByVal langCode As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, dealerCode As String, certNumber As String,
+                               commentType As String, excludeClosedClaims As String, claimsCommentsOnly As String, beginDate As String,
+                                  endDate As String, sortBy As String, langCode As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim reportName As String = RPT_FILENAME
@@ -216,14 +216,14 @@ Namespace Reports
             'Dim dv As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "CODE")
             Dim dealerCode As String = DealerMultipleDrop.SelectedCode 'LookupListNew.GetCodeFromId(dv, dealerID)
             Dim commentTypeLk As DataView
-            Dim commentTypeId As Guid = Me.GetSelectedItem(Me.cboCommentType)
+            Dim commentTypeId As Guid = GetSelectedItem(cboCommentType)
             commentTypeLk = LookupListNew.GetCommentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
             Dim commentCode As String = LookupListNew.GetCodeFromId(commentTypeLk, commentTypeId)
             Dim commentDesc As String = LookupListNew.GetDescriptionFromCode(LookupListNew.LK_COMMENT_TYPES, commentCode)
             Dim endDate As String
             Dim beginDate As String
-            Dim certNumber As String = CType(Me.moCertNumberTextbox.Text, String)
+            Dim certNumber As String = CType(moCertNumberTextbox.Text, String)
             Dim excludeClosedClaims As String
             Dim claimsCommentsOnly As String
             Dim sortBy As String
@@ -234,7 +234,7 @@ Namespace Reports
             beginDate = ReportCeBase.FormatDate(moBeginDateLabel, moBeginDateText.Text)
 
             'Certifcates moCertNumberTextbox
-            If Me.rcerts.Checked Then
+            If rcerts.Checked Then
                 certNumber = ALL
             Else
                 If moCertNumberTextbox.Text.Equals(String.Empty) Then
@@ -244,7 +244,7 @@ Namespace Reports
             End If
 
             'dealer
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             Else
                 If selectedDealerId.Equals(Guid.Empty) Then
@@ -254,7 +254,7 @@ Namespace Reports
             End If
 
             'CommentType
-            If Me.rcommentType.Checked Then
+            If rcommentType.Checked Then
                 commentCode = ALL
             Else
                 If commentTypeId.Equals(Guid.Empty) Then
@@ -264,19 +264,19 @@ Namespace Reports
             End If
 
 
-            If Me.RadiobuttonAllRecords.Checked Then
+            If RadiobuttonAllRecords.Checked Then
                 excludeClosedClaims = NO
             Else
                 excludeClosedClaims = YES
             End If
 
-            If Me.RadiobuttonAllComments.Checked Then
+            If RadiobuttonAllComments.Checked Then
                 claimsCommentsOnly = NO
             Else
                 claimsCommentsOnly = YES
             End If
 
-            Select Case Me.rdReportSortOrder.SelectedValue()
+            Select Case rdReportSortOrder.SelectedValue()
                 Case BY_DEALER_CODE
                     sortBy = SORT_BY_DEALER_CODE
                 Case BY_CERTIFICATE_NUMBER

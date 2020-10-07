@@ -28,24 +28,24 @@ Public Class AfaAcctAmtSrcMappingDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("afa_acct_amt_src_mapping_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadFormularByProdLossType(ByVal AcctAmtSrcID As Guid, ByVal languageID As Guid, _
-                             ByVal prodID As Guid, ByVal LossType As String, ByVal CntToUse As String, _
+    Public Function LoadFormularByProdLossType(AcctAmtSrcID As Guid, languageID As Guid, _
+                             prodID As Guid, LossType As String, CntToUse As String, _
                              Optional ByVal blnGetMatchedOnly As Boolean = False) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_FORMULAR_BY_RPDO_LOSSTYPE")
+        Dim selectStmt As String = Config("/SQL/LOAD_FORMULAR_BY_RPDO_LOSSTYPE")
         Dim para() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("language_id", languageID.ToByteArray), _
                                                                                      New DBHelper.DBHelperParameter("language_id", languageID.ToByteArray), _
                                                                                      New DBHelper.DBHelperParameter("language_id", languageID.ToByteArray), _
@@ -75,7 +75,7 @@ Public Class AfaAcctAmtSrcMappingDAL
 
 
         Try
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
             ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, para)
 
         Catch ex As Exception
@@ -84,8 +84,8 @@ Public Class AfaAcctAmtSrcMappingDAL
         Return ds
     End Function
 
-    Public Function LoadList(ByVal AcctAmtSrcID As Guid, ByVal prodID As Guid, ByVal LossType As String, ByVal CntToUse As String, Optional ByVal blnGetMatchedOnly As Boolean = False) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(AcctAmtSrcID As Guid, prodID As Guid, LossType As String, CntToUse As String, Optional ByVal blnGetMatchedOnly As Boolean = False) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim para() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("acct_amt_src_id", AcctAmtSrcID.ToByteArray)}
         Dim ds As New DataSet
         Dim inClauseCondition As String
@@ -109,7 +109,7 @@ Public Class AfaAcctAmtSrcMappingDAL
         End If
 
         Try
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
             ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, para)
 
         Catch ex As Exception
@@ -119,38 +119,38 @@ Public Class AfaAcctAmtSrcMappingDAL
     End Function
 
 
-    Public Function LoadProductByDealer(ByVal dealerId As Guid, ByVal productCode As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PRODUCT_LIST_BY_DEALER")
+    Public Function LoadProductByDealer(dealerId As Guid, productCode As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_PRODUCT_LIST_BY_DEALER")
         Dim whereClauseConditions As String = "", strTemp As String
 
-        If Me.FormatSearchMask(productCode) Then
+        If FormatSearchMask(productCode) Then
             whereClauseConditions &= Environment.NewLine & " and UPPER(p.code) " & productCode.ToUpper.Trim
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_id", dealerId.ToByteArray)}
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

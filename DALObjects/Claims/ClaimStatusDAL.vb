@@ -61,38 +61,38 @@ Public Class ClaimStatusDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet, ByVal languageId As Guid)
+    Public Sub LoadSchema(ds As DataSet, languageId As Guid)
         Load(ds, Guid.Empty, languageId)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid, ByVal languageId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid, languageId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                                                             {New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray), _
                                                              New DBHelper.DBHelperParameter(COL_NAME_CLAIM_STATUS_ID, id.ToByteArray), _
                                                              New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal claimId As Guid, ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(claimId As Guid, languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As OracleParameter = New OracleParameter() _
                                             {New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray), _
                                              New OracleParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray), _
                                              New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
         Try
-            Return DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetLatestClaimStatus(ByVal claimId As Guid, ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/MAX_CLAIM_STATUS")
+    Public Function GetLatestClaimStatus(claimId As Guid, languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/MAX_CLAIM_STATUS")
         Dim parameters() As OracleParameter = New OracleParameter() _
                                             {New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray), _
                                              New OracleParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray), _
@@ -100,28 +100,28 @@ Public Class ClaimStatusDAL
                                              New OracleParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray), _
                                              New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
         Try
-            Return DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetClaimStatus(ByVal claimId As Guid, ByVal languageId As Guid, ByVal companyGroupId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/CLAIM_STATUS_HISTORY")
+    Public Function GetClaimStatus(claimId As Guid, languageId As Guid, companyGroupId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/CLAIM_STATUS_HISTORY")
         Dim parameters() As OracleParameter = New OracleParameter() _
                                             {New OracleParameter(COL_NAME_PARAM_CLAIM_ID, claimId.ToByteArray), _
                                              New OracleParameter(COL_NAME_PARAM_LANGUAGE_ID, languageId.ToByteArray), _
                                              New OracleParameter(COL_NAME_PARAM_COMPANY_GROUP_ID, companyGroupId.ToByteArray)}
 
         Try
-            Return DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
     '5623
-    Public Function GetClaimStatusByUserRole(ByVal claimId As Guid, ByVal languageId As Guid, ByVal companyGroupId As Guid, ByVal userId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/CLAIM_STATUS_BY_USER_ROLE")
+    Public Function GetClaimStatusByUserRole(claimId As Guid, languageId As Guid, companyGroupId As Guid, userId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/CLAIM_STATUS_BY_USER_ROLE")
         Dim parameters() As OracleParameter = New OracleParameter() _
                                             {New OracleParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray), _
                                              New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray), _
@@ -133,51 +133,51 @@ Public Class ClaimStatusDAL
                                               New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray)}
 
         Try
-            Return DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function GetExtendedStatusForCompanyGroup(ByVal languageId As Guid, ByVal companyGroupId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/EXTENDED_CLAIM_STATUS_FOR_COMPANY_GROUP")
+    Public Function GetExtendedStatusForCompanyGroup(languageId As Guid, companyGroupId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/EXTENDED_CLAIM_STATUS_FOR_COMPANY_GROUP")
         Dim parameters() As OracleParameter = New OracleParameter() _
                                             {New OracleParameter(COL_NAME_PARAM_LANGUAGE_ID, languageId.ToByteArray), _
                                              New OracleParameter(COL_NAME_PARAM_COMPANY_GROUP_ID, companyGroupId.ToByteArray)}
 
         Try
-            Return DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetClaimStatusHistoryOnly(ByVal claimId As Guid, ByVal languageId As Guid, ByVal companyGroupId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/CLAIM_STATUS_HISTORY_ONLY")
+    Public Function GetClaimStatusHistoryOnly(claimId As Guid, languageId As Guid, companyGroupId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/CLAIM_STATUS_HISTORY_ONLY")
         Dim parameters() As OracleParameter = New OracleParameter() _
                                             {New OracleParameter(COL_NAME_PARAM_LANGUAGE_ID, languageId.ToByteArray),
                                              New OracleParameter(COL_NAME_PARAM_CLAIM_ID, claimId.ToByteArray)}
 
         Try
-            Return DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetClaimHistoryDetails(ByVal claimId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/CLAIM_HISTORY_DETAILS")
+    Public Function GetClaimHistoryDetails(claimId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/CLAIM_HISTORY_DETAILS")
         Dim parameters() As OracleParameter = New OracleParameter() _
                                            {New OracleParameter(COL_NAME_PARAM_CLAIM_ID, claimId.ToByteArray)}
         Try
 
-            Return DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
-    Public Function GetExtendedMVStatus(ByVal claimId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/GET_EXTENDED_CLAIM_MV")
+    Public Function GetExtendedMVStatus(claimId As Guid)
+        Dim selectStmt As String = Config("/SQL/GET_EXTENDED_CLAIM_MV")
         Dim parameters() As OracleParameter = New OracleParameter() _
                                             {New OracleParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray)}
         Try
@@ -189,23 +189,23 @@ Public Class ClaimStatusDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
             tr = DBHelper.GetNewTransaction
         End If
         Try
-            Me.Update(familyDataset, tr, DataRowState.Deleted)
-            Me.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset, tr, DataRowState.Deleted)
+            Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
             If Not familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim oTransactionLogHeaderDAL As New TransactionLogHeaderDAL
@@ -224,14 +224,14 @@ Public Class ClaimStatusDAL
         End Try
     End Sub
 
-    Public Sub AddClaimToNewPickList(ByVal claim_id As Guid, ByVal claim_status_by_groupID As Guid, ByVal external_user_name As String, ByVal comments As String) 
+    Public Sub AddClaimToNewPickList(claim_id As Guid, claim_status_by_groupID As Guid, external_user_name As String, comments As String) 
 
         Dim selectStmt As String = Config("/SQL/ADD_CLAIM_TO_NEWPICKLIST")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                                    New DBHelper.DBHelperParameter(Me.COL_NAME_PARAM_CLAIM_ID, claim_id.ToByteArray), _
-                                    New DBHelper.DBHelperParameter(Me.COL_NAME_PARAM_CLAIM_STATUS_BY_COMPANY_GROUP_ID, claim_status_by_groupID.ToByteArray), _
-                                    New DBHelper.DBHelperParameter(Me.COL_NAME_PARAM_EXTERNAL_USER_NAME, external_user_name), _
-                                    New DBHelper.DBHelperParameter(Me.COL_NAME_PARAM_COMMENTS, comments)}
+                                    New DBHelper.DBHelperParameter(COL_NAME_PARAM_CLAIM_ID, claim_id.ToByteArray), _
+                                    New DBHelper.DBHelperParameter(COL_NAME_PARAM_CLAIM_STATUS_BY_COMPANY_GROUP_ID, claim_status_by_groupID.ToByteArray), _
+                                    New DBHelper.DBHelperParameter(COL_NAME_PARAM_EXTERNAL_USER_NAME, external_user_name), _
+                                    New DBHelper.DBHelperParameter(COL_NAME_PARAM_COMMENTS, comments)}
 
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                                                                 {New DBHelper.DBHelperParameter(PARAM_RETURN, GetType(Integer)), _                                                                 
@@ -258,8 +258,8 @@ Public Class ClaimStatusDAL
 
 
     End Sub
-    Public Sub UpdateExtendedMV(ByVal claimId As System.Guid, ByVal claimStatusId As System.Guid, ByVal statusCode As String)
-        Dim updateStmt As String = Me.Config("/SQL/UPDATE_EXTENDED_CLAIM_MV")
+    Public Sub UpdateExtendedMV(claimId As System.Guid, claimStatusId As System.Guid, statusCode As String)
+        Dim updateStmt As String = Config("/SQL/UPDATE_EXTENDED_CLAIM_MV")
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_PARAM_CLAIM_ID, claimId.ToByteArray), _
                                                                                        New DBHelper.DBHelperParameter(COL_NAME_CLAIM_STATUS_ID, claimStatusId.ToByteArray), _
                                                                                        New DBHelper.DBHelperParameter(COL_NAME_STATUS_CODE, statusCode)}

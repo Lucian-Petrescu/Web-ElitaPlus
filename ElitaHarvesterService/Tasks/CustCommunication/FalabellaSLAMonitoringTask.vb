@@ -11,14 +11,14 @@ Public Class FalabellaSLAMonitoringTask
         Get
             Return _claimId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _claimId = value
         End Set
     End Property
 #End Region
 
 #Region "Constructors"
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 #End Region

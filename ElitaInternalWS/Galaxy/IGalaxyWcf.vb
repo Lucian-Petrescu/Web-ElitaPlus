@@ -7,18 +7,18 @@ Namespace Galaxy
     Public Interface IGalaxyWcf
 
         <OperationContract()> _
-        Function Hello(ByVal name As String) As String
+        Function Hello(name As String) As String
 
         <OperationContract()> _
         Function Login() As String
 
         <OperationContract()> _
-        Function LoginBody(ByVal networkID As String, ByVal password As String, ByVal group As String) As String
+        Function LoginBody(networkID As String, password As String, group As String) As String
 
         <OperationContract()> _
-        Function ProcessRequest(ByVal token As String, _
-                                               ByVal functionToProcess As String, _
-                                               ByVal xmlStringDataIn As String) As String
+        Function ProcessRequest(token As String, _
+                                               functionToProcess As String, _
+                                               xmlStringDataIn As String) As String
 
     End Interface
 

@@ -79,29 +79,29 @@ Public Class GVSUpdateSVC
 
     Public Property TransactionId() As String
         Get
-            If Row(Me.DATA_COL_NAME_TRANSACTION_ID) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_TRANSACTION_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_TRANSACTION_ID), String))
+                Return (CType(Row(DATA_COL_NAME_TRANSACTION_ID), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_TRANSACTION_ID, Value)
+            SetValue(DATA_COL_NAME_TRANSACTION_ID, Value)
         End Set
     End Property
 
     Public Property FunctionType() As String
         Get
-            If Row(Me.DATA_COL_NAME_FUNCTION_TYPE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_FUNCTION_TYPE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_FUNCTION_TYPE), String))
+                Return (CType(Row(DATA_COL_NAME_FUNCTION_TYPE), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_FUNCTION_TYPE, Value)
+            SetValue(DATA_COL_NAME_FUNCTION_TYPE, Value)
         End Set
     End Property
 

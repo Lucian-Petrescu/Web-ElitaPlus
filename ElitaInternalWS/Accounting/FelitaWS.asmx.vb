@@ -31,7 +31,7 @@ Imports Assurant.ElitaPlus.DALObjects
         components = New System.ComponentModel.Container
     End Sub
 
-    Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overloads Overrides Sub Dispose(disposing As Boolean)
         'CODEGEN: This procedure is required by the Web Services Designer
         'Do not modify it using the code editor.
         If disposing Then

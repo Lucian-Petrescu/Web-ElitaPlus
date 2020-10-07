@@ -6,11 +6,11 @@ Public Class HarvestersCollection
     Public Sub New()
     End Sub
 
-    Default Public Shadows Property Item(ByVal index As Integer) As ThreadConfigElement
+    Default Public Shadows Property Item(index As Integer) As ThreadConfigElement
         Get
             Return DirectCast(BaseGet(index), ThreadConfigElement)
         End Get
-        Set(ByVal value As ThreadConfigElement)
+        Set(value As ThreadConfigElement)
             If (BaseGet(index) IsNot Nothing) Then
                 BaseRemoveAt(index)
             End If
@@ -18,7 +18,7 @@ Public Class HarvestersCollection
         End Set
     End Property
 
-    Public Sub Add(ByVal serviceConfig As ThreadConfigElement)
+    Public Sub Add(serviceConfig As ThreadConfigElement)
         BaseAdd(serviceConfig)
     End Sub
 
@@ -30,21 +30,21 @@ Public Class HarvestersCollection
         Return New ThreadEnvironmentConfigElement
     End Function
 
-    Protected Overrides Function GetElementKey(ByVal element As ConfigurationElement) As Object
+    Protected Overrides Function GetElementKey(element As ConfigurationElement) As Object
         Return (DirectCast(element, ThreadConfigElement)).Name
     End Function
 
-    Public Sub Remove(ByVal serviceConfig As ThreadConfigElement)
+    Public Sub Remove(serviceConfig As ThreadConfigElement)
         If BaseIndexOf(serviceConfig) >= 0 Then
             BaseRemove(serviceConfig.Name)
         End If
     End Sub
 
-    Public Sub RemoveAt(ByVal index As Integer)
+    Public Sub RemoveAt(index As Integer)
         BaseRemoveAt(index)
     End Sub
 
-    Public Sub Remove(ByVal name As String)
+    Public Sub Remove(name As String)
         BaseRemove(name)
     End Sub
 

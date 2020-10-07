@@ -84,7 +84,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -95,45 +95,45 @@ Namespace Reports
 #Region "Handlers-Init"
 
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.ClearLabelsErrSign()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+            ErrControllerMaster.Clear_Hide()
+            ClearLabelsErrSign()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     JavascriptCalls()
                     InitializeForm()
-                    Me.AddCalendar(Me.BtnBeginDate, Me.BeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.EndDateText)
+                    AddCalendar(BtnBeginDate, BeginDateText)
+                    AddCalendar(BtnEndDate, EndDateText)
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(BeginDateLabel)
-                Me.ClearLabelErrSign(EndDateLabel)
-                Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(BeginDateLabel)
+                ClearLabelErrSign(EndDateLabel)
+                ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -142,12 +142,12 @@ Namespace Reports
 #Region "Handlers-DropDowns"
 
         ' Multiple Dealer Drop 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
            Handles multipleDropControl.SelectedDropChanged
             Try
                 PopulateProductCodeDropDown()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
@@ -169,7 +169,7 @@ Namespace Reports
                 listcontext.DealerId = DealerMultipleDrop.SelectedGuid
 
                 Dim productcodeList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByDealer", context:=listcontext)
-                Me.cboProduct.Populate(productcodeList, New PopulateOptions() With
+                cboProduct.Populate(productcodeList, New PopulateOptions() With
                 {
                    .AddBlankItem = True,
                    .TextFunc = AddressOf .GetCode,
@@ -182,13 +182,13 @@ Namespace Reports
 
         Private Sub InitializeForm()
             Dim t As Date = Date.Now.AddDays(-1)
-            Me.BeginDateText.Text = GetDateFormattedString(t)
-            Me.EndDateText.Text = GetDateFormattedString(Date.Now)
+            BeginDateText.Text = GetDateFormattedString(t)
+            EndDateText.Text = GetDateFormattedString(Date.Now)
             PopulateDealerDropDown()
             PopulateProductCodeDropDown()
-            Me.rdealer.Checked = True
-            Me.rbProduct.Checked = True
-            Me.RadiobuttonTotalsOnly.Checked = True
+            rdealer.Checked = True
+            rbProduct.Checked = True
+            RadiobuttonTotalsOnly.Checked = True
             TheReportCeInputControl.populateReportLanguages(RPT_FILENAME)
         End Sub
 
@@ -197,9 +197,9 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal userId As String, ByVal dealerCode As String, ByVal productCode As String, _
-                               ByVal beginDate As String, ByVal endDate As String, _
-                               ByVal detailCode As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, dealerCode As String, productCode As String, _
+                               beginDate As String, endDate As String, _
+                               detailCode As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim params As New ReportCeBaseForm.Params
@@ -261,9 +261,9 @@ Namespace Reports
             Dim params As ReportCeBaseForm.Params
             Dim endDate As String
             Dim beginDate As String
-            Dim selectedProduct As String = Me.GetSelectedDescription(Me.cboProduct)
+            Dim selectedProduct As String = GetSelectedDescription(cboProduct)
 
-            If Me.RadiobuttonTotalsOnly.Checked Then
+            If RadiobuttonTotalsOnly.Checked Then
                 detailCode = YES
             Else
                 detailCode = NO
@@ -275,7 +275,7 @@ Namespace Reports
             beginDate = ReportCeBase.FormatDate(BeginDateLabel, BeginDateText.Text)
 
             'Validating the dealer selection
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             Else
 
@@ -285,7 +285,7 @@ Namespace Reports
                 End If
             End If
 
-            If Me.rbProduct.Checked Then
+            If rbProduct.Checked Then
                 selectedProduct = ALL
             Else
                 If selectedProduct.Equals(String.Empty) Then
@@ -310,9 +310,9 @@ Namespace Reports
             Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
         End Sub
 
-        Function SetExpParameters(ByVal userId As String, ByVal beginDate As String, _
-                                  ByVal endDate As String, ByVal dealerCode As String, _
-                                  ByVal productCode As String, ByVal detailCode As String) As ReportCeBaseForm.Params
+        Function SetExpParameters(userId As String, beginDate As String, _
+                                  endDate As String, dealerCode As String, _
+                                  productCode As String, detailCode As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim repParams(TOTAL_EXP_PARAMS) As ReportCeBaseForm.RptParam
@@ -344,8 +344,8 @@ Namespace Reports
             Return params
         End Function
 
-        Sub SetReportParams(ByVal rptParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam, _
-                            ByVal rptName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(rptParams As ReportParams, repParams() As ReportCeBaseForm.RptParam, _
+                            rptName As String, startIndex As Integer)
 
             With rptParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_USER_KEY", .userId, rptName)

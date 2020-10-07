@@ -43,26 +43,26 @@
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("payment_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal certId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_CERT")
+    Public Function LoadList(certId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_FOR_CERT")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_id", certId.ToByteArray)}
         Try
             Dim ds = New DataSet
-            Return (DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -71,26 +71,26 @@
 #End Region
 
 #Region "Add / Update Methods"
-    Public Sub AddPayment(ByVal payment_date As Date,
-                          ByVal amount As Decimal,
-                          ByVal currency_code As String,
-                          ByVal exchange_rate As String,
-                          ByVal source As String,
-                          ByVal reference As String,
-                          ByVal reference_id As Guid,
-                          ByVal application_mode As String,
-                          ByVal payment_method As String,
-                          ByVal distributed As String,
-                          ByVal check_number As String,
-                          ByVal check_customer_name As String,
-                          ByVal check_bank_name As String,
-                          ByVal comments As String,
-                          ByVal user_id As String,
+    Public Sub AddPayment(payment_date As Date,
+                          amount As Decimal,
+                          currency_code As String,
+                          exchange_rate As String,
+                          source As String,
+                          reference As String,
+                          reference_id As Guid,
+                          application_mode As String,
+                          payment_method As String,
+                          distributed As String,
+                          check_number As String,
+                          check_customer_name As String,
+                          check_bank_name As String,
+                          comments As String,
+                          user_id As String,
                           ByRef payment_id As Guid,
                           ByRef err_no As Integer,
                           ByRef err_msg As String)
 
-        Dim selectStmt As String = Me.Config("/SQL/ADD_CHECK_PAYMENT")
+        Dim selectStmt As String = Config("/SQL/ADD_CHECK_PAYMENT")
         Dim inputParameters() As DBHelper.DBHelperParameter
         Dim outputParameter(2) As DBHelper.DBHelperParameter
 
@@ -127,14 +127,14 @@
 
     End Sub
 
-    Public Sub AddRejectPayment(ByVal reject_date As Date,
-                          ByVal payment_id As Guid,
-                          ByVal reject_reason As String,
-                          ByVal comments As String,
+    Public Sub AddRejectPayment(reject_date As Date,
+                          payment_id As Guid,
+                          reject_reason As String,
+                          comments As String,
                           ByRef err_no As Integer,
                           ByRef err_msg As String)
 
-        Dim selectStmt As String = Me.Config("/SQL/ADD_REJECT_PAYMENT")
+        Dim selectStmt As String = Config("/SQL/ADD_REJECT_PAYMENT")
         Dim inputParameters() As DBHelper.DBHelperParameter
         Dim outputParameter(1) As DBHelper.DBHelperParameter
 
@@ -159,7 +159,7 @@
 
     End Sub
 
-    Function SetParameter(ByVal name As String, ByVal value As Object) As DBHelper.DBHelperParameter
+    Function SetParameter(name As String, value As Object) As DBHelper.DBHelperParameter
         name = name.Trim
         If value Is Nothing Then value = DBNull.Value
         If value.GetType Is GetType(String) Then value = DirectCast(value, String).Trim

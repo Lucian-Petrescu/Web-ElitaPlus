@@ -18,37 +18,37 @@
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "stage_end_id", OracleDbType.Raw, id.ToByteArray, ParameterDirection.Input)
 
         Try
-            OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+            OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub LoadList(ByVal familyDS As DataSet, ByVal stage_id As Guid, ByVal language_id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Sub LoadList(familyDS As DataSet, stage_id As Guid, language_id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "stage_id", OracleDbType.Raw, stage_id.ToByteArray, ParameterDirection.Input)
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, language_id.ToByteArray, ParameterDirection.Input)
 
         Try
-            OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+            OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function GetSelectedStageEndStatus(ByVal familyDS As DataSet, ByVal stage_id As Guid, ByVal language_id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_SELECTED_STAGE_END_STATUS")
+    Public Function GetSelectedStageEndStatus(familyDS As DataSet, stage_id As Guid, language_id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_SELECTED_STAGE_END_STATUS")
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "stage_id", OracleDbType.Raw, stage_id.ToByteArray, ParameterDirection.Input)
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, language_id.ToByteArray, ParameterDirection.Input)
@@ -72,22 +72,22 @@
 
 #Region "Overloaded Methods"
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter("pi_stage_end_id", OracleDbType.Raw, sourceColumn:=COL_NAME_STAGE_END_ID)
         End With
     End Sub
 
-    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter("pi_stage_end_id", OracleDbType.Raw, sourceColumn:=COL_NAME_STAGE_END_ID)
             .AddParameter("pi_stage_id", OracleDbType.Raw, sourceColumn:=COL_NAME_STAGE_ID)
@@ -96,7 +96,7 @@
         End With
     End Sub
 
-    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter("pi_stage_end_id", OracleDbType.Raw, sourceColumn:=COL_NAME_STAGE_END_ID)
             .AddParameter("pi_stage_id", OracleDbType.Raw, sourceColumn:=COL_NAME_STAGE_ID)

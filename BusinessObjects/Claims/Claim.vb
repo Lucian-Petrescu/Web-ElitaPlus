@@ -22,34 +22,34 @@ Public NotInheritable Class Claim
     'New BO
     Friend Sub New()
         MyBase.New()
-        Me.ReportedDate = Date.Today
+        ReportedDate = Date.Today
     End Sub
 
     'New BO attaching to a BO family
-    Friend Sub New(ByVal familyDS As DataSet)
+    Friend Sub New(familyDS As DataSet)
         MyBase.New(familyDS)
-        Me.ReportedDate = Date.Today
+        ReportedDate = Date.Today
     End Sub
 
     'Existing BO
-    Friend Sub New(ByVal id As Guid)
+    Friend Sub New(id As Guid)
         MyBase.New(id)
-        Me.originalAuthorizedAmount = Me.AuthorizedAmount
+        originalAuthorizedAmount = AuthorizedAmount
     End Sub
 
     'Existing BO attaching to a BO family
-    Friend Sub New(ByVal id As Guid, ByVal familyDS As DataSet, Optional ByVal blnMustReload As Boolean = False)
+    Friend Sub New(id As Guid, familyDS As DataSet, Optional ByVal blnMustReload As Boolean = False)
         MyBase.New(id, familyDS, blnMustReload)
-        Me.originalAuthorizedAmount = Me.AuthorizedAmount
+        originalAuthorizedAmount = AuthorizedAmount
     End Sub
 
-    Friend Sub New(ByVal row As DataRow)
+    Friend Sub New(row As DataRow)
         MyBase.New(row)
     End Sub
 
-    Friend Sub New(ByVal claimNumber As String, ByVal companyId As Guid)
+    Friend Sub New(claimNumber As String, companyId As Guid)
         MyBase.New(claimNumber, companyId)
-        Me.originalAuthorizedAmount = Me.AuthorizedAmount
+        originalAuthorizedAmount = AuthorizedAmount
     End Sub
 
 #End Region
@@ -68,7 +68,7 @@ Public NotInheritable Class Claim
     Private _sourceForCancellation As String
     'REQ-5404 end
 
-    Public Function GetExistClaimNumber(ByVal companyId As Guid, ByVal claimNumber As String, ByVal CoverageCode As String, ByVal UnitNumber As Integer, Optional ByVal IsPayClaim As Boolean = False) As String
+    Public Function GetExistClaimNumber(companyId As Guid, claimNumber As String, CoverageCode As String, UnitNumber As Integer, Optional ByVal IsPayClaim As Boolean = False) As String
         Try
             Dim dal As New ClaimDAL
             Dim retClaimNumber As String = dal.GetExistClaimNumber(companyId, claimNumber, CoverageCode, UnitNumber, IsPayClaim)
@@ -85,7 +85,7 @@ Public NotInheritable Class Claim
         End Try
     End Function
 
-    Private Function getDeductible(ByVal pCert_Item_Cov_Id As Guid, ByVal pService_Center_Id As Guid) As DecimalType
+    Private Function getDeductible(pCert_Item_Cov_Id As Guid, pService_Center_Id As Guid) As DecimalType
         getDeductible = New ClaimDAL().LoadDeductible(pCert_Item_Cov_Id, pService_Center_Id)
     End Function
 
@@ -142,21 +142,21 @@ Public NotInheritable Class Claim
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_CLAIM_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_CLAIM_GROUP_ID, Value)
+            SetValue(ClaimDAL.COL_NAME_CLAIM_GROUP_ID, Value)
         End Set
     End Property
 
     Private _servCenterObject As ServiceCenter
     Public ReadOnly Property ServiceCenterObject() As ServiceCenter Implements IInvoiceable.ServiceCenterObject
         Get
-            If Me._servCenterObject Is Nothing Then
-                If Not Me.ServiceCenterId.Equals(Guid.Empty) Then
-                    Me._servCenterObject = New ServiceCenter(Me.ServiceCenterId)
+            If _servCenterObject Is Nothing Then
+                If Not ServiceCenterId.Equals(Guid.Empty) Then
+                    _servCenterObject = New ServiceCenter(ServiceCenterId)
                 End If
             End If
-            Return Me._servCenterObject
+            Return _servCenterObject
         End Get
     End Property
 
@@ -205,17 +205,17 @@ Public NotInheritable Class Claim
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_SERVICE_CENTER_ID, Value)
+            SetValue(ClaimDAL.COL_NAME_SERVICE_CENTER_ID, Value)
             If Not Value.Equals(Guid.Empty) Then
                 Dim servCenterObj As New ServiceCenter(Value)
-                Me.SetValue(ClaimDAL.COL_NAME_SERVICE_CENTER, servCenterObj.Description)
+                SetValue(ClaimDAL.COL_NAME_SERVICE_CENTER, servCenterObj.Description)
             Else
-                Me.SetValue(ClaimDAL.COL_NAME_SERVICE_CENTER, Nothing)
+                SetValue(ClaimDAL.COL_NAME_SERVICE_CENTER, Nothing)
             End If
             'invalidate the servcenter object
-            Me._servCenterObject = Nothing
+            _servCenterObject = Nothing
         End Set
     End Property
 
@@ -228,9 +228,9 @@ Public NotInheritable Class Claim
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_LOANER_CENTER_ID), Byte()))
             End If
         End Get
-        Private Set(ByVal Value As Guid)
+        Private Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_LOANER_CENTER_ID, Value)
+            SetValue(ClaimDAL.COL_NAME_LOANER_CENTER_ID, Value)
         End Set
     End Property
 
@@ -239,7 +239,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.AuthorizedAmount
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
             MyBase.AuthorizedAmount = Value
         End Set
@@ -255,9 +255,9 @@ Public NotInheritable Class Claim
                 Return New DateType(CType(Row(ClaimDAL.COL_NAME_INVOICE_PROCESS_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_INVOICE_PROCESS_DATE, Value)
+            SetValue(ClaimDAL.COL_NAME_INVOICE_PROCESS_DATE, Value)
         End Set
     End Property
 
@@ -271,9 +271,9 @@ Public NotInheritable Class Claim
                 Return New DateType(CType(Row(ClaimDAL.COL_NAME_LOANER_RETURNED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_LOANER_RETURNED_DATE, Value)
+            SetValue(ClaimDAL.COL_NAME_LOANER_RETURNED_DATE, Value)
         End Set
     End Property
 
@@ -287,9 +287,9 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_SOURCE, Value)
+            SetValue(ClaimDAL.COL_NAME_SOURCE, Value)
         End Set
     End Property
 
@@ -303,16 +303,16 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_SPARE_PARTS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
 
             'Added logic to default to "Y" for spare parts if the current value is "Y", else default to "N"
             If (Not Row(ClaimDAL.COL_NAME_SPARE_PARTS) Is DBNull.Value) AndAlso (Row(ClaimDAL.COL_NAME_SPARE_PARTS) = "Y") Then
-                Me.SetValue(ClaimDAL.COL_NAME_SPARE_PARTS, "Y")
+                SetValue(ClaimDAL.COL_NAME_SPARE_PARTS, "Y")
             ElseIf Value = Nothing Then
-                Me.SetValue(ClaimDAL.COL_NAME_SPARE_PARTS, "N")
+                SetValue(ClaimDAL.COL_NAME_SPARE_PARTS, "N")
             Else
-                Me.SetValue(ClaimDAL.COL_NAME_SPARE_PARTS, Value)
+                SetValue(ClaimDAL.COL_NAME_SPARE_PARTS, Value)
             End If
 
         End Set
@@ -351,9 +351,9 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_LOANER_REQUESTED_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_LOANER_REQUESTED_XCD, Value)
+            SetValue(ClaimDAL.COL_NAME_LOANER_REQUESTED_XCD, Value)
         End Set
     End Property
 
@@ -395,13 +395,13 @@ Public NotInheritable Class Claim
 
     Public Property LoanerTaken() As Boolean
         Get
-            Return Not Me.LoanerCenterId.Equals(Guid.Empty)
+            Return Not LoanerCenterId.Equals(Guid.Empty)
         End Get
-        Set(ByVal Value As Boolean)
+        Set(Value As Boolean)
             If Value Then
-                Me.LoanerCenterId = Me.ServiceCenterObject.LoanerCenterId
+                LoanerCenterId = ServiceCenterObject.LoanerCenterId
             Else
-                Me.LoanerCenterId = Guid.Empty
+                LoanerCenterId = Guid.Empty
             End If
         End Set
     End Property
@@ -414,7 +414,7 @@ Public NotInheritable Class Claim
                         ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 Dim desc As String = LookupListNew.GetDescriptionFromId(dv, certItemCoverage.CoverageTypeId)
 
-                Me.SetValue(ClaimDAL.COL_NAME_COVERAGE_TYPE_ID, certItemCoverage.CoverageTypeId)
+                SetValue(ClaimDAL.COL_NAME_COVERAGE_TYPE_ID, certItemCoverage.CoverageTypeId)
                 Return desc
             Else
                 Dim dv As DataView = LookupListNew.GetCoverageTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
@@ -444,9 +444,9 @@ Public NotInheritable Class Claim
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_WHO_PAYS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_WHO_PAYS_ID, Value)
+            SetValue(ClaimDAL.COL_NAME_WHO_PAYS_ID, Value)
         End Set
     End Property
 
@@ -469,21 +469,21 @@ Public NotInheritable Class Claim
             'Since the RepairDate for the new Service Warranty Claim is Blank, we need to get the 
             'RepairDate for the parent Repair Claim.
             'BEGIN - New logic - Ravi
-            If (Me.parentClaim Is Nothing AndAlso Not Me.ClaimNumber Is Nothing AndAlso Me.ClaimNumber.EndsWith("S")) Then
-                Me.parentClaim = ClaimFacade.Instance.GetClaim(Of Claim)(Me.ClaimNumber.TrimEnd("S"), Me.CompanyId)
+            If (parentClaim Is Nothing AndAlso Not ClaimNumber Is Nothing AndAlso ClaimNumber.EndsWith("S")) Then
+                parentClaim = ClaimFacade.Instance.GetClaim(Of Claim)(ClaimNumber.TrimEnd("S"), CompanyId)
             End If
-            If (Me.parentClaim Is Nothing OrElse (Not Me.ClaimNumber Is Nothing AndAlso Not Me.ClaimNumber.EndsWith("S"))) Then
+            If (parentClaim Is Nothing OrElse (Not ClaimNumber Is Nothing AndAlso Not ClaimNumber.EndsWith("S"))) Then
                 Return False
             End If
-            If Not Me.ClaimActivityCode Is Nothing AndAlso Me.ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK AndAlso Not Me.parentClaim.RepairDate Is Nothing AndAlso Not Me.ServiceCenterObject Is Nothing Then
+            If Not ClaimActivityCode Is Nothing AndAlso ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK AndAlso Not parentClaim.RepairDate Is Nothing AndAlso Not ServiceCenterObject Is Nothing Then
                 Dim elpasedDaysSinceRepaired As Long
-                If Not Me.parentClaim.PickUpDate Is Nothing Then
-                    elpasedDaysSinceRepaired = Date.Now.Subtract(Me.parentClaim.PickUpDate.Value).Days
+                If Not parentClaim.PickUpDate Is Nothing Then
+                    elpasedDaysSinceRepaired = Date.Now.Subtract(parentClaim.PickUpDate.Value).Days
                 Else
-                    elpasedDaysSinceRepaired = Date.Now.Subtract(Me.parentClaim.RepairDate.Value).Days
+                    elpasedDaysSinceRepaired = Date.Now.Subtract(parentClaim.RepairDate.Value).Days
                 End If
 
-                Return elpasedDaysSinceRepaired > Me.ServiceCenterObject.ServiceWarrantyDays.Value
+                Return elpasedDaysSinceRepaired > ServiceCenterObject.ServiceWarrantyDays.Value
             Else
                 Return False
             End If
@@ -537,7 +537,7 @@ Public NotInheritable Class Claim
         Get
             Return moIsComingFromPayClaim
         End Get
-        Set(ByVal Value As Boolean)
+        Set(Value As Boolean)
             moIsComingFromPayClaim = Value
         End Set
     End Property
@@ -554,9 +554,9 @@ Public NotInheritable Class Claim
                 Return New DateType(CType(Row(ClaimDAL.COL_NAME_VISIT_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_VISIT_DATE, Value)
+            SetValue(ClaimDAL.COL_NAME_VISIT_DATE, Value)
         End Set
     End Property
 
@@ -570,9 +570,9 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_BATCH_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_BATCH_NUMBER, Value)
+            SetValue(ClaimDAL.COL_NAME_BATCH_NUMBER, Value)
         End Set
     End Property
 
@@ -585,9 +585,9 @@ Public NotInheritable Class Claim
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_CLAIM_IS_SPECIAL_SERVICE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_CLAIM_IS_SPECIAL_SERVICE_ID, Value)
+            SetValue(ClaimDAL.COL_NAME_CLAIM_IS_SPECIAL_SERVICE_ID, Value)
         End Set
     End Property
 
@@ -595,7 +595,7 @@ Public NotInheritable Class Claim
         Get
             Return splsvcOccurances
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             splsvcOccurances = Value
         End Set
     End Property
@@ -603,7 +603,7 @@ Public NotInheritable Class Claim
         Get
             Return splsvcSvcCls
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             splsvcSvcCls = Value
         End Set
     End Property
@@ -611,7 +611,7 @@ Public NotInheritable Class Claim
         Get
             Return splsvcSvcType
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             splsvcSvcType = Value
         End Set
     End Property
@@ -631,7 +631,7 @@ Public NotInheritable Class Claim
         Get
             Return splsvcDesc
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             splsvcDesc = Value
         End Set
     End Property
@@ -640,7 +640,7 @@ Public NotInheritable Class Claim
         Get
             Return moIsUpdatedMasterClaimComment
         End Get
-        Set(ByVal Value As Boolean)
+        Set(Value As Boolean)
             moIsUpdatedMasterClaimComment = Value
         End Set
     End Property
@@ -649,7 +649,7 @@ Public NotInheritable Class Claim
         Get
             Return moMasterClaimId
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             moMasterClaimId = Value
         End Set
     End Property
@@ -676,9 +676,9 @@ Public NotInheritable Class Claim
                 Return New DateType(CType(Row(ClaimDAL.COL_NAME_INVOICE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_INVOICE_DATE, Value)
+            SetValue(ClaimDAL.COL_NAME_INVOICE_DATE, Value)
         End Set
     End Property
 
@@ -691,9 +691,9 @@ Public NotInheritable Class Claim
                 Return New LongType(CType(Row(ClaimDAL.COL_NAME_CURRENT_ODOMETER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set(Value As LongType)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_CURRENT_ODOMETER, Value)
+            SetValue(ClaimDAL.COL_NAME_CURRENT_ODOMETER, Value)
         End Set
     End Property
 
@@ -706,17 +706,17 @@ Public NotInheritable Class Claim
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_REVERSE_LOGISTICS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_REVERSE_LOGISTICS_ID, Value)
+            SetValue(ClaimDAL.COL_NAME_REVERSE_LOGISTICS_ID, Value)
         End Set
     End Property
 
     Public ReadOnly Property IsSupervisorAuthorizationRequired() As Boolean
         Get
             Dim bIsReq As Boolean
-            Dim bDaysExceeded As Boolean = Me.IsDaysLimitExceeded
-            Dim bAuthorizationExceeded As Boolean = Me.IsAuthorizationLimitExceeded
+            Dim bDaysExceeded As Boolean = IsDaysLimitExceeded
+            Dim bAuthorizationExceeded As Boolean = IsAuthorizationLimitExceeded
 
             If bAuthorizationExceeded Then
                 bIsReq = True
@@ -758,9 +758,9 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_SPECIAL_INSTRUCTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_SPECIAL_INSTRUCTION, Value)
+            SetValue(ClaimDAL.COL_NAME_SPECIAL_INSTRUCTION, Value)
         End Set
     End Property
 
@@ -768,7 +768,7 @@ Public NotInheritable Class Claim
         Get
             Return _cert_RemainingBalance
         End Get
-        Set(ByVal Value As Decimal)
+        Set(Value As Decimal)
             _cert_RemainingBalance = Value
         End Set
     End Property
@@ -777,7 +777,7 @@ Public NotInheritable Class Claim
         Get
             Return _vehicle_condition
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             _vehicle_condition = Value
         End Set
     End Property
@@ -785,7 +785,7 @@ Public NotInheritable Class Claim
         Get
             Return _MFG_MAX_Mileage_Limit
         End Get
-        Set(ByVal Value As Integer)
+        Set(Value As Integer)
             _MFG_MAX_Mileage_Limit = Value
         End Set
     End Property
@@ -793,7 +793,7 @@ Public NotInheritable Class Claim
         Get
             Return _coverage_mi_km
         End Get
-        Set(ByVal Value As Integer)
+        Set(Value As Integer)
             _coverage_mi_km = Value
         End Set
     End Property
@@ -802,7 +802,7 @@ Public NotInheritable Class Claim
         Get
             Return _sourceForCancellation
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             _sourceForCancellation = Value
         End Set
     End Property
@@ -816,9 +816,9 @@ Public NotInheritable Class Claim
                 Return New DateType(CType(Row(ClaimDAL.COL_NAME_DEVICE_RECEPTION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_DEVICE_RECEPTION_DATE, Value)
+            SetValue(ClaimDAL.COL_NAME_DEVICE_RECEPTION_DATE, Value)
         End Set
     End Property
 
@@ -831,9 +831,9 @@ Public NotInheritable Class Claim
                 Return New DateType(CType(Row(ClaimDAL.COL_NAME_DEVICE_ACTIVATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_DEVICE_ACTIVATION_DATE, Value)
+            SetValue(ClaimDAL.COL_NAME_DEVICE_ACTIVATION_DATE, Value)
         End Set
     End Property
 
@@ -848,9 +848,9 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_EMPLOYEE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_EMPLOYEE_NUMBER, Value)
+            SetValue(ClaimDAL.COL_NAME_EMPLOYEE_NUMBER, Value)
         End Set
     End Property
 
@@ -863,9 +863,9 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_FULFILMENT_METHOD_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_FULFILMENT_METHOD_XCD, Value)
+            SetValue(ClaimDAL.COL_NAME_FULFILMENT_METHOD_XCD, Value)
         End Set
     End Property
     Public Property BankInfoId() As Guid
@@ -877,9 +877,9 @@ Public NotInheritable Class Claim
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_BANK_INFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_BANK_INFO_ID, Value)
+            SetValue(ClaimDAL.COL_NAME_BANK_INFO_ID, Value)
         End Set
     End Property
 #End Region
@@ -892,12 +892,12 @@ Public NotInheritable Class Claim
             'JP -- If the notification type field is not null then display the pick up date and 
             '      do not base the display on the source field else let the source field handle it as usual
 
-            If Not (Me.NotificationTypeId.Equals(Guid.Empty)) Then
+            If Not (NotificationTypeId.Equals(Guid.Empty)) Then
                 Return True
-            ElseIf ((Me.Source Is Nothing) Or (Not Me.Source Is Nothing AndAlso Me.Source.Equals(String.Empty))) _
-                             And ((Me.ClaimActivityCode Is Nothing) Or ((Not Me.ClaimActivityCode Is Nothing) AndAlso
-                             ((Me.ClaimActivityCode <> Codes.CLAIM_ACTIVITY__REPLACED) And
-                               Me.ClaimActivityCode <> Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT))) Then
+            ElseIf ((Source Is Nothing) Or (Not Source Is Nothing AndAlso Source.Equals(String.Empty))) _
+                             And ((ClaimActivityCode Is Nothing) Or ((Not ClaimActivityCode Is Nothing) AndAlso
+                             ((ClaimActivityCode <> Codes.CLAIM_ACTIVITY__REPLACED) And
+                               ClaimActivityCode <> Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT))) Then
                 Return True
             Else
                 Return False
@@ -909,14 +909,14 @@ Public NotInheritable Class Claim
         Get
             Return _AuthDetailUsage
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             _AuthDetailUsage = Value
         End Set
     End Property
 
     Public ReadOnly Property MyDataset() As DataSet
         Get
-            Return Me.Dataset
+            Return Dataset
         End Get
     End Property
 
@@ -930,7 +930,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.RepairDate
         End Get
-        Set(ByVal Value As DateType)
+        Set(Value As DateType)
             MyBase.RepairDate = Value
         End Set
     End Property
@@ -940,7 +940,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.PickUpDate
         End Get
-        Set(ByVal Value As DateType)
+        Set(Value As DateType)
             MyBase.PickUpDate = Value
         End Set
     End Property
@@ -955,9 +955,9 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
+            SetValue(ClaimDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
     End Property
 
@@ -975,7 +975,7 @@ Public NotInheritable Class Claim
 
     Public ReadOnly Property Claim_Id() As Guid Implements IInvoiceable.Claim_Id
         Get
-            Return Me.Id
+            Return Id
         End Get
     End Property
 
@@ -1002,9 +1002,9 @@ Public NotInheritable Class Claim
                 Return New DecimalType(CType(Row(ClaimDAL.COL_NAME_REPAIR_ESTIMATE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimDAL.COL_NAME_REPAIR_ESTIMATE, Value)
+            SetValue(ClaimDAL.COL_NAME_REPAIR_ESTIMATE, Value)
         End Set
     End Property
 
@@ -1012,7 +1012,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.RepairCodeId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             MyBase.RepairCodeId = value
         End Set
     End Property
@@ -1021,7 +1021,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.ClaimActivityId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             MyBase.ClaimActivityId = value
         End Set
     End Property
@@ -1030,7 +1030,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.RiskTypeId
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             MyBase.RiskTypeId = Value
         End Set
     End Property
@@ -1039,7 +1039,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.ReasonClosedId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             MyBase.ReasonClosedId = value
         End Set
     End Property
@@ -1048,7 +1048,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.ClaimNumber
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             MyBase.ClaimNumber = value
         End Set
     End Property
@@ -1059,7 +1059,7 @@ Public NotInheritable Class Claim
         End Get
     End Property
 
-    Public Sub VerifyConcurrency(ByVal sModifiedDate As String) Implements IInvoiceable.VerifyConcurrency
+    Public Sub VerifyConcurrency(sModifiedDate As String) Implements IInvoiceable.VerifyConcurrency
         MyBase.VerifyConcurrency(sModifiedDate)
     End Sub
 
@@ -1067,7 +1067,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.StatusCode
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             MyBase.StatusCode = value
         End Set
     End Property
@@ -1076,7 +1076,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.ClaimClosedDate
         End Get
-        Set(ByVal value As DateType)
+        Set(value As DateType)
             MyBase.ClaimClosedDate = value
         End Set
     End Property
@@ -1085,7 +1085,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.CauseOfLossId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             MyBase.CauseOfLossId = value
         End Set
     End Property
@@ -1094,7 +1094,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.CompanyId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             MyBase.CompanyId = value
         End Set
     End Property
@@ -1115,7 +1115,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.CertItemCoverageId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             MyBase.CertItemCoverageId = value
         End Set
     End Property
@@ -1124,7 +1124,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.IsRequiredCheckLossDateForCancelledCert
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             MyBase.IsRequiredCheckLossDateForCancelledCert = value
         End Set
     End Property
@@ -1133,7 +1133,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.SalvageAmount
         End Get
-        Set(ByVal value As DecimalType)
+        Set(value As DecimalType)
             MyBase.SalvageAmount = value
         End Set
     End Property
@@ -1142,7 +1142,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.Deductible
         End Get
-        Set(ByVal value As DecimalType)
+        Set(value As DecimalType)
             MyBase.Deductible = value
         End Set
     End Property
@@ -1151,7 +1151,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.DiscountAmount
         End Get
-        Set(ByVal value As DecimalType)
+        Set(value As DecimalType)
             MyBase.DiscountAmount = value
         End Set
     End Property
@@ -1160,7 +1160,7 @@ Public NotInheritable Class Claim
         Get
             Return MyBase.LiabilityLimit
         End Get
-        Set(ByVal value As DecimalType)
+        Set(value As DecimalType)
             MyBase.LiabilityLimit = value
         End Set
     End Property
@@ -1199,15 +1199,15 @@ Public NotInheritable Class Claim
 #Region "Public Members"
     Public Sub CancelCertBasedOnContractReplacementPolicy()
 
-        If Me.MethodOfRepairCode = "R" AndAlso (Not Me.RepairDate Is Nothing) Then 'Replacement claim is fulfilled
+        If MethodOfRepairCode = "R" AndAlso (Not RepairDate Is Nothing) Then 'Replacement claim is fulfilled
             'Get a refreshed the certificate BO
             Dim certBO As Certificate = New Certificate(Certificate.Id)
             If certBO.StatusCode = "A" Then 'certificate is still active
-                Dim contractBO As Contract = New Contract(Contract.GetContractID(Me.CertificateId))
+                Dim contractBO As Contract = New Contract(Contract.GetContractID(CertificateId))
                 Dim blnCancelCert As Boolean = False
                 If contractBO.ReplacementPolicyId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_REPLACEMENT_POLICIES, Codes.REPLACEMENT_POLICY__CNCLAF)) Then
 
-                    Dim lngRepPolicyClaimCnt As Long = ReppolicyClaimCount.GetReplacementPolicyClaimCntByClaim(contractBO.Id, Me.Id)
+                    Dim lngRepPolicyClaimCnt As Long = ReppolicyClaimCount.GetReplacementPolicyClaimCntByClaim(contractBO.Id, Id)
 
                     If lngRepPolicyClaimCnt = 1 Then
                         blnCancelCert = True
@@ -1217,7 +1217,7 @@ Public NotInheritable Class Claim
                         Claimlist = Certificate.ClaimsForCertificate(Certificate.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                         paidReplacementClaimCnt = 0
                         For i = 0 To Claimlist.Count - 1
-                            If Claimlist(i)(Certificate.CertificateClaimsDV.COL_CLAIM_NUMBER) <> Me.ClaimNumber _
+                            If Claimlist(i)(Certificate.CertificateClaimsDV.COL_CLAIM_NUMBER) <> ClaimNumber _
                                 AndAlso Claimlist(i)(Certificate.CertificateClaimsDV.COL_Method_Of_Repair_code) = "R" _
                                 AndAlso (Not IsDBNull(Claimlist(i)(Certificate.CertificateClaimsDV.COL_Repair_Date))) Then 'other fulfilled replacement claim
                                 paidReplacementClaimCnt = paidReplacementClaimCnt + 1
@@ -1233,11 +1233,11 @@ Public NotInheritable Class Claim
                     Dim cancelCertificateData = New CertCancellationData
                     Dim dal As CertCancellationDAL
                     With cancelCertificateData
-                        .companyId = Me.CompanyId
+                        .companyId = CompanyId
                         .dealerId = certBO.DealerId
                         .certificate = certBO.CertNumber
                         .source = certBO.Source
-                        .cancellationDate = Me.LossDate.Value.AddDays(1)
+                        .cancellationDate = LossDate.Value.AddDays(1)
                         .cancellationCode = Codes.REASON_CLOSED__TO_BE_REPAIRED
                         .customerPaid = 0
                         .quote = "N"
@@ -1262,7 +1262,7 @@ Public NotInheritable Class Claim
     End Sub
 
     Public Overrides Sub Validate()
-        If Me.IsNew Then Me.IsRequiredCheckLossDateForCancelledCert = True 'Always check loss date for Cancelled certificate
+        If IsNew Then IsRequiredCheckLossDateForCancelledCert = True 'Always check loss date for Cancelled certificate
         MyBase.Validate()
     End Sub
 
@@ -1282,14 +1282,14 @@ Public NotInheritable Class Claim
         Dim dsClaim As DataSet '= claimdal.GetClaimsCntByLossDatesSplService(cert.Id, Me.LossDate)
 
         If SpecialServiceOccurrenceType = Codes.OCCURRENCES_ALWD_SPL_SVC_ONE_PER_YEAR Then
-            dsClaim = claimdal.GetClaimsCntByLossDatesSplService(cert.Id, Me.CauseOfLossId, CType(Me.LossDate, Date).ToString("MM/dd/yyyy"))
-            If CType(dsClaim.Tables(0).Rows(0)(Me.CLAIM_COUNT), Integer) > 0 Then
+            dsClaim = claimdal.GetClaimsCntByLossDatesSplService(cert.Id, CauseOfLossId, CType(LossDate, Date).ToString("MM/dd/yyyy"))
+            If CType(dsClaim.Tables(0).Rows(0)(CLAIM_COUNT), Integer) > 0 Then
                 claimExsists = True
             End If
         End If
         If SpecialServiceOccurrenceType = Codes.OCCURRENCES_ALWD_SPL_SVC_ONE_PER_CERT_PERIOD Then
-            dsClaim = claimdal.GetClaimsCntByLossDatesSplService(cert.Id, Me.CauseOfLossId)
-            If CType(dsClaim.Tables(0).Rows(0)(Me.CLAIM_COUNT), Integer) > 0 Then
+            dsClaim = claimdal.GetClaimsCntByLossDatesSplService(cert.Id, CauseOfLossId)
+            If CType(dsClaim.Tables(0).Rows(0)(CLAIM_COUNT), Integer) > 0 Then
                 claimExsists = True
             End If
         End If
@@ -1301,7 +1301,7 @@ Public NotInheritable Class Claim
                 Dim ds As DataSet = Claim.GetClaimDetailbyClaimNumAndDealer(MasterClaimNumber, cert.DealerId)
                 MasterClaimId = GuidControl.ByteArrayToGuid(ds.Tables(0).Rows(0)(ClaimDAL.COL_NAME_CLAIM_ID))
 
-                Dim claimBO As Claim = Me.AddClaim(MasterClaimId)
+                Dim claimBO As Claim = AddClaim(MasterClaimId)
                 claimBO.ProblemDescription = "  ***" & splsvcDesc & "  " &
                                              Denied_MaxOccr_Desc & "***  " _
                                              & vbCrLf & claimBO.ProblemDescription
@@ -1344,8 +1344,8 @@ Public NotInheritable Class Claim
             End If
         End If
 
-        If Not Me.CauseOfLossId.Equals(Guid.Empty) Then
-            Dim dsCovLoss As DataSet = boCovloss.LoadSelectedCovLossFromCovandCauseOfLoss(Me.CauseOfLossId, certItemCoverage.CoverageTypeId)
+        If Not CauseOfLossId.Equals(Guid.Empty) Then
+            Dim dsCovLoss As DataSet = boCovloss.LoadSelectedCovLossFromCovandCauseOfLoss(CauseOfLossId, certItemCoverage.CoverageTypeId)
             If dsCovLoss.Tables(0).Rows.Count > 0 Then
                 Dim dsSplSvc As DataSet = boSplSvc.ValidateCoverageLoss(cert.DealerId, GuidControl.ByteArrayToGuid(dsCovLoss.Tables(0).Rows(0)(dalCovloss.COL_NAME_COVERAGE_LOSS_ID)))
                 If Not dsSplSvc Is Nothing Then
@@ -1381,25 +1381,25 @@ Public NotInheritable Class Claim
     End Function
 
     Public Overrides Sub Save(Optional ByVal Transaction As IDbTransaction = Nothing)
-        If (Me.StatusCode <> Codes.CLAIM_STATUS__DENIED AndAlso Me.IsNew AndAlso (Me.IsSupervisorAuthorizationRequired)) Then
-            Me.StatusCode = Codes.CLAIM_STATUS__PENDING
+        If (StatusCode <> Codes.CLAIM_STATUS__DENIED AndAlso IsNew AndAlso (IsSupervisorAuthorizationRequired)) Then
+            StatusCode = Codes.CLAIM_STATUS__PENDING
         End If
         Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")
         'Special Service Validation
         ClaimSpecialServiceId = GetSpecialServiceValue()
-        If ClaimSpecialServiceId = yesId AndAlso Not Me.IsComingFromPayClaim AndAlso Me.IsNew Then
+        If ClaimSpecialServiceId = yesId AndAlso Not IsComingFromPayClaim AndAlso IsNew Then
             HandleSpecialServiceClaimCreation()
         End If
         Dim blnGVSCall As Boolean = False
-        If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+        If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
             ' Create transaction log header if the service center is integrated with GVS 
-            If Not Me.ServiceCenterObject Is Nothing AndAlso Me.ServiceCenterObject.IntegratedWithGVS AndAlso Not Me.ServiceCenterObject.IntegratedAsOf Is Nothing AndAlso (Me.IsNew Or (Not Me.IsNew AndAlso Me.CreatedDateTime.Value >= Me.ServiceCenterObject.IntegratedAsOf.Value)) Then
-                If Me.IsNew Then
+            If Not ServiceCenterObject Is Nothing AndAlso ServiceCenterObject.IntegratedWithGVS AndAlso Not ServiceCenterObject.IntegratedAsOf Is Nothing AndAlso (IsNew Or (Not IsNew AndAlso CreatedDateTime.Value >= ServiceCenterObject.IntegratedAsOf.Value)) Then
+                If IsNew Then
                     ' Add a NEW extended claim status when open a new claim with GVS integrated
                     Dim newClaimStatusByGroupId As Guid = ClaimStatusByGroup.GetClaimStatusByGroupID(DALObjects.ClaimStatusDAL.NEW_EXTENDED_CLAIM_STATUS)
-                    If Me._claimStatusBO Is Nothing Then
-                        Me.AddExtendedClaimStatus(Guid.Empty)
-                        _claimStatusBO.ClaimId = Me.Id
+                    If _claimStatusBO Is Nothing Then
+                        AddExtendedClaimStatus(Guid.Empty)
+                        _claimStatusBO.ClaimId = Id
                         _claimStatusBO.ClaimStatusByGroupId = newClaimStatusByGroupId
                         _claimStatusBO.StatusDate = DateTime.Now
                         _claimStatusBO.HandelTimeZoneForClaimExtStatusDate(Me)
@@ -1409,33 +1409,33 @@ Public NotInheritable Class Claim
             blnGVSCall = True
         End If
 
-        Dim bIsNew As Boolean = Me.IsNew
+        Dim bIsNew As Boolean = IsNew
         MyBase.Save(Transaction)
 
         If blnGVSCall Then
             ' Create transaction log header if the service center is integrated with GVS 
-            Me.HandleGVSTransactionCreation(Guid.Empty, bIsNew)
+            HandleGVSTransactionCreation(Guid.Empty, bIsNew)
         End If
 
         'REQ-1333, cancel certificate after replacement based on contract configuration
         CancelCertBasedOnContractReplacementPolicy()
 
         'REQ-5404
-        If Me.DealerTypeCode = Codes.DEALER_TYPES__VSC AndAlso Me.CurrentOdometer.Value > 0 AndAlso Me.Certificate.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE Then
-            Dim t As Thread = New Thread(AddressOf Me.CancelCertBasedOnCurrentOdometerExceedsAIZMiles)
+        If DealerTypeCode = Codes.DEALER_TYPES__VSC AndAlso CurrentOdometer.Value > 0 AndAlso Certificate.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE Then
+            Dim t As Thread = New Thread(AddressOf CancelCertBasedOnCurrentOdometerExceedsAIZMiles)
             t.Start()
         End If
 
     End Sub
 
 
-    Public Sub PrePopulate(ByVal serviceCenterId As Guid, ByVal certItemCoverageId As Guid, ByVal mstrClaimNumber As String, ByVal DateOfLoss As DateType, Optional ByVal RecoveryButtonClick As Boolean = False, Optional ByVal WsUse As Boolean = False, Optional ByVal ComingFromDenyClaim As Boolean = False, Optional ByVal comingFromCert As Boolean = False, Optional ByVal callerName As String = Nothing, Optional ByVal problemDescription As String = Nothing, Optional ByVal ClaimedEquipment As ClaimEquipment = Nothing)
+    Public Sub PrePopulate(serviceCenterId As Guid, certItemCoverageId As Guid, mstrClaimNumber As String, DateOfLoss As DateType, Optional ByVal RecoveryButtonClick As Boolean = False, Optional ByVal WsUse As Boolean = False, Optional ByVal ComingFromDenyClaim As Boolean = False, Optional ByVal comingFromCert As Boolean = False, Optional ByVal callerName As String = Nothing, Optional ByVal problemDescription As String = Nothing, Optional ByVal ClaimedEquipment As ClaimEquipment = Nothing)
 
         MyBase.PrePopulate(certItemCoverageId, mstrClaimNumber, DateOfLoss, RecoveryButtonClick, WsUse, ComingFromDenyClaim, comingFromCert, callerName, problemDescription, , ClaimedEquipment)
 
         'REQ-5546
         If serviceCenterId.Equals(Guid.Empty) Then
-            Dim objCountry As New Country(Me.Company.CountryId)
+            Dim objCountry As New Country(Company.CountryId)
 
             If Not objCountry.DefaultSCId.Equals(Guid.Empty) Then
                 Me.ServiceCenterId = objCountry.DefaultSCId
@@ -1449,22 +1449,22 @@ Public NotInheritable Class Claim
         End If
 
 
-        Dim dv As DataView = Me.GetRePairPricesByMethodOfRepair
+        Dim dv As DataView = GetRePairPricesByMethodOfRepair
 
         Me.AuthorizedAmount = 0
         If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
-            Me.AuthorizedAmount = CDec(dv.Table.Rows(0)(COL_PRICE_DV))
+            AuthorizedAmount = CDec(dv.Table.Rows(0)(COL_PRICE_DV))
             'Else
             '   Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, Messages.PRICE_LIST_NOT_FOUND)
         End If
 
-        If Me.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Then
-            Me.Deductible = New DecimalType(0)
-            Me.LiabilityLimit = New DecimalType(0)
-            Me.DeductiblePercent = New DecimalType(0)
-            Me.DeductiblePercentID = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+        If MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Then
+            Deductible = New DecimalType(0)
+            LiabilityLimit = New DecimalType(0)
+            DeductiblePercent = New DecimalType(0)
+            DeductiblePercentID = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
         Else
-            Me.LiabilityLimit = Me.CertificateItemCoverage.LiabilityLimits
+            LiabilityLimit = CertificateItemCoverage.LiabilityLimits
             PrepopulateDeductible()
         End If
 
@@ -1472,28 +1472,28 @@ Public NotInheritable Class Claim
 
     Public Function GetRePairPricesByMethodOfRepair() As DataView
         Dim dv As DataView
-        Dim servCenter As New ServiceCenter(Me.ServiceCenterId)
+        Dim servCenter As New ServiceCenter(ServiceCenterId)
         Dim equipConditionid As Guid
         Dim equipmentId As Guid
         Dim equipClassId As Guid
         'Dim servCenter As ServiceCenter
 
         'get the equipment information'if equipment not used then get the prices based on risktypeid
-        If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, Me.Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
+        If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
             equipConditionid = LookupListNew.GetIdFromCode(LookupListNew.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
-            If Me.ClaimedEquipment Is Nothing OrElse Me.ClaimedEquipment.EquipmentBO Is Nothing Then
-                Me.CreateClaimedEquipment(Me.CertificateItem.CopyEnrolledEquip_into_ClaimedEquip())
+            If ClaimedEquipment Is Nothing OrElse ClaimedEquipment.EquipmentBO Is Nothing Then
+                CreateClaimedEquipment(CertificateItem.CopyEnrolledEquip_into_ClaimedEquip())
             End If
 
-            If Not Me.ClaimedEquipment Is Nothing AndAlso Not Me.ClaimedEquipment.EquipmentBO Is Nothing Then
-                equipmentId = Me.ClaimedEquipment.EquipmentId
-                equipClassId = Me.ClaimedEquipment.EquipmentBO.EquipmentClassId
-                dv = PriceListDetail.GetRepairPricesforMethodofRepair(Me.MethodOfRepairId, Me.CompanyId, servCenter.Code, Me.RiskTypeId, DateTime.Now,
-                           Me.Certificate.SalesPrice.Value, equipClassId, equipmentId, equipConditionid, Me.Dealer.Id, String.Empty)
+            If Not ClaimedEquipment Is Nothing AndAlso Not ClaimedEquipment.EquipmentBO Is Nothing Then
+                equipmentId = ClaimedEquipment.EquipmentId
+                equipClassId = ClaimedEquipment.EquipmentBO.EquipmentClassId
+                dv = PriceListDetail.GetRepairPricesforMethodofRepair(MethodOfRepairId, CompanyId, servCenter.Code, RiskTypeId, DateTime.Now,
+                           Certificate.SalesPrice.Value, equipClassId, equipmentId, equipConditionid, Dealer.Id, String.Empty)
             End If
         Else
-            dv = PriceListDetail.GetRepairPricesforMethodofRepair(Me.MethodOfRepairId, Me.CompanyId, servCenter.Code, Me.RiskTypeId, DateTime.Now,
-                           Me.Certificate.SalesPrice.Value, equipClassId, equipmentId, equipConditionid, Me.Dealer.Id, String.Empty)
+            dv = PriceListDetail.GetRepairPricesforMethodofRepair(MethodOfRepairId, CompanyId, servCenter.Code, RiskTypeId, DateTime.Now,
+                           Certificate.SalesPrice.Value, equipClassId, equipmentId, equipConditionid, Dealer.Id, String.Empty)
         End If
 
         'If (Not ServiceCenterId = Guid.Empty) Then
@@ -1530,32 +1530,32 @@ Public NotInheritable Class Claim
         Return dv
     End Function
 
-    Public Function GetPricesForServiceType(ByVal serviceClassCode As String, ByVal serviceTypeCode As String) As DataView
+    Public Function GetPricesForServiceType(serviceClassCode As String, serviceTypeCode As String) As DataView
 
         Dim dv As DataView
-        Dim servCenter As New ServiceCenter(Me.ServiceCenterId)
+        Dim servCenter As New ServiceCenter(ServiceCenterId)
         Dim equipConditionid As Guid
         Dim equipmentId As Guid
         Dim equipClassId As Guid
 
         'get the equipment information'if equipment not used then get the prices based on risktypeid
-        If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, Me.Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
+        If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
             equipConditionid = LookupListNew.GetIdFromCode(LookupListNew.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
-            If Not Me.ClaimedEquipment Is Nothing AndAlso Not Me.ClaimedEquipment.EquipmentBO Is Nothing Then
-                equipmentId = Me.ClaimedEquipment.EquipmentId
-                equipClassId = Me.ClaimedEquipment.EquipmentBO.EquipmentClassId
-                dv = PriceListDetail.GetPricesForServiceType(Me.CompanyId, Me.ServiceCenterObject.Code, Me.RiskTypeId,
-                              DateTime.Now, Me.Certificate.SalesPrice.Value,
+            If Not ClaimedEquipment Is Nothing AndAlso Not ClaimedEquipment.EquipmentBO Is Nothing Then
+                equipmentId = ClaimedEquipment.EquipmentId
+                equipClassId = ClaimedEquipment.EquipmentBO.EquipmentClassId
+                dv = PriceListDetail.GetPricesForServiceType(CompanyId, ServiceCenterObject.Code, RiskTypeId,
+                              DateTime.Now, Certificate.SalesPrice.Value,
                               LookupListNew.GetIdFromCode(Codes.SERVICE_CLASS, serviceClassCode),
                               LookupListNew.GetIdFromCode(Codes.SERVICE_CLASS_TYPE, serviceTypeCode),
-                              equipClassId, equipmentId, equipConditionid, Me.Dealer.Id, String.Empty)
+                              equipClassId, equipmentId, equipConditionid, Dealer.Id, String.Empty)
             End If
         Else
-            dv = PriceListDetail.GetPricesForServiceType(Me.CompanyId, Me.ServiceCenterObject.Code, Me.RiskTypeId,
-                              DateTime.Now, Me.Certificate.SalesPrice.Value,
+            dv = PriceListDetail.GetPricesForServiceType(CompanyId, ServiceCenterObject.Code, RiskTypeId,
+                              DateTime.Now, Certificate.SalesPrice.Value,
                               LookupListNew.GetIdFromCode(Codes.SERVICE_CLASS, serviceClassCode),
                               LookupListNew.GetIdFromCode(Codes.SERVICE_CLASS_TYPE, serviceTypeCode),
-                              equipClassId, equipmentId, equipConditionid, Me.Dealer.Id, String.Empty)
+                              equipClassId, equipmentId, equipConditionid, Dealer.Id, String.Empty)
         End If
 
         Return dv
@@ -1563,36 +1563,36 @@ Public NotInheritable Class Claim
     End Function
 
     Public Sub CancelCertBasedOnCurrentOdometerExceedsAIZMiles()
-        If Me.SourceForCancellation <> "GALAXY_INSERT_CLAIM_WS" Then
-            Me.PopulateRequiredData()
+        If SourceForCancellation <> "GALAXY_INSERT_CLAIM_WS" Then
+            PopulateRequiredData()
         End If
-        If Me.CurrentOdometer.Value > 0 AndAlso Me._cert_RemainingBalance <= 0 Then
+        If CurrentOdometer.Value > 0 AndAlso _cert_RemainingBalance <= 0 Then
             Dim _intMaxAssurantMileageLimit As Integer = 0
-            If Me._vehicle_condition = Codes.VEHICLE_COND__NEW Then
-                _intMaxAssurantMileageLimit = Me._MFG_MAX_Mileage_Limit + Me._coverage_mi_km
-            ElseIf Me._vehicle_condition = Codes.VEHICLE_COND__USED Then
-                _intMaxAssurantMileageLimit = Me._coverage_mi_km
+            If _vehicle_condition = Codes.VEHICLE_COND__NEW Then
+                _intMaxAssurantMileageLimit = _MFG_MAX_Mileage_Limit + _coverage_mi_km
+            ElseIf _vehicle_condition = Codes.VEHICLE_COND__USED Then
+                _intMaxAssurantMileageLimit = _coverage_mi_km
             End If
 
-            If _intMaxAssurantMileageLimit > 0 AndAlso Me.CurrentOdometer.Value > _intMaxAssurantMileageLimit Then
+            If _intMaxAssurantMileageLimit > 0 AndAlso CurrentOdometer.Value > _intMaxAssurantMileageLimit Then
                 Dim dal As New CertCancellationDAL
-                dal.VSC_CancelPolicy(Me.CertificateId, Me.CANCELLATION_REASON_CODE, ElitaPlusIdentity.Current.ActiveUser.Id, Me.SourceForCancellation, Nothing, _intMaxAssurantMileageLimit, Me.CurrentOdometer)
+                dal.VSC_CancelPolicy(CertificateId, CANCELLATION_REASON_CODE, ElitaPlusIdentity.Current.ActiveUser.Id, SourceForCancellation, Nothing, _intMaxAssurantMileageLimit, CurrentOdometer)
 
             End If
         End If
     End Sub
     Private Sub PopulateRequiredData()
 
-        Dim _CertificateDetailDataSet As DataSet = Certificate.GalaxyGetCertificateDetail(Me.CertificateNumber, Me.DealerCode)
+        Dim _CertificateDetailDataSet As DataSet = Certificate.GalaxyGetCertificateDetail(CertificateNumber, DealerCode)
         If Not _CertificateDetailDataSet Is Nothing AndAlso _CertificateDetailDataSet.Tables.Count > 0 AndAlso _CertificateDetailDataSet.Tables(0).Rows.Count > 0 Then
-            _MFG_MAX_Mileage_Limit = CType(_CertificateDetailDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_MFG_MAX_MILEAGE_LIMIT), Integer)
-            _vehicle_condition = _CertificateDetailDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_MFG_NEW_USED)
-            _cert_RemainingBalance = _CertificateDetailDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_REMAINING_BALANCE)
+            _MFG_MAX_Mileage_Limit = CType(_CertificateDetailDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_MFG_MAX_MILEAGE_LIMIT), Integer)
+            _vehicle_condition = _CertificateDetailDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_MFG_NEW_USED)
+            _cert_RemainingBalance = _CertificateDetailDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_REMAINING_BALANCE)
 
-            Dim dsItemCoverages As DataSet = CertItemCoverage.LoadAllItemCoveragesForGalaxyClaim(Me.CertificateId)
+            Dim dsItemCoverages As DataSet = CertItemCoverage.LoadAllItemCoveragesForGalaxyClaim(CertificateId)
 
             If Not dsItemCoverages Is Nothing AndAlso dsItemCoverages.Tables.Count > 0 AndAlso dsItemCoverages.Tables(0).Rows.Count > 0 Then
-                Me._coverage_mi_km = dsItemCoverages.Tables(0).Compute("Max(coverage_km_mi)", "")
+                _coverage_mi_km = dsItemCoverages.Tables(0).Compute("Max(coverage_km_mi)", "")
             End If
 
         End If
@@ -1606,17 +1606,17 @@ Public NotInheritable Class Claim
 
     Public Sub UpdateAssociatedClaimInfoBeforeSave()
         'Generate a New Comment if the ClaimBO is Dirty and no new comment has already been added
-        Dim commentBO As Comment = Me.AddNewComment()
-        commentBO.CallerName = Me.CallerName
+        Dim commentBO As Comment = AddNewComment()
+        commentBO.CallerName = CallerName
         commentBO.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CUSTOMER_CALL)
         commentBO.Comments = LookupListNew.GetDescriptionFromId(LookupListNew.LK_COMMENT_TYPES, commentBO.CommentTypeId)
     End Sub
 
     Public Function CreateNewClaim(Optional ByVal oldClaimId As Guid = Nothing) As Claim
 
-        Dim newClaimBO As Claim = ClaimFacade.Instance.CreateClaim(Of Claim)(Me, Me.Dataset)
-        newClaimBO.CertItemCoverageId = Me.CertItemCoverageId
-        newClaimBO.ServiceCenterId = Me.ServiceCenterId
+        Dim newClaimBO As Claim = ClaimFacade.Instance.CreateClaim(Of Claim)(Me, Dataset)
+        newClaimBO.CertItemCoverageId = CertItemCoverageId
+        newClaimBO.ServiceCenterId = ServiceCenterId
         newClaimBO.CopyFrom(Me, True)
         newClaimBO._isDSCreator = True
         newClaimBO.CalculateFollowUpDate()
@@ -1633,13 +1633,13 @@ Public NotInheritable Class Claim
         newClaimBO.ClaimsAdjuster = ElitaPlusIdentity.Current.ActiveUser.NetworkId
         newClaimBO.ClaimsAdjusterName = ElitaPlusIdentity.Current.ActiveUser.UserName
         'Set the loaner center ID to that of the source claim
-        newClaimBO.LoanerCenterId = Me.LoanerCenterId
+        newClaimBO.LoanerCenterId = LoanerCenterId
         newClaimBO.InvoiceProcessDate = Nothing
         newClaimBO.ProblemDescription = Nothing
         newClaimBO.SpecialInstruction = Nothing
         newClaimBO.ContactSalutationID = Guid.Empty
         newClaimBO.CallerSalutationID = Guid.Empty
-        newClaimBO.MasterClaimNumber = Me.MasterClaimNumber
+        newClaimBO.MasterClaimNumber = MasterClaimNumber
 
 
         'REQ 1106 start
@@ -1696,27 +1696,27 @@ Public NotInheritable Class Claim
             .ReasonClosedId = Guid.Empty
             .RepairDate = Nothing
             .ClaimClosedDate = Nothing
-            .ProblemDescription = Me.ProblemDescription
-            .SpecialInstruction = Me.SpecialInstruction
+            .ProblemDescription = ProblemDescription
+            .SpecialInstruction = SpecialInstruction
         End With
 
     End Sub
 
-    Public Function NumberOfAvailableClaims(ByVal certItemCoverageId As Guid, ByVal createdDate As Date, ByVal redoClaimID As Guid) As Boolean
+    Public Function NumberOfAvailableClaims(certItemCoverageId As Guid, createdDate As Date, redoClaimID As Guid) As Boolean
         Dim dal As New ClaimDAL
         Return dal.NumberOfAvailableClaims(certItemCoverageId, createdDate, redoClaimID)
     End Function
 
-    Public Function IsClaimActive(ByVal ClaimId As Guid) As Integer
+    Public Function IsClaimActive(ClaimId As Guid) As Integer
         Dim dal As New ClaimDAL
         Return dal.IsClaimActive(ClaimId)
     End Function
 
-    Public Function IsClaimAuthNumberExists(ByVal ClaimId As Guid, ByVal AuthNumber As String) As Integer
+    Public Function IsClaimAuthNumberExists(ClaimId As Guid, AuthNumber As String) As Integer
         Dim dal As New ClaimDAL
         Return dal.IsClaimAuthNumberExists(ClaimId, AuthNumber)
     End Function
-    Public Function GetDepreciationSchedule(ByVal contractId As Guid) As DataView
+    Public Function GetDepreciationSchedule(contractId As Guid) As DataView
         Dim dal As New ClaimDAL
         Dim dv As DataView, ds As DataSet
         ds = dal.GetDepreciationSchedule(contractId)
@@ -1724,7 +1724,7 @@ Public NotInheritable Class Claim
         Return dv
     End Function
 
-    Public Function Handle_Replaced_Items(ByVal replaceAll As Integer, ByVal claimId As Guid, ByVal certId As Guid, ByVal certItemCoverageId As Guid, ByVal replaceDate As Date) As Integer
+    Public Function Handle_Replaced_Items(replaceAll As Integer, claimId As Guid, certId As Guid, certItemCoverageId As Guid, replaceDate As Date) As Integer
         Dim dal As New ClaimDAL
 
         Return dal.Handle_Replaced_Items(replaceAll, claimId, certId, certItemCoverageId, replaceDate)
@@ -1735,8 +1735,8 @@ Public NotInheritable Class Claim
 
         'This is a Repair Claim
         'Get the EstimatePrice for the PriceListDetail associated with the ServiceCenter for the Claim
-        If (Not (Me.ServiceCenterId.Equals(Guid.Empty))) Then
-            Dim serviceCenterBO As ServiceCenter = New ServiceCenter(Me.ServiceCenterId)
+        If (Not (ServiceCenterId.Equals(Guid.Empty))) Then
+            Dim serviceCenterBO As ServiceCenter = New ServiceCenter(ServiceCenterId)
             If (Not (serviceCenterBO.PriceListCode = String.Empty)) Then
                 'Dim priceGroupBO As PriceGroup = New PriceGroup(serviceCenterBO.PriceGroupId)
                 'Get the Price List ID from Price List Code
@@ -1754,7 +1754,7 @@ Public NotInheritable Class Claim
 
                 Dim price As Decimal = 0
                 price = 0
-                Dim dvEstimate As DataView = Me.GetPricesForServiceType(Codes.SERVICE_CLASS__REPAIR, Codes.SERVICE_TYPE__ESTIMATE_PRICE)
+                Dim dvEstimate As DataView = GetPricesForServiceType(Codes.SERVICE_CLASS__REPAIR, Codes.SERVICE_TYPE__ESTIMATE_PRICE)
 
                 If Not dvEstimate Is Nothing AndAlso dvEstimate.Count > 0 Then
                     price = CDec(dvEstimate(0)(COL_PRICE_DV))
@@ -1762,28 +1762,28 @@ Public NotInheritable Class Claim
                 End If
                 ''''''''''''''''''''''''''''''''''''''''''
                 If PreserveAuthAmount() Then
-                    Me.AuthorizedAmount = Me.AuthorizedAmount
+                    AuthorizedAmount = AuthorizedAmount
                 Else
-                    Me.AuthorizedAmount = nEstimatePrice
+                    AuthorizedAmount = nEstimatePrice
                 End If
 
 
                 If (nEstimatePrice = 0) Then
-                    If Not Me.PreserveAuthAmount() Then
-                        Me.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_REPLACED)
-                        Me.CloseTheClaim()
+                    If Not PreserveAuthAmount() Then
+                        ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_REPLACED)
+                        CloseTheClaim()
                     End If
                     If PreserveAuthAmount() Then
-                        Me.AuthorizedAmount = Me.AuthorizedAmount
+                        AuthorizedAmount = AuthorizedAmount
                     Else
-                        Me.AuthorizedAmount = New DecimalType(ZERO_DECIMAL)
+                        AuthorizedAmount = New DecimalType(ZERO_DECIMAL)
                     End If
                 Else
                     'EstimatePrice <> 0, so set the ClaimActivityCode for the Existing RepairClaim = "TBREP"
-                    Me.ClaimActivityId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Assurant.ElitaPlus.BusinessObjectsNew.Codes.CLAIM_ACTIVITY__TO_BE_REPLACED)
+                    ClaimActivityId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Assurant.ElitaPlus.BusinessObjectsNew.Codes.CLAIM_ACTIVITY__TO_BE_REPLACED)
                 End If
-                If Me.Deductible.Value > 0 Then
-                    Me.Deductible = New DecimalType(ZERO_DECIMAL)
+                If Deductible.Value > 0 Then
+                    Deductible = New DecimalType(ZERO_DECIMAL)
                 End If
             End If
         End If
@@ -1833,7 +1833,7 @@ Public NotInheritable Class Claim
 
     Public Function GetManufacturerIdForServiceCenter() As Guid
 
-        Dim cicBO As CertItemCoverage = New CertItemCoverage(Me.CertItemCoverageId)
+        Dim cicBO As CertItemCoverage = New CertItemCoverage(CertItemCoverageId)
         Dim ciBO As CertItem = New CertItem(cicBO.CertItemId)
 
         Return (ciBO.ManufacturerId)
@@ -1842,7 +1842,7 @@ Public NotInheritable Class Claim
 
     Public Function GetCoverageTypeCodeForServiceCenter() As String
 
-        Dim cicBO As CertItemCoverage = New CertItemCoverage(Me.CertItemCoverageId)
+        Dim cicBO As CertItemCoverage = New CertItemCoverage(CertItemCoverageId)
         Dim ciBO As CertItem = New CertItem(cicBO.CertItemId)
 
         Return (ciBO.GetCoverageTypeCode(cicBO.CoverageTypeId))
@@ -1867,10 +1867,10 @@ Public NotInheritable Class Claim
         ''    Me.AuthorizedAmount = New DecimalType(0D)
         ''End If
 
-        Dim dv As DataView = Me.GetRePairPricesByMethodOfRepair
+        Dim dv As DataView = GetRePairPricesByMethodOfRepair
         'Me.AuthorizedAmount = 0
         If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
-            Me.AuthorizedAmount = CDec(dv.Table.Rows(0)(COL_PRICE_DV))
+            AuthorizedAmount = CDec(dv.Table.Rows(0)(COL_PRICE_DV))
             'Else
             '   Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, Messages.PRICE_LIST_NOT_FOUND)
         End If
@@ -1879,19 +1879,19 @@ Public NotInheritable Class Claim
 
     Public Function GetIVATaxRate() As Decimal
         Dim retval As Decimal = 0D, taxtypeID As Guid, dtEff As Date
-        Dim svcCtrBO As New ServiceCenter(Me.ServiceCenterId)
+        Dim svcCtrBO As New ServiceCenter(ServiceCenterId)
 
         If Not svcCtrBO.IvaResponsibleFlag Then
             Return retval
         End If
-        If Me.CreatedDate Is Nothing Then
+        If CreatedDate Is Nothing Then
             dtEff = System.DateTime.Now
         Else
-            dtEff = Me.CreatedDate.Value
+            dtEff = CreatedDate.Value
         End If
         If MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT Then
             'Replacement claim, find the applicable IVA tax type
-            Dim ProductPrice As Decimal = Me.Certificate.SalesPrice.Value
+            Dim ProductPrice As Decimal = Certificate.SalesPrice.Value
             Dim dal As ClaimInvoiceDAL = New ClaimInvoiceDAL
             dal.GetReplacementTaxType(ServiceCenterId, RiskTypeId, dtEff, ProductPrice, taxtypeID)
             If taxtypeID = Guid.Empty Then
@@ -1902,7 +1902,7 @@ Public NotInheritable Class Claim
         End If
 
         'REQ 1150
-        Return CountryTax.GetTaxRate(svcCtrBO.Address.CountryId, taxtypeID, svcCtrBO.Address.RegionId, dtEff, Me.Certificate.DealerId)
+        Return CountryTax.GetTaxRate(svcCtrBO.Address.CountryId, taxtypeID, svcCtrBO.Address.RegionId, dtEff, Certificate.DealerId)
     End Function
 
     'Public Function GetCurrentPriceGroupDetail() As PriceGroupDetail
@@ -1928,11 +1928,11 @@ Public NotInheritable Class Claim
 
     Public Sub SetPickUpDateFromLoanerReturnedDate() Implements IInvoiceable.SetPickUpDateFromLoanerReturnedDate
 
-        If Not Me.LoanerReturnedDate Is Nothing Then Me.PickUpDate = Me.LoanerReturnedDate
+        If Not LoanerReturnedDate Is Nothing Then PickUpDate = LoanerReturnedDate
 
     End Sub
 
-    Public Sub UpdateClaimAuthorizedAmount(ByVal objClaimAuthDetail As ClaimAuthDetail)
+    Public Sub UpdateClaimAuthorizedAmount(objClaimAuthDetail As ClaimAuthDetail)
         Dim subTotal As Decimal = 0
         Dim tax As Decimal = 0
         Dim Total As Decimal
@@ -1949,12 +1949,12 @@ Public NotInheritable Class Claim
 
         End With
         Total = subTotal + tax
-        Me.AuthorizedAmount = Total
+        AuthorizedAmount = Total
 
         '' Auth amt is being changed, calculate the new deductible amt if by percent
-        If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, Me.DeductiblePercentID) = Codes.YESNO_Y Then
-            If Not Me.DeductiblePercent Is Nothing Then
-                If Me.DeductiblePercent.Value > 0 Then
+        If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, DeductiblePercentID) = Codes.YESNO_Y Then
+            If Not DeductiblePercent Is Nothing Then
+                If DeductiblePercent.Value > 0 Then
                     Calculate_deductible_if_by_percentage()
                 End If
             End If
@@ -1962,19 +1962,19 @@ Public NotInheritable Class Claim
 
     End Sub
 
-    Public Function AddClaim(ByVal claimID As Guid) As Claim
+    Public Function AddClaim(claimID As Guid) As Claim
         Dim objClaim As Claim
 
         If Not claimID.Equals(Guid.Empty) Then
-            objClaim = ClaimFacade.Instance.GetClaim(Of Claim)(claimID, Me.Dataset)
+            objClaim = ClaimFacade.Instance.GetClaim(Of Claim)(claimID, Dataset)
         Else
-            objClaim = ClaimFacade.Instance.CreateClaim(Of Claim)(Me.Dataset)
+            objClaim = ClaimFacade.Instance.CreateClaim(Of Claim)(Dataset)
         End If
 
         Return objClaim
     End Function
 
-    Public Function AddExtendedClaimStatus(ByVal claimStatusId As Guid) As ClaimStatus Implements IInvoiceable.AddExtendedClaimStatus
+    Public Function AddExtendedClaimStatus(claimStatusId As Guid) As ClaimStatus Implements IInvoiceable.AddExtendedClaimStatus
         Return MyBase.AddExtendedClaimStatus(claimStatusId)
     End Function
 
@@ -2015,7 +2015,7 @@ Public NotInheritable Class Claim
         '    nHomePrice = pgDetail.HomePrice
         'End If
         'Get the price
-        Dim dv As DataView = Me.GetRePairPricesByMethodOfRepair
+        Dim dv As DataView = GetRePairPricesByMethodOfRepair
         Dim price As Decimal = 0
         If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
             price = CDec(dv.Table.Rows(0)(COL_PRICE_DV))
@@ -2039,7 +2039,7 @@ Public NotInheritable Class Claim
         End If
         'calculating the estimate price
         price = 0
-        Dim dvEstimate As DataView = Me.GetPricesForServiceType(Codes.SERVICE_CLASS__REPAIR, Codes.SERVICE_TYPE__ESTIMATE_PRICE)
+        Dim dvEstimate As DataView = GetPricesForServiceType(Codes.SERVICE_CLASS__REPAIR, Codes.SERVICE_TYPE__ESTIMATE_PRICE)
 
         If Not dvEstimate Is Nothing AndAlso dvEstimate.Count > 0 Then
             price = CDec(dvEstimate(0)(COL_PRICE_DV))
@@ -2067,19 +2067,19 @@ Public NotInheritable Class Claim
         Return False
     End Function
 
-    Private Function ChangeCoverage(ByVal claimSpecialServiceId As Guid) As Boolean
+    Private Function ChangeCoverage(claimSpecialServiceId As Guid) As Boolean
         Dim AuthAmtText As String
         Dim AssurantPaysAmt As New DecimalType(0)
         Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), Codes.YESNO_Y)
         Dim AssurantPaysId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
         Dim oClaimDal As ClaimDAL
         If claimSpecialServiceId = yesId Then
-            Me.WhoPaysId = AssurantPaysId
-            Me.Deductible = New DecimalType(ZERO_DECIMAL)
-            Dim myContractId As Guid = Contract.GetContractID(Me.CertificateId)
-            If Me.MethodOfRepairCode <> Codes.METHOD_OF_REPAIR__RECOVERY Then
-                Dim al As ArrayList = Me.CalculateLiabilityLimit(Me.CertificateId, myContractId, Me.CertItemCoverageId, Me.LossDate)
-                Me.LiabilityLimit = CType(al(0), Decimal)
+            WhoPaysId = AssurantPaysId
+            Deductible = New DecimalType(ZERO_DECIMAL)
+            Dim myContractId As Guid = Contract.GetContractID(CertificateId)
+            If MethodOfRepairCode <> Codes.METHOD_OF_REPAIR__RECOVERY Then
+                Dim al As ArrayList = CalculateLiabilityLimit(CertificateId, myContractId, CertItemCoverageId, LossDate)
+                LiabilityLimit = CType(al(0), Decimal)
             End If
         End If
     End Function
@@ -2090,7 +2090,7 @@ Public NotInheritable Class Claim
 
     Public Function AddNewComment() As Comment
         Dim c As Comment = MyBase.AddNewComment
-        If Not Me.SpecialInstruction Is Nothing Then c.Comments &= Environment.NewLine & Me.SpecialInstruction
+        If Not SpecialInstruction Is Nothing Then c.Comments &= Environment.NewLine & SpecialInstruction
         Return c
     End Function
 
@@ -2098,14 +2098,14 @@ Public NotInheritable Class Claim
 
 #Region "GVS"
 
-    Public Sub HandleGVSTransactionCreation(ByVal commentId As Guid, ByVal pIsNew As Nullable(Of Boolean)) Implements IInvoiceable.HandleGVSTransactionCreation
+    Public Sub HandleGVSTransactionCreation(commentId As Guid, pIsNew As Nullable(Of Boolean)) Implements IInvoiceable.HandleGVSTransactionCreation
         ' Create transaction log header if the service center is integrated with GVS
-        If Not Me.ServiceCenterObject Is Nothing AndAlso Me.ServiceCenterObject.IntegratedWithGVS AndAlso Not Me.ServiceCenterObject.IntegratedAsOf Is Nothing AndAlso (Me.IsNew Or (Not Me.IsNew AndAlso Me.CreatedDateTime.Value >= Me.ServiceCenterObject.IntegratedAsOf.Value)) Then
+        If Not ServiceCenterObject Is Nothing AndAlso ServiceCenterObject.IntegratedWithGVS AndAlso Not ServiceCenterObject.IntegratedAsOf Is Nothing AndAlso (IsNew Or (Not IsNew AndAlso CreatedDateTime.Value >= ServiceCenterObject.IntegratedAsOf.Value)) Then
             ' GVS Function Type = NEW_CLAIM or UPDATE_CLAIM
             ' Question: need to create the log for Replace or Service Warranty claim?
             Dim dal As New ClaimDAL
-            dal.GVSTransactionCreation(Me.Id,
-                                       If(pIsNew.GetValueOrDefault(Me.IsNew), "1", "2"),
+            dal.GVSTransactionCreation(Id,
+                                       If(pIsNew.GetValueOrDefault(IsNew), "1", "2"),
                                        If(commentId.Equals(Guid.Empty), Nothing, "COMMENT_ID_BEGIN" & GuidControl.GuidToHexString(commentId) & "COMMENT_ID_END"))
         End If
     End Sub
@@ -2113,9 +2113,9 @@ Public NotInheritable Class Claim
 
 #Region "DataView Retrieveing Methods"
     'Manually added method
-    Public Shared Function getActiveClaimsList(ByVal claimNumber As String, ByVal customerName As String,
-                                      ByVal serviceCenterName As String, ByVal authorizationNumber As String,
-                                      ByVal authorizedAmount As String, ByVal Dealerid As Guid, Optional ByVal sortBy As String = ClaimDAL.SORT_BY_CLAIM_NUMBER) As ClaimSearchDV
+    Public Shared Function getActiveClaimsList(claimNumber As String, customerName As String,
+                                      serviceCenterName As String, authorizationNumber As String,
+                                      authorizedAmount As String, Dealerid As Guid, Optional ByVal sortBy As String = ClaimDAL.SORT_BY_CLAIM_NUMBER) As ClaimSearchDV
 
         Try
             Dim compIds As ArrayList
@@ -2170,9 +2170,9 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function GetClaimslist(ByVal cert_item_id As Guid, ByVal begin_date As Date,
-                                         ByVal end_date As Date,
-                                         ByVal isManufacturerWaranty As Boolean) As ClaimSearchDV
+    Public Shared Function GetClaimslist(cert_item_id As Guid, begin_date As Date,
+                                         end_date As Date,
+                                         isManufacturerWaranty As Boolean) As ClaimSearchDV
 
         Try
             Dim dal As New ClaimDAL
@@ -2187,7 +2187,7 @@ Public NotInheritable Class Claim
         End Try
 
     End Function
-    Public Shared Function GetCertClaims(ByVal certId As Guid) As DataView
+    Public Shared Function GetCertClaims(certId As Guid) As DataView
         Try
             Dim dal As New ClaimDAL
             Dim ds As New DataSet
@@ -2200,9 +2200,9 @@ Public NotInheritable Class Claim
         End Try
     End Function
 
-    Public Shared Function GetClaimslistByCoverageId(ByVal cert_item_coverage_id As Guid, ByVal begin_date As Date,
-                                         ByVal end_date As Date,
-                                         ByVal isManufacturerWaranty As Boolean) As ClaimSearchDV
+    Public Shared Function GetClaimslistByCoverageId(cert_item_coverage_id As Guid, begin_date As Date,
+                                         end_date As Date,
+                                         isManufacturerWaranty As Boolean) As ClaimSearchDV
 
         Try
             Dim dal As New ClaimDAL
@@ -2214,9 +2214,9 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function getClaimListForImageIndexing(ByVal claimNumber As String, ByVal claimStatus As String, ByVal companyCode As String, ByVal customerName As String,
-                                   ByVal serviceCenterName As String, ByVal authorizationNumber As String,
-                                   ByVal authorizedAmount As String, ByVal serviceCenterIds As ArrayList,
+    Public Shared Function getClaimListForImageIndexing(claimNumber As String, claimStatus As String, companyCode As String, customerName As String,
+                                   serviceCenterName As String, authorizationNumber As String,
+                                   authorizedAmount As String, serviceCenterIds As ArrayList,
                                    Optional ByVal sortBy As String = ClaimDAL.SORT_BY_CLAIM_NUMBER) As ClaimSearchDV
 
         Try
@@ -2271,11 +2271,11 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function getListFromArray(ByVal claimNumber As String, ByVal customerName As String,
-                                   ByVal serviceCenterName As String, ByVal svcRefNumber As String,
-                                   ByVal authorizedAmount As String, ByVal hasPendingAuthId As Guid,
-                                   ByVal serviceCenterIds As ArrayList, ByVal certNumber As String, ByVal dealerid As Guid,
-                                   ByVal Status As String, Optional ByVal sortBy As String = ClaimDAL.SORT_BY_CLAIM_NUMBER, Optional ByVal trackingNumber As String = "",
+    Public Shared Function getListFromArray(claimNumber As String, customerName As String,
+                                   serviceCenterName As String, svcRefNumber As String,
+                                   authorizedAmount As String, hasPendingAuthId As Guid,
+                                   serviceCenterIds As ArrayList, certNumber As String, dealerid As Guid,
+                                   Status As String, Optional ByVal sortBy As String = ClaimDAL.SORT_BY_CLAIM_NUMBER, Optional ByVal trackingNumber As String = "",
                                    Optional ByVal authorizationNumber As String = "", Optional ByVal claimAuthStatusId As Guid = Nothing) As ClaimSearchDV
 
         Try
@@ -2344,10 +2344,10 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function GetClaimsByIssue(ByVal issueTypeCode As String, ByVal issueTypeId As Guid,
-                                                   ByVal issueId As Guid?, ByVal issueStatusXcd As String,
-                                                   ByVal claimStatusCode As String, ByVal dealerId As Guid?,
-                                                   ByVal issueAddedFromDate As Date?, ByVal issueAddedToDate As Date?
+    Public Shared Function GetClaimsByIssue(issueTypeCode As String, issueTypeId As Guid,
+                                                   issueId As Guid?, issueStatusXcd As String,
+                                                   claimStatusCode As String, dealerId As Guid?,
+                                                   issueAddedFromDate As Date?, issueAddedToDate As Date?
                                    ) As ClaimIssueSearchDV
 
         Dim dal As New ClaimDAL
@@ -2365,10 +2365,10 @@ Public NotInheritable Class Claim
                                                         issueAddedFromDate, issueAddedToDate, Authentication.CurrentUser.NetworkId).Tables(0))
     End Function
 
-    Public Shared Function getAdjusterList(ByVal claimNumber As String, ByVal serviceCenterName As String, ByVal authorizationNumber As String,
-                               ByVal claim_status As String, ByVal claimTypeId As Guid, ByVal claimExtendedStatusId As Guid,
-                                ByVal claimExtendedStatusOwnerId As Guid, ByVal scTATId As Guid, ByVal AutoApprove As String,
-                                ByVal BeginDate As String, ByVal EndDate As String, ByVal claimAdjuster As String, ByVal claimAddedBy As String, Optional ByVal sortOrder As String = ClaimDAL.SORT_ORDER_DESC,
+    Public Shared Function getAdjusterList(claimNumber As String, serviceCenterName As String, authorizationNumber As String,
+                               claim_status As String, claimTypeId As Guid, claimExtendedStatusId As Guid,
+                                claimExtendedStatusOwnerId As Guid, scTATId As Guid, AutoApprove As String,
+                                BeginDate As String, EndDate As String, claimAdjuster As String, claimAddedBy As String, Optional ByVal sortOrder As String = ClaimDAL.SORT_ORDER_DESC,
                                 Optional ByVal sortBy As String = ClaimDAL.SORT_BY_SC_TAT) As ClaimAdjusterSearchDV
 
         Try
@@ -2428,11 +2428,11 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function GetClaimsByCommentType(ByVal claimNumber As String, ByVal customerName As String,
-                                              ByVal authorizationNumber As String,
-                                              ByVal commentTypeId As Guid,
-                                              ByVal claimStatus As String,
-                                              ByVal languageId As Guid,
+    Public Shared Function GetClaimsByCommentType(claimNumber As String, customerName As String,
+                                              authorizationNumber As String,
+                                              commentTypeId As Guid,
+                                              claimStatus As String,
+                                              languageId As Guid,
                                               Optional ByVal sortBy As String = ClaimDAL.SORT_BY_CLAIM_NUMBER) As ClaimSearchDV
 
         Try
@@ -2480,7 +2480,7 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function GetClaimID(ByVal companyIds As ArrayList, ByVal claimNumber As String) As Guid
+    Public Shared Function GetClaimID(companyIds As ArrayList, claimNumber As String) As Guid
         Dim claimID As Guid = Guid.Empty
         Dim dal As New ClaimDAL
         Dim ds As DataSet = dal.GetClaimID(companyIds, claimNumber)
@@ -2494,8 +2494,8 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function getMasterClaimListFromArray(ByVal claimNumber As String, ByVal customerName As String,
-                                   ByVal masterClaimNumber As String, ByVal authorizationNumber As String) As ClaimSearchDV
+    Public Shared Function getMasterClaimListFromArray(claimNumber As String, customerName As String,
+                                   masterClaimNumber As String, authorizationNumber As String) As ClaimSearchDV
         Try
             Dim dal As New ClaimDAL
             Dim compIds As ArrayList
@@ -2547,7 +2547,7 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function GetClaimsByMasterClaimNumber(ByVal masterClaimNumber As String) As DataSet
+    Public Shared Function GetClaimsByMasterClaimNumber(masterClaimNumber As String) As DataSet
         Try
             Dim dal As New ClaimDAL
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -2565,7 +2565,7 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function getMasterClaimDetailFromArray(ByVal masterClaimNumber As String, ByVal certId As Guid) As ClaimSearchDV
+    Public Shared Function getMasterClaimDetailFromArray(masterClaimNumber As String, certId As Guid) As ClaimSearchDV
         Try
             Dim dal As New ClaimDAL
             Dim certIdStr As String
@@ -2594,7 +2594,7 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function getMasterClaimDetailListFromArray(ByVal masterClaimNumber As String, ByVal certId As Guid) As ClaimSearchDV
+    Public Shared Function getMasterClaimDetailListFromArray(masterClaimNumber As String, certId As Guid) As ClaimSearchDV
         Try
             Dim dal As New ClaimDAL
             Dim certIdStr As String
@@ -2623,9 +2623,9 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function getList(ByVal claimNumber As String, ByVal customerName As String,
-                                   ByVal selectedServiceCenterId As Guid, ByVal authorizationNumber As String,
-                                   ByVal authorizedAmount As String, Optional ByVal sortBy As String = ClaimDAL.SORT_BY_CLAIM_NUMBER) As ClaimSearchDV
+    Public Shared Function getList(claimNumber As String, customerName As String,
+                                   selectedServiceCenterId As Guid, authorizationNumber As String,
+                                   authorizedAmount As String, Optional ByVal sortBy As String = ClaimDAL.SORT_BY_CLAIM_NUMBER) As ClaimSearchDV
 
         Dim oSvcIds As New ArrayList
 
@@ -2635,13 +2635,13 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function GetClaimFollowUpList(ByVal followUpDate As String,
-                             ByVal serviceCenterName As String,
-                             ByVal claimNumber As String,
-                             ByVal claimAdjusterName As String,
-                             ByVal customerName As String, ByVal claimStatus As String, ByVal dealerId As Guid,
-                             ByVal claimTATId As Guid, ByVal claimExtendedStatusId As Guid, ByVal noActivityId As Guid, ByVal ownerId As Guid,
-                             ByVal languageId As Guid, ByVal nonOperatedClaims As String, Optional ByVal sortBy As String = Nothing) As ClaimFollowUpSearchDV
+    Public Shared Function GetClaimFollowUpList(followUpDate As String,
+                             serviceCenterName As String,
+                             claimNumber As String,
+                             claimAdjusterName As String,
+                             customerName As String, claimStatus As String, dealerId As Guid,
+                             claimTATId As Guid, claimExtendedStatusId As Guid, noActivityId As Guid, ownerId As Guid,
+                             languageId As Guid, nonOperatedClaims As String, Optional ByVal sortBy As String = Nothing) As ClaimFollowUpSearchDV
         Try
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
             Dim companyGroupID As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
@@ -2667,8 +2667,8 @@ Public NotInheritable Class Claim
         End Try
     End Function
 
-    Public Shared Function GetPendingClaimList(ByVal claimNumber As String, ByVal certNumber As String,
-                                         ByVal dealerName As String) As PendingClaimSearchDV
+    Public Shared Function GetPendingClaimList(claimNumber As String, certNumber As String,
+                                         dealerName As String) As PendingClaimSearchDV
 
         Try
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -2694,8 +2694,8 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function GetPendingApprovalClaimList(ByVal claimNumber As String, ByVal certNumber As String,
-                                        ByVal serviceCenterName As String) As PendingApprovalClaimSearchDV
+    Public Shared Function GetPendingApprovalClaimList(claimNumber As String, certNumber As String,
+                                        serviceCenterName As String) As PendingApprovalClaimSearchDV
 
         Try
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -2727,11 +2727,11 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function GetPendingReviewPaymentClaimList(ByVal claimNumber As String, ByVal srlNumber As String, ByVal certNumber As String, ByVal serviceCenterId As Guid,
-                                                            ByVal countryid As Guid, ByVal manufacturerid As Guid, ByVal model As String, ByVal skuclaimed As String, ByVal skureplaced As String,
-                                                           ByVal claimstatus As String, ByVal extclaimstatusid As Guid, ByVal coveragetypeId As Guid, ByVal servicelevelid As Guid,
-                                                            ByVal Risktypeid As Guid, ByVal skureppart As String, ByVal ReplacementtypeId As Guid,
-                                                            ByVal ClaimCreatedDate As SearchCriteriaStructType(Of Date)) As PendingReviewPaymentClaimSearchDV
+    Public Shared Function GetPendingReviewPaymentClaimList(claimNumber As String, srlNumber As String, certNumber As String, serviceCenterId As Guid,
+                                                            countryid As Guid, manufacturerid As Guid, model As String, skuclaimed As String, skureplaced As String,
+                                                           claimstatus As String, extclaimstatusid As Guid, coveragetypeId As Guid, servicelevelid As Guid,
+                                                            Risktypeid As Guid, skureppart As String, ReplacementtypeId As Guid,
+                                                            ClaimCreatedDate As SearchCriteriaStructType(Of Date)) As PendingReviewPaymentClaimSearchDV
 
         Try
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -2789,9 +2789,9 @@ Public NotInheritable Class Claim
     End Function
 
 
-    Public Shared Function getNonReworkClaimsList(ByVal claimNumber As String, ByVal customerName As String,
-                                      ByVal selectedServiceCenter As String, ByVal authorizationNumber As String,
-                                      ByVal authorizedAmount As String, Optional ByVal sortBy As String = ClaimDAL.SORT_BY_CLAIM_NUMBER) As ClaimSearchDV
+    Public Shared Function getNonReworkClaimsList(claimNumber As String, customerName As String,
+                                      selectedServiceCenter As String, authorizationNumber As String,
+                                      authorizedAmount As String, Optional ByVal sortBy As String = ClaimDAL.SORT_BY_CLAIM_NUMBER) As ClaimSearchDV
 
         Try
             Dim dal As New ClaimDAL
@@ -2826,7 +2826,7 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function GetClaimNumberForOpenMobile(ByVal cert_number As String, ByVal serial_number As String) As DataSet
+    Public Shared Function GetClaimNumberForOpenMobile(cert_number As String, serial_number As String) As DataSet
         Dim dal As New ClaimDAL
         Dim ds As DataSet
         Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -2838,7 +2838,7 @@ Public NotInheritable Class Claim
         End Try
     End Function
 
-    Public Shared Function GetActiveClaimsForSvc(ByVal serviceCenterID As Guid, ByVal sortOrder As Integer, ByVal ExtendedClaimStatusListItemID As Guid, ByVal ExcludeRepairedClaims As String) As DataSet
+    Public Shared Function GetActiveClaimsForSvc(serviceCenterID As Guid, sortOrder As Integer, ExtendedClaimStatusListItemID As Guid, ExcludeRepairedClaims As String) As DataSet
 
         Try
             Dim dal As New ClaimDAL
@@ -2852,7 +2852,7 @@ Public NotInheritable Class Claim
         End Try
     End Function
 
-    Public Shared Function GetActiveClaimsForSvcGeneric(ByVal oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
+    Public Shared Function GetActiveClaimsForSvcGeneric(oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
 
         Try
             Dim dal As New ClaimDAL
@@ -2866,7 +2866,7 @@ Public NotInheritable Class Claim
         End Try
     End Function
 
-    Public Shared Function GetClaimsForServiceCenter(ByVal oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
+    Public Shared Function GetClaimsForServiceCenter(oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
 
         Try
             Dim dal As New ClaimDAL
@@ -2878,7 +2878,7 @@ Public NotInheritable Class Claim
         End Try
     End Function
 
-    Public Shared Function GetClaimsForServiceCenterAC(ByVal oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
+    Public Shared Function GetClaimsForServiceCenterAC(oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
 
         Try
             Dim dal As New ClaimDAL
@@ -2892,7 +2892,7 @@ Public NotInheritable Class Claim
 
 
 
-    Public Shared Function GetActiveClaimsByClaimNumberorCertificate(ByVal oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
+    Public Shared Function GetActiveClaimsByClaimNumberorCertificate(oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
 
         Try
             Dim dal As New ClaimDAL
@@ -2906,7 +2906,7 @@ Public NotInheritable Class Claim
         End Try
     End Function
 
-    Public Shared Function GetClaimDetailbyClaimNumAndDealer(ByVal claimnunber As String, ByVal dealerId As Guid) As DataSet
+    Public Shared Function GetClaimDetailbyClaimNumAndDealer(claimnunber As String, dealerId As Guid) As DataSet
         Try
             Dim dal As New ClaimDAL
 
@@ -2917,7 +2917,7 @@ Public NotInheritable Class Claim
         End Try
 
     End Function
-    Public Shared Function GetClaimDetailbyClaimNumAndCompany(ByVal claimnunber As String) As DataSet
+    Public Shared Function GetClaimDetailbyClaimNumAndCompany(claimnunber As String) As DataSet
         Try
             Dim dal As New ClaimDAL
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -2928,7 +2928,7 @@ Public NotInheritable Class Claim
         End Try
 
     End Function
-    Public Shared Function GetClaimDetailForWS(ByVal claimId As String, ByVal claimNumber As String, ByVal company_id As Guid) As DataSet
+    Public Shared Function GetClaimDetailForWS(claimId As String, claimNumber As String, company_id As Guid) As DataSet
         Try
             Dim dal As New ClaimDAL
             Dim language_id As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -2940,7 +2940,7 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function ClaimDetailForWS(ByVal claimNumber As String, ByVal company_id As Guid, ByVal getComments As Integer, ByVal getPartsDesc As Integer) As DataSet
+    Public Shared Function ClaimDetailForWS(claimNumber As String, company_id As Guid, getComments As Integer, getPartsDesc As Integer) As DataSet
         Try
             Dim dal As New ClaimDAL
             Dim language_id As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -2952,7 +2952,7 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function ApproveOrRejectClaims(ByVal cmd As String, ByVal claimIds As String) As DBHelper.DBHelperParameter()
+    Public Shared Function ApproveOrRejectClaims(cmd As String, claimIds As String) As DBHelper.DBHelperParameter()
         Try
             Dim dal As New ClaimDAL
             Return dal.ApproveOrRejectClaims(cmd, claimIds, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
@@ -2961,7 +2961,7 @@ Public NotInheritable Class Claim
         End Try
     End Function
 
-    Public Shared Function ApproveOrRejectClaims(ByVal cmd As String, ByVal claimIds As String, ByVal comments As String, ByVal risktypes As String) As DBHelper.DBHelperParameter()
+    Public Shared Function ApproveOrRejectClaims(cmd As String, claimIds As String, comments As String, risktypes As String) As DBHelper.DBHelperParameter()
         Try
             Dim dal As New ClaimDAL
             Return dal.ApproveOrRejectClaims(cmd, claimIds, comments, risktypes, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
@@ -2970,7 +2970,7 @@ Public NotInheritable Class Claim
         End Try
     End Function
 
-    Public Shared Function GetProblemDescription(ByVal claim_number As String) As String
+    Public Shared Function GetProblemDescription(claim_number As String) As String
 
         Dim retVal As String
         Dim dal As New ClaimDAL
@@ -2986,7 +2986,7 @@ Public NotInheritable Class Claim
         Return retVal
 
     End Function
-    Public Shared Function GetExtendedStatusComment(ByVal claim_number As String) As String
+    Public Shared Function GetExtendedStatusComment(claim_number As String) As String
 
         Dim retVal As String
         Dim dal As New ClaimDAL
@@ -3003,7 +3003,7 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function GetTechnicalReport(ByVal claim_number As String) As String
+    Public Shared Function GetTechnicalReport(claim_number As String) As String
 
         Dim retVal As String
         Dim dal As New ClaimDAL
@@ -3020,14 +3020,14 @@ Public NotInheritable Class Claim
     End Function
 
     'REQ-6230
-    Public Shared Function GetCountryCodeOverwrite(ByVal companyId As Guid) As String
+    Public Shared Function GetCountryCodeOverwrite(companyId As Guid) As String
         Dim claimDalObj As ClaimDAL = New ClaimDAL()
         Dim countryCode As String = claimDalObj.GetCountryCodeOverwrite(companyId)
 
         Return countryCode
     End Function
 
-    Public Shared Function GetPreviousInProgressClaimCount(ByVal claimId As Guid) As Integer
+    Public Shared Function GetPreviousInProgressClaimCount(claimId As Guid) As Integer
         Dim claimDalObj As ClaimDAL = New ClaimDAL()
         Return claimDalObj.LoadPreviousInProgressClaimCount(claimId)
     End Function
@@ -3086,17 +3086,17 @@ Public NotInheritable Class Claim
 
 
 #End Region
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property ClaimId(ByVal row) As Guid
+        Public Shared ReadOnly Property ClaimId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_CLAIM_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property ClaimNumber(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ClaimNumber(row As DataRow) As String
             Get
                 Return row(COL_CLAIM_NUMBER).ToString
             End Get
@@ -3153,17 +3153,17 @@ Public NotInheritable Class Claim
         Public Const COL_NAME_LOSS_DATE As String = "loss_date"
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property ClaimId(ByVal row) As Guid
+        Public Shared ReadOnly Property ClaimId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_CLAIM_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property ClaimNumber(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ClaimNumber(row As DataRow) As String
             Get
                 Return row(COL_CLAIM_NUMBER).ToString
             End Get
@@ -3200,7 +3200,7 @@ Public NotInheritable Class Claim
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -3221,7 +3221,7 @@ Public NotInheritable Class Claim
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -3242,7 +3242,7 @@ Public NotInheritable Class Claim
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -3260,7 +3260,7 @@ Public NotInheritable Class Claim
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -3288,7 +3288,7 @@ Public NotInheritable Class Claim
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -3337,7 +3337,7 @@ Public NotInheritable Class Claim
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -3355,7 +3355,7 @@ Public NotInheritable Class Claim
 
     End Class
     '10/12/2006 - ALR - Added for the batch process.
-    Public Shared Function getClaimsForBatchProcess(ByVal serviceCenterId As Guid, ByVal batchNumber As String, ByVal InvoiceTransId As Guid, ByVal languageId As Guid) As ClaimsForBatchProcessDV
+    Public Shared Function getClaimsForBatchProcess(serviceCenterId As Guid, batchNumber As String, InvoiceTransId As Guid, languageId As Guid) As ClaimsForBatchProcessDV
 
         Try
             Dim dal As New ClaimDAL
@@ -3398,7 +3398,7 @@ Public NotInheritable Class Claim
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -3412,11 +3412,11 @@ Public NotInheritable Class Claim
     Public NotInheritable Class ValidRepairDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_REPAIR_DATE_ERR2)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Claim = CType(objectToValidate, Claim)
 
 
@@ -3463,11 +3463,11 @@ Public NotInheritable Class Claim
     Public NotInheritable Class ValidLoanerReturnedDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_LOANER_RETURNED_DATE_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Claim = CType(objectToValidate, Claim)
 
 
@@ -3482,17 +3482,17 @@ Public NotInheritable Class Claim
             End If
 
             If loanerReturnedDate < createdDate Then
-                Me.Message = Common.ErrorCodes.INVALID_LOANER_RETURN_DATE_ERR1 '"Loaner Return Date Must Be Greater Than Or Equal To Date Added."
+                Message = Common.ErrorCodes.INVALID_LOANER_RETURN_DATE_ERR1 '"Loaner Return Date Must Be Greater Than Or Equal To Date Added."
                 Return False
             End If
 
             If loanerReturnedDate > obj.GetShortDate(Today) Then
-                Me.Message = Common.ErrorCodes.INVALID_LOANER_RETURN_DATE_ERR2 '"Loaner Return Date Must Be Less Than Or Equal To Today."
+                Message = Common.ErrorCodes.INVALID_LOANER_RETURN_DATE_ERR2 '"Loaner Return Date Must Be Less Than Or Equal To Today."
                 Return False
             End If
 
             If Not obj.RepairDate Is Nothing AndAlso loanerReturnedDate < obj.GetShortDate(obj.RepairDate.Value) Then
-                Me.Message = Common.ErrorCodes.INVALID_LOANER_RETURN_DATE_ERR3 '"Loaner Return Date Must Be Greater Than Or Equal To Repair Date."
+                Message = Common.ErrorCodes.INVALID_LOANER_RETURN_DATE_ERR3 '"Loaner Return Date Must Be Greater Than Or Equal To Repair Date."
                 Return False
             End If
 
@@ -3512,11 +3512,11 @@ Public NotInheritable Class Claim
     Public NotInheritable Class ValidAuthorizedAmount
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.AUTHORIZED_AMOUNT_HAS_EXCEEDED_YOUR_AUTHORIZATION_LIMIT_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Claim = CType(objectToValidate, Claim)
 
             If obj.AuthorizedAmount Is Nothing Then
@@ -3542,11 +3542,11 @@ Public NotInheritable Class Claim
     Public NotInheritable Class ValidVisitDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_VISIT_DATE_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Claim = CType(objectToValidate, Claim)
             If obj.VisitDate Is Nothing Then Return True
             Dim visitDate As Date = obj.GetShortDate(obj.VisitDate.Value)
@@ -3563,19 +3563,19 @@ Public NotInheritable Class Claim
             ' Must be LT or EQ to Pick-Up Date if not NULL. 
 
             If visitDate > Today Then
-                Me.Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR1 ' "Visit Date Must Be Less Than Or Equal To Today."
+                Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR1 ' "Visit Date Must Be Less Than Or Equal To Today."
                 Return False
             End If
             If Not obj.LossDate Is Nothing AndAlso visitDate < obj.GetShortDate(obj.LossDate.Value) Then
-                Me.Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR4 ' "Visit Date Must Be Greater Than Or Equal To Date Of Loss."
+                Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR4 ' "Visit Date Must Be Greater Than Or Equal To Date Of Loss."
                 Return False
             End If
             If Not obj.RepairDate Is Nothing AndAlso visitDate > obj.GetShortDate(obj.RepairDate.Value) Then
-                Me.Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR2 ' "Visit Date Must Be Less Than Or Equal To Repair Date."
+                Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR2 ' "Visit Date Must Be Less Than Or Equal To Repair Date."
                 Return False
             End If
             If Not obj.PickUpDate Is Nothing AndAlso visitDate > obj.GetShortDate(obj.PickUpDate.Value) Then
-                Me.Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR3 ' "Visit Date Must Be Less Than Or Equal To Pick-Up Date."
+                Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR3 ' "Visit Date Must Be Less Than Or Equal To Pick-Up Date."
                 Return False
             End If
 
@@ -3588,11 +3588,11 @@ Public NotInheritable Class Claim
     Public NotInheritable Class ValidPickUpDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Claim = CType(objectToValidate, Claim)
             If obj.PickUpDate Is Nothing Then Return True
             Dim pickUpDate As Date = obj.GetShortDate(obj.PickUpDate.Value)
@@ -3611,28 +3611,28 @@ Public NotInheritable Class Claim
             If obj.LoanerTaken Then Return True
 
             If pickUpDate > Today Then
-                Me.Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR1 '"Pick-Up Date Must Be Less Than Or Equal To Today."
+                Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR1 '"Pick-Up Date Must Be Less Than Or Equal To Today."
                 Return False
                 'End If
             ElseIf Not obj.RepairDate Is Nothing Then
                 If pickUpDate < obj.GetShortDate(obj.RepairDate.Value) Then
-                    Me.Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR2  '"Pick-Up Date Must Be Greater Than Or Equal To Repair Date."
+                    Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR2  '"Pick-Up Date Must Be Greater Than Or Equal To Repair Date."
                     Return False
                 End If
                 'ElseIf pickUpDate > Today AndAlso pickUpDate < obj.GetShortDate(obj.RepairDate.Value) Then
                 '    Me.Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR6 '"Pick-Up Date Must Be Between Repair Date and Today."
                 '    Return False
             Else
-                Me.Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR5  '"Pick-Up Date Requires The Entry Of A Repair Date."
+                Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR5  '"Pick-Up Date Requires The Entry Of A Repair Date."
                 Return False
             End If
 
             If Not obj.LoanerReturnedDate Is Nothing AndAlso pickUpDate < obj.GetShortDate(obj.LoanerReturnedDate.Value) Then
-                Me.Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR4 '"Pick-Up Date Must Be Greater Than Or Equal To Loaner Returned Date."
+                Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR4 '"Pick-Up Date Must Be Greater Than Or Equal To Loaner Returned Date."
                 Return False
             End If
             If Not obj.VisitDate Is Nothing AndAlso pickUpDate < obj.GetShortDate(obj.VisitDate.Value) Then
-                Me.Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR3 '"Pick-Up Date Must Be Greater Than Or Equal To Visit Date."
+                Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR3 '"Pick-Up Date Must Be Greater Than Or Equal To Visit Date."
                 Return False
             End If
 
@@ -3650,12 +3650,12 @@ Public NotInheritable Class Claim
     Public NotInheritable Class ValidAuthAmountEdit
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             'MyBase.New(fieldDisplayName, Common.ErrorCodes.AUTHORIZED_AMOUNT_HAS_EXCEEDED_YOUR_AUTHORIZATION_LIMIT_ERR)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.NEW_AUTHORIZED_AMOUNT_LESS_DEDUCTIBLE_WOULD_BE_LOWER_THAN_SUM_OF_PAYMENTS_ALREADY_MADE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Claim = CType(objectToValidate, Claim)
             Dim ClaimInvoiceBO As New ClaimInvoice
             ClaimInvoiceBO.PrepopulateClaimInvoice(obj)
@@ -3681,19 +3681,19 @@ Public NotInheritable Class Claim
 #End Region
 
 #Region "Iterator"
-    Public Shared Function GetIterator(ByVal familyMember As BusinessObjectBase) As BusinessObjectIteratorBase
+    Public Shared Function GetIterator(familyMember As BusinessObjectBase) As BusinessObjectIteratorBase
         Return New BusinessObjectIteratorBase(familyMember.Dataset.Tables(ClaimDAL.TABLE_NAME), GetType(Claim))
     End Function
 #End Region
 
 #Region "Children"
 
-    Public Function AddPartsInfo(ByVal partInfoID As Guid) As PartsInfo
+    Public Function AddPartsInfo(partInfoID As Guid) As PartsInfo
         If partInfoID.Equals(Guid.Empty) Then
-            Dim objPartsInfo As New PartsInfo(Me.Dataset)
+            Dim objPartsInfo As New PartsInfo(Dataset)
             Return objPartsInfo
         Else
-            Dim objPartsInfo As New PartsInfo(partInfoID, Me.Dataset)
+            Dim objPartsInfo As New PartsInfo(partInfoID, Dataset)
             Return objPartsInfo
         End If
     End Function
@@ -3701,7 +3701,7 @@ Public NotInheritable Class Claim
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal certItemCoverageId As Guid, ByVal allowdifferentcoverage As Boolean, ByVal masterClaimProcCode As String, Optional ByVal selDateOfLoss As Date = Nothing) As MaterClaimDV
+    Public Shared Function getList(certItemCoverageId As Guid, allowdifferentcoverage As Boolean, masterClaimProcCode As String, Optional ByVal selDateOfLoss As Date = Nothing) As MaterClaimDV
         Try
             Dim dal As New ClaimDAL, MaterClaimFilterDV As MaterClaimDV
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -3719,7 +3719,7 @@ Public NotInheritable Class Claim
         End Try
     End Function
 
-    Public Shared Function getRepairedMasterClaimsList(ByVal certItemCoverageId As Guid, ByVal selDateOfLoss As Date) As MaterClaimDV
+    Public Shared Function getRepairedMasterClaimsList(certItemCoverageId As Guid, selDateOfLoss As Date) As MaterClaimDV
         Try
             Dim dal As New ClaimDAL, MaterClaimFilterDV As MaterClaimDV
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -3730,7 +3730,7 @@ Public NotInheritable Class Claim
         End Try
     End Function
 
-    Public Shared Function getRedoList(ByVal certItemCoverageId As Guid, ByVal createdDate As DateType, ByVal redoClaimID As Guid) As ClaimRedoDV
+    Public Shared Function getRedoList(certItemCoverageId As Guid, createdDate As DateType, redoClaimID As Guid) As ClaimRedoDV
         Try
             Dim dal As New ClaimDAL
 
@@ -3739,11 +3739,11 @@ Public NotInheritable Class Claim
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function ProductRemainLiabilityAmount(ByVal CertId As Guid, ByVal lossDate As DateType) As Decimal
+    Public Shared Function ProductRemainLiabilityAmount(CertId As Guid, lossDate As DateType) As Decimal
         Dim dal As New ClaimDAL
         Return dal.ProductRemainLiabilityAmount(CertId, lossDate)
     End Function
-    Public Shared Function CoverageRemainLiabilityAmount(ByVal CertItemCoverageId As Guid, ByVal lossDate As DateType) As Decimal
+    Public Shared Function CoverageRemainLiabilityAmount(CertItemCoverageId As Guid, lossDate As DateType) As Decimal
         Dim dal As New ClaimDAL
         Return dal.CoverageRemainLiabilityAmount(CertItemCoverageId, lossDate)
     End Function
@@ -3765,7 +3765,7 @@ Public NotInheritable Class Claim
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -3775,14 +3775,14 @@ Public NotInheritable Class Claim
 
 #Region "Claim Logistics"
 
-    Public Shared Function WS_GetClaimStatusInfo(ByVal CustomerIdentifier As String, ByVal IdentifierType As String, ByVal DealerId As Guid, ByVal BillingZipCode As String, ByVal LanguageISOCode As String, ByVal Certificate_Number As String, ByRef ValidateErrorCode As Integer) As DataSet
+    Public Shared Function WS_GetClaimStatusInfo(CustomerIdentifier As String, IdentifierType As String, DealerId As Guid, BillingZipCode As String, LanguageISOCode As String, Certificate_Number As String, ByRef ValidateErrorCode As Integer) As DataSet
         Dim userId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
         Dim dal As New ClaimDAL
 
         Return dal.WS_GetClaimStatusInfo(CustomerIdentifier, IdentifierType, DealerId, userId, BillingZipCode, LanguageISOCode, Certificate_Number, ValidateErrorCode)
     End Function
 
-    Public Shared Function WebSubmitClaimPreValidate(ByVal oWebSubmitClaimPreValidateInputData As ClaimDAL.WebSubmitClaimPreValidateInputData, ByRef oWebSubmitClaimPreValidateOutputData As ClaimDAL.WebSubmitClaimPreValidateOutputData) As DataSet
+    Public Shared Function WebSubmitClaimPreValidate(oWebSubmitClaimPreValidateInputData As ClaimDAL.WebSubmitClaimPreValidateInputData, ByRef oWebSubmitClaimPreValidateOutputData As ClaimDAL.WebSubmitClaimPreValidateOutputData) As DataSet
         Dim dal As New ClaimDAL
 
         Return dal.WebSubmitClaimPreValidate(oWebSubmitClaimPreValidateInputData, oWebSubmitClaimPreValidateOutputData)
@@ -3797,10 +3797,10 @@ Public NotInheritable Class Claim
     Public Overrides Function CanIssuesReopen() As Boolean
         Dim flag As Boolean = False
 
-        If (Me.RepairDate Is Nothing And Me.PickUpDate Is Nothing) Then
+        If (RepairDate Is Nothing And PickUpDate Is Nothing) Then
             Dim claimNumber As String = If(Me.ClaimNumber = String.Empty, "0", Me.ClaimNumber)
-            If (ClaimInvoice.getPaymentsList(Me.CompanyId, claimNumber).Count = 0) Then
-                If (Me.StatusCode = Codes.CLAIM_STATUS__ACTIVE Or Me.StatusCode = Codes.CLAIM_STATUS__PENDING Or Me.StatusCode = Codes.CLAIM_STATUS__DENIED) Then
+            If (ClaimInvoice.getPaymentsList(CompanyId, claimNumber).Count = 0) Then
+                If (StatusCode = Codes.CLAIM_STATUS__ACTIVE Or StatusCode = Codes.CLAIM_STATUS__PENDING Or StatusCode = Codes.CLAIM_STATUS__DENIED) Then
                     flag = True
                 End If
             End If
@@ -3809,7 +3809,7 @@ Public NotInheritable Class Claim
 
     End Function
 
-    Public Shared Function CheckClaimPaymentInProgress(ByVal claimId As Guid, ByVal companyGroupId As Guid) As Boolean
+    Public Shared Function CheckClaimPaymentInProgress(claimId As Guid, companyGroupId As Guid) As Boolean
         Dim dal As New ClaimDAL
         Dim ds As DataSet
         ds = dal.CheckClaimPaymentInProgress(claimId, companyGroupId)
@@ -3828,12 +3828,12 @@ Public NotInheritable Class Claim
         Try
             Lock = False
             Dim _dal As New ClaimDAL
-            If Not Me.IsNew Then
-                _dal.Lock_Claim(Me.Id, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+            If Not IsNew Then
+                _dal.Lock_Claim(Id, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
             End If
-            Me.LockedBy = ElitaPlusIdentity.Current.ActiveUser.Id
-            Me.lockedOn = Date.Now
-            Me.IsLocked = Codes.YESNO_Y
+            LockedBy = ElitaPlusIdentity.Current.ActiveUser.Id
+            lockedOn = Date.Now
+            IsLocked = Codes.YESNO_Y
             Lock = True
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
@@ -3844,12 +3844,12 @@ Public NotInheritable Class Claim
         Try
             UnLock = False
             Dim _dal As New ClaimDAL
-            If Not Me.IsNew Then
-                _dal.UnLock_Claim(Me.Id, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+            If Not IsNew Then
+                _dal.UnLock_Claim(Id, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
             End If
-            Me.LockedBy = Guid.Empty
-            Me.lockedOn = Nothing
-            Me.IsLocked = Codes.YESNO_N
+            LockedBy = Guid.Empty
+            lockedOn = Nothing
+            IsLocked = Codes.YESNO_N
             UnLock = True
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
@@ -3859,7 +3859,7 @@ Public NotInheritable Class Claim
 #End Region
 
 #Region "Claim Extensions"
-    Public Shared Function GetFraudulentClaimExtensions(ByVal claimId As Guid) As ClaimExtensionsDV
+    Public Shared Function GetFraudulentClaimExtensions(claimId As Guid) As ClaimExtensionsDV
 
         Dim dal As New ClaimDAL
 
@@ -3875,7 +3875,7 @@ Public NotInheritable Class Claim
         Public Sub New()
             MyBase.New()
         End Sub
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class

@@ -60,33 +60,33 @@ Public Class PriceListDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_price_list_id", id.ToByteArray)}
         Dim outputParameter(1) As DBHelper.DBHelperParameter
         outputParameter(0) = New DBHelper.DBHelperParameter("po_price_list", GetType(DataSet))
         outputParameter(1) = New DBHelper.DBHelperParameter(PAR_OUT_NAME_RETURN_CODE, GetType(Integer))
         Try
-            DBHelper.FetchSp(selectStmt, parameters, outputParameter, familyDS, Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, parameters, outputParameter, familyDS, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal code As String, _
-                             ByVal description As String, _
-                             ByVal serviceType As Guid, _
-                             ByVal countryList As String, _
-                             ByVal serviceCenter As String, _
-                             ByVal activeOn As DateType, _
-                             ByVal languageId As Guid) As DataSet
+    Public Function LoadList(code As String, _
+                             description As String, _
+                             serviceType As Guid, _
+                             countryList As String, _
+                             serviceCenter As String, _
+                             activeOn As DateType, _
+                             languageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_SEARCH")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_SEARCH")
         Dim parameters() As OracleParameter
 
         'Deleting NULL string wherever it's found
@@ -131,16 +131,16 @@ Public Class PriceListDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         Dim ServiceCenter As New ServiceCenterDAL
         Dim PriceListDetails As New PriceListDetailDAL
@@ -155,10 +155,10 @@ Public Class PriceListDAL
             PriceListDetails.Update(familyDataset, tr, DataRowState.Deleted)
             ServiceCenter.Update(familyDataset, tr, DataRowState.Deleted)
             VendorQty.Update(familyDataset, tr, DataRowState.Deleted)
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            UpdateFromSP(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            UpdateFromSP(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             PriceListDetails.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             'PriceListDetails.Update(familyDataset, tr, DataRowState.Modified)
             'PriceListDetails.Update(familyDataset, tr, DataRowState.Added)
@@ -177,7 +177,7 @@ Public Class PriceListDAL
             Throw ex
         End Try
     End Sub
-    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, tableName As String)
 
         With command
             .AddParameter(PAR_IN_NAME_PRICE_LIST_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_PRICE_LIST_ID)
@@ -196,7 +196,7 @@ Public Class PriceListDAL
 
     End Sub
 
-    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, tableName As String)
 
         With command
             .AddParameter(PAR_IN_NAME_PRICE_LIST_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_PRICE_LIST_ID)
@@ -215,7 +215,7 @@ Public Class PriceListDAL
     'US 224101 - Common call to stored procedures
     Private Function FetchStoredProcedure(methodName As String, storedProc As String, parameters() As OracleParameter) As DataSet
         Dim ds As New DataSet
-        Dim tbl As String = Me.TABLE_NAME
+        Dim tbl As String = TABLE_NAME
 
         ds.Tables.Add(tbl)
         ' Call DBHelper Store Procedure
@@ -227,7 +227,7 @@ Public Class PriceListDAL
                     OracleDbHelper.Fetch(cmd, tbl, ds)
                 End Using
             End Using
-            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(Me.PAR_OUT_NAME_RETURN_CODE))
+            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
             If (Not par Is Nothing AndAlso par.Value = 200) Then
                 Throw New ElitaPlusException("PriceList - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
             End If
@@ -239,8 +239,8 @@ Public Class PriceListDAL
     End Function
 
 #End Region
-    Public Sub ProcessPriceListByStatus(ByVal PriceListID As Guid, ByVal PriceListDetailIDList As String, ByVal userNetworkID As String, ByVal status_xcd As String)
-        Dim selectStmt As String = Me.Config("/SQL/PROCESS_PRICE_LIST_BY_STATUS")
+    Public Sub ProcessPriceListByStatus(PriceListID As Guid, PriceListDetailIDList As String, userNetworkID As String, status_xcd As String)
+        Dim selectStmt As String = Config("/SQL/PROCESS_PRICE_LIST_BY_STATUS")
         Dim inputParameters() As DBHelper.DBHelperParameter
         Dim outputParameter(0) As DBHelper.DBHelperParameter
 
@@ -262,7 +262,7 @@ Public Class PriceListDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Function SetParameter(ByVal name As String, ByVal value As Object) As DBHelper.DBHelperParameter
+    Function SetParameter(name As String, value As Object) As DBHelper.DBHelperParameter
         name = name.Trim
         If value Is Nothing Then value = DBNull.Value
         If value.GetType Is GetType(String) Then value = DirectCast(value, String).Trim

@@ -56,7 +56,7 @@ Namespace Tables
 
         Public ReadOnly Property IsEditing() As Boolean
             Get
-                IsEditing = (Me.moWarrantyMasterGrid.EditItemIndex > NO_ITEM_SELECTED_INDEX)
+                IsEditing = (moWarrantyMasterGrid.EditItemIndex > NO_ITEM_SELECTED_INDEX)
             End Get
         End Property
 #End Region
@@ -85,7 +85,7 @@ Namespace Tables
                 Get
                     Return moDealerId
                 End Get
-                Set(ByVal Value As Guid)
+                Set(Value As Guid)
                     moDealerId = Value
                 End Set
             End Property
@@ -107,29 +107,29 @@ Namespace Tables
 #Region "Page Return"
 
 
-        Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.IsReturningFromChild = True
+                IsReturningFromChild = True
                 Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.State.moWarrantyMasterId = retObj.moRegistrationLetterId
+                            State.moWarrantyMasterId = retObj.moRegistrationLetterId
                         Case Else
-                            Me.State.moWarrantyMasterId = Guid.Empty
+                            State.moWarrantyMasterId = Guid.Empty
                     End Select
-                    moWarrantyMasterGrid.CurrentPageIndex = Me.State.PageIndex
-                    moWarrantyMasterGrid.PageSize = Me.State.PageSize
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                    moWarrantyMasterGrid.PageSize = Me.State.PageSize
+                    moWarrantyMasterGrid.CurrentPageIndex = State.PageIndex
+                    moWarrantyMasterGrid.PageSize = State.PageSize
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
+                    moWarrantyMasterGrid.PageSize = State.PageSize
                     ControlMgr.SetVisibleControl(Me, trPageSize, moWarrantyMasterGrid.Visible)
                     PopulateDealer()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -138,9 +138,9 @@ Namespace Tables
             Public moRegistrationLetterId As Guid
             Public BoChanged As Boolean = False
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal oRegistrationLetterId As Guid, Optional ByVal boChanged As Boolean = False)
-                Me.LastOperation = LastOp
-                Me.moRegistrationLetterId = oRegistrationLetterId
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, oRegistrationLetterId As Guid, Optional ByVal boChanged As Boolean = False)
+                LastOperation = LastOp
+                moRegistrationLetterId = oRegistrationLetterId
                 Me.BoChanged = boChanged
             End Sub
 
@@ -156,80 +156,80 @@ Namespace Tables
 #Region "Hanlers-Init"
 
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Me.ErrControllerMaster.Clear_Hide()
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+            ErrControllerMaster.Clear_Hide()
             Try
                 Page.Master.Page.Form.DefaultButton = moBtnSearch.UniqueID
 
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
 
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
 
-                    Me.SetGridItemStyleColor(moWarrantyMasterGrid)
-                    If Not Me.IsReturningFromChild Then
+                    SetGridItemStyleColor(moWarrantyMasterGrid)
+                    If Not IsReturningFromChild Then
                         ' It is The First Time
                         ' It is not Returning from Detail
                         ControlMgr.SetVisibleControl(Me, trPageSize, False)
                         PopulateDealer()
                     Else
                         ' It is returning from detail
-                        Me.PopulateGrid(Me.POPULATE_ACTION_SAVE)
+                        PopulateGrid(POPULATE_ACTION_SAVE)
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region
 
 #Region "Handlers-Grid"
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 moWarrantyMasterGrid.CurrentPageIndex = NewCurrentPageIndex(moWarrantyMasterGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.PageSize = moWarrantyMasterGrid.PageSize
+                State.PageSize = moWarrantyMasterGrid.PageSize
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub moWarrantyMasterGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moWarrantyMasterGrid.PageIndexChanged
+        Private Sub moWarrantyMasterGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moWarrantyMasterGrid.PageIndexChanged
             Try
                 moWarrantyMasterGrid.CurrentPageIndex = e.NewPageIndex
                 PopulateGrid(POPULATE_ACTION_NO_EDIT)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub moWarrantyMasterGrid_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moWarrantyMasterGrid.ItemCreated
+        Private Sub moWarrantyMasterGrid_ItemCreated(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moWarrantyMasterGrid.ItemCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub moWarrantyMasterGrid_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles moWarrantyMasterGrid.ItemCommand
+        Private Sub moWarrantyMasterGrid_ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles moWarrantyMasterGrid.ItemCommand
             Try
                 Dim index As Integer = e.Item.ItemIndex
 
-                If (e.CommandName = Me.EDIT_COMMAND) Then
-                    Me.State.IsEditMode = True
-                    Me.State.WarrantyMasterID = New Guid(Me.moWarrantyMasterGrid.Items(e.Item.ItemIndex).Cells(Me.GRID_COL_WARRANTY_MASTER_ID).Text)
-                    Me.State.myBO = New WarrantyMaster(Me.State.WarrantyMasterID)
+                If (e.CommandName = EDIT_COMMAND) Then
+                    State.IsEditMode = True
+                    State.WarrantyMasterID = New Guid(moWarrantyMasterGrid.Items(e.Item.ItemIndex).Cells(GRID_COL_WARRANTY_MASTER_ID).Text)
+                    State.myBO = New WarrantyMaster(State.WarrantyMasterID)
 
-                    Me.PopulateGrid()
+                    PopulateGrid()
 
-                    Me.State.PageIndex = moWarrantyMasterGrid.CurrentPageIndex
+                    State.PageIndex = moWarrantyMasterGrid.CurrentPageIndex
 
                     'Disable all Edit and Delete icon buttons on the Grid
-                    SetGridControls(Me.moWarrantyMasterGrid, False)
+                    SetGridControls(moWarrantyMasterGrid, False)
 
                     'Dim ddl As DropDownList = CType(moWarrantyMasterGrid.Items(index).Cells(GRID_COL_RISK_TYPE).FindControl(GRID_CONTROL_RISK_TYPE), DropDownList)
                     'If Not ddl Is Nothing Then
@@ -241,46 +241,46 @@ Namespace Tables
                     '    End Try
                     'End If
 
-                    Me.SetButtonsState()
+                    SetButtonsState()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub moWarrantyMasterGrid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moWarrantyMasterGrid.SortCommand
+        Private Sub moWarrantyMasterGrid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moWarrantyMasterGrid.SortCommand
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.moWarrantyMasterGrid.CurrentPageIndex = 0
-                Me.moWarrantyMasterGrid.SelectedIndex = -1
-                Me.PopulateGrid()
+                moWarrantyMasterGrid.CurrentPageIndex = 0
+                moWarrantyMasterGrid.SelectedIndex = -1
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub moWarrantyMasterGrid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moWarrantyMasterGrid.ItemDataBound
+        Private Sub moWarrantyMasterGrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moWarrantyMasterGrid.ItemDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
                 If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem _
                     OrElse itemType = ListItemType.SelectedItem) Then
-                    e.Item.Cells(Me.GRID_COL_WARRANTY_MASTER_ID).Text = GetGuidStringFromByteArray(CType(dvRow(WarrantyMaster.WarrantyMasterSearchDV.COL_WARRANTY_MASTER_ID), Byte()))
-                    If Me.State.IsEditMode = True Then e.Item.Cells(Me.GRID_COL_EDIT).Text = ""
+                    e.Item.Cells(GRID_COL_WARRANTY_MASTER_ID).Text = GetGuidStringFromByteArray(CType(dvRow(WarrantyMaster.WarrantyMasterSearchDV.COL_WARRANTY_MASTER_ID), Byte()))
+                    If State.IsEditMode = True Then e.Item.Cells(GRID_COL_EDIT).Text = ""
                 ElseIf itemType = ListItemType.EditItem Then
-                    e.Item.Cells(Me.GRID_COL_WARRANTY_MASTER_ID).Text = GetGuidStringFromByteArray(CType(dvRow(WarrantyMaster.WarrantyMasterSearchDV.COL_WARRANTY_MASTER_ID), Byte()))
-                    e.Item.Cells(Me.GRID_COL_EDIT).Text = ""
+                    e.Item.Cells(GRID_COL_WARRANTY_MASTER_ID).Text = GetGuidStringFromByteArray(CType(dvRow(WarrantyMaster.WarrantyMasterSearchDV.COL_WARRANTY_MASTER_ID), Byte()))
+                    e.Item.Cells(GRID_COL_EDIT).Text = ""
                     Dim ddl As DropDownList = CType(e.Item.Cells(GRID_COL_RISK_TYPE).FindControl(GRID_CONTROL_RISK_TYPE), DropDownList)
-                    If Not ddl Is Nothing Then
+                    If ddl IsNot Nothing Then
                         Try
                             SetFocus(ddl)
                             'Me.BindListControlToDataView(ddl, LookupListNew.GetRiskTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id))
@@ -291,69 +291,69 @@ Namespace Tables
                             {
                             .AddBlankItem = True
                             })
-                            Me.SetSelectedItem(ddl, Me.State.myBO.RiskTypeId)
+                            SetSelectedItem(ddl, State.myBO.RiskTypeId)
                         Catch ex As Exception
                         End Try
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Protected Sub moBtnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles moBtnSearch.Click
+        Protected Sub moBtnSearch_Click(sender As Object, e As EventArgs) Handles moBtnSearch.Click
             Try
-                moWarrantyMasterGrid.CurrentPageIndex = Me.NO_PAGE_INDEX
+                moWarrantyMasterGrid.CurrentPageIndex = NO_PAGE_INDEX
                 moWarrantyMasterGrid.DataMember = Nothing
                 moWarrantyMasterGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
-                Me.State.searchDV = Nothing
-                Me.PopulateGrid()
+                State.searchDV = Nothing
+                PopulateGrid()
                 SetButtonsState()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub moBtnClear_Click(ByVal sender As Object, ByVal e As EventArgs) Handles moBtnClear.Click
+        Protected Sub moBtnClear_Click(sender As Object, e As EventArgs) Handles moBtnClear.Click
             Try
                 ClearSearch()
                 SetButtonsState()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub SaveButton_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles SaveButton_WRITE.Click
+        Protected Sub SaveButton_WRITE_Click(sender As Object, e As EventArgs) Handles SaveButton_WRITE.Click
             Try
-                Dim ddl As DropDownList = CType(Me.moWarrantyMasterGrid.Items(moWarrantyMasterGrid.EditItemIndex).Cells(GRID_COL_RISK_TYPE).FindControl(GRID_CONTROL_RISK_TYPE), DropDownList)
-                Me.PopulateBOProperty(Me.State.myBO, "RiskTypeId", ddl)
-                If (Me.State.myBO.IsDirty) Then
-                    Me.State.myBO.Save()
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.State.searchDV = Nothing
-                    Me.State.IsEditMode = False
-                    Me.ReturnFromEditing()
+                Dim ddl As DropDownList = CType(moWarrantyMasterGrid.Items(moWarrantyMasterGrid.EditItemIndex).Cells(GRID_COL_RISK_TYPE).FindControl(GRID_CONTROL_RISK_TYPE), DropDownList)
+                PopulateBOProperty(State.myBO, "RiskTypeId", ddl)
+                If (State.myBO.IsDirty) Then
+                    State.myBO.Save()
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    State.searchDV = Nothing
+                    State.IsEditMode = False
+                    ReturnFromEditing()
                 Else
-                    Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
-                    Me.State.IsEditMode = False
-                    Me.ReturnFromEditing()
+                    AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
+                    State.IsEditMode = False
+                    ReturnFromEditing()
                 End If
             Catch ex As Exception
-                Me.PopulateGrid()
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                PopulateGrid()
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub CancelButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CancelButton.Click
+        Protected Sub CancelButton_Click(sender As Object, e As EventArgs) Handles CancelButton.Click
             Try
-                Me.moWarrantyMasterGrid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
-                Me.State.IsEditMode = False
+                moWarrantyMasterGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                State.IsEditMode = False
                 ReturnFromEditing()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
@@ -365,31 +365,31 @@ Namespace Tables
         Private Sub ReturnFromEditing()
             moWarrantyMasterGrid.EditItemIndex = NO_ITEM_SELECTED_INDEX
             SetGridControls(moWarrantyMasterGrid, True)
-            Me.State.IsEditMode = False
-            Me.PopulateGrid()
-            Me.State.PageIndex = moWarrantyMasterGrid.CurrentPageIndex
+            State.IsEditMode = False
+            PopulateGrid()
+            State.PageIndex = moWarrantyMasterGrid.CurrentPageIndex
             SetButtonsState()
         End Sub
 
         Private Sub SetButtonsState()
-            If (Me.State.IsEditMode) Then
+            If (State.IsEditMode) Then
                 ControlMgr.SetVisibleControl(Me, SaveButton_WRITE, True)
                 ControlMgr.SetVisibleControl(Me, CancelButton, True)
-                ControlMgr.SetEnableControl(Me, Me.SaveButton_WRITE, True)
-                ControlMgr.SetEnableControl(Me, Me.CancelButton, True)
-                ControlMgr.SetEnableControl(Me, Me.moBtnClear, False)
-                ControlMgr.SetEnableControl(Me, Me.moBtnSearch, False)
-                Me.MenuEnabled = False
-                If (Me.cboPageSize.Visible) Then
+                ControlMgr.SetEnableControl(Me, SaveButton_WRITE, True)
+                ControlMgr.SetEnableControl(Me, CancelButton, True)
+                ControlMgr.SetEnableControl(Me, moBtnClear, False)
+                ControlMgr.SetEnableControl(Me, moBtnSearch, False)
+                MenuEnabled = False
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, False)
                 End If
             Else
                 ControlMgr.SetVisibleControl(Me, SaveButton_WRITE, False)
                 ControlMgr.SetVisibleControl(Me, CancelButton, False)
-                ControlMgr.SetEnableControl(Me, Me.moBtnClear, True)
-                ControlMgr.SetEnableControl(Me, Me.moBtnSearch, True)
-                Me.MenuEnabled = True
-                If (Me.cboPageSize.Visible) Then
+                ControlMgr.SetEnableControl(Me, moBtnClear, True)
+                ControlMgr.SetEnableControl(Me, moBtnSearch, True)
+                MenuEnabled = True
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, True)
                 End If
             End If
@@ -404,10 +404,10 @@ Namespace Tables
                 TheDealerControl.BindData(oDataView)
                 TheDealerControl.AutoPostBackDD = False
                 TheDealerControl.NothingSelected = True
-                TheDealerControl.SelectedGuid = Me.State.DealerId
+                TheDealerControl.SelectedGuid = State.DealerId
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -415,51 +415,51 @@ Namespace Tables
             Dim oDataView As DataView
 
             Try
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = WarrantyMaster.getList(ElitaPlusIdentity.Current.ActiveUser.Companies, _
-                                        TheDealerControl.SelectedGuid, Me.tbSearchSKU.Text, tbSearchManufacturer.Text, _
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = WarrantyMaster.getList(ElitaPlusIdentity.Current.ActiveUser.Companies, _
+                                        TheDealerControl.SelectedGuid, tbSearchSKU.Text, tbSearchManufacturer.Text, _
                                         tbSearchModel.Text, ddlWarrantyType.SelectedValue.Trim)
                 End If
 
 
                 If chkOrderByRiskType.Checked Then
-                    Me.State.searchDV.Sort = WarrantyMaster.WarrantyMasterSearchDV.COL_RISK_TYPE & ", " & WarrantyMaster.WarrantyMasterSearchDV.COL_SKU_NUMBER
-                    Me.State.SortExpression = WarrantyMaster.WarrantyMasterSearchDV.COL_RISK_TYPE
+                    State.searchDV.Sort = WarrantyMaster.WarrantyMasterSearchDV.COL_RISK_TYPE & ", " & WarrantyMaster.WarrantyMasterSearchDV.COL_SKU_NUMBER
+                    State.SortExpression = WarrantyMaster.WarrantyMasterSearchDV.COL_RISK_TYPE
                 Else
-                    Me.State.searchDV.Sort = WarrantyMaster.WarrantyMasterSearchDV.COL_SKU_NUMBER
-                    Me.State.SortExpression = WarrantyMaster.WarrantyMasterSearchDV.COL_SKU_NUMBER
+                    State.searchDV.Sort = WarrantyMaster.WarrantyMasterSearchDV.COL_SKU_NUMBER
+                    State.SortExpression = WarrantyMaster.WarrantyMasterSearchDV.COL_SKU_NUMBER
                 End If
                 
-                If (Me.State.IsEditMode) Then
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.myBO.Id, Me.moWarrantyMasterGrid, Me.State.PageIndex, Me.State.IsEditMode)
+                If (State.IsEditMode) Then
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.myBO.Id, moWarrantyMasterGrid, State.PageIndex, State.IsEditMode)
                 End If
 
-                Me.State.PageIndex = Me.moWarrantyMasterGrid.CurrentPageIndex
-                Me.moWarrantyMasterGrid.DataSource = Me.State.searchDV
-                HighLightSortColumn(moWarrantyMasterGrid, Me.State.SortExpression)
-                Me.moWarrantyMasterGrid.DataBind()
+                State.PageIndex = moWarrantyMasterGrid.CurrentPageIndex
+                moWarrantyMasterGrid.DataSource = State.searchDV
+                HighLightSortColumn(moWarrantyMasterGrid, State.SortExpression)
+                moWarrantyMasterGrid.DataBind()
 
                 ControlMgr.SetVisibleControl(Me, trPageSize, moWarrantyMasterGrid.Visible)
 
-                Session("recCount") = Me.State.searchDV.Count
+                Session("recCount") = State.searchDV.Count
 
-                If Me.moWarrantyMasterGrid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If moWarrantyMasterGrid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub ClearSearch()
             TheDealerControl.SelectedIndex = 0
-            Me.State.moWarrantyMasterId = Guid.Empty
-            Me.tbSearchSKU.Text = ""
-            Me.tbSearchManufacturer.Text = ""
-            Me.tbSearchModel.Text = ""
-            Me.ddlWarrantyType.SelectedIndex = -1
-            Me.chkOrderByRiskType.Checked = False
+            State.moWarrantyMasterId = Guid.Empty
+            tbSearchSKU.Text = ""
+            tbSearchManufacturer.Text = ""
+            tbSearchModel.Text = ""
+            ddlWarrantyType.SelectedIndex = -1
+            chkOrderByRiskType.Checked = False
         End Sub
 
 #End Region
@@ -467,12 +467,12 @@ Namespace Tables
 #Region "State-Management"
 
         Private Sub SetSession()
-            With Me.State
+            With State
                 .DealerId = TheDealerControl.SelectedGuid
                 .PageIndex = moWarrantyMasterGrid.CurrentPageIndex
                 .PageSize = moWarrantyMasterGrid.PageSize
-                .PageSort = Me.State.SortExpression
-                .SearchDataView = Me.State.searchDV
+                .PageSort = State.SortExpression
+                .SearchDataView = State.searchDV
             End With
         End Sub
 

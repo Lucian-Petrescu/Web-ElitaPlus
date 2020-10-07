@@ -14,7 +14,7 @@ Namespace Translation
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -27,7 +27,7 @@ Namespace Translation
             Public moLookupId As Guid
             Public moCompanyId As Guid
 
-            Public Sub New(ByVal oCompanyId As Guid, ByVal oLookupId As Guid)
+            Public Sub New(oCompanyId As Guid, oLookupId As Guid)
                 moCompanyId = oCompanyId
                 moLookupId = oLookupId
             End Sub
@@ -71,17 +71,17 @@ Namespace Translation
 #End Region
 
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                If Not Me.IsPostBack Then
-                    Me.ShowMissingTranslations(ErrorController)
-                    Me.MenuEnabled = False
-                    Me.LoadData()
-                    Me.PopulateGrid()
+                If Not IsPostBack Then
+                    ShowMissingTranslations(ErrorController)
+                    MenuEnabled = False
+                    LoadData()
+                    PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorController)
+                HandleErrors(ex, ErrorController)
             End Try
         End Sub
 
@@ -97,7 +97,7 @@ Namespace Translation
                 moCompanyMultipleDrop.SetControl(True, moCompanyMultipleDrop.MODES.NEW_MODE, True, LookupListNew.GetUserCompaniesLookupList(), TranslationBase.TranslateLabelOrMessage(LABEL_COMPANY), True)
                 
             Catch ex As Exception
-                Me.ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
+                ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
             End Try
 
             
@@ -109,22 +109,22 @@ Namespace Translation
 
             If Not moCompanyMultipleDrop.SelectedGuid.Equals(Guid.Empty) Then
                 MyCompanyLang = New Company(moCompanyMultipleDrop.SelectedGuid)
-                Me.State.UserCompanyLanguageId = MyCompanyLang.LanguageId
+                State.UserCompanyLanguageId = MyCompanyLang.LanguageId
             End If
 
-            If Not Me.State.moDropdownGuid.Equals(Guid.Empty) Then
-                moCompanyMultipleDrop.SelectedGuid = Me.State.moDropdownGuid
+            If Not State.moDropdownGuid.Equals(Guid.Empty) Then
+                moCompanyMultipleDrop.SelectedGuid = State.moDropdownGuid
             End If
 
-            Me.State.searchDV = Dropdown.AdminLoadList(Me.State.UserCompanyLanguageId)
-            Me.State.searchDV.RowFilter = "MAINTAINABLE_BY_USER='Y'"
-            Me.DataGridDropdowns.DataSource = Me.State.searchDV
-            Me.DataGridDropdowns.AutoGenerateColumns = False
-            If Not Me.State.UserCompanyLanguageId.Equals(Guid.Empty) Then
-                Me.DataGridDropdowns.Columns(2).HeaderText = LookupListNew.GetDescriptionFromId(LookupListNew.LK_LANGUAGES, Me.State.UserCompanyLanguageId)
+            State.searchDV = Dropdown.AdminLoadList(State.UserCompanyLanguageId)
+            State.searchDV.RowFilter = "MAINTAINABLE_BY_USER='Y'"
+            DataGridDropdowns.DataSource = State.searchDV
+            DataGridDropdowns.AutoGenerateColumns = False
+            If Not State.UserCompanyLanguageId.Equals(Guid.Empty) Then
+                DataGridDropdowns.Columns(2).HeaderText = LookupListNew.GetDescriptionFromId(LookupListNew.LK_LANGUAGES, State.UserCompanyLanguageId)
             End If
-            Me.DataGridDropdowns.CurrentPageIndex = Me.State.PageIndex
-            Me.DataGridDropdowns.DataBind()
+            DataGridDropdowns.CurrentPageIndex = State.PageIndex
+            DataGridDropdowns.DataBind()
             ControlMgr.DisableAllGridControlsIfNotEditAuth(Me, DataGridDropdowns)
         End Sub
 
@@ -133,65 +133,65 @@ Namespace Translation
             Dim i As Integer
             Dim dropdownBO As New Dropdown
             Dim retVal As Integer
-            For i = 0 To Me.DataGridDropdowns.Items.Count - 1
-                Dim newLangTransValue As String = CType(Me.DataGridDropdowns.Items(i).Cells(Me.NEW_TRANS_VALUE_CIDX).FindControl("TextBoxLangTrans"), TextBox).Text
+            For i = 0 To DataGridDropdowns.Items.Count - 1
+                Dim newLangTransValue As String = CType(DataGridDropdowns.Items(i).Cells(NEW_TRANS_VALUE_CIDX).FindControl("TextBoxLangTrans"), TextBox).Text
                 'comparing to the original values saved in hidden columns
                 Dim isDirty As Boolean = False
-                isDirty = (newLangTransValue.Trim.ToUpper <> Me.DataGridDropdowns.Items(i).Cells(Me.OLD_TRANS_VALUE_CIDX).Text.Trim.ToUpper)
+                isDirty = (newLangTransValue.Trim.ToUpper <> DataGridDropdowns.Items(i).Cells(OLD_TRANS_VALUE_CIDX).Text.Trim.ToUpper)
                 If isDirty Then
-                    Dim DropdownId As New Guid(CType(Me.DataGridDropdowns.Items(i).Cells(Me.DROPDOWN_ID_CIDX).FindControl("lblListId"), Label).Text)
-                    Dim nDictItemTranslationID As New Guid(CType(Me.DataGridDropdowns.Items(i).Cells(Me.DICT_ITEM_GUID_ID_CIDX).FindControl("lblDictItemTransId"), Label).Text)
+                    Dim DropdownId As New Guid(CType(DataGridDropdowns.Items(i).Cells(DROPDOWN_ID_CIDX).FindControl("lblListId"), Label).Text)
+                    Dim nDictItemTranslationID As New Guid(CType(DataGridDropdowns.Items(i).Cells(DICT_ITEM_GUID_ID_CIDX).FindControl("lblDictItemTransId"), Label).Text)
                     Try
                         retVal = dropdownBO.UpdateTranslation(nDictItemTranslationID, newLangTransValue.Trim, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
                         If retVal = 0 Then
-                            Me.MenuEnabled = True
+                            MenuEnabled = True
                             DataChanged = True
                         Else
-                            Me.ErrorController.AddError(Message.ERR_SAVING_DATA)
+                            ErrorController.AddError(Message.ERR_SAVING_DATA)
                         End If
                     Catch ex As Exception
-                        Me.ErrorController.AddError(Message.ERR_SAVING_DATA)
+                        ErrorController.AddError(Message.ERR_SAVING_DATA)
                     End Try
                 End If
             Next
             If DataChanged Then
-                Me.PopulateGrid()
+                PopulateGrid()
             End If
         End Sub
 
-        Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
-                Me.ErrorController.Clear_Hide()
-                Me.SaveChanges()
-                Me.ErrorController.Show()
+                ErrorController.Clear_Hide()
+                SaveChanges()
+                ErrorController.Show()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorController)
+                HandleErrors(ex, ErrorController)
             End Try
         End Sub
 
-        Private Sub btnCancel_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel_WRITE.Click
+        Private Sub btnCancel_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCancel_WRITE.Click
             Try
-                Me.Response.Redirect(NavigationHistory.LastPage)
+                Response.Redirect(NavigationHistory.LastPage)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorController)
+                HandleErrors(ex, ErrorController)
             End Try
         End Sub
 
-        Public Sub DataGridDropdowns_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles DataGridDropdowns.ItemCommand
+        Public Sub DataGridDropdowns_ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles DataGridDropdowns.ItemCommand
             Try
                 If e.CommandName = "ItemsCMD" Then
-                    Dim DropdownId As New Guid(CType(Me.DataGridDropdowns.Items(e.Item.ItemIndex).Cells(Me.DROPDOWN_ID_CIDX).FindControl("lblListId"), Label).Text)
+                    Dim DropdownId As New Guid(CType(DataGridDropdowns.Items(e.Item.ItemIndex).Cells(DROPDOWN_ID_CIDX).FindControl("lblListId"), Label).Text)
                     
-                    Me.callPage(Translation.MaintainDropdownItemForm.URL, New Translation.MaintainDropdownItemForm.Parameters(DropdownId, Me.State.UserCompanyLanguageId))
+                    callPage(Translation.MaintainDropdownItemForm.URL, New Translation.MaintainDropdownItemForm.Parameters(DropdownId, State.UserCompanyLanguageId))
                     'Me.callPage(MaintainDropdownItemForm.PAGE_NAME, DropdownId)
                 End If
             Catch ex As Exception
 
-                Me.HandleErrors(ex, Me.ErrorController)
+                HandleErrors(ex, ErrorController)
             End Try
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             '-------------------------------------
             'Name:ReasorbTranslation
             'Purpose:Translate any message tobe display
@@ -251,7 +251,7 @@ Namespace Translation
                 If elemType = ListItemType.AlternatingItem Then
                     Dim objButton As Button
 
-                    objButton = DirectCast(e.Item.Cells(Me.ITEMS_CIDX).Controls(0), Button)
+                    objButton = DirectCast(e.Item.Cells(ITEMS_CIDX).Controls(0), Button)
                     objButton.Style.Add("background-color", "#dee3e7")
                     objButton.Style.Add("cursor", "hand")
                     objButton.CssClass = "FLATBUTTON"
@@ -260,7 +260,7 @@ Namespace Translation
                 ElseIf elemType = ListItemType.Item Then
                     Dim objButton As Button
 
-                    objButton = DirectCast(e.Item.Cells(Me.ITEMS_CIDX).Controls(0), Button)
+                    objButton = DirectCast(e.Item.Cells(ITEMS_CIDX).Controls(0), Button)
                     objButton.Style.Add("background-color", "#dee3e7")
                     objButton.Style.Add("cursor", "hand")
                     objButton.CssClass = "FLATBUTTON"
@@ -269,38 +269,38 @@ Namespace Translation
             End If
         End Sub
 
-        Private Sub DataGridDropdowns_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGridDropdowns.PageIndexChanged
+        Private Sub DataGridDropdowns_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGridDropdowns.PageIndexChanged
             Try
-                Me.DataGridDropdowns.CurrentPageIndex = e.NewPageIndex
-                Me.State.PageIndex = Me.DataGridDropdowns.CurrentPageIndex
+                DataGridDropdowns.CurrentPageIndex = e.NewPageIndex
+                State.PageIndex = DataGridDropdowns.CurrentPageIndex
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorController)
+                HandleErrors(ex, ErrorController)
             End Try
         End Sub
 
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             'Enable the Menu Navigation Back after returning from the child
             Try
-                Me.MenuEnabled = True
+                MenuEnabled = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorController)
+                HandleErrors(ex, ErrorController)
             End Try
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Me.ReturnToTabHomePage()
+                ReturnToTabHomePage()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorController)
+                HandleErrors(ex, ErrorController)
             End Try
         End Sub
 
 
 
-        Private Sub moCompanyMultipleDrop_SelectedDropChanged(ByVal aSrc As Common.MultipleColumnDDLabelControl) Handles moCompanyMultipleDrop.SelectedDropChanged
-            Me.State.moDropdownGuid = moCompanyMultipleDrop.SelectedGuid
+        Private Sub moCompanyMultipleDrop_SelectedDropChanged(aSrc As Common.MultipleColumnDDLabelControl) Handles moCompanyMultipleDrop.SelectedDropChanged
+            State.moDropdownGuid = moCompanyMultipleDrop.SelectedGuid
             PopulateGrid()
 
         End Sub

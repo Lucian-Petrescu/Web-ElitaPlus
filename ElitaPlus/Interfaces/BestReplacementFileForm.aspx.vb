@@ -9,34 +9,34 @@ Namespace Interfaces
         Private Const BEST_REPLACEMENT As String = "BEST_REPLACEMENT_FILE"
 #End Region
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
 
             TheFileController.SetErrorController(ErrorCtrl)
             TheFileController.Page_PageReturn(ReturnFromUrl, ReturnPar)
             mbIsPageReturn = True
         End Sub
 
-        Private Sub moFileController_PopulateReferenceDataView(ByVal sender As Object, ByVal e As FileProcessedController.PopulateReferenceEventArgs) _
+        Private Sub moFileController_PopulateReferenceDataView(sender As Object, e As FileProcessedController.PopulateReferenceEventArgs) _
             Handles moFileController.PopulateReferenceDataView
             e.ReferenceDV = LookupListNew.GetBestReplacementLookupList(e.CompanyGroupId)
         End Sub
 
-        Private Sub moFileController_SetExpectedFileName(ByVal sender As Object, ByVal e As FileProcessedController.SetExpectedFileNameEventArgs) _
+        Private Sub moFileController_SetExpectedFileName(sender As Object, e As FileProcessedController.SetExpectedFileNameEventArgs) _
             Handles moFileController.SetExpectedFileName
             e.FileName = e.CompanyGroupCode & "-" & e.ReferenceCode & "-"
         End Sub
 
-        Private Sub moFileController_OnValidate(ByVal sender As Object, ByVal e As FileProcessedController.ExecuteActionEventArgs) _
+        Private Sub moFileController_OnValidate(sender As Object, e As FileProcessedController.ExecuteActionEventArgs) _
             Handles moFileController.OnValidate
             e.InterfaceStatusId = BestReplacementRecon.ValidateFile(e.FileProcessedId)
         End Sub
 
-        Private Sub moFileController_OnProcess(ByVal sender As Object, ByVal e As FileProcessedController.ExecuteActionEventArgs) _
+        Private Sub moFileController_OnProcess(sender As Object, e As FileProcessedController.ExecuteActionEventArgs) _
             Handles moFileController.OnProcess
             e.InterfaceStatusId = BestReplacementRecon.ProcessFile(e.FileProcessedId)
         End Sub
 
-        Private Sub moFileController_OnDelete(ByVal sender As Object, ByVal e As FileProcessedController.ExecuteActionEventArgs) _
+        Private Sub moFileController_OnDelete(sender As Object, e As FileProcessedController.ExecuteActionEventArgs) _
             Handles moFileController.OnDelete
             e.InterfaceStatusId = BestReplacementRecon.DeleteFile(e.FileProcessedId)
         End Sub
@@ -88,7 +88,7 @@ Namespace Interfaces
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -97,24 +97,24 @@ Namespace Interfaces
 #End Region
 
 #Region "Handlers-Init"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.ErrorCtrl.Clear_Hide()
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+            ErrorCtrl.Clear_Hide()
             moFileController.SetErrorController(ErrorCtrl)
-            Me.MenuEnabled = True
+            MenuEnabled = True
             'If moDealerMultiDrop Is Nothing Then
             '    moDealerMultiDrop = CType(TheFileController.FindControl("multipleDropControl"), MultipleColumnDDLabelControl)
             'End If
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     If mbIsPageReturn = False Then
                         TheFileController.InitController(BestReplacementReconWrkForm.URL)
                     End If
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            If mbIsPageReturn = False Then Me.ShowMissingTranslations(Me.ErrorCtrl)
+            If mbIsPageReturn = False Then ShowMissingTranslations(ErrorCtrl)
             TheFileController.InstallInterfaceProgressBar()
         End Sub
 #End Region

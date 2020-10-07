@@ -11,7 +11,7 @@ Namespace GeographicServices
     Public Class RegionAndComunaService
         Implements IRegionAndComunaService
 
-        Public Function GetRegionsAndComunasInfo(ByVal request As GetRegionsAndComunasInfoRequest) As GetRegionsAndComunasInfoResponse Implements IRegionAndComunaService.GetRegionsAndComunasInfo
+        Public Function GetRegionsAndComunasInfo(request As GetRegionsAndComunasInfoRequest) As GetRegionsAndComunasInfoResponse Implements IRegionAndComunaService.GetRegionsAndComunasInfo
             'Get user country
             Dim CountriesDV As DataView
             CountriesDV = LookupListNew.GetUserCountriesLookupList

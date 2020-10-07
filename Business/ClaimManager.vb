@@ -1,5 +1,4 @@
-﻿Imports System.ServiceModel
-Imports Assurant.ElitaPlus.Business
+﻿
 Imports Assurant.ElitaPlus.DataAccessInterface
 Imports Assurant.ElitaPlus.DataEntities
 Public Class ClaimManager
@@ -98,20 +97,20 @@ Public Class ClaimManager
             Return m_DisbursementRepository
         End Get
     End Property
-    Public Sub New(ByVal pCommonManager As ICommonManager,
-                   ByVal pCertificateManager As ICertificateManager,
-                   ByVal pDealerManager As IDealerManager,
-                   ByVal pCompanyManager As ICompanyManager,
-                   ByVal pCompanyGroupManager As ICompanyGroupManager,
-                   ByVal pEquipmentManager As IEquipmentManager,
-                   ByVal pCountryManager As ICountryManager,
-                   ByVal pCurrencyManager As ICurrencyManager,
-                   ByVal pAddressManager As IAddressManager,
-                   ByVal pClaimRepository As IClaimRepository(Of Claim),
-                   ByVal pDealerRepository As IDealerRepository(Of Dealer),
-                   ByVal pCertificateItemRepository As ICertificateRepository(Of CertificateItem),
-                   ByVal pClaimInvoiceRepository As IClaimRepository(Of ClaimInvoice),
-                   ByVal pDisbursementRepository As IClaimRepository(Of Disbursement))
+    Public Sub New(pCommonManager As ICommonManager,
+                   pCertificateManager As ICertificateManager,
+                   pDealerManager As IDealerManager,
+                   pCompanyManager As ICompanyManager,
+                   pCompanyGroupManager As ICompanyGroupManager,
+                   pEquipmentManager As IEquipmentManager,
+                   pCountryManager As ICountryManager,
+                   pCurrencyManager As ICurrencyManager,
+                   pAddressManager As IAddressManager,
+                   pClaimRepository As IClaimRepository(Of Claim),
+                   pDealerRepository As IDealerRepository(Of Dealer),
+                   pCertificateItemRepository As ICertificateRepository(Of CertificateItem),
+                   pClaimInvoiceRepository As IClaimRepository(Of ClaimInvoice),
+                   pDisbursementRepository As IClaimRepository(Of Disbursement))
 
         If (pCommonManager Is Nothing) Then
             Throw New ArgumentNullException("pCommonManager")
@@ -188,16 +187,16 @@ Public Class ClaimManager
 
 #Region "GOOW SERVICE"
 
-    Public Function CreateClaim(ByVal pCic As CertificateItemCoverage,
-                                ByVal pClaim As Claim,
-                                ByVal pDealer As Dealer,
-                                ByVal pCoverageTypeCode As String,
-                                ByVal pServiceCenterCode As String,
-                                ByVal pClaimType As Integer,
-                                ByVal pMake As String,
-                                ByVal pModel As String,
-                                ByVal pComments As String,
-                                ByVal pDamageType As String) As Object Implements IClaimManager.CreateClaim
+    Public Function CreateClaim(pCic As CertificateItemCoverage,
+                                pClaim As Claim,
+                                pDealer As Dealer,
+                                pCoverageTypeCode As String,
+                                pServiceCenterCode As String,
+                                pClaimType As Integer,
+                                pMake As String,
+                                pModel As String,
+                                pComments As String,
+                                pDamageType As String) As Object Implements IClaimManager.CreateClaim
 
         Dim oClaim As Claim = pClaim
         Dim oMethodOfRepairCode As String
@@ -206,14 +205,14 @@ Public Class ClaimManager
         Dim serviceTypeCode As String = String.Empty
 
         Dim certItemCoverageDed As CertificateItemCoverageDeductible = Nothing
-        Dim oCompany As Company = pDealer.GetCompany(Me.CompanyManager)
+        Dim oCompany As Company = pDealer.GetCompany(CompanyManager)
 
         oClaim.CertItemCoverageId = pCic.CertItemCoverageId
         oClaim.OriginalRiskTypeId = pCic.Item.RiskTypeId
-        oClaim.CompanyId = pDealer.GetCompany(Me.CompanyManager).CompanyId
+        oClaim.CompanyId = pDealer.GetCompany(CompanyManager).CompanyId
         If (pClaimType = 0) Then
-            oClaim.MethodOfRepairId = If(pCic.MethodOfRepairId.Equals(Guid.Empty) Or pCic.MethodOfRepairId Is Nothing, pCic.Certificate.MethodOfRepairId, pCic.MethodOfRepairId)
-            oMethodOfRepairCode = oClaim.MethodOfRepairId.ToCode(Me.CommonManager, ListCodes.MethodOfRepair)
+            oClaim.MethodOfRepairId = If(pCic.MethodOfRepairId.Equals(Guid.Empty) OrElse pCic.MethodOfRepairId Is Nothing, pCic.Certificate.MethodOfRepairId, pCic.MethodOfRepairId)
+            oMethodOfRepairCode = oClaim.MethodOfRepairId.ToCode(CommonManager, ListCodes.MethodOfRepair)
 
         Else
             oClaim.MethodOfRepairId = MethodofRepairCodes.Replacement.ToGuid(ListCodes.MethodOfRepair, CommonManager)
@@ -225,13 +224,13 @@ Public Class ClaimManager
         oClaim.WhoPaysId = WhoPaysCodes.Assurant.ToGuid(ListCodes.WhoPaysCode, CommonManager)
         oClaim.MgrAuthAmountFlag = YesNoCodes.No
         oClaim.StatusCode = ClaimStatusCodes.Active
-        oClaim.ClaimAuthTypeId = Me.GetClaimAuthTypeCode(ClaimAuthorizationTypes.Single_Auth)
+        oClaim.ClaimAuthTypeId = GetClaimAuthTypeCode(ClaimAuthorizationTypes.Single_Auth)
         oClaim.CauseOfLossId = pDamageType.ToGuid(ListCodes.CauseOfLoss, CommonManager)
 
-        oClaim.ServiceCenterId = Me.CountryManager.GetServiceCenterByCode(pDealer.GetCompany(Me.CompanyManager).BusinessCountryId, pServiceCenterCode).ServiceCenterId
+        oClaim.ServiceCenterId = CountryManager.GetServiceCenterByCode(pDealer.GetCompany(CompanyManager).BusinessCountryId, pServiceCenterCode).ServiceCenterId
 
         ''''check whether the cert item has make and model and if not expect the make and model in the request.
-        If (pCic.Item.ManufacturerId.Equals(Guid.Empty) Or IsNothing(pCic.Item.ManufacturerId)) Then
+        If (pCic.Item.ManufacturerId.Equals(Guid.Empty) OrElse IsNothing(pCic.Item.ManufacturerId)) Then
             ''''validate the make and model if provided in the request
             If (pMake = String.Empty) Then
                 '''''if the cert item has no make and model and also make and model are not provided in the request.
@@ -276,8 +275,8 @@ Public Class ClaimManager
         Dim oAuthAmount As Decimal = 0
 
         '''''if make and model is not found price list falls back on the risk type , priority for risk type=4
-        If (Not oPriceListbyMakeAndModel Is Nothing) Then
-            If (oPriceListbyMakeAndModel.Where(Function(p) p.Make.ToUpper() = pMake.ToUpper() And p.Model.ToUpper() = pModel.ToUpper()).Count = 0) Then
+        If (oPriceListbyMakeAndModel IsNot Nothing) Then
+            If (oPriceListbyMakeAndModel.Where(Function(p) p.Make.ToUpper() = pMake.ToUpper() AndAlso p.Model.ToUpper() = pModel.ToUpper()).Count = 0) Then
                 Throw New PriceListNotConfiguredException(Guid.Empty, pServiceCenterCode, "Price List not configured for Make/Model/SC: " & pMake & "/" & pModel & "/" & pServiceCenterCode)
             End If
             oAuthAmount = oPriceListbyMakeAndModel.Where(Function(p) p.ServiceClassCode = serviceClassCode AndAlso
@@ -306,7 +305,7 @@ Public Class ClaimManager
             ''''PrePopulate Deductible
             PrePopulateDeductible(pCic, pDealer, oClaim,, ClaimActions.NewClaim, pClaimType)
         End If
-        oClaim.FollowupDate = Date.Now.AddDays(pDealer.GetCompany(Me.CompanyManager).DefaultFollowUpDays)
+        oClaim.FollowupDate = Date.Now.AddDays(pDealer.GetCompany(CompanyManager).DefaultFollowUpDays)
         ''''Calculate Discount Percent
         oClaim = CalculateDiscountPercent(pCic, oClaim, oMethodOfRepairCode)
 
@@ -324,18 +323,18 @@ Public Class ClaimManager
         Return oClaim
     End Function
 
-    Public Sub FulfillClaim(ByVal pClaim As Claim,
-                            ByVal pCert As Certificate,
-                            ByVal pCompany As Company,
-                            ByVal pDealerCode As String,
-                            ByVal pComments As String,
-                            ByVal pRepairDate As Date,
-                            ByVal pClaimType As Int64,
-                            ByVal pSerialNumber As String,
-                            ByVal pModel As String,
-                            ByVal pMake As String,
-                            ByVal pServiceCenterCode As String,
-                            ByVal pTrackingNumber As String) Implements IClaimManager.FulfillClaim
+    Public Sub FulfillClaim(pClaim As Claim,
+                            pCert As Certificate,
+                            pCompany As Company,
+                            pDealerCode As String,
+                            pComments As String,
+                            pRepairDate As Date,
+                            pClaimType As Int64,
+                            pSerialNumber As String,
+                            pModel As String,
+                            pMake As String,
+                            pServiceCenterCode As String,
+                            pTrackingNumber As String) Implements IClaimManager.FulfillClaim
 
 
         Dim oReplacementClaim As Claim
@@ -416,9 +415,9 @@ Public Class ClaimManager
                 oReplacementClaim.CertItemCoverageId = pClaim.CertItemCoverageId
 
                 replaceClaimCiC = pCert.ItemCoverages.Where(Function(cic) cic.CertItemCoverageId = oReplacementClaim.CertItemCoverageId).FirstOrDefault()
-                pMethodOfRepairCode = oReplacementClaim.MethodOfRepairId.ToCode(Me.CommonManager, ListCodes.MethodOfRepair)
+                pMethodOfRepairCode = oReplacementClaim.MethodOfRepairId.ToCode(CommonManager, ListCodes.MethodOfRepair)
                 Try
-                    Me.AddEquipment(replaceClaimCiC, oReplacementClaim, ClaimEquipmentTypeCodes.Claimed,
+                    AddEquipment(replaceClaimCiC, oReplacementClaim, ClaimEquipmentTypeCodes.Claimed,
                                    pSerialNumber, pSerialNumber, pMake, pModel)
                 Catch ex As ManufacturerNotFoundException
                     Throw New ManufacturerNotFoundException(Guid.Empty, pMake)
@@ -450,8 +449,8 @@ Public Class ClaimManager
                 Dim oAuthAmount As Decimal = 0
 
                 '''''if make and model is not found price list falls back on the risk type , priority for risk type=4
-                If (Not oPriceListbyMakeAndModel Is Nothing) Then
-                    If (oPriceListbyMakeAndModel.Where(Function(p) p.Make.ToUpper() = pMake.ToUpper() And p.Model.ToUpper() = pModel.ToUpper()).Count = 0) Then
+                If (oPriceListbyMakeAndModel IsNot Nothing) Then
+                    If (oPriceListbyMakeAndModel.Where(Function(p) p.Make.ToUpper() = pMake.ToUpper() AndAlso p.Model.ToUpper() = pModel.ToUpper()).Count = 0) Then
                         Throw New PriceListNotConfiguredException(Guid.Empty, pServiceCenterCode, "Price List not configured for Make/Model/SC: " & pMake & "/" & pModel & "/" & pServiceCenterCode)
                     End If
                     oAuthAmount = oPriceListbyMakeAndModel.Where(Function(p) p.ServiceClassCode = serviceClassCode AndAlso
@@ -462,71 +461,71 @@ Public Class ClaimManager
 
                 oReplacementClaim.ClaimNumber = pClaimNUmber + "R"
 
-                Me.AddCommentToCertificate(pCert.CertificateId, oReplacementClaim, pComments)
-                Me.Save(pClaim)
-                Me.Save(oReplacementClaim)
+                AddCommentToCertificate(pCert.CertificateId, oReplacementClaim, pComments)
+                Save(pClaim)
+                Save(oReplacementClaim)
                 Exit Sub
             End If
 
-            Me.AddCommentToCertificate(pCert.CertificateId, pClaim, pComments)
-            Me.Save(pClaim)
+            AddCommentToCertificate(pCert.CertificateId, pClaim, pComments)
+            Save(pClaim)
 
         Catch ex As Exception
         End Try
     End Sub
 
-    Public Sub ChangeServiceCenter(ByVal pClaim As Claim,
-                            ByVal pCert As Certificate,
-                            ByVal pCompany As Company,
-                            ByVal pComments As String,
-                            ByVal pServiceCenterCode As String) Implements IClaimManager.ChangeServiceCenter
+    Public Sub ChangeServiceCenter(pClaim As Claim,
+                            pCert As Certificate,
+                            pCompany As Company,
+                            pComments As String,
+                            pServiceCenterCode As String) Implements IClaimManager.ChangeServiceCenter
 
         Try
             ''''check whether the service center is different from original
-            Dim oNewSvcCenter As ServiceCenter = Me.CountryManager.GetServiceCenterByCode(pCompany.BusinessCountryId, pServiceCenterCode)
+            Dim oNewSvcCenter As ServiceCenter = CountryManager.GetServiceCenterByCode(pCompany.BusinessCountryId, pServiceCenterCode)
 
             If (Not pClaim.ServiceCenterId.Equals(oNewSvcCenter.ServiceCenterId)) Then
                 pClaim.ServiceCenterId = oNewSvcCenter.ServiceCenterId
             End If
-            Me.AddCommentToCertificate(pCert.CertificateId, pClaim, pComments)
-            Me.Save(pClaim)
+            AddCommentToCertificate(pCert.CertificateId, pClaim, pComments)
+            Save(pClaim)
         Catch ex As Exception
         End Try
     End Sub
 
-    Public Sub ReturnDamagedDeviceAdvEx(pClaim As Claim, ByVal pCert As Certificate,
-                            ByVal pCompany As Company,
-                            ByVal pDealer As Dealer,
-                            ByVal pComments As String,
-                            ByVal pCoverageTypeCode As String) Implements IClaimManager.ReturnDamagedDeviceAdvEx
+    Public Sub ReturnDamagedDeviceAdvEx(pClaim As Claim, pCert As Certificate,
+                            pCompany As Company,
+                            pDealer As Dealer,
+                            pComments As String,
+                            pCoverageTypeCode As String) Implements IClaimManager.ReturnDamagedDeviceAdvEx
         Try
 
             ClaimRepository.ReturnAdvanceExchange(pCert.CertificateNumber, pDealer.DealerCode, pCoverageTypeCode)
 
-            Me.AddCommentToCertificate(pCert.CertificateId, pClaim, pComments)
-            Me.Save(pClaim)
+            AddCommentToCertificate(pCert.CertificateId, pClaim, pComments)
+            Save(pClaim)
         Catch ex As Exception
             Throw New CoverageNotFoundException(Guid.Empty, pCoverageTypeCode)
         End Try
     End Sub
 
-    Public Sub MaxDaysElapsedAdvEx(pClaim As Claim, ByVal pCert As Certificate,
-                            ByVal pCompany As Company,
-                            ByVal pDealer As Dealer,
-                            ByVal pComments As String) Implements IClaimManager.MaxDaysElapsedAdEx
+    Public Sub MaxDaysElapsedAdvEx(pClaim As Claim, pCert As Certificate,
+                            pCompany As Company,
+                            pDealer As Dealer,
+                            pComments As String) Implements IClaimManager.MaxDaysElapsedAdEx
         Try
-            Me.AddCommentToCertificate(pCert.CertificateId, pClaim, pComments)
-            Me.Save(pClaim)
+            AddCommentToCertificate(pCert.CertificateId, pClaim, pComments)
+            Save(pClaim)
         Catch ex As Exception
         End Try
     End Sub
 
-    Public Sub PayClaim(ByVal pClaim As Claim,
-                            ByVal pCert As Certificate,
-                            ByVal pCompany As Company,
-                            ByVal pServiceCenterCode As String,
-                            ByVal pInvoiceNumber As String,
-                            ByVal pAmount As Decimal) Implements IClaimManager.PayClaim
+    Public Sub PayClaim(pClaim As Claim,
+                            pCert As Certificate,
+                            pCompany As Company,
+                            pServiceCenterCode As String,
+                            pInvoiceNumber As String,
+                            pAmount As Decimal) Implements IClaimManager.PayClaim
 
         Dim pcic As CertificateItemCoverage = pCert.ItemCoverages.Where(Function(cic) cic.CertItemCoverageId = pClaim.CertItemCoverageId).FirstOrDefault()
 
@@ -539,12 +538,12 @@ Public Class ClaimManager
         'End If
 
         ''''check whether the service center is different from original
-        Dim oNewSvcCenter As ServiceCenter = Me.CountryManager.GetServiceCenterByCode(pCompany.BusinessCountryId, pServiceCenterCode)
+        Dim oNewSvcCenter As ServiceCenter = CountryManager.GetServiceCenterByCode(pCompany.BusinessCountryId, pServiceCenterCode)
 
             Dim oBankInfo As BankInfo = New BankInfo()
 
-            If Not oNewSvcCenter.BankInfoId Is Nothing Then
-                oBankInfo = Me.CountryManager.GetBankInfoById(pCompany.BusinessCountryId, oNewSvcCenter.BankInfoId)
+            If oNewSvcCenter.BankInfoId IsNot Nothing Then
+                oBankInfo = CountryManager.GetBankInfoById(pCompany.BusinessCountryId, oNewSvcCenter.BankInfoId)
             End If
 
             If (Not pClaim.ServiceCenterId.Equals(oNewSvcCenter.ServiceCenterId)) Then
@@ -566,21 +565,21 @@ Public Class ClaimManager
         Catch ex As Exception
 
             End Try
-            Me.Save(pClaim)
+            Save(pClaim)
 
     End Sub
 
-    Private Function GetClaimCaseReserve(ByVal pClaimId As Guid) As Decimal
+    Private Function GetClaimCaseReserve(pClaimId As Guid) As Decimal
         Dim oCaseReserve As Decimal = 0
         oCaseReserve = m_ClaimRepository.GetClaimCaseReserve(pClaimId)
         Return oCaseReserve
 
     End Function
 
-    Private Function ValidatePaymentAmount(ByVal pClaimId As Guid,
-                                           ByVal pPaymentAmount As Decimal) As Boolean
+    Private Function ValidatePaymentAmount(pClaimId As Guid,
+                                           pPaymentAmount As Decimal) As Boolean
 
-        Dim oCaseReserve As Decimal = Me.GetClaimCaseReserve(pClaimId)
+        Dim oCaseReserve As Decimal = GetClaimCaseReserve(pClaimId)
 
         If (pPaymentAmount > oCaseReserve) Then
             Return False
@@ -589,9 +588,9 @@ Public Class ClaimManager
         Return True
     End Function
 
-    Private Function ValidateCauseOfLoss(ByVal pClaim As Claim, ByVal pcic As CertificateItemCoverage, ByVal pCompanyGroupId As Guid) As Boolean
+    Private Function ValidateCauseOfLoss(pClaim As Claim, pcic As CertificateItemCoverage, pCompanyGroupId As Guid) As Boolean
 
-        Dim causeOfLossId As Nullable(Of Guid)
+        Dim causeOfLossId As Guid?
         Dim active As String = String.Empty
         causeOfLossId = pClaim.CauseOfLossId
 
@@ -614,10 +613,10 @@ Public Class ClaimManager
     End Function
 
     Public Sub PrePopulateClaimInvoice(ByRef oClaimInvoice As ClaimInvoice,
-                                       ByVal pClaim As Claim,
-                                       ByVal pDisbursement As Disbursement,
-                                       ByVal pAmount As Decimal,
-                                       ByVal pInvoiceNumber As String)
+                                       pClaim As Claim,
+                                       pDisbursement As Disbursement,
+                                       pAmount As Decimal,
+                                       pInvoiceNumber As String)
 
         oClaimInvoice.ClaimInvoiceId = Guid.NewGuid()
         oClaimInvoice.ClaimId = pClaim.ClaimId
@@ -638,12 +637,12 @@ Public Class ClaimManager
     End Sub
 
     Public Sub PrePopulateDisbursement(ByRef oDisbursement As Disbursement,
-                                       ByVal pclaim As Claim,
-                                       ByVal pServiceCenter As ServiceCenter,
-                                       ByVal pBankInfo As BankInfo,
-                                       ByVal pCompany As Company,
-                                       ByVal pAmount As Decimal,
-                                       ByVal pInvoiceNumber As String)
+                                       pclaim As Claim,
+                                       pServiceCenter As ServiceCenter,
+                                       pBankInfo As BankInfo,
+                                       pCompany As Company,
+                                       pAmount As Decimal,
+                                       pInvoiceNumber As String)
 
 
         oDisbursement.DISBURSEMENT_ID = Guid.NewGuid()
@@ -655,7 +654,7 @@ Public Class ClaimManager
 
         Dim svcAddress As Address = AddressManager.GetAddress(pServiceCenter.ADDRESS_ID)
 
-        oDisbursement.PAYEE = If(Not pServiceCenter Is Nothing, pServiceCenter.CODE, String.Empty)
+        oDisbursement.PAYEE = If(pServiceCenter IsNot Nothing, pServiceCenter.CODE, String.Empty)
         oDisbursement.STATUS_DATE = DateTime.Today.ToShortDateString()
         oDisbursement.PAYMENT_DATE = DateTime.Today.ToShortDateString()
         oDisbursement.BANK_ID = pBankInfo.BankId
@@ -672,7 +671,7 @@ Public Class ClaimManager
         oDisbursement.TRACKING_NUMBER = pclaim.TrackingNumber
         oDisbursement.ACCT_STATUS = AccountingStatusCodes.REQUESTED
 
-        If Not svcAddress.RegionId Is Nothing Then
+        If svcAddress.RegionId IsNot Nothing Then
             oDisbursement.REGION_DESC = CountryManager.GetRegion(svcAddress.CountryId, svcAddress.RegionId).Description
         Else
             oDisbursement.REGION_DESC = String.Empty
@@ -686,15 +685,15 @@ Public Class ClaimManager
 
     End Sub
 
-    Public Function ComputeTax(ByVal pAmount As Decimal,
-                               ByVal pDealerId As Nullable(Of Guid),
-                               ByVal pCountryId As Nullable(Of Guid),
-                               ByVal pCompanyTypeId As Nullable(Of Guid),
-                               ByVal pTaxTypeId As Nullable(Of Guid),
-                               ByVal pRegionId As Nullable(Of Guid),
-                               ByVal pExpectedPremiumIsWpId As Nullable(Of Guid),
-                               ByVal pProductTaxTypeId As Nullable(Of Guid),
-                               ByVal pSalesDate As Date) As Decimal Implements IClaimManager.ComputeTax
+    Public Function ComputeTax(pAmount As Decimal,
+                               pDealerId As Guid?,
+                               pCountryId As Guid?,
+                               pCompanyTypeId As Guid?,
+                               pTaxTypeId As Guid?,
+                               pRegionId As Guid?,
+                               pExpectedPremiumIsWpId As Guid?,
+                               pProductTaxTypeId As Guid?,
+                               pSalesDate As Date) As Decimal Implements IClaimManager.ComputeTax
 
         Return m_DealerRepository.ComputeTax(pAmount,
                                                  pDealerId,
@@ -709,16 +708,16 @@ Public Class ClaimManager
 
     End Function
 
-    Public Function GetClaimInfo(ByVal pClaim As Claim,
-                                ByVal pDealer As Dealer, ByVal pCert As Certificate) As Object Implements IClaimManager.GetClaimInfo
+    Public Function GetClaimInfo(pClaim As Claim,
+                                pDealer As Dealer, pCert As Certificate) As Object Implements IClaimManager.GetClaimInfo
         Dim oClaim As Claim = pClaim
 
         Return oClaim
     End Function
 
-    Private Sub AddCommentToCertificate(ByVal pCertificateId As Guid,
+    Private Sub AddCommentToCertificate(pCertificateId As Guid,
                                         ByRef pClaim As Claim,
-                                        ByVal pComments As String)
+                                        pComments As String)
 
         Dim translation As String = String.Empty
         Dim oCommentTypeId As Guid = CommentTypeCodes.Other.ToGuid(ListCodes.CommentType, CommonManager)
@@ -744,23 +743,23 @@ Public Class ClaimManager
 
 #End Region
 
-    Public Function Save(ByVal pClaim As Claim) As Claim Implements IClaimManager.SaveClaim
+    Public Function Save(pClaim As Claim) As Claim Implements IClaimManager.SaveClaim
         m_ClaimRepository.Save(pClaim)
         ''return the claim without querying back to the caller.
         Return pClaim
 
     End Function
 
-    Function LocateCoverage(ByVal pCertificate As Certificate,
-                            ByVal pDateOfLoss As Date,
-                            ByVal pCoverageTypeCode As String,
-                            ByVal pItemNumber As Nullable(Of Short)) As CertificateItemCoverage Implements IClaimManager.LocateCoverage
+    Function LocateCoverage(pCertificate As Certificate,
+                            pDateOfLoss As Date,
+                            pCoverageTypeCode As String,
+                            pItemNumber As Short?) As CertificateItemCoverage Implements IClaimManager.LocateCoverage
 
         Dim ci As CertificateItem = (From oci As CertificateItem In pCertificate.Item.
                                           Where(Function(pci) pci.ItemNumber = 1 AndAlso pDateOfLoss >= pci.EffectiveDate AndAlso
                                                  pDateOfLoss <= pci.ExpirationDate)).FirstOrDefault()
 
-        If (Not ci Is Nothing) Then
+        If (ci IsNot Nothing) Then
 
             Dim count As Integer = (From cic As CertificateItemCoverage In
                                                  ci.ItemCoverages.Where(Function(c) pDateOfLoss >= c.BeginDate AndAlso
@@ -782,23 +781,23 @@ Public Class ClaimManager
         End If
     End Function
 
-    Function GetClaim(ByVal pClaimNUmber As String,
+    Function GetClaim(pClaimNUmber As String,
                       pCompanyId As Guid) As Claim Implements IClaimManager.GetClaim
 
-        If m_ClaimRepository.Get(Function(c) c.ClaimNumber = pClaimNUmber And c.CompanyId = pCompanyId, Nothing, "claimequipments,comments,entityissues,claimstatuses").Count > 0 Then
-            Return m_ClaimRepository.Get(Function(c) c.ClaimNumber = pClaimNUmber And c.CompanyId = pCompanyId).FirstOrDefault()
+        If m_ClaimRepository.Get(Function(c) c.ClaimNumber = pClaimNUmber AndAlso c.CompanyId = pCompanyId, Nothing, "claimequipments,comments,entityissues,claimstatuses").Count > 0 Then
+            Return m_ClaimRepository.Get(Function(c) c.ClaimNumber = pClaimNUmber AndAlso c.CompanyId = pCompanyId).FirstOrDefault()
         Else
             Throw New ClaimNotFoundException(pCompanyId, pClaimNUmber)
         End If
 
     End Function
 
-    Private Function IsCoverageChangeValid(ByVal pCertificate As Certificate,
-                                           ByVal CoverageTypeCode As String,
+    Private Function IsCoverageChangeValid(pCertificate As Certificate,
+                                           coverageTypeCode As String,
                                            pDateOfLoss As Date) As Boolean Implements IClaimManager.IsCoverageChangeValid
 
-        Dim count As Integer = (From ocic As CertificateItemCoverage In
-                                   pCertificate.ItemCoverages.Where(Function(cic) cic.CoverageTypeId = CoverageTypeCode.ToGuid(ListCodes.CoverageType, Me.CommonManager) AndAlso
+        Dim count As Integer = (From certificateItemCoverage As CertificateItemCoverage In
+                                   pCertificate.ItemCoverages.Where(Function(cic) cic.CoverageTypeId = coverageTypeCode.ToGuid(ListCodes.CoverageType, CommonManager) AndAlso
                                                                 pDateOfLoss > cic.BeginDate AndAlso pDateOfLoss <= cic.EndDate)).Count
 
         If count > 0 Then
@@ -810,20 +809,20 @@ Public Class ClaimManager
 
     End Function
 
-    Public Sub UpdateRepairableClaim(ByVal pRepairClaim As Claim,
-                                     ByVal pCert As Certificate,
-                                     ByVal pCompany As Company,
-                                     ByVal pCoverageTypeCode As String,
-                                     ByVal pServiceCenterCode As String,
-                                     ByVal pServiceLevelCode As String,
-                                     ByVal pHasCoverageChanged As Boolean,
-                                     ByVal pHasSvcCenterChanged As Boolean,
-                                     ByVal pIsServiceWarrantyClaim As Boolean,
-                                     ByVal pMake As String,
-                                     ByVal pModel As String,
-                                     ByVal pSerialNumberReplacedDevice As String,
-                                     ByVal pAuthorizedAmount As Nullable(Of Decimal),
-                                     ByVal pClaimBasicUpdateFields As IClaimManager.ClaimBasicUpdateFields) Implements IClaimManager.UpdateRepairableClaim
+    Public Sub UpdateRepairableClaim(pRepairClaim As Claim,
+                                     pCert As Certificate,
+                                     pCompany As Company,
+                                     pCoverageTypeCode As String,
+                                     pServiceCenterCode As String,
+                                     pServiceLevelCode As String,
+                                     pHasCoverageChanged As Boolean,
+                                     pHasSvcCenterChanged As Boolean,
+                                     pIsServiceWarrantyClaim As Boolean,
+                                     pMake As String,
+                                     pModel As String,
+                                     pSerialNumberReplacedDevice As String,
+                                     pAuthorizedAmount As Decimal?,
+                                     pClaimBasicUpdateFields As IClaimManager.ClaimBasicUpdateFields) Implements IClaimManager.UpdateRepairableClaim
 
 
         Dim methodOfRepairCode As String
@@ -843,7 +842,7 @@ Public Class ClaimManager
                 repClaimNUmber &= "R"
             End If
 
-            oReplacementClaim = Me.GetClaim(repClaimNUmber, pRepairClaim.CompanyId)
+            oReplacementClaim = GetClaim(repClaimNUmber, pRepairClaim.CompanyId)
 
             'Expected Behavior as per DEF-27210
             'When diagnostic Is "Repaired" Or "Denied" Or "Replaced Refurbished" And there Is an existing REPLACEMENT CLAIM; 
@@ -869,14 +868,14 @@ Public Class ClaimManager
                 '        oReplacementClaim.DeniedReasonId = DeniedReasonCodes.UnderMFGWarranty.ToGuid(ListCodes.DeniedReasonCode, Me.CommonManager)
                 'End Select
 
-                Me.Save(oReplacementClaim)
+                Save(oReplacementClaim)
 
             ElseIf oReplacementClaim.StatusCode = ClaimStatusCodes.Active Then
                 'Case b. from above behaviour
                 oReplacementClaim.StatusCode = ClaimStatusCodes.Pending
-                Me.Save(oReplacementClaim)
+                Save(oReplacementClaim)
                 pRepairClaim.StatusCode = ClaimStatusCodes.Pending
-                Me.Save(pRepairClaim)
+                Save(pRepairClaim)
                 'No Updates to the Repair Claim and send the User a Message Back
                 Throw New ReplacementClaimFoundException(pRepairClaim.CompanyId, pRepairClaim.ClaimNumber,
                                                          "Active Replacement Claim Found")
@@ -884,7 +883,7 @@ Public Class ClaimManager
             ElseIf oReplacementClaim.StatusCode = ClaimStatusCodes.Closed Then
                 'Case c. from above behaviour
                 pRepairClaim.StatusCode = ClaimStatusCodes.Pending
-                Me.Save(pRepairClaim)
+                Save(pRepairClaim)
                 Throw New ReplacementClaimFoundException(pRepairClaim.CompanyId, pRepairClaim.ClaimNumber,
                                                         "Closed Replacement Claim Found")
             End If
@@ -899,7 +898,7 @@ Public Class ClaimManager
                                pHasSvcCenterChanged, pServiceCenterCode, pClaimBasicUpdateFields)
 
         'Get the CertItemCoverage at this state to include and Coverage change if applicable
-        Dim claimCiC As CertificateItemCoverage = pCert.ItemCoverages.Where(Function(cic) cic.CertItemCoverageId = pRepairClaim.CertItemCoverageId).FirstOrDefault()
+        Dim claimCiC As CertificateItemCoverage = pCert.ItemCoverages.FirstOrDefault(Function (cic) cic.CertItemCoverageId = pRepairClaim.CertItemCoverageId)
 
         repairClaimCi = claimCiC.Item
 
@@ -911,7 +910,7 @@ Public Class ClaimManager
 
         ' Serial Number, Make and Model of the Replaced Device should be stored at the Claim Level and not replaced to the Item level
         Try
-            Me.AddEquipment(claimCiC, pRepairClaim, ClaimEquipmentTypeCodes.Claimed, pSerialNumberReplacedDevice, pSerialNumberReplacedDevice, pMake, pModel)
+            AddEquipment(claimCiC, pRepairClaim, ClaimEquipmentTypeCodes.Claimed, pSerialNumberReplacedDevice, pSerialNumberReplacedDevice, pMake, pModel)
         Catch ex As ManufacturerNotFoundException
             Throw New ManufacturerNotFoundException(Guid.Empty, pMake)
         End Try
@@ -923,9 +922,9 @@ Public Class ClaimManager
             pRepairClaim.AuthorizedAmount = 0D
         Else
 
-            Dim oDealer As Dealer = claimCiC.Certificate.GetDealer(Me.DealerManager)
+            Dim oDealer As Dealer = claimCiC.Certificate.GetDealer(DealerManager)
 
-            methodOfRepairCode = pRepairClaim.MethodOfRepairId.ToCode(Me.CommonManager, ListCodes.MethodOfRepair)
+            methodOfRepairCode = pRepairClaim.MethodOfRepairId.ToCode(CommonManager, ListCodes.MethodOfRepair)
 
             'b.	If any amount is provided by the Claim Portal, System shall assigned the provided amount to the claim authorization amount otherwise
             If pAuthorizedAmount > 0 Then
@@ -933,23 +932,23 @@ Public Class ClaimManager
             Else
                 'For Repairable Claims, if method of repair is 'Replacement' then Auth amount is based on existing behaviour
                 If methodOfRepairCode = MethodofRepairCodes.Replacement Then
-                    pRepairClaim.AuthorizedAmount = Me.GetPriceListByMethodOfRepair(claimCiC, pServiceCenterCode, pServiceLevelCode, methodOfRepairCode, pRepairClaim)
+                    pRepairClaim.AuthorizedAmount = GetPriceListByMethodOfRepair(claimCiC, pServiceCenterCode, pServiceLevelCode, methodOfRepairCode, pRepairClaim)
 
                 Else
                     Dim pCurrencyConversionDate As Date
-                    If Not pRepairClaim.RepairDate Is Nothing Then
+                    If pRepairClaim.RepairDate IsNot Nothing Then
                         pCurrencyConversionDate = pRepairClaim.RepairDate
                     Else
                         pCurrencyConversionDate = DateTime.Today
                     End If
                     Dim effectiveDate As Date
-                    If Not pRepairClaim.RepairDate Is Nothing Then
+                    If pRepairClaim.RepairDate IsNot Nothing Then
                         effectiveDate = pRepairClaim.RepairDate
                     Else
                         effectiveDate = Nothing
                     End If
 
-                    Dim bSvcLevelValid As Boolean = Me.IsServiceLevelValid(pRepairClaim.ServiceCenterId, repairClaimCi.RiskTypeId,
+                    Dim bSvcLevelValid As Boolean = IsServiceLevelValid(pRepairClaim.ServiceCenterId, repairClaimCi.RiskTypeId,
                                                                            effectiveDate, repairClaimCi.Certificate.SalesPrice, pServiceLevelCode)
                     If Not bSvcLevelValid Then
                         Throw New InvalidServiceLevelException(pServiceLevelCode, "Invalid Service Level Code")
@@ -957,7 +956,7 @@ Public Class ClaimManager
 
                     GetServiceClassAndTypeByMor(methodOfRepairCode, serviceClassCode, serviceTypeCode)
 
-                    pRepairClaim.AuthorizedAmount = Me.GetAuthAmountByLaborAndParts(claimCiC,
+                    pRepairClaim.AuthorizedAmount = GetAuthAmountByLaborAndParts(claimCiC,
                                                                                     pCompany.Code,
                                                                                     m_DealerManager.GetDealerById(claimCiC.Certificate.DealerId).DealerCode,
                                                                                     pServiceCenterCode,
@@ -990,11 +989,11 @@ Public Class ClaimManager
         End If
 
         'Save the Repair Claim
-        Me.Save(pRepairClaim)
+        Save(pRepairClaim)
 
     End Sub
 
-    Private Sub GetServiceClassAndTypeByMor(ByVal pMethodofRepairCode As String,
+    Private Sub GetServiceClassAndTypeByMor(pMethodofRepairCode As String,
                                             ByRef pServiceClassCode As String,
                                             ByRef pServiceTypeCode As String)
         Select Case pMethodofRepairCode
@@ -1012,71 +1011,68 @@ Public Class ClaimManager
     End Sub
 
     Private Sub UpdateClaimBasicFields(ByRef pClaim As Claim,
-                                       ByVal pCert As Certificate,
-                                       ByVal pCompany As Company,
-                                       ByVal pHasCoverageChanged As Boolean,
-                                       ByVal pCoverageTypeCode As String,
-                                       ByVal pHasSvcCenterChanged As Boolean,
-                                       ByVal pServiceCenterCode As String,
-                                       ByVal pClaimBasicUpdateFields As IClaimManager.ClaimBasicUpdateFields
+                                       pCert As Certificate,
+                                       pCompany As Company,
+                                       pHasCoverageChanged As Boolean,
+                                       pCoverageTypeCode As String,
+                                       pHasSvcCenterChanged As Boolean,
+                                       pServiceCenterCode As String,
+                                       pClaimBasicUpdateFields As IClaimManager.ClaimBasicUpdateFields
                                        ) Implements IClaimManager.UpdateClaimBasicFields
 
         Dim oCompGroup As CompanyGroup
         Dim oNewSvcCenter As ServiceCenter
         Dim newCertItemCovg As CertificateItemCoverage
 
-        If Not pClaimBasicUpdateFields.RepairDate Is Nothing Then
+        If pClaimBasicUpdateFields.RepairDate IsNot Nothing Then
             pClaim.RepairDate = pClaimBasicUpdateFields.RepairDate
         End If
 
-        If Not pClaimBasicUpdateFields.Specialnstructions Is Nothing AndAlso
+        If pClaimBasicUpdateFields.Specialnstructions IsNot Nothing AndAlso
             pClaimBasicUpdateFields.Specialnstructions <> String.Empty Then
             pClaim.SpecialInstruction = pClaimBasicUpdateFields.Specialnstructions
         End If
 
-        If Not pClaimBasicUpdateFields.AuthNumber Is Nothing AndAlso
+        If pClaimBasicUpdateFields.AuthNumber IsNot Nothing AndAlso
             pClaimBasicUpdateFields.AuthNumber <> String.Empty Then
             pClaim.AuthorizationNumber = pClaimBasicUpdateFields.AuthNumber
         End If
 
-        If Not pClaimBasicUpdateFields.TechnicalReport Is Nothing AndAlso
+        If pClaimBasicUpdateFields.TechnicalReport IsNot Nothing AndAlso
             pClaimBasicUpdateFields.TechnicalReport <> String.Empty Then
             pClaim.TechnicalReport = pClaimBasicUpdateFields.TechnicalReport
         End If
 
-        If Not pClaimBasicUpdateFields.ProblemDescription Is Nothing AndAlso
+        If pClaimBasicUpdateFields.ProblemDescription IsNot Nothing AndAlso
             pClaimBasicUpdateFields.ProblemDescription <> String.Empty Then
             pClaim.ProblemDescription = pClaimBasicUpdateFields.ProblemDescription
         End If
 
 
         'Update the Extended Statuses for the Claim
-        If Not pClaimBasicUpdateFields.ExtendedStatuses Is Nothing Then
-            If (pClaimBasicUpdateFields.ExtendedStatuses.Count > 0) Then
-                For Each es As IClaimManager.ExtendedStatus In pClaimBasicUpdateFields.ExtendedStatuses
-                    InsertClaimExtendedStatus(pCert.GetDealer(Me.DealerManager), es.Code, es.StatusDate, pClaim)
-                Next
-            End If
+        If pClaimBasicUpdateFields.ExtendedStatuses IsNot Nothing AndAlso (pClaimBasicUpdateFields.ExtendedStatuses.Count > 0) Then
+            For Each es As IClaimManager.ExtendedStatus In pClaimBasicUpdateFields.ExtendedStatuses
+                InsertClaimExtendedStatus(pCert.GetDealer(DealerManager), es.Code, es.StatusDate, pClaim)
+            Next
         End If
 
         'Change the Coverage Type if there is a Valid change! Update the Coverage on the Claim with the new CType
-        If pHasCoverageChanged = True Then
+        If pHasCoverageChanged Then
 
             Dim claimCiCId = pClaim.CertItemCoverageId
             Dim claimLossDate = pClaim.LossDate
 
-            newCertItemCovg = pCert.ItemCoverages.Where(Function(cic) cic.CertItemCoverageId <> claimCiCId And
-                                                          cic.CoverageTypeId = pCoverageTypeCode.ToGuid(ListCodes.CoverageType, Me.CommonManager) And
-                                                            claimLossDate > cic.BeginDate And claimLossDate <= cic.EndDate).First()
+            newCertItemCovg = pCert.ItemCoverages.First(Function (cic) cic.CertItemCoverageId <> claimCiCId AndAlso cic.CoverageTypeId = pCoverageTypeCode.ToGuid(ListCodes.CoverageType, CommonManager) And
+                                                                       claimLossDate > cic.BeginDate And claimLossDate <= cic.EndDate)
 
             'The Deductible Amount calculation would use it with the new cert item coverage Id
             pClaim.CertItemCoverageId = newCertItemCovg.CertItemCoverageId
 
             'Also change the Default 'cause of loss' defined for the new given coverage type at the Comp Group level
-            oCompGroup = Me.CompanyGroupManager.GetCompanyGroup(pCompany.CompanyGroupId)
+            oCompGroup = CompanyGroupManager.GetCompanyGroup(pCompany.CompanyGroupId)
             Dim newCauseOfLossId As Guid = Guid.Empty
             If oCompGroup.CoverageLosses.Count > 0 Then
-                newCauseOfLossId = oCompGroup.CoverageLosses.Where(Function(covgL) covgL.CoverageTypeId = newCertItemCovg.CoverageTypeId And covgL.DefaultFlag = "Y").FirstOrDefault().CauseOfLossId
+                newCauseOfLossId = oCompGroup.CoverageLosses.FirstOrDefault(Function (coverageLoss) coverageLoss.CoverageTypeId = newCertItemCovg.CoverageTypeId AndAlso coverageLoss.DefaultFlag = "Y").CauseOfLossId
             End If
             pClaim.CauseOfLossId = newCauseOfLossId
 
@@ -1084,31 +1080,31 @@ Public Class ClaimManager
 
         'Change the Service Center if there is a Valid change!
         If pHasSvcCenterChanged Then
-            oNewSvcCenter = Me.CountryManager.GetServiceCenterByCode(pCompany.BusinessCountryId, pServiceCenterCode)
+            oNewSvcCenter = CountryManager.GetServiceCenterByCode(pCompany.BusinessCountryId, pServiceCenterCode)
             pClaim.ServiceCenterId = oNewSvcCenter.ServiceCenterId
         End If
 
 
     End Sub
 
-    Public Sub UpdateClaimReplacedWithRefubished(ByVal pRepairClaim As Claim,
-                                       ByVal pCert As Certificate,
-                                       ByVal pCompany As Company,
-                                       ByVal pCoverageTypeCode As String,
-                                       ByVal pServiceCenterCode As String,
-                                       ByVal pServiceLevelCode As String,
-                                       ByVal pHasCoverageChanged As Boolean,
-                                       ByVal pHasSvcCenterChanged As Boolean,
-                                       ByVal pIsServiceWarrantyClaim As Boolean,
-                                       ByVal pAuthorizedAmount As Nullable(Of Decimal),
-                                       ByVal pSimCardAmount As Nullable(Of Decimal),
-                                       ByVal pSerialNumberReplacedDevice As String,
-                                       ByVal pModel As String,
-                                       ByVal pManufacturer As String,
-                                       ByVal pUpdateAction As String,
-                                       ByVal pCondition As IClaimManager.DeviceConditionEnum,
-                                       ByVal pLossType As String,
-                                       ByVal pClaimBasicUpdateFields As IClaimManager.ClaimBasicUpdateFields) Implements IClaimManager.UpdateClaimReplacedWithRefubished
+    Public Sub UpdateClaimReplacedWithRefubished(pRepairClaim As Claim,
+                                       pCert As Certificate,
+                                       pCompany As Company,
+                                       pCoverageTypeCode As String,
+                                       pServiceCenterCode As String,
+                                       pServiceLevelCode As String,
+                                       pHasCoverageChanged As Boolean,
+                                       pHasSvcCenterChanged As Boolean,
+                                       pIsServiceWarrantyClaim As Boolean,
+                                       pAuthorizedAmount As Decimal?,
+                                       pSimCardAmount As Decimal?,
+                                       pSerialNumberReplacedDevice As String,
+                                       pModel As String,
+                                       pManufacturer As String,
+                                       pUpdateAction As String,
+                                       pCondition As IClaimManager.DeviceConditionEnum,
+                                       pLossType As String,
+                                       pClaimBasicUpdateFields As IClaimManager.ClaimBasicUpdateFields) Implements IClaimManager.UpdateClaimReplacedWithRefubished
 
         Dim oDealer As Dealer
         Dim methodOfRepairCode As String
@@ -1127,7 +1123,7 @@ Public Class ClaimManager
             repClaimNUmber &= "R"
         End If
 
-        oDealer = pCert.GetDealer(Me.DealerManager)
+        oDealer = pCert.GetDealer(DealerManager)
 
         'Expected Behavior as per DEF-27210
         'When diagnostic Is "Repaired" Or "Denied" Or "Replaced Refurbished" And there Is an existing REPLACEMENT CLAIM; 
@@ -1138,9 +1134,9 @@ Public Class ClaimManager
         'System should mark REPAIR claim as pending And return error message "Closed Replacement Claim found"
 
         Try
-            oReplacementClaim = Me.GetClaim(repClaimNUmber, pRepairClaim.CompanyId)
+            oReplacementClaim = GetClaim(repClaimNUmber, pRepairClaim.CompanyId)
 
-            If (Not oReplacementClaim Is Nothing) Then
+            If (oReplacementClaim IsNot Nothing) Then
                 ''''a.	There is already a replacement claim created for the same repair claim
                 Throw New ReplacementClaimFoundException(pRepairClaim.CompanyId, pRepairClaim.ClaimNumber,
                                                       "Replacement Claim Found")
@@ -1181,7 +1177,7 @@ Public Class ClaimManager
             replaceClaimCiC = pCert.ItemCoverages.Where(Function(cic) cic.CertItemCoverageId = oReplacementClaim.CertItemCoverageId).FirstOrDefault()
 
             ''check for max replacements limit
-            If Me.IsMaxReplacementExceeded(replaceClaimCiC, pRepairClaim, m_DealerManager.GetContract(oDealer.DealerCode, pCert.WarrantySalesDate)) Then
+            If IsMaxReplacementExceeded(replaceClaimCiC, pRepairClaim, m_DealerManager.GetContract(oDealer.DealerCode, pCert.WarrantySalesDate)) Then
                 ''b.	Replacement claim limit has been reached out already (customer already has 2 replacement claims for example);
                 Throw New ReplacementClaimFoundException(pRepairClaim.CompanyId, pRepairClaim.ClaimNumber,
                                                       "Max Replacement Claims Reached")
@@ -1189,7 +1185,7 @@ Public Class ClaimManager
 
             ' Serial Number, Make and Model of the Replaced Device should be stored at the Claim Level and not replaced to the Item level
             Try
-                Me.AddEquipment(replaceClaimCiC, oReplacementClaim, ClaimEquipmentTypeCodes.Claimed,
+                AddEquipment(replaceClaimCiC, oReplacementClaim, ClaimEquipmentTypeCodes.Claimed,
                                pSerialNumberReplacedDevice, pSerialNumberReplacedDevice, pManufacturer, pModel,
                                 CType(pCondition, IClaimManager.DeviceConditionEnum).ToString())
             Catch ex As ManufacturerNotFoundException
@@ -1214,7 +1210,7 @@ Public Class ClaimManager
                     'For a Refurb Device the Auth amount is mandatory and has to be greater than zero
                     oReplacementClaim.AuthorizedAmount = pAuthorizedAmount
                 Else
-                    methodOfRepairCode = oReplacementClaim.MethodOfRepairId.ToCode(Me.CommonManager, ListCodes.MethodOfRepair)
+                    methodOfRepairCode = oReplacementClaim.MethodOfRepairId.ToCode(CommonManager, ListCodes.MethodOfRepair)
 
                     If (oReplacementClaim.ClaimNumber.ToUpper.EndsWith("R")) Then
                         'as the replacement claim is not saved yet, price list will fial if Repl claim number is passed.
@@ -1241,9 +1237,9 @@ Public Class ClaimManager
                     oReplacementClaim.ClaimNumber = repClaimNUmber
                     'Me.GetPriceListByMakeAndModel(replaceClaimCiC, pServiceCenterCode, pServiceLevelCode, methodOfRepairCode, oReplacementClaim)
                     Dim oAuthAmount As Decimal = 0
-                    If (Not oPriceListbyMakeAndModel Is Nothing) Then
+                    If (oPriceListbyMakeAndModel IsNot Nothing) Then
                         '''''if make and model is not found price list falls back on the risk type , priority for risk type=4
-                        If (oPriceListbyMakeAndModel.Where(Function(p) p.Make.ToUpper() = pManufacturer.ToUpper() And p.Model.ToUpper() = pModel.ToUpper()).Count = 0) Then
+                        If (oPriceListbyMakeAndModel.Where(Function(p) p.Make.ToUpper() = pManufacturer.ToUpper() AndAlso p.Model.ToUpper() = pModel.ToUpper()).Count = 0) Then
                             If (oPriceListbyMakeAndModel.Where(Function(p) p.ServiceClassCode = ServiceClassCodes.Replacement AndAlso p.ServiceTypeCode = ServiceTypeCodes.ReplacementPrice).Count = 0) Then
                                 Throw New PriceListNotConfiguredException(Guid.Empty, pServiceCenterCode, "Price List not configured for Make/Model/SC: " & pManufacturer & "/" & pModel & "/" & pServiceCenterCode)
                             End If
@@ -1262,7 +1258,7 @@ Public Class ClaimManager
             End If
 
             'Add sim card amount to the authorized amount for Irreparable and Replace-Refurbished
-            If (pUpdateAction = 7 Or pUpdateAction = 8) Then
+            If (pUpdateAction = 7 OrElse pUpdateAction = 8) Then
                 oReplacementClaim.AuthorizedAmount = oReplacementClaim.AuthorizedAmount + pSimCardAmount
             End If
 
@@ -1284,26 +1280,26 @@ Public Class ClaimManager
             End If
 
             'save the repair claim
-            Me.Save(pRepairClaim)
+            Save(pRepairClaim)
 
             'Save the New Replacement Claim 
-            Me.Save(oReplacementClaim)
+            Save(oReplacementClaim)
 
         End Try
     End Sub
 
-    Private Sub UpdateRepairClaimWhenIrreparable(ByVal pRepairClaim As Claim,
-                                                ByVal pCert As Certificate,
-                                                ByVal oDealer As Dealer,
-                                                ByVal pCompany As Company,
-                                                ByVal pCoverageTypeCode As String,
-                                                ByVal pServiceCenterCode As String,
-                                                ByVal pServiceLevelCode As String,
-                                                ByVal pHasCoverageChanged As Boolean,
-                                                ByVal pHasSvcCenterChanged As Boolean,
-                                                ByVal pIsServiceWarrantyClaim As Boolean,
-                                                ByVal pCondition As IClaimManager.DeviceConditionEnum,
-                                                ByVal pClaimBasicUpdateFields As IClaimManager.ClaimBasicUpdateFields)
+    Private Sub UpdateRepairClaimWhenIrreparable(pRepairClaim As Claim,
+                                                pCert As Certificate,
+                                                oDealer As Dealer,
+                                                pCompany As Company,
+                                                pCoverageTypeCode As String,
+                                                pServiceCenterCode As String,
+                                                pServiceLevelCode As String,
+                                                pHasCoverageChanged As Boolean,
+                                                pHasSvcCenterChanged As Boolean,
+                                                pIsServiceWarrantyClaim As Boolean,
+                                                pCondition As IClaimManager.DeviceConditionEnum,
+                                                pClaimBasicUpdateFields As IClaimManager.ClaimBasicUpdateFields)
 
         Dim repairClaimCi As CertificateItem
         Dim repairClaimCiC As CertificateItemCoverage
@@ -1315,7 +1311,7 @@ Public Class ClaimManager
 
         'Update Repair Claim Fields
         Dim pCurrencyConversionDate As Date
-        If Not pRepairClaim.RepairDate Is Nothing Then
+        If pRepairClaim.RepairDate IsNot Nothing Then
             pCurrencyConversionDate = pRepairClaim.RepairDate
         Else
             pCurrencyConversionDate = DateTime.Today
@@ -1335,13 +1331,13 @@ Public Class ClaimManager
             pRepairClaim.Deductible = 0D
 
             Dim effectiveDate As Date
-            If Not pRepairClaim.RepairDate Is Nothing Then
+            If pRepairClaim.RepairDate IsNot Nothing Then
                 effectiveDate = pRepairClaim.RepairDate
             Else
                 effectiveDate = Nothing
             End If
 
-            Dim bSvcLevelValid As Boolean = Me.IsServiceLevelValid(pRepairClaim.ServiceCenterId, repairClaimCi.RiskTypeId,
+            Dim bSvcLevelValid As Boolean = IsServiceLevelValid(pRepairClaim.ServiceCenterId, repairClaimCi.RiskTypeId,
                                                                    effectiveDate, repairClaimCi.Certificate.SalesPrice, pServiceLevelCode)
             If Not bSvcLevelValid Then
                 Throw New InvalidServiceLevelException(pServiceLevelCode, "Invalid Service Level Code")
@@ -1352,7 +1348,7 @@ Public Class ClaimManager
             'pRepairClaim.AuthorizedAmount = oAuthAmount
 
             'If visit fee is configured in the price list, assign the visit fee otherwise ZERO if no amount is configured
-            pRepairClaim.AuthorizedAmount = Me.GetPriceListByServiceType(repairClaimCiC, pServiceCenterCode, pServiceLevelCode, ServiceClassCodes.Repair, ServiceTypeCodes.EstimatePrice, pRepairClaim, pCurrencyConversionDate)
+            pRepairClaim.AuthorizedAmount = GetPriceListByServiceType(repairClaimCiC, pServiceCenterCode, pServiceLevelCode, ServiceClassCodes.Repair, ServiceTypeCodes.EstimatePrice, pRepairClaim, pCurrencyConversionDate)
             If pRepairClaim.AuthorizedAmount = 0 Then
                 pRepairClaim.StatusCode = ClaimStatusCodes.Closed
                 pRepairClaim.ClaimClosedDate = DateTime.Today
@@ -1498,21 +1494,21 @@ Public Class ClaimManager
 
     'End Sub
 
-    Public Sub UpdateTheftClaim(ByVal pReplacementClaim As Claim,
-                                       ByVal pCert As Certificate,
-                                       ByVal pCompany As Company,
-                                       ByVal pHasSvcCenterChanged As Boolean,
-                                       ByVal pCoverageTypeCode As String,
-                                       ByVal pServiceCenterCode As String,
-                                       ByVal pServiceLevelCode As String,
-                                       ByVal pAuthorizedAmount As Nullable(Of Decimal),
-                                       ByVal pSerialNumberReplacedDevice As String,
-                                       ByVal pModel As String,
-                                       ByVal pManufacturer As String,
-                                       ByVal pCondition As IClaimManager.DeviceConditionEnum,
-                                       ByVal pLossType As String,
-                                       ByVal pSimCardAmount As Nullable(Of Decimal),
-                                       ByVal pClaimBasicUpdateFields As IClaimManager.ClaimBasicUpdateFields) Implements IClaimManager.UpdateTheftClaim
+    Public Sub UpdateTheftClaim(pReplacementClaim As Claim,
+                                       pCert As Certificate,
+                                       pCompany As Company,
+                                       pHasSvcCenterChanged As Boolean,
+                                       pCoverageTypeCode As String,
+                                       pServiceCenterCode As String,
+                                       pServiceLevelCode As String,
+                                       pAuthorizedAmount As Decimal?,
+                                       pSerialNumberReplacedDevice As String,
+                                       pModel As String,
+                                       pManufacturer As String,
+                                       pCondition As IClaimManager.DeviceConditionEnum,
+                                       pLossType As String,
+                                       pSimCardAmount As Decimal?,
+                                       pClaimBasicUpdateFields As IClaimManager.ClaimBasicUpdateFields) Implements IClaimManager.UpdateTheftClaim
 
         Dim oDealer As Dealer
         ' Dim methodOfRepairCode As String
@@ -1520,7 +1516,7 @@ Public Class ClaimManager
         'Dim replaceClaimCi As CertificateItem
         Dim replaceClaimCiC As CertificateItemCoverage
 
-        oDealer = pCert.GetDealer(Me.DealerManager)
+        oDealer = pCert.GetDealer(DealerManager)
 
 
         'Update the Replacement Claim Basic Fields
@@ -1534,7 +1530,7 @@ Public Class ClaimManager
 
 
         ' Serial Number, Make and Model of the Replaced Device should be stored at the Claim Level and not replaced to the Item level
-        Me.AddEquipment(replaceClaimCiC,
+        AddEquipment(replaceClaimCiC,
                             pReplacementClaim,
                             ClaimEquipmentTypeCodes.Claimed,
                             pSerialNumberReplacedDevice,,
@@ -1568,8 +1564,8 @@ Public Class ClaimManager
                 'Me.GetPriceListByMakeAndModel(replaceClaimCiC, pServiceCenterCode, pServiceLevelCode, methodOfRepairCode, oReplacementClaim)
                 Dim oAuthAmount As Decimal = 0
                 '''''if make and model is not found price list falls back on the risk type , priority for risk type=4
-                If (Not oPriceListbyMakeAndModel Is Nothing) Then
-                    If (oPriceListbyMakeAndModel.Where(Function(p) p.Make.ToUpper() = pManufacturer.ToUpper() And p.Model.ToUpper() = pModel.ToUpper()).Count = 0) Then
+                If (oPriceListbyMakeAndModel IsNot Nothing) Then
+                    If (oPriceListbyMakeAndModel.Where(Function(p) p.Make.ToUpper() = pManufacturer.ToUpper() AndAlso p.Model.ToUpper() = pModel.ToUpper()).Count = 0) Then
                         Throw New PriceListNotConfiguredException(Guid.Empty, pServiceCenterCode, "Price List not configured for Make/Model/SC: " & pManufacturer & "/" & pModel & "/" & pServiceCenterCode)
                     End If
                     oAuthAmount = oPriceListbyMakeAndModel.Where(Function(p) p.ServiceClassCode = ServiceClassCodes.Replacement AndAlso
@@ -1597,14 +1593,14 @@ Public Class ClaimManager
             Throw New PriceListNotConfiguredException(Guid.Empty, pServiceCenterCode, "Price List not configured for Make/Model/SC: " & certItemMake & "/" & replaceClaimCiC.Item.Model & "/" & pServiceCenterCode)
         End If
         'Save the Replacement Claim Updates
-        Me.Save(pReplacementClaim)
+        Save(pReplacementClaim)
 
     End Sub
 
-    Public Sub DenyClaim(ByVal pRepairClaim As Claim,
-                         ByVal pCert As Certificate,
-                         ByVal pCompany As Company,
-                         ByVal pClaimBasicUpdateFields As IClaimManager.ClaimBasicUpdateFields) Implements IClaimManager.DenyClaim
+    Public Sub DenyClaim(pRepairClaim As Claim,
+                         pCert As Certificate,
+                         pCompany As Company,
+                         pClaimBasicUpdateFields As IClaimManager.ClaimBasicUpdateFields) Implements IClaimManager.DenyClaim
         'Get the Claim that needs to be updated
 
         Dim oReplacementClaim As Claim
@@ -1628,7 +1624,7 @@ Public Class ClaimManager
                 repClaimNUmber &= "R"
             End If
 
-            oReplacementClaim = Me.GetClaim(repClaimNUmber, pRepairClaim.CompanyId)
+            oReplacementClaim = GetClaim(repClaimNUmber, pRepairClaim.CompanyId)
 
             'If Active Replacement Claim is found then set that Claim as Pending and throw Fault
             'If Pending Replacement Claim is found that means its a Repocessing Case so Deny the Replacement Claim
@@ -1641,21 +1637,21 @@ Public Class ClaimManager
                 'Set the Denial Reason
                 Select Case pClaimBasicUpdateFields.ExtendedStatuses.First.Code
                     Case UpdateActionTypeCodes.NoProblemFound
-                        oReplacementClaim.DeniedReasonId = DeniedReasonCodes.NoProblemFound.ToGuid(ListCodes.DeniedReasonCode, Me.CommonManager)
+                        oReplacementClaim.DeniedReasonId = DeniedReasonCodes.NoProblemFound.ToGuid(ListCodes.DeniedReasonCode, CommonManager)
                     Case UpdateActionTypeCodes.UnderMFW
-                        oReplacementClaim.DeniedReasonId = DeniedReasonCodes.UnderMFGWarranty.ToGuid(ListCodes.DeniedReasonCode, Me.CommonManager)
+                        oReplacementClaim.DeniedReasonId = DeniedReasonCodes.UnderMFGWarranty.ToGuid(ListCodes.DeniedReasonCode, CommonManager)
                 End Select
 
-                Me.Save(oReplacementClaim)
+                Save(oReplacementClaim)
 
                 'Continue with Repair claim update in this scenario
 
             ElseIf oReplacementClaim.StatusCode = ClaimStatusCodes.Active Then
                 'Case b. from above expected Behavior
                 oReplacementClaim.StatusCode = ClaimStatusCodes.Pending
-                Me.Save(oReplacementClaim)
+                Save(oReplacementClaim)
                 pRepairClaim.StatusCode = ClaimStatusCodes.Pending
-                Me.Save(pRepairClaim)
+                Save(pRepairClaim)
 
                 'No Updates to the Repair Claim and send the User a Message Back
                 Throw New ReplacementClaimFoundException(pRepairClaim.CompanyId, pRepairClaim.ClaimNumber,
@@ -1664,7 +1660,7 @@ Public Class ClaimManager
             ElseIf oReplacementClaim.StatusCode = ClaimStatusCodes.Closed Then
                 'Case c. from above expected Behavior
                 pRepairClaim.StatusCode = ClaimStatusCodes.Pending
-                Me.Save(pRepairClaim)
+                Save(pRepairClaim)
                 Throw New ReplacementClaimFoundException(pRepairClaim.CompanyId, pRepairClaim.ClaimNumber,
                                                         "Closed Replacement Claim Found")
             End If
@@ -1685,27 +1681,27 @@ Public Class ClaimManager
         pRepairClaim.StatusCode = ClaimStatusCodes.Denied
 
         'Set the Denial Reason
-        If Not pClaimBasicUpdateFields.ExtendedStatuses Is Nothing Then
+        If pClaimBasicUpdateFields.ExtendedStatuses IsNot Nothing Then
             Select Case pClaimBasicUpdateFields.ExtendedStatuses.First.Code
                 Case UpdateActionTypeCodes.NoProblemFound
-                    pRepairClaim.DeniedReasonId = DeniedReasonCodes.NoProblemFound.ToGuid(ListCodes.DeniedReasonCode, Me.CommonManager)
+                    pRepairClaim.DeniedReasonId = DeniedReasonCodes.NoProblemFound.ToGuid(ListCodes.DeniedReasonCode, CommonManager)
                 Case UpdateActionTypeCodes.UnderMFW
-                    pRepairClaim.DeniedReasonId = DeniedReasonCodes.UnderMFGWarranty.ToGuid(ListCodes.DeniedReasonCode, Me.CommonManager)
+                    pRepairClaim.DeniedReasonId = DeniedReasonCodes.UnderMFGWarranty.ToGuid(ListCodes.DeniedReasonCode, CommonManager)
             End Select
         Else
-            pRepairClaim.DeniedReasonId = DeniedReasonCodes.NoProblemFound.ToGuid(ListCodes.DeniedReasonCode, Me.CommonManager)
+            pRepairClaim.DeniedReasonId = DeniedReasonCodes.NoProblemFound.ToGuid(ListCodes.DeniedReasonCode, CommonManager)
         End If
 
         pRepairClaim.ClaimClosedDate = Date.Today
 
-        Me.Save(pRepairClaim)
+        Save(pRepairClaim)
 
 
     End Sub
 
-    Public Sub DenyClaim(ByVal pClaim As Claim,
-                         ByVal pCert As Certificate,
-                         ByVal pComments As String) Implements IClaimManager.DenyClaim
+    Public Sub DenyClaim(pClaim As Claim,
+                         pCert As Certificate,
+                         pComments As String) Implements IClaimManager.DenyClaim
         'Get the Claim that needs to be updated
 
         pClaim.AuthorizedAmount = 0D
@@ -1713,18 +1709,18 @@ Public Class ClaimManager
         pClaim.StatusCode = ClaimStatusCodes.Denied
         pClaim.ClaimClosedDate = Date.Today
 
-        pClaim.DeniedReasonId = DeniedReasonCodes.CustomerDesistClaim.ToGuid(ListCodes.DeniedReasonCode, Me.CommonManager)
+        pClaim.DeniedReasonId = DeniedReasonCodes.CustomerDesistClaim.ToGuid(ListCodes.DeniedReasonCode, CommonManager)
 
         AddCommentToCertificate(pCert.CertificateId,
                                 pClaim,
                                 pComments)
 
-        Me.Save(pClaim)
+        Save(pClaim)
 
 
     End Sub
 
-    Public Function CreateRepairReplacmentClaim(ByVal pCertificate As Certificate, ByVal pRepairClaim As Claim) As Claim Implements IClaimManager.CreateRepairReplacmentClaim
+    Public Function CreateRepairReplacmentClaim(pCertificate As Certificate, pRepairClaim As Claim) As Claim Implements IClaimManager.CreateRepairReplacmentClaim
 
         '''''create a shell for Replacement claim and copy entire Repair claim information
 
@@ -1734,7 +1730,7 @@ Public Class ClaimManager
         oReplacementClaim = pRepairClaim.Clone
 
 
-        If (pRepairClaim.ClaimNumber.ToUpperInvariant.EndsWith("R") Or pRepairClaim.ClaimNumber.ToUpperInvariant.EndsWith("S")) Then
+        If (pRepairClaim.ClaimNumber.ToUpperInvariant.EndsWith("R") OrElse pRepairClaim.ClaimNumber.ToUpperInvariant.EndsWith("S")) Then
             oClaimNumber = pRepairClaim.ClaimNumber.Substring(0, pRepairClaim.ClaimNumber - 1)
         Else
             oClaimNumber = pRepairClaim.ClaimNumber
@@ -1743,7 +1739,7 @@ Public Class ClaimManager
         oReplacementClaim.ClaimNumber = oClaimNumber + "R"
         oReplacementClaim.MethodOfRepairId = MethodofRepairCodes.Replacement.ToGuid(ListCodes.MethodOfRepair, CommonManager)
 
-        oReplacementClaim.AuthorizedAmount = Me.GetPriceListByMethodOfRepair(pCertificate.ItemCoverages.ElementAt(0),
+        oReplacementClaim.AuthorizedAmount = GetPriceListByMethodOfRepair(pCertificate.ItemCoverages.ElementAt(0),
                                                                              CountryManager.GetServiceCenterById(CompanyManager.GetCompany(pCertificate.CompanyId).CountryId, oReplacementClaim.ServiceCenterId).CODE,
                                                                              String.Empty, MethodofRepairCodes.Replacement, oReplacementClaim)
         oReplacementClaim.StatusCode = ClaimStatusCodes.Active
@@ -1753,14 +1749,14 @@ Public Class ClaimManager
 
     End Function
 
-    Public Function CreateServiceWarrantyClaim(ByVal pCertificate As Certificate, ByVal pRepairClaim As Claim) As Claim Implements IClaimManager.CreateServiceWarrantyClaim
+    Public Function CreateServiceWarrantyClaim(pCertificate As Certificate, pRepairClaim As Claim) As Claim Implements IClaimManager.CreateServiceWarrantyClaim
 
         '''''create a shell for Replacement claim and copy entire Repair claim information
         Dim oClaimNumber As String = String.Empty
         Dim oServiceWarrantyClaim As Claim
         oServiceWarrantyClaim = pRepairClaim.Clone
 
-        If (pRepairClaim.ClaimNumber.ToUpperInvariant.EndsWith("R") Or pRepairClaim.ClaimNumber.ToUpperInvariant.EndsWith("S")) Then
+        If (pRepairClaim.ClaimNumber.ToUpperInvariant.EndsWith("R") OrElse pRepairClaim.ClaimNumber.ToUpperInvariant.EndsWith("S")) Then
             oClaimNumber = pRepairClaim.ClaimNumber.Substring(0, pRepairClaim.ClaimNumber - 1)
         Else
             oClaimNumber = pRepairClaim.ClaimNumber
@@ -1774,14 +1770,14 @@ Public Class ClaimManager
 
     End Function
 
-    Public Function CreateClaim(ByVal pCic As CertificateItemCoverage,
-                                ByVal pClaim As Claim,
-                                ByVal pDealer As Dealer,
-                                ByVal pCoverageTypeCode As String,
-                                ByVal pServiceCenterCode As String,
-                                ByVal pClaimType As Integer,
-                                ByVal pMake As String,
-                                ByVal pModel As String) As Object Implements IClaimManager.CreateClaim
+    Public Function CreateClaim(pCic As CertificateItemCoverage,
+                                pClaim As Claim,
+                                pDealer As Dealer,
+                                pCoverageTypeCode As String,
+                                pServiceCenterCode As String,
+                                pClaimType As Integer,
+                                pMake As String,
+                                pModel As String) As Object Implements IClaimManager.CreateClaim
 
         Dim oClaim As Claim = pClaim
         ''Dim pDealer As Dealer = pCic.Certificate.GetDealer(Me.DealerManager)
@@ -1790,10 +1786,10 @@ Public Class ClaimManager
 
         oClaim.CertItemCoverageId = pCic.CertItemCoverageId
         oClaim.OriginalRiskTypeId = pCic.Item.RiskTypeId
-        oClaim.CompanyId = pDealer.GetCompany(Me.CompanyManager).CompanyId
+        oClaim.CompanyId = pDealer.GetCompany(CompanyManager).CompanyId
         If (pClaimType = 0) Then
-            oClaim.MethodOfRepairId = If(pCic.MethodOfRepairId.Equals(Guid.Empty) Or pCic.MethodOfRepairId Is Nothing, pCic.Certificate.MethodOfRepairId, pCic.MethodOfRepairId)
-            oMethodOfRepairCode = oClaim.MethodOfRepairId.ToCode(Me.CommonManager, ListCodes.MethodOfRepair)
+            oClaim.MethodOfRepairId = If(pCic.MethodOfRepairId.Equals(Guid.Empty) OrElse pCic.MethodOfRepairId Is Nothing, pCic.Certificate.MethodOfRepairId, pCic.MethodOfRepairId)
+            oMethodOfRepairCode = oClaim.MethodOfRepairId.ToCode(CommonManager, ListCodes.MethodOfRepair)
         Else
             oClaim.MethodOfRepairId = MethodofRepairCodes.Replacement.ToGuid(ListCodes.MethodOfRepair, CommonManager)
             oMethodOfRepairCode = MethodofRepairCodes.Replacement
@@ -1803,12 +1799,12 @@ Public Class ClaimManager
         oClaim.WhoPaysId = WhoPaysCodes.Assurant.ToGuid(ListCodes.WhoPaysCode, CommonManager)
         oClaim.MgrAuthAmountFlag = YesNoCodes.No
         oClaim.StatusCode = ClaimStatusCodes.Active
-        oClaim.ClaimAuthTypeId = Me.GetClaimAuthTypeCode(ClaimAuthorizationTypes.Single_Auth)
+        oClaim.ClaimAuthTypeId = GetClaimAuthTypeCode(ClaimAuthorizationTypes.Single_Auth)
 
-        oClaim.ServiceCenterId = Me.CountryManager.GetServiceCenterByCode(pDealer.GetCompany(Me.CompanyManager).BusinessCountryId, pServiceCenterCode).ServiceCenterId
+        oClaim.ServiceCenterId = CountryManager.GetServiceCenterByCode(pDealer.GetCompany(CompanyManager).BusinessCountryId, pServiceCenterCode).ServiceCenterId
 
         ''''check whether the cert item has make and model and if not expect the make and model in the request.
-        If (pCic.Item.ManufacturerId.Equals(Guid.Empty) Or IsNothing(pCic.Item.ManufacturerId)) Then
+        If (pCic.Item.ManufacturerId.Equals(Guid.Empty) OrElse IsNothing(pCic.Item.ManufacturerId)) Then
             ''''validate the make and model if provided in the request
             If (pMake = String.Empty) Then
                 '''''if the cert item has no make and model and also make and model are not provided in the request.
@@ -1854,7 +1850,7 @@ Public Class ClaimManager
             ''''PrePopulate Deductible
             PrePopulateDeductible(pCic, pDealer, oClaim,, ClaimActions.NewClaim, pClaimType)
         End If
-        oClaim.FollowupDate = Date.Now.AddDays(pDealer.GetCompany(Me.CompanyManager).DefaultFollowUpDays)
+        oClaim.FollowupDate = Date.Now.AddDays(pDealer.GetCompany(CompanyManager).DefaultFollowUpDays)
         ''''Calculate Discount Percent
         oClaim = CalculateDiscountPercent(pCic, oClaim, oMethodOfRepairCode)
 
@@ -1869,7 +1865,7 @@ Public Class ClaimManager
         Return oClaim
     End Function
 
-    Private Sub AddRulesAndIssuesToClaim(ByVal pDealer As Dealer, ByVal pCic As CertificateItemCoverage, ByRef pClaim As Claim)
+    Private Sub AddRulesAndIssuesToClaim(pDealer As Dealer, pCic As CertificateItemCoverage, ByRef pClaim As Claim)
 
         ''''Add Rules
         For Each pRule As Rule In pDealer.GetRules()
@@ -1884,7 +1880,7 @@ Public Class ClaimManager
         Next
     End Sub
 
-    Private Sub AddClaimIssueStatus(ByRef pEntityIssue As EntityIssue, ByVal pClaimIssueStatusCode As String)
+    Private Sub AddClaimIssueStatus(ByRef pEntityIssue As EntityIssue, pClaimIssueStatusCode As String)
 
         Dim oComment As String = String.Empty
 
@@ -1901,17 +1897,17 @@ Public Class ClaimManager
 
     End Sub
 
-    Private Sub GetAuthAmountByMORandClaimType(ByVal pClaimType As Integer,
-                                                    ByVal pCic As CertificateItemCoverage,
+    Private Sub GetAuthAmountByMORandClaimType(pClaimType As Integer,
+                                                    pCic As CertificateItemCoverage,
                                                     ByRef pClaim As Claim,
-                                                    ByVal pServiceCentercode As String,
-                                                    ByVal pMethodOfRepairCode As String)
+                                                    pServiceCentercode As String,
+                                                    pMethodOfRepairCode As String)
 
         Dim oAuthAmount As Decimal
 
         If (pClaimType = ClaimTypeCodes.Repair OrElse pClaimType = ClaimTypeCodes.OriginalReplacement) Then
             ''''Authorization amount
-            oAuthAmount = Me.GetPriceListByMethodOfRepair(pCic,
+            oAuthAmount = GetPriceListByMethodOfRepair(pCic,
                                                           pServiceCentercode,
                                                           String.Empty,
                                                           pMethodOfRepairCode,
@@ -1923,11 +1919,11 @@ Public Class ClaimManager
         End If
     End Sub
 
-    Private Sub GetNewClaimNumberByClaimType(ByVal pClaimType As Integer,
-                                                    ByVal pDealer As Dealer,
+    Private Sub GetNewClaimNumberByClaimType(pClaimType As Integer,
+                                                    pDealer As Dealer,
                                                     ByRef pClaim As Claim)
 
-        Dim oClaimNumber As String = m_ClaimRepository.GetNextClaimNumber(pDealer.GetCompany(Me.CompanyManager).CompanyId)
+        Dim oClaimNumber As String = m_ClaimRepository.GetNextClaimNumber(pDealer.GetCompany(CompanyManager).CompanyId)
         pClaim.ClaimNumber = oClaimNumber
         pClaim.MasterClaimNumber = oClaimNumber
 
@@ -1939,15 +1935,15 @@ Public Class ClaimManager
         End If
     End Sub
 
-    Public Function ValidateServiceCenter(ByVal pDealer As Dealer, ByVal pServiceCenterCode As String) As Boolean Implements IClaimManager.ValidateServiceCenter
-        Dim oCompany As Company = pDealer.GetCompany(Me.CompanyManager)
-        If (Me.CountryManager.GetServiceCenterByCode(pDealer.GetCompany(Me.CompanyManager).BusinessCountryId, pServiceCenterCode) Is Nothing) Then
+    Public Function ValidateServiceCenter(pDealer As Dealer, pServiceCenterCode As String) As Boolean Implements IClaimManager.ValidateServiceCenter
+        Dim oCompany As Company = pDealer.GetCompany(CompanyManager)
+        If (CountryManager.GetServiceCenterByCode(pDealer.GetCompany(CompanyManager).BusinessCountryId, pServiceCenterCode) Is Nothing) Then
             Return False
         End If
         Return True
     End Function
 
-    Public Function ValidateManufacturerByCompanyGroup(ByVal pNewMake As String, ByVal pCompanyId As Guid, ByVal pCertItemCoverageId As Guid) As Guid Implements IClaimManager.ValidateManufacturerByCompanyGroup
+    Public Function ValidateManufacturerByCompanyGroup(pNewMake As String, pCompanyId As Guid, pCertItemCoverageId As Guid) As Guid Implements IClaimManager.ValidateManufacturerByCompanyGroup
         Dim oManufacturerId As Guid = m_ClaimRepository.ValidateManufacturerByCompanyGroup(pNewMake,
                                                                                                  pCompanyId,
                                                                                                  pCertItemCoverageId)
@@ -1959,7 +1955,7 @@ Public Class ClaimManager
 
     End Function
 
-    Private Function CalculateDiscountPercent(ByVal pCic As CertificateItemCoverage, ByVal oClaim As Claim, ByVal methodOfRepairCode As String) As Claim
+    Private Function CalculateDiscountPercent(pCic As CertificateItemCoverage, oClaim As Claim, methodOfRepairCode As String) As Claim
         Dim discountPercent As Long = 0
         If (methodOfRepairCode = MethodofRepairCodes.CarryIn OrElse methodOfRepairCode = MethodofRepairCodes.Home) Then
             oClaim.DiscountPercent = pCic.RepairDiscountPCt
@@ -2064,9 +2060,9 @@ Public Class ClaimManager
     '    End Select
     'End Sub
 
-    Private Sub PrePopulateDeductible(ByVal pCic As CertificateItemCoverage,
-                                      ByVal pDealer As Dealer,
-                                      ByVal pClaim As Claim,
+    Private Sub PrePopulateDeductible(pCic As CertificateItemCoverage,
+                                      pDealer As Dealer,
+                                      pClaim As Claim,
                                       Optional ByVal pLossType As String = "",
                                       Optional ByVal pClaimAction As String = "",
                                       Optional ByVal pClaimType As Integer = Nothing,
@@ -2074,7 +2070,7 @@ Public Class ClaimManager
                                       Optional ByVal pModel As String = "",
                                       Optional ByVal pHasCoverageChanged As Boolean = False)
         ''deductible information
-        Dim odeductibleType As DeductibleType = Me.GetDeductible(pCic, pClaim.MethodOfRepairId, pHasCoverageChanged)
+        Dim odeductibleType As DeductibleType = GetDeductible(pCic, pClaim.MethodOfRepairId, pHasCoverageChanged)
 
         Select Case odeductibleType.DeductibleBasedOn.ToUpperInvariant()
             Case DeductibleBasedOnCodes.PercentageOfAuthAmount
@@ -2108,13 +2104,13 @@ Public Class ClaimManager
                 pClaim.DeductibleByPercentId = YesNoCodes.No.ToGuid(ListCodes.YesNo, CommonManager)
                 ''calculate list price deductible
                 Dim listPriceDed As Decimal = 0D
-                listPriceDed = Me.GetListPrice(pCic, pDealer, pClaim)
+                listPriceDed = GetListPrice(pCic, pDealer, pClaim)
                 If (listPriceDed > 0) Then
                     pClaim.Deductible = listPriceDed * odeductibleType.Deductible / 100
                 End If
             Case DeductibleBasedOnCodes.Expression
                 pClaim.DeductibleByPercentId = YesNoCodes.No.ToGuid(ListCodes.YesNo, CommonManager)
-                Dim oClaimSvcCenter As ServiceCenter = Me.CountryManager.GetServiceCenterById(pDealer.GetCompany(m_CompanyManager).BusinessCountryId,
+                Dim oClaimSvcCenter As ServiceCenter = CountryManager.GetServiceCenterById(pDealer.GetCompany(m_CompanyManager).BusinessCountryId,
                                                                                               pClaim.ServiceCenterId)
                 pClaim.DeductiblePercent = Nothing
 
@@ -2129,13 +2125,13 @@ Public Class ClaimManager
                         End If
 
                     Case ClaimActions.Update
-                        Dim listPrice As Nullable(Of Decimal) = Nothing
+                        Dim listPrice As Decimal? = Nothing
                         Dim oCompany As Company = m_CompanyManager.GetCompany(pDealer.CompanyId)
 
                         If odeductibleType.ExpressionId Is Nothing Then
                             Exit Sub
                         Else
-                            pClaim.Deductible = SerializationExtensions.Serialize(Of BaseExpression)(
+                            pClaim.Deductible = Serialize (Of BaseExpression)(
                             CommonManager.GetExpression(odeductibleType.ExpressionId).ExpressionXml).
                             Evaluate(Function(variableName)
                                          Select Case variableName.ToUpperInvariant()
@@ -2143,7 +2139,7 @@ Public Class ClaimManager
                                                  If (listPrice.HasValue) Then
                                                      Return listPrice.Value
                                                  Else
-                                                     listPrice = Me.GetListPrice(pCic, pDealer, pClaim)
+                                                     listPrice = GetListPrice(pCic, pDealer, pClaim)
                                                      If listPrice.HasValue Then
                                                          Return listPrice.Value
                                                      Else
@@ -2178,7 +2174,7 @@ Public Class ClaimManager
                                                                            DateTime.Today,
                                                                            m_CommonManager)
                                                  Dim oDeductible As Decimal = 0
-                                                 If (Not oPriceListbyMakeAndModel Is Nothing) Then
+                                                 If (oPriceListbyMakeAndModel IsNot Nothing) Then
                                                      oDeductible = oPriceListbyMakeAndModel.Where(Function(p) p.ServiceClassCode = ServiceClassCodes.Deductible AndAlso
                                                                 p.ServiceTypeCode = ServiceTypeCodes.DeductibleBasePrice).FirstOrDefault.Price
                                                  End If
@@ -2196,7 +2192,7 @@ Public Class ClaimManager
         End Select
     End Sub
 
-    Public Sub CalculatedeductibleIfByPercentage(ByRef pClaim As Claim, ByVal pDeductibleType As DeductibleType)
+    Public Sub CalculatedeductibleIfByPercentage(ByRef pClaim As Claim, pDeductibleType As DeductibleType)
         Dim authAmount As Decimal = New Decimal(0D)
         authAmount = pClaim.AuthorizedAmount
         'If Me.ClaimAuthorizationType = BusinessObjectsNew.ClaimAuthorizationType.Single Then
@@ -2230,9 +2226,9 @@ Public Class ClaimManager
         'End If
     End Sub
 
-    Private Function AdjustMethodofRepair(ByVal pCic As CertificateItemCoverage, ByVal oClaim As Claim) As Claim
-        If (oClaim.MethodOfRepairId.ToCode(Me.CommonManager, ListCodes.MethodOfRepair) <> MethodofRepairCodes.Recovery) Then
-            Dim coverageTypeCode As String = pCic.CoverageTypeId.ToCode(Me.CommonManager, ListCodes.CoverageType)
+    Private Function AdjustMethodofRepair(pCic As CertificateItemCoverage, oClaim As Claim) As Claim
+        If (oClaim.MethodOfRepairId.ToCode(CommonManager, ListCodes.MethodOfRepair) <> MethodofRepairCodes.Recovery) Then
+            Dim coverageTypeCode As String = pCic.CoverageTypeId.ToCode(CommonManager, ListCodes.CoverageType)
             If (coverageTypeCode = CoverageTypeCodes.TheftLoss OrElse
                 coverageTypeCode = CoverageTypeCodes.Theft OrElse
                 coverageTypeCode = CoverageTypeCodes.Loss) Then
@@ -2244,43 +2240,43 @@ Public Class ClaimManager
         Return oClaim
     End Function
 
-    Private Function CreateEquipmentInfo(ByVal pCic As CertificateItemCoverage, ByVal oClaim As Claim) As Claim
+    Private Function CreateEquipmentInfo(pCic As CertificateItemCoverage, oClaim As Claim) As Claim
         ''''Enrolled vs Claimed equipment
         If (oClaim.ClaimEquipments.Count = 0 AndAlso
-            pCic.Certificate.GetDealer(Me.DealerManager).UseEquipmentId.ToCode(Me.CommonManager, ListCodes.YesNo) = YesNoCodes.Yes AndAlso
+            pCic.Certificate.GetDealer(DealerManager).UseEquipmentId.ToCode(CommonManager, ListCodes.YesNo) = YesNoCodes.Yes AndAlso
             (Not pCic.Item.ManufacturerId.Equals(Guid.Empty) AndAlso Not String.IsNullOrEmpty(pCic.Item.Model))) Then
 
             AddEquipment(pCic, oClaim, ClaimEquipmentTypeCodes.Enrolled)
 
-        ElseIf (pCic.Certificate.GetDealer(Me.DealerManager).UseEquipmentId.ToCode(Me.CommonManager, ListCodes.YesNo) = YesNoCodes.No AndAlso
-        Not pCic.Item Is Nothing AndAlso
-        pCic.Certificate.GetDealer(Me.DealerManager).DealerTypeId.ToCode(Me.CommonManager, ListCodes.DealerType) = DealerTypeCodes.Wepp) Then
+        ElseIf (pCic.Certificate.GetDealer(DealerManager).UseEquipmentId.ToCode(CommonManager, ListCodes.YesNo) = YesNoCodes.No AndAlso
+pCic.Item IsNot Nothing AndAlso
+        pCic.Certificate.GetDealer(DealerManager).DealerTypeId.ToCode(CommonManager, ListCodes.DealerType) = DealerTypeCodes.Wepp) Then
             AddEquipment(pCic, oClaim, ClaimEquipmentTypeCodes.Claimed)
             '.EquipmentId = Me.m_EquipmentManager.GetEquipmentIdByEquipmentList(pCic.Item),'''''implement this
         End If
         Return oClaim
     End Function
 
-    Private Sub AddEquipment(ByVal pCic As CertificateItemCoverage,
-                             ByVal oClaim As Claim,
-                             ByVal oClaimEquipmentTypeCode As String,
+    Private Sub AddEquipment(pCic As CertificateItemCoverage,
+                             oClaim As Claim,
+                             oClaimEquipmentTypeCode As String,
                              Optional ByVal pSerialNumberReplaced As String = Nothing,
                              Optional ByVal pImeiNumberReplaced As String = Nothing,
                              Optional ByVal pManufacturer As String = Nothing,
                              Optional ByVal pModel As String = Nothing,
                              Optional ByVal pDeviceCondition As String = Nothing)
 
-        Dim oequipmentId As Nullable(Of Guid)
-        Dim oManufacturerId As Nullable(Of Guid)
+        Dim oequipmentId As Guid?
+        Dim oManufacturerId As Guid?
         Dim serialNumber As String
         Dim imeiNUmber As String
         Dim model As String
-        Dim oDeviceConditonId As Nullable(Of Guid)
+        Dim oDeviceConditonId As Guid?
 
         If (oClaimEquipmentTypeCode = "C") Then
             oequipmentId = m_EquipmentManager.GetEquipmentIdByEquipmentList(pCic.Item)
         Else
-            If (Not pCic.Item.EquipmentId Is Nothing AndAlso Not pCic.Item.EquipmentId.Equals(Guid.Empty)) Then
+            If (pCic.Item.EquipmentId IsNot Nothing AndAlso Not pCic.Item.EquipmentId.Equals(Guid.Empty)) Then
                 oequipmentId = pCic.Item.EquipmentId
             End If
         End If
@@ -2357,14 +2353,14 @@ Public Class ClaimManager
 
     End Sub
 
-    Private Function LocateClaimActivity(ByVal oClaim As Claim) As Nullable(Of Guid)
+    Private Function LocateClaimActivity(oClaim As Claim) As Guid?
         Dim oMorCode As String = String.Empty
-        Dim oClaimActivityId As Nullable(Of Guid) = Nothing
+        Dim oClaimActivityId As Guid? = Nothing
 
         If (oClaim.MethodOfRepairId.Equals(Guid.Empty)) Then
             Return Nothing
         Else
-            oMorCode = oClaim.MethodOfRepairId.ToCode(Me.CommonManager, ListCodes.MethodOfRepair)
+            oMorCode = oClaim.MethodOfRepairId.ToCode(CommonManager, ListCodes.MethodOfRepair)
         End If
 
         If (oMorCode = MethodofRepairCodes.Replacement) Then
@@ -2376,7 +2372,7 @@ Public Class ClaimManager
         Return oClaimActivityId
     End Function
 
-    Private Sub CheckForRules(ByVal pCic As CertificateItemCoverage, ByRef pClaim As Claim)
+    Private Sub CheckForRules(pCic As CertificateItemCoverage, ByRef pClaim As Claim)
         Dim oComment As Comment = New Comment()
         Dim oDealer As Dealer = pCic.Certificate.GetDealer(DealerManager)
         If pClaim.StatusCode = ClaimStatusCodes.Pending Then
@@ -2396,7 +2392,7 @@ Public Class ClaimManager
 
     End Sub
 
-    Private Sub AddComment(ByVal pCic As CertificateItemCoverage, ByRef pClaim As Claim, ByVal pComment As Comment)
+    Private Sub AddComment(pCic As CertificateItemCoverage, ByRef pClaim As Claim, pComment As Comment)
         If (Not pComment.CommentTypeId.Equals(Guid.Empty)) Then
             pClaim.Comments.Add(New Comment() With {
                             .CommentId = Guid.NewGuid(),
@@ -2411,7 +2407,7 @@ Public Class ClaimManager
         End If
     End Sub
 
-    Private Sub CheckForDenyingRules(ByVal pCic As CertificateItemCoverage, ByRef pClaim As Claim, ByRef pComment As Comment, ByVal pDealer As Dealer)
+    Private Sub CheckForDenyingRules(pCic As CertificateItemCoverage, ByRef pClaim As Claim, ByRef pComment As Comment, pDealer As Dealer)
         'Dim osubscriberStatus As String
         Dim oFlag As Boolean = True
         Dim oClaimReportedWithinGracePeriod As Boolean = True
@@ -2423,30 +2419,30 @@ Public Class ClaimManager
         'If (Not pCic.Certificate.SubscriberStatus.Equals(Guid.Empty) OrElse Not pCic.Certificate.SubscriberStatus Is Nothing) Then
         '    osubscriberStatus = pCic.Certificate.SubscriberStatus.ToCode(CommonManager, ListCodes.SubscriberStatus)
 
-        If (pCic.Certificate.StatusCode = CertificateStatusCodes.Cancelled AndAlso Me.IsGracePeriodSpecified(pDealer)) Then
+        If (pCic.Certificate.StatusCode = CertificateStatusCodes.Cancelled AndAlso IsGracePeriodSpecified(pDealer)) Then
 
             If (Not pClaim.ClaimActivityId.ToCode(CommonManager, ListCodes.ClaimActivityCode) = ClaimActivityCodes.Rework) Then
-                oCoverageTypeNotMissing = Me.IsClaimReportedWithValidCoverage(pCic, pDealer, pClaim)
+                oCoverageTypeNotMissing = IsClaimReportedWithValidCoverage(pCic, pDealer, pClaim)
             End If
 
             If (Not pClaim.ClaimActivityId.ToCode(CommonManager, ListCodes.ClaimActivityCode) = ClaimActivityCodes.Rework) Then
-                oClaimReportedWithinGracePeriod = Me.IsClaimReportedWithinGracePeriod(pCic, pDealer, pClaim)
+                oClaimReportedWithinGracePeriod = IsClaimReportedWithinGracePeriod(pCic, pDealer, pClaim)
             End If
 
             If (oCoverageTypeNotMissing AndAlso oClaimReportedWithinGracePeriod) Then
                 oContract = DealerManager.GetContract(pDealer.DealerCode, pCic.Certificate.WarrantySalesDate)
-                oExceedMaxReplacements = Me.IsMaxReplacementExceeded(pCic, pClaim, oContract)
+                oExceedMaxReplacements = IsMaxReplacementExceeded(pCic, pClaim, oContract)
             End If
         Else '''' 'only check the condition for new claim
             oContract = DealerManager.GetContract(pDealer.DealerCode, pCic.Certificate.WarrantySalesDate)
-            oExceedMaxReplacements = Me.IsMaxReplacementExceeded(pCic, pClaim, oContract)
+            oExceedMaxReplacements = IsMaxReplacementExceeded(pCic, pClaim, oContract)
             If (Not pClaim.ClaimActivityId.ToCode(CommonManager, ListCodes.ClaimActivityCode) = ClaimActivityCodes.Rework) Then
-                oClaimReportedWithinPeriod = Me.IsClaimReportedWithinPeriod(pCic, pDealer, pClaim)
+                oClaimReportedWithinPeriod = IsClaimReportedWithinPeriod(pCic, pDealer, pClaim)
             End If
         End If
 
         'Add comments to indicate that the claim will be closed
-        If (pCic.Certificate.StatusCode = CertificateStatusCodes.Cancelled AndAlso Me.IsGracePeriodSpecified(pDealer)) Then
+        If (pCic.Certificate.StatusCode = CertificateStatusCodes.Cancelled AndAlso IsGracePeriodSpecified(pDealer)) Then
             If Not oCoverageTypeNotMissing Then
                 oFlag = False
                 pClaim.DeniedReasonId = DeniedReasonCodes.CoverageTypeMissing.ToGuid(ListCodes.DeniedReasonCode, CommonManager)
@@ -2469,14 +2465,14 @@ Public Class ClaimManager
                 '    comment.Comments &= Environment.NewLine & TranslationBase.TranslateLabelOrMessage("MSG_CLAIM_DENIED_ISSUE_REJECTED")
 
 
-            ElseIf (Not pCic.CoverageLiabilityLimit Is Nothing AndAlso pCic.CoverageLiabilityLimit.HasValue) Then
+            ElseIf (pCic.CoverageLiabilityLimit IsNot Nothing AndAlso pCic.CoverageLiabilityLimit.HasValue) Then
 
                 If (m_ClaimRepository.GetRemainingCoverageLiabilityLimit(pCic.CertItemCoverageId, pClaim.LossDate) <= 0) Then
                     oFlag = False
                     pClaim.DeniedReasonId = DeniedReasonCodes.MaxCoverageLiabilityLimitReached.ToGuid(ListCodes.DeniedReasonCode, CommonManager)
                     pComment.CommentTypeId = CommentTypeCodes.ClaimDenied.ToGuid(ListCodes.CommentType, CommonManager)
                 End If
-            ElseIf (Not pCic.Certificate.ProdLiabilityLimit Is Nothing AndAlso pCic.Certificate.ProdLiabilityLimit.HasValue) Then
+            ElseIf (pCic.Certificate.ProdLiabilityLimit IsNot Nothing AndAlso pCic.Certificate.ProdLiabilityLimit.HasValue) Then
 
                 If (m_ClaimRepository.GetProductRemainingLiabilityLimit(pCic.Certificate.CertificateId, pClaim.LossDate) <= 0) Then
                     oFlag = False
@@ -2504,7 +2500,7 @@ Public Class ClaimManager
             '    Comment.Comments &= Environment.NewLine & TranslationBase.TranslateLabelOrMessage("MSG_CLAIM_DENIED_ISSUE_REJECTED")
             'End If
 
-            If (Not pCic.CoverageLiabilityLimit Is Nothing AndAlso pCic.CoverageLiabilityLimit.HasValue) Then
+            If (pCic.CoverageLiabilityLimit IsNot Nothing AndAlso pCic.CoverageLiabilityLimit.HasValue) Then
                 If (m_ClaimRepository.GetRemainingCoverageLiabilityLimit(pCic.CertItemCoverageId, pClaim.LossDate) <= 0) Then
                     oFlag = False
                     pClaim.DeniedReasonId = DeniedReasonCodes.MaxCoverageLiabilityLimitReached.ToGuid(ListCodes.DeniedReasonCode, CommonManager)
@@ -2512,7 +2508,7 @@ Public Class ClaimManager
                 End If
             End If
 
-            If (Not pCic.Certificate.ProdLiabilityLimit Is Nothing AndAlso pCic.Certificate.ProdLiabilityLimit.HasValue) Then
+            If (pCic.Certificate.ProdLiabilityLimit IsNot Nothing AndAlso pCic.Certificate.ProdLiabilityLimit.HasValue) Then
                 If (m_ClaimRepository.GetProductRemainingLiabilityLimit(pCic.Certificate.CertificateId, pClaim.LossDate) <= 0) Then
                     oFlag = False
                     pClaim.DeniedReasonId = DeniedReasonCodes.MaxProductLiabilityLimitReached.ToGuid(ListCodes.DeniedReasonCode, CommonManager)
@@ -2529,34 +2525,34 @@ Public Class ClaimManager
 
     End Sub
 
-    Private Sub CheckForPendingRules(ByVal pCic As CertificateItemCoverage, ByVal pClaim As Claim, ByRef pComment As Comment, ByVal pDealer As Dealer)
+    Private Sub CheckForPendingRules(pCic As CertificateItemCoverage, pClaim As Claim, ByRef pComment As Comment, pDealer As Dealer)
         Dim oFlag As Boolean = True
 
-        If (Not Me.IsSubscriberStatusValid(pCic)) Then
+        If (Not IsSubscriberStatusValid(pCic)) Then
             oFlag = False
             pComment.CommentTypeId = CommentTypeCodes.ClaimPendingSubscriberStatusNotValid.ToGuid(ListCodes.CommentType, CommonManager)
         End If
 
         'If Me.Contract.PayOutstandingPremiumId.Equals(LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) AndAlso Me.OutstandingPremiumAmount.Value > 0 Then
         Dim oContract As Contract = DealerManager.GetContract(pDealer.DealerCode, pCic.Certificate.WarrantySalesDate)
-        If (oContract.PAY_OUTSTANDING_PREMIUM_ID.ToCode(CommonManager, ListCodes.YesNo) = YesNoCodes.Yes AndAlso Me.CalculateOutstandingPremiumAmount(pDealer, pCic) > 0) Then
+        If (oContract.PAY_OUTSTANDING_PREMIUM_ID.ToCode(CommonManager, ListCodes.YesNo) = YesNoCodes.Yes AndAlso CalculateOutstandingPremiumAmount(pDealer, pCic) > 0) Then
             oFlag = False
             pComment.CommentTypeId = CommentTypeCodes.PendingPaymentOnOutstandingPremium.ToGuid(ListCodes.CommentType, CommonManager)
         End If
 
         ''''New Equipment Flow starts here
-        If Me.IsEquipmentRequired(pDealer) Then
+        If IsEquipmentRequired(pDealer) Then
             If (Not ValidateAndMatchClaimedEnrolledEquipments(pCic, pDealer, pClaim, pComment)) Then
                 oFlag = False
             End If
         End If
         '''''
-        Dim oDeductibleType As DeductibleType = Me.GetDeductible(pCic, pClaim.MethodOfRepairId, False)
+        Dim oDeductibleType As DeductibleType = GetDeductible(pCic, pClaim.MethodOfRepairId, False)
 
         ' Check if Deductible Calculation Method is List and SKU Price is resolved
         If (oDeductibleType.DeductibleBasedOn = DeductibleBasedOnCodes.PercentageOfListPrice) Then
             Dim listPriceDed As Decimal = 0D
-            listPriceDed = Me.GetListPrice(pCic, pDealer, pClaim)
+            listPriceDed = GetListPrice(pCic, pDealer, pClaim)
             'Me.GetListPrice(pCic.Item.SkuNumber, pDealer, pClaim.ClaimEquipments.FirstOrDefault.Sku, pClaim.LossDate)
             If (listPriceDed <= 0) Then
                 oFlag = False
@@ -2583,23 +2579,23 @@ Public Class ClaimManager
 
     End Sub
 
-    Private Function IsGracePeriodSpecified(ByVal pDealer As Dealer) As Boolean
-        If (Not pDealer.GracePeriodDays Is Nothing OrElse pDealer.GracePeriodMonths Is Nothing) Then
+    Private Function IsGracePeriodSpecified(pDealer As Dealer) As Boolean
+        If (pDealer.GracePeriodDays IsNot Nothing OrElse pDealer.GracePeriodMonths Is Nothing) Then
             Return True
         End If
         Return False
     End Function
 
-    Private Function IsSubscriberStatusValid(ByVal pCic As CertificateItemCoverage) As Boolean
+    Private Function IsSubscriberStatusValid(pCic As CertificateItemCoverage) As Boolean
         Dim osubscriberStatus As String
-        If (Not pCic.Certificate.SubscriberStatus.Equals(Guid.Empty) OrElse Not pCic.Certificate.SubscriberStatus Is Nothing) Then
+        If (Not pCic.Certificate.SubscriberStatus.Equals(Guid.Empty) OrElse pCic.Certificate.SubscriberStatus IsNot Nothing) Then
             osubscriberStatus = pCic.Certificate.SubscriberStatus.ToCode(CommonManager, ListCodes.SubscriberStatus)
             If (osubscriberStatus = SubscriberStatusCodes.Active OrElse osubscriberStatus = SubscriberStatusCodes.PastDueClaimsAllowed) Then
                 Return True
                 ' REQ-1251 Allow Claim if Suspended Reason code is set to Allow Cliams
             ElseIf (osubscriberStatus = SubscriberStatusCodes.Suspended)
-                If (Not pCic.Certificate.SuspendedReasonId.Equals(Guid.Empty) OrElse Not pCic.Certificate.SuspendedReasonId Is Nothing) Then
-                    If (pCic.Certificate.GetDealer(Me.DealerManager).SuspendedReasons.Where(Function(s) s.SuspendedReasonId = pCic.Certificate.SuspendedReasonId).FirstOrDefault.ClaimAllowed = YesNoCodes.Yes) Then
+                If (Not pCic.Certificate.SuspendedReasonId.Equals(Guid.Empty) OrElse pCic.Certificate.SuspendedReasonId IsNot Nothing) Then
+                    If (pCic.Certificate.GetDealer(DealerManager).SuspendedReasons.Where(Function(s) s.SuspendedReasonId = pCic.Certificate.SuspendedReasonId).FirstOrDefault.ClaimAllowed = YesNoCodes.Yes) Then
                         Return True
                     End If
                 End If
@@ -2608,12 +2604,12 @@ Public Class ClaimManager
         Return False
     End Function
 
-    Private Function IsClaimReportedWithValidCoverage(ByVal pCic As CertificateItemCoverage, ByVal pDealer As Dealer, ByVal pClaim As Claim) As Boolean
+    Private Function IsClaimReportedWithValidCoverage(pCic As CertificateItemCoverage, pDealer As Dealer, pClaim As Claim) As Boolean
         If (pDealer.GracePeriodMonths > 0 OrElse pDealer.GracePeriodDays > 0) Then
             Dim oGracePeriodEndDate As Date = pCic.EndDate.AddMonths(pDealer.GracePeriodMonths).AddDays(pDealer.GracePeriodDays)
 
             If (pClaim.LossDate > pCic.EndDate) Then
-                If (pClaim.ReportedDate <= oGracePeriodEndDate Or pClaim.ReportedDate >= oGracePeriodEndDate) Then
+                If (pClaim.ReportedDate <= oGracePeriodEndDate OrElse pClaim.ReportedDate >= oGracePeriodEndDate) Then
                     Return False
                 End If
             End If
@@ -2621,7 +2617,7 @@ Public Class ClaimManager
         Return True
     End Function
 
-    Private Function IsClaimReportedWithinGracePeriod(ByVal pCic As CertificateItemCoverage, ByVal pDealer As Dealer, ByVal pClaim As Claim) As Boolean
+    Private Function IsClaimReportedWithinGracePeriod(pCic As CertificateItemCoverage, pDealer As Dealer, pClaim As Claim) As Boolean
         If (pDealer.GracePeriodMonths > 0 OrElse pDealer.GracePeriodDays > 0) Then
             Dim oGracePeriodEndDate As Date = pCic.EndDate.AddMonths(pDealer.GracePeriodMonths).AddDays(pDealer.GracePeriodDays)
 
@@ -2635,12 +2631,12 @@ Public Class ClaimManager
 
     End Function
 
-    Public Function IsClaimReportedWithinPeriod(pCic As CertificateItemCoverage, ByVal pDealer As Dealer, ByVal pClaim As Claim) As Boolean
+    Public Function IsClaimReportedWithinPeriod(pCic As CertificateItemCoverage, pDealer As Dealer, pClaim As Claim) As Boolean
 
         Dim pContract As Contract = DealerManager.GetContract(pDealer.DealerCode, pCic.Certificate.WarrantySalesDate)
 
-        If Not pContract Is Nothing Then
-            If (Not pContract.DaysToReportClaim Is Nothing) AndAlso (pContract.DaysToReportClaim.Value > 0) Then
+        If pContract IsNot Nothing Then
+            If (pContract.DaysToReportClaim IsNot Nothing) AndAlso (pContract.DaysToReportClaim.Value > 0) Then
                 Dim intDaysReported As Integer = pClaim.ReportedDate.Subtract(pClaim.LossDate).Days
                 If intDaysReported <= pContract.DaysToReportClaim.Value Then
                     Return True
@@ -2652,7 +2648,7 @@ Public Class ClaimManager
         Return False
     End Function
 
-    Private Function IsMaxReplacementExceeded(ByVal pCic As CertificateItemCoverage, ByVal pClaim As Claim, ByVal pContract As Contract) As Boolean
+    Private Function IsMaxReplacementExceeded(pCic As CertificateItemCoverage, pClaim As Claim, pContract As Contract) As Boolean
         ' only valid for repair and replacement claim
         Return m_ClaimRepository.IsMaxReplacementsExceeded(pCic.Certificate.CertificateId, pClaim.MethodOfRepairId, pClaim.LossDate, pContract.ClaimLimitBasedOnId.ToCode(CommonManager, ListCodes.ClaimLimitBasedOn), pCic.Certificate.InsuranceActivationDate)
 
@@ -2686,23 +2682,23 @@ Public Class ClaimManager
 
     End Function
 
-    Private Function IsServiceLevelValid(ByVal pServiceCenterId As Guid,
-                                         ByVal pRiskTypeId As Guid,
-                                         ByVal pEffectiveDate As Date,
-                                         ByVal pSalesPrice As Decimal,
-                                         ByVal pServiceLevel As String) As Boolean
+    Private Function IsServiceLevelValid(pServiceCenterId As Guid,
+                                         pRiskTypeId As Guid,
+                                         pEffectiveDate As Date,
+                                         pSalesPrice As Decimal,
+                                         pServiceLevel As String) As Boolean
         ' only valid for repair and replacement claim
         Return m_ClaimRepository.IsServiceLevelValid(pServiceCenterId, pRiskTypeId, pEffectiveDate, pSalesPrice, pServiceLevel)
 
     End Function
 
-    Private Function GetStartDateOf12MonthWindow(ByVal pStartDate As Date, ByVal pCurrentDate As Date) As Date
+    Private Function GetStartDateOf12MonthWindow(pStartDate As Date, pCurrentDate As Date) As Date
         Dim oTemp As Boolean = False
         If pCurrentDate <= pStartDate Then
             Return pStartDate
         Else
             Do Until (oTemp = True)
-                If pCurrentDate >= pStartDate And pCurrentDate <= pStartDate.AddMonths(12).AddDays(-1) Then
+                If pCurrentDate >= pStartDate AndAlso pCurrentDate <= pStartDate.AddMonths(12).AddDays(-1) Then
                     oTemp = True
                     Exit Do
                 Else
@@ -2713,7 +2709,7 @@ Public Class ClaimManager
         End If
     End Function
 
-    Private Function CalculateOutstandingPremiumAmount(ByVal pDealer As Dealer, ByVal pCic As CertificateItemCoverage) As Decimal
+    Private Function CalculateOutstandingPremiumAmount(pDealer As Dealer, pCic As CertificateItemCoverage) As Decimal
         Dim outAmt As Decimal = 0
         Dim pContract As Contract = DealerManager.GetContract(pDealer.DealerCode, pCic.Certificate.WarrantySalesDate)
         If pContract.PAY_OUTSTANDING_PREMIUM_ID.ToCode(CommonManager, ListCodes.YesNo) = YesNoCodes.Yes Then
@@ -2745,14 +2741,14 @@ Public Class ClaimManager
 
     End Function
 
-    Public Function ValidateAndMatchClaimedEnrolledEquipments(ByVal pCic As CertificateItemCoverage, ByVal pDealer As Dealer, ByVal pClaim As Claim, ByRef pComment As Comment) As Boolean
+    Public Function ValidateAndMatchClaimedEnrolledEquipments(pCic As CertificateItemCoverage, pDealer As Dealer, pClaim As Claim, ByRef pComment As Comment) As Boolean
         Dim retval As Boolean = True '
-        If Me.IsEquipmentRequired(pDealer) Then
+        If IsEquipmentRequired(pDealer) Then
             Dim claimedEquipment As ClaimEquipment = pClaim.ClaimEquipments.Where(Function(ce) ce.ClaimEquipmentTypeId.ToCode(CommonManager, ListCodes.ClaimEquipmentTypeCode) = ClaimEquipmentTypeCodes.Claimed).FirstOrDefault
             Dim enrolledEquipment As ClaimEquipment = pClaim.ClaimEquipments.Where(Function(ce) ce.ClaimEquipmentTypeId.ToCode(CommonManager, ListCodes.ClaimEquipmentTypeCode) = ClaimEquipmentTypeCodes.Enrolled).FirstOrDefault
 
             'Validate Claimed Equipment
-            If Not claimedEquipment Is Nothing AndAlso claimedEquipment.ClaimEquipmentId.Equals(Guid.Empty) Then
+            If claimedEquipment IsNot Nothing AndAlso claimedEquipment.ClaimEquipmentId.Equals(Guid.Empty) Then
                 pComment.CommentTypeId = CommentTypeCodes.ClaimedEquipmentNotConfigured.ToGuid(ListCodes.CommentType, CommonManager)
                 pComment.Comments &= Environment.NewLine & CommonManager.GetLabelTranslations("MSG_CLAIM_PENDING_CLAIMED_EQUIPMENT_NOT_RESOLVED").FirstOrDefault.Translation
 
@@ -2760,7 +2756,7 @@ Public Class ClaimManager
                 Return retval
             Else
                 'Validate Enrolled Equipment
-                If Not enrolledEquipment Is Nothing AndAlso enrolledEquipment.ClaimEquipmentId.Equals(Guid.Empty) Then
+                If enrolledEquipment IsNot Nothing AndAlso enrolledEquipment.ClaimEquipmentId.Equals(Guid.Empty) Then
                     pComment.CommentTypeId = CommentTypeCodes.EnrolledEquipmentNotConfigured.ToGuid(ListCodes.CommentType, CommonManager)
                     pComment.Comments &= Environment.NewLine & CommonManager.GetLabelTranslations("MSG_CLAIM_PENDING_ENROLLED_EQUIPMENT_NOT_RESOLVED").FirstOrDefault.Translation
 
@@ -2784,13 +2780,13 @@ Public Class ClaimManager
 
     End Function
 
-    Private Function IsEquipmentMisMatch(pCic As CertificateItemCoverage, ByVal pDealer As Dealer, ByVal pClaim As Claim) As Boolean
+    Private Function IsEquipmentMisMatch(pCic As CertificateItemCoverage, pDealer As Dealer, pClaim As Claim) As Boolean
         'when a mismatch found function returns true 
         Dim retVal As Boolean = False
         Dim enrolledEquipment As ClaimEquipment = pClaim.ClaimEquipments.Where(Function(ce) ce.ClaimEquipmentTypeId.ToCode(CommonManager, ListCodes.ClaimEquipmentTypeCode) = ClaimEquipmentTypeCodes.Enrolled).FirstOrDefault
         Dim claimedEquipment As ClaimEquipment = pClaim.ClaimEquipments.Where(Function(ce) ce.ClaimEquipmentTypeId.ToCode(CommonManager, ListCodes.ClaimEquipmentTypeCode) = ClaimEquipmentTypeCodes.Claimed).FirstOrDefault
 
-        If Me.IsEquipmentRequired(pDealer) AndAlso Not enrolledEquipment Is Nothing AndAlso enrolledEquipment.EquipmentId.Equals(Guid.Empty) Then
+        If IsEquipmentRequired(pDealer) AndAlso enrolledEquipment IsNot Nothing AndAlso enrolledEquipment.EquipmentId.Equals(Guid.Empty) Then
             If (pDealer.UseEquipmentId.ToCode(CommonManager, ListCodes.YesNo) = YesNoCodes.Yes) Then
                 If Not enrolledEquipment.EquipmentId = claimedEquipment.EquipmentId OrElse
                         Not enrolledEquipment.SerialNumber = claimedEquipment.SerialNumber Then
@@ -2802,9 +2798,9 @@ Public Class ClaimManager
         Return False
     End Function
 
-    Private Function GetDeductible(ByVal pCic As CertificateItemCoverage,
-                                   ByVal pMethodofRepairId As Guid,
-                                   ByVal pHasCoverageChanged As Boolean) As DeductibleType
+    Private Function GetDeductible(pCic As CertificateItemCoverage,
+                                   pMethodofRepairId As Guid,
+                                   pHasCoverageChanged As Boolean) As DeductibleType
         Dim returnValue As New DeductibleType(CommonManager)
         returnValue.DeductibleBasedOnId = DeductibleBasedOnCodes.Fixed.ToGuid(ListCodes.DeductibleBasedOn, CommonManager)
         returnValue.Deductible = 0
@@ -2827,7 +2823,7 @@ Public Class ClaimManager
 
             If (ocertItemCoverageDed Is Nothing) Then
 
-                If (Not pCic Is Nothing) Then
+                If (pCic IsNot Nothing) Then
 
                     returnValue.DeductibleBasedOnId = pCic.DeductibleBasedOnId
 
@@ -2863,7 +2859,7 @@ Public Class ClaimManager
     End Function
 
     Private Function HasIssues(pCic As CertificateItemCoverage, pClaim As Claim) As Boolean
-        Dim oclaim As Claim = Me.GetClaim(pClaim.ClaimNumber.ToUpperInvariant, pCic.Certificate.CompanyId)
+        Dim oclaim As Claim = GetClaim(pClaim.ClaimNumber.ToUpperInvariant, pCic.Certificate.CompanyId)
         For Each ei As EntityIssue In oclaim.EntityIssues
             For Each cis1 As ClaimIssueStatus In ei.ClaimIssueStatuses
                 If (cis1.ClaimIssueStatusCId.ToCode(CommonManager, ListCodes.ClaimIssueStatusCode) = ClaimIssueStatusCodes.Open) Then
@@ -2875,7 +2871,7 @@ Public Class ClaimManager
         Return False
     End Function
 
-    Private Function GetClaimAuthTypeCode(ByVal pAuthType As String) As Nullable(Of Guid)
+    Private Function GetClaimAuthTypeCode(pAuthType As String) As Guid?
         If pAuthType = ClaimAuthorizationTypes.Single_Auth Then
             Return ClaimAuthorizationTypes.Single_Auth.ToGuid(ListCodes.ClaimAuthorizationTypeCode, CommonManager)
         ElseIf pAuthType = ClaimAuthorizationTypes.Multi_Auth
@@ -2884,18 +2880,17 @@ Public Class ClaimManager
 
     End Function
 
-    Private Function GetPriceList(ByVal pCic As CertificateItemCoverage,
-                                      ByVal pServiceCenterCode As String,
-                                  ByVal pServiceLevelCode As String,
-                                  ByVal pServiceClassCode As String,
-                                  ByVal pServiceTypeCode As String,
-                                  ByVal pClaim As Claim,
-                                  ByVal pCurrencyConversionDate As Date) As IEnumerable(Of PriceListDetailRecord)
+    Private Function GetPriceList(pCic As CertificateItemCoverage,
+                                      pServiceCenterCode As String,
+                                  pServiceLevelCode As String,
+                                  pServiceClassCode As String,
+                                  pServiceTypeCode As String,
+                                  pClaim As Claim,
+                                  pCurrencyConversionDate As Date) As IEnumerable(Of PriceListDetailRecord)
 
-        Dim oEquipmentConditionId As Nullable(Of Guid)
-        Dim oEquipmentId As Nullable(Of Guid)
-        Dim oEquipmentClassId As Nullable(Of Guid)
-
+        Dim oEquipmentConditionId As Guid?
+        Dim oEquipmentId As Guid?
+        Dim oEquipmentClassId As Guid?
         GetEquipmentInfoForPriceList(pCic, pClaim, oEquipmentConditionId, oEquipmentId, oEquipmentClassId)
 
         Return m_ClaimRepository.GetPriceList(pCic.Certificate.CompanyId,
@@ -2916,15 +2911,15 @@ Public Class ClaimManager
 
     End Function
 
-    Private Function GetPriceListByMethodOfRepair(ByVal pCic As CertificateItemCoverage,
-                                      ByVal pServiceCenterCode As String,
-                                      ByVal pServiceLevelCode As String,
-                                      ByVal pMethodOfRepairCode As String,
-                                      ByVal pClaim As Claim) As Decimal
+    Private Function GetPriceListByMethodOfRepair(pCic As CertificateItemCoverage,
+                                      pServiceCenterCode As String,
+                                      pServiceLevelCode As String,
+                                      pMethodOfRepairCode As String,
+                                      pClaim As Claim) As Decimal
 
-        Dim oEquipmentConditionId As Nullable(Of Guid)
-        Dim oEquipmentId As Nullable(Of Guid)
-        Dim oEquipmentClassId As Nullable(Of Guid)
+        Dim oEquipmentConditionId As Guid?
+        Dim oEquipmentId As Guid?
+        Dim oEquipmentClassId As Guid?
 
         'Dim oPriceList As IEnumerable(Of PriceListDetailRecord) = GetPriceList(pCic,
         '                                                                       pServiceCenterCode,
@@ -2947,7 +2942,7 @@ Public Class ClaimManager
                                                                                                                 DateTime.Today.AddDays(15))
         Dim pricelist As Decimal = Nothing
 
-        If (Not oPriceList Is Nothing AndAlso oPriceList.Count > 0) Then
+        If (oPriceList IsNot Nothing AndAlso oPriceList.Count > 0) Then
             Select Case pMethodOfRepairCode
                 Case MethodofRepairCodes.Home
                     pricelist = oPriceList.Where(Function(p) p.ServiceClassCode = ServiceClassCodes.Repair AndAlso
@@ -2979,13 +2974,13 @@ Public Class ClaimManager
         Return pricelist
     End Function
 
-    Public Function GetPriceListByServiceType(ByVal pCic As CertificateItemCoverage,
-                                      ByVal pServiceCenterCode As String,
-                                      ByVal pServiceLevelCode As String,
-                                      ByVal pServiceClassCode As String,
-                                      ByVal pServiceTypeCode As String,
-                                      ByVal pClaim As Claim,
-                                      ByVal pCurrencyConversionDate As Date) As Decimal
+    Public Function GetPriceListByServiceType(pCic As CertificateItemCoverage,
+                                      pServiceCenterCode As String,
+                                      pServiceLevelCode As String,
+                                      pServiceClassCode As String,
+                                      pServiceTypeCode As String,
+                                      pClaim As Claim,
+                                      pCurrencyConversionDate As Date) As Decimal
 
         Dim oPriceList As IEnumerable(Of PriceListDetailRecord) = GetPriceList(pCic,
                                                                                pServiceCenterCode,
@@ -2998,7 +2993,7 @@ Public Class ClaimManager
 
         Dim pricelist As Decimal = 0D
 
-        If (Not oPriceList Is Nothing AndAlso oPriceList.Count > 0) Then
+        If (oPriceList IsNot Nothing AndAlso oPriceList.Count > 0) Then
             Select Case pServiceTypeCode
                 Case ServiceTypeCodes.HomePrice
                     pricelist = oPriceList.Where(Function(p) p.ServiceClassCode = ServiceClassCodes.Repair AndAlso
@@ -3041,26 +3036,25 @@ Public Class ClaimManager
         Return pricelist
     End Function
 
-    Private Function GetPriceListByMakeAndModel(ByVal pCic As CertificateItemCoverage,
-                                                ByVal pServiceCenterCode As String,
-                                                ByVal pServiceLevelCode As String,
-                                                ByVal pServiceClassCode As String,
-                                                ByVal pServiceTypeCode As String,
-                                                ByVal pCompanyCode As String,
-                                                ByVal pRiskTypeCode As String,
-                                                ByVal pMake As String,
-                                                ByVal pModel As String,
-                                                ByVal pClaim As Claim,
-                                                ByVal pDealerCode As String,
-                                                ByVal pLowPrice As Nullable(Of Decimal),
-                                                ByVal pHighPrice As Nullable(Of Decimal),
-                                                ByVal pCurrencyConversionDate As Date,
-                                                ByVal pCommonManager As CommonManager) As IEnumerable(Of PriceListDetailRecord)
+    Private Function GetPriceListByMakeAndModel(pCic As CertificateItemCoverage,
+                                                pServiceCenterCode As String,
+                                                pServiceLevelCode As String,
+                                                pServiceClassCode As String,
+                                                pServiceTypeCode As String,
+                                                pCompanyCode As String,
+                                                pRiskTypeCode As String,
+                                                pMake As String,
+                                                pModel As String,
+                                                pClaim As Claim,
+                                                pDealerCode As String,
+                                                pLowPrice As Decimal?,
+                                                pHighPrice As Decimal?,
+                                                pCurrencyConversionDate As Date,
+                                                pCommonManager As CommonManager) As IEnumerable(Of PriceListDetailRecord)
 
-        Dim oEquipmentConditionId As Nullable(Of Guid)
-        Dim oEquipmentId As Nullable(Of Guid)
-        Dim oEquipmentClassId As Nullable(Of Guid)
-
+        Dim oEquipmentConditionId As Guid?
+        Dim oEquipmentId As Guid?
+        Dim oEquipmentClassId As Guid?
         GetEquipmentInfoForPriceList(pCic, pClaim, oEquipmentConditionId, oEquipmentId, oEquipmentClassId)
 
 
@@ -3086,26 +3080,26 @@ Public Class ClaimManager
 
     End Function
 
-    Private Function GetAuthAmountByLaborAndParts(ByVal pCic As CertificateItemCoverage,
-                                                  ByVal pCompanyCode As String,
-                                                  ByVal pDealerCode As String,
-                                                  ByVal pServiceCenterCode As String,
-                                                  ByVal pServiceLevelCode As String,
-                                                  ByVal pServiceClassCode As String,
-                                                  ByVal pServiceTypeCode As String,
-                                                  ByVal pClaim As Claim,
-                                                  ByVal pCurrencyConversionDate As Date,
-                                                  ByVal pRiskTypeCode As String,
-                                                  ByVal pMake As String,
-                                                  ByVal pModel As String,
-                                                  ByVal pLowPrice As Decimal,
-                                                  ByVal pHighPrice As Decimal,
-                                                  ByVal pCommonManger As CommonManager) As Decimal
+    Private Function GetAuthAmountByLaborAndParts(pCic As CertificateItemCoverage,
+                                                  pCompanyCode As String,
+                                                  pDealerCode As String,
+                                                  pServiceCenterCode As String,
+                                                  pServiceLevelCode As String,
+                                                  pServiceClassCode As String,
+                                                  pServiceTypeCode As String,
+                                                  pClaim As Claim,
+                                                  pCurrencyConversionDate As Date,
+                                                  pRiskTypeCode As String,
+                                                  pMake As String,
+                                                  pModel As String,
+                                                  pLowPrice As Decimal,
+                                                  pHighPrice As Decimal,
+                                                  pCommonManger As CommonManager) As Decimal
 
 
         Dim laborAmount As Decimal = 0D
         Dim partsAmount As Decimal = 0D
-        Dim priceListDetailRecord As Nullable(Of PriceListDetailRecord)
+        Dim priceListDetailRecord As PriceListDetailRecord?
 
         Try
 
@@ -3134,12 +3128,12 @@ Public Class ClaimManager
                                                                                                                pCurrencyConversionDate,
                                                                                                                pCommonManger)
 
-            If (Not oPriceList Is Nothing AndAlso oPriceList.Count > 0) Then
+            If (oPriceList IsNot Nothing AndAlso oPriceList.Count > 0) Then
                 '''''Get the Labor amount
                 priceListDetailRecord = oPriceList.Where(Function(p) p.ServiceClassCode = ServiceClassCodes.Repair AndAlso
                                        p.ServiceTypeCode = ServiceTypeCodes.Labor).FirstOrDefault
 
-                If (Not priceListDetailRecord Is Nothing) Then
+                If (priceListDetailRecord IsNot Nothing) Then
                     laborAmount = oPriceList.Where(Function(p) p.ServiceClassCode = ServiceClassCodes.Repair AndAlso
                                        p.ServiceTypeCode = ServiceTypeCodes.Labor).FirstOrDefault.Price
                 End If
@@ -3147,13 +3141,13 @@ Public Class ClaimManager
                 Throw New PriceListNotConfiguredException(Guid.Empty, pServiceCenterCode, "Labor Amount not configured for Service Center: " + pServiceCenterCode)
             End If
 
-            If (Not oPriceListbyMakeAndModel Is Nothing AndAlso oPriceListbyMakeAndModel.Count > 0) Then
+            If (oPriceListbyMakeAndModel IsNot Nothing AndAlso oPriceListbyMakeAndModel.Count > 0) Then
                 '''''Get the Parts amount
                 priceListDetailRecord = Nothing
                 priceListDetailRecord = oPriceListbyMakeAndModel.Where(Function(p) p.ServiceClassCode = ServiceClassCodes.Repair AndAlso
                                        p.ServiceTypeCode = ServiceTypeCodes.Parts).FirstOrDefault
 
-                If (Not priceListDetailRecord Is Nothing) Then
+                If (priceListDetailRecord IsNot Nothing) Then
                     partsAmount = oPriceListbyMakeAndModel.Where(Function(p) p.ServiceClassCode = ServiceClassCodes.Repair AndAlso
                                        p.ServiceTypeCode = ServiceTypeCodes.Parts).FirstOrDefault.Price
                 End If
@@ -3171,7 +3165,7 @@ Public Class ClaimManager
     End Function
 
     Private Sub GetEquipmentInfoForPriceList(pCic As CertificateItemCoverage, pClaim As Claim, ByRef oEquipmentConditionId As Guid?, ByRef oEquipmentId As Guid?, ByRef oEquipmentClassId As Guid?)
-        If (pCic.Certificate.GetDealer(Me.DealerManager).UseEquipmentId.ToCode(Me.CommonManager, ListCodes.YesNo) = YesNoCodes.Yes) Then
+        If (pCic.Certificate.GetDealer(DealerManager).UseEquipmentId.ToCode(CommonManager, ListCodes.YesNo) = YesNoCodes.Yes) Then
 
             oEquipmentConditionId = EquipmentConditionCodes.[New].ToGuid(ListCodes.EquipmentType, CommonManager)
             If (pClaim.ClaimEquipments.Count > 0) Then
@@ -3181,7 +3175,7 @@ Public Class ClaimManager
                 If (pClaim.ClaimEquipments.FirstOrDefault.ClaimEquipmentTypeId.ToCode(CommonManager, ListCodes.ClaimEquipmentTypeCode).Count > 0) Then
                     oEquipmentId = pClaim.ClaimEquipments.ElementAt(1).EquipmentId
                     'pClaim.ClaimEquipments.Where(Function(ce) ce.ClaimEquipmentTypeId.ToCode(CommonManager, ListCodes.ClaimEquipmentTypeCode) = ClaimEquipmentTypeCodes.Claimed).First.EquipmentId
-                    If (Not oEquipmentId Is Nothing) Then
+                    If (oEquipmentId IsNot Nothing) Then
                         oEquipmentClassId = m_EquipmentManager.GetEquipment(pClaim.ClaimEquipments.ElementAt(0).EquipmentId).EquipmentClassId
                     End If
                 End If
@@ -3207,14 +3201,14 @@ Public Class ClaimManager
         ''''End If
     End Sub
 
-    Private Function GetListPrice(ByVal pCic As CertificateItemCoverage, ByVal pDealer As Dealer, ByVal pClaim As Claim) As Decimal
+    Private Function GetListPrice(pCic As CertificateItemCoverage, pDealer As Dealer, pClaim As Claim) As Decimal
         'Private Function GetListPrice(ByVal pSkuNumber As String,
         '                              ByVal pDealer As Dealer,
         '                              ByVal pClaimEquipmentSku As String,
         '                              ByVal pLossDate As Date) As Decimal
         Dim oSku As String = String.Empty
         Dim oPrice As Decimal = 0D
-        If (Me.IsEquipmentRequired(pDealer)) Then
+        If (IsEquipmentRequired(pDealer)) Then
             oSku = pClaim.ClaimEquipments.FirstOrDefault.Sku
         Else
             oSku = pCic.Item.SkuNumber
@@ -3236,7 +3230,7 @@ Public Class ClaimManager
         Return oPrice
     End Function
 
-    Public Sub InsertClaimExtendedStatus(ByVal pDealer As Dealer, ByVal pExtendedStatusCode As String, ByVal pExtendedStatusDate As Date, ByRef pClaim As Claim) Implements IClaimManager.InsertClaimExtendedStatus
+    Public Sub InsertClaimExtendedStatus(pDealer As Dealer, pExtendedStatusCode As String, pExtendedStatusDate As Date, ByRef pClaim As Claim) Implements IClaimManager.InsertClaimExtendedStatus
         Dim oCompanyGroup As CompanyGroup
         oCompanyGroup = CompanyGroupManager.GetCompanyGroup(pDealer.GetCompany(CompanyManager).CompanyGroupId)
 
@@ -3254,11 +3248,11 @@ Public Class ClaimManager
 
     End Sub
 
-    Public Sub AddDefaultExtendedStatus(ByRef pClaim As Claim, ByVal pDealer As Dealer, ByVal Action As String) Implements IClaimManager.AddDefaultExtendedStatus
+    Public Sub AddDefaultExtendedStatus(ByRef pClaim As Claim, pDealer As Dealer, Action As String) Implements IClaimManager.AddDefaultExtendedStatus
 
         ''''Adding default extended status for New Claim
         If (Action = ClaimActions.NewClaim) Then
-            Dim oCompGroup As CompanyGroup = Me.CompanyGroupManager.GetCompanyGroup(pDealer.GetCompany(m_CompanyManager).CompanyGroupId)
+            Dim oCompGroup As CompanyGroup = CompanyGroupManager.GetCompanyGroup(pDealer.GetCompany(m_CompanyManager).CompanyGroupId)
             Try
                 Dim oClaimStatusByGroupId As Guid = oCompGroup.DefaultClaimStatuses.Where(Function(d) d.DefaultTypeId.ToCode(CommonManager, ListCodes.ClaimExtendedStatusDefaultType) = ClaimExtendedStatusDefaultTypeCodes.NewClaim).FirstOrDefault.ClaimStatusByGroupId
                 If (Not oClaimStatusByGroupId.Equals(Guid.Empty)) Then
@@ -3278,29 +3272,29 @@ Public Class ClaimManager
         End If
     End Sub
 
-    Public Function GetListItemIdForCode(ByVal pListItemCode As String, pListCode As String) As Nullable(Of Guid)
+    Public Function GetListItemIdForCode(pListItemCode As String, pListCode As String) As Guid?
         Return pListItemCode.ToGuid(pListCode, CommonManager)
 
     End Function
 
-    Private Function GetClaimsPaidAmountByCertificate(ByVal pCertificateId As Guid) As Decimal Implements IClaimManager.GetClaimsPaidAmountByCertificate
+    Private Function GetClaimsPaidAmountByCertificate(pCertificateId As Guid) As Decimal Implements IClaimManager.GetClaimsPaidAmountByCertificate
         '''''used in GW PIL Service
         Return m_ClaimRepository.GetClaimsPaidAmountByCertificate(pCertificateId)
 
     End Function
 
-    Public Function GetCertificateClaimInfo(pCompanyCode As String, pCertificateNumber As String, ByVal pSerialNumber As String, ByVal pPhoneNumber As String, pUserId As Guid, pLanguageId As Guid, ByRef pErrorCode As String, ByRef pErrorMessage As String) As DataSet Implements IClaimManager.GetCertificateClaimInfo
+    Public Function GetCertificateClaimInfo(pCompanyCode As String, pCertificateNumber As String, pSerialNumber As String, pPhoneNumber As String, pUserId As Guid, pLanguageId As Guid, ByRef pErrorCode As String, ByRef pErrorMessage As String) As DataSet Implements IClaimManager.GetCertificateClaimInfo
         Throw New NotImplementedException()
     End Function
 
     Public Class DeductibleType
         Private oDeductible As Decimal
-        Private oExpressionId As Nullable(Of Guid)
+        Private oExpressionId As Guid?
         Private oDeductibleBasedOn As String
         Private oDeductibleBasedOnId As Guid
         Private ReadOnly m_CommonManager As ICommonManager
 
-        Public Sub New(ByVal pCommonManager As ICommonManager)
+        Public Sub New(pCommonManager As ICommonManager)
             If (pCommonManager Is Nothing) Then
                 Throw New ArgumentNullException("pCommonManager")
             End If
@@ -3318,7 +3312,7 @@ Public Class ClaimManager
             Get
                 Return oDeductible
             End Get
-            Set(ByVal value As Decimal)
+            Set(value As Decimal)
                 oDeductible = value
             End Set
         End Property
@@ -3334,17 +3328,17 @@ Public Class ClaimManager
             Get
                 Return oDeductibleBasedOnId
             End Get
-            Set(ByVal value As Guid)
+            Set(value As Guid)
                 oDeductibleBasedOnId = value
-                oDeductibleBasedOn = Me.DeductibleBasedOnId.ToCode(CommonManager, ListCodes.DeductibleBasedOn)
+                oDeductibleBasedOn = DeductibleBasedOnId.ToCode(CommonManager, ListCodes.DeductibleBasedOn)
             End Set
         End Property
 
-        Public Property ExpressionId As Nullable(Of Guid)
+        Public Property ExpressionId As Guid?
             Get
                 Return oExpressionId
             End Get
-            Set(value As Nullable(Of Guid))
+            Set(value As Guid?)
                 oExpressionId = value
             End Set
         End Property

@@ -28,77 +28,77 @@ Public Class RegionStandardizationDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("region_standardization_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function GetRegionAliasList(ByVal description As String, _
-                                    ByVal regionId As Guid, _
-                                    ByVal countryId As Guid) As DataSet
+    Public Function GetRegionAliasList(description As String, _
+                                    regionId As Guid, _
+                                    countryId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As New DataSet
 
         description = description.ToUpper
-        If (Not (description.Equals(String.Empty))) AndAlso (Me.FormatSearchMask(description)) Then
+        If (Not (description.Equals(String.Empty))) AndAlso (FormatSearchMask(description)) Then
             selectStmt &= Environment.NewLine & "AND UPPER(rgnstand.DESCRIPTION) " & description
         End If
 
         If Not regionId.Equals(Guid.Empty) Then
-            selectStmt &= Environment.NewLine & "AND rgnstand.region_id = '" & Me.GuidToSQLString(regionId) & "'"
+            selectStmt &= Environment.NewLine & "AND rgnstand.region_id = '" & GuidToSQLString(regionId) & "'"
         End If
 
         selectStmt &= Environment.NewLine & "ORDER BY UPPER(rgnstand.DESCRIPTION)"
 
         'Return (DBHelper.Fetch(selectStmt, Me.RISK_TYPE_LIST))
-        Dim param As New DBHelper.DBHelperParameter("country_id", Me.GuidToSQLString(countryId))
+        Dim param As New DBHelper.DBHelperParameter("country_id", GuidToSQLString(countryId))
 
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, _
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, _
                         New DBHelper.DBHelperParameter() {param})
         Return ds
 
     End Function
 
-    Public Function GetRegionAliasList(ByVal description As String, ByVal regionId As Guid, ByVal userCountries As ArrayList) As DataSet
+    Public Function GetRegionAliasList(description As String, regionId As Guid, userCountries As ArrayList) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_USER_COUNTRIES")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_FOR_USER_COUNTRIES")
         Dim inClausecondition As String = ""
-        inClausecondition &= "rgnstand." & MiscUtil.BuildListForSql(Me.COL_NAME_COUNTRY_ID, userCountries, False)
+        inClausecondition &= "rgnstand." & MiscUtil.BuildListForSql(COL_NAME_COUNTRY_ID, userCountries, False)
 
         description = description.ToUpper
-        If (Not (description.Equals(String.Empty))) AndAlso (Me.FormatSearchMask(description)) Then
+        If (Not (description.Equals(String.Empty))) AndAlso (FormatSearchMask(description)) Then
             selectStmt &= Environment.NewLine & "AND UPPER(rgnstand.DESCRIPTION) " & description
         End If
 
         If Not regionId.Equals(Guid.Empty) Then
-            selectStmt &= Environment.NewLine & "AND rgnstand.region_id = '" & Me.GuidToSQLString(regionId) & "'"
+            selectStmt &= Environment.NewLine & "AND rgnstand.region_id = '" & GuidToSQLString(regionId) & "'"
         End If
 
         selectStmt &= Environment.NewLine & "ORDER BY UPPER(c.description), UPPER(rgnstand.description)"
 
         If Not inClausecondition = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -108,9 +108,9 @@ Public Class RegionStandardizationDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

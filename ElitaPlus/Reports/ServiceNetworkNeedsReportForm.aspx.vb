@@ -53,7 +53,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -63,19 +63,19 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
                 ClearErrLabels()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
@@ -83,12 +83,12 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -97,7 +97,7 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moSelectACityLabel)
+            ClearLabelErrSign(moSelectACityLabel)
         End Sub
 #End Region
 #End Region
@@ -105,9 +105,9 @@ Namespace Reports
 #Region "Populate"
 
         Private Sub InitializeForm()
-            Me.OptSelectAllCities.Checked = True
-            Me.rdReportSortOrder.Items(0).Selected = True
-            Me.RadiobuttonTotalsOnly.Checked = True
+            OptSelectAllCities.Checked = True
+            rdReportSortOrder.Items(0).Selected = True
+            RadiobuttonTotalsOnly.Checked = True
         End Sub
 
 #End Region
@@ -115,8 +115,8 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal city As String, ByVal userId As String,
-                               ByVal sortBy As String, ByVal detailCode As String) As ReportCeBaseForm.Params
+        Function SetParameters(city As String, userId As String,
+                               sortBy As String, detailCode As String) As ReportCeBaseForm.Params
             Dim moReportFormat As ReportCeBaseForm.RptFormat
             Dim params As New ReportCeBaseForm.Params
             Dim repParams(TOTALPARAMS) As ReportCeBaseForm.RptParam
@@ -143,7 +143,7 @@ Namespace Reports
                 reportName = RPT_FILENAME_EXPORT
             End If
 
-            Me.rptWindowTitle.InnerText = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            rptWindowTitle.InnerText = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
 
             With params
                 .msRptName = reportName
@@ -157,8 +157,8 @@ Namespace Reports
 
         End Function
 
-        Sub SetReportParams(ByVal rptParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                            ByVal reportName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(rptParams As ReportParams, repParams() As ReportCeBaseForm.RptParam,
+                            reportName As String, startIndex As Integer)
 
             With rptParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_CITY", .City, reportName)
@@ -169,10 +169,10 @@ Namespace Reports
         End Sub
         Private Sub GenerateReport()
             Dim UserId As String = DALBase.GuidToSQLString(ElitaPlusIdentity.Current.ActiveUser.Id)
-            Dim sortBy As String = Me.rdReportSortOrder.SelectedValue
+            Dim sortBy As String = rdReportSortOrder.SelectedValue
             Dim detailCode As String
             Dim moCity As String
-            If Me.OptSelectAllCities.Checked Then
+            If OptSelectAllCities.Checked Then
                 moCity = ALL
             Else
                 If moCityText.Text = "" Then
@@ -183,7 +183,7 @@ Namespace Reports
                 End If
             End If
 
-            If Me.RadiobuttonTotalsOnly.Checked Then
+            If RadiobuttonTotalsOnly.Checked Then
                 detailCode = NO
             Else
                 detailCode = YES

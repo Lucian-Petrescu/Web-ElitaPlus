@@ -40,7 +40,7 @@ Namespace SpecializedServices.Ascn
 #End Region
 
         Private _fulfilmentRuleProvider As IFulfillmentRulesClientProvider
-        Public Sub New(ByVal pfulfilmentRuleProvider As IFulfillmentRulesClientProvider)
+        Public Sub New(pfulfilmentRuleProvider As IFulfillmentRulesClientProvider)
             _fulfilmentRuleProvider = pfulfilmentRuleProvider
         End Sub
 
@@ -55,17 +55,17 @@ Namespace SpecializedServices.Ascn
             Get
                 Return _company_id
             End Get
-            Set(ByVal Value As Guid)
+            Set(Value As Guid)
                 _company_id = Value
             End Set
         End Property
 
         Private Property ClaimBO() As Claim
             Get
-                Return Me._claimBo
+                Return _claimBo
             End Get
-            Set(ByVal value As Claim)
-                Me._claimBo = value
+            Set(value As Claim)
+                _claimBo = value
             End Set
         End Property
 
@@ -85,7 +85,7 @@ Namespace SpecializedServices.Ascn
 #End Region
 
 #Region "Member Methods"
-        Public Function GetServiceCenterClaims(ByVal request As GetServiceCenterClaimsRequest) As GetServiceCenterClaimsResponse Implements ISNMPService.GetServiceCenterClaims
+        Public Function GetServiceCenterClaims(request As GetServiceCenterClaimsRequest) As GetServiceCenterClaimsResponse Implements ISNMPService.GetServiceCenterClaims
             request.Validate("request").HandleFault()
 
             Dim response As New GetServiceCenterClaimsResponse
@@ -540,7 +540,7 @@ Namespace SpecializedServices.Ascn
 
             For i = 0 To _PartsInfoDV.Count - 1
                 Dim objPartInfoId As Guid = New Guid(CType(_PartsInfoDV.Item(i)(PartsInfoDAL.COL_NAME_PARTS_INFO_ID), Byte()))
-                Dim objPartInfo As PartsInfo = Me.ClaimBO.AddPartsInfo(objPartInfoId)
+                Dim objPartInfo As PartsInfo = ClaimBO.AddPartsInfo(objPartInfoId)
                 objPartInfo.Delete()
             Next
         End Sub
@@ -631,7 +631,7 @@ Namespace SpecializedServices.Ascn
 
             Try
                 If request.PartsListInfo IsNot Nothing Then
-                    _PartsInfoDV = PartsInfo.getSelectedList(Me.ClaimBO.Id)
+                    _PartsInfoDV = PartsInfo.getSelectedList(ClaimBO.Id)
                     DeleteExistingParts()
 
                     ''' This section should be enabled back once the BRAND / MODEL standardization is implemented.  This section is tested and worked FINE
@@ -883,7 +883,7 @@ Namespace SpecializedServices.Ascn
                 .TripAmount = clmAuthDetail.TripAmount
                 .OtherExplanation = clmAuthDetail.OtherExplanation
                 .OtherAmount = clmAuthDetail.OtherAmount
-                .Amount = Me.GetAuthDetailTotal(clmAuthDetail)
+                .Amount = GetAuthDetailTotal(clmAuthDetail)
             End With
         End Sub
 

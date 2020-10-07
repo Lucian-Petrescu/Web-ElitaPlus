@@ -32,61 +32,61 @@ Public Class AccountingCloseInfoDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("accounting_close_info_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal cmpId As Guid, ByVal familyDataset As DataSet) As DataSet
+    Public Function LoadList(cmpId As Guid, familyDataset As DataSet) As DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_COMPANY_ID, cmpId.ToByteArray), _
-                                            New OracleParameter(Me.COL_NAME_COMPANY_ID, cmpId.ToByteArray)}
-        DBHelper.Fetch(familyDataset, selectStmt, Me.TABLE_NAME, parameters)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_COMPANY_ID, cmpId.ToByteArray), _
+                                            New OracleParameter(COL_NAME_COMPANY_ID, cmpId.ToByteArray)}
+        DBHelper.Fetch(familyDataset, selectStmt, TABLE_NAME, parameters)
 
     End Function
 
 
-    Public Function GetClosingYears(ByVal companyId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_ALL_THE_CLOSING_YEARS")
+    Public Function GetClosingYears(companyId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_ALL_THE_CLOSING_YEARS")
         Dim parameters(GET_CLOSING_YEARS_TOTAL_PARAM) As DBHelper.DBHelperParameter
 
 
         parameters(COMPANY_ID) = New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, companyId.ToByteArray)
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetClosingYearsByUser(ByVal userId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_ALL_THE_CLOSING_YEARS_BY_USER")
+    Public Function GetClosingYearsByUser(userId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_ALL_THE_CLOSING_YEARS_BY_USER")
         Dim parameters(GET_CLOSING_YEARS_TOTAL_PARAM) As DBHelper.DBHelperParameter
 
         parameters(USER_ID) = New DBHelper.DBHelperParameter(COL_NAME_USER_ID, userId.ToByteArray)
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetAccountingCloseDates(ByVal companyId As Guid, ByVal forThisYear As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_CLOSING_DATES")
+    Public Function GetAccountingCloseDates(companyId As Guid, forThisYear As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_CLOSING_DATES")
         Dim parameters(GET_CLOSING_DATE_TOTAL_PARAM) As DBHelper.DBHelperParameter
         'Pedro
 
@@ -95,30 +95,30 @@ Public Class AccountingCloseInfoDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetLastClosingDate(ByVal companyId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_LAST_CLOSING_DATES")
+    Public Function GetLastClosingDate(companyId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_LAST_CLOSING_DATES")
         Dim parameters(GET_CLOSING_YEARS_TOTAL_PARAM) As DBHelper.DBHelperParameter
 
         parameters(COMPANY_ID) = New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, companyId.ToByteArray)
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetAccountingCloseDate(ByVal companyId As Guid, ByVal forThisDate As Date) As DataRow
-        Dim selectStmt As String = Me.Config("/SQL/GET_CLOSING_DATE")
+    Public Function GetAccountingCloseDate(companyId As Guid, forThisDate As Date) As DataRow
+        Dim selectStmt As String = Config("/SQL/GET_CLOSING_DATE")
         Dim parameters(GET_CLOSING_DATE_TOTAL_PARAM) As DBHelper.DBHelperParameter
 
 
@@ -126,7 +126,7 @@ Public Class AccountingCloseInfoDAL
         parameters(FOR_THIS_DATE) = New DBHelper.DBHelperParameter(COL_NAME_CLOSING_DATE, forThisDate)
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_CLOSING_DATE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_CLOSING_DATE_NAME, parameters)
 
 
             If ds.Tables(TABLE_CLOSING_DATE_NAME).Rows.Count = 0 Then
@@ -140,8 +140,8 @@ Public Class AccountingCloseInfoDAL
         End Try
 
     End Function
-    Public Function GetMinAccountingCloseDate(ByVal companyId As Guid) As DataRow
-        Dim selectStmt As String = Me.Config("/SQL/GET_MIN_CLOSING_DATE")
+    Public Function GetMinAccountingCloseDate(companyId As Guid) As DataRow
+        Dim selectStmt As String = Config("/SQL/GET_MIN_CLOSING_DATE")
         Dim parameters(GET_CLOSING_YEARS_TOTAL_PARAM) As DBHelper.DBHelperParameter
 
 
@@ -149,7 +149,7 @@ Public Class AccountingCloseInfoDAL
         ' parameters(FOR_THIS_DATE) = New DBHelper.DBHelperParameter(COL_NAME_CLOSING_DATE, forThisDate)
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_CLOSING_DATE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_CLOSING_DATE_NAME, parameters)
 
 
             If ds.Tables(TABLE_CLOSING_DATE_NAME).Rows.Count = 0 Then
@@ -164,8 +164,8 @@ Public Class AccountingCloseInfoDAL
 
     End Function
 
-    Public Function GetAllAccountingCloseDates(ByVal companyId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_ALL_CLOSING_DATES")
+    Public Function GetAllAccountingCloseDates(companyId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_ALL_CLOSING_DATES")
         Dim parameters(GET_CLOSING_YEARS_TOTAL_PARAM) As DBHelper.DBHelperParameter
 
 
@@ -173,7 +173,7 @@ Public Class AccountingCloseInfoDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -185,10 +185,10 @@ Public Class AccountingCloseInfoDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If Not ds Is Nothing Then
             'If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

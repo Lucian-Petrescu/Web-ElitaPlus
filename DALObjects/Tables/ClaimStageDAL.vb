@@ -34,27 +34,27 @@ Public Class ClaimStageDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "stage_id", OracleDbType.Raw, id.ToByteArray, ParameterDirection.Input)
 
         Try
-            OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+            OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal StageNameID As Guid, ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal DealerID As Guid, _
-                             ByVal CoverageTypeID As Guid, ByVal ActiveOn As DateType, ByVal Sequence As String, _
-                             ByVal ScreenID As Guid, ByVal PortalID As Guid, ByVal LanguageID As Guid, _
-                             ByVal userCompanies As ArrayList, ByVal userCountries As ArrayList) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(StageNameID As Guid, CompGrpID As Guid, CompanyID As Guid, DealerID As Guid, _
+                             CoverageTypeID As Guid, ActiveOn As DateType, Sequence As String, _
+                             ScreenID As Guid, PortalID As Guid, LanguageID As Guid, _
+                             userCompanies As ArrayList, userCountries As ArrayList) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = "", strTemp As String
         Dim ds As New DataSet
 
@@ -85,10 +85,10 @@ Public Class ClaimStageDAL
 
         If Not ActiveOn = Nothing Then
             whereClauseConditions &= Environment.NewLine & " and trunc(to_date('" & Date.Parse(ActiveOn).ToString("MM/dd/yyyy HH:mm:ss") _
-                          & "', 'mm-dd-yyyy hh24:mi:ss')) BETWEEN trunc(s." & Me.COL_NAME_EFFECTIVE_DATE & ")" & " AND trunc(s." & Me.COL_NAME_EXPIRATION_DATE & ")" & ""
+                          & "', 'mm-dd-yyyy hh24:mi:ss')) BETWEEN trunc(s." & COL_NAME_EFFECTIVE_DATE & ")" & " AND trunc(s." & COL_NAME_EXPIRATION_DATE & ")" & ""
         End If
 
-        If (Not Sequence = Nothing AndAlso (Me.FormatSearchMask(Sequence))) Then
+        If (Not Sequence = Nothing AndAlso (FormatSearchMask(Sequence))) Then
             whereClauseConditions &= Environment.NewLine & "and UPPER(s." & COL_NAME_SEQUENCE & ")" & Sequence
         End If
 
@@ -100,7 +100,7 @@ Public Class ClaimStageDAL
             whereClauseConditions &= Environment.NewLine & " and s." & COL_NAME_PORTAL_ID & " = " & MiscUtil.GetDbStringFromGuid(PortalID, True)
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, LanguageID.ToByteArray, ParameterDirection.Input)
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, LanguageID.ToByteArray, ParameterDirection.Input)
@@ -109,15 +109,15 @@ Public Class ClaimStageDAL
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, LanguageID.ToByteArray, ParameterDirection.Input)
 
         Try
-            Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, ds)
+            Return OracleDbHelper.Fetch(cmd, TABLE_NAME, ds)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
     'LoadEndStatusList(Me.Dataset, StageEndStatusDAL.TABLE_NAME, Me.Id, languageid)
-    Public Sub LoadEndStatusList(ByVal familyDS As DataSet, ByVal tablename As String, ByVal stageid As Guid, ByVal languageid As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_STAGE_END_STATUS_LIST")
+    Public Sub LoadEndStatusList(familyDS As DataSet, tablename As String, stageid As Guid, languageid As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_STAGE_END_STATUS_LIST")
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, languageid.ToByteArray, ParameterDirection.Input)
         OracleDbHelper.AddParameter(cmd, "stage_id", OracleDbType.Raw, stageid.ToByteArray, ParameterDirection.Input)
@@ -130,8 +130,8 @@ Public Class ClaimStageDAL
 
     End Sub
 
-    Function LoadMinEffectiveMaxExpiration(ByVal StageNameId As Guid, ByVal CompanyGroupId As Guid, ByVal CompanyId As Guid, ByVal DealerId As Guid, ByVal ProductCode As String, ByVal CoverageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_MIN_EFFECTIVE_MAX_EXPIRATION")
+    Function LoadMinEffectiveMaxExpiration(StageNameId As Guid, CompanyGroupId As Guid, CompanyId As Guid, DealerId As Guid, ProductCode As String, CoverageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_MIN_EFFECTIVE_MAX_EXPIRATION")
         Dim whereClauseConditions As String = ""
         Dim groupbyClause As String = " Group By "
         Dim applygroupby As Boolean = False
@@ -168,18 +168,18 @@ Public Class ClaimStageDAL
             whereClauseConditions &= groupbyClause
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
 
         Try
-            Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, ds)
+            Return OracleDbHelper.Fetch(cmd, TABLE_NAME, ds)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Function LoadStagesWithSameDefinition(ByVal StageId As Guid, ByVal StageNameId As Guid, ByVal CompanyGroupId As Guid, ByVal CompanyId As Guid, ByVal DealerId As Guid, ByVal ProductCode As String, ByVal CoverageId As Guid, ByVal StartStatusId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_STAGES_WITH_SAME_DEFINATION")
+    Function LoadStagesWithSameDefinition(StageId As Guid, StageNameId As Guid, CompanyGroupId As Guid, CompanyId As Guid, DealerId As Guid, ProductCode As String, CoverageId As Guid, StartStatusId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_STAGES_WITH_SAME_DEFINATION")
         Dim whereClauseConditions As String = ""
         Dim ds As New DataSet
 
@@ -209,11 +209,11 @@ Public Class ClaimStageDAL
             whereClauseConditions &= Environment.NewLine & " and " & COL_NAME_START_STATUS_ID & " = " & MiscUtil.GetDbStringFromGuid(StartStatusId, True)
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
 
         Try
-            Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, ds)
+            Return OracleDbHelper.Fetch(cmd, TABLE_NAME, ds)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -223,8 +223,8 @@ Public Class ClaimStageDAL
 
 #Region "Children Related"
 
-    Public Function GetAvailableStageStartStatusList(ByVal company_group_id As Guid, ByVal language_id As Guid) As DataView
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_AVAILABLE_STAGE_START_STATUS")
+    Public Function GetAvailableStageStartStatusList(company_group_id As Guid, language_id As Guid) As DataView
+        Dim selectStmt As String = Config("/SQL/LOAD_AVAILABLE_STAGE_START_STATUS")
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, language_id.ToByteArray, ParameterDirection.Input)
         OracleDbHelper.AddParameter(cmd, "company_group_id", OracleDbType.Raw, company_group_id.ToByteArray, ParameterDirection.Input)
@@ -243,8 +243,8 @@ Public Class ClaimStageDAL
         End Try
     End Function
 
-    Public Function GetAvailableStageEndStatusList(ByVal company_group_id As Guid, ByVal language_id As Guid) As DataView
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_AVAILABLE_STAGE_END_STATUS")
+    Public Function GetAvailableStageEndStatusList(company_group_id As Guid, language_id As Guid) As DataView
+        Dim selectStmt As String = Config("/SQL/LOAD_AVAILABLE_STAGE_END_STATUS")
 
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, language_id.ToByteArray, ParameterDirection.Input)
@@ -264,8 +264,8 @@ Public Class ClaimStageDAL
         End Try
     End Function
 
-    Public Function GetSelectedStageEndStatusList(ByVal stage_id As Guid, ByVal language_id As Guid) As DataView
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_SELECTED_STAGE_END_STATUS")
+    Public Function GetSelectedStageEndStatusList(stage_id As Guid, language_id As Guid) As DataView
+        Dim selectStmt As String = Config("/SQL/LOAD_SELECTED_STAGE_END_STATUS")
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, language_id.ToByteArray, ParameterDirection.Input)
         OracleDbHelper.AddParameter(cmd, "stage_id", OracleDbType.Raw, stage_id.ToByteArray, ParameterDirection.Input)
@@ -287,25 +287,25 @@ Public Class ClaimStageDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
         If ds Is Nothing Then
             Return
         End If
         If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
             Throw New NotSupportedException()
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter("pi_stage_id", OracleDbType.Raw, sourceColumn:=COL_NAME_STAGE_ID, direction:=ParameterDirection.Input)
         End With
     End Sub
 
-    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter("pi_stage_id", OracleDbType.Raw, sourceColumn:=COL_NAME_STAGE_ID, direction:=ParameterDirection.Input)
             .AddParameter("pi_stage_name_id", OracleDbType.Raw, sourceColumn:=COL_NAME_STAGE_NAME_ID, direction:=ParameterDirection.Input)
@@ -324,7 +324,7 @@ Public Class ClaimStageDAL
         End With
     End Sub
 
-    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter("pi_stage_id", OracleDbType.Raw, sourceColumn:=COL_NAME_STAGE_ID, direction:=ParameterDirection.Input)
             .AddParameter("pi_stage_name_id", OracleDbType.Raw, sourceColumn:=COL_NAME_STAGE_NAME_ID, direction:=ParameterDirection.Input)
@@ -344,7 +344,7 @@ Public Class ClaimStageDAL
     End Sub
 
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim tr As IDbTransaction = Transaction
 
         If tr Is Nothing Then
@@ -357,7 +357,7 @@ Public Class ClaimStageDAL
             _stageEndStatusDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 
             _stageEndStatusDAL.Update(familyDataset.GetChanges(DataRowState.Added), tr, DataRowState.Added Or DataRowState.Modified)
 

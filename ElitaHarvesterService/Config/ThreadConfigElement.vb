@@ -12,7 +12,7 @@ Public MustInherit Class ThreadConfigElement
 
     End Sub
 
-    Public Sub New(ByVal pName As String, ByVal pEnvironment As String)
+    Public Sub New(pName As String, pEnvironment As String)
         Name = pName
         Environment = pEnvironment
     End Sub
@@ -22,7 +22,7 @@ Public MustInherit Class ThreadConfigElement
         Get
             Return DirectCast(Me(PROPERTY_NAME_NAME), String)
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me(PROPERTY_NAME_NAME) = value
         End Set
     End Property
@@ -32,7 +32,7 @@ Public MustInherit Class ThreadConfigElement
         Get
             Return DirectCast(Me(PROPERTY_NAME_ENVIRONMENT), String)
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me(PROPERTY_NAME_ENVIRONMENT) = value
         End Set
     End Property
@@ -42,7 +42,7 @@ Public MustInherit Class ThreadConfigElement
         Get
             Return DirectCast(Me(PROPERTY_NAME_SLEEP_TIME_SECONDS), Integer)
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me(PROPERTY_NAME_SLEEP_TIME_SECONDS) = value
         End Set
     End Property

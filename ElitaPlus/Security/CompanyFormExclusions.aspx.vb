@@ -26,7 +26,7 @@ Namespace Security
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -45,11 +45,11 @@ Namespace Security
                                             Request.ApplicationPath & PATH_TO_ICONS & drv("TAB_ICON_IMG").ToString)
                 newNode.PopulateOnDemand = True
                 newNode.Expanded = False
-                Me.tvFormList.Nodes.Add(newNode)
+                tvFormList.Nodes.Add(newNode)
             Next
         End Sub
 
-        Private Sub populateCompanyPermission(ByVal formNode As SysWebUICtls.TreeNode)
+        Private Sub populateCompanyPermission(formNode As SysWebUICtls.TreeNode)
             Dim dv As DataView = CompanyFormExclusion.GetCompanyPermissionByFormID(New Guid(formNode.Value))
 
             Dim strTabExcluded As String
@@ -66,7 +66,7 @@ Namespace Security
             Next
         End Sub
 
-        Private Sub populateForms(ByVal tabNode As SysWebUICtls.TreeNode)
+        Private Sub populateForms(tabNode As SysWebUICtls.TreeNode)
             Dim dv As DataView = CompanyFormExclusion.GetFormListByTabID(New Guid(tabNode.Value), ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             'tabNode.ChildNodes.Add(New TreeNode(
             Dim drv As DataRowView, i As Integer
@@ -80,7 +80,7 @@ Namespace Security
             Next
         End Sub
 
-        Private Sub tvFormList_TreeNodePopulate(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.TreeNodeEventArgs) Handles tvFormList.TreeNodePopulate
+        Private Sub tvFormList_TreeNodePopulate(sender As Object, e As System.Web.UI.WebControls.TreeNodeEventArgs) Handles tvFormList.TreeNodePopulate
             Try
                 Select Case e.Node.Depth
                     Case 0
@@ -95,21 +95,21 @@ Namespace Security
 #End Region
 
 #Region "Handlers"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
             'Put user code to initialize the page here
-            Me.ErrControllerMaster.Clear_Hide()
+            ErrControllerMaster.Clear_Hide()
 
             'Put user code to initialize the page here
             If Not Page.IsPostBack Then
 
-                Me.SetFormTab(Me.PAGETAB)
-                Me.SetFormTitle(Me.PAGETITLE)
+                SetFormTab(PAGETAB)
+                SetFormTitle(PAGETITLE)
                 populateTabs()
             End If
         End Sub
 
-        Private Sub BtnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSave_WRITE.Click
+        Private Sub BtnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnSave_WRITE.Click
             Try
                 ProcessChanges()
             Catch ex As Exception
@@ -117,7 +117,7 @@ Namespace Security
             End Try
         End Sub
 
-        Private Sub BtnReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnReset.Click
+        Private Sub BtnReset_Click(sender As System.Object, e As System.EventArgs) Handles BtnReset.Click
             tvFormList.Nodes.Clear()
             populateTabs()
         End Sub
@@ -170,7 +170,7 @@ Namespace Security
             ReloadCompanyPermissions(changedNotes)
         End Sub
 
-        Sub ReloadCompanyPermissions(ByVal changedNodes As SysWebUICtls.TreeNodeCollection)
+        Sub ReloadCompanyPermissions(changedNodes As SysWebUICtls.TreeNodeCollection)
             For Each tabNode As SysWebUICtls.TreeNode In tvFormList.Nodes
                 For Each formNode As TreeNode In tabNode.ChildNodes
                     If IsFormPermissionChanged(changedNodes, formNode) Then
@@ -181,7 +181,7 @@ Namespace Security
             Next
         End Sub
 
-        Function IsFormPermissionChanged(ByVal changedNodes As SysWebUICtls.TreeNodeCollection, ByVal formNode As SysWebUICtls.TreeNode) As Boolean
+        Function IsFormPermissionChanged(changedNodes As SysWebUICtls.TreeNodeCollection, formNode As SysWebUICtls.TreeNode) As Boolean
             Dim blnChanged As Boolean = False
             For Each objNode As TreeNode In changedNodes
                 If objNode.Value = formNode.Value Then

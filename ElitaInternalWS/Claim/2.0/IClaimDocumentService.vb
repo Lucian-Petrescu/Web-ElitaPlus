@@ -13,7 +13,7 @@ Namespace Claims
             FaultContract(GetType(ClaimNotFoundFault)), _
             FaultContract(GetType(ValidationFault)), _
             FaultContract(GetType(ImageRepositoryNotFoundFault))> _
-        Function AttachDocument(ByVal request As AttachDocumentRequest) As AttachDocumentResponse
+        Function AttachDocument(request As AttachDocumentRequest) As AttachDocumentResponse
 
         <OperationContract(Name:="DownloadDocument"), _
             ElitaPermission(PermissionCodes.WS_ClaimDocument_Download), _
@@ -23,7 +23,7 @@ Namespace Claims
             FaultContract(GetType(FileTypeNotValidFault)), _
             FaultContract(GetType(ValidationFault)), _
             FaultContract(GetType(ImageRepositoryNotFoundFault))> _
-        Function DownloadDocument(ByVal request As DownloadDocumentRequest) As DownloadDocumentResponse
+        Function DownloadDocument(request As DownloadDocumentRequest) As DownloadDocumentResponse
 
     End Interface
 End Namespace

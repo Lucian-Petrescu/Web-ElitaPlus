@@ -15,7 +15,7 @@ Namespace Claims
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -110,14 +110,14 @@ Namespace Claims
         End Property
         Public Property SortDirection() As String
             Get
-                If Not ViewState("SortDirection") Is Nothing Then
+                If ViewState("SortDirection") IsNot Nothing Then
                     Return ViewState("SortDirection").ToString
                 Else
                     Return String.Empty
                 End If
 
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
@@ -129,8 +129,8 @@ Namespace Claims
             Public ClaimBO As ClaimBase
             Public HasDataChanged As Boolean
 
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal ClaimBO As ClaimBase, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
+            Public Sub New(LastOp As DetailPageCommand, ClaimBO As ClaimBase, hasDataChanged As Boolean)
+                LastOperation = LastOp
                 Me.ClaimBO = ClaimBO
                 Me.HasDataChanged = hasDataChanged
             End Sub
@@ -139,17 +139,17 @@ Namespace Claims
 
 #Region "Page_Events"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.MasterPage.MessageController.Clear_Hide()
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+            MasterPage.MessageController.Clear_Hide()
             Try
-                Me.MasterPage.MessageController.Clear()
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(Claims)
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(CHANGE_COVERAGE)
-                Me.UpdateBreadCrum()
+                MasterPage.MessageController.Clear()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(Claims)
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(CHANGE_COVERAGE)
+                UpdateBreadCrum()
 
-                Dim ClaimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.State.claimId)
-                Me.State.authorizedAmount = CType(ClaimBO.AuthorizedAmount, String)
+                Dim ClaimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.claimId)
+                State.authorizedAmount = CType(ClaimBO.AuthorizedAmount, String)
 
                 moClaimNumberText.Text = ClaimBO.ClaimNumber
                 EnableDisableControls(moClaimNumberText, False)
@@ -157,60 +157,60 @@ Namespace Claims
                 EnableDisableControls(moCertificateText, False)
                 moCertificateText.Text = ClaimBO.CertificateNumber
                 EnableDisableControls(moDealerText, False)
-                Me.EnableDisableButtons()
+                EnableDisableButtons()
                 CheckIfComingFromSaveConfirm()
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     TranslateGridHeader(Grid)
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
 
         End Sub
 
         Private Sub UpdateBreadCrum()
 
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                     TranslationBase.TranslateLabelOrMessage(CHANGE_COVERAGE)
             End If
 
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_OK Then
-                Me.HiddenSaveChangesPromptResponse.Value = ""
-                Me.Back(ElitaPlusPage.DetailPageCommand.Back)
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_OK Then
+                HiddenSaveChangesPromptResponse.Value = ""
+                Back(ElitaPlusPage.DetailPageCommand.Back)
                 'Me.callPage(ClaimForm.URL, Me.State.claimId)
             End If
         End Sub
 
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
+                MenuEnabled = True
+                IsReturningFromChild = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
-                    Me.State.lossDate = CType(CType(CallingPar, ArrayList)(0), Date)
-                    Me.State.claimId = CType(CType(CallingPar, ArrayList)(1), Guid)
-                    Me.State.certId = CType(CType(CallingPar, ArrayList)(2), Guid)
-                    Me.State.certItemCoverageId = CType(CType(CallingPar, ArrayList)(3), Guid)
-                    Me.State.StatusCode = CType(CType(CallingPar, ArrayList)(4), String)
-                    Me.State.InvoiceProcessDate = CType(CType(CallingPar, ArrayList)(5), Date)
+                If CallingParameters IsNot Nothing Then
+                    State.lossDate = CType(CType(CallingPar, ArrayList)(0), Date)
+                    State.claimId = CType(CType(CallingPar, ArrayList)(1), Guid)
+                    State.certId = CType(CType(CallingPar, ArrayList)(2), Guid)
+                    State.certItemCoverageId = CType(CType(CallingPar, ArrayList)(3), Guid)
+                    State.StatusCode = CType(CType(CallingPar, ArrayList)(4), String)
+                    State.InvoiceProcessDate = CType(CType(CallingPar, ArrayList)(5), Date)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -218,38 +218,38 @@ Namespace Claims
 #End Region
 
 #Region "Controlling Logic"
-        Protected Sub cboCauseOfLossId_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+        Protected Sub cboCauseOfLossId_SelectedIndexChanged(sender As Object, e As System.EventArgs)
             Try
                 Dim ddlCauseOfLoss As DropDownList = CType(sender, DropDownList)
                 'Dim cell As TableCell = CType(ddCauseOfLoss.Parent, TableCell)
                 Dim index As Integer = CType(ddlCauseOfLoss.NamingContainer, GridViewRow).RowIndex
                 ' Dim item As DataGridItem = CType(cell.Parent, DataGridItem)
                 Dim content As String = Grid.Rows(index).Cells(0).Text 'item.Cells(0).Text
-                Me.State.causeoflossId = GetSelectedItem(ddlCauseOfLoss)
-                Dim txtType As TextBox = CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_AUTHORIZED_AMOUNT), TextBox)
+                State.causeoflossId = GetSelectedItem(ddlCauseOfLoss)
+                Dim txtType As TextBox = CType(Grid.Rows(index).Cells(GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_AUTHORIZED_AMOUNT), TextBox)
 
                 PopulateAuthorizedAmountFromPGPrices()
 
                 EnableDisableButtons()
 
-                Grid.DataSource = Me.State.searchDV
+                Grid.DataSource = State.searchDV
                 Grid.DataBind()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Sub PopulateAuthorizedAmountFromPGPrices()
             Dim retVal As Boolean
-            Dim ClaimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.State.claimId)
-            ClaimBO.CertItemCoverageId = Me.State.selectedCertItemCoverageId
-            ClaimBO.CauseOfLossId = Me.State.causeoflossId
+            Dim ClaimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.claimId)
+            ClaimBO.CertItemCoverageId = State.selectedCertItemCoverageId
+            ClaimBO.CauseOfLossId = State.causeoflossId
 
             Select Case ClaimBO.ClaimAuthorizationType
                 Case ClaimAuthorizationType.Single
-                    Me.State.claimSpecialServiceId = CType(ClaimBO, Claim).GetSpecialServiceValue()
-                    CType(ClaimBO, Claim).ClaimSpecialServiceId = Me.State.claimSpecialServiceId
+                    State.claimSpecialServiceId = CType(ClaimBO, Claim).GetSpecialServiceValue()
+                    CType(ClaimBO, Claim).ClaimSpecialServiceId = State.claimSpecialServiceId
                     retVal = CType(ClaimBO, Claim).CalculateAuthorizedAmountFromPGPrices()
                 Case ClaimAuthorizationType.Multiple
                     retVal = False
@@ -257,18 +257,18 @@ Namespace Claims
                     Throw New NotImplementedException
             End Select
 
-            Me.State.authorizedAmount = ClaimBO.AuthorizedAmount.ToString
-            Me.State.isSpecialServiceCase = retVal
+            State.authorizedAmount = ClaimBO.AuthorizedAmount.ToString
+            State.isSpecialServiceCase = retVal
 
         End Sub
 
 
-        Sub PopulateCauseOfLossDropDown(ByVal CovTypeId As Guid, ByVal ddl As DropDownList)
+        Sub PopulateCauseOfLossDropDown(CovTypeId As Guid, ddl As DropDownList)
             Try
                 Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
                 'Me.BindListControlToDataView(ddl, LookupListNew.GetCauseOfLossByCoverageTypeLookupList(Authentication.LangId, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, CovTypeId, , True))
 
-                Dim certificateBO As New Certificate(Me.State.certId)
+                Dim certificateBO As New Certificate(State.certId)
 
                ' Me.BindListControlToDataView(ddl, LookupListNew.GetCauseOfLossByCoverageTypeAndSplSvcLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, CovTypeId, certificateBO.DealerId, Authentication.LangId, certificateBO.ProductCode, , False))
                 Dim oListContext As ListContext = New ListContext()
@@ -283,7 +283,7 @@ Namespace Claims
                                                    .AddBlankItem = True
                                                    })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -291,72 +291,72 @@ Namespace Claims
 
             Try
                 Dim blnNewSearch As Boolean = False
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = CertItemCoverage.GetClaimCoverageType(Me.State.certId, Me.State.certItemCoverageId, Me.State.lossDate, Me.State.StatusCode, Me.State.InvoiceProcessDate)
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = CertItemCoverage.GetClaimCoverageType(State.certId, State.certItemCoverageId, State.lossDate, State.StatusCode, State.InvoiceProcessDate)
                     blnNewSearch = True
                 End If
                 ' ''''
-                Me.Grid.AutoGenerateColumns = False
-                Me.State.searchDV.Sort = Me.SortDirection
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedCertItemCoverageId, Me.Grid, Me.State.PageIndex)
+                Grid.AutoGenerateColumns = False
+                State.searchDV.Sort = SortDirection
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedCertItemCoverageId, Grid, State.PageIndex)
                 ' Me.State.PageIndex = Me.Grid.PageIndex
                 'Me.Grid.DataSource = Me.State.searchDV
                 'Me.Grid.AllowSorting = True
                 'Me.Grid.PagerStyle.HorizontalAlign = HorizontalAlign.Center
 
                 'Me.Grid.DataBind()
-                Me.Grid.AutoGenerateColumns = False
+                Grid.AutoGenerateColumns = False
                 ' Me.Grid.Columns(Me.GRID_COL_RISK_TYPE_DESCRIPTION_IDX).SortExpression = CertItemCoverage.CertItemCoverageSearchDV.COL_ISK_TYPE
                 ' Me.Grid.Columns(Me.GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).SortExpression = CertItemCoverage.CertItemCoverageSearchDV.COL_COVERAGE_TYPE
                 SortAndBindGrid(blnNewSearch)
 
-                ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+                ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Private Sub SortAndBindGrid(Optional ByVal blnShowErr As Boolean = True)
 
-            Me.TranslateGridControls(Grid)
+            TranslateGridControls(Grid)
 
-            If (Me.State.searchDV.Count = 0) Then
-                Me.State.searchDV = Nothing
+            If (State.searchDV.Count = 0) Then
+                State.searchDV = Nothing
 
-                Me.Grid.Rows(0).Visible = False
+                Grid.Rows(0).Visible = False
 
-                Me.State.IsGridVisible = False
+                State.IsGridVisible = False
                 If blnShowErr Then
-                    Me.MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
+                    MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
                 End If
             Else
-                Me.Grid.Enabled = True
-                Me.Grid.PageSize = Me.State.PageSize
-                Me.Grid.DataSource = Me.State.searchDV
-                Me.State.IsGridVisible = True
-                HighLightSortColumn(Grid, Me.SortDirection)
-                Me.Grid.DataBind()
+                Grid.Enabled = True
+                Grid.PageSize = State.PageSize
+                Grid.DataSource = State.searchDV
+                State.IsGridVisible = True
+                HighLightSortColumn(Grid, SortDirection)
+                Grid.DataBind()
             End If
 
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
             'ControlMgr.SetVisibleControl(Me, moSearchResults, Me.State.IsGridVisible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.State.searchDV.Count > 0 Then
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If State.searchDV.Count > 0 Then
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             Else
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
 
         End Sub
         Private Sub EnableDisableButtons()
-            If Not Me.State.selectedCertItemCoverageId.Equals(Guid.Empty) Then
+            If Not State.selectedCertItemCoverageId.Equals(Guid.Empty) Then
                 ControlMgr.SetEnableControl(Me, btnChangeCoverage, True)
             Else
                 ControlMgr.SetEnableControl(Me, btnChangeCoverage, False)
@@ -368,7 +368,7 @@ Namespace Claims
 
 #Region " Datagrid Related "
 
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
@@ -379,86 +379,86 @@ Namespace Claims
                 'If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then
                 If e.Row.RowType = DataControlRowType.DataRow Then
                     '''Edit only on the row that was clicked by the user.
-                    If Me.State.isEditMode And Grid.EditIndex = e.Row.RowIndex Then
-                        If (Not e.Row.Cells(Me.GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_AUTHORIZED_AMOUNT) Is Nothing) Then
-                            txt = CType(e.Row.Cells(Me.GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_AUTHORIZED_AMOUNT), TextBox)
+                    If State.isEditMode And Grid.EditIndex = e.Row.RowIndex Then
+                        If (e.Row.Cells(GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_AUTHORIZED_AMOUNT) IsNot Nothing) Then
+                            txt = CType(e.Row.Cells(GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_AUTHORIZED_AMOUNT), TextBox)
                             '''''if claim is of special service then allow the user to edit the authorization amount
-                            If (Me.State.isSpecialServiceCase) Then
+                            If (State.isSpecialServiceCase) Then
                                 txt.Enabled = True
                             Else
                                 txt.Enabled = False
                             End If
-                            txt.Text = Me.State.authorizedAmount
+                            txt.Text = State.authorizedAmount
                         End If
-                        If (Not e.Row.Cells(Me.GRID_COL_CAUSE_OF_LOSS_IDX).FindControl(GRID_CAUSE_OF_LOSS_ID_DDL) Is Nothing) Then
-                            ddl = CType(e.Row.Cells(Me.GRID_COL_CAUSE_OF_LOSS_IDX).FindControl(GRID_CAUSE_OF_LOSS_ID_DDL), DropDownList)
+                        If (e.Row.Cells(GRID_COL_CAUSE_OF_LOSS_IDX).FindControl(GRID_CAUSE_OF_LOSS_ID_DDL) IsNot Nothing) Then
+                            ddl = CType(e.Row.Cells(GRID_COL_CAUSE_OF_LOSS_IDX).FindControl(GRID_CAUSE_OF_LOSS_ID_DDL), DropDownList)
                             Dim dv As DataView = LookupListNew.GetServiceClassList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                             Dim mytext As String = GetGuidStringFromByteArray(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_COVERAGE_TYPE_ID), Byte()))
                             PopulateCauseOfLossDropDown(New Guid(mytext), ddl)
-                            If Not Me.State.causeoflossId.Equals(Guid.Empty) Then Me.SetSelectedItem(ddl, Me.State.causeoflossId)
+                            If Not State.causeoflossId.Equals(Guid.Empty) Then SetSelectedItem(ddl, State.causeoflossId)
                             ddl.Enabled = True
 
                         End If
-                        e.Row.Cells(Me.GRID_COL_RISK_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_RISK_TYPE).ToString()
-                        e.Row.Cells(Me.GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_COVERAGE_TYPE).ToString
-                        e.Row.Cells(Me.GRID_COL_BEGIN_DATE_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date))
-                        e.Row.Cells(Me.GRID_COL_END_DATE_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date))
+                        e.Row.Cells(GRID_COL_RISK_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_RISK_TYPE).ToString()
+                        e.Row.Cells(GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_COVERAGE_TYPE).ToString
+                        e.Row.Cells(GRID_COL_BEGIN_DATE_IDX).Text = GetDateFormattedString(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date))
+                        e.Row.Cells(GRID_COL_END_DATE_IDX).Text = GetDateFormattedString(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date))
 
                     Else
-                        If (Not e.Row.Cells(Me.GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_Label_AUTHORIZATION_AMOUNT) Is Nothing) Then
-                            lbl = CType(e.Row.Cells(Me.GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_Label_AUTHORIZATION_AMOUNT), Label)
-                            lbl.Text = Me.State.authorizedAmount
+                        If (e.Row.Cells(GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_Label_AUTHORIZATION_AMOUNT) IsNot Nothing) Then
+                            lbl = CType(e.Row.Cells(GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_Label_AUTHORIZATION_AMOUNT), Label)
+                            lbl.Text = State.authorizedAmount
                         End If
-                        If (Not e.Row.Cells(Me.GRID_COL_CAUSE_OF_LOSS_IDX).FindControl(GRID_Label_CAUSE_OF_LOSS) Is Nothing) Then
-                            lbl = CType(e.Row.Cells(Me.GRID_COL_CAUSE_OF_LOSS_IDX).FindControl(GRID_Label_CAUSE_OF_LOSS), Label)
+                        If (e.Row.Cells(GRID_COL_CAUSE_OF_LOSS_IDX).FindControl(GRID_Label_CAUSE_OF_LOSS) IsNot Nothing) Then
+                            lbl = CType(e.Row.Cells(GRID_COL_CAUSE_OF_LOSS_IDX).FindControl(GRID_Label_CAUSE_OF_LOSS), Label)
                         End If
-                        e.Row.Cells(Me.GRID_COL_RISK_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_RISK_TYPE).ToString()
-                        e.Row.Cells(Me.GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_COVERAGE_TYPE).ToString
-                        e.Row.Cells(Me.GRID_COL_BEGIN_DATE_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date))
-                        e.Row.Cells(Me.GRID_COL_END_DATE_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date))
+                        e.Row.Cells(GRID_COL_RISK_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_RISK_TYPE).ToString()
+                        e.Row.Cells(GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_COVERAGE_TYPE).ToString
+                        e.Row.Cells(GRID_COL_BEGIN_DATE_IDX).Text = GetDateFormattedString(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date))
+                        e.Row.Cells(GRID_COL_END_DATE_IDX).Text = GetDateFormattedString(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date))
                     End If
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+        Public Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
             Try
                 Dim nIndex As Integer
 
                 If e.CommandName = "SelectRecord" Then
                     nIndex = CInt(e.CommandArgument)
-                    Me.State.isEditMode = True
+                    State.isEditMode = True
                     Grid.EditIndex = nIndex
-                    Me.State.idx = nIndex
-                    Me.State.selectedCertItemCoverageId = New Guid(CType(Grid.Rows(nIndex).Cells(Me.GRID_COL_CERT_ITEM_COVERAGE_IDX).FindControl("moCertItemCoverageId"), Label).Text)
+                    State.idx = nIndex
+                    State.selectedCertItemCoverageId = New Guid(CType(Grid.Rows(nIndex).Cells(GRID_COL_CERT_ITEM_COVERAGE_IDX).FindControl("moCertItemCoverageId"), Label).Text)
 
                     EnableDisableButtons()
 
-                    Grid.DataSource = Me.State.searchDV
+                    Grid.DataSource = State.searchDV
                     Grid.DataBind()
                 ElseIf e.CommandName = "Sort" Then
                     Grid.DataMember = e.CommandArgument.ToString
-                    Me.PopulateGrid()
+                    PopulateGrid()
 
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
-                Me.State.PageIndex = e.NewPageIndex
-                Grid.PageIndex = Me.State.PageIndex
-                Me.State.selectedCertItemCoverageId = Guid.Empty
-                Me.PopulateGrid()
+                State.PageIndex = e.NewPageIndex
+                Grid.PageIndex = State.PageIndex
+                State.selectedCertItemCoverageId = Guid.Empty
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -466,42 +466,42 @@ Namespace Claims
 
 #Region "Button Clicks"
 
-        Private Sub btnChangeCoverage_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnChangeCoverage.Click
+        Private Sub btnChangeCoverage_Click(sender As Object, e As System.EventArgs) Handles btnChangeCoverage.Click
             Dim AuthAmtText As String
             Dim AssurantPaysAmt As New DecimalType(0)
             Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), Codes.YESNO_Y)
             Dim AssurantPaysId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
             Dim oClaimDal As ClaimDAL
             Try
-                If (Not Me.State.claimId.Equals(Guid.Empty)) AndAlso (Not Me.State.selectedCertItemCoverageId.Equals(Guid.Empty)) Then
+                If (Not State.claimId.Equals(Guid.Empty)) AndAlso (Not State.selectedCertItemCoverageId.Equals(Guid.Empty)) Then
                     'Me.State.searchDV = CertItemCoverage.GetClaimCoverageType(Me.State.certId, Me.State.certItemCoverageId, Me.State.lossDate, Me.State.StatusCode, Me.State.InvoiceProcessDate)
 
-                    If (Me.State.searchDV.Count > 0) Then
-                        Dim ClaimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.State.claimId)
-                        Me.BindBOPropertyToGridHeader(ClaimBO, Me.CAUSE_OF_LOSS_ID_PROPERTY, Me.Grid.Columns(Me.GRID_COL_CAUSE_OF_LOSS_IDX))
+                    If (State.searchDV.Count > 0) Then
+                        Dim ClaimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.claimId)
+                        BindBOPropertyToGridHeader(ClaimBO, CAUSE_OF_LOSS_ID_PROPERTY, Grid.Columns(GRID_COL_CAUSE_OF_LOSS_IDX))
                         'REQ-863
 
                         If ClaimBO.ClaimAuthorizationType = ClaimAuthorizationType.Multiple Then
-                            PopulateBOProperty(ClaimBO, Me.CAUSE_OF_LOSS_ID_PROPERTY, Me.GetSelectedItem(CType(Grid.Rows(Me.State.idx).Cells(Me.GRID_COL_CAUSE_OF_LOSS_IDX).FindControl(GRID_CAUSE_OF_LOSS_ID_DDL), DropDownList)))
-                            CType(ClaimBO, MultiAuthClaim).ChangeCoverageType(Me.State.selectedCertItemCoverageId, ClaimBO.CauseOfLossId)
+                            PopulateBOProperty(ClaimBO, CAUSE_OF_LOSS_ID_PROPERTY, GetSelectedItem(CType(Grid.Rows(State.idx).Cells(GRID_COL_CAUSE_OF_LOSS_IDX).FindControl(GRID_CAUSE_OF_LOSS_ID_DDL), DropDownList)))
+                            CType(ClaimBO, MultiAuthClaim).ChangeCoverageType(State.selectedCertItemCoverageId, ClaimBO.CauseOfLossId)
                             'End REQ-863
                         Else
-                            ClaimBO.CertItemCoverageId = Me.State.selectedCertItemCoverageId
+                            ClaimBO.CertItemCoverageId = State.selectedCertItemCoverageId
                             ClaimBO.CalculateFollowUpDate()
 
                             'claimBO.CauseOfLossId = Me.GetSelectedItem(CType(Grid.Items(Me.State.idx).Cells(Me.GRID_COL_CAUSE_OF_LOSS_IDX).FindControl("cboCauseOfLossId"), DropDownList))
-                            PopulateBOProperty(ClaimBO, Me.CAUSE_OF_LOSS_ID_PROPERTY, Me.GetSelectedItem(CType(Grid.Rows(Me.State.idx).Cells(Me.GRID_COL_CAUSE_OF_LOSS_IDX).FindControl(GRID_CAUSE_OF_LOSS_ID_DDL), DropDownList)))
+                            PopulateBOProperty(ClaimBO, CAUSE_OF_LOSS_ID_PROPERTY, GetSelectedItem(CType(Grid.Rows(State.idx).Cells(GRID_COL_CAUSE_OF_LOSS_IDX).FindControl(GRID_CAUSE_OF_LOSS_ID_DDL), DropDownList)))
 
                             If ClaimBO.CauseOfLossId.Equals(Guid.Empty) Then
                                 Throw New GUIException(Message.MSG_CAUSE_OF_LOSS_IS_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_CAUSE_OF_LOSS_IS_REQUIRED)
                             End If
 
-                            AuthAmtText = CType(Grid.Rows(Me.State.idx).Cells(Me.GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_AUTHORIZED_AMOUNT), TextBox).Text
+                            AuthAmtText = CType(Grid.Rows(State.idx).Cells(GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_AUTHORIZED_AMOUNT), TextBox).Text
 
                             If IsNumeric(AuthAmtText) AndAlso CType(AuthAmtText, Decimal) < 0 Then
                                 Throw New GUIException(Message.MSG_CAUSE_OF_LOSS_IS_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)
                             Else
-                                PopulateBOProperty(ClaimBO, Me.AUTHORIZED_AMOUNT_PROPERTY, CType(Grid.Rows(Me.State.idx).Cells(Me.GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_AUTHORIZED_AMOUNT), TextBox).Text)
+                                PopulateBOProperty(ClaimBO, AUTHORIZED_AMOUNT_PROPERTY, CType(Grid.Rows(State.idx).Cells(GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_AUTHORIZED_AMOUNT), TextBox).Text)
                             End If
 
                             'Req - 1001 Change of Coverage Type and Recompute Deductible
@@ -531,9 +531,9 @@ Namespace Claims
                                 End If
                             End If 'end SKU Price
 
-                            PopulateBOProperty(ClaimBO, Me.CLAIM_SPECIAL_SERVICE_ID_PROPERTY, Me.State.claimSpecialServiceId)
-                            PopulateBOProperty(ClaimBO, CLAIM_SPECIAL_SERVICE_ID_PROPERTY, Me.State.claimSpecialServiceId)
-                            If Me.State.claimSpecialServiceId = yesId Then
+                            PopulateBOProperty(ClaimBO, CLAIM_SPECIAL_SERVICE_ID_PROPERTY, State.claimSpecialServiceId)
+                            PopulateBOProperty(ClaimBO, CLAIM_SPECIAL_SERVICE_ID_PROPERTY, State.claimSpecialServiceId)
+                            If State.claimSpecialServiceId = yesId Then
                                 PopulateBOProperty(ClaimBO, WHO_PAYS_ID_PROPERTY, AssurantPaysId)
                                 ClaimBO.Deductible = New DecimalType(ZERO_DECIMAL)
                                 Dim myContractId As Guid = Contract.GetContractID(ClaimBO.CertificateId)
@@ -546,59 +546,59 @@ Namespace Claims
 
                             ClaimBO.Save()
                         End If
-                        Me.MasterPage.MessageController.AddSuccess(Me.MSG_COVERAGE_CHANGED_SUCCESSFULLY, True)
+                        MasterPage.MessageController.AddSuccess(MSG_COVERAGE_CHANGED_SUCCESSFULLY, True)
 
                     Else
                         'Req - 1001 Display the Error Message 'New Coverage Type is not in effect on the date of loss of the claim'
-                        Me.MasterPage.MessageController.AddError(Me.MSG_COVERAGE_NOT_IN_EFFECT, True)
+                        MasterPage.MessageController.AddError(MSG_COVERAGE_NOT_IN_EFFECT, True)
                     End If
 
                 End If
-                Me.State.isEditMode = False
+                State.isEditMode = False
                 'Send the user back to the previous page to see the udpated results
-                Me.Back(ElitaPlusPage.DetailPageCommand.Back)
+                Back(ElitaPlusPage.DetailPageCommand.Back)
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Me.State.isEditMode = False
-                Me.Back(ElitaPlusPage.DetailPageCommand.Back)
+                State.isEditMode = False
+                Back(ElitaPlusPage.DetailPageCommand.Back)
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub Back(ByVal cmd As ElitaPlusPage.DetailPageCommand)
-            Dim ClaimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.State.claimId)
+        Protected Sub Back(cmd As ElitaPlusPage.DetailPageCommand)
+            Dim ClaimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.claimId)
             Dim retObj As ReturnType = New ReturnType(cmd, ClaimBO, False)
-            Me.ReturnToCallingPage(retObj)
+            ReturnToCallingPage(retObj)
         End Sub
 
         Private Sub Grid_Sorting(sender As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
 
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 

@@ -5,16 +5,16 @@ Imports Assurant.ElitaPlus.DataEntities
 Public Class CompanyGroupCacheManager
     Implements ICacheManager
     Private Property CompanyGroupRepository As ICompanyGroupRepository(Of CompanyGroup)
-    Friend Sub New(ByVal pCompanyGroupRepository As ICompanyGroupRepository(Of CompanyGroup))
-        Me.CompanyGroupRepository = pCompanyGroupRepository
+    Friend Sub New(pCompanyGroupRepository As ICompanyGroupRepository(Of CompanyGroup))
+        CompanyGroupRepository = pCompanyGroupRepository
     End Sub
 
     Private Const CacheKeyValue As String = "CompanyGroup"
-    Friend Function CacheKey(ByVal pCompanyGroupId As Guid) As String
+    Friend Function CacheKey(pCompanyGroupId As Guid) As String
         Return String.Format("{0}#{1}", CacheKeyValue, pCompanyGroupId)
     End Function
 
-    Friend Function BuildCache(ByVal pCompanygroupId As Guid) As CompanyGroup
+    Friend Function BuildCache(pCompanygroupId As Guid) As CompanyGroup
         Return CompanyGroupRepository.Get(Function(cg) cg.CompanyGroupId = pCompanygroupId, Nothing, "RiskTypes, Manufacturers,PaymentTypes,ClaimStatusByGroups,DefaultClaimStatuses,CoverageLosses").FirstOrDefault()
     End Function
 

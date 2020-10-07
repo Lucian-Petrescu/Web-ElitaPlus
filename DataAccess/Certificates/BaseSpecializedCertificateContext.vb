@@ -9,7 +9,7 @@ Public MustInherit Class BaseSpecializedCertificateContext
 
     Private Sub CheckDBConnection()
         If Me.Database.Connection.State = ConnectionState.Closed Then
-            Me.Database.Connection.Open()
+            Database.Connection.Open()
         End If
     End Sub
 
@@ -43,7 +43,7 @@ Public MustInherit Class BaseSpecializedCertificateContext
                                                  ByVal pIdentificationNumber As String,
                                                  ByVal pServiceLineNumber As String) As DataSet
 
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
         dbCommand.CommandType = CommandType.StoredProcedure
         Dim commandTxt As String = If(String.IsNullOrEmpty(CustomizationName),
                                                     "elp_ws_getCertificate.Search_Certificate",

@@ -54,8 +54,8 @@ Public Class GetExpectedGWP
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -66,10 +66,10 @@ Public Class GetExpectedGWP
     Private Sub Load(ByVal ds As GetExpectedGWPDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -86,21 +86,21 @@ Public Class GetExpectedGWP
         Try
             If ds.GetExpectedGWP.Count = 0 Then Exit Sub
             With ds.GetExpectedGWP.Item(0)
-                Me.DealerCode = .dealer_code
-                Me.ProductCode = .product_code
-                Me.CertificateDuration = .cert_duration
-                Me.WarrantySalesDate = .warranty_sales_date
-                Me.PurchasePrice = .purchase_price
+                DealerCode = .dealer_code
+                ProductCode = .product_code
+                CertificateDuration = .cert_duration
+                WarrantySalesDate = .warranty_sales_date
+                PurchasePrice = .purchase_price
                 If Not .Ismanufacturer_durationNull Then
-                    Me.CoverageDuration = .manufacturer_duration
+                    CoverageDuration = .manufacturer_duration
                 Else
-                    Me.CoverageDuration = -1
+                    CoverageDuration = -1
                 End If
                 
                 If Not .Isproduct_purchase_dateNull Then
-                    Me.ProductPurchaseDate = .product_purchase_date
+                    ProductPurchaseDate = .product_purchase_date
                 Else
-                    Me.ProductPurchaseDate = Date.MinValue
+                    ProductPurchaseDate = Date.MinValue
                 End If
             End With
 
@@ -121,30 +121,30 @@ Public Class GetExpectedGWP
     <ValueMandatory("")> _
     Public Property DealerCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_DEALER_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_DEALER_CODE), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER_CODE, Value)
+            SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property ProductCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_PRODUCT_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_PRODUCT_CODE), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_PRODUCT_CODE, Value)
+            SetValue(DATA_COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
@@ -152,30 +152,30 @@ Public Class GetExpectedGWP
     Public Property CertificateDuration() As Integer
         Get
             CheckDeleted()
-            If Row(Me.DATA_COL_NAME_CERT_DURATION) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CERT_DURATION) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CERT_DURATION), Integer)
+                Return CType(Row(DATA_COL_NAME_CERT_DURATION), Integer)
             End If
         End Get
         Set(ByVal Value As Integer)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CERT_DURATION, Value)
+            SetValue(DATA_COL_NAME_CERT_DURATION, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property WarrantySalesDate() As DateTime
         Get
-            If Row(Me.DATA_COL_NAME_WARRANTY_SALES_DATE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_WARRANTY_SALES_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_WARRANTY_SALES_DATE), String)
+                Return CType(Row(DATA_COL_NAME_WARRANTY_SALES_DATE), String)
             End If
         End Get
         Set(ByVal Value As Date)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_WARRANTY_SALES_DATE, Value)
+            SetValue(DATA_COL_NAME_WARRANTY_SALES_DATE, Value)
         End Set
     End Property
 
@@ -197,29 +197,29 @@ Public Class GetExpectedGWP
     Public Property CoverageDuration() As Integer
         Get
             CheckDeleted()
-            If Row(Me.DATA_COL_NAME_MANUFACTURER_DURATION) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MANUFACTURER_DURATION) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_MANUFACTURER_DURATION), Integer)
+                Return CType(Row(DATA_COL_NAME_MANUFACTURER_DURATION), Integer)
             End If
         End Get
         Set(ByVal Value As Integer)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MANUFACTURER_DURATION, Value)
+            SetValue(DATA_COL_NAME_MANUFACTURER_DURATION, Value)
         End Set
     End Property
 
     Public Property ProductPurchaseDate() As DateTime
         Get
-            If Row(Me.DATA_COL_NAME_PRODUCT_PURCHASE_DATE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_PRODUCT_PURCHASE_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_PRODUCT_PURCHASE_DATE), String)
+                Return CType(Row(DATA_COL_NAME_PRODUCT_PURCHASE_DATE), String)
             End If
         End Get
         Set(ByVal Value As Date)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_PRODUCT_PURCHASE_DATE, Value)
+            SetValue(DATA_COL_NAME_PRODUCT_PURCHASE_DATE, Value)
         End Set
     End Property
 
@@ -233,18 +233,18 @@ Public Class GetExpectedGWP
         Dim productBO As New ProductCode
 
         Try
-            Me.Validate()
+            Validate()
 
             Dim dvDealrs As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
             If Not dvDealrs Is Nothing AndAlso dvDealrs.Count > 0 Then
-                dealerId = LookupListNew.GetIdFromCode(dvDealrs, Me.DealerCode)
+                dealerId = LookupListNew.GetIdFromCode(dvDealrs, DealerCode)
                 If dealerId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("GetExpectedGWP Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_CODE)
                 End If
             End If
 
 
-            dvProductCodeID = productBO.GetProductCodeId(dealerId, Me.ProductCode)
+            dvProductCodeID = productBO.GetProductCodeId(dealerId, ProductCode)
 
             If Not dvProductCodeID Is Nothing AndAlso dvProductCodeID.Count > 0 Then
                 If Not dvProductCodeID.Item(0)(DATE_COL_NAME_PRODUCT_CODE_ID).Equals(Guid.Empty) Then
@@ -256,7 +256,7 @@ Public Class GetExpectedGWP
                 Throw New BOValidationException("GetExpectedGWP Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PRODUCT_CODE)
             End If
 
-            If Len((Me.CertificateDuration.ToString)) > 3 Or Me.CertificateDuration = MIN_DURATION Or Me.CertificateDuration > MAX_DURATION Then
+            If Len((CertificateDuration.ToString)) > 3 Or CertificateDuration = MIN_DURATION Or CertificateDuration > MAX_DURATION Then
                 Throw New BOValidationException("GetExpectedGWP Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_CERTIFICATE_DURATION)
             End If
 
@@ -267,12 +267,12 @@ Public Class GetExpectedGWP
             objExpectedGWPTable.Columns.Add(New DataColumn("ExpectedGWP", GetType(Double)))
             Dim row As DataRow = objExpectedGWPTable.NewRow
 
-            If Me.PercentageOfRetail(ProductCodeID).Value > 0 Then
-                row("ExpectedGWP") = Me.decExpectedGWP.Value
+            If PercentageOfRetail(ProductCodeID).Value > 0 Then
+                row("ExpectedGWP") = decExpectedGWP.Value
             Else
                 'Me.ValidateDealerFlags() ' this validation has been moved to the DB "ELP_EXPECTED_PREMIUM.GetExpectedGWP"
-                Dim expcetedGWP As Object = CoverageRate.GetExpectedGWP(dealerId, Me.ProductCode, Me.CertificateDuration, Me.WarrantySalesDate, Me.PurchasePrice, _
-                                                                 Me.CoverageDuration, Me.ProductPurchaseDate)
+                Dim expcetedGWP As Object = CoverageRate.GetExpectedGWP(dealerId, ProductCode, CertificateDuration, WarrantySalesDate, PurchasePrice, _
+                                                                 CoverageDuration, ProductPurchaseDate)
 
                 If Not expcetedGWP Is Nothing Then
                     row("ExpectedGWP") = Convert.ToDouble(expcetedGWP)
@@ -311,9 +311,9 @@ Public Class GetExpectedGWP
                     percentOfRetail = New DecimalType(CType(oPercentOfRetailDataview.Item(0).Item("CODE"), Decimal))
                 End If
             End If
-            Me.decExpectedGWP = Math.Round((Me.PurchasePrice * percentOfRetail.Value / 100), 2)
+            decExpectedGWP = Math.Round((PurchasePrice * percentOfRetail.Value / 100), 2)
 
-            Return Me.decExpectedGWP
+            Return decExpectedGWP
         Catch ex As Exception
             Throw New StoredProcedureGeneratedException("GetExpectedGWP Error: ", Assurant.ElitaPlus.Common.ErrorCodes.WS_PERCENT_OF_RETAIL_COMPUTE_ERROR)
         End Try

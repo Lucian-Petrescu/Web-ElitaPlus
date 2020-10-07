@@ -51,32 +51,32 @@ Public Class ClaimHistoryDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_history_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal familyDS As DataSet, ByVal claimId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(familyDS As DataSet, claimId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_id", claimId.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function GetClaimHistoryDetails(ByVal claimId As Guid, ByVal languageId As Guid) As DataView
-        Dim selectStmt As String = Me.Config("/SQL/CLAIM_HISTORY_DETAILS")
+    Public Function GetClaimHistoryDetails(claimId As Guid, languageId As Guid) As DataView
+        Dim selectStmt As String = Config("/SQL/CLAIM_HISTORY_DETAILS")
         Dim parameters() As OracleParameter = New OracleParameter() _
                                            {New OracleParameter(COL_NAME_PARAM_LANGUAGE_ID, languageId.ToByteArray), _
                                             New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray), _
@@ -86,7 +86,7 @@ Public Class ClaimHistoryDAL
 
         Try
 
-            Return New DataView((DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters)).Tables(0))
+            Return New DataView((DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters)).Tables(0))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -96,12 +96,12 @@ Public Class ClaimHistoryDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

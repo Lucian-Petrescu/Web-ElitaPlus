@@ -21,7 +21,7 @@ Partial Class APInvoiceDetailForm
         Public LineNumberMin As Integer
         Public LineNumberMax As Integer  
         
-        Public Sub New(ByVal intMin As Integer, ByVal intMax As Integer)
+        Public Sub New(intMin As Integer, intMax As Integer)
             LineNumberMin = intMin
             LineNumberMax = intMax
         End Sub
@@ -90,25 +90,25 @@ Partial Class APInvoiceDetailForm
 #Region "Page Return Type"
     Public Class ReturnType
         Public DataChanged As Boolean = False
-        Public Sub New(ByVal boChanged As Boolean)
-            Me.DataChanged = boChanged
+        Public Sub New(boChanged As Boolean)
+            DataChanged = boChanged
         End Sub
     End Class
 #End Region
 
 #Region "Page Event handler"
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                     TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
             End If
         End If
     End Sub
 
     
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         MasterPage.MessageController.Clear_Hide()
         Try
             If Not IsPostBack Then
@@ -122,7 +122,7 @@ Partial Class APInvoiceDetailForm
                 populateFormFromBOExtendedInfo
 
                 TranslateGridHeader(Grid)
-                cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
+                cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
                 populateLinesGrid(1, LineBatchSize)
                 SetGridItemStyleColor(Grid)            
             End If
@@ -138,7 +138,7 @@ Partial Class APInvoiceDetailForm
             Dim tempGuid As Guid = CallingPar
             State.myBO = New ApInvoiceHeader(tempGuid)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -177,7 +177,7 @@ Partial Class APInvoiceDetailForm
         End If
 
     End sub
-    Private Function GetDescriptionFromExtendedCode(ByVal list As DataElements.ListItem(), ByVal lookupValue As String) As String
+    Private Function GetDescriptionFromExtendedCode(list As DataElements.ListItem(), lookupValue As String) As String
         For Each item As DataElements.ListItem In list
             If item.ExtendedCode = lookupValue Then
                 Return item.Description
@@ -186,7 +186,7 @@ Partial Class APInvoiceDetailForm
         Return String.Empty
     End Function
 
-    Private Function GetDescriptionFromCode(ByVal list As DataElements.ListItem(), ByVal lookupValue As String) As String
+    Private Function GetDescriptionFromCode(list As DataElements.ListItem(), lookupValue As String) As String
         For Each item As DataElements.ListItem In list
             If item.Code = lookupValue Then
                 Return item.Description
@@ -195,7 +195,7 @@ Partial Class APInvoiceDetailForm
         Return String.Empty
     End Function
     Private Sub PopulateFormFromBO()
-        With Me.State.myBO
+        With State.myBO
             PopulateControlFromBOProperty(txtInvoiceNumber, .InvoiceNumber)
             PopulateControlFromBOProperty(txtInvoiceAmount, .InvoiceAmount)
             PopulateControlFromBOProperty(txtInvoiceDate, .InvoiceDate)
@@ -223,19 +223,19 @@ Partial Class APInvoiceDetailForm
         txtTotalLineCnt.Text = State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_TOTAL_LINE_COUNT)
         txtUnMatchedLineCnt.Text = State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_UNMATCHED_LINES_COUNT)
         
-        If not State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT) Is DBNull.Value Then
+        If State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT) IsNot DBNull.Value Then
             txtPaidAmount.Text = State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT)
         Else
             txtPaidAmount.Text = String.Empty
         End If
 
-        If not State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT) Is DBNull.Value Then
+        If State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT) IsNot DBNull.Value Then
             txtPaidAmount.Text = State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT)
         Else
             txtPaidAmount.Text = String.Empty
         End If
 
-        If not State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_MATCHED_AMOUNT) Is DBNull.Value Then
+        If State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_MATCHED_AMOUNT) IsNot DBNull.Value Then
             txtMatchedAmount.Text = State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_MATCHED_AMOUNT)
         Else
             txtMatchedAmount.Text = String.Empty
@@ -243,7 +243,7 @@ Partial Class APInvoiceDetailForm
         
     End Sub
 
-    Private Sub PopulateLinesGrid(ByVal intMinLineNum As Integer, ByVal intMaxLineNum As Integer)
+    Private Sub PopulateLinesGrid(intMinLineNum As Integer, intMaxLineNum As Integer)
         If State.myBOLines Is Nothing Then
             State.myBOLines = State.myBO.GetInvoiceLines(intMinLineNum, intMaxLineNum, State.UnMatchedLineOnly, LineBatchSize)
 
@@ -291,7 +291,7 @@ Partial Class APInvoiceDetailForm
 
 #Region "Grid Event handlers"
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
@@ -301,7 +301,7 @@ Partial Class APInvoiceDetailForm
     End Sub
 
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(Grid, State.myBOLines.Count, State.selectedPageSize)
@@ -313,7 +313,7 @@ Partial Class APInvoiceDetailForm
     End Sub
 
 
-    Public Sub RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -321,7 +321,7 @@ Partial Class APInvoiceDetailForm
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = Grid.PageIndex
             populateLinesGrid(0, 0)
@@ -337,7 +337,7 @@ Partial Class APInvoiceDetailForm
             ReturnToCallingPage(new ReturnType(State.HasDataChanged))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
     private Sub RefreshScreen()

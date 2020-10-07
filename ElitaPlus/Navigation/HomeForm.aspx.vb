@@ -15,7 +15,7 @@ Partial Class HomeForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -35,19 +35,19 @@ Partial Class HomeForm
     ' Private CFG_MAIN_PAGE_NAME As String = ConfigurationMgr.ConfigValue(ELPWebConstants.MAIN_PAGE_NAME)
 
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         If Not IsPostBack() Then
-            Me.AppHomeUrl = Me.Request.Url.AbsolutePath
-            Me.LoadLanguageInfo()
-            Me.SetFormImages()
+            AppHomeUrl = Request.Url.AbsolutePath
+            LoadLanguageInfo()
+            SetFormImages()
             UpdateNavigation()
 
-            Me.lblEnvValue.Text = EnvironmentContext.Current.EnvironmentName
+            lblEnvValue.Text = EnvironmentContext.Current.EnvironmentName
 
             'Added to display the separate paths in Test and Model
             If ((EnvironmentContext.Current.Environment <> Environments.Development) AndAlso (EnvironmentContext.Current.Environment <> Environments.Production)) Then
-                Me.lblEnvValue.Text += " - " + AppConfig.ConnType
+                lblEnvValue.Text += " - " + AppConfig.ConnType
             End If
 
             'Added build version
@@ -61,9 +61,9 @@ Partial Class HomeForm
             sBuildNum = String.Empty
             sBuildNum = sBuildArr(0).ToString() + "." + sBuildArr(1).ToString() + "." + sBuildArr(2).ToString()
 
-            Me.lblBuildValue.Text = sBuildNum
+            lblBuildValue.Text = sBuildNum
 
-            Me.lblCopyright.Text = "&copy;" + DateTime.Now.Year.ToString() + " Assurant. All rights reserved. "
+            lblCopyright.Text = "&copy;" + DateTime.Now.Year.ToString() + " Assurant. All rights reserved. "
 
             'If AppConfig.CurrentEnvironment.ToUpper.Equals("PROD") Then
             '    Me.lblEnvValue.Text = ""
@@ -78,7 +78,7 @@ Partial Class HomeForm
                 Session("PageCalledFrom") = "MAINPAGE"
                 Dim NotificationListURL As String = ELPWebConstants.APPLICATION_PATH & "/Security/NotificationListForm.aspx"
                 'Me.Response.Redirect(NotificationListURL)
-                Me.callPage(NotificationListURL, "MAINPAGE")
+                callPage(NotificationListURL, "MAINPAGE")
             End If
         End If
 
@@ -94,8 +94,8 @@ Partial Class HomeForm
         ' ELPWebConstants.ExecuteJavascript("changewidth", sScript, Me.Page)
         txtNextPageID.Value = Assurant.ElitaPlus.BusinessObjectsNew.Codes.TAB_HOME_PAGE
 
-        If Not Request.QueryString("nextaction") Is Nothing AndAlso Request.QueryString("nextaction").Equals("updateHeader") Then
-            ELPWebConstants.ExecuteJavascript(" Reload_Header() ", Me.Page)
+        If Request.QueryString("nextaction") IsNot Nothing AndAlso Request.QueryString("nextaction").Equals("updateHeader") Then
+            ELPWebConstants.ExecuteJavascript(" Reload_Header() ", Page)
         End If
         '
     End Sub
@@ -138,7 +138,7 @@ Partial Class HomeForm
     End Sub
 
 
-    Sub LoadListItems(ByVal oDataSource As Object)
+    Sub LoadListItems(oDataSource As Object)
 
         With cboLanguage
 
@@ -162,18 +162,18 @@ Partial Class HomeForm
         Dim LanguageList As DataElements.ListItem() =
                 CommonConfigManager.Current.ListManager.GetList(listCode:=ListCodes.LanguageList)
 
-        Me.cboLanguage.Populate(LanguageList.ToArray(),
+        cboLanguage.Populate(LanguageList.ToArray(),
                                 New PopulateOptions() With
                                 {
                                     .AddBlankItem = True
                                 })
 
-        Me.SetSelectedItem(cboLanguage, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+        SetSelectedItem(cboLanguage, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
     End Sub
 
 
-    Function SetSelectedLanguageID(ByVal languageID As Guid) As Integer
+    Function SetSelectedLanguageID(languageID As Guid) As Integer
         'find the item that matches the value of the languageid.
 
         Dim oItem As ListItem
@@ -188,7 +188,7 @@ Partial Class HomeForm
 
 
 
-    Private Sub cboLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboLanguage.SelectedIndexChanged
+    Private Sub cboLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboLanguage.SelectedIndexChanged
         Dim LanguageIDGuid As Guid
         ' Dim HomePageLocation As String = ConfigurationMgr.ConfigValue(ELPWebConstants.HOME_PAGE)
         Dim HomePageLocation As String = ELPWebConstants.HOME_PAGE
@@ -204,7 +204,7 @@ Partial Class HomeForm
         Session(ELPWebConstants.MENUSTATE) = ELPWebConstants.enumMenu_State.View_Page_Mode
 
         'basepage method to send reload script to the header
-        Me.ReloadHeader()
+        ReloadHeader()
 
         'Response.Redirect(HomePageLocation & "?nextaction=updateHeader")
         'SetFormImages()
@@ -219,7 +219,7 @@ Partial Class HomeForm
         Response.Redirect(url & "LogOutForm.aspx")
     End Sub
 
-    Private Sub btnExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExit.Click
+    Private Sub btnExit_Click(sender As System.Object, e As System.EventArgs) Handles btnExit.Click
         'close the main page
         Logout()
         'Dim sScript As String
@@ -234,7 +234,7 @@ Partial Class HomeForm
 #Region "NAVIGATION FUNCTION CODE"
 
 
-    Private Sub btnForward_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub btnForward_Click(sender As System.Object, e As System.EventArgs)
 
         NavigateForward()
     End Sub
@@ -250,12 +250,12 @@ Partial Class HomeForm
             Dim sNextPage As String = "../test/testpage2.aspx"
             Response.Redirect(sNextPage)
         Else
-            ELPWebConstants.ShowPopup(NoNavMessage, Me.Page)
+            ELPWebConstants.ShowPopup(NoNavMessage, Page)
         End If
     End Sub
 
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs)
         NavigateToPrevious()
     End Sub
 
@@ -268,7 +268,7 @@ Partial Class HomeForm
             Response.Redirect(sPreviousPage)
 
         Else
-            ELPWebConstants.ShowPopup(NoNavMessage, Me.Page)
+            ELPWebConstants.ShowPopup(NoNavMessage, Page)
         End If
 
     End Sub
@@ -277,11 +277,11 @@ Partial Class HomeForm
 #End Region
 
 
-    Private Sub btnExit_ServerClick(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub btnExit_ServerClick(sender As System.Object, e As System.EventArgs)
         'close the main page
         Dim sScript As String
         sScript = " window.parent.close() "
-        ELPWebConstants.ExecuteJavascript(sScript, Me.Page)
+        ELPWebConstants.ExecuteJavascript(sScript, Page)
     End Sub
 
 End Class

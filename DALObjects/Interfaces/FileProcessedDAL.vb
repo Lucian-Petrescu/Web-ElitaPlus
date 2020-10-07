@@ -54,22 +54,22 @@ Public Class FileProcessedDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("file_processed_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal oFileProcessedData As FileProcessedData) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(oFileProcessedData As FileProcessedData) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters(9) As DBHelperParameter
 
         With oFileProcessedData
@@ -110,7 +110,7 @@ Public Class FileProcessedDAL
         End With
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -121,7 +121,7 @@ Public Class FileProcessedDAL
 
 #Region "Helper"
 
-    Public Shared Function GetFileLayout(ByVal value As FileProcessedData.FileTypeCode) As String
+    Public Shared Function GetFileLayout(value As FileProcessedData.FileTypeCode) As String
         Dim returnValue As String = Nothing
         Select Case value
             Case FileProcessedData.FileTypeCode.BestReplacement
@@ -132,7 +132,7 @@ Public Class FileProcessedDAL
         Return returnValue
     End Function
 
-    Public Shared Function FileTypeToSQL(ByVal value As FileProcessedData.FileTypeCode) As String
+    Public Shared Function FileTypeToSQL(value As FileProcessedData.FileTypeCode) As String
         Dim returnValue As String = Nothing
         Select Case value
             Case FileProcessedData.FileTypeCode.BestReplacement
@@ -149,12 +149,12 @@ Public Class FileProcessedDAL
 
 #Region "Signatures"
 
-    Public Delegate Sub AsyncCaller(ByVal fileProcessedId As Guid, ByVal interfaceStatusId As Guid, ByVal sqlStmt As String)
+    Public Delegate Sub AsyncCaller(fileProcessedId As Guid, interfaceStatusId As Guid, sqlStmt As String)
 
 #End Region
 
 #Region "Async Calls"
-    Private Sub AsyncExecuteSP(ByVal fileProcessedId As Guid, ByVal interfaceStatusId As Guid, ByVal sqlStmt As String)
+    Private Sub AsyncExecuteSP(fileProcessedId As Guid, interfaceStatusId As Guid, sqlStmt As String)
         Dim inputParameters(1) As DBHelperParameter
         Dim outputParameter(0) As DBHelperParameter
 
@@ -170,7 +170,7 @@ Public Class FileProcessedDAL
         End If
     End Sub
 
-    Public Sub ExecuteSP(ByVal fileProcessedId As Guid, ByVal interfaceStatusId As Guid, ByVal sqlStmt As String)
+    Public Sub ExecuteSP(fileProcessedId As Guid, interfaceStatusId As Guid, sqlStmt As String)
         Dim aSyncHandler As New AsyncCaller(AddressOf AsyncExecuteSP)
         aSyncHandler.BeginInvoke(fileProcessedId, interfaceStatusId, sqlStmt, Nothing, Nothing)
     End Sub

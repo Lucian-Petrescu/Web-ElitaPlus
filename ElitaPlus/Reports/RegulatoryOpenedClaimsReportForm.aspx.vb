@@ -97,12 +97,12 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Protected Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Protected Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
      Handles multipleDropControl.SelectedDropChanged
             Try
                 GetReportDatesAndPageNumber(RPT_FILENAME)
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -134,16 +134,16 @@ Namespace Reports
             End If
         End Sub
 
-        Private Sub ViewPDFRadioButtonChecked(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub ViewPDFRadioButtonChecked(sender As Object, e As System.EventArgs)
             EnableDisablePageControls()
             'GetReportDatesAndPageNumber(RPT_FILENAME)
         End Sub
 
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(lblCompany)
+                ClearLabelErrSign(lblCompany)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
@@ -162,7 +162,7 @@ Namespace Reports
         Private designerPlaceholderDeclaration As System.Object
         'Protected WithEvents ReportCeInputControl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Reports.ReportCeInputControl
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             'AddHandler , AddressOf MoodChangedFromMasterPage
@@ -177,30 +177,30 @@ Namespace Reports
         'End Sub
 
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrControllerMaster.Clear_Hide()
+            ErrControllerMaster.Clear_Hide()
             ClearLabelsErrSign()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             If UserCompanyMultipleDrop.Visible = False Then
                 HideHtmlElement(trcomp.ClientID)
             End If
             TheReportCeInputControl.RadioButtonPDFControl.AutoPostBack = True
             TheReportCeInputControl.RadioButtonVIEWControl.AutoPostBack = True
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     'JavascriptCalls()
                     InitializeForm()
                 Else
                     CheckIfComingFromSaveConfirm()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region
@@ -214,7 +214,7 @@ Namespace Reports
             If dv.Count.Equals(ONE_ITEM) Then
                 ControlMgr.SetVisibleControl(Me, lblCompany, False)
                 HideHtmlElement(trcomp.ClientID)
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
                 GetReportDatesAndPageNumber(RPT_FILENAME)
             End If
@@ -225,7 +225,7 @@ Namespace Reports
             listcontext.CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyId
 
             Dim YearListLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ClosingYearsByCompany", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.moYearDropDownList.Populate(YearListLkl, New PopulateOptions() With
+            moYearDropDownList.Populate(YearListLkl, New PopulateOptions() With
                 {
                    .AddBlankItem = True,
                    .BlankItemValue = "0",
@@ -235,12 +235,12 @@ Namespace Reports
             'Dim dv As DataView = AccountingCloseInfo.GetClosingYears(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
             'Me.BindListTextToDataView(Me.moYearDropDownList, dv, , , True)
 
-            Dim oDescrip As String = Me.GetSelectedDescription(Me.moYearDropDownList)
+            Dim oDescrip As String = GetSelectedDescription(moYearDropDownList)
         End Sub
 
         Private Sub PopulateMonthsDropdown()
             Dim monthLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("MONTH", Thread.CurrentPrincipal.GetLanguageCode())
-            Me.moMonthDropDownList.Populate(monthLkl, New PopulateOptions() With
+            moMonthDropDownList.Populate(monthLkl, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -267,7 +267,7 @@ Namespace Reports
             Return MonthNames
         End Function
 
-        Private Sub GetReportDatesAndPageNumber(ByVal rptname As String)
+        Private Sub GetReportDatesAndPageNumber(rptname As String)
             'Dim Month As DictionaryEntry
             'Dim MonthName As Hashtable
             Dim rptBO As New ReportsPageCtrl
@@ -279,7 +279,7 @@ Namespace Reports
                 If ds.Tables(0).Rows.Count > 0 Then
                     txtLPage.Text = ds.Tables(0).Rows(0)(PAGENUM).ToString.PadLeft(6, CChar("0".ToString))
                     For Each Month In MonthName
-                        If Not ds.Tables(0).Rows(0)(PREVIOUS_DATE).ToString Is String.Empty Then
+                        If ds.Tables(0).Rows(0)(PREVIOUS_DATE).ToString IsNot String.Empty Then
                             If Month.Key.ToString = ds.Tables(0).Rows(0)(PREVIOUS_DATE).ToString.Substring(0, 2) Then
                                 txtLPeriod.Text = Month.Value.ToString & " " & ds.Tables(0).Rows(0)(PREVIOUS_DATE).ToString.Substring(2, 4)
                                 hidden_LPeriod.Value = ds.Tables(0).Rows(0)(PREVIOUS_DATE).ToString
@@ -291,9 +291,9 @@ Namespace Reports
                         If Month.Key.ToString = ds.Tables(0).Rows(0)(FUTURE_DATE).ToString.Substring(0, 2) Then
                             txtPGenerate.Text = Month.Value.ToString & " " & ds.Tables(0).Rows(0)(FUTURE_DATE).ToString.Substring(2, 4)
                             hidden_PGenerate.Value = ds.Tables(0).Rows(0)(FUTURE_DATE).ToString
-                            Me.State.PGenerateStatus = ds.Tables(0).Rows(0)(STATUS).ToString
-                            If Not ds.Tables(0).Rows(0)(PageCtrl_ID).ToString Is String.Empty Then
-                                Me.State.moPageCtrlId = GuidControl.ByteArrayToGuid(ds.Tables(0).Rows(0)(PageCtrl_ID))
+                            State.PGenerateStatus = ds.Tables(0).Rows(0)(STATUS).ToString
+                            If ds.Tables(0).Rows(0)(PageCtrl_ID).ToString IsNot String.Empty Then
+                                State.moPageCtrlId = GuidControl.ByteArrayToGuid(ds.Tables(0).Rows(0)(PageCtrl_ID))
                             End If
                         End If
                     Next
@@ -321,20 +321,20 @@ Namespace Reports
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenRptPromptResponse.Value
-            Me.HiddenRptPromptResponse.Value = Nothing
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-                GenerateReport(Me.MSG_VALUE_YES)
+            Dim confResponse As String = HiddenRptPromptResponse.Value
+            HiddenRptPromptResponse.Value = Nothing
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+                GenerateReport(MSG_VALUE_YES)
             End If
         End Sub
 #End Region
 
 #Region "Report Parameters"
 
-        Function SetParameters(ByVal companyCode As String, ByVal companyDesc As String, _
-                               ByVal viewOption As String, ByVal selectedYearMonth As String, _
-                               ByVal Rpt_GenerateDate As String, ByVal periodExists As Boolean, _
-                               ByVal langCode As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, companyDesc As String, _
+                               viewOption As String, selectedYearMonth As String, _
+                               Rpt_GenerateDate As String, periodExists As Boolean, _
+                               langCode As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim culturecode As String = TheReportCeInputControl.getCultureValue(False)
@@ -378,7 +378,7 @@ Namespace Reports
 
 #Region "View Report"
 
-        Private Sub GenerateReport(ByVal ResponseVal As String)
+        Private Sub GenerateReport(ResponseVal As String)
             Dim compDesc As String = UserCompanyMultipleDrop.SelectedDesc
             Dim compCode As String = UserCompanyMultipleDrop.SelectedCode
             Dim compId As Guid = UserCompanyMultipleDrop.SelectedGuid
@@ -399,8 +399,8 @@ Namespace Reports
 
             If TheReportCeInputControl.RadioButtonVIEWControl.Checked = True Then
                 viewOption = "View"
-                Dim selectedYear As String = Me.GetSelectedDescription(Me.moYearDropDownList)
-                Dim selectedMonthID As Guid = Me.GetSelectedItem(Me.moMonthDropDownList)
+                Dim selectedYear As String = GetSelectedDescription(moYearDropDownList)
+                Dim selectedMonthID As Guid = GetSelectedItem(moMonthDropDownList)
                 Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
                 selectedMonthYear = selectedMonth & selectedYear
                 selectedYearMonth = selectedYear & selectedMonth
@@ -436,7 +436,7 @@ Namespace Reports
                     'Given Report Period should not be open
                     periodExists = True
                     If ResponseVal <> "2" Then
-                        DisplayMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_REPORT_CANNOT_RUN_FORTHAT_DATE, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenRptPromptResponse, True)
+                        DisplayMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_REPORT_CANNOT_RUN_FORTHAT_DATE, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenRptPromptResponse, True)
                         Exit Sub
                     Else
                         periodExists = True
@@ -457,14 +457,14 @@ Namespace Reports
             Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
         End Sub
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
 
                 GenerateReport("1")
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 

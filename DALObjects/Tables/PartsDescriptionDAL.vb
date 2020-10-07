@@ -29,15 +29,15 @@ Public Class PartsDescriptionDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("parts_description_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -48,58 +48,58 @@ Public Class PartsDescriptionDAL
     '    Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
     'End Function
 
-    Public Function LoadList(ByVal compGrpId As Guid, ByVal langID As Guid, ByVal riskGroupID As Guid, ByVal description As String) As DataSet
+    Public Function LoadList(compGrpId As Guid, langID As Guid, riskGroupID As Guid, description As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
-        selectStmt &= Environment.NewLine & " AND parts.company_group_id = '" & Me.GuidToSQLString(compGrpId) & "'"
-        selectStmt &= Environment.NewLine & " AND trans.language_id = '" & Me.GuidToSQLString(langID) & "'"
+        selectStmt &= Environment.NewLine & " AND parts.company_group_id = '" & GuidToSQLString(compGrpId) & "'"
+        selectStmt &= Environment.NewLine & " AND trans.language_id = '" & GuidToSQLString(langID) & "'"
 
         If Not riskGroupID.Equals(Guid.Empty) Then
-            selectStmt &= Environment.NewLine & " AND parts.risk_group_id = '" & Me.GuidToSQLString(riskGroupID) & "'"
+            selectStmt &= Environment.NewLine & " AND parts.risk_group_id = '" & GuidToSQLString(riskGroupID) & "'"
         End If
 
-        If ((Not (description Is Nothing)) AndAlso (Me.FormatSearchMask(description))) Then
+        If ((Not (description Is Nothing)) AndAlso (FormatSearchMask(description))) Then
             selectStmt &= Environment.NewLine & " AND UPPER(parts.description)" & description.ToUpper
         End If
 
         selectStmt &= Environment.NewLine & " ORDER BY Risk_Group"
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadAssignedList(ByVal compGrpId As Guid, ByVal langID As Guid) As DataSet
+    Public Function LoadAssignedList(compGrpId As Guid, langID As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_ASSIGNED_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_ASSIGNED_LIST")
 
-        selectStmt &= Environment.NewLine & " AND parts.company_group_id = '" & Me.GuidToSQLString(compGrpId) & "'"
-        selectStmt &= Environment.NewLine & " AND trans.language_id = '" & Me.GuidToSQLString(langID) & "'"
+        selectStmt &= Environment.NewLine & " AND parts.company_group_id = '" & GuidToSQLString(compGrpId) & "'"
+        selectStmt &= Environment.NewLine & " AND trans.language_id = '" & GuidToSQLString(langID) & "'"
 
         selectStmt &= Environment.NewLine & " ORDER BY Risk_Group"
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function GetNextCode(ByVal compGrpId As Guid) As String
-        Dim selectStmt As String = Me.Config("/SQL/MAX_CODE")
+    Public Function GetNextCode(compGrpId As Guid) As String
+        Dim selectStmt As String = Config("/SQL/MAX_CODE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("company_group_id", compGrpId.ToByteArray)}
         Dim retVal As String
 
         Try
             Dim ds As DataSet = New DataSet
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
-            If ds.Tables(Me.TABLE_NAME).Rows.Count = 1 AndAlso Not ds.Tables(Me.TABLE_NAME).Rows(0)(0) Is DBNull.Value Then
-                retVal = CType(CType(ds.Tables(Me.TABLE_NAME).Rows(0)(0), Integer) + 1, String)
+            If ds.Tables(TABLE_NAME).Rows.Count = 1 AndAlso Not ds.Tables(TABLE_NAME).Rows(0)(0) Is DBNull.Value Then
+                retVal = CType(CType(ds.Tables(TABLE_NAME).Rows(0)(0), Integer) + 1, String)
             Else
                 retVal = Nothing
             End If
@@ -110,8 +110,8 @@ Public Class PartsDescriptionDAL
         End Try
     End Function
 
-    Public Function IsValidCode(ByVal compGrpId As Guid, ByVal code As String) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/CODE_VALIDATION")
+    Public Function IsValidCode(compGrpId As Guid, code As String) As Boolean
+        Dim selectStmt As String = Config("/SQL/CODE_VALIDATION")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("company_group_id", compGrpId.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter("code", code)}
         Dim retVal As Boolean
@@ -119,9 +119,9 @@ Public Class PartsDescriptionDAL
         Try
             Dim ds As DataSet = New DataSet
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
-            If ds.Tables(Me.TABLE_NAME).Rows.Count = 1 AndAlso ds.Tables(Me.TABLE_NAME).Rows(0)(0) = 1 Then
+            If ds.Tables(TABLE_NAME).Rows.Count = 1 AndAlso ds.Tables(TABLE_NAME).Rows(0)(0) = 1 Then
                 retVal = True
             Else
                 retVal = False
@@ -133,8 +133,8 @@ Public Class PartsDescriptionDAL
         End Try
     End Function
 
-    Public Function GetPartDescriptionByCode(ByVal compGrpId As Guid, ByVal code As String) As Guid
-        Dim selectStmt As String = Me.Config("/SQL/GET_PARTS_DESCRIPTION_BY_CODE")
+    Public Function GetPartDescriptionByCode(compGrpId As Guid, code As String) As Guid
+        Dim selectStmt As String = Config("/SQL/GET_PARTS_DESCRIPTION_BY_CODE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("company_group_id", compGrpId.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter("code", code)}
         Dim retVal As Guid
@@ -142,10 +142,10 @@ Public Class PartsDescriptionDAL
         Try
             Dim ds As DataSet = New DataSet
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
-            If ds.Tables(Me.TABLE_NAME).Rows.Count = 1 Then
-                retVal = New Guid(CType(ds.Tables(Me.TABLE_NAME).Rows(0)(0), Byte()))
+            If ds.Tables(TABLE_NAME).Rows.Count = 1 Then
+                retVal = New Guid(CType(ds.Tables(TABLE_NAME).Rows(0)(0), Byte()))
             Else
                 retVal = Guid.Empty
             End If
@@ -156,8 +156,8 @@ Public Class PartsDescriptionDAL
         End Try
     End Function
 
-    Public Function GetPartDescriptionByCode(ByVal compGrpId As Guid, ByVal code As String, ByVal ClaimId As Guid) As Guid
-        Dim selectStmt As String = Me.Config("/SQL/GET_PARTS_DESCRIPTION_BY_CODE_AND_RISK_GROUP")
+    Public Function GetPartDescriptionByCode(compGrpId As Guid, code As String, ClaimId As Guid) As Guid
+        Dim selectStmt As String = Config("/SQL/GET_PARTS_DESCRIPTION_BY_CODE_AND_RISK_GROUP")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("company_group_id", compGrpId.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter("code", code), _
                                                                                            New DBHelper.DBHelperParameter("company_group_id", compGrpId.ToByteArray), _
@@ -167,10 +167,10 @@ Public Class PartsDescriptionDAL
         Try
             Dim ds As DataSet = New DataSet
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
-            If ds.Tables(Me.TABLE_NAME).Rows.Count = 1 Then
-                retVal = New Guid(CType(ds.Tables(Me.TABLE_NAME).Rows(0)(0), Byte()))
+            If ds.Tables(TABLE_NAME).Rows.Count = 1 Then
+                retVal = New Guid(CType(ds.Tables(TABLE_NAME).Rows(0)(0), Byte()))
             Else
                 retVal = Guid.Empty
             End If
@@ -181,8 +181,8 @@ Public Class PartsDescriptionDAL
         End Try
     End Function
 
-    Public Function IsPartCodeUnique(ByVal riskgrpId As Guid, ByVal compGrpId As Guid, ByVal code As String) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/IS_PART_CODE_UNIQUE")
+    Public Function IsPartCodeUnique(riskgrpId As Guid, compGrpId As Guid, code As String) As Boolean
+        Dim selectStmt As String = Config("/SQL/IS_PART_CODE_UNIQUE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("risk_group_id", riskgrpId.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter("company_group_id", compGrpId.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter("code", code)}
@@ -190,9 +190,9 @@ Public Class PartsDescriptionDAL
         Try
             Dim ds As DataSet = New DataSet
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
-            If ds.Tables(Me.TABLE_NAME).Rows.Count >= 1 Then
+            If ds.Tables(TABLE_NAME).Rows.Count >= 1 Then
                 Return False
             Else
                 Return True
@@ -204,8 +204,8 @@ Public Class PartsDescriptionDAL
         End Try
     End Function
 
-    Public Function IsEnglishDescriptionUnique(ByVal riskgrpId As Guid, ByVal compGrpId As Guid, ByVal description_english As String) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/IS_ENGLISH_DESCRIPTION_UNIQUE")
+    Public Function IsEnglishDescriptionUnique(riskgrpId As Guid, compGrpId As Guid, description_english As String) As Boolean
+        Dim selectStmt As String = Config("/SQL/IS_ENGLISH_DESCRIPTION_UNIQUE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("risk_group_id", riskgrpId.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter("company_group_id", compGrpId.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter("description_english", Description_English)}
@@ -213,9 +213,9 @@ Public Class PartsDescriptionDAL
         Try
             Dim ds As DataSet = New DataSet
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
-            If ds.Tables(Me.TABLE_NAME).Rows.Count >= 1 Then
+            If ds.Tables(TABLE_NAME).Rows.Count >= 1 Then
                 Return False
             Else
                 Return True
@@ -232,9 +232,9 @@ Public Class PartsDescriptionDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

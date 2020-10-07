@@ -48,7 +48,7 @@ Namespace Reports
         Dim oCompany As Company
         Private rptName As String = ""
         Dim DAC_CODE As String
-        Public Event SelectedDropChanged(ByVal aSrc As MultipleColumnDDLabelControl)
+        Public Event SelectedDropChanged(aSrc As MultipleColumnDDLabelControl)
 #End Region
 
 #Region "Properties"
@@ -77,39 +77,39 @@ Namespace Reports
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
         End Sub
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.ClearLabelsErrSign()
-            If Not Request.QueryString("CALLER") Is Nothing Then
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles MyBase.Load
+            ErrControllerMaster.Clear_Hide()
+            ClearLabelsErrSign()
+            If Request.QueryString("CALLER") IsNot Nothing Then
                 strRptType = Request.QueryString("CALLER")
                 If Request.QueryString("CALLER") = "PV" Then
-                    Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW_PV)
+                    Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW_PV)
                 Else
-                    Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW_BC)
+                    Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW_BC)
                 End If
             End If
-            Me.InstallProgressBar()
+            InstallProgressBar()
 
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(Me.Title, False)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(Title, False)
+                    SetFormTab(PAGETAB)
                     JavascriptCalls()
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
                     InitializeForm()
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #Region "JavaScript"
@@ -122,11 +122,11 @@ Namespace Reports
 
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
-                Me.ClearLabelErrSign(UserDealerMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(UserDealerMultipleDrop.CaptionLabel)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -135,9 +135,9 @@ Namespace Reports
             PopulateCompaniesDropdown()
             PopulateDealerDropDown()
             Dim t As Date = Date.Now.AddMonths(-1).AddDays(1)
-            Me.moBeginDateText.Text = GetDateFormattedString(t)
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Now)
-            Me.rdealer.Checked = True
+            moBeginDateText.Text = GetDateFormattedString(t)
+            moEndDateText.Text = GetDateFormattedString(Date.Now)
+            rdealer.Checked = True
             If strRptType = "PV" Then
                 TheReportCeInputControl.populateReportLanguages(RPT_FILENAME_EXPORT_PV)
             Else
@@ -151,7 +151,7 @@ Namespace Reports
             UserCompanyMultipleDrop.NothingSelected = True
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, "* " & TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
             End If
         End Sub
 
@@ -175,12 +175,12 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -188,13 +188,13 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
             Handles moUserCompanyMultipleDrop.SelectedDropChanged
             Try
                 PopulateDealerDropDown()
 
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -254,10 +254,10 @@ Namespace Reports
 
         End Sub
 
-        Function SetExpParameters(ByVal companyCode As String, _
-                                 ByVal dealerCode As String, _
-                              ByVal beginDate As String, _
-                              ByVal endDate As String) As ReportCeBaseForm.Params
+        Function SetExpParameters(companyCode As String, _
+                                 dealerCode As String, _
+                              beginDate As String, _
+                              endDate As String) As ReportCeBaseForm.Params
             Dim params As New ReportCeBaseForm.Params
             Dim rptParams As ReportParams
             Dim culturevalue As String = TheReportCeInputControl.getCultureValue(True, GuidControl.GuidToHexString(UserCompanyMultipleDrop.SelectedGuid))
@@ -295,10 +295,10 @@ Namespace Reports
 
         End Function
 
-        Function SetParameters(ByVal companyCode As String,
-                               ByVal dealerCode As String, _
-                               ByVal beginDate As String, _
-                               ByVal endDate As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String,
+                               dealerCode As String, _
+                               beginDate As String, _
+                               endDate As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim reportFormat As ReportCeBaseForm.RptFormat
@@ -334,10 +334,10 @@ Namespace Reports
                 .msRptName = reportName
                 If strRptType = "PV" Then
                     .msRptWindowName = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW_PV)
-                    Me.rptWindowTitle.InnerText = TheReportCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW_PV))
+                    rptWindowTitle.InnerText = TheReportCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW_PV))
                 Else
                     .msRptWindowName = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW_BC)
-                    Me.rptWindowTitle.InnerText = TheReportCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW_BC))
+                    rptWindowTitle.InnerText = TheReportCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW_BC))
                 End If
                 .moRptFormat = reportFormat
                 .moAction = ReportCeBaseForm.RptAction.SCHEDULE_VIEW

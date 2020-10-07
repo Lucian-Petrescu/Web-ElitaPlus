@@ -32,7 +32,7 @@ Public NotInheritable Class LookupListDALNew
     ''' <param name="column">column name</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function Load(ByVal listName As String, ByVal id As Guid, ByVal tableName As String, ByVal column As String) As DataView
+    Public Shared Function Load(listName As String, id As Guid, tableName As String, column As String) As DataView
         Dim ds As New DataSet
         Dim selectStmt As String = ConfigReader.GetNodeValue(GetType(LookupListDALNew), DetermineSQLName(listName))
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(column, id.ToByteArray)}
@@ -44,7 +44,7 @@ Public NotInheritable Class LookupListDALNew
         Return New DataView(ds.Tables(tableName))
     End Function
 
-    Public Shared Function Load(ByVal listName As String) As DataView
+    Public Shared Function Load(listName As String) As DataView
         Dim ds As DataSet
 
         ds = DBHelper.Fetch(ConfigReader.GetNodeValue(GetType(LookupListDALNew), DetermineSQLName(listName)), listName)
@@ -56,7 +56,7 @@ Public NotInheritable Class LookupListDALNew
 
 
 
-    Public Shared Function Load(ByVal listName As String, ByVal dataSetName As String, ByVal tableName As String) As DataSet
+    Public Shared Function Load(listName As String, dataSetName As String, tableName As String) As DataSet
         Dim ds As DataSet
 
         ds = DBHelper.Fetch(ConfigReader.GetNodeValue(GetType(LookupListDALNew), DetermineSQLName(listName)), dataSetName, tableName)
@@ -65,7 +65,7 @@ Public NotInheritable Class LookupListDALNew
 
     End Function
 
-    Public Shared Function Load(ByVal listName As String, ByVal params() As DBHelper.DBHelperParameter) As DataView
+    Public Shared Function Load(listName As String, params() As DBHelper.DBHelperParameter) As DataView
         Dim ds As New DataSet
         Dim selectStmt As String = ConfigReader.GetNodeValue(GetType(LookupListDALNew), DetermineSQLName(listName))
 
@@ -74,7 +74,7 @@ Public NotInheritable Class LookupListDALNew
         Return New DataView(ds.Tables(listName))
     End Function
 
-    Public Shared Function Load(ByVal listName As String, ByVal params() As DBHelper.DBHelperParameter, ByVal dynamicClause As String, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
+    Public Shared Function Load(listName As String, params() As DBHelper.DBHelperParameter, dynamicClause As String, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
         Dim ds As New DataSet
         Dim selectStmt As String = ConfigReader.GetNodeValue(GetType(LookupListDALNew), DetermineSQLName(listName))
         selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, dynamicClause)
@@ -85,7 +85,7 @@ Public NotInheritable Class LookupListDALNew
         Return New DataView(ds.Tables(listName))
     End Function
 
-    Public Shared Function Load(ByVal listName As String, ByVal dynamicInClause As String) As DataView
+    Public Shared Function Load(listName As String, dynamicInClause As String) As DataView
         Dim ds As New DataSet
         Dim selectStmt As String = ConfigReader.GetNodeValue(GetType(LookupListDALNew), DetermineSQLName(listName))
 
@@ -94,7 +94,7 @@ Public NotInheritable Class LookupListDALNew
         AddSequenceColumn(ds.Tables(listName))
         Return New DataView(ds.Tables(listName))
     End Function
-    Public Shared Function GET_RPT_RUNDATE_PAGENUM(ByVal RptName As String, ByVal CompanyId As Guid) As DataSet
+    Public Shared Function GET_RPT_RUNDATE_PAGENUM(RptName As String, CompanyId As Guid) As DataSet
         Dim selectStmt As String = ConfigReader.GetNodeValue(GetType(LookupListDALNew), DetermineSQLName("REPORT_RUNDATE_PAGENUM"))
 
         Dim parameters(1) As DBHelper.DBHelperParameter
@@ -112,7 +112,7 @@ Public NotInheritable Class LookupListDALNew
         End Try
     End Function
 
-    Public Shared Function LookuplistDealerByAttribute(ByVal CompanyId As String, ByVal tablename As String, ByVal UIProgCode As String)
+    Public Shared Function LookuplistDealerByAttribute(CompanyId As String, tablename As String, UIProgCode As String)
 
         Dim andclause As String = ""
         Dim selectStmt As String = ConfigReader.GetNodeValue(GetType(LookupListDALNew), DetermineSQLName("ATTRIBUTE_VALUE"))
@@ -137,7 +137,7 @@ Public NotInheritable Class LookupListDALNew
 #Region " Private Methods "
 
 
-    Private Shared Function DetermineSQLName(ByVal listName As String) As String
+    Private Shared Function DetermineSQLName(listName As String) As String
         Dim sqlName As String
 
         'check if prefix already is set

@@ -92,46 +92,46 @@ Public Class DisbursementDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("disbursement_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadPayeeList(ByVal svcControlNumber As String, ByVal companyList As ArrayList) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PAYEE_LIST")
+    Public Function LoadPayeeList(svcControlNumber As String, companyList As ArrayList) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_PAYEE_LIST")
         Dim whereClauseCondition As String = ""
 
-        whereClauseCondition = " AND " & Environment.NewLine & MiscUtil.BuildListForSql(Me.COL_NAME_COMPANY_ID, companyList)
+        whereClauseCondition = " AND " & Environment.NewLine & MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, companyList)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, whereClauseCondition)
+        selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, whereClauseCondition)
 
         'svcControlNumber = GetFormattedSearchStringForSQL(svcControlNumber)
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("svc_control_number", svcControlNumber.ToUpper)}
         'New DBHelper.DBHelperParameter("company_id", companylist)}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return (ds)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadDisbursement(ByVal id As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Function LoadDisbursement(id As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("disbursement_id", id.ToByteArray)}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return (ds)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -141,8 +141,8 @@ Public Class DisbursementDAL
 #End Region
 
 #Region "Public methods"
-    Public Function LoadRemainingInvoicePayment(ByVal svcControlNumber As String, ByVal OrigDisbID As Guid, ByVal ClaimID As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_OTHER_UNREVERSED_PAYMENT")
+    Public Function LoadRemainingInvoicePayment(svcControlNumber As String, OrigDisbID As Guid, ClaimID As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_OTHER_UNREVERSED_PAYMENT")
 
         'selectStmt = selectStmt.Replace(":svc_control_number", svcControlNumber).Replace(":disbursement_id", MiscUtil.GetDbStringFromGuid(OrigDisbID, True)).Replace(":claim_id", MiscUtil.GetDbStringFromGuid(ClaimID, True))
         'Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {}
@@ -155,21 +155,21 @@ Public Class DisbursementDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return (ds)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function LoadDisbursementFromClaim(ByVal ClaimID As Guid) As DataTable
-        Dim selectStmt As String = Me.Config("/SQL/GET_DISBURSEMENT_FROM_CLAIM")
+    Public Function LoadDisbursementFromClaim(ClaimID As Guid) As DataTable
+        Dim selectStmt As String = Config("/SQL/GET_DISBURSEMENT_FROM_CLAIM")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                                     New DBHelper.DBHelperParameter("claim_id", ClaimID.ToByteArray)}
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return (ds.Tables(0))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -177,9 +177,9 @@ Public Class DisbursementDAL
     End Function
 #End Region
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

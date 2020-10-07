@@ -23,7 +23,7 @@ Public Class CaseRecordingForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -84,7 +84,7 @@ Public Class CaseRecordingForm
         Public CasePurpose As CasePurpose
         Public IsCallerAuthenticated As Boolean = False
 
-        Public Sub New(ByVal entityId As Guid, ByVal casePurpose As CasePurpose,optional IsCallerAuthenticated As boolean = False)
+        Public Sub New(entityId As Guid, casePurpose As CasePurpose,optional IsCallerAuthenticated As boolean = False)
             Me.EntityId = entityId
             Me.CasePurpose = casePurpose
             Me.IsCallerAuthenticated = IsCallerAuthenticated
@@ -97,12 +97,12 @@ Public Class CaseRecordingForm
         Public CertificateId As Guid
         Public IsCallerAuthenticated as Boolean = False
 
-        Public Sub New(ByVal lastOp As DetailPageCommand, ByVal certId As Guid,Optional byval IsCallerAuthenticated As boolean = False)
-            Me.LastOperation = lastOp
-            Me.CertificateId = certId
+        Public Sub New(lastOp As DetailPageCommand, certId As Guid,Optional byval IsCallerAuthenticated As boolean = False)
+            LastOperation = lastOp
+            CertificateId = certId
             Me.IsCallerAuthenticated = IsCallerAuthenticated
         End SuB
-        Public Sub New(ByVal lastOp As DetailPageCommand)
+        Public Sub New(lastOp As DetailPageCommand)
             LastOperation = lastOp
         End Sub
     End Class
@@ -123,9 +123,9 @@ Public Class CaseRecordingForm
     End Property
 #End Region
 #Region "Page Events"
-    Private Sub Page_PageCall(ByVal callFromUrl As String, ByVal callingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(callFromUrl As String, callingPar As Object) Handles MyBase.PageCall
         Try
-            If Not CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 State.InputParameters = CType(CallingParameters, Parameters)
                 State.CasePurpose = State.InputParameters.CasePurpose
                 state.IsCallerAuthenticated = state.InputParameters.IsCallerAuthenticated
@@ -149,9 +149,9 @@ Public Class CaseRecordingForm
         Try
             _isReturningFromChild = True            
             
-            If Not returnPar Is Nothing AndAlso returnPar.GetType() Is GetType(CertificateForm.ReturnType) Then
+            If returnPar IsNot Nothing AndAlso returnPar.GetType() Is GetType(CertificateForm.ReturnType) Then
                 Dim returnParInstance As CertificateForm.ReturnType = DirectCast(returnPar, CertificateForm.ReturnType)
-                Me.State.IsCallerAuthenticated = returnParInstance.IsCallerAuthenticated
+                State.IsCallerAuthenticated = returnParInstance.IsCallerAuthenticated
             End If             
 
         Catch ex As ThreadAbortException
@@ -160,16 +160,16 @@ Public Class CaseRecordingForm
         End Try
     End Sub
 
-    Public Sub UcExistingCallerInfo_GridSelectionHandler(ByVal strValue As Object)
-        Me.State.ExistingUserControlItemSelected = True
+    Public Sub UcExistingCallerInfo_GridSelectionHandler(strValue As Object)
+        State.ExistingUserControlItemSelected = True
         UcPreviousCallerInfo.DisableGridSelection()
     End Sub
 
-    Public Sub UcPreviousCallerInfo_GridSelectionHandler(ByVal strValue As Object)
-        Me.State.ExistingUserControlItemSelected = False
+    Public Sub UcPreviousCallerInfo_GridSelectionHandler(strValue As Object)
+        State.ExistingUserControlItemSelected = False
         UcExistingCallerInfo.DisableGridSelection()
     End Sub
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         MasterPage.MessageController.Clear()    
         
         AddHandler  UcExistingCallerInfo.GridSelectionHandler, AddressOf  UcExistingCallerInfo_GridSelectionHandler
@@ -232,7 +232,7 @@ Public Class CaseRecordingForm
         CaseHeaderInformation(oCertificate)
 
     End Sub
-    Private Sub UpdateBreadCrum(ByVal entityNumber As String)
+    Private Sub UpdateBreadCrum(entityNumber As String)
         MasterPage.UsePageTabTitleInBreadCrum = False
         Select Case State.CasePurpose
             Case CasePurpose.CertificateInquiry
@@ -243,7 +243,7 @@ Public Class CaseRecordingForm
                 MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(Pagetitle) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage("CASE") + " " + entityNumber
         End Select
     End Sub
-    Private Sub CaseHeaderInformation(ByVal oCert As Certificate)        
+    Private Sub CaseHeaderInformation(oCert As Certificate)        
         If Not CaseBase.DisplaySecField(State.ExclSecFieldsDt, State.CallerAuthenticationNeeded, "ELP_CERT", "CUSTOMER_NAME", State.IsCallerAuthenticated) then            
             ucCaseHeaderInformation.CustomerName = string.Empty           
         Else
@@ -271,7 +271,7 @@ Public Class CaseRecordingForm
                 objList = CaseBase.LoadExclSecFieldsConfig(Guid.Empty,State.DealerId)
                 If objList.count > 0 then
                     exclSecFieldsDt= ConvertToDataTable(of CaseBase.ExclSecFields) (objList)
-                    If Not ExclSecFieldsdt Is nothing and ExclSecFieldsDt.Rows.Count > 0 then
+                    If ExclSecFieldsdt IsNot nothing and ExclSecFieldsDt.Rows.Count > 0 then
                         State.ExclSecFieldsDt = ExclSecFieldsDt
                         'State.IsCallerAuthenticated = False
                     End If
@@ -314,7 +314,7 @@ Public Class CaseRecordingForm
     '    Public Property Column_Name As String        
     'End Class
     
-    Private Sub LoadCaseInformationInHeader(ByVal caseNumber As String, ByVal companyCode As String) 
+    Private Sub LoadCaseInformationInHeader(caseNumber As String, companyCode As String) 
         Dim oCase As CaseBase = New CaseBase(caseNumber, companyCode)
         ucCaseHeaderInformation.CaseNumber = oCase.CaseNumber
         ucCaseHeaderInformation.CaseOpenDate = GetDateFormattedStringNullable(oCase.CaseOpenDate)
@@ -324,7 +324,7 @@ Public Class CaseRecordingForm
         ucCaseHeaderInformation.CallerName = oCase.InitialCallerName
     End Sub
 
-    Private Sub LoadCaseInformationInHeader(ByVal oCase As CaseBase)
+    Private Sub LoadCaseInformationInHeader(oCase As CaseBase)
         ucCaseHeaderInformation.CaseNumber = oCase.CaseNumber
         ucCaseHeaderInformation.CaseOpenDate = GetDateFormattedStringNullable(oCase.CaseOpenDate)
         ucCaseHeaderInformation.CaseStatus = CommonConfigManager.Current.ListManager.GetList("CASESTAT", Authentication.CurrentUser.LanguageCode).FirstOrDefault(Function(p) p.Code = oCase.CaseStatusCode).Translation
@@ -386,8 +386,8 @@ Public Class CaseRecordingForm
         End Try
     End Sub
     Private Sub ReturnBackToCallingPage()
-        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back,Me.State.CertificateId,Me.state.IsCallerAuthenticated)
-        Me.ReturnToCallingPage(retObj)        
+        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back,State.CertificateId,state.IsCallerAuthenticated)
+        ReturnToCallingPage(retObj)        
     End Sub
     Private Sub ThrowWsFaultExceptions(fex As FaultException)
         Log(fex)
@@ -395,7 +395,7 @@ Public Class CaseRecordingForm
     End Sub
 #End Region
 #Region "Button Clicks"
-    Protected Sub button_Cancel_Yes_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancelYes.Click
+    Protected Sub button_Cancel_Yes_Click(sender As Object, e As EventArgs) Handles btnCancelYes.Click
         Try
             ReturnBackToCallingPage()
         Catch ex As ThreadAbortException
@@ -403,7 +403,7 @@ Public Class CaseRecordingForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Protected Sub button_Continue_Click(ByVal sender As Object, ByVal e As EventArgs) Handles button_Continue.Click
+    Protected Sub button_Continue_Click(sender As Object, e As EventArgs) Handles button_Continue.Click
         Try
             Select Case mvClaimsRecording.ActiveViewIndex
                 Case CaseRecordingViewIndexCaller
@@ -447,7 +447,7 @@ Public Class CaseRecordingForm
         End If
 
         Dim callerinfo As New PhoneCaller()
-        If Me.State.ExistingUserControlItemSelected = True
+        If State.ExistingUserControlItemSelected = True
             UcExistingCallerInfo.GetCallerInformation()
 
             callerinfo.FirstName = UcExistingCallerInfo.FirstName
@@ -459,7 +459,7 @@ Public Class CaseRecordingForm
             callerinfo.EmailAddress = UcExistingCallerInfo.Email
             'For Optus , if Agent is CSR Enable the Authetication Sceen always.
 
-            If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
+            If State.ExclSecFieldsDt IsNot Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
                 callerinfo.IsAuthenticated = False                
             End If
 
@@ -476,7 +476,7 @@ Public Class CaseRecordingForm
             callerinfo.CultureCode = Thread.CurrentThread.CurrentCulture.ToString().ToUpper()
             callerinfo.EmailAddress = UcPreviousCallerInfo.Email
             'For Optus , if Agent is CSR Enable the Authetication Sceen always.
-            If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
+            If State.ExclSecFieldsDt IsNot Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
                 callerinfo.IsAuthenticated = False                
             End If
 
@@ -507,7 +507,7 @@ Public Class CaseRecordingForm
             Dim wsResponse = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, BaseCaseResponse)(
                 GetCaseWebAppGatewayClient(),
                 New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                Function(ByVal c As WebAppGatewayClient)
+                Function(c As WebAppGatewayClient)
                     Return c.BeginInteraction(wsRequest)
                                                                                                                  End Function)
 
@@ -551,7 +551,7 @@ Public Class CaseRecordingForm
         End If
 
         Dim callerinfo As New PhoneCaller()
-        If Me.State.ExistingUserControlItemSelected = True
+        If State.ExistingUserControlItemSelected = True
             UcExistingCallerInfo.GetCallerInformation()
 
             callerinfo.FirstName = UcExistingCallerInfo.FirstName
@@ -561,7 +561,7 @@ Public Class CaseRecordingForm
             callerinfo.ChannelCode = "CSR"
             callerinfo.CultureCode = Thread.CurrentThread.CurrentCulture.ToString().ToUpper()
             callerinfo.EmailAddress = UcExistingCallerInfo.Email    
-            If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
+            If State.ExclSecFieldsDt IsNot Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
                 callerinfo.IsAuthenticated = False                
             End If                    
 
@@ -577,7 +577,7 @@ Public Class CaseRecordingForm
             callerinfo.ChannelCode = "CSR"
             callerinfo.CultureCode = Thread.CurrentThread.CurrentCulture.ToString().ToUpper()
             callerinfo.EmailAddress = UcPreviousCallerInfo.Email
-            If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
+            If State.ExclSecFieldsDt IsNot Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
                 callerinfo.IsAuthenticated = False                
             End If
 
@@ -613,7 +613,7 @@ Public Class CaseRecordingForm
             Dim wsResponse = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, BaseCaseResponse)(
                 GetCaseWebAppGatewayClient(),
                 New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                Function(ByVal c As WebAppGatewayClient)
+                Function(c As WebAppGatewayClient)
                     Return c.CreateCase(wsRequest)
                                                                                                                  End Function)
 
@@ -660,7 +660,7 @@ Public Class CaseRecordingForm
             If State.SubmitWsBaseCaseResponse.GetType() Is GetType(AuthenticationResponse) Then
                 Dim authResponse As AuthenticationResponse = DirectCast(State.SubmitWsBaseCaseResponse, AuthenticationResponse)
                 If authResponse.CallerAuthenticationStatus = CallerAuthenticationStatusTypes.Success Then                    
-                    Me.State.IsCallerAuthenticated = True
+                    State.IsCallerAuthenticated = True
                     MoveToNextPage()
                 Else
                     ReturnBackToCallingPage()
@@ -696,7 +696,7 @@ Public Class CaseRecordingForm
                 Dim wsResponse = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, BaseCaseResponse)(
                     GetCaseWebAppGatewayClient(),
                     New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                    Function(ByVal c As WebAppGatewayClient)
+                    Function(c As WebAppGatewayClient)
                         Return c.Submit(wsRequest)
                                                                                                                      End Function)
 
@@ -779,7 +779,7 @@ Public Class CaseRecordingForm
                 Dim wsResponse = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, BaseCaseResponse)(
                     GetCaseWebAppGatewayClient(),
                     New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                    Function(ByVal c As WebAppGatewayClient)
+                    Function(c As WebAppGatewayClient)
                         Return c.SaveCase(wsRequest)
                                                                                                                      End Function)
 

@@ -22,7 +22,7 @@ Partial Class ClaimStatusByGroupForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -121,7 +121,7 @@ Partial Class ClaimStatusByGroupForm
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
             If CMD.Value Is Nothing Or CMD.Value = "" Then
@@ -130,51 +130,51 @@ Partial Class ClaimStatusByGroupForm
 
             permType = FormAuthorization.GetPermissions("CLAIMSTATUSBYGROUPFORM")
 
-            If Not Me.IsPostBack Then
-                ClearGridHeaders(Me.DataGridDropdowns)
-                ClearLabelErrSign(Me.TheDealerControl.CaptionLabel)
-                Me.ShowMissingTranslations(ErrorControl)
-                Me.MenuEnabled = False
-                Me.SetGridItemStyleColor(Me.DataGridDropdowns)
-                Me.SetHeaderControlStatus()
-                Me.SetButtonsState()
-                Me.PopulateAll()
-                Me.PopulateGrid()
+            If Not IsPostBack Then
+                ClearGridHeaders(DataGridDropdowns)
+                ClearLabelErrSign(TheDealerControl.CaptionLabel)
+                ShowMissingTranslations(ErrorControl)
+                MenuEnabled = False
+                SetGridItemStyleColor(DataGridDropdowns)
+                SetHeaderControlStatus()
+                SetButtonsState()
+                PopulateAll()
+                PopulateGrid()
             End If
 
-            EnableDisableControl(Me.btnSave)
-            EnableDisableControl(Me.btnCancel)
-            EnableDisableControl(Me.btnButtomNew_WRITE)
-            EnableDisableControl(Me.btnCopy_WRITE)
+            EnableDisableControl(btnSave)
+            EnableDisableControl(btnCancel)
+            EnableDisableControl(btnButtomNew_WRITE)
+            EnableDisableControl(btnCopy_WRITE)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorControl)
+            HandleErrors(ex, ErrorControl)
         End Try
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                Me.State.searchBy = CType(CType(CallingPar, ArrayList)(0), Integer)
-                Me.State.dealerId = CType(CType(CallingPar, ArrayList)(1), Guid)
-                Me.State.isNew = CType(CType(CallingPar, ArrayList)(2), String)
-                If Me.State.isNew = "Y" Then
-                    CMD.Value = Me.INIT_LOAD
+            If CallingParameters IsNot Nothing Then
+                State.searchBy = CType(CType(CallingPar, ArrayList)(0), Integer)
+                State.dealerId = CType(CType(CallingPar, ArrayList)(1), Guid)
+                State.isNew = CType(CType(CallingPar, ArrayList)(2), String)
+                If State.isNew = "Y" Then
+                    CMD.Value = INIT_LOAD
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorControl)
+            HandleErrors(ex, ErrorControl)
         End Try
 
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
-            Me.State.searchDV = Nothing
+            MenuEnabled = True
+            IsReturningFromChild = True
+            State.searchDV = Nothing
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorControl)
+            HandleErrors(ex, ErrorControl)
         End Try
     End Sub
 
@@ -185,8 +185,8 @@ Partial Class ClaimStatusByGroupForm
         Public dealerId As Guid = Guid.Empty
         Public ObjectType As TargetType
 
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal dealerId As Guid, ByVal objectType As TargetType, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
+        Public Sub New(LastOp As DetailPageCommand, dealerId As Guid, objectType As TargetType, hasDataChanged As Boolean)
+            LastOperation = LastOp
             Me.HasDataChanged = hasDataChanged
             Me.dealerId = dealerId
             Me.ObjectType = objectType
@@ -204,15 +204,15 @@ Partial Class ClaimStatusByGroupForm
 
 #Region "Datagrid Related "
 
-    Protected Sub ItemBound(ByVal source As Object, ByVal e As DataGridItemEventArgs) Handles DataGridDropdowns.ItemDataBound
+    Protected Sub ItemBound(source As Object, e As DataGridItemEventArgs) Handles DataGridDropdowns.ItemDataBound
 
         Try
             BaseItemBound(source, e)
 
             If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem Then
-                If (Not e.Item.Cells(Me.GRID_COL_ACTIVE_IDX).FindControl(Me.GRID_CTL_ACTIVE) Is Nothing) Then
-                    Dim YESNOdv As DataView = Me.State.YESNOdv
-                    Dim dropdownActive As DropDownList = CType(e.Item.Cells(Me.GRID_COL_ACTIVE_IDX).FindControl(Me.GRID_CTL_ACTIVE), DropDownList)
+                If (e.Item.Cells(GRID_COL_ACTIVE_IDX).FindControl(GRID_CTL_ACTIVE) IsNot Nothing) Then
+                    Dim YESNOdv As DataView = State.YESNOdv
+                    Dim dropdownActive As DropDownList = CType(e.Item.Cells(GRID_COL_ACTIVE_IDX).FindControl(GRID_CTL_ACTIVE), DropDownList)
                     'Me.BindListControlToDataView(dropdownActive, YESNOdv)
                     Dim YESNOList As ListItem() = CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode())
                     dropdownActive.Populate(YESNOList, New PopulateOptions() With
@@ -221,16 +221,16 @@ Partial Class ClaimStatusByGroupForm
                                            })
 
                     Dim drv As DataRowView = CType(e.Item.DataItem, DataRowView)
-                    If Not drv(DALObjects.ClaimStatusByGroupDAL.COL_NAME_ACTIVE_ID) Is DBNull.Value Then
+                    If drv(DALObjects.ClaimStatusByGroupDAL.COL_NAME_ACTIVE_ID) IsNot DBNull.Value Then
                         dropdownActive.SelectedValue = GuidControl.ByteArrayToGuid(CType(drv(DALObjects.ClaimStatusByGroupDAL.COL_NAME_ACTIVE_ID), Byte())).ToString()
                     End If
 
-                    EnableDisableControl(e.Item.Cells(Me.GRID_COL_ACTIVE_IDX).FindControl(Me.GRID_CTL_ACTIVE))
+                    EnableDisableControl(e.Item.Cells(GRID_COL_ACTIVE_IDX).FindControl(GRID_CTL_ACTIVE))
                 End If
 
-                If (Not e.Item.Cells(Me.GRID_COL_OWNER_IDX).FindControl(Me.GRID_CTL_OWNER) Is Nothing) Then
-                    Dim OWNERdv As DataView = Me.State.OWNERdv
-                    Dim dropdownOwner As DropDownList = CType(e.Item.Cells(Me.GRID_COL_OWNER_IDX).FindControl(Me.GRID_CTL_OWNER), DropDownList)
+                If (e.Item.Cells(GRID_COL_OWNER_IDX).FindControl(GRID_CTL_OWNER) IsNot Nothing) Then
+                    Dim OWNERdv As DataView = State.OWNERdv
+                    Dim dropdownOwner As DropDownList = CType(e.Item.Cells(GRID_COL_OWNER_IDX).FindControl(GRID_CTL_OWNER), DropDownList)
                     'Me.BindListControlToDataView(dropdownOwner, OWNERdv)
                     Dim ownerList As ListItem() = CommonConfigManager.Current.ListManager.GetList("EXTOWN", Thread.CurrentPrincipal.GetLanguageCode())
                     dropdownOwner.Populate(ownerList, New PopulateOptions() With
@@ -239,16 +239,16 @@ Partial Class ClaimStatusByGroupForm
                                            })
 
                     Dim drv As DataRowView = CType(e.Item.DataItem, DataRowView)
-                    If Not drv(DALObjects.ClaimStatusByGroupDAL.COL_NAME_OWNER_ID) Is DBNull.Value Then
+                    If drv(DALObjects.ClaimStatusByGroupDAL.COL_NAME_OWNER_ID) IsNot DBNull.Value Then
                         dropdownOwner.SelectedValue = GuidControl.ByteArrayToGuid(CType(drv(DALObjects.ClaimStatusByGroupDAL.COL_NAME_OWNER_ID), Byte())).ToString()
                     End If
 
-                    EnableDisableControl(e.Item.Cells(Me.GRID_COL_OWNER_IDX).FindControl(Me.GRID_CTL_OWNER))
+                    EnableDisableControl(e.Item.Cells(GRID_COL_OWNER_IDX).FindControl(GRID_CTL_OWNER))
                 End If
 
-                If (Not e.Item.Cells(Me.GRID_COL_SKIPPING_ALLOWED_IDX).FindControl(Me.GRID_CTL_SKIPPING_ALLOWED) Is Nothing) Then
-                    Dim YESNOdv As DataView = Me.State.YESNOdv
-                    Dim dropdownSkippingAllowed As DropDownList = CType(e.Item.Cells(Me.GRID_COL_SKIPPING_ALLOWED_IDX).FindControl(Me.GRID_CTL_SKIPPING_ALLOWED), DropDownList)
+                If (e.Item.Cells(GRID_COL_SKIPPING_ALLOWED_IDX).FindControl(GRID_CTL_SKIPPING_ALLOWED) IsNot Nothing) Then
+                    Dim YESNOdv As DataView = State.YESNOdv
+                    Dim dropdownSkippingAllowed As DropDownList = CType(e.Item.Cells(GRID_COL_SKIPPING_ALLOWED_IDX).FindControl(GRID_CTL_SKIPPING_ALLOWED), DropDownList)
                     ' Me.BindListControlToDataView(dropdownSkippingAllowed, YESNOdv)
                     Dim YESNOList As ListItem() = CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode())
                     dropdownSkippingAllowed.Populate(YESNOList, New PopulateOptions() With
@@ -257,79 +257,79 @@ Partial Class ClaimStatusByGroupForm
                                            })
 
                     Dim drv As DataRowView = CType(e.Item.DataItem, DataRowView)
-                    If Not drv(DALObjects.ClaimStatusByGroupDAL.COL_NAME_SKIPPING_ALLOWED_ID) Is DBNull.Value Then
+                    If drv(DALObjects.ClaimStatusByGroupDAL.COL_NAME_SKIPPING_ALLOWED_ID) IsNot DBNull.Value Then
                         dropdownSkippingAllowed.SelectedValue = GuidControl.ByteArrayToGuid(CType(drv(DALObjects.ClaimStatusByGroupDAL.COL_NAME_SKIPPING_ALLOWED_ID), Byte())).ToString()
                     End If
 
-                    EnableDisableControl(e.Item.Cells(Me.GRID_COL_SKIPPING_ALLOWED_IDX).FindControl(Me.GRID_CTL_SKIPPING_ALLOWED))
+                    EnableDisableControl(e.Item.Cells(GRID_COL_SKIPPING_ALLOWED_IDX).FindControl(GRID_CTL_SKIPPING_ALLOWED))
                 End If
 
-                If (Not e.Item.Cells(Me.GRID_COL_STATUS_ORDER_IDX).FindControl(Me.GRID_CTL_STATUS_ORDER) Is Nothing) Then
-                    EnableDisableControl(e.Item.Cells(Me.GRID_COL_STATUS_ORDER_IDX).FindControl(Me.GRID_CTL_STATUS_ORDER))
+                If (e.Item.Cells(GRID_COL_STATUS_ORDER_IDX).FindControl(GRID_CTL_STATUS_ORDER) IsNot Nothing) Then
+                    EnableDisableControl(e.Item.Cells(GRID_COL_STATUS_ORDER_IDX).FindControl(GRID_CTL_STATUS_ORDER))
                 End If
 
-                If (Not e.Item.Cells(Me.GRID_COL_SELECTED_CHK_IDX).FindControl(Me.GRID_CTL_SELECTED_CHKBOX) Is Nothing) Then
-                    EnableDisableControl(e.Item.Cells(Me.GRID_COL_SELECTED_CHK_IDX).FindControl(Me.GRID_CTL_SELECTED_CHKBOX))
+                If (e.Item.Cells(GRID_COL_SELECTED_CHK_IDX).FindControl(GRID_CTL_SELECTED_CHKBOX) IsNot Nothing) Then
+                    EnableDisableControl(e.Item.Cells(GRID_COL_SELECTED_CHK_IDX).FindControl(GRID_CTL_SELECTED_CHKBOX))
                 End If
 
-                If (Not e.Item.Cells(Me.GRID_COL_GROUP_NUMBER_IDX).FindControl(Me.GRID_CTL_GROUP_NUMBER) Is Nothing) Then
-                    EnableDisableControl(e.Item.Cells(Me.GRID_COL_GROUP_NUMBER_IDX).FindControl(Me.GRID_CTL_GROUP_NUMBER))
+                If (e.Item.Cells(GRID_COL_GROUP_NUMBER_IDX).FindControl(GRID_CTL_GROUP_NUMBER) IsNot Nothing) Then
+                    EnableDisableControl(e.Item.Cells(GRID_COL_GROUP_NUMBER_IDX).FindControl(GRID_CTL_GROUP_NUMBER))
                 End If
 
-                If (Not e.Item.Cells(Me.GRID_COL_TURNAROUND_DAYS_IDX).FindControl(Me.GRID_CTL_TURNAROUND_DAYS) Is Nothing) Then
-                    EnableDisableControl(e.Item.Cells(Me.GRID_COL_TURNAROUND_DAYS_IDX).FindControl(Me.GRID_CTL_TURNAROUND_DAYS))
+                If (e.Item.Cells(GRID_COL_TURNAROUND_DAYS_IDX).FindControl(GRID_CTL_TURNAROUND_DAYS) IsNot Nothing) Then
+                    EnableDisableControl(e.Item.Cells(GRID_COL_TURNAROUND_DAYS_IDX).FindControl(GRID_CTL_TURNAROUND_DAYS))
                 End If
 
-                If (Not e.Item.Cells(Me.GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(Me.GRID_CTL_TAT_REMINDER_HOURS) Is Nothing) Then
-                    EnableDisableControl(e.Item.Cells(Me.GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(Me.GRID_CTL_TAT_REMINDER_HOURS))
+                If (e.Item.Cells(GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(GRID_CTL_TAT_REMINDER_HOURS) IsNot Nothing) Then
+                    EnableDisableControl(e.Item.Cells(GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(GRID_CTL_TAT_REMINDER_HOURS))
                 End If
 
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorControl)
+            HandleErrors(ex, ErrorControl)
         End Try
     End Sub
 
-    Protected Sub EnableDisableControl(ByVal ctl As System.Web.UI.Control)
+    Protected Sub EnableDisableControl(ctl As System.Web.UI.Control)
         If Not (permType = FormAuthorization.enumPermissionType.EDIT) Then
             ControlMgr.SetEnableControl(Me, CType(ctl, System.Web.UI.WebControls.WebControl), False)
         End If
     End Sub
 
-    Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+    Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
         Handles multipleDropControl.SelectedDropChanged
         Try
-            Me.State.searchBy = Me.SearchByType.Dealer
-            Me.State.dealerId = TheDealerControl.SelectedGuid
+            State.searchBy = Me.SearchByType.Dealer
+            State.dealerId = TheDealerControl.SelectedGuid
 
-            If CMD.Value <> Me.COPY_CLAIM_STATUS_GROUP Then
-                CMD.Value = Me.INIT_LOAD
-                Me.State.searchDV = Nothing
+            If CMD.Value <> COPY_CLAIM_STATUS_GROUP Then
+                CMD.Value = INIT_LOAD
+                State.searchDV = Nothing
                 PopulateGrid()
                 SetButtonsState()
-                Me.State.isNew = "Y"
+                State.isNew = "Y"
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorControl)
+            HandleErrors(ex, ErrorControl)
         End Try
     End Sub
 
-    Public Sub DataGridDropdowns_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles DataGridDropdowns.ItemCommand
+    Public Sub DataGridDropdowns_ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles DataGridDropdowns.ItemCommand
     End Sub
 
-    Protected Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+    Protected Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub DataGridDropdowns_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGridDropdowns.PageIndexChanged
+    Private Sub DataGridDropdowns_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGridDropdowns.PageIndexChanged
         Try
-            Me.DataGridDropdowns.CurrentPageIndex = e.NewPageIndex
-            Me.State.PageIndex = Me.DataGridDropdowns.CurrentPageIndex
+            DataGridDropdowns.CurrentPageIndex = e.NewPageIndex
+            State.PageIndex = DataGridDropdowns.CurrentPageIndex
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorControl)
+            HandleErrors(ex, ErrorControl)
         End Try
     End Sub
 
@@ -347,29 +347,29 @@ Partial Class ClaimStatusByGroupForm
         dtStatusOrder.Columns.Add("StatusOrder")
 
         ErrorControl.Clear_Hide()
-        ClearGridHeaders(Me.DataGridDropdowns)
-        ClearLabelErrSign(Me.TheDealerControl.CaptionLabel)
+        ClearGridHeaders(DataGridDropdowns)
+        ClearLabelErrSign(TheDealerControl.CaptionLabel)
 
         Try
-            If Me.State.searchBy = ClaimStatusByGroupForm.SearchByType.Dealer AndAlso Me.State.dealerId.Equals(Guid.Empty) Then
-                ElitaPlusPage.SetLabelError(Me.TheDealerControl.CaptionLabel)
+            If State.searchBy = ClaimStatusByGroupForm.SearchByType.Dealer AndAlso State.dealerId.Equals(Guid.Empty) Then
+                ElitaPlusPage.SetLabelError(TheDealerControl.CaptionLabel)
                 emptyDealerId = True
                 Throw New GUIException(Message.MSG_DEALER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_REQUIRED)
             End If
 
-            For i = 0 To Me.DataGridDropdowns.Items.Count - 1
+            For i = 0 To DataGridDropdowns.Items.Count - 1
                 Dim statusOrderInt As Integer
                 Dim groupNumberInt As Integer
-                Dim statusOrder As String = CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_STATUS_ORDER_IDX).FindControl(Me.GRID_CTL_STATUS_ORDER), TextBox).Text, String)
-                Dim listItemId As String = CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_SELECTED_IDX).FindControl(Me.GRID_CTL_SELECTED_LISTITEMID), Label).Text
-                Dim selected As Boolean = CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_SELECTED_CHK_IDX).FindControl(Me.GRID_CTL_SELECTED_CHKBOX), CheckBox).Checked
-                Dim ownerId As Guid = Me.GetSelectedItem(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_OWNER_IDX).FindControl(Me.GRID_CTL_OWNER), DropDownList))
-                Dim skippingAllowedId As Guid = Me.GetSelectedItem(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_SKIPPING_ALLOWED_IDX).FindControl(Me.GRID_CTL_SKIPPING_ALLOWED), DropDownList))
-                Dim activeId As Guid = Me.GetSelectedItem(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_ACTIVE_IDX).FindControl(Me.GRID_CTL_ACTIVE), DropDownList))
-                Dim isNew As String = CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_ISNEW_IDX).FindControl(Me.GRID_CTL_ISNEW), Label).Text
-                Dim groupNumber As String = CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_GROUP_NUMBER_IDX).FindControl(Me.GRID_CTL_GROUP_NUMBER), TextBox).Text, String)
-                Dim turnaroundDays As String = CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_TURNAROUND_DAYS_IDX).FindControl(Me.GRID_CTL_TURNAROUND_DAYS), TextBox).Text, String)
-                Dim tatReminderHours As String = CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(Me.GRID_CTL_TAT_REMINDER_HOURS), TextBox).Text, String)
+                Dim statusOrder As String = CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_STATUS_ORDER_IDX).FindControl(GRID_CTL_STATUS_ORDER), TextBox).Text, String)
+                Dim listItemId As String = CType(DataGridDropdowns.Items(i).Cells(GRID_COL_SELECTED_IDX).FindControl(GRID_CTL_SELECTED_LISTITEMID), Label).Text
+                Dim selected As Boolean = CType(DataGridDropdowns.Items(i).Cells(GRID_COL_SELECTED_CHK_IDX).FindControl(GRID_CTL_SELECTED_CHKBOX), CheckBox).Checked
+                Dim ownerId As Guid = GetSelectedItem(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_OWNER_IDX).FindControl(GRID_CTL_OWNER), DropDownList))
+                Dim skippingAllowedId As Guid = GetSelectedItem(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_SKIPPING_ALLOWED_IDX).FindControl(GRID_CTL_SKIPPING_ALLOWED), DropDownList))
+                Dim activeId As Guid = GetSelectedItem(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_ACTIVE_IDX).FindControl(GRID_CTL_ACTIVE), DropDownList))
+                Dim isNew As String = CType(DataGridDropdowns.Items(i).Cells(GRID_COL_ISNEW_IDX).FindControl(GRID_CTL_ISNEW), Label).Text
+                Dim groupNumber As String = CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_GROUP_NUMBER_IDX).FindControl(GRID_CTL_GROUP_NUMBER), TextBox).Text, String)
+                Dim turnaroundDays As String = CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_TURNAROUND_DAYS_IDX).FindControl(GRID_CTL_TURNAROUND_DAYS), TextBox).Text, String)
+                Dim tatReminderHours As String = CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(GRID_CTL_TAT_REMINDER_HOURS), TextBox).Text, String)
                
 
                 Dim drStatusOrder As DataRow = dtStatusOrder.NewRow()
@@ -380,53 +380,53 @@ Partial Class ClaimStatusByGroupForm
                     ' Checkbox selected
                     selectedCount = selectedCount + 1
 
-                    If (Not isNew Is Nothing AndAlso isNew = "N") AndAlso CMD.Value <> Me.COPY_CLAIM_STATUS_GROUP Then
+                    If (isNew IsNot Nothing AndAlso isNew = "N") AndAlso CMD.Value <> COPY_CLAIM_STATUS_GROUP Then
                         ' Record exist for update
 
-                        Dim dv As DataView = Me.State.searchDV
+                        Dim dv As DataView = State.searchDV
                         Dim dr As DataRowView = GetDataRow(dv, listItemId)
                         Dim isDirty As Boolean = False
 
-                        If Not dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_STATUS_ORDER) Is DBNull.Value Then
-                            isDirty = isDirty Or (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_STATUS_ORDER), String) <> (CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_STATUS_ORDER_IDX).FindControl(Me.GRID_CTL_STATUS_ORDER), TextBox).Text, String)))
+                        If dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_STATUS_ORDER) IsNot DBNull.Value Then
+                            isDirty = isDirty Or (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_STATUS_ORDER), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_STATUS_ORDER_IDX).FindControl(GRID_CTL_STATUS_ORDER), TextBox).Text, String)))
                         Else
-                            isDirty = isDirty Or ("" <> (CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_STATUS_ORDER_IDX).FindControl(Me.GRID_CTL_STATUS_ORDER), TextBox).Text, String)))
+                            isDirty = isDirty Or ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_STATUS_ORDER_IDX).FindControl(GRID_CTL_STATUS_ORDER), TextBox).Text, String)))
                         End If
 
-                        If Not dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_OWNER_ID) Is DBNull.Value Then
+                        If dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_OWNER_ID) IsNot DBNull.Value Then
                             isDirty = isDirty Or Not ((New Guid(CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_OWNER_ID), Byte()))).Equals(ownerId))
                         Else
                             isDirty = isDirty Or Not ((Guid.Empty).Equals(ownerId))
                         End If
 
-                        If Not dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_SKIPPING_ALLOWED_ID) Is DBNull.Value Then
+                        If dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_SKIPPING_ALLOWED_ID) IsNot DBNull.Value Then
                             isDirty = isDirty Or Not ((New Guid(CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_SKIPPING_ALLOWED_ID), Byte()))).Equals(skippingAllowedId))
                         Else
                             isDirty = isDirty Or Not ((Guid.Empty).Equals(skippingAllowedId))
                         End If
 
-                        If Not dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_ACTIVE_ID) Is DBNull.Value Then
+                        If dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_ACTIVE_ID) IsNot DBNull.Value Then
                             isDirty = isDirty Or Not ((New Guid(CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_ACTIVE_ID), Byte()))).Equals(activeId))
                         Else
                             isDirty = isDirty Or Not ((Guid.Empty).Equals(activeId))
                         End If
 
-                        If Not dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_GROUP_NUMBER) Is DBNull.Value Then
-                            isDirty = isDirty Or (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_GROUP_NUMBER), String) <> (CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_GROUP_NUMBER_IDX).FindControl(Me.GRID_CTL_GROUP_NUMBER), TextBox).Text, String)))
+                        If dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_GROUP_NUMBER) IsNot DBNull.Value Then
+                            isDirty = isDirty Or (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_GROUP_NUMBER), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_GROUP_NUMBER_IDX).FindControl(GRID_CTL_GROUP_NUMBER), TextBox).Text, String)))
                         Else
-                            isDirty = isDirty Or ("" <> (CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_GROUP_NUMBER_IDX).FindControl(Me.GRID_CTL_GROUP_NUMBER), TextBox).Text, String)))
+                            isDirty = isDirty Or ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_GROUP_NUMBER_IDX).FindControl(GRID_CTL_GROUP_NUMBER), TextBox).Text, String)))
                         End If
 
-                        If Not dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TURNAROUND_DAYS) Is DBNull.Value Then
-                            isDirty = isDirty Or (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TURNAROUND_DAYS), String) <> (CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_TURNAROUND_DAYS_IDX).FindControl(Me.GRID_CTL_TURNAROUND_DAYS), TextBox).Text, String)))
+                        If dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TURNAROUND_DAYS) IsNot DBNull.Value Then
+                            isDirty = isDirty Or (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TURNAROUND_DAYS), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_TURNAROUND_DAYS_IDX).FindControl(GRID_CTL_TURNAROUND_DAYS), TextBox).Text, String)))
                         Else
-                            isDirty = isDirty Or ("" <> (CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_TURNAROUND_DAYS_IDX).FindControl(Me.GRID_CTL_TURNAROUND_DAYS), TextBox).Text, String)))
+                            isDirty = isDirty Or ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_TURNAROUND_DAYS_IDX).FindControl(GRID_CTL_TURNAROUND_DAYS), TextBox).Text, String)))
                         End If
 
-                        If Not dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TAT_REMINDER_HOURS) Is DBNull.Value Then
-                            isDirty = isDirty Or (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TAT_REMINDER_HOURS), String) <> (CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(Me.GRID_CTL_TAT_REMINDER_HOURS), TextBox).Text, String)))
+                        If dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TAT_REMINDER_HOURS) IsNot DBNull.Value Then
+                            isDirty = isDirty Or (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TAT_REMINDER_HOURS), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(GRID_CTL_TAT_REMINDER_HOURS), TextBox).Text, String)))
                         Else
-                            isDirty = isDirty Or ("" <> (CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(Me.GRID_CTL_TAT_REMINDER_HOURS), TextBox).Text, String)))
+                            isDirty = isDirty Or ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(GRID_CTL_TAT_REMINDER_HOURS), TextBox).Text, String)))
                         End If
 
                         If isDirty Then
@@ -446,7 +446,7 @@ Partial Class ClaimStatusByGroupForm
                                 statusOrderInt = 0
                             End If
 
-                            If Not groupNumber Is String.Empty Then
+                            If groupNumber IsNot String.Empty Then
                                 Integer.TryParse(groupNumber, groupNumberInt)
                                 curBO.GroupNumber = groupNumberInt
                             Else
@@ -467,13 +467,13 @@ Partial Class ClaimStatusByGroupForm
                             curBO.SkippingAllowedId = skippingAllowedId
 
 
-                            Me.BindBOPropertyToGridHeader(curBO, "OwnerId", Me.DataGridDropdowns.Columns(Me.GRID_COL_OWNER_IDX))
-                            Me.BindBOPropertyToGridHeader(curBO, "SkippingAllowedId", Me.DataGridDropdowns.Columns(Me.GRID_COL_SKIPPING_ALLOWED_IDX))
-                            Me.BindBOPropertyToGridHeader(curBO, "StatusOrder", Me.DataGridDropdowns.Columns(Me.GRID_COL_STATUS_ORDER_IDX))
-                            Me.BindBOPropertyToGridHeader(curBO, "ActiveId", Me.DataGridDropdowns.Columns(Me.GRID_COL_ACTIVE_IDX))
-                            Me.BindBOPropertyToGridHeader(curBO, "GroupNumber", Me.DataGridDropdowns.Columns(Me.GRID_COL_GROUP_NUMBER_IDX))
-                            Me.BindBOPropertyToGridHeader(curBO, "TurnaroundDays", Me.DataGridDropdowns.Columns(Me.GRID_COL_TURNAROUND_DAYS_IDX))
-                            Me.BindBOPropertyToGridHeader(curBO, "TurnaroundTimeReminderHours", Me.DataGridDropdowns.Columns(Me.GRID_COL_TAT_REMINDER_HOURS_IDX))
+                            BindBOPropertyToGridHeader(curBO, "OwnerId", DataGridDropdowns.Columns(GRID_COL_OWNER_IDX))
+                            BindBOPropertyToGridHeader(curBO, "SkippingAllowedId", DataGridDropdowns.Columns(GRID_COL_SKIPPING_ALLOWED_IDX))
+                            BindBOPropertyToGridHeader(curBO, "StatusOrder", DataGridDropdowns.Columns(GRID_COL_STATUS_ORDER_IDX))
+                            BindBOPropertyToGridHeader(curBO, "ActiveId", DataGridDropdowns.Columns(GRID_COL_ACTIVE_IDX))
+                            BindBOPropertyToGridHeader(curBO, "GroupNumber", DataGridDropdowns.Columns(GRID_COL_GROUP_NUMBER_IDX))
+                            BindBOPropertyToGridHeader(curBO, "TurnaroundDays", DataGridDropdowns.Columns(GRID_COL_TURNAROUND_DAYS_IDX))
+                            BindBOPropertyToGridHeader(curBO, "TurnaroundTimeReminderHours", DataGridDropdowns.Columns(GRID_COL_TAT_REMINDER_HOURS_IDX))
 
                             curBO.Validate()
 
@@ -486,9 +486,9 @@ Partial Class ClaimStatusByGroupForm
                         Dim curBO As ClaimStatusByGroup
                         curBO = GetClaimStatusByGroupBO(isFirstBO, Guid.Empty)
 
-                        If Me.State.searchBy = DALObjects.ClaimStatusByGroupDAL.SearchByType.Dealer Then
-                            curBO.DealerId = Me.State.dealerId
-                        ElseIf Me.State.searchBy = DALObjects.ClaimStatusByGroupDAL.SearchByType.CompanyGroup Then
+                        If State.searchBy = DALObjects.ClaimStatusByGroupDAL.SearchByType.Dealer Then
+                            curBO.DealerId = State.dealerId
+                        ElseIf State.searchBy = DALObjects.ClaimStatusByGroupDAL.SearchByType.CompanyGroup Then
                             curBO.CompanyGroupId = Authentication.CurrentUser.CompanyGroup.Id
                         End If
 
@@ -500,7 +500,7 @@ Partial Class ClaimStatusByGroupForm
                             statusOrderInt = 0
                         End If
 
-                        If Not groupNumber Is String.Empty Then
+                        If groupNumber IsNot String.Empty Then
                             Integer.TryParse(groupNumber, groupNumberInt)
                         End If
 
@@ -519,13 +519,13 @@ Partial Class ClaimStatusByGroupForm
                         curBO.SkippingAllowedId = skippingAllowedId
                         curBO.GroupNumber = groupNumberInt
 
-                        Me.BindBOPropertyToGridHeader(curBO, "OwnerId", Me.DataGridDropdowns.Columns(Me.GRID_COL_OWNER_IDX))
-                        Me.BindBOPropertyToGridHeader(curBO, "SkippingAllowedId", Me.DataGridDropdowns.Columns(Me.GRID_COL_SKIPPING_ALLOWED_IDX))
-                        Me.BindBOPropertyToGridHeader(curBO, "StatusOrder", Me.DataGridDropdowns.Columns(Me.GRID_COL_STATUS_ORDER_IDX))
-                        Me.BindBOPropertyToGridHeader(curBO, "ActiveId", Me.DataGridDropdowns.Columns(Me.GRID_COL_ACTIVE_IDX))
-                        Me.BindBOPropertyToGridHeader(curBO, "GroupNumber", Me.DataGridDropdowns.Columns(Me.GRID_COL_GROUP_NUMBER_IDX))
-                        Me.BindBOPropertyToGridHeader(curBO, "TurnaroundDays", Me.DataGridDropdowns.Columns(Me.GRID_COL_TURNAROUND_DAYS_IDX))
-                        Me.BindBOPropertyToGridHeader(curBO, "TurnaroundTimeReminderHours", Me.DataGridDropdowns.Columns(Me.GRID_COL_TAT_REMINDER_HOURS_IDX))
+                        BindBOPropertyToGridHeader(curBO, "OwnerId", DataGridDropdowns.Columns(GRID_COL_OWNER_IDX))
+                        BindBOPropertyToGridHeader(curBO, "SkippingAllowedId", DataGridDropdowns.Columns(GRID_COL_SKIPPING_ALLOWED_IDX))
+                        BindBOPropertyToGridHeader(curBO, "StatusOrder", DataGridDropdowns.Columns(GRID_COL_STATUS_ORDER_IDX))
+                        BindBOPropertyToGridHeader(curBO, "ActiveId", DataGridDropdowns.Columns(GRID_COL_ACTIVE_IDX))
+                        BindBOPropertyToGridHeader(curBO, "GroupNumber", DataGridDropdowns.Columns(GRID_COL_GROUP_NUMBER_IDX))
+                        BindBOPropertyToGridHeader(curBO, "TurnaroundDays", DataGridDropdowns.Columns(GRID_COL_TURNAROUND_DAYS_IDX))
+                        BindBOPropertyToGridHeader(curBO, "TurnaroundTimeReminderHours", DataGridDropdowns.Columns(GRID_COL_TAT_REMINDER_HOURS_IDX))
 
                         curBO.Validate()
                         DataChanged = True
@@ -535,12 +535,12 @@ Partial Class ClaimStatusByGroupForm
 
                 Else
                     ' Checkbox deselected
-                    If Not isNew Is Nothing AndAlso isNew = "N" Then
+                    If isNew IsNot Nothing AndAlso isNew = "N" Then
                         ' Record exist for deletion
-                        If ClaimStatusByGroup.IsDeletable(listItemId, Me.State.dealerId, Authentication.CurrentUser.CompanyGroup.Id, Me.State.searchBy) Then
+                        If ClaimStatusByGroup.IsDeletable(listItemId, State.dealerId, Authentication.CurrentUser.CompanyGroup.Id, State.searchBy) Then
                             ' Delete record
                             Dim curBO As ClaimStatusByGroup
-                            Dim dv As DataView = Me.State.searchDV
+                            Dim dv As DataView = State.searchDV
                             Dim drLocal As DataRowView = GetDataRow(dv, listItemId)
 
                             If drLocal(DALObjects.ClaimStatusByGroupDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID) Is DBNull.Value Then
@@ -549,13 +549,13 @@ Partial Class ClaimStatusByGroupForm
                                 curBO = GetClaimStatusByGroupBO(isFirstBO, New Guid(CType(drLocal(DALObjects.ClaimStatusByGroupDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID), Byte())))
                             End If
 
-                            Me.BindBOPropertyToGridHeader(curBO, "OwnerId", Me.DataGridDropdowns.Columns(Me.GRID_COL_OWNER_IDX))
-                            Me.BindBOPropertyToGridHeader(curBO, "SkippingAllowedId", Me.DataGridDropdowns.Columns(Me.GRID_COL_SKIPPING_ALLOWED_IDX))
-                            Me.BindBOPropertyToGridHeader(curBO, "StatusOrder", Me.DataGridDropdowns.Columns(Me.GRID_COL_STATUS_ORDER_IDX))
-                            Me.BindBOPropertyToGridHeader(curBO, "ActiveId", Me.DataGridDropdowns.Columns(Me.GRID_COL_ACTIVE_IDX))
-                            Me.BindBOPropertyToGridHeader(curBO, "GroupNumber", Me.DataGridDropdowns.Columns(Me.GRID_COL_GROUP_NUMBER_IDX))
-                            Me.BindBOPropertyToGridHeader(curBO, "TurnaroundDays", Me.DataGridDropdowns.Columns(Me.GRID_COL_TURNAROUND_DAYS_IDX))
-                            Me.BindBOPropertyToGridHeader(curBO, "TurnaroundTimeReminderHours", Me.DataGridDropdowns.Columns(Me.GRID_COL_TAT_REMINDER_HOURS_IDX))
+                            BindBOPropertyToGridHeader(curBO, "OwnerId", DataGridDropdowns.Columns(GRID_COL_OWNER_IDX))
+                            BindBOPropertyToGridHeader(curBO, "SkippingAllowedId", DataGridDropdowns.Columns(GRID_COL_SKIPPING_ALLOWED_IDX))
+                            BindBOPropertyToGridHeader(curBO, "StatusOrder", DataGridDropdowns.Columns(GRID_COL_STATUS_ORDER_IDX))
+                            BindBOPropertyToGridHeader(curBO, "ActiveId", DataGridDropdowns.Columns(GRID_COL_ACTIVE_IDX))
+                            BindBOPropertyToGridHeader(curBO, "GroupNumber", DataGridDropdowns.Columns(GRID_COL_GROUP_NUMBER_IDX))
+                            BindBOPropertyToGridHeader(curBO, "TurnaroundDays", DataGridDropdowns.Columns(GRID_COL_TURNAROUND_DAYS_IDX))
+                            BindBOPropertyToGridHeader(curBO, "TurnaroundTimeReminderHours", DataGridDropdowns.Columns(GRID_COL_TAT_REMINDER_HOURS_IDX))
 
                             curBO.Validate()
                             curBO.Delete()
@@ -565,46 +565,46 @@ Partial Class ClaimStatusByGroupForm
 
                         Else
                             ' Show error
-                            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, New Guid(listItemId), Me.DataGridDropdowns, Me.State.PageIndex)
+                            SetPageAndSelectedIndexFromGuid(State.searchDV, New Guid(listItemId), DataGridDropdowns, State.PageIndex)
                             Throw New GUIException(ERR_CLAIM_STATUS_GROUP_IN_USED, ERR_CLAIM_STATUS_GROUP_IN_USED)
                         End If
                     Else
-                        If (Not statusOrder Is Nothing AndAlso statusOrder <> "") Or Not ownerId.Equals(Guid.Empty) Or Not skippingAllowedId.Equals(Guid.Empty) Or Not activeId.Equals(Guid.Empty) Then
+                        If (statusOrder IsNot Nothing AndAlso statusOrder <> "") Or Not ownerId.Equals(Guid.Empty) Or Not skippingAllowedId.Equals(Guid.Empty) Or Not activeId.Equals(Guid.Empty) Then
                             ' Show error
-                            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, New Guid(listItemId), Me.DataGridDropdowns, Me.State.PageIndex)
+                            SetPageAndSelectedIndexFromGuid(State.searchDV, New Guid(listItemId), DataGridDropdowns, State.PageIndex)
                             Throw New GUIException(ERR_CLAIM_STATUS_GROUP_NOT_CHECKED, ERR_CLAIM_STATUS_GROUP_NOT_CHECKED)
                         End If
                     End If
                 End If
             Next
 
-            If selectedCount = 0 AndAlso Me.State.isNew = "Y" Then
+            If selectedCount = 0 AndAlso State.isNew = "Y" Then
                 Throw New GUIException(MSG_NO_RECORD_SELECTED, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_NO_RECORD_SELECTED)
             Else
                 If DataChanged Then
                     csbgFamilyBO.Save()
-                    Me.State.isNew = "N"
-                    Me.CMD.Value = ""
-                    Me.State.searchDV = Nothing
+                    State.isNew = "N"
+                    CMD.Value = ""
+                    State.searchDV = Nothing
                     PopulateGrid()
-                    Me.AddInfoMsg(Me.MSG_RECORD_SAVED_OK)
+                    AddInfoMsg(MSG_RECORD_SAVED_OK)
                 Else
-                    Me.AddInfoMsg(Me.MSG_RECORD_NOT_SAVED)
+                    AddInfoMsg(MSG_RECORD_NOT_SAVED)
                 End If
             End If
 
             csbgFamilyBO = Nothing
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorControl)
+            HandleErrors(ex, ErrorControl)
             If emptyDealerId Then
-                Me.PopulateDealer()
+                PopulateDealer()
             End If
         End Try
 
     End Sub
 
-    Private Function GetClaimStatusByGroupBO(ByVal isFirstBO As Boolean, ByVal claimStatusGroupId As Guid) As ClaimStatusByGroup
+    Private Function GetClaimStatusByGroupBO(isFirstBO As Boolean, claimStatusGroupId As Guid) As ClaimStatusByGroup
 
         If isFirstBO Then
             If claimStatusGroupId.Equals(Guid.Empty) Then
@@ -621,7 +621,7 @@ Partial Class ClaimStatusByGroupForm
 
     End Function
 
-    Public Function GetDataRow(ByVal dv As DataView, ByVal listItemId As String) As DataRowView
+    Public Function GetDataRow(dv As DataView, listItemId As String) As DataRowView
         Dim dr As DataRowView = Nothing
         Dim retDr As DataRowView = Nothing
         Dim i As Integer = 0
@@ -637,64 +637,64 @@ Partial Class ClaimStatusByGroupForm
         Return retDr
     End Function
 
-    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+    Private Sub btnSave_Click(sender As System.Object, e As System.EventArgs) Handles btnSave.Click
         Try
-            Me.ErrorControl.Clear_Hide()
-            Me.SaveChanges()
-            Me.ErrorControl.Show()
+            ErrorControl.Clear_Hide()
+            SaveChanges()
+            ErrorControl.Show()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorControl)
+            HandleErrors(ex, ErrorControl)
         End Try
     End Sub
 
-    Private Sub btnButtomNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnButtomNew_WRITE.Click
+    Private Sub btnButtomNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnButtomNew_WRITE.Click
         Try
-            Me.State.searchBy = Me.SearchByType.Dealer
-            CMD.Value = Me.NEW_CLAIM_STATUS_GROUP
-            Me.State.dealerId = Guid.Empty
-            Me.State.isNew = "Y"
-            Me.State.searchDV = Nothing
-            Me.SetHeaderControlStatus()
+            State.searchBy = Me.SearchByType.Dealer
+            CMD.Value = NEW_CLAIM_STATUS_GROUP
+            State.dealerId = Guid.Empty
+            State.isNew = "Y"
+            State.searchDV = Nothing
+            SetHeaderControlStatus()
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorControl)
+            HandleErrors(ex, ErrorControl)
         End Try
     End Sub
 
-    Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
         Try
-            CMD.Value = Me.COPY_CLAIM_STATUS_GROUP
-            CopyDealerId.Value = GuidControl.GuidToHexString(Me.State.dealerId)
-            Me.State.isNew = "Y"
-            Me.State.dealerId = Guid.Empty
+            CMD.Value = COPY_CLAIM_STATUS_GROUP
+            CopyDealerId.Value = GuidControl.GuidToHexString(State.dealerId)
+            State.isNew = "Y"
+            State.dealerId = Guid.Empty
             SetHeaderControlStatus()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorControl)
+            HandleErrors(ex, ErrorControl)
         End Try
     End Sub
 
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(sender As System.Object, e As System.EventArgs) Handles btnCancel.Click
         Try
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorControl)
+            HandleErrors(ex, ErrorControl)
         End Try
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.Back(ElitaPlusPage.DetailPageCommand.Back)
+            Back(ElitaPlusPage.DetailPageCommand.Back)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorControl)
+            HandleErrors(ex, ErrorControl)
         End Try
     End Sub
 
-    Protected Sub Back(ByVal cmd As ElitaPlusPage.DetailPageCommand)
-        If Me.State.searchBy = SearchByType.CompanyGroup Then
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Guid.Empty, ReturnType.TargetType.CompanyGroup, False))
+    Protected Sub Back(cmd As ElitaPlusPage.DetailPageCommand)
+        If State.searchBy = SearchByType.CompanyGroup Then
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Guid.Empty, ReturnType.TargetType.CompanyGroup, False))
         Else
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.dealerId, ReturnType.TargetType.Dealer, False))
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.dealerId, ReturnType.TargetType.Dealer, False))
         End If
     End Sub
 
@@ -703,41 +703,41 @@ Partial Class ClaimStatusByGroupForm
 #Region "Controlling Logic"
 
     Protected Sub PopulateGrid()
-        If Me.State.searchDV Is Nothing Then
-            Me.State.searchDV = ClaimStatusByGroup.getListByCompanyGroupOrDealer(Me.State.searchBy, Authentication.CurrentUser.CompanyGroup.Id, Me.State.dealerId)
+        If State.searchDV Is Nothing Then
+            State.searchDV = ClaimStatusByGroup.getListByCompanyGroupOrDealer(State.searchBy, Authentication.CurrentUser.CompanyGroup.Id, State.dealerId)
             'REQ-941
             Dim row As DataRow
-            For Each row In Me.State.searchDV.Table.Rows
+            For Each row In State.searchDV.Table.Rows
                 If row("SELECTED").ToString.Equals("Y") Then
-                    Me.btnActionSettings.Enabled = True
+                    btnActionSettings.Enabled = True
                     Exit For
                 End If
             Next
         End If
 
-        Me.DataGridDropdowns.AutoGenerateColumns = False
+        DataGridDropdowns.AutoGenerateColumns = False
 
-        If Me.State.searchBy = Me.SearchByType.Dealer Then
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.dealerId, Me.DataGridDropdowns, Me.State.PageIndex)
+        If State.searchBy = Me.SearchByType.Dealer Then
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.dealerId, DataGridDropdowns, State.PageIndex)
         Else
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Authentication.CurrentUser.CompanyGroup.Id, Me.DataGridDropdowns, Me.State.PageIndex)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, Authentication.CurrentUser.CompanyGroup.Id, DataGridDropdowns, State.PageIndex)
         End If
 
-        Me.State.PageIndex = Me.DataGridDropdowns.CurrentPageIndex
-        Me.DataGridDropdowns.DataSource = Me.State.searchDV
-        Me.DataGridDropdowns.DataBind()
+        State.PageIndex = DataGridDropdowns.CurrentPageIndex
+        DataGridDropdowns.DataSource = State.searchDV
+        DataGridDropdowns.DataBind()
     End Sub
 
-    Public Shared Sub SetLabelColor(ByVal lbl As Label)
+    Public Shared Sub SetLabelColor(lbl As Label)
         lbl.ForeColor = Color.Black
     End Sub
 
     Private Sub PopulateAll()
         Dim YESNOdv As DataView = LookupListNew.DropdownLookupList(YESNO, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
-        Me.State.YESNOdv = YESNOdv
+        State.YESNOdv = YESNOdv
 
         Dim OWNERdv As DataView = LookupListNew.DropdownLookupList(EXTOWN, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
-        Me.State.OWNERdv = OWNERdv
+        State.OWNERdv = OWNERdv
 
     End Sub
 
@@ -757,7 +757,7 @@ Partial Class ClaimStatusByGroupForm
                                         False, _
                                         0)
 
-            Me.TheDealerControl.SelectedGuid = Me.State.dealerId
+            TheDealerControl.SelectedGuid = State.dealerId
         Catch ex As Exception
             ErrorControl.AddError(BRANCH_LIST_FORM001)
             ErrorControl.AddError(ex.Message, False)
@@ -766,25 +766,25 @@ Partial Class ClaimStatusByGroupForm
     End Sub
 
     Private Sub SetHeaderControlStatus()
-        If Me.State.searchBy = Me.SearchByType.Dealer Then
-            ControlMgr.SetVisibleControl(Me, Me.TheDealerControl, True)
+        If State.searchBy = Me.SearchByType.Dealer Then
+            ControlMgr.SetVisibleControl(Me, TheDealerControl, True)
 
-            If Me.State.isNew = "Y" Then
+            If State.isNew = "Y" Then
                 TheDealerControl.ChangeEnabledControlProperty(True)
             Else
                 TheDealerControl.ChangeEnabledControlProperty(False)
             End If
 
-            ControlMgr.SetVisibleControl(Me, Me.lblCompanyGroup, False)
-            ControlMgr.SetVisibleControl(Me, Me.txtCompanyGroup, False)
+            ControlMgr.SetVisibleControl(Me, lblCompanyGroup, False)
+            ControlMgr.SetVisibleControl(Me, txtCompanyGroup, False)
 
-            Me.PopulateDealer()
+            PopulateDealer()
         Else
-            ControlMgr.SetVisibleControl(Me, Me.TheDealerControl, False)
-            ControlMgr.SetVisibleControl(Me, Me.lblCompanyGroup, True)
-            ControlMgr.SetVisibleControl(Me, Me.txtCompanyGroup, True)
-            ControlMgr.SetEnableControl(Me, Me.lblCompanyGroup, False)
-            ControlMgr.SetEnableControl(Me, Me.txtCompanyGroup, False)
+            ControlMgr.SetVisibleControl(Me, TheDealerControl, False)
+            ControlMgr.SetVisibleControl(Me, lblCompanyGroup, True)
+            ControlMgr.SetVisibleControl(Me, txtCompanyGroup, True)
+            ControlMgr.SetEnableControl(Me, lblCompanyGroup, False)
+            ControlMgr.SetEnableControl(Me, txtCompanyGroup, False)
             Dim arCompanyGroup As New ArrayList
             arCompanyGroup.Add(Authentication.CurrentUser.CompanyGroup.Id)
             txtCompanyGroup.Text = CType(LookupListNew.GetCompanyGroupNoptInUseLookupList(arCompanyGroup)(0)(DALObjects.CompanyGroupDAL.COL_NAME_DESCRIPTION), String)
@@ -794,45 +794,45 @@ Partial Class ClaimStatusByGroupForm
 
     Private Sub SetButtonsState()
 
-        If (Me.State.searchBy = Me.SearchByType.Dealer) Then
+        If (State.searchBy = Me.SearchByType.Dealer) Then
             ControlMgr.SetEnableControl(Me, btnButtomNew_WRITE, True)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, True)
-            Me.MenuEnabled = False
+            MenuEnabled = False
         Else
             ControlMgr.SetEnableControl(Me, btnButtomNew_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
-            Me.MenuEnabled = False
+            MenuEnabled = False
         End If
 
     End Sub
 
 #End Region
 
-    Protected Sub btnActionSettings_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnActionSettings.Click
+    Protected Sub btnActionSettings_Click(sender As Object, e As EventArgs) Handles btnActionSettings.Click
         Try
             Dim params As New ArrayList
 
-            params.Add(Me.State.searchBy)
-            params.Add(Me.State.dealerId)
-            params.Add(Me.State.isNew)
-            Me.callPage(ClaimStatusAction.URL, params)
+            params.Add(State.searchBy)
+            params.Add(State.dealerId)
+            params.Add(State.isNew)
+            callPage(ClaimStatusAction.URL, params)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub btnDefaultStatuses_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDefaultStatuses.Click
+    Protected Sub btnDefaultStatuses_Click(sender As Object, e As EventArgs) Handles btnDefaultStatuses.Click
         Try
             Dim params As New ArrayList
 
-            params.Add(Me.State.searchBy)
-            params.Add(Me.State.dealerId)
-            params.Add(Me.State.isNew)
-            Me.callPage(Claims.DefaultClaimStatusForm.URL, params)
+            params.Add(State.searchBy)
+            params.Add(State.dealerId)
+            params.Add(State.isNew)
+            callPage(Claims.DefaultClaimStatusForm.URL, params)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 End Class

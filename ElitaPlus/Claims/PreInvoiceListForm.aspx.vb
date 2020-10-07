@@ -76,68 +76,68 @@ Partial Class PreInvoiceListForm
 #End Region
 
 #Region "Page event handlers"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
-        Me.MasterPage.MessageController.Clear()
+        MasterPage.MessageController.Clear()
 
-        Me.Form.DefaultButton = btnSearch.UniqueID
+        Form.DefaultButton = btnSearch.UniqueID
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
-                Me.MasterPage.MessageController.Clear()
+                MasterPage.MessageController.Clear()
 
                 ' Populate the header and bredcrumb
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Claims")
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Claims")
                 UpdateBreadCrum()
 
 
-                Me.TranslateGridHeader(Grid)
+                TranslateGridHeader(Grid)
                 'Me.TranslateGridControls(Grid)
-                Me.AddCalendar_New(Me.btnCreatedDateFromCert, Me.txtCreatedDateFrom)
-                Me.AddCalendar_New(Me.btnCreatedDateToCert, Me.txtCreatedDateTo)
+                AddCalendar_New(btnCreatedDateFromCert, txtCreatedDateFrom)
+                AddCalendar_New(btnCreatedDateToCert, txtCreatedDateTo)
                 PopulateCompanyDropDown()
                 populatePreInvoiceStatusDropdown()
                 GetStateProperties()
 
-                cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
+                cboPageSize.SelectedValue = CType(State.PageSize, String)
 
-                If Not Me.IsReturningFromChild Then
+                If Not IsReturningFromChild Then
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
                 End If
 
                 PopulateSearchFieldsFromState()
 
-                If Me.IsReturningFromChild Then
-                    Me.PopulateGrid()
+                If IsReturningFromChild Then
+                    PopulateGrid()
                 End If
 
-                SetFocus(Me.txtBatchNumber)
+                SetFocus(txtBatchNumber)
             End If
-            Me.DisplayNewProgressBarOnClick(Me.btnSearch, "Loading Information")
+            DisplayNewProgressBarOnClick(btnSearch, "Loading Information")
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                     TranslationBase.TranslateLabelOrMessage("PRE_INVOICE_SEARCH")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("PRE_INVOICE_SEARCH")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("PRE_INVOICE_SEARCH")
             End If
         End If
     End Sub
 
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
-            Me.State.searchDV = Nothing
+            MenuEnabled = True
+            IsReturningFromChild = True
+            State.searchDV = Nothing
             'Dim retObj As PreinvoiceDetailForm.ReturnType = CType(ReturnPar, PreinvoiceDetailForm.ReturnType)
             'If Not retObj Is Nothing AndAlso retObj.BoChanged Then
             '    Me.State.searchDV = Nothing
@@ -152,7 +152,7 @@ Partial Class PreInvoiceListForm
             '        End If
             'End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -188,17 +188,17 @@ Partial Class PreInvoiceListForm
 #End Region
 
 #Region "Button event handlers"
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
         Try
-            Me.State.searchBtnClicked = True
-            Me.State.PageIndex = 0
-            Me.State.selectedBatchNumber = String.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
+            State.searchBtnClicked = True
+            State.PageIndex = 0
+            State.selectedBatchNumber = String.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
             PopulateGrid()
-            Me.State.searchBtnClicked = False
-            If Not Me.State.searchDV Is Nothing Then
-                Me.ValidSearchResultCountNew(Me.State.searchDV.Count, True)
+            State.searchBtnClicked = False
+            If State.searchDV IsNot Nothing Then
+                ValidSearchResultCountNew(State.searchDV.Count, True)
             End If
         Catch ex As Exception
 
@@ -214,33 +214,33 @@ Partial Class PreInvoiceListForm
             End If
 
             PopulateStateFromSearchFields()
-            If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-                Me.State.searchDV = PreInvoice.LoadPreInvoiceProcess(Me.State.selectedCompanyId, Me.State.selectedStatusId, Me.State.BatchNumber, Me.State.CreatedDateFrom, Me.State.CreatedDateTo)
+            If ((State.searchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+                State.searchDV = PreInvoice.LoadPreInvoiceProcess(State.selectedCompanyId, State.selectedStatusId, State.BatchNumber, State.CreatedDateFrom, State.CreatedDateTo)
             End If
 
-            Me.Grid.PageSize = Me.State.PageSize
-            If Not (Me.State.searchDV Is Nothing) Then
-                If Me.State.searchBtnClicked Then
-                    Me.State.SortExpression = PreInvoice.PreinvoiceSearchDV.COL_BATCH_NUMBER
-                    Me.State.SortExpression &= " DESC"
-                    Me.State.searchDV.Sort = Me.State.SortExpression
+            Grid.PageSize = State.PageSize
+            If Not (State.searchDV Is Nothing) Then
+                If State.searchBtnClicked Then
+                    State.SortExpression = PreInvoice.PreinvoiceSearchDV.COL_BATCH_NUMBER
+                    State.SortExpression &= " DESC"
+                    State.searchDV.Sort = State.SortExpression
                 Else
-                    Me.State.searchDV.Sort = Me.State.SortExpression
+                    State.searchDV.Sort = State.SortExpression
                 End If
 
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedPreInvoiceID, Me.Grid, Me.State.PageIndex)
-                Me.Grid.DataSource = Me.State.searchDV
-                Me.State.PageIndex = Me.Grid.PageIndex
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedPreInvoiceID, Grid, State.PageIndex)
+                Grid.DataSource = State.searchDV
+                State.PageIndex = Grid.PageIndex
 
-                HighLightSortColumn(Me.Grid, Me.State.SortExpression, Me.IsNewUI)
-                Me.Grid.DataBind()
+                HighLightSortColumn(Grid, State.SortExpression, IsNewUI)
+                Grid.DataBind()
 
                 ControlMgr.SetVisibleControl(Me, Grid, True)
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
-                Session("recCount") = Me.State.searchDV.Count
+                ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
+                Session("recCount") = State.searchDV.Count
 
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
 
                 If State.searchDV.Count = 0 Then
@@ -259,11 +259,11 @@ Partial Class PreInvoiceListForm
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnNewInvCycle_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNewInvCycle.Click
+    Private Sub btnNewInvCycle_Click(sender As Object, e As System.EventArgs) Handles btnNewInvCycle.Click
         Try
             Dim oCompanyCode As String = moMultipleColumnDrop.SelectedCode
             'Validating the Company selection
@@ -276,7 +276,7 @@ Partial Class PreInvoiceListForm
             btnSearch_Click(sender, e)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -285,37 +285,37 @@ Partial Class PreInvoiceListForm
 #Region "Helper functions"
     Private Sub PopulateStateFromSearchFields()
         Try
-            If Me.State Is Nothing Then
-                Me.Trace(Me, "Restoring State")
-                Me.RestoreState(New MyState)
+            If State Is Nothing Then
+                Trace(Me, "Restoring State")
+                RestoreState(New MyState)
             End If
 
-            Me.ClearStateValues()
-            Me.State.selectedCompanyId = moMultipleColumnDrop.SelectedGuid
-            Me.State.BatchNumber = Me.txtBatchNumber.Text.ToUpper.Trim
-            Me.State.selectedStatusId = Me.GetSelectedItem(ddlStatus)
-            Me.State.CreatedDateFrom = Me.txtCreatedDateFrom.Text.Trim
-            Me.State.CreatedDateTo = Me.txtCreatedDateTo.Text.Trim
+            ClearStateValues()
+            State.selectedCompanyId = moMultipleColumnDrop.SelectedGuid
+            State.BatchNumber = txtBatchNumber.Text.ToUpper.Trim
+            State.selectedStatusId = GetSelectedItem(ddlStatus)
+            State.CreatedDateFrom = txtCreatedDateFrom.Text.Trim
+            State.CreatedDateTo = txtCreatedDateTo.Text.Trim
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Public Sub PopulateSearchFieldsFromState()
 
         Try
-            Me.txtBatchNumber.Text = Me.State.BatchNumber
-            Me.txtCreatedDateFrom.Text = Me.State.CreatedDateFrom
-            Me.txtCreatedDateTo.Text = Me.State.CreatedDateTo
-            Me.SetSelectedItem(Me.ddlStatus, Me.State.selectedStatusId)
+            txtBatchNumber.Text = State.BatchNumber
+            txtCreatedDateFrom.Text = State.CreatedDateFrom
+            txtCreatedDateTo.Text = State.CreatedDateTo
+            SetSelectedItem(ddlStatus, State.selectedStatusId)
 
-            If (Me.State.selectedCompanyId <> Guid.Empty) Then
-                Me.moMultipleColumnDrop.SelectedGuid = Me.State.selectedCompanyId
+            If (State.selectedCompanyId <> Guid.Empty) Then
+                moMultipleColumnDrop.SelectedGuid = State.selectedCompanyId
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
@@ -323,26 +323,26 @@ Partial Class PreInvoiceListForm
     Protected Sub ClearStateValues()
         Try
             'clear State
-            Me.State.BatchNumber = String.Empty
-            Me.State.selectedStatusId = Guid.Empty
-            Me.State.CreatedDateFrom = String.Empty
-            Me.State.CreatedDateTo = String.Empty
+            State.BatchNumber = String.Empty
+            State.selectedStatusId = Guid.Empty
+            State.CreatedDateFrom = String.Empty
+            State.CreatedDateTo = String.Empty
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
     Private Sub GetStateProperties()
         Try
-            Me.txtBatchNumber.Text = Me.State.BatchNumber
-            Me.SetSelectedItem(ddlStatus, Me.State.selectedStatusId)
-            Me.txtCreatedDateFrom.Text = Me.State.CreatedDateFrom
-            Me.txtCreatedDateTo.Text = Me.State.CreatedDateTo
+            txtBatchNumber.Text = State.BatchNumber
+            SetSelectedItem(ddlStatus, State.selectedStatusId)
+            txtCreatedDateFrom.Text = State.CreatedDateFrom
+            txtCreatedDateTo.Text = State.CreatedDateTo
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -355,7 +355,7 @@ Partial Class PreInvoiceListForm
         Get
             Return ViewState("SortDirection").ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
@@ -396,95 +396,95 @@ Partial Class PreInvoiceListForm
     '    End If
     'End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
-            Me.State.PageIndex = e.NewPageIndex
+            State.PageIndex = e.NewPageIndex
 
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             Dim index As Integer
             If e.CommandName = SELECT_ACTION_COMMAND Then
                 index = CInt(e.CommandArgument)
 
-                Me.State.selectedPreInvoiceID = New Guid(Me.Grid.Rows(index).Cells(Me.GRID_COL_PRE_INVOICE_ID_NUMBER_IDX).Text)
-                Me.State.selectedBatchNumber = Grid.DataKeys(index).Values(0).ToString()
-                Me.State.status = Me.Grid.Rows(index).Cells(Me.GRID_COL_STATUS_IDX).Text
-                Me.State.createDate = Me.Grid.Rows(index).Cells(Me.GRID_COL_CREATED_DATE_IDX).Text
-                Me.State.displayDate = Me.Grid.Rows(index).Cells(Me.GRID_COL_DISPLAY_DATE_IDX).Text
-                Me.State.claims = Me.Grid.Rows(index).Cells(Me.GRID_COL_CLAIMS_COUNT_IDX).Text
-                Me.State.totalBonusAmount = Me.Grid.Rows(index).Cells(GRID_COL_BONUS_AMOUNT_IDX).Text
-                Me.State.Deductible = Me.Grid.Rows(index).Cells(GRID_COL_DEDUCTIBLE_IDX).Text
-                Me.State.totalAmount = Me.Grid.Rows(index).Cells(GRID_COL_TOTAL_AMOUNT_IDX).Text
+                State.selectedPreInvoiceID = New Guid(Grid.Rows(index).Cells(GRID_COL_PRE_INVOICE_ID_NUMBER_IDX).Text)
+                State.selectedBatchNumber = Grid.DataKeys(index).Values(0).ToString()
+                State.status = Grid.Rows(index).Cells(GRID_COL_STATUS_IDX).Text
+                State.createDate = Grid.Rows(index).Cells(GRID_COL_CREATED_DATE_IDX).Text
+                State.displayDate = Grid.Rows(index).Cells(GRID_COL_DISPLAY_DATE_IDX).Text
+                State.claims = Grid.Rows(index).Cells(GRID_COL_CLAIMS_COUNT_IDX).Text
+                State.totalBonusAmount = Grid.Rows(index).Cells(GRID_COL_BONUS_AMOUNT_IDX).Text
+                State.Deductible = Grid.Rows(index).Cells(GRID_COL_DEDUCTIBLE_IDX).Text
+                State.totalAmount = Grid.Rows(index).Cells(GRID_COL_TOTAL_AMOUNT_IDX).Text
                 If (moMultipleColumnDrop.CodeDropDown.Items.Count > 2) Then ' one item for empty row and one for actual company code
-                    Me.State.selectedCompanycode = moMultipleColumnDrop.SelectedCode
-                    Me.State.selectedCompanyDesc = moMultipleColumnDrop.SelectedDesc
+                    State.selectedCompanycode = moMultipleColumnDrop.SelectedCode
+                    State.selectedCompanyDesc = moMultipleColumnDrop.SelectedDesc
                 End If
-                Me.callPage(PreinvoiceDetailForm.URL, New PreinvoiceDetailForm.Parameters(Me.State.selectedCompanycode, Me.State.selectedCompanyDesc, Me.State.selectedPreInvoiceID, Me.State.selectedBatchNumber, Me.State.status, Me.State.createDate, Me.State.displayDate, Me.State.claims, Me.State.totalBonusAmount, Me.State.totalAmount, Me.State.Deductible))
+                callPage(PreinvoiceDetailForm.URL, New PreinvoiceDetailForm.Parameters(State.selectedCompanycode, State.selectedCompanyDesc, State.selectedPreInvoiceID, State.selectedBatchNumber, State.status, State.createDate, State.displayDate, State.claims, State.totalBonusAmount, State.totalAmount, State.Deductible))
             End If
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim btnEditItem As LinkButton
             If (e.Row.RowType = DataControlRowType.DataRow) _
                 OrElse (e.Row.RowType = DataControlRowType.Separator) Then
-                If (Not e.Row.Cells(Me.GRID_COL_PRE_INVOICE_ID_NUMBER_IDX).FindControl(GRID_COL_EDIT_BATCH_NUMBER_CTRL) Is Nothing) Then
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_PRE_INVOICE_ID_NUMBER_IDX), dvRow(PreInvoice.PreinvoiceSearchDV.COL_PRE_INVOICE_ID))
+                If (e.Row.Cells(GRID_COL_PRE_INVOICE_ID_NUMBER_IDX).FindControl(GRID_COL_EDIT_BATCH_NUMBER_CTRL) IsNot Nothing) Then
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_PRE_INVOICE_ID_NUMBER_IDX), dvRow(PreInvoice.PreinvoiceSearchDV.COL_PRE_INVOICE_ID))
 
-                    btnEditItem = CType(e.Row.Cells(Me.GRID_COL_BATCH_NUMBER_IDX).FindControl(GRID_COL_EDIT_BATCH_NUMBER_CTRL), LinkButton)
+                    btnEditItem = CType(e.Row.Cells(GRID_COL_BATCH_NUMBER_IDX).FindControl(GRID_COL_EDIT_BATCH_NUMBER_CTRL), LinkButton)
                     'btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(PreInvoice.PreinvoiceSearchDV.COL_PRE_INVOICE_ID), Byte()))
                     btnEditItem.CommandName = SELECT_ACTION_COMMAND
                     btnEditItem.Text = dvRow(PreInvoice.PreinvoiceSearchDV.COL_BATCH_NUMBER).ToString
-                    Me.State.selectedBatchNumber = btnEditItem.Text.Trim()
+                    State.selectedBatchNumber = btnEditItem.Text.Trim()
                 End If
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_Sorting(sender As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.PopulateGrid()
+            State.PageSize = CType(cboPageSize.SelectedValue, Integer)
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region

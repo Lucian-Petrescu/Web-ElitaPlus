@@ -23,7 +23,7 @@ Public MustInherit Class OracleDALBase : Inherits DALBase
     ''' <param name="command"><see cref="OracleCommand" /> to be used for adding <see cref="OracleParameter" />.</param>
     ''' <param name="tableName">Name of table for which <see cref="OracleDataAdapter" /> is being built.</param>
     ''' <remarks></remarks>
-    Protected MustOverride Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected MustOverride Sub ConfigureUpdateCommand(ByRef command As OracleCommand, tableName As String)
 
     ''' <summary>
     ''' Derived class should add <see cref="OracleParameter" /> objects to <see cref="OracleCommand" /> 
@@ -33,7 +33,7 @@ Public MustInherit Class OracleDALBase : Inherits DALBase
     ''' <param name="command"><see cref="OracleCommand" /> to be used for adding <see cref="OracleParameter" />.</param>
     ''' <param name="tableName">Name of table for which <see cref="OracleDataAdapter" /> is being built.</param>
     ''' <remarks></remarks>
-    Protected MustOverride Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected MustOverride Sub ConfigureInsertCommand(ByRef command As OracleCommand, tableName As String)
 
     ''' <summary>
     ''' Derived class should add <see cref="OracleParameter" /> objects to <see cref="OracleCommand" /> 
@@ -43,7 +43,7 @@ Public MustInherit Class OracleDALBase : Inherits DALBase
     ''' <param name="command"><see cref="OracleCommand" /> to be used for adding <see cref="OracleParameter" />.</param>
     ''' <param name="tableName">Name of table for which <see cref="OracleDataAdapter" /> is being built.</param>
     ''' <remarks></remarks>
-    Protected MustOverride Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected MustOverride Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
 
 #End Region
 
@@ -71,7 +71,7 @@ Public MustInherit Class OracleDALBase : Inherits DALBase
     ''' updates to database.</param>
     ''' <param name="changesFilter">Optional. When value is provided; only rows having one of the flag values will be updated.</param>
     ''' <remarks></remarks>
-    Public Overridable Sub Update(ByVal table As DataTable, _
+    Public Overridable Sub Update(table As DataTable, _
                                   Optional ByVal transaction As OracleTransaction = Nothing, _
                                   Optional ByVal changesFilter As DataRowState = DataRowState.Added Or DataRowState.Deleted Or DataRowState.Modified)
 
@@ -109,7 +109,7 @@ Public MustInherit Class OracleDALBase : Inherits DALBase
         '''TODO: Check weather explicit AcceptChanegs are Required
         table.AcceptChanges()
 
-        LookupListCache.ClearFromCache(Me.GetType.ToString)
+        LookupListCache.ClearFromCache([GetType].ToString)
     End Sub
 
     ''' <summary>
@@ -122,7 +122,7 @@ Public MustInherit Class OracleDALBase : Inherits DALBase
     ''' updates to database.</param>
     ''' <param name="changesFilter">Optional. When value is provided; only rows having one of the flag values will be updated.</param>
     ''' <remarks></remarks>
-    Public Overridable Sub Update(ByVal row As DataRow, _
+    Public Overridable Sub Update(row As DataRow, _
                                   Optional ByVal transaction As OracleTransaction = Nothing, _
                                   Optional ByVal changesFilter As DataRowState = DataRowState.Added Or DataRowState.Modified Or DataRowState.Deleted)
         ' Check if Row has changes based on RowState
@@ -156,7 +156,7 @@ Public MustInherit Class OracleDALBase : Inherits DALBase
             ex = Nothing
         End Try
 
-        LookupListCache.ClearFromCache(Me.GetType.ToString)
+        LookupListCache.ClearFromCache([GetType].ToString)
 
     End Sub
 
@@ -176,7 +176,7 @@ Public MustInherit Class OracleDALBase : Inherits DALBase
     ''' <param name="changesFilter">Optional. When value is provided; only rows having one of the flag values will be updated.</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function CreateDataAdapter(ByVal tableName As String, _
+    Private Function CreateDataAdapter(tableName As String, _
                                        Optional ByVal transaction As OracleTransaction = Nothing, _
                                        Optional ByVal changesFilter As DataRowState = DataRowState.Added Or DataRowState.Modified Or DataRowState.Deleted)
         Dim da As OracleDataAdapter

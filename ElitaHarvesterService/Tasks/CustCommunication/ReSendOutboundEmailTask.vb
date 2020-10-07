@@ -7,7 +7,7 @@ Public Class ReSendOutboundEmailTask
     Inherits TaskBase
 
 #Region "Constructors"
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 #End Region

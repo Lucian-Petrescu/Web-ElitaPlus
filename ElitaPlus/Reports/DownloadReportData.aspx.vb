@@ -41,14 +41,14 @@ Namespace Reports
         Private designerPlaceholderDeclaration As System.Object
 
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.ErrorCtrl.Clear_Hide()
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+            ErrorCtrl.Clear_Hide()
             Try
 
                 If Not String.IsNullOrEmpty(Request.QueryString("rid")) Then
@@ -67,7 +67,7 @@ Namespace Reports
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
 
 
@@ -100,7 +100,7 @@ Namespace Reports
         End Sub
 
 
-        Private Sub InitDownLoad(ByVal zipFileName As String, ByVal sourceDirectory As String)
+        Private Sub InitDownLoad(zipFileName As String, sourceDirectory As String)
             Dim sJavaScript As String
             Dim params As DownLoadBase.DownLoadParams
 

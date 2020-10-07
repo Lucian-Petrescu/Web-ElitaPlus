@@ -33,8 +33,8 @@ Public Class ConsentActionsDAL
 
 #Region "Load Methods"
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
 
         cmd.BindByName = True
@@ -42,16 +42,16 @@ Public Class ConsentActionsDAL
         cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+            OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadConsentActionsList(ByVal ReferenceType As String, ByVal ReferenceValueId As Guid, ByVal ConsentType As String, ByVal ConsentFieldName As String, ByVal LanguageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadConsentActionsList(ReferenceType As String, ReferenceValueId As Guid, ConsentType As String, ConsentFieldName As String, LanguageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As DataSet = New DataSet
-        Dim outputParameter(Me.PO_CURSOR_CONSENT_ACTIONS) As DBHelper.DBHelperParameter
+        Dim outputParameter(PO_CURSOR_CONSENT_ACTIONS) As DBHelper.DBHelperParameter
         Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
@@ -70,7 +70,7 @@ Public Class ConsentActionsDAL
         param = New DBHelper.DBHelperParameter(PAR_I_NAME_LANGUAGE_ID, LanguageId.ToByteArray)
         inParameters.Add(param)
 
-        outputParameter(Me.PO_CURSOR_CONSENT_ACTIONS) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME_CONSENT_ACTIONS_LIST, GetType(DataSet))
+        outputParameter(PO_CURSOR_CONSENT_ACTIONS) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_CONSENT_ACTIONS_LIST, GetType(DataSet))
 
         Try
             DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetConsentActionsList")
@@ -84,19 +84,19 @@ Public Class ConsentActionsDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
         If ds Is Nothing Then
             Return
         End If
         If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
             Throw New NotSupportedException()
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter("pi_consent_value_id", OracleDbType.Raw, sourceColumn:=COL_NAME_CONSENT_VALUE_ID, direction:=ParameterDirection.Input)
         End With

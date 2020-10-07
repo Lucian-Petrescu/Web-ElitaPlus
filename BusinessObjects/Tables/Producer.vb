@@ -11,46 +11,46 @@ Public Class Producer
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ProducerDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -61,20 +61,20 @@ Public Class Producer
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New ProducerDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -88,15 +88,15 @@ Public Class Producer
     Private _address As Address = Nothing
     Public ReadOnly Property Address() As Address
         Get
-            If Me._address Is Nothing Then
-                If Me.AddressId.Equals(Guid.Empty) Then
-                    Me._address = New Address(Me.Dataset, Nothing)
+            If _address Is Nothing Then
+                If AddressId.Equals(Guid.Empty) Then
+                    _address = New Address(Dataset, Nothing)
                     _address.CountryId = Company.BusinessCountryId
                 Else
-                    Me._address = New Address(Me.AddressId, Me.Dataset, Nothing)
+                    _address = New Address(AddressId, Dataset, Nothing)
                 End If
             End If
-            Return Me._address
+            Return _address
         End Get
     End Property
 #End Region
@@ -133,7 +133,7 @@ Public Class Producer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProducerDAL.COL_NAME_CODE, Value)
+            SetValue(ProducerDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
@@ -150,7 +150,7 @@ Public Class Producer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProducerDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(ProducerDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -167,7 +167,7 @@ Public Class Producer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProducerDAL.COL_NAME_PRODUCER_TYPE_XCD, Value)
+            SetValue(ProducerDAL.COL_NAME_PRODUCER_TYPE_XCD, Value)
         End Set
     End Property
 
@@ -184,7 +184,7 @@ Public Class Producer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProducerDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(ProducerDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
@@ -201,7 +201,7 @@ Public Class Producer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProducerDAL.COL_NAME_ADDRESS_ID, Value)
+            SetValue(ProducerDAL.COL_NAME_ADDRESS_ID, Value)
         End Set
     End Property
 
@@ -218,7 +218,7 @@ Public Class Producer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProducerDAL.COL_NAME_TAX_ID_NUMBER, Value)
+            SetValue(ProducerDAL.COL_NAME_TAX_ID_NUMBER, Value)
         End Set
     End Property
 
@@ -235,20 +235,20 @@ Public Class Producer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProducerDAL.COL_NAME_REGULATOR_REGISTRATION_ID, Value)
+            SetValue(ProducerDAL.COL_NAME_REGULATOR_REGISTRATION_ID, Value)
         End Set
     End Property
 
     Public ReadOnly Property Company() As Company
         Get
-            If Me._company Is Nothing Then
-                If Not (Me.CompanyId.Equals(Guid.Empty)) Then
-                    Me._company = New Company(Me.CompanyId)
+            If _company Is Nothing Then
+                If Not (CompanyId.Equals(Guid.Empty)) Then
+                    _company = New Company(CompanyId)
                 Else
                     Return Nothing
                 End If
             End If
-            Return Me._company
+            Return _company
         End Get
     End Property
 
@@ -259,16 +259,16 @@ Public Class Producer
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ProducerDAL
-                dal.UpdateFamily(Me.Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
-                    Me._address = Nothing
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
+                    _address = Nothing
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -277,27 +277,27 @@ Public Class Producer
     End Sub
 
     Public Sub DeleteAndSave()
-        Dim addr As Address = Me.Address
-        Me.CheckDeleted()
-        Me.BeginEdit()
+        Dim addr As Address = Address
+        CheckDeleted()
+        BeginEdit()
         Try
-            Me.Delete()
+            Delete()
             addr.Delete()
-            Me.Save()
+            Save()
         Catch ex As Exception
-            Me.cancelEdit()
+            cancelEdit()
             Throw ex
         End Try
     End Sub
 
     Public Sub Copy(ByVal original As Producer)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing producer")
         End If
         'Copy myself
-        Me.CopyFrom(original)
-        Me.AddressId = Guid.Empty
-        Me.Address.CopyFrom(original.Address)
+        CopyFrom(original)
+        AddressId = Guid.Empty
+        Address.CopyFrom(original.Address)
     End Sub
 
     Public Overrides ReadOnly Property IsDirty() As Boolean
@@ -305,7 +305,7 @@ Public Class Producer
             Dim blnIsDirty As Boolean = False
             If MyBase.IsDirty Then
                 blnIsDirty = True
-            ElseIf (Not Me.Address.IsNew AndAlso Me.Address.IsDirty) OrElse (Me.Address.IsNew AndAlso Not Me.Address.IsEmpty) Then
+            ElseIf (Not Address.IsNew AndAlso Address.IsDirty) OrElse (Address.IsNew AndAlso Not Address.IsEmpty) Then
                 blnIsDirty = True
             End If
             Return blnIsDirty

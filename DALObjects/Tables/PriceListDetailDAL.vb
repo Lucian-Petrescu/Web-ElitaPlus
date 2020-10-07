@@ -168,12 +168,12 @@ Public Class PriceListDetailDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         'Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("price_list_detail_id", id.ToByteArray)}
         'Try
         '    DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
@@ -181,9 +181,9 @@ Public Class PriceListDetailDAL
         '    Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         'End Try
 
-        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(Me.PAR_IN_NAME_PRICE_LIST_DETAIL_ID, OracleDbType.Raw, id.ToByteArray, ParameterDirection.Input),
+        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(PAR_IN_NAME_PRICE_LIST_DETAIL_ID, OracleDbType.Raw, id.ToByteArray, ParameterDirection.Input),
                                                                      New OracleParameter("po_price_table", OracleDbType.RefCursor, ParameterDirection.Output),
-                                                                     New OracleParameter(Me.PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int32, ParameterDirection.Output)}
+                                                                     New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int32, ParameterDirection.Output)}
         FetchStoredProcedure("Load",
                                     selectStmt,
                                     parameters,
@@ -192,7 +192,7 @@ Public Class PriceListDetailDAL
     End Sub
 
 
-    Public Function Load(ByVal id As Guid) As DataSet
+    Public Function Load(id As Guid) As DataSet
 
         'Dim selectStmt As String = Me.Config("/SQL/LOAD")
         'Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("price_list_detail_id", id.ToByteArray)}
@@ -205,13 +205,13 @@ Public Class PriceListDetailDAL
         'End Try
 
         'US 224101 - Replacing code to call stored proc
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+        Dim selectStmt As String = Config("/SQL/LOAD")
 
         Dim ds As New DataSet
 
-        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(Me.PAR_IN_NAME_PRICE_LIST_DETAIL_ID, OracleDbType.Raw, id.ToByteArray, ParameterDirection.Input),
+        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(PAR_IN_NAME_PRICE_LIST_DETAIL_ID, OracleDbType.Raw, id.ToByteArray, ParameterDirection.Input),
                                                                      New OracleParameter("po_price_table", OracleDbType.RefCursor, ParameterDirection.Output),
-                                                                     New OracleParameter(Me.PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int16, ParameterDirection.Output)}
+                                                                     New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int16, ParameterDirection.Output)}
 
 
         FetchStoredProcedure("Load",
@@ -222,8 +222,8 @@ Public Class PriceListDetailDAL
         Return ds
     End Function
 
-    Public Function LoadList(ByVal id As Guid, ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(id As Guid, languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         ''Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("language_id", languageId.ToByteArray), _
         ''                                                                                   New DBHelper.DBHelperParameter("price_list_id", id.ToByteArray)}
 
@@ -234,9 +234,9 @@ Public Class PriceListDetailDAL
         ''End Try
 
         'US 224101 - Replacing code to call stored proc
-        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(Me.PAR_IN_NAME_PRICE_LIST_DETAIL_ID, OracleDbType.Raw, id.ToByteArray, ParameterDirection.Input),
+        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(PAR_IN_NAME_PRICE_LIST_DETAIL_ID, OracleDbType.Raw, id.ToByteArray, ParameterDirection.Input),
                                                                      New OracleParameter("po_price_table", OracleDbType.RefCursor, ParameterDirection.Output),
-                                                                     New OracleParameter(Me.PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int16, ParameterDirection.Output)}
+                                                                     New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int16, ParameterDirection.Output)}
 
         'Dim inParameters(1) As DBHelper.DBHelperParameter
 
@@ -253,9 +253,9 @@ Public Class PriceListDetailDAL
                                          parameters)
     End Function
 
-    Public Function GetPriceBandList(ByVal priceListId As Guid, ByVal riskTypeId As Guid, ByVal equipmentclassId As Guid, ByVal equipmentId As Guid,
-                                     ByVal conditionId As Guid, ByVal effectiveDate As DateTime, ByVal serviceClassId As Guid, ByVal serviceTypeId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PRICEBAND_LIST")
+    Public Function GetPriceBandList(priceListId As Guid, riskTypeId As Guid, equipmentclassId As Guid, equipmentId As Guid,
+                                     conditionId As Guid, effectiveDate As DateTime, serviceClassId As Guid, serviceTypeId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_PRICEBAND_LIST")
         'Dim ds As New DataSet
         'Dim parameters() As DBHelper.DBHelperParameter
 
@@ -293,16 +293,16 @@ Public Class PriceListDetailDAL
     End Function
 
 
-    Private Function IsThereALikeClause(ByVal description As String, ByVal code As String) As Boolean
+    Private Function IsThereALikeClause(description As String, code As String) As Boolean
         Dim bIsLikeClause As Boolean
 
-        bIsLikeClause = Me.IsLikeClause(description) OrElse Me.IsLikeClause(code)
+        bIsLikeClause = IsLikeClause(description) OrElse IsLikeClause(code)
 
         Return bIsLikeClause
     End Function
 
-    Public Function GetMakeByModel(ByVal EquipmentId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GETMAKE")
+    Public Function GetMakeByModel(EquipmentId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GETMAKE")
         Dim ds As New DataSet
         'Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("equipment_id", EquipmentId.ToByteArray())}
         'Try
@@ -325,8 +325,8 @@ Public Class PriceListDetailDAL
 
     End Function
 
-    Public Function GetVendorQuantiy(ByVal id As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GETVENDORQUANTITY")
+    Public Function GetVendorQuantiy(id As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GETVENDORQUANTITY")
         'Dim ds As New DataSet
         ''Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("reference_id", id.ToByteArray())}
         'Try
@@ -346,8 +346,8 @@ Public Class PriceListDetailDAL
                                          parameters)
     End Function
 
-    Public Function GetMaxExpirationMinEffectiveDateForPriceList(ByVal Price_list_Id As Guid, ByVal Price_list_detail_id As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_MAX_EXP_MIN_EFF_DATES")
+    Public Function GetMaxExpirationMinEffectiveDateForPriceList(Price_list_Id As Guid, Price_list_detail_id As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_MAX_EXP_MIN_EFF_DATES")
         'Dim ds As New DataSet
         'Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("price_list_id", Price_list_Id.ToByteArray), _
         '                                                                                  New DBHelper.DBHelperParameter("price_list_detail_id", Price_list_detail_id.ToByteArray)}
@@ -374,12 +374,12 @@ Public Class PriceListDetailDAL
                                          parameters)
     End Function
 
-    Public Function GetOverlap(ByVal EquipmentClassId As Guid, ByVal EquipmentId As Guid, ByVal ConditionId As Guid, ByVal risktypeId As Guid,
-                               ByVal ServiceClassId As Guid, ByVal ServiceTypeId As Guid, ByVal Sku As String, ByVal PriceListId As Guid,
-                               ByVal languageId As Guid, ByVal PriceListDetailId As Guid,
-                               ByVal PartId As Guid, ByVal MakeId As Guid, ByVal ManufacturerOrigin As String,
-                               ByVal expiration As String, ByVal effective As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GETOVERLAP")
+    Public Function GetOverlap(EquipmentClassId As Guid, EquipmentId As Guid, ConditionId As Guid, risktypeId As Guid,
+                               ServiceClassId As Guid, ServiceTypeId As Guid, Sku As String, PriceListId As Guid,
+                               languageId As Guid, PriceListDetailId As Guid,
+                               PartId As Guid, MakeId As Guid, ManufacturerOrigin As String,
+                               expiration As String, effective As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/GETOVERLAP")
         'Dim whereClauseConditions As String = " expiration > SYSDATE "
 
         'If Not whereClauseConditions.Equals(String.Empty) Then
@@ -511,10 +511,10 @@ Public Class PriceListDetailDAL
                                          parameters)
     End Function
 
-    Public Function FormPriceRangeQuery(ByVal EquipmentClassId As Guid, ByVal EquipmentId As Guid, ByVal ConditionId As Guid, ByVal risktypeId As Guid,
-                                        ByVal ServiceClassId As Guid, ByVal ServiceTypeId As Guid, ByVal PriceListId As Guid, ByVal languageId As Guid,
-                                        ByVal EffectiveDate As String) As DataView
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PRICEBAND_LIST")
+    Public Function FormPriceRangeQuery(EquipmentClassId As Guid, EquipmentId As Guid, ConditionId As Guid, risktypeId As Guid,
+                                        ServiceClassId As Guid, ServiceTypeId As Guid, PriceListId As Guid, languageId As Guid,
+                                        EffectiveDate As String) As DataView
+        Dim selectStmt As String = Config("/SQL/LOAD_PRICEBAND_LIST")
 
         'Dim whereClauseConditions As String = "trunc(Effective) = to_date('" & EffectiveDate & "','MM/dd/yyyy')"
 
@@ -644,7 +644,7 @@ Public Class PriceListDetailDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
@@ -656,8 +656,8 @@ Public Class PriceListDetailDAL
         'End If
 
         'US 224101 - Replacing code to call stored proc
-        If ds.Tables(Me.TABLE_NAME) IsNot Nothing Then
-            Dim tbl As DataTable = ds.Tables(Me.TABLE_NAME)
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
+            Dim tbl As DataTable = ds.Tables(TABLE_NAME)
 
             'If (Not tbl.Columns.Contains(COL_NAME_MANUFACTURER_ID)) Then
             '    tbl.Columns.Add(COL_NAME_MANUFACTURER_ID, GetType(Guid))
@@ -676,7 +676,7 @@ Public Class PriceListDetailDAL
             End If
 
             Try
-                MyBase.UpdateFromSP(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+                MyBase.UpdateFromSP(ds.Tables(TABLE_NAME), Transaction, changesFilter)
             Catch dbEx As DataBaseAccessException
                 If (dbEx.Code.Equals("200")) Then
                     Throw New ElitaPlusException("PriceListDetail - " + dbEx.Message, Common.ErrorCodes.DB_READ_ERROR)
@@ -694,7 +694,7 @@ Public Class PriceListDetailDAL
         End If
     End Sub
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim VendorQty As New VendorQuantityDAL
 
         Dim tr As IDbTransaction = Transaction
@@ -707,14 +707,14 @@ Public Class PriceListDetailDAL
             'Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
 
             'US 224101 - Replacing code to call stored proc
-            UpdateFromSP(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            UpdateFromSP(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
             VendorQty.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             'Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
 
             'US 224101 - Replacing code to call stored proc
-            UpdateFromSP(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            UpdateFromSP(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
 
             If Transaction Is Nothing Then
                 'We are the creator of the transaction we shoul commit it  and close the connection
@@ -733,7 +733,7 @@ Public Class PriceListDetailDAL
 
 
     Public Function GetCurrentDateTime() As DateTime
-        Dim selectStmt As String = Me.Config("/SQL/CURRENT_TIME_STAMP")
+        Dim selectStmt As String = Config("/SQL/CURRENT_TIME_STAMP")
         'Dim whereClauseConditions As String = String.Empty
         'Dim ds As New DataSet
         'Dim EquipmentIdParam As DBHelper.DBHelperParameter
@@ -761,37 +761,37 @@ Public Class PriceListDetailDAL
         Return Nothing
     End Function
 
-    Public Function GetRepairPrices(ByVal companyId As Guid, ByVal ServiceCenterCode As String, ByVal EffectiveDate As Date,
-                                    ByVal SalesPrice As Decimal, ByVal RiskTypeId As Guid, ByVal EquipClassId As Guid,
-                                    ByVal EquipmentID As Guid, ByVal ConditionId As Guid, ByVal DealerId As Guid, ByVal serviceLevelCode As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/FIND_REPAIR_PRICE")
+    Public Function GetRepairPrices(companyId As Guid, ServiceCenterCode As String, EffectiveDate As Date,
+                                    SalesPrice As Decimal, RiskTypeId As Guid, EquipClassId As Guid,
+                                    EquipmentID As Guid, ConditionId As Guid, DealerId As Guid, serviceLevelCode As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/FIND_REPAIR_PRICE")
         Dim inParameters(9) As DBHelper.DBHelperParameter
 
 
-        inParameters(0) = New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY, companyId.ToByteArray)
-        inParameters(1) = New DBHelper.DBHelperParameter(Me.PAR_NAME_SERVICE_CENTER_CODE, ServiceCenterCode)
-        inParameters(2) = New DBHelper.DBHelperParameter(Me.PAR_NAME_EFFECTIVE_DATE, EffectiveDate)
-        inParameters(3) = New DBHelper.DBHelperParameter(Me.PAR_NAME_SALES_PRICE, SalesPrice)
-        inParameters(4) = New DBHelper.DBHelperParameter(Me.PAR_NAME_RISK_TYPE_ID, RiskTypeId.ToByteArray)
-        inParameters(5) = New DBHelper.DBHelperParameter(Me.PAR_NAME_EQUIP_CLASS_ID, EquipClassId.ToByteArray)
-        inParameters(6) = New DBHelper.DBHelperParameter(Me.PAR_NAME_EQUIPMENT_ID, EquipmentID.ToByteArray)
-        inParameters(7) = New DBHelper.DBHelperParameter(Me.PAR_NAME_CONDITION_ID, ConditionId.ToByteArray)
+        inParameters(0) = New DBHelper.DBHelperParameter(PAR_NAME_COMPANY, companyId.ToByteArray)
+        inParameters(1) = New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_CENTER_CODE, ServiceCenterCode)
+        inParameters(2) = New DBHelper.DBHelperParameter(PAR_NAME_EFFECTIVE_DATE, EffectiveDate)
+        inParameters(3) = New DBHelper.DBHelperParameter(PAR_NAME_SALES_PRICE, SalesPrice)
+        inParameters(4) = New DBHelper.DBHelperParameter(PAR_NAME_RISK_TYPE_ID, RiskTypeId.ToByteArray)
+        inParameters(5) = New DBHelper.DBHelperParameter(PAR_NAME_EQUIP_CLASS_ID, EquipClassId.ToByteArray)
+        inParameters(6) = New DBHelper.DBHelperParameter(PAR_NAME_EQUIPMENT_ID, EquipmentID.ToByteArray)
+        inParameters(7) = New DBHelper.DBHelperParameter(PAR_NAME_CONDITION_ID, ConditionId.ToByteArray)
 
         ''''send null if dealer is guid.empty
         If Not DealerId.Equals(Guid.Empty) Then
-            inParameters(8) = New DBHelper.DBHelperParameter(Me.PAR_NAME_DEALER_ID, DealerId.ToByteArray)
+            inParameters(8) = New DBHelper.DBHelperParameter(PAR_NAME_DEALER_ID, DealerId.ToByteArray)
         Else
-            inParameters(8) = New DBHelper.DBHelperParameter(Me.PAR_NAME_DEALER_ID, Nothing)
+            inParameters(8) = New DBHelper.DBHelperParameter(PAR_NAME_DEALER_ID, Nothing)
         End If
 
-        inParameters(9) = New DBHelper.DBHelperParameter(Me.PAR_NAME_SERVICE_LEVEL_CODE, serviceLevelCode)
+        inParameters(9) = New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_LEVEL_CODE, serviceLevelCode)
 
         Dim outParameters(1) As DBHelper.DBHelperParameter
         outParameters(0) = New DBHelper.DBHelperParameter("P_PriceListSVCLvlCur", GetType(DataSet))
-        outParameters(1) = New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN_CODE, GetType(Integer))
+        outParameters(1) = New DBHelper.DBHelperParameter(PAR_NAME_RETURN_CODE, GetType(Integer))
 
         Dim ds As New DataSet
-        Dim tbl As String = Me.TABLE_NAME
+        Dim tbl As String = TABLE_NAME
 
         ' Call DBHelper Store Procedure
         DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, tbl)
@@ -802,7 +802,7 @@ Public Class PriceListDetailDAL
 
 #Region "Private Methods"
 
-    Function SetParameter(ByVal name As String, ByVal value As Object) As DBHelper.DBHelperParameter
+    Function SetParameter(name As String, value As Object) As DBHelper.DBHelperParameter
 
         name = name.Trim
         If value Is Nothing Then value = DBNull.Value
@@ -814,14 +814,14 @@ Public Class PriceListDetailDAL
 
 #End Region
 
-    Public Function GetPriceForMethodofRepair(ByVal MethodofRepairId As Guid, ByVal companyId As Guid, ByVal ServiceCenterCode As String,
-                                              ByVal EffectiveDate As Date, ByVal SalesPrice As Decimal, ByVal RiskTypeId As Guid,
-                                              ByVal EquipClassId As Guid, ByVal EquipmentID As Guid, ByVal ConditionId As Guid,
-                                              ByVal DealerId As Guid, ByVal ServiceLevelCode As String) As DataSet
+    Public Function GetPriceForMethodofRepair(MethodofRepairId As Guid, companyId As Guid, ServiceCenterCode As String,
+                                              EffectiveDate As Date, SalesPrice As Decimal, RiskTypeId As Guid,
+                                              EquipClassId As Guid, EquipmentID As Guid, ConditionId As Guid,
+                                              DealerId As Guid, ServiceLevelCode As String) As DataSet
         Try
 
 
-            Dim selectStmt As String = Me.Config("/SQL/GET_METHOD_OF_REPAIR_PRICE_LIST")
+            Dim selectStmt As String = Config("/SQL/GET_METHOD_OF_REPAIR_PRICE_LIST")
             Dim inParameters(10) As DBHelper.DBHelperParameter
 
             Dim dealerBytes As Byte()
@@ -835,17 +835,17 @@ Public Class PriceListDetailDAL
 
             Dim inputParameters() As DBHelper.DBHelperParameter
             inputParameters = New DBHelper.DBHelperParameter() _
-                   {SetParameter(Me.PAR_NAME_METHOD_OF_REPAIR_ID, MethodofRepairId.ToByteArray),
-                    SetParameter(Me.PAR_NAME_COMPANY, companyId.ToByteArray),
-                    SetParameter(Me.PAR_NAME_SERVICE_CENTER_CODE, ServiceCenterCode),
-                    SetParameter(Me.PAR_NAME_EFFECTIVE_DATE, EffectiveDate),
-                    SetParameter(Me.PAR_NAME_SALES_PRICE, SalesPrice),
-                    SetParameter(Me.PAR_NAME_RISK_TYPE_ID, RiskTypeId.ToByteArray),
-                    SetParameter(Me.PAR_NAME_EQUIP_CLASS_ID, EquipClassId.ToByteArray),
-                    SetParameter(Me.PAR_NAME_EQUIPMENT_ID, EquipmentID.ToByteArray),
-                    SetParameter(Me.PAR_NAME_CONDITION_ID, ConditionId.ToByteArray),
-                    SetParameter(Me.PAR_NAME_DEALER_ID, dealerBytes),
-                    SetParameter(Me.PAR_NAME_SERVICE_LEVEL_CODE, ServiceLevelCode)}
+                   {SetParameter(PAR_NAME_METHOD_OF_REPAIR_ID, MethodofRepairId.ToByteArray),
+                    SetParameter(PAR_NAME_COMPANY, companyId.ToByteArray),
+                    SetParameter(PAR_NAME_SERVICE_CENTER_CODE, ServiceCenterCode),
+                    SetParameter(PAR_NAME_EFFECTIVE_DATE, EffectiveDate),
+                    SetParameter(PAR_NAME_SALES_PRICE, SalesPrice),
+                    SetParameter(PAR_NAME_RISK_TYPE_ID, RiskTypeId.ToByteArray),
+                    SetParameter(PAR_NAME_EQUIP_CLASS_ID, EquipClassId.ToByteArray),
+                    SetParameter(PAR_NAME_EQUIPMENT_ID, EquipmentID.ToByteArray),
+                    SetParameter(PAR_NAME_CONDITION_ID, ConditionId.ToByteArray),
+                    SetParameter(PAR_NAME_DEALER_ID, dealerBytes),
+                    SetParameter(PAR_NAME_SERVICE_LEVEL_CODE, ServiceLevelCode)}
 
 
             Dim outParameters(1) As DBHelper.DBHelperParameter
@@ -853,7 +853,7 @@ Public Class PriceListDetailDAL
             outParameters(1) = New DBHelper.DBHelperParameter(PAR_NAME_RETURN_CODE, GetType(Integer))
 
             Dim ds As New DataSet
-            Dim tbl As String = Me.TABLE_NAME
+            Dim tbl As String = TABLE_NAME
 
             ' Call DBHelper Store Procedure
             DBHelper.FetchSp(selectStmt, inputParameters, outParameters, ds, tbl)
@@ -871,8 +871,8 @@ Public Class PriceListDetailDAL
         End Try
     End Function
 
-    Public Sub LoadPriceListDetailsForPriceList(ByVal familyDS As DataSet, ByVal id As Guid, ByVal languageId As Guid, ByVal User_id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PRICE_LIST_LIST")
+    Public Sub LoadPriceListDetailsForPriceList(familyDS As DataSet, id As Guid, languageId As Guid, User_id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_PRICE_LIST_LIST")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() {
                               New OracleParameter(PAR_IN_NAME_LANGUAGE_ID, OracleDbType.Raw, languageId.ToByteArray, ParameterDirection.Input),
@@ -887,8 +887,8 @@ Public Class PriceListDetailDAL
                                     familyDS)
     End Sub
 
-    Public Function ViewPriceListDetailHistory(ByVal Pricelistdetaild As Guid, ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PRICE_LIST_DETAIL_HISTORY")
+    Public Function ViewPriceListDetailHistory(Pricelistdetaild As Guid, languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_PRICE_LIST_DETAIL_HISTORY")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() {
                               New OracleParameter("pi_price_list_detail_id", OracleDbType.Raw, Pricelistdetaild.ToByteArray, ParameterDirection.Input),
@@ -901,7 +901,7 @@ Public Class PriceListDetailDAL
                                     parameters)
     End Function
 
-    Public Function GetMakeModelByEquipmentId(ByVal Equipmentid As Guid, ByVal CompanyGroupId As Guid) As DataSet
+    Public Function GetMakeModelByEquipmentId(Equipmentid As Guid, CompanyGroupId As Guid) As DataSet
         'Dim ds As New DataSet
         'Try
 
@@ -916,7 +916,7 @@ Public Class PriceListDetailDAL
         'End Try
 
         'US 224101 - Replacing code to call stored proc
-        Dim selectStmt As String = Me.Config("/SQL/FIND_MAKE_MODEL_BY_EQUIPMENT_ID")
+        Dim selectStmt As String = Config("/SQL/FIND_MAKE_MODEL_BY_EQUIPMENT_ID")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() {
                               New OracleParameter(PAR_IN_NAME_EQUIPMENT_ID, OracleDbType.Raw, Equipmentid.ToByteArray, ParameterDirection.Input),
@@ -929,7 +929,7 @@ Public Class PriceListDetailDAL
                                         parameters)
     End Function
 
-    Public Function GetModelsByMake(ByVal Manufacturerid As Guid) As DataSet
+    Public Function GetModelsByMake(Manufacturerid As Guid) As DataSet
         'Dim ds As New DataSet
         'Try
 
@@ -944,7 +944,7 @@ Public Class PriceListDetailDAL
 
 
         'US 224101 - Replacing code to call stored proc
-        Dim selectStmt As String = Me.Config("/SQL/FIND_MODELS_BY_MAKE")
+        Dim selectStmt As String = Config("/SQL/FIND_MODELS_BY_MAKE")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() {
                               New OracleParameter(PAR_IN_NAME_MANUFACTURER_ID, OracleDbType.Raw, Manufacturerid.ToByteArray, ParameterDirection.Input),
@@ -956,28 +956,28 @@ Public Class PriceListDetailDAL
                                         parameters)
     End Function
 
-    Public Function GetPriceList(ByVal InForceDate As Date, ByVal ClaimNumber As String, ByVal CompanyCode As String, ByVal ServiceCenterCode As String, ByVal RiskTypeCode As String,
-                                 ByVal EquipmentClassCode As String, ByVal DealerCode As String, ByVal ServiceClassCode As String, ByVal ServiceTypeCode As String, ByVal Make As String,
-                                 ByVal Model As String, ByVal LowPrice As String, ByVal HighPrice As String, ByVal ServiceLevelCode As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_PRICE_LIST")
+    Public Function GetPriceList(InForceDate As Date, ClaimNumber As String, CompanyCode As String, ServiceCenterCode As String, RiskTypeCode As String,
+                                 EquipmentClassCode As String, DealerCode As String, ServiceClassCode As String, ServiceTypeCode As String, Make As String,
+                                 Model As String, LowPrice As String, HighPrice As String, ServiceLevelCode As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_PRICE_LIST")
         Dim inParameters(15) As DBHelper.DBHelperParameter
 
-        inParameters(0) = New DBHelper.DBHelperParameter(Me.PAR_NAME_IN_FORCE_DATE, InForceDate)
-        inParameters(1) = New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIM_NUMBER, ClaimNumber)
-        inParameters(2) = New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY_CODE, CompanyCode)
-        inParameters(3) = New DBHelper.DBHelperParameter(Me.PAR_NAME_SERVICE_CENTER_CODE, ServiceCenterCode)
-        inParameters(4) = New DBHelper.DBHelperParameter(Me.PAR_NAME_RISK_TYPE_CODE, RiskTypeCode)
-        inParameters(5) = New DBHelper.DBHelperParameter(Me.PAR_NAME_EQUIPMENT_CLASS_CODE, EquipmentClassCode)
-        inParameters(6) = New DBHelper.DBHelperParameter(Me.PAR_NAME_EQUIPMENT_ID, Nothing)
-        inParameters(7) = New DBHelper.DBHelperParameter(Me.PAR_NAME_CONDITION_ID, Nothing)
-        inParameters(8) = New DBHelper.DBHelperParameter(Me.PAR_NAME_DEALER_CODE, DealerCode)
-        inParameters(9) = New DBHelper.DBHelperParameter(Me.PAR_NAME_SERVICE_CLASS_CODE, ServiceClassCode)
-        inParameters(10) = New DBHelper.DBHelperParameter(Me.PAR_NAME_SERVICE_TYPE_CODE, ServiceTypeCode)
-        inParameters(11) = New DBHelper.DBHelperParameter(Me.PAR_NAME_MAKE, Make)
-        inParameters(12) = New DBHelper.DBHelperParameter(Me.PAR_NAME_MODEL, Model)
-        inParameters(13) = New DBHelper.DBHelperParameter(Me.PAR_NAME_LOW_PRICE, LowPrice)
-        inParameters(14) = New DBHelper.DBHelperParameter(Me.PAR_NAME_HIGH_PRICE, HighPrice)
-        inParameters(15) = New DBHelper.DBHelperParameter(Me.PAR_NAME_SERVICE_LEVEL_CODE, ServiceLevelCode)
+        inParameters(0) = New DBHelper.DBHelperParameter(PAR_NAME_IN_FORCE_DATE, InForceDate)
+        inParameters(1) = New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_NUMBER, ClaimNumber)
+        inParameters(2) = New DBHelper.DBHelperParameter(PAR_NAME_COMPANY_CODE, CompanyCode)
+        inParameters(3) = New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_CENTER_CODE, ServiceCenterCode)
+        inParameters(4) = New DBHelper.DBHelperParameter(PAR_NAME_RISK_TYPE_CODE, RiskTypeCode)
+        inParameters(5) = New DBHelper.DBHelperParameter(PAR_NAME_EQUIPMENT_CLASS_CODE, EquipmentClassCode)
+        inParameters(6) = New DBHelper.DBHelperParameter(PAR_NAME_EQUIPMENT_ID, Nothing)
+        inParameters(7) = New DBHelper.DBHelperParameter(PAR_NAME_CONDITION_ID, Nothing)
+        inParameters(8) = New DBHelper.DBHelperParameter(PAR_NAME_DEALER_CODE, DealerCode)
+        inParameters(9) = New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_CLASS_CODE, ServiceClassCode)
+        inParameters(10) = New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_TYPE_CODE, ServiceTypeCode)
+        inParameters(11) = New DBHelper.DBHelperParameter(PAR_NAME_MAKE, Make)
+        inParameters(12) = New DBHelper.DBHelperParameter(PAR_NAME_MODEL, Model)
+        inParameters(13) = New DBHelper.DBHelperParameter(PAR_NAME_LOW_PRICE, LowPrice)
+        inParameters(14) = New DBHelper.DBHelperParameter(PAR_NAME_HIGH_PRICE, HighPrice)
+        inParameters(15) = New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_LEVEL_CODE, ServiceLevelCode)
 
         Dim outParameters(1) As DBHelper.DBHelperParameter
         outParameters(0) = New DBHelper.DBHelperParameter("p_price_table", GetType(DataSet))
@@ -997,13 +997,13 @@ Public Class PriceListDetailDAL
 
     End Function
 
-    Public Function GetPriceListForParts(ByVal claimId As Guid, ByVal listOfParts As String) As DataSet
+    Public Function GetPriceListForParts(claimId As Guid, listOfParts As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_PARTS_PRICE_LIST")
+        Dim selectStmt As String = Config("/SQL/GET_PARTS_PRICE_LIST")
         Dim inParameters(1) As DBHelper.DBHelperParameter
 
-        inParameters(0) = New DBHelper.DBHelperParameter(Me.PAR_IN_NAME_CLAIM_ID, claimId)
-        inParameters(1) = New DBHelper.DBHelperParameter(Me.PAR_IN_NAME_PARTS_LIST, listOfParts)
+        inParameters(0) = New DBHelper.DBHelperParameter(PAR_IN_NAME_CLAIM_ID, claimId)
+        inParameters(1) = New DBHelper.DBHelperParameter(PAR_IN_NAME_PARTS_LIST, listOfParts)
 
 
         Dim outParameters(1) As DBHelper.DBHelperParameter
@@ -1026,7 +1026,7 @@ Public Class PriceListDetailDAL
     'US 224101 - Common call to stored procedures
     Private Function FetchStoredProcedure(methodName As String, storedProc As String, parameters() As OracleParameter, Optional familyDS As DataSet = Nothing) As DataSet
         Dim ds As DataSet = If(familyDS Is Nothing, New DataSet(), familyDS)
-        Dim tbl As String = Me.TABLE_NAME
+        Dim tbl As String = TABLE_NAME
 
         If (ds.Tables Is Nothing OrElse ds.Tables.Count = 0) Then
             ds.Tables.Add(tbl)
@@ -1042,7 +1042,7 @@ Public Class PriceListDetailDAL
                     OracleDbHelper.Fetch(cmd, tbl, ds)
                 End Using
             End Using
-            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(Me.PAR_OUT_NAME_RETURN_CODE))
+            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
             If (Not par Is Nothing And par.Value = 200) Then
                 Throw New ElitaPlusException("PriceListDetail - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
             End If
@@ -1054,12 +1054,12 @@ Public Class PriceListDetailDAL
         Return ds
     End Function
 
-    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
         command.AddParameter(PAR_IN_NAME_PRICE_LIST_DETAIL_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_PRICE_LIST_DETAIL_ID)
         command.AddParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int32, ParameterDirection.Output)
     End Sub
 
-    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, tableName As String)
 
         With command
             .AddParameter(PAR_IN_NAME_PRICE_LIST_DETAIL_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_PRICE_LIST_DETAIL_ID)
@@ -1094,7 +1094,7 @@ Public Class PriceListDetailDAL
 
     End Sub
 
-    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, tableName As String)
 
         With command
             .AddParameter(PAR_IN_NAME_PRICE_LIST_DETAIL_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_PRICE_LIST_DETAIL_ID)

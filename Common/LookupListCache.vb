@@ -8,7 +8,7 @@ Public Class LookupListCache
 
 #Region "Private Methods"
 
-    Private Shared Function DetermineCacheItemName(ByVal itemName As String) As String
+    Private Shared Function DetermineCacheItemName(itemName As String) As String
         Dim parameters As ElitaPlusParameters = Nothing
         Try
             parameters = CType(Threading.Thread.CurrentThread.CurrentPrincipal.Identity, ElitaPlusParameters)
@@ -26,7 +26,7 @@ Public Class LookupListCache
 
 #Region "Class Methods"
 
-    Public Shared Function RetrieveFromCache(ByVal listName As String, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+    Public Shared Function RetrieveFromCache(listName As String, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
         Dim key As String = listName & "-" & displayNothingSelected
 
@@ -36,7 +36,7 @@ Public Class LookupListCache
 
     End Function
 
-    Public Shared Sub AddToCache(ByVal listName As String, ByVal dv As DataView, Optional ByVal displayNothingSelected As Boolean = True)
+    Public Shared Sub AddToCache(listName As String, dv As DataView, Optional ByVal displayNothingSelected As Boolean = True)
 
         Dim key As String = listName & "-" & displayNothingSelected
         ' JLR - Note: AddPermanententry may be used only when a mechanism to update cache across servers is implemented.
@@ -49,7 +49,7 @@ Public Class LookupListCache
 
     End Sub
 
-    Public Shared Function ClearFromCache(ByVal DALName As String) As Boolean
+    Public Shared Function ClearFromCache(DALName As String) As Boolean
 
         Dim key As String
         Dim oDalTable As DalLookupTable = AppConfig.CommonCache.GetDalLookupTable

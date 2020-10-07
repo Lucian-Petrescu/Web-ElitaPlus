@@ -54,7 +54,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -64,23 +64,23 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
 
         End Sub
 
@@ -88,12 +88,12 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -104,9 +104,9 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moBeginDateLabel)
-            Me.ClearLabelErrSign(moEndDateLabel)
-            Me.ClearLabelErrSign(moBrokerCommPercentLabel)
+            ClearLabelErrSign(moBeginDateLabel)
+            ClearLabelErrSign(moEndDateLabel)
+            ClearLabelErrSign(moBrokerCommPercentLabel)
         End Sub
 
 #End Region
@@ -126,7 +126,7 @@ Namespace Reports
                 oListContext.CompanyId = _company
                 Dim dealerListForCompany As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerWithMonthlyBillingContractByCompany", context:=oListContext, languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
                 If dealerListForCompany.Count > 0 Then
-                    If Not dealerWithMonthlyBillingList Is Nothing Then
+                    If dealerWithMonthlyBillingList IsNot Nothing Then
                         dealerWithMonthlyBillingList.AddRange(dealerListForCompany)
                     Else
                         dealerWithMonthlyBillingList = dealerListForCompany.Clone()
@@ -134,31 +134,31 @@ Namespace Reports
                 End If
             Next
 
-            Me.cboDealer.Populate(dealerWithMonthlyBillingList.ToArray(),
+            cboDealer.Populate(dealerWithMonthlyBillingList.ToArray(),
                                 New PopulateOptions() With
                                 {
                                     .AddBlankItem = True
                                 })
 
-            Dim oDescrip As String = Me.GetSelectedDescription(Me.cboDealer)
+            Dim oDescrip As String = GetSelectedDescription(cboDealer)
 
         End Sub
 
         Private Sub InitializeForm()
             PopulateDealerDropDown()
             Dim t As Date = Date.Now.AddMonths(-1).AddDays(1)
-            Me.moBeginDateText.Text = GetDateFormattedString(t)
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Now)
-            Me.rdealer.Checked = True
-            Me.PopulateControlFromBOProperty(Me.moBrokerCommPercentText, Me.DEFAULT_BROKER_COMM_RATE, Me.DECIMAL_FORMAT)
+            moBeginDateText.Text = GetDateFormattedString(t)
+            moEndDateText.Text = GetDateFormattedString(Date.Now)
+            rdealer.Checked = True
+            PopulateControlFromBOProperty(moBrokerCommPercentText, DEFAULT_BROKER_COMM_RATE, DECIMAL_FORMAT)
         End Sub
 
 #End Region
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal userId As String, ByVal dealerCode As String, ByVal beginDate As String,
-                                  ByVal endDate As String, ByVal brokerCommPercent As Decimal, ByVal dealerName As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, dealerCode As String, beginDate As String,
+                                  endDate As String, brokerCommPercent As Decimal, dealerName As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim reportName As String = RPT_FILENAME
@@ -198,7 +198,7 @@ Namespace Reports
         Private Sub GenerateReport()
 
             Dim userId As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.Id)
-            Dim dealerID As Guid = Me.GetSelectedItem(Me.cboDealer)
+            Dim dealerID As Guid = GetSelectedItem(cboDealer)
             Dim dv As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "CODE")
             Dim dealerCode As String = LookupListNew.GetCodeFromId(dv, dealerID)
             Dim selectedDealer As String = LookupListNew.GetDescriptionFromId(dv, dealerID)
@@ -206,7 +206,7 @@ Namespace Reports
             Dim beginDate As String
             Dim brokerCommPercent As Decimal
 
-            If IsNumeric(Me.moBrokerCommPercentText.Text()) Then brokerCommPercent = CType(Me.moBrokerCommPercentText.Text, Decimal) Else brokerCommPercent = 0
+            If IsNumeric(moBrokerCommPercentText.Text()) Then brokerCommPercent = CType(moBrokerCommPercentText.Text, Decimal) Else brokerCommPercent = 0
 
             'Dates
             ReportCeBase.ValidateBeginEndDate(moBeginDateLabel, moBeginDateText.Text, moEndDateLabel, moEndDateText.Text)
@@ -218,7 +218,7 @@ Namespace Reports
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_BROKER_COMM_PERCENT)
             End If
 
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             End If
 

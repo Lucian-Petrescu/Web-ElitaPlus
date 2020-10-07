@@ -69,7 +69,7 @@ Namespace Tables
 
         Public ReadOnly Property IsEditing() As Boolean
             Get
-                IsEditing = (Me.Grid.EditIndex > NO_ROW_SELECTED_INDEX)
+                IsEditing = (Grid.EditIndex > NO_ROW_SELECTED_INDEX)
             End Get
         End Property
 
@@ -86,7 +86,7 @@ Namespace Tables
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
@@ -106,7 +106,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -174,146 +174,146 @@ Namespace Tables
 
 #Region "Handlers"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
                 ErrControllerMaster.Clear_Hide()
                 'Me.SetStateProperties()
                 If Not Page.IsPostBack Then
-                    Me.SortDirection = BranchStandardization.BranchStandardizationSearchDV.COL_DEALER_NAME
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                    SortDirection = BranchStandardization.BranchStandardizationSearchDV.COL_DEALER_NAME
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SetDefaultButton(Me.moExternalBranchCodeText, Me.moBtnSearch)
-                    Me.SetGridItemStyleColor(Me.Grid)
-                    If Me.State.BranchAliasBO Is Nothing Then
-                        Me.State.BranchAliasBO = New BranchStandardization
+                    SetDefaultButton(moExternalBranchCodeText, moBtnSearch)
+                    SetGridItemStyleColor(Grid)
+                    If State.BranchAliasBO Is Nothing Then
+                        State.BranchAliasBO = New BranchStandardization
                     End If
-                    Me.TranslateGridHeader(Grid)
-                    Me.TranslateGridControls(Grid)
+                    TranslateGridHeader(Grid)
+                    TranslateGridControls(Grid)
                     PopulateDealerDropdown()
-                    Me.State.PageIndex = 0
+                    State.PageIndex = 0
                     SetButtonsState()
                     BindBoPropertiesToGridHeaders()
                 Else
-                    If Not Me.State.searchDV Is Nothing Then
-                        Grid.DataSource = Me.State.searchDV
+                    If State.searchDV IsNot Nothing Then
+                        Grid.DataSource = State.searchDV
                     End If
                 End If
 
                 BindBoPropertiesToGridHeaders()
                 CheckIfComingFromDeleteConfirm()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
-        Private Sub moBtnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnSearch.Click
+        Private Sub moBtnSearch_Click(sender As System.Object, e As System.EventArgs) Handles moBtnSearch.Click
             Try
-                Me.State.IsGridVisible = True
-                Me.State.searchDV = Nothing
+                State.IsGridVisible = True
+                State.searchDV = Nothing
                 PopulateBranchGrid()
-                Me.State.PageIndex = Grid.PageIndex
+                State.PageIndex = Grid.PageIndex
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub moBtnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnClearSearch.Click
+        Private Sub moBtnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles moBtnClearSearch.Click
             Try
-                Me.moExternalBranchCodeText.Text = String.Empty
-                Me.DealerMultipleDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
+                moExternalBranchCodeText.Text = String.Empty
+                DealerMultipleDrop.SelectedIndex = BLANK_ITEM_SELECTED
 
-                If (Not Me.moDropdownBranch.SelectedIndex.Equals(-1)) Then
-                    Me.moDropdownBranch.SelectedIndex = Me.BLANK_ITEM_SELECTED
+                If (Not moDropdownBranch.SelectedIndex.Equals(-1)) Then
+                    moDropdownBranch.SelectedIndex = BLANK_ITEM_SELECTED
                 End If
 
                 'Update Page State
-                With Me.State
+                With State
                     .DescriptionMask = DealerMultipleDrop.TextColumnName
                     .BranchIdSearch = Nothing
                     .SearchDealerId = Nothing
                 End With
                 'Me.PopulateBranchGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub moBtnAdd_WITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnAdd_WRITE.Click
+        Private Sub moBtnAdd_WITE_Click(sender As System.Object, e As System.EventArgs) Handles moBtnAdd_WRITE.Click
 
             Try
-                If Me.State.dealerCount > 0 Then
-                    Me.State.IsEditMode = True
-                    Me.State.IsGridVisible = True
-                    Me.State.AddingNewRow = True
-                    Me.State.searchDV = Nothing
-                    Me.AddBranchAlias()
+                If State.dealerCount > 0 Then
+                    State.IsEditMode = True
+                    State.IsGridVisible = True
+                    State.AddingNewRow = True
+                    State.searchDV = Nothing
+                    AddBranchAlias()
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub moBtnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnSave_WRITE.Click
+        Private Sub moBtnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles moBtnSave_WRITE.Click
 
             Try
                 PopulateBOFromForm()
-                If (Me.State.BranchAliasBO.IsDirty) Then
-                    Me.State.BranchAliasBO.Save()
-                    Me.State.IsAfterSave = True
-                    Me.State.AddingNewRow = False
-                    ShowInfoMsgBox(Me.MSG_RECORD_SAVED_OK)
-                    Me.State.searchDV = Nothing
-                    Me.ReturnFromEditing()
+                If (State.BranchAliasBO.IsDirty) Then
+                    State.BranchAliasBO.Save()
+                    State.IsAfterSave = True
+                    State.AddingNewRow = False
+                    ShowInfoMsgBox(MSG_RECORD_SAVED_OK)
+                    State.searchDV = Nothing
+                    ReturnFromEditing()
                 Else
-                    ShowInfoMsgBox(Me.MSG_RECORD_NOT_SAVED)
-                    Me.ReturnFromEditing()
+                    ShowInfoMsgBox(MSG_RECORD_NOT_SAVED)
+                    ReturnFromEditing()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
-                Me.ReturnFromEditing(True)
+                HandleErrors(ex, ErrControllerMaster)
+                ReturnFromEditing(True)
             End Try
         End Sub
 
-        Private Sub moBtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnCancel.Click
+        Private Sub moBtnCancel_Click(sender As System.Object, e As System.EventArgs) Handles moBtnCancel.Click
             Try
-                Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
-                Me.State.Canceling = True
-                If (Me.State.AddingNewRow) Then
-                    Me.State.AddingNewRow = False
-                    Me.State.searchDV = Nothing
+                Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                State.Canceling = True
+                If (State.AddingNewRow) Then
+                    State.AddingNewRow = False
+                    State.searchDV = Nothing
                 End If
                 ReturnFromEditing()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub moDealerNameDropGrid_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Protected Sub moDealerNameDropGrid_SelectedIndexChanged(sender As System.Object, e As System.EventArgs)
 
             ReloadNewFields()
 
         End Sub
 
         Protected Sub CheckIfComingFromDeleteConfirm()
-            Dim confResponse As String = Me.HiddenDeletePromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+            Dim confResponse As String = HiddenDeletePromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
                 If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
                     DoDelete()
                 End If
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Delete
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Delete
                 End Select
             End If
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
             'Me.HiddenDeletePromptResponse.Value = ""
         End Sub
 
@@ -323,7 +323,7 @@ Namespace Tables
 
             'Save the LanguageId in the Session
 
-            Dim BranchStandardizationBO As BranchStandardization = New BranchStandardization(Me.State.BranchAliasId)
+            Dim BranchStandardizationBO As BranchStandardization = New BranchStandardization(State.BranchAliasId)
 
             BranchStandardizationBO.Delete()
 
@@ -334,12 +334,12 @@ Namespace Tables
             'Me.State.PageIndex = Grid.PageIndex
 
             'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-            Me.State.IsAfterSave = True
-            Me.State.searchDV = Nothing
-            Me.PopulateBranchGrid()
-            Me.State.PageIndex = Grid.PageIndex
-            Me.State.IsEditMode = False
-            Me.SetButtonsState()
+            State.IsAfterSave = True
+            State.searchDV = Nothing
+            PopulateBranchGrid()
+            State.PageIndex = Grid.PageIndex
+            State.IsEditMode = False
+            SetButtonsState()
         End Sub
 #End Region
 
@@ -350,68 +350,68 @@ Namespace Tables
 
             'Dim dv As DataView
             Try
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.SetStateProperties()
-                    Me.State.searchDV = GetBranchGridDataView()
+                If (State.searchDV Is Nothing) Then
+                    SetStateProperties()
+                    State.searchDV = GetBranchGridDataView()
                 End If
 
-                Me.State.searchDV.Sort = Me.SortDirection
+                State.searchDV.Sort = SortDirection
 
-                If (Me.State.IsAfterSave) Then
-                    Me.State.IsAfterSave = False
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.BranchAliasId, Me.Grid, Me.State.PageIndex)
-                ElseIf (Me.State.IsEditMode) Then
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.BranchAliasId, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+                If (State.IsAfterSave) Then
+                    State.IsAfterSave = False
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.BranchAliasId, Grid, State.PageIndex)
+                ElseIf (State.IsEditMode) Then
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.BranchAliasId, Grid, State.PageIndex, State.IsEditMode)
                 Else
                     'For a rare Delete scenario...
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.Grid, Me.State.PageIndex)
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, State.PageIndex)
                 End If
 
-                Me.Grid.AutoGenerateColumns = False
-                Me.Grid.Columns(Me.GRID_COL_DEALER).SortExpression = BranchStandardization.BranchStandardizationSearchDV.COL_DEALER_NAME
-                Me.Grid.Columns(Me.GRID_COL_BRANCH_ALIAS).SortExpression = BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_ALIAS.ToUpper
-                Me.Grid.Columns(Me.GRID_COL_BRANCH_ID).SortExpression = BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_CODE
+                Grid.AutoGenerateColumns = False
+                Grid.Columns(GRID_COL_DEALER).SortExpression = BranchStandardization.BranchStandardizationSearchDV.COL_DEALER_NAME
+                Grid.Columns(GRID_COL_BRANCH_ALIAS).SortExpression = BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_ALIAS.ToUpper
+                Grid.Columns(GRID_COL_BRANCH_ID).SortExpression = BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_CODE
 
                 SortAndBindGrid()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub SortAndBindGrid()
 
-            Me.State.PageIndex = Me.Grid.PageIndex
+            State.PageIndex = Grid.PageIndex
 
-            If (Me.State.searchDV.Count = 0) Then
-                Me.State.searchDV = Nothing
-                Me.State.bnoRow = True
-                Me.State.BranchAliasBO = New BranchStandardization
-                Me.State.BranchAliasBO.AddNewRowToBranchStandardizationSearchDV(Me.State.searchDV, Me.State.BranchAliasBO)
-                Me.Grid.DataSource = Me.State.searchDV
-                Me.Grid.DataBind()
-                Me.Grid.Rows(0).Visible = False
-                Me.State.AddingNewRow = True
+            If (State.searchDV.Count = 0) Then
+                State.searchDV = Nothing
+                State.bnoRow = True
+                State.BranchAliasBO = New BranchStandardization
+                State.BranchAliasBO.AddNewRowToBranchStandardizationSearchDV(State.searchDV, State.BranchAliasBO)
+                Grid.DataSource = State.searchDV
+                Grid.DataBind()
+                Grid.Rows(0).Visible = False
+                State.AddingNewRow = True
             Else
-                Me.State.bnoRow = False
-                Me.Grid.Enabled = True
-                Grid.DataSource = Me.State.searchDV
-                HighLightSortColumn(Grid, Me.State.SortExpression)
-                Me.Grid.DataBind()
+                State.bnoRow = False
+                Grid.Enabled = True
+                Grid.DataSource = State.searchDV
+                HighLightSortColumn(Grid, State.SortExpression)
+                Grid.DataBind()
             End If
 
             If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.Grid.Visible Then
-                If (Me.State.AddingNewRow) Then
-                    Me.lblRecordCount.Text = (Me.State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                If (State.AddingNewRow) Then
+                    lblRecordCount.Text = (State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 Else
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
@@ -419,47 +419,47 @@ Namespace Tables
 
         Private Function GetBranchGridDataView() As BranchStandardization.BranchStandardizationSearchDV
             With State
-                Me.State.searchDV = BranchStandardization.GetBranchAliasList(Me.State.DescriptionMask.ToUpper,
-                                                                             Me.State.BranchIdSearch,
-                                                                             Me.State.SearchDealerId)
+                State.searchDV = BranchStandardization.GetBranchAliasList(State.DescriptionMask.ToUpper,
+                                                                             State.BranchIdSearch,
+                                                                             State.SearchDealerId)
             End With
 
-            Me.State.searchDV.Sort = Grid.DataMember()
-            Grid.DataSource = Me.State.searchDV
+            State.searchDV.Sort = Grid.DataMember()
+            Grid.DataSource = State.searchDV
 
-            Return (Me.State.searchDV)
+            Return (State.searchDV)
         End Function
 
         Private Sub SetStateProperties()
             Dim company As New ElitaPlus.BusinessObjectsNew.Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
 
-            Me.State.DescriptionMask = moExternalBranchCodeText.Text
+            State.DescriptionMask = moExternalBranchCodeText.Text
             'If (Not moDropdownDealerName.SelectedItem Is Nothing AndAlso moDropdownDealerName.SelectedItem.Value <> Me.NOTHING_SELECTED_TEXT) Then
             '    Me.State.SearchDealerId = Me.GetGuidFromString(moDropdownDealerName.SelectedItem.Value)
             'Else
 
-            Me.State.SearchDealerId = Me.DealerMultipleDrop.SelectedGuid
+            State.SearchDealerId = DealerMultipleDrop.SelectedGuid
             'End If
 
-            If (Not moDropdownBranch.SelectedItem Is Nothing AndAlso moDropdownBranch.SelectedItem.Value <> Me.NOTHING_SELECTED_TEXT) Then
-                Me.State.BranchIdSearch = Me.GetGuidFromString(moDropdownBranch.SelectedItem.Value)
+            If (moDropdownBranch.SelectedItem IsNot Nothing AndAlso moDropdownBranch.SelectedItem.Value <> NOTHING_SELECTED_TEXT) Then
+                State.BranchIdSearch = GetGuidFromString(moDropdownBranch.SelectedItem.Value)
             Else
-                Me.State.BranchIdSearch = Nothing
+                State.BranchIdSearch = Nothing
             End If
 
-            Me.State.CompanyId = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
+            State.CompanyId = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
 
         End Sub
 
         Private Sub PopulateBOFromForm()
             Try
-                With Me.State.BranchAliasBO
-                    .DealerId = Me.GetSelectedItem(CType(Grid.Rows(Grid.EditIndex).Cells(Me.GRID_COL_DEALER).FindControl(DEALER_IN_GRID_CONTROL_NAME), DropDownList))
-                    .DealerBranchCode = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.GRID_COL_BRANCH_ALIAS).FindControl(Me.DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text.ToUpper
-                    .BranchId = Me.GetSelectedItem(CType(Grid.Rows(Grid.EditIndex).Cells(Me.GRID_COL_BRANCH_ID).FindControl(Me.BRANCH_LIST_IN_GRID_CONTROL_NAME), DropDownList))
+                With State.BranchAliasBO
+                    .DealerId = GetSelectedItem(CType(Grid.Rows(Grid.EditIndex).Cells(GRID_COL_DEALER).FindControl(DEALER_IN_GRID_CONTROL_NAME), DropDownList))
+                    .DealerBranchCode = CType(Grid.Rows(Grid.EditIndex).Cells(GRID_COL_BRANCH_ALIAS).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text.ToUpper
+                    .BranchId = GetSelectedItem(CType(Grid.Rows(Grid.EditIndex).Cells(GRID_COL_BRANCH_ID).FindControl(BRANCH_LIST_IN_GRID_CONTROL_NAME), DropDownList))
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -467,7 +467,7 @@ Namespace Tables
         Private Sub PopulateDealerDropdown()
             Try
                 Dim dv As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, , , , True)
-                Me.State.dealerCount = dv.Count
+                State.dealerCount = dv.Count
 
                 DealerMultipleDrop.Caption = TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_DEALERCODE)
                 DealerMultipleDrop.NothingSelected = True
@@ -479,9 +479,9 @@ Namespace Tables
 
         End Sub
 
-        Private Sub PopulateBranchDropdownGrid(ByVal oDealerDropDownList As DropDownList, ByVal oBranchDropDownList As DropDownList, Optional ByVal edmode As Boolean = False, Optional ByVal isNew As Boolean = False)
+        Private Sub PopulateBranchDropdownGrid(oDealerDropDownList As DropDownList, oBranchDropDownList As DropDownList, Optional ByVal edmode As Boolean = False, Optional ByVal isNew As Boolean = False)
             Try
-                Dim oDealerId As Guid = Me.GetSelectedItem(oDealerDropDownList)
+                Dim oDealerId As Guid = GetSelectedItem(oDealerDropDownList)
                 'Me.BindListControlToDataView(oBranchDropDownList,
                 'LookupListNew.GetBranchCodeLookupList(oDealerId), "CODE", "ID", True) 'Dll
                 Dim listcontext As ListContext = New ListContext()
@@ -501,60 +501,60 @@ Namespace Tables
 
 
         Private Sub AddBranchAlias()
-            Me.State.searchDV = GetBranchGridDataView()
+            State.searchDV = GetBranchGridDataView()
 
 
-            Me.State.BranchAliasBO = New BranchStandardization
-            Me.State.BranchAliasId = Me.State.BranchAliasBO.Id
+            State.BranchAliasBO = New BranchStandardization
+            State.BranchAliasId = State.BranchAliasBO.Id
 
-            GetNewDataViewRow(Me.State.searchDV, Me.State.BranchAliasId)
+            GetNewDataViewRow(State.searchDV, State.BranchAliasId)
 
-            Grid.DataSource = Me.State.searchDV
-            Me.SetGridControls(Me.Grid, False)
+            Grid.DataSource = State.searchDV
+            SetGridControls(Grid, False)
 
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.BranchAliasId, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.BranchAliasId, Grid, State.PageIndex, State.IsEditMode)
 
-            Me.Grid.AutoGenerateColumns = False
-            Me.Grid.Columns(Me.GRID_COL_DEALER).SortExpression = BranchStandardization.BranchStandardizationSearchDV.COL_DEALER_NAME
-            Me.Grid.Columns(Me.GRID_COL_BRANCH_ALIAS).SortExpression = BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_ALIAS
-            Me.Grid.Columns(Me.GRID_COL_BRANCH_ID).SortExpression = BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_CODE
+            Grid.AutoGenerateColumns = False
+            Grid.Columns(GRID_COL_DEALER).SortExpression = BranchStandardization.BranchStandardizationSearchDV.COL_DEALER_NAME
+            Grid.Columns(GRID_COL_BRANCH_ALIAS).SortExpression = BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_ALIAS
+            Grid.Columns(GRID_COL_BRANCH_ID).SortExpression = BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_CODE
 
 
-            Me.SortAndBindGrid()
+            SortAndBindGrid()
 
             'Set focus on the Description TextBox for the EditItemIndex row
-            Me.SetFocusOnEditableFieldInGrid(Me.Grid, Me.GRID_COL_DEALER, Grid.EditIndex)
+            SetFocusOnEditableFieldInGrid(Grid, GRID_COL_DEALER, Grid.EditIndex)
 
-            Dim ctrlDealer As DropDownList = CType(Grid.Rows(Grid.EditIndex).Cells(Me.GRID_COL_DEALER).FindControl(Me.DEALER_IN_GRID_CONTROL_NAME), DropDownList)
-            Dim BranchList As DropDownList = CType(Grid.Rows(Grid.EditIndex).Cells(Me.GRID_COL_BRANCH_ID).FindControl(Me.BRANCH_LIST_IN_GRID_CONTROL_NAME), DropDownList)
+            Dim ctrlDealer As DropDownList = CType(Grid.Rows(Grid.EditIndex).Cells(GRID_COL_DEALER).FindControl(DEALER_IN_GRID_CONTROL_NAME), DropDownList)
+            Dim BranchList As DropDownList = CType(Grid.Rows(Grid.EditIndex).Cells(GRID_COL_BRANCH_ID).FindControl(BRANCH_LIST_IN_GRID_CONTROL_NAME), DropDownList)
             'Invoke the RiskGroupFactoryLookup with NotingSelected = False
             PopulateBranchDropdownGrid(ctrlDealer, BranchList, False)
 
             'Me.TranslateGridControls(Grid)
 
-            Me.SetButtonsState()
+            SetButtonsState()
 
         End Sub
         Private Sub ReloadNewFields()
             Dim oDealerDrop, oBatnchCodeDrop As DropDownList
             Dim oDealerBranchCode As TextBox
             Try
-                oDealerBranchCode = CType(Grid.Rows(Grid.EditIndex).Cells(Me.GRID_COL_BRANCH_ALIAS).FindControl(Me.DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox)
-                oDealerDrop = CType(Me.GetSelectedGridControl(Grid, Me.GRID_COL_DEALER), DropDownList)
+                oDealerBranchCode = CType(Grid.Rows(Grid.EditIndex).Cells(GRID_COL_BRANCH_ALIAS).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox)
+                oDealerDrop = CType(GetSelectedGridControl(Grid, GRID_COL_DEALER), DropDownList)
                 'oBatnchCodeDrop = CType(Me.GetSelectedGridControl(Grid, Me.GRID_COL_BRANCH_ID), DropDownList)
-                If Not Me.State.searchDV Is Nothing Then
-                    Dim oDealerId As Guid = Me.GetSelectedItem(oDealerDrop)
-                    Grid.DataSource = Me.State.searchDV
-                    Me.Grid.DataBind()
-                    oDealerDrop = CType(Me.GetSelectedGridControl(Grid, Me.GRID_COL_DEALER), DropDownList)
-                    oBatnchCodeDrop = CType(Me.GetSelectedGridControl(Grid, Me.GRID_COL_BRANCH_ID), DropDownList)
-                    Me.SetSelectedItem(oDealerDrop, oDealerId)
+                If State.searchDV IsNot Nothing Then
+                    Dim oDealerId As Guid = GetSelectedItem(oDealerDrop)
+                    Grid.DataSource = State.searchDV
+                    Grid.DataBind()
+                    oDealerDrop = CType(GetSelectedGridControl(Grid, GRID_COL_DEALER), DropDownList)
+                    oBatnchCodeDrop = CType(GetSelectedGridControl(Grid, GRID_COL_BRANCH_ID), DropDownList)
+                    SetSelectedItem(oDealerDrop, oDealerId)
                     PopulateBranchDropdownGrid(oDealerDrop, oBatnchCodeDrop)
-                    CType(Grid.Rows(Grid.EditIndex).Cells(Me.GRID_COL_BRANCH_ALIAS).FindControl(Me.DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text = oDealerBranchCode.Text
+                    CType(Grid.Rows(Grid.EditIndex).Cells(GRID_COL_BRANCH_ALIAS).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text = oDealerBranchCode.Text
                 End If
                 SetButtonsState()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -564,26 +564,26 @@ Namespace Tables
 
                 Grid.EditIndex = NO_ROW_SELECTED_INDEX
 
-                If (Me.Grid.PageCount = 0) Then
+                If (Grid.PageCount = 0) Then
                     'if returning to the "1st time in" screen
                     ControlMgr.SetVisibleControl(Me, Grid, False)
                 Else
                     ControlMgr.SetVisibleControl(Me, Grid, True)
                 End If
 
-                Me.State.IsEditMode = False
-                Me.PopulateBranchGrid()
-                Me.State.PageIndex = Grid.PageIndex
+                State.IsEditMode = False
+                PopulateBranchGrid()
+                State.PageIndex = Grid.PageIndex
                 SetButtonsState()
             Else
                 ReloadNewFields()
             End If
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As GridView, ByVal cellPosition As Integer, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As GridView, cellPosition As Integer, itemIndex As Integer)
             'Set focus on the Description TextBox for the EditItemIndex row
             Dim ind As Integer = grid.EditIndex
-            Dim ctrlDealer As DropDownList = CType(grid.Rows(ind).Cells(Me.GRID_COL_DEALER).FindControl(Me.DEALER_IN_GRID_CONTROL_NAME), DropDownList)
+            Dim ctrlDealer As DropDownList = CType(grid.Rows(ind).Cells(GRID_COL_DEALER).FindControl(DEALER_IN_GRID_CONTROL_NAME), DropDownList)
             'Dim ctrlDealer As DropDownList = CType(grid.Rows(itemIndex).Cells(Me.GRID_COL_DEALER).FindControl(Me.DEALER_IN_GRID_CONTROL_NAME), DropDownList)
 
             SetFocus(ctrlDealer)
@@ -591,10 +591,10 @@ Namespace Tables
         End Sub
 
         Protected Sub BindBoPropertiesToGridHeaders()
-            Me.BindBOPropertyToGridHeader(Me.State.BranchAliasBO, "DealerBranchCode", Me.Grid.Columns(Me.GRID_COL_BRANCH_ALIAS))
-            Me.BindBOPropertyToGridHeader(Me.State.BranchAliasBO, "dealerId", Me.Grid.Columns(Me.GRID_COL_DEALER))
-            Me.BindBOPropertyToGridHeader(Me.State.BranchAliasBO, "BranchId", Me.Grid.Columns(Me.GRID_COL_BRANCH_ID))
-            Me.ClearGridViewHeadersAndLabelsErrSign()
+            BindBOPropertyToGridHeader(State.BranchAliasBO, "DealerBranchCode", Grid.Columns(GRID_COL_BRANCH_ALIAS))
+            BindBOPropertyToGridHeader(State.BranchAliasBO, "dealerId", Grid.Columns(GRID_COL_DEALER))
+            BindBOPropertyToGridHeader(State.BranchAliasBO, "BranchId", Grid.Columns(GRID_COL_BRANCH_ID))
+            ClearGridViewHeadersAndLabelsErrSign()
         End Sub
 
 #End Region
@@ -603,8 +603,8 @@ Namespace Tables
 
         Private Sub SetButtonsState()
 
-            If (Me.State.IsEditMode) Then
-                ControlMgr.SetVisibleControl(Me, Me.moBtnSave_WRITE, True)
+            If (State.IsEditMode) Then
+                ControlMgr.SetVisibleControl(Me, moBtnSave_WRITE, True)
                 ControlMgr.SetVisibleControl(Me, moBtnCancel, True)
                 ControlMgr.SetVisibleControl(Me, moBtnAdd_WRITE, False)
                 ControlMgr.SetEnableControl(Me, moBtnSearch, False)
@@ -612,11 +612,11 @@ Namespace Tables
                 ControlMgr.SetEnableControl(Me, moDropdownBranch, False)
                 ControlMgr.SetEnableControl(Me, moExternalBranchCodeText, False)
                 DealerMultipleDrop.ChangeEnabledControlProperty(False)
-                Me.MenuEnabled = False
-                If (Me.cboPageSize.Visible) Then
+                MenuEnabled = False
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, False)
                 End If
-                Me.SetGridControls(Me.Grid, False)
+                SetGridControls(Grid, False)
             Else
                 ControlMgr.SetVisibleControl(Me, moBtnSave_WRITE, False)
                 ControlMgr.SetVisibleControl(Me, moBtnCancel, False)
@@ -626,26 +626,26 @@ Namespace Tables
                 ControlMgr.SetEnableControl(Me, moDropdownBranch, True)
                 ControlMgr.SetEnableControl(Me, moExternalBranchCodeText, True)
                 DealerMultipleDrop.ChangeEnabledControlProperty(True)
-                Me.MenuEnabled = True
-                If (Me.cboPageSize.Visible) Then
+                MenuEnabled = True
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, True)
                 End If
             End If
 
         End Sub
-        Private Sub moBtnDelete_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles moBtnDelete.Click
+        Private Sub moBtnDelete_Click(sender As Object, e As System.Web.UI.ImageClickEventArgs) Handles moBtnDelete.Click
             Try
                 'Place code here
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub moBtnDelete_Command(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.CommandEventArgs) Handles moBtnDelete.Command
+        Private Sub moBtnDelete_Command(sender As Object, e As System.Web.UI.WebControls.CommandEventArgs) Handles moBtnDelete.Command
             Try
                 'Place code here
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -661,39 +661,39 @@ Namespace Tables
         '    End Set
         'End Property
 
-        Private Sub Grid_PageIndexChanged(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As System.Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
-                If (Not (Me.State.IsEditMode)) Then
-                    Me.State.PageIndex = e.NewPageIndex
-                    Me.Grid.PageIndex = Me.State.PageIndex
-                    Me.PopulateBranchGrid()
-                    Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+                If (Not (State.IsEditMode)) Then
+                    State.PageIndex = e.NewPageIndex
+                    Grid.PageIndex = State.PageIndex
+                    PopulateBranchGrid()
+                    Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.PopulateBranchGrid()
+                PopulateBranchGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+                If dvRow IsNot Nothing And Not State.bnoRow Then
                     If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                        CType(e.Row.Cells(Me.GRID_COL_BRANCH_ALIAS_ID).FindControl(Me.BRANCHALIAS_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_STANDARDIZATION_ID), Byte()))
+                        CType(e.Row.Cells(GRID_COL_BRANCH_ALIAS_ID).FindControl(BRANCHALIAS_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_STANDARDIZATION_ID), Byte()))
 
-                        If (Me.State.IsEditMode = True _
-                                AndAlso Me.State.BranchAliasId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_STANDARDIZATION_ID), Byte())))) Then
+                        If (State.IsEditMode = True _
+                                AndAlso State.BranchAliasId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_STANDARDIZATION_ID), Byte())))) Then
 
                             '   Me.BindListControlToDataView(CType(e.Row.Cells(Me.GRID_COL_DEALER).FindControl(DEALER_IN_GRID_CONTROL_NAME), DropDownList), LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, , , , True)) 'DealerWithEditBranchByUser
 
@@ -703,66 +703,66 @@ Namespace Tables
                             Dim dealerTextFunc As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
                                                                                                Return li.Translation + "-" + li.Code
                                                                                            End Function
-                            CType(e.Row.Cells(Me.GRID_COL_DEALER).FindControl(DEALER_IN_GRID_CONTROL_NAME), DropDownList).Populate(listLkl, New PopulateOptions() With
+                            CType(e.Row.Cells(GRID_COL_DEALER).FindControl(DEALER_IN_GRID_CONTROL_NAME), DropDownList).Populate(listLkl, New PopulateOptions() With
                              {
                               .AddBlankItem = True,
                               .TextFunc = dealerTextFunc,
                               .SortFunc = dealerTextFunc
                             })
-                            Me.SetSelectedItem(CType(e.Row.Cells(Me.GRID_COL_DEALER).FindControl(DEALER_IN_GRID_CONTROL_NAME), DropDownList), Me.State.BranchAliasBO.DealerId)
+                            SetSelectedItem(CType(e.Row.Cells(GRID_COL_DEALER).FindControl(DEALER_IN_GRID_CONTROL_NAME), DropDownList), State.BranchAliasBO.DealerId)
 
-                            Dim ctrlDealer As DropDownList = CType(e.Row.Cells(Me.GRID_COL_DEALER).FindControl(Me.DEALER_IN_GRID_CONTROL_NAME), DropDownList)
-                            Dim BranchList As DropDownList = CType(e.Row.Cells(Me.GRID_COL_BRANCH_ID).FindControl(Me.BRANCH_LIST_IN_GRID_CONTROL_NAME), DropDownList)
-                            Me.PopulateBranchDropdownGrid(ctrlDealer, BranchList, True)
-                            Me.SetSelectedItem(BranchList, Me.State.BranchAliasBO.BranchId) 'New Guid(CType(dvRow(BranchStandardization.BranchStandardizationSearchDV.COL_Branch_STANDARDIZATION_ID), Byte())))
+                            Dim ctrlDealer As DropDownList = CType(e.Row.Cells(GRID_COL_DEALER).FindControl(DEALER_IN_GRID_CONTROL_NAME), DropDownList)
+                            Dim BranchList As DropDownList = CType(e.Row.Cells(GRID_COL_BRANCH_ID).FindControl(BRANCH_LIST_IN_GRID_CONTROL_NAME), DropDownList)
+                            PopulateBranchDropdownGrid(ctrlDealer, BranchList, True)
+                            SetSelectedItem(BranchList, State.BranchAliasBO.BranchId) 'New Guid(CType(dvRow(BranchStandardization.BranchStandardizationSearchDV.COL_Branch_STANDARDIZATION_ID), Byte())))
 
-                            CType(e.Row.Cells(Me.GRID_COL_BRANCH_ALIAS).FindControl(Me.DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text = dvRow(BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_ALIAS).ToString
+                            CType(e.Row.Cells(GRID_COL_BRANCH_ALIAS).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text = dvRow(BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_ALIAS).ToString
                         Else
-                            CType(e.Row.Cells(Me.GRID_COL_DEALER).FindControl(Me.DEALER_IN_GRID_CONTROL_NAME_LABEL), Label).Text = dvRow(BranchStandardization.BranchStandardizationSearchDV.COL_DEALER_NAME).ToString
-                            CType(e.Row.Cells(Me.GRID_COL_BRANCH_ALIAS).FindControl(Me.DEALER_BRANCH_IN_GRID_CONTROL_NAME_LABEL), Label).Text = dvRow(BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_ALIAS).ToString
-                            CType(e.Row.Cells(Me.GRID_COL_BRANCH_ID).FindControl(Me.BRANCH_IN_GRID_CONTROL_NAME_LABEL), Label).Text = dvRow(BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_CODE).ToString
+                            CType(e.Row.Cells(GRID_COL_DEALER).FindControl(DEALER_IN_GRID_CONTROL_NAME_LABEL), Label).Text = dvRow(BranchStandardization.BranchStandardizationSearchDV.COL_DEALER_NAME).ToString
+                            CType(e.Row.Cells(GRID_COL_BRANCH_ALIAS).FindControl(DEALER_BRANCH_IN_GRID_CONTROL_NAME_LABEL), Label).Text = dvRow(BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_ALIAS).ToString
+                            CType(e.Row.Cells(GRID_COL_BRANCH_ID).FindControl(BRANCH_IN_GRID_CONTROL_NAME_LABEL), Label).Text = dvRow(BranchStandardization.BranchStandardizationSearchDV.COL_BRANCH_CODE).ToString
                         End If
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
                 'To handle the requirement of always going to the FIRST page on the Grid whenever the user switches the sorting criterion
                 'Set the Me.State.selectedClaimId = Guid.Empty and set Me.State.PageIndex = 0
-                Me.State.BranchAliasId = Guid.Empty
-                Me.State.PageIndex = 0
+                State.BranchAliasId = Guid.Empty
+                State.PageIndex = 0
 
-                Me.PopulateBranchGrid()
+                PopulateBranchGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Public Sub ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles Grid.RowDataBound
+        Public Sub ItemBound(source As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 BaseItemBound(source, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         'The pencil or the trash icon was clicked
-        Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
 
 
 
@@ -771,61 +771,61 @@ Namespace Tables
                 Dim index As Integer
 
 
-                If (e.CommandName = Me.EDIT_COMMAND) Then
+                If (e.CommandName = EDIT_COMMAND) Then
 
                     'Do the Edit here
                     index = CInt(e.CommandArgument)
                     'Do the Edit here
 
                     'Set the IsEditMode flag to TRUE
-                    Me.State.IsEditMode = True
+                    State.IsEditMode = True
 
-                    Me.State.BranchAliasId = New Guid(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_BRANCH_ALIAS_ID).FindControl(Me.BRANCHALIAS_CONTROL_NAME), Label).Text)
-                    Me.State.BranchAliasBO = New BranchStandardization(Me.State.BranchAliasId)
+                    State.BranchAliasId = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_BRANCH_ALIAS_ID).FindControl(BRANCHALIAS_CONTROL_NAME), Label).Text)
+                    State.BranchAliasBO = New BranchStandardization(State.BranchAliasId)
 
-                    Me.PopulateBranchGrid()
+                    PopulateBranchGrid()
 
-                    Me.State.PageIndex = Grid.PageIndex
+                    State.PageIndex = Grid.PageIndex
 
                     'Me.SetGridControls(Me.Grid, False)
 
                     'Set focus on the Code TextBox for the EditItemIndex row
-                    Me.SetFocusOnEditableFieldInGrid(Me.Grid, Me.GRID_COL_DEALER, index)
+                    SetFocusOnEditableFieldInGrid(Grid, GRID_COL_DEALER, index)
 
-                    Me.PopulateBranchGrid()
+                    PopulateBranchGrid()
 
-                    Me.SetButtonsState()
+                    SetButtonsState()
 
-                ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+                ElseIf (e.CommandName = DELETE_COMMAND) Then
                     index = CInt(e.CommandArgument)
-                    Me.State.BranchAliasId = New Guid(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_BRANCH_ALIAS_ID).FindControl(Me.BRANCHALIAS_CONTROL_NAME), Label).Text)
-                    Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenDeletePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                    State.BranchAliasId = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_BRANCH_ALIAS_ID).FindControl(BRANCHALIAS_CONTROL_NAME), Label).Text)
+                    DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
-                If (e.CommandName = Me.DELETE_COMMAND) Then
-                    Me.State.searchDV = Nothing
+                HandleErrors(ex, ErrControllerMaster)
+                If (e.CommandName = DELETE_COMMAND) Then
+                    State.searchDV = Nothing
                     ReturnFromEditing()
                 End If
             End Try
 
         End Sub
 
-        Public Sub rowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+        Public Sub rowCreated(sender As Object, e As GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 #End Region
 
         Private Sub PopulateBranchCode()
             Try
-                If Me.State.DealerId.Equals(Guid.Empty) Then
+                If State.DealerId.Equals(Guid.Empty) Then
                     Return
                 Else
                     ' Me.BindListControlToDataView(moDropdownBranch,
                     'LookupListNew.GetBranchCodeLookupList(Me.State.DealerId), "CODE", "ID", True) 'Dll
                     Dim listcontext As ListContext = New ListContext()
-                    listcontext.DealerId = Me.State.DealerId
+                    listcontext.DealerId = State.DealerId
                     Dim branchLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.BranchCodeByDealer, Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
                     moDropdownBranch.Populate(branchLkl, New PopulateOptions() With
                      {
@@ -836,32 +836,32 @@ Namespace Tables
                 End If
 
                 ControlMgr.SetEnableControl(Me, moDropdownBranch, True)
-                Me.State.searchDV = Nothing
+                State.searchDV = Nothing
                 PopulateBranchGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
             Handles moDealerMultipleDrop.SelectedDropChanged
             Try
-                Me.State.DealerId = Me.DealerMultipleDrop.SelectedGuid()
+                State.DealerId = DealerMultipleDrop.SelectedGuid()
                 PopulateBranchCode()
 
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub ShowInfoMsgBox(ByVal strMsg As String, Optional ByVal Translate As Boolean = True)
+        Private Sub ShowInfoMsgBox(strMsg As String, Optional ByVal Translate As Boolean = True)
             Dim translatedMsg As String = strMsg
             If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
             Dim sJavaScript As String
             sJavaScript = "<SCRIPT>" & Environment.NewLine
-            sJavaScript &= "setTimeout(""showMessage('" & translatedMsg & "', '" & "AlertWindow" & "', '" & Me.MSG_BTN_OK & "', '" & Me.MSG_TYPE_INFO & "', '" & "null" & "')"", 0);" & Environment.NewLine
+            sJavaScript &= "setTimeout(""showMessage('" & translatedMsg & "', '" & "AlertWindow" & "', '" & MSG_BTN_OK & "', '" & MSG_TYPE_INFO & "', '" & "null" & "')"", 0);" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
-            Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+            RegisterStartupScript("ShowConfirmation", sJavaScript)
         End Sub
 
     End Class

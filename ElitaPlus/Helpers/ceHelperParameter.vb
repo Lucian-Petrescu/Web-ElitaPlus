@@ -27,7 +27,7 @@ Public Structure ceHelperParameter
     Public Value As String
     Public subReportName As String
 
-    Public Sub New(ByVal parmName As String, ByVal parmValue As String,
+    Public Sub New(parmName As String, parmValue As String,
                           Optional ByVal parmSubReportName As String = EMPTY_CEPARAM)
         Name = parmName
         Value = parmValue
@@ -45,7 +45,7 @@ Public Class ceSchedule
     Public uDisk As ceUDisk
     Public email As ceEMAIL
 
-    Public Sub New(ByVal oStartDateTime As DateTime)
+    Public Sub New(oStartDateTime As DateTime)
         startDateTime = oStartDateTime
     End Sub
 End Class

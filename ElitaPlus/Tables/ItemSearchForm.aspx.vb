@@ -67,7 +67,7 @@ Namespace Tables
                 Get
                     Return mnPageIndex
                 End Get
-                Set(ByVal Value As Integer)
+                Set(Value As Integer)
                     mnPageIndex = Value
                 End Set
             End Property
@@ -76,7 +76,7 @@ Namespace Tables
                 Get
                     Return mnPageSize
                 End Get
-                Set(ByVal Value As Integer)
+                Set(Value As Integer)
                     mnPageSize = Value
                 End Set
             End Property
@@ -85,7 +85,7 @@ Namespace Tables
                 Get
                     Return msPageSort
                 End Get
-                Set(ByVal Value As String)
+                Set(Value As String)
                     msPageSort = Value
                 End Set
             End Property
@@ -94,7 +94,7 @@ Namespace Tables
                 Get
                     Return moSearchDataView
                 End Get
-                Set(ByVal Value As DataView)
+                Set(Value As DataView)
                     moSearchDataView = Value
                 End Set
             End Property
@@ -120,10 +120,10 @@ Namespace Tables
                     Dim s As String
                     Dim i As Integer
                     Dim sortExp As String = ""
-                    For i = 0 To Me.SortColumns.Length - 1
-                        If Not Me.SortColumns(i) Is Nothing Then
-                            sortExp &= Me.SortColumns(i)
-                            If Me.IsSortDesc(i) Then sortExp &= " DESC"
+                    For i = 0 To SortColumns.Length - 1
+                        If SortColumns(i) IsNot Nothing Then
+                            sortExp &= SortColumns(i)
+                            If IsSortDesc(i) Then sortExp &= " DESC"
                             sortExp &= ","
                         End If
                     Next
@@ -131,7 +131,7 @@ Namespace Tables
                 End Get
             End Property
 
-            Public Sub ToggleSort1(ByVal gridColIndex As Integer)
+            Public Sub ToggleSort1(gridColIndex As Integer)
                 IsSortDesc(gridColIndex) = Not IsSortDesc(gridColIndex)
             End Sub
 
@@ -152,37 +152,37 @@ Namespace Tables
 #Region "Page Return"
         Private IsReturningFromChild As Boolean = False
 
-        Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.IsReturningFromChild = True
-                If Me.State.searchDV Is Nothing Then
-                    Me.State.IsGridVisible = False
+                IsReturningFromChild = True
+                If State.searchDV Is Nothing Then
+                    State.IsGridVisible = False
                 Else
-                    Me.State.IsGridVisible = True
+                    State.IsGridVisible = True
                 End If
                 Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
 
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.State.moItemId = retObj.moItemId
+                            State.moItemId = retObj.moItemId
                         Case Else
-                            Me.State.moItemId = Guid.Empty
+                            State.moItemId = Guid.Empty
                     End Select
-                    moItemGrid.PageIndex = Me.State.PageIndex
-                    moItemGrid.PageSize = Me.State.PageSize
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                    moItemGrid.PageSize = Me.State.PageSize
+                    moItemGrid.PageIndex = State.PageIndex
+                    moItemGrid.PageSize = State.PageSize
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
+                    moItemGrid.PageSize = State.PageSize
                     ControlMgr.SetVisibleControl(Me, trPageSize, moItemGrid.Visible)
                     PopulateDealer()
                     PopulateRiskType()
                     PopulateProductCode()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -191,9 +191,9 @@ Namespace Tables
             Public moItemId As Guid
             Public BoChanged As Boolean = False
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal oItemId As Guid, Optional ByVal boChanged As Boolean = False)
-                Me.LastOperation = LastOp
-                Me.moItemId = oItemId
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, oItemId As Guid, Optional ByVal boChanged As Boolean = False)
+                LastOperation = LastOp
+                moItemId = oItemId
                 Me.BoChanged = boChanged
             End Sub
 
@@ -251,7 +251,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -259,18 +259,18 @@ Namespace Tables
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
                 moErrorController.Clear_Hide()
                 If Not Page.IsPostBack Then
-                    Me.SortDirection = Me.State.SortExpression
+                    SortDirection = State.SortExpression
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
 
                     '   Me.MenuEnabled = True
-                    Me.SetGridItemStyleColor(moItemGrid)
-                    Me.TranslateGridHeader(Me.moItemGrid)
-                    If Not Me.IsReturningFromChild Then
+                    SetGridItemStyleColor(moItemGrid)
+                    TranslateGridHeader(moItemGrid)
+                    If Not IsReturningFromChild Then
                         ' It is The First Time
                         ' It is not Returning from Detail
                         ControlMgr.SetVisibleControl(Me, trPageSize, False)
@@ -280,13 +280,13 @@ Namespace Tables
                     Else
                         ' It is returning from detail
                         PopulateProductCode()
-                        Me.PopulateGrid(Me.POPULATE_ACTION_SAVE)
+                        PopulateGrid(POPULATE_ACTION_SAVE)
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
-            Me.ShowMissingTranslations(moErrorController)
+            ShowMissingTranslations(moErrorController)
         End Sub
 
 #End Region
@@ -304,14 +304,14 @@ Namespace Tables
         '    End Try
         'End Sub
 
-        Private Sub moProductCodeDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moProductCodeDrop.SelectedIndexChanged
+        Private Sub moProductCodeDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moProductCodeDrop.SelectedIndexChanged
             Try
                 ClearForProduct()
                 If moProductCodeDrop.SelectedIndex > 0 Then
                     PopulateRiskType()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -319,34 +319,34 @@ Namespace Tables
 
 #Region "Handlers-Buttons"
 
-        Private Sub moBtnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnSearch.Click
+        Private Sub moBtnSearch_Click(sender As System.Object, e As System.EventArgs) Handles moBtnSearch.Click
             Try
-                moItemGrid.PageIndex = Me.NO_PAGE_INDEX
+                moItemGrid.PageIndex = NO_PAGE_INDEX
                 moItemGrid.DataMember = Nothing
-                Me.State.searchDV = Nothing
-                Me.State.searchBtnClicked = True
-                Me.PopulateGrid()
-                Me.State.searchBtnClicked = False
+                State.searchDV = Nothing
+                State.searchBtnClicked = True
+                PopulateGrid()
+                State.searchBtnClicked = False
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moBtnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnClear.Click
+        Private Sub moBtnClear_Click(sender As System.Object, e As System.EventArgs) Handles moBtnClear.Click
             Try
                 ClearSearch()
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
                 'Me.State.moItemId = Guid.Empty
                 SetSession()
-                Me.callPage(ItemForm.URL)
+                callPage(ItemForm.URL)
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -358,29 +358,29 @@ Namespace Tables
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
 
-        Private Sub moItemGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moItemGrid.PageIndexChanging
+        Private Sub moItemGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moItemGrid.PageIndexChanging
             Try
                 moItemGrid.PageIndex = e.NewPageIndex
                 PopulateGrid(POPULATE_ACTION_NO_EDIT)
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moItemGrid_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles moItemGrid.RowCreated
+        Private Sub moItemGrid_ItemCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles moItemGrid.RowCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moItemGrid_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles moItemGrid.RowCommand
+        Private Sub moItemGrid_ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles moItemGrid.RowCommand
             Dim sItemId As String
             Try
 
@@ -389,34 +389,34 @@ Namespace Tables
                     'this only runs when they click the pencil button for editing.
                     'New Guid(Me.Grid.Rows(index).Cells(Me.GRID_COL_ITEM_IDX).Text)
                     'sItemId = CType(e.row.FindControl("moItemId"), Label).Text
-                    Me.State.moItemId = New Guid(Me.moItemGrid.Rows(index).Cells(Me.GRID_COL_ITEM_IDX).Text)
+                    State.moItemId = New Guid(moItemGrid.Rows(index).Cells(GRID_COL_ITEM_IDX).Text)
                     SetSession()
-                    Me.callPage(ItemForm.URL, Me.State.moItemId)
+                    callPage(ItemForm.URL, State.moItemId)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
-        Private Sub moItemGrid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles moItemGrid.Sorting
+        Private Sub moItemGrid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles moItemGrid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
-                Me.State.SortExpression = Me.SortDirection
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.SortExpression = SortDirection
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -441,7 +441,7 @@ Namespace Tables
                                             "multipleDropControl_lb_DropDown",
                                             False,
                                             0)
-                TheDealerControl.SelectedGuid = Me.State.DealerId
+                TheDealerControl.SelectedGuid = State.DealerId
 
 
             Catch ex As Exception
@@ -465,7 +465,7 @@ Namespace Tables
                 .TextFunc = AddressOf .GetCode,
                 .SortFunc = AddressOf .GetCode
                  })
-                BindSelectItem(Me.State.ProductCodeId.ToString, moProductCodeDrop)
+                BindSelectItem(State.ProductCodeId.ToString, moProductCodeDrop)
                 moProductCodeDrop.Enabled = True
             Catch ex As Exception
                 moErrorController.AddError(ITEM_LIST_FORM002)
@@ -476,7 +476,7 @@ Namespace Tables
 
         Private Sub PopulateRiskType()
             Try
-                Dim oProductId As Guid = Me.GetSelectedItem(moProductCodeDrop)
+                Dim oProductId As Guid = GetSelectedItem(moProductCodeDrop)
 
                 '  Me.BindListControlToDataView(moItemRiskTypeDrop, LookupListNew.GetRiskProductCodeLookupList(oProductId)) 'need to implement
                 Dim listcontext As ListContext = New ListContext()
@@ -486,7 +486,7 @@ Namespace Tables
                  {
                 .AddBlankItem = True
                  })
-                BindSelectItem(Me.State.RiskTypeId.ToString, moItemRiskTypeDrop)
+                BindSelectItem(State.RiskTypeId.ToString, moItemRiskTypeDrop)
                 moItemRiskTypeDrop.Enabled = True
             Catch ex As Exception
                 moErrorController.AddError(ITEM_LIST_FORM002)
@@ -495,34 +495,34 @@ Namespace Tables
             End Try
         End Sub
 
-        Private Sub BindDataGrid(ByVal oDataView As DataView)
+        Private Sub BindDataGrid(oDataView As DataView)
             'oDataView.Sort = moItemGrid.DataMember()
             'moItemGrid.DataSource = oDataView
             'moItemGrid.DataBind()
-            Me.State.PageIndex = Me.moItemGrid.PageIndex
+            State.PageIndex = moItemGrid.PageIndex
 
             If (oDataView.Count = 0) Then
 
-                Me.State.bnoRow = True
-                CreateHeaderForEmptyGrid(moItemGrid, Me.SortDirection)
+                State.bnoRow = True
+                CreateHeaderForEmptyGrid(moItemGrid, SortDirection)
             Else
-                Me.State.bnoRow = False
-                Me.moItemGrid.Enabled = True
-                Me.moItemGrid.DataSource = Me.State.searchDV
-                HighLightSortColumn(moItemGrid, Me.SortDirection)
-                Me.moItemGrid.DataBind()
+                State.bnoRow = False
+                moItemGrid.Enabled = True
+                moItemGrid.DataSource = State.searchDV
+                HighLightSortColumn(moItemGrid, SortDirection)
+                moItemGrid.DataBind()
             End If
 
             If Not moItemGrid.BottomPagerRow.Visible Then moItemGrid.BottomPagerRow.Visible = True
 
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
-                Me.moItemGrid.PageIndex = NewCurrentPageIndex(moItemGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.PopulateGrid()
+                moItemGrid.PageIndex = NewCurrentPageIndex(moItemGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -530,53 +530,53 @@ Namespace Tables
             Dim oDataView As DataView
 
             Try
-                If (Me.State.searchDV Is Nothing) Then
+                If (State.searchDV Is Nothing) Then
                     'oDataView = GetDataView()
-                    Me.State.searchDV = GetDataView()
+                    State.searchDV = GetDataView()
                     'Ticket # 748479 - Search grids in Tables tab should not show pop-up message when number of retrieved record is over 1,000
                     'If Me.State.searchBtnClicked Then
                     'Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
                     ' End If
                 End If
 
-                Me.State.searchDV.Sort = Me.State.SortExpression
+                State.searchDV.Sort = State.SortExpression
                 moItemGrid.AutoGenerateColumns = False
                 'moItemGrid.Columns(Me.GRID_COL_DEALER_NAME).SortExpression = Item.COL_DEALER_NAME
                 'moItemGrid.Columns(Me.GRID_COL_PRODUCT_CODE).SortExpression = Item.COL_PRODUCT_CODE
                 'moItemGrid.Columns(Me.GRID_COL_RISK_TYPE).SortExpression = Item.COL_RISK_TYPE
                 'moItemGrid.Columns(Me.GRID_COL_ITEM_NUMBER).SortExpression = Item.COL_ITEM_NUMBER
-                HighLightSortColumn(moItemGrid, Me.State.SortExpression)
-                BasePopulateGrid(moItemGrid, Me.State.searchDV, Me.State.moItemId, oAction)
+                HighLightSortColumn(moItemGrid, State.SortExpression)
+                BasePopulateGrid(moItemGrid, State.searchDV, State.moItemId, oAction)
 
                 ControlMgr.SetVisibleControl(Me, trPageSize, moItemGrid.Visible)
 
-                Session("recCount") = Me.State.searchDV.Count
+                Session("recCount") = State.searchDV.Count
 
-                If Me.moItemGrid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If moItemGrid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
-                BindDataGrid(Me.State.searchDV)
+                BindDataGrid(State.searchDV)
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub EnableDropDowns(ByVal bIsEnable As Boolean)
+        Private Sub EnableDropDowns(bIsEnable As Boolean)
             moProductCodeDrop.Enabled = bIsEnable
             moItemRiskTypeDrop.Enabled = bIsEnable
         End Sub
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
          Handles multipleDropControl.SelectedDropChanged
             Try
-                Me.State.DealerId = TheDealerControl.SelectedGuid
+                State.DealerId = TheDealerControl.SelectedGuid
                 PopulateDealer()
                 ClearForDealer()
                 If TheDealerControl.SelectedIndex > 0 Then
                     PopulateProductCode()
                 End If
             Catch ex As Exception
-                HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -593,20 +593,20 @@ Namespace Tables
 
         Private Sub ClearForProduct()
             ' ClearForGrid()
-            Me.ClearList(moItemRiskTypeDrop)
+            ClearList(moItemRiskTypeDrop)
             moItemRiskTypeDrop.Enabled = False
         End Sub
 
         Private Sub ClearForDealer()
             ClearForProduct()
-            Me.ClearList(moProductCodeDrop)
+            ClearList(moProductCodeDrop)
             moProductCodeDrop.Enabled = False
         End Sub
 
         Private Sub ClearSearch()
             TheDealerControl.SelectedIndex = 0
             ClearForDealer()
-            Me.State.moItemId = Guid.Empty
+            State.moItemId = Guid.Empty
         End Sub
 
 #End Region
@@ -614,14 +614,14 @@ Namespace Tables
 #Region "State-Management"
 
         Private Sub SetSession()
-            With Me.State
+            With State
                 .DealerId = TheDealerControl.SelectedGuid '.GetSelectedItem(moDealerDrop)
-                .RiskTypeId = Me.GetSelectedItem(moItemRiskTypeDrop)
-                .ProductCodeId = Me.GetSelectedItem(moProductCodeDrop)
+                .RiskTypeId = GetSelectedItem(moItemRiskTypeDrop)
+                .ProductCodeId = GetSelectedItem(moProductCodeDrop)
                 .PageIndex = moItemGrid.PageIndex
                 .PageSize = moItemGrid.PageSize
-                .PageSort = Me.State.SortExpression
-                .SearchDataView = Me.State.searchDV
+                .PageSort = State.SortExpression
+                .SearchDataView = State.searchDV
             End With
         End Sub
 
@@ -636,9 +636,9 @@ Namespace Tables
 
             With oItem
                 CompanyIdList = ElitaPlusIdentity.Current.ActiveUser.Companies
-                Me.PopulateBOProperty(oItem, "DealerID", TheDealerControl.SelectedGuid)
-                Me.PopulateBOProperty(oItem, "ProductCodeId", moProductCodeDrop)
-                Me.PopulateBOProperty(oItem, "RiskTypeId", moItemRiskTypeDrop)
+                PopulateBOProperty(oItem, "DealerID", TheDealerControl.SelectedGuid)
+                PopulateBOProperty(oItem, "ProductCodeId", moProductCodeDrop)
+                PopulateBOProperty(oItem, "RiskTypeId", moItemRiskTypeDrop)
                 oDataView = .GetList(.DealerID, .ProductCodeId, .RiskTypeId)
             End With
             Return oDataView
@@ -648,23 +648,23 @@ Namespace Tables
 #End Region
 
 
-        Private Sub moItemGrid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles moItemGrid.RowDataBound
+        Private Sub moItemGrid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles moItemGrid.RowDataBound
             Try
 
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-                If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+                If dvRow IsNot Nothing And Not State.bnoRow Then
                     If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                        e.Row.Cells(Me.GRID_COL_ITEM_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_ITEM_ID), Byte()))
-                        e.Row.Cells(Me.GRID_COL_DEALER_NAME).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_DEALER_NAME).ToString
-                        e.Row.Cells(Me.GRID_COL_PRODUCT_CODE).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_PRODUCT_CODE).ToString
-                        e.Row.Cells(Me.GRID_COL_ITEM_NUMBER).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_ITEM_NUMBER).ToString
-                        e.Row.Cells(Me.GRID_COL_RISK_TYPE).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_RISK_TYPE).ToString
+                        e.Row.Cells(GRID_COL_ITEM_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_ITEM_ID), Byte()))
+                        e.Row.Cells(GRID_COL_DEALER_NAME).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_DEALER_NAME).ToString
+                        e.Row.Cells(GRID_COL_PRODUCT_CODE).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_PRODUCT_CODE).ToString
+                        e.Row.Cells(GRID_COL_ITEM_NUMBER).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_ITEM_NUMBER).ToString
+                        e.Row.Cells(GRID_COL_RISK_TYPE).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.Item.COL_RISK_TYPE).ToString
 
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
     End Class

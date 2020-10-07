@@ -66,86 +66,86 @@ Public Class User
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
-        Me.userPermission = New UserPermissionList(Me)
+        Dataset = New DataSet
+        Load(id)
+        userPermission = New UserPermissionList(Me)
     End Sub
 
     'Exiting BO using networkId
     Public Sub New(ByVal networkId As String)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(networkId)
-        Me.UserPermission = New UserPermissionList(Me)
+        Dataset = New DataSet
+        Load(networkId)
+        UserPermission = New UserPermissionList(Me)
     End Sub
 
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
-        Me.UserPermission = New UserPermissionList(Me)
+        Dataset = New DataSet
+        Load()
+        UserPermission = New UserPermissionList(Me)
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
-        Me.UserPermission = New UserPermissionList(Me)
+        Dataset = familyDS
+        Load(id)
+        UserPermission = New UserPermissionList(Me)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
-        Me.UserPermission = New UserPermissionList(Me)
+        Dataset = familyDS
+        Load()
+        UserPermission = New UserPermissionList(Me)
     End Sub
 
     Protected Sub Load()
         Dim dal As New UserDAL
-        If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-            dal.LoadSchema(Me.Dataset)
+        If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+            dal.LoadSchema(Dataset)
         End If
-        Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-        Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-        Me.Row = newRow
+        Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+        Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+        Row = newRow
         SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
     End Sub
 
     Protected Sub Load(ByVal id As Guid)
-        Me.Row = Nothing
+        Row = Nothing
         Dim dal As New UserDAL
-        If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-            Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+        If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+            Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
         End If
-        If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-            dal.Load(Me.Dataset, id)
-            Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+        If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+            dal.Load(Dataset, id)
+            Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
         End If
-        If Me.Row Is Nothing Then
+        If Row Is Nothing Then
             Throw New DataNotFoundException
         End If
         LoadCompanyAssigned(id)
     End Sub
 
     Protected Sub Load(ByVal networkId As String)
-        Me.Row = Nothing
+        Row = Nothing
         Dim dal As New UserDAL
-        If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-            dal.LoadByNetworkId(Me.Dataset, networkId)
-            Me.Row = Me.Dataset.Tables(dal.TABLE_NAME).Rows(0)
+        If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+            dal.LoadByNetworkId(Dataset, networkId)
+            Row = Dataset.Tables(dal.TABLE_NAME).Rows(0)
         End If
-        If Me.Row Is Nothing Then
+        If Row Is Nothing Then
             Throw New DataNotFoundException
         End If
-        LoadCompanyAssigned(New Guid(CType(Me.Row(UserDAL.COL_NAME_USER_ID), Byte())))
+        LoadCompanyAssigned(New Guid(CType(Row(UserDAL.COL_NAME_USER_ID), Byte())))
     End Sub
 
     Private Sub LoadCompanyAssigned(ByVal id As Guid)
-        If Not Me.Row Is Nothing Then
+        If Not Row Is Nothing Then
             Dim userCompanyAssignedDv As UserCompanyAssigned.UserCompanyAssignedDV = GetSelectedAssignedCompanies(id)
             _paymentLimits = New Dictionary(Of Guid, DecimalType)
             _authorizationLimits = New Dictionary(Of Guid, DecimalType)
@@ -186,7 +186,7 @@ Public Class User
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(UserDAL.COL_NAME_NETWORK_ID, Value)
+            SetValue(UserDAL.COL_NAME_NETWORK_ID, Value)
         End Set
     End Property
 
@@ -202,7 +202,7 @@ Public Class User
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(UserDAL.COL_NAME_USER_NAME, Value)
+            SetValue(UserDAL.COL_NAME_USER_NAME, Value)
         End Set
     End Property
 
@@ -282,7 +282,7 @@ Public Class User
     End Sub
     Public ReadOnly Property CompanyId() As Guid
         Get
-            Return Me.FirstCompanyID
+            Return FirstCompanyID
         End Get
     End Property
 
@@ -298,16 +298,16 @@ Public Class User
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(UserDAL.COL_NAME_LANGUAGE_ID, Value)
+            SetValue(UserDAL.COL_NAME_LANGUAGE_ID, Value)
         End Set
     End Property
 
     Public ReadOnly Property LanguageCode() As String
         Get
-            If Me.LanguageId = Nothing Then
+            If LanguageId = Nothing Then
                 Return String.Empty
             Else
-                Return New Language(Me.LanguageId).Code
+                Return New Language(LanguageId).Code
             End If
         End Get
     End Property
@@ -324,7 +324,7 @@ Public Class User
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(UserDAL.COL_NAME_ID1, Value)
+            SetValue(UserDAL.COL_NAME_ID1, Value)
         End Set
     End Property
 
@@ -340,7 +340,7 @@ Public Class User
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(UserDAL.COL_NAME_ID2, Value)
+            SetValue(UserDAL.COL_NAME_ID2, Value)
         End Set
     End Property
 
@@ -356,7 +356,7 @@ Public Class User
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(UserDAL.COL_NAME_ACTIVE, Value)
+            SetValue(UserDAL.COL_NAME_ACTIVE, Value)
         End Set
     End Property
 
@@ -372,7 +372,7 @@ Public Class User
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(UserDAL.COL_NAME_EXTERNAL, Value)
+            SetValue(UserDAL.COL_NAME_EXTERNAL, Value)
         End Set
     End Property
 
@@ -388,7 +388,7 @@ Public Class User
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(UserDAL.COL_NAME_PASSWORD, Value)
+            SetValue(UserDAL.COL_NAME_PASSWORD, Value)
         End Set
     End Property
 
@@ -410,7 +410,7 @@ Public Class User
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(UserDAL.COL_NAME_EXTERNAL_TYPE_ID, Value)
+            SetValue(UserDAL.COL_NAME_EXTERNAL_TYPE_ID, Value)
         End Set
     End Property
 
@@ -425,7 +425,7 @@ Public Class User
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(UserDAL.COL_NAME_SC_DEALER_ID, Value)
+            SetValue(UserDAL.COL_NAME_SC_DEALER_ID, Value)
         End Set
     End Property
 
@@ -459,7 +459,7 @@ Public Class User
 
     Public ReadOnly Property CompanyGroup() As CompanyGroup
         Get
-            Dim oCompanyGroup = New CompanyGroup(Me.Company.CompanyGroupId)
+            Dim oCompanyGroup = New CompanyGroup(Company.CompanyGroupId)
 
             Return oCompanyGroup
         End Get
@@ -469,8 +469,8 @@ Public Class User
         Get
             Dim oFirstId As Guid = Guid.Empty
 
-            If Me.Companies.Count > 0 Then
-                oFirstId = CType((Me.Companies())(0), Guid)
+            If Companies.Count > 0 Then
+                oFirstId = CType((Companies())(0), Guid)
             End If
             Return oFirstId
         End Get
@@ -478,7 +478,7 @@ Public Class User
 
     Public ReadOnly Property ExtendedUser As Auth.ExtendedUser
         Get
-            If (Me.IsDeleted) Then
+            If (IsDeleted) Then
                 _extendedUser = Nothing
                 Return Nothing
             End If
@@ -486,7 +486,7 @@ Public Class User
                 SyncLock (_syncRoot)
                     If (_extendedUser Is Nothing) Then
                         Try
-                            _extendedUser = ServiceHelper.CreateAuthorizationClient().GetUserForServiceByKey(Me.NetworkId, ServiceHelper.WORKQUEUE_SERVICE_NAME)
+                            _extendedUser = ServiceHelper.CreateAuthorizationClient().GetUserForServiceByKey(NetworkId, ServiceHelper.WORKQUEUE_SERVICE_NAME)
                         Catch ex As FaultException(Of WrkQueue.ValidationFault)
                             Throw ex.AsBOValidationException()
                         Catch ex As FaultException(Of Auth.AuthorizationFault)
@@ -500,7 +500,7 @@ Public Class User
     End Property
 
     Friend Sub ResetExtendedUser()
-        Me._extendedUser = Nothing
+        _extendedUser = Nothing
     End Sub
 
 
@@ -528,7 +528,7 @@ Public Class User
     Public ReadOnly Property IsExternal() As Boolean
         Get
             Dim bExternal As Boolean = False
-            If Me.External = "Y" Then
+            If External = "Y" Then
                 bExternal = True
             End If
             Return bExternal
@@ -539,7 +539,7 @@ Public Class User
         Get
             Dim bDealerGroup As Boolean = False
             If IsExternal AndAlso _
-               Me.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER_GROUP)) Then
+               ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER_GROUP)) Then
                 bDealerGroup = True
             End If
             Return bDealerGroup
@@ -549,7 +549,7 @@ Public Class User
         Get
             Dim bDealer As Boolean = False
             If IsExternal AndAlso _
-               Me.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER)) Then
+               ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER)) Then
                 bDealer = True
             End If
             Return bDealer
@@ -560,7 +560,7 @@ Public Class User
         Get
             Dim bServiceCenter As Boolean = False
             If IsExternal AndAlso _
-               Me.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__SERVICE_CENTER)) Then
+               ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__SERVICE_CENTER)) Then
                 bServiceCenter = True
             End If
             Return bServiceCenter
@@ -571,7 +571,7 @@ Public Class User
         Get
             If moIsIHQRole = 0 Then
                 Dim dal As New UserDAL
-                Dim ds As DataSet = dal.LoadUserIHQRoles(Me.Id)
+                Dim ds As DataSet = dal.LoadUserIHQRoles(Id)
                 If (Not ds Is Nothing) AndAlso ds.Tables(0).Rows.Count > 0 Then
                     moIsIHQRole = 1
                 Else
@@ -588,10 +588,10 @@ Public Class User
 #Region "Public Members"
     Private Sub UpdateRemoteUser()
         Dim provider As New AuthorizationServiceRoleProvider
-        Select Case Me.Row.RowState
+        Select Case Row.RowState
             Case DataRowState.Added
                 If (provider.SupportsCreateUser()) Then
-                    provider.CreateUser(Me.Id, Me.NetworkId.ToUpperInvariant(), Me.UserName, Me.Active = "Y")
+                    provider.CreateUser(Id, NetworkId.ToUpperInvariant(), UserName, Active = "Y")
                 End If
             Case DataRowState.Deleted
                 If (provider.SupportsDeleteUser()) Then
@@ -599,32 +599,32 @@ Public Class User
                 End If
             Case DataRowState.Modified
                 If (provider.SupportsUpdateUser()) Then
-                    provider.UpdateUser(Me.Id, Me.Row(UserDAL.COL_NAME_NETWORK_ID, DataRowVersion.Original).ToString().ToUpperInvariant(), Me.NetworkId.ToUpperInvariant(), Me.UserName, Me.Active = "Y")
+                    provider.UpdateUser(Id, Row(UserDAL.COL_NAME_NETWORK_ID, DataRowVersion.Original).ToString().ToUpperInvariant(), NetworkId.ToUpperInvariant(), UserName, Active = "Y")
                 End If
         End Select
 
-        If (Me.Row.RowState <> DataRowState.Deleted) Then
+        If (Row.RowState <> DataRowState.Deleted) Then
             ' Update Grants and Revokes on Remote System
             Dim oRole As Role
             Dim oUserRole As UserRole
             Dim oDataTable As DataTable
-            If (Not Me.Dataset.Tables(UserRoleDAL.TABLE_NAME) Is Nothing) Then
-                oDataTable = Me.Dataset.Tables(UserRoleDAL.TABLE_NAME).GetChanges(DataRowState.Deleted)
+            If (Not Dataset.Tables(UserRoleDAL.TABLE_NAME) Is Nothing) Then
+                oDataTable = Dataset.Tables(UserRoleDAL.TABLE_NAME).GetChanges(DataRowState.Deleted)
                 If (Not oDataTable Is Nothing) Then
                     For Each dr As DataRow In oDataTable.Rows
                         oRole = New Role(New Guid(CType(dr(UserRoleDAL.COL_NAME_ROLE_ID, DataRowVersion.Original), Byte())))
                         If (Not oRole.RemoteRoleId.Equals(Guid.Empty)) Then
-                            provider.Revoke(oRole.Id, oRole.RemoteRoleId, oRole.Code, Me.Id, Me.NetworkId, Me.UserName)
+                            provider.Revoke(oRole.Id, oRole.RemoteRoleId, oRole.Code, Id, NetworkId, UserName)
                         End If
                     Next
                 End If
-                oDataTable = Me.Dataset.Tables(UserRoleDAL.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified)
+                oDataTable = Dataset.Tables(UserRoleDAL.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified)
                 If (Not oDataTable Is Nothing) Then
                     For Each dr As DataRow In oDataTable.Rows
                         oUserRole = New UserRole(dr)
                         oRole = New Role(oUserRole.RoleId)
                         If (Not oRole.RemoteRoleId.Equals(Guid.Empty)) Then
-                            provider.Grant(oRole.Id, oRole.RemoteRoleId, oRole.Code, Me.Id, Me.NetworkId, Me.UserName)
+                            provider.Grant(oRole.Id, oRole.RemoteRoleId, oRole.Code, Id, NetworkId, UserName)
                         End If
                     Next
                 End If
@@ -643,16 +643,16 @@ Public Class User
             UpdateRemoteUser()
         End If
 
-        dal.UpdateFamily(Me.Dataset)
+        dal.UpdateFamily(Dataset)
         '  dal.Update(Me.Dataset)
         'Reload the Data
-        If Me._isDSCreator AndAlso Me.Row.RowState <> DataRowState.Detached Then
+        If _isDSCreator AndAlso Row.RowState <> DataRowState.Detached Then
             'Reload the Data from the DB
-            Dim objId As Guid = Me.Id
-            Me.Dataset = New DataSet
-            Me.Row = Nothing
-            Me.Load(objId)
-            Me.UserPermission = New UserPermissionList(Me)
+            Dim objId As Guid = Id
+            Dataset = New DataSet
+            Row = Nothing
+            Load(objId)
+            UserPermission = New UserPermissionList(Me)
             ' Me.Load(Me.Id)
         End If
     End Sub
@@ -776,7 +776,7 @@ Public Class User
     Private userRoles As DataView
     Public Function isInRole(ByVal roleCode As String) As Boolean
         If userRoles Is Nothing Then
-            userRoles = Me.GetUserRoles(Me.Id)
+            userRoles = GetUserRoles(Id)
             userRoles.Sort = UserDAL.COL_NAME_ROLE_CODE
         End If
         If Not userRoles Is Nothing Then
@@ -788,7 +788,7 @@ Public Class User
     Public Function Companies() As ArrayList
         Dim oCompaniesDv As DataView
         If userCompanies Is Nothing Then
-            oCompaniesDv = Me.GetUserCompanies(Me.Id)
+            oCompaniesDv = GetUserCompanies(Id)
             moCompanies = Nothing
             userCompanies = New ArrayList
 
@@ -818,7 +818,7 @@ Public Class User
         Dim oCompaniesDv As DataView
         Dim oCompanies = New ArrayList
 
-        oCompaniesDv = Me.GetUserCompanies(Me.Id, oCountryId)
+        oCompaniesDv = GetUserCompanies(Id, oCountryId)
         If oCompaniesDv.Table.Rows.Count > 0 Then
             Dim index As Integer
             ' Create Array
@@ -838,7 +838,7 @@ Public Class User
         End If
 
         Try
-            userAccountingCompanies = AcctCompany.GetAccountingCompanies(Me.Companies)
+            userAccountingCompanies = AcctCompany.GetAccountingCompanies(Companies)
             Return userAccountingCompanies
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
@@ -851,7 +851,7 @@ Public Class User
     End Sub
 
     Public Function Countries() As ArrayList
-        Dim oCountriesDv = Me.GetUserCountries(Me.Id)
+        Dim oCountriesDv = GetUserCountries(Id)
         Dim oCountriesArr = New ArrayList
 
         If oCountriesDv.Table.Rows.Count > 0 Then
@@ -885,7 +885,7 @@ Public Class User
     Public Sub InitUserRoleTable()
         Dim oUserRole As UserRole
 
-        oUserRole = New UserRole(Me.Dataset)
+        oUserRole = New UserRole(Dataset)
         oUserRole.InitTable()
     End Sub
 
@@ -893,11 +893,11 @@ Public Class User
         Dim blnRoleAssigned As Boolean = False
         Dim dr As DataRow, intRoles As Integer, intDeleted As Integer, intAdded As Integer
 
-        If Me.IsNew Then 'new BO
-            If Me.Dataset.Tables(UserRoleDAL.TABLE_NAME) Is Nothing Then
+        If IsNew Then 'new BO
+            If Dataset.Tables(UserRoleDAL.TABLE_NAME) Is Nothing Then
                 Return False
             Else
-                For Each dr In Me.Dataset.Tables(UserRoleDAL.TABLE_NAME).Rows
+                For Each dr In Dataset.Tables(UserRoleDAL.TABLE_NAME).Rows
                     If Not dr.RowState = DataRowState.Deleted Then
                         blnRoleAssigned = True
                         Exit For
@@ -906,15 +906,15 @@ Public Class User
                 Return blnRoleAssigned
             End If
         Else 'EXISTING BO
-            intRoles = GetUserRoles(Me.Id).Count
-            If Me.Dataset.Tables(UserRoleDAL.TABLE_NAME) Is Nothing Then
+            intRoles = GetUserRoles(Id).Count
+            If Dataset.Tables(UserRoleDAL.TABLE_NAME) Is Nothing Then
                 If intRoles = 0 Then
                     Return False
                 Else
                     Return True
                 End If
             Else
-                For Each dr In Me.Dataset.Tables(UserRoleDAL.TABLE_NAME).Rows
+                For Each dr In Dataset.Tables(UserRoleDAL.TABLE_NAME).Rows
                     If dr.RowState = DataRowState.Deleted Then
                         intDeleted = intDeleted + 1
                     ElseIf dr.RowState = DataRowState.Added Then
@@ -943,8 +943,8 @@ Public Class User
     Public Function AddUserRoleChild(ByVal roleId As Guid) As UserRole
         Dim oUserRole As UserRole
 
-        oUserRole = New UserRole(Me.Dataset)
-        oUserRole.UserId = Me.Id
+        oUserRole = New UserRole(Dataset)
+        oUserRole.UserId = Id
         oUserRole.RoleId = roleId
         Return oUserRole
     End Function
@@ -952,7 +952,7 @@ Public Class User
     Public Function GetUserRoleChild(ByVal roleId As Guid) As UserRole
         Dim oUserRole As UserRole
 
-        oUserRole = New UserRole(Me.Dataset, Me.Id, roleId)
+        oUserRole = New UserRole(Dataset, Id, roleId)
         Return oUserRole
     End Function
 
@@ -967,7 +967,7 @@ Public Class User
     Public Sub DetachUserRoles(ByVal selectedRoleGuidStrCollection As ArrayList)
         Dim userRoleIdStr As String
         For Each userRoleIdStr In selectedRoleGuidStrCollection
-            Dim userRoleBO As UserRole = Me.GetRoleChild(New Guid(userRoleIdStr))
+            Dim userRoleBO As UserRole = GetRoleChild(New Guid(userRoleIdStr))
             userRoleBO.Delete()
             userRoleBO.Save()
         Next
@@ -976,8 +976,8 @@ Public Class User
     Public Function AddRoleChild(ByVal RoleId As Guid) As UserRole
         Dim oUserRole As UserRole
 
-        oUserRole = New UserRole(Me.Dataset)
-        oUserRole.UserId = Me.Id
+        oUserRole = New UserRole(Dataset)
+        oUserRole.UserId = Id
         oUserRole.RoleId = RoleId
         Return oUserRole
 
@@ -986,25 +986,25 @@ Public Class User
     Public Function GetRoleChild(ByVal RoleId As Guid) As UserRole
         Dim oUserRole As UserRole
 
-        oUserRole = New UserRole(Me.Dataset, Me.Id, RoleId)
+        oUserRole = New UserRole(Dataset, Id, RoleId)
         Return oUserRole
     End Function
 
     Public Sub InitCompanyGrpTable()
         Dim oUserCompanyAssigned As UserCompanyAssigned
-        oUserCompanyAssigned = New UserCompanyAssigned(Me.Dataset)
+        oUserCompanyAssigned = New UserCompanyAssigned(Dataset)
         oUserCompanyAssigned.InitTable()
 
         Dim oUserCompany As UserCompany
-        oUserCompany = New UserCompany(Me.Dataset)
+        oUserCompany = New UserCompany(Dataset)
         oUserCompany.InitTable()
     End Sub
 
     Public Function AddCompanyGrpChild(ByVal CompanyId As Guid, ByVal AuthorizationLimit As Decimal, ByVal PaymentLimit As Decimal,ByVal LiabilityOverrideLimit As Decimal) As UserCompanyAssigned
         Dim oUserCompanyAssigned As UserCompanyAssigned
 
-        oUserCompanyAssigned = New UserCompanyAssigned(Me.Dataset)
-        oUserCompanyAssigned.UserId = Me.Id
+        oUserCompanyAssigned = New UserCompanyAssigned(Dataset)
+        oUserCompanyAssigned.UserId = Id
         oUserCompanyAssigned.CompanyId = CompanyId
         oUserCompanyAssigned.AuthorizationLimit = New DecimalType(AuthorizationLimit)
         oUserCompanyAssigned.PaymentLimit = New DecimalType(PaymentLimit)
@@ -1015,21 +1015,21 @@ Public Class User
     Public Function GetCompanyGrpChild(ByVal CompanyId As Guid) As UserCompanyAssigned
         Dim oUserCompanyAssigned As UserCompanyAssigned
 
-        oUserCompanyAssigned = New UserCompanyAssigned(Me.Dataset, Me.Id, CompanyId)
+        oUserCompanyAssigned = New UserCompanyAssigned(Dataset, Id, CompanyId)
         Return oUserCompanyAssigned
     End Function
 
     Public Function AddUserCompanyGrpChild(ByVal CompanyId As Guid) As UserCompany
         Dim oUserCompany As UserCompany
-        oUserCompany = New UserCompany(Me.Dataset)
-        oUserCompany.UserId = Me.Id
+        oUserCompany = New UserCompany(Dataset)
+        oUserCompany.UserId = Id
         oUserCompany.CompanyId = CompanyId
         Return oUserCompany
     End Function
 
     Public Function GetUserCompanyGrpChild(ByVal CompanyId As Guid) As UserCompany
         Dim oUserCompany As UserCompany
-        oUserCompany = New UserCompany(Me.Dataset, Me.Id, CompanyId)
+        oUserCompany = New UserCompany(Dataset, Id, CompanyId)
         Return oUserCompany
     End Function
 
@@ -1042,12 +1042,12 @@ Public Class User
             ' Create The New User Companies
             For Each oCompanyId In oCompanies
                 oUserCompany = New UserCompany(oDataset)
-                oUserCompany.UserId = Me.Id
+                oUserCompany.UserId = Id
                 oUserCompany.CompanyId = oCompanyId
                 oUserCompany.Save()
             Next
             ' Update Delete, Insert
-            oUserDAL.UpdateUserCompanies(Me.Id, oDataset)
+            oUserDAL.UpdateUserCompanies(Id, oDataset)
             ResetUserCompany()
             Return Companies()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -1093,8 +1093,8 @@ Public Class User
     Public Function AddSecurityClaim(ByVal SpClaimTypeID As Guid, ByVal SpClaimValue As String, ByVal Effective As DateTime, ByVal Expiration As DateTime) As SpUserClaims
         Dim oSpUserClaims As SpUserClaims
 
-        oSpUserClaims = New SpUserClaims(Me.Dataset)
-        oSpUserClaims.UserId = Me.Id
+        oSpUserClaims = New SpUserClaims(Dataset)
+        oSpUserClaims.UserId = Id
         oSpUserClaims.SpClaimTypeId = SpClaimTypeID
         oSpUserClaims.SpClaimValue = SpClaimValue
         oSpUserClaims.EffectiveDate = Effective
@@ -1103,7 +1103,7 @@ Public Class User
     End Function
     Public Function GetSecurityClaim(ByVal SpClaimsID As Guid) As SpUserClaims
         Dim oSpUserClaims As SpUserClaims
-        oSpUserClaims = New SpUserClaims(SpClaimsID, Me.Dataset)
+        oSpUserClaims = New SpUserClaims(SpClaimsID, Dataset)
         Return oSpUserClaims
     End Function
     Public Function NeedPERMtoViewPrivacyData() As boolean
@@ -1139,10 +1139,10 @@ Public Class User
     Public Function DealerOrSvcList() As ArrayList
         Dim oDealerOrSvcDv As DataView
         If moServiceCenter_Or_DealerIDs Is Nothing Then
-            If Me.IsServiceCenter = True Then
-                oDealerOrSvcDv = GetExternalUserServiceCenters(Me.ScDealerId)
-            ElseIf Me.IsDealer = True Then
-                oDealerOrSvcDv = GetExternalUserDealers(Me.ScDealerId)
+            If IsServiceCenter = True Then
+                oDealerOrSvcDv = GetExternalUserServiceCenters(ScDealerId)
+            ElseIf IsDealer = True Then
+                oDealerOrSvcDv = GetExternalUserDealers(ScDealerId)
             Else
                 Return Nothing
             End If
@@ -1273,8 +1273,8 @@ Public Class User
     End Property
 
     Public Function GetNewWorkQueueAsignChild() As WorkQueueAssign
-        Dim NewNotesList As WorkQueueAssign = CType(Me.WorkQueueAssignChildren.GetNewChild, WorkQueueAssign)
-        NewNotesList.UserId = Me.Id
+        Dim NewNotesList As WorkQueueAssign = CType(WorkQueueAssignChildren.GetNewChild, WorkQueueAssign)
+        NewNotesList.UserId = Id
         Return NewNotesList
     End Function
 
@@ -1284,7 +1284,7 @@ Public Class User
 
         Dim WQ_List As WrkQueue.WorkQueue() = WorkQueue.GetList()
 
-        For Each detail In Me.WorkQueueAssignChildren
+        For Each detail In WorkQueueAssignChildren
             If detail.CompanyId = CompanyId Then
                 Dim row As DataRow = t.NewRow
                 row(WorkQueueAssignSelectionView.COL_NAME_WORKQUEUE_ASSIGN_ID) = detail.Id.ToByteArray
@@ -1347,17 +1347,17 @@ Public Class User
             'If SelectedQueue.Count = 0 Then Exit Function
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find
-            For Each WQ_user As WorkQueueAssign In Me.WorkQueueAssignChildren
+            For Each WQ_user As WorkQueueAssign In WorkQueueAssignChildren
                 Dim dFound As Boolean = False
                 For Each Str As String In SelectedQueue
                     Dim WorkQueue_id As Guid = New Guid(Str)
-                    If WQ_user.WorkqueueId = WorkQueue_id And WQ_user.CompanyId = Me.SelectedCompanyId Then
+                    If WQ_user.WorkqueueId = WorkQueue_id And WQ_user.CompanyId = SelectedCompanyId Then
                         dFound = True : Exit For
                     End If
                 Next
-                If Not dFound And WQ_user.CompanyId = Me.SelectedCompanyId Then
+                If Not dFound And WQ_user.CompanyId = SelectedCompanyId Then
                     'Revoke Work queue permission - Process
-                    WorkQueue.RevokeProcessWQPermission((New WorkQueue(WQ_user.WorkqueueId)).WorkQueue.Name, Me.NetworkId)
+                    WorkQueue.RevokeProcessWQPermission((New WorkQueue(WQ_user.WorkqueueId)).WorkQueue.Name, NetworkId)
                     WQ_user.BeginEdit()
                     WQ_user.Delete()
                     WQ_user.EndEdit()
@@ -1368,16 +1368,16 @@ Public Class User
             'next now add those items which are there in user control but we don't have it
             For Each Str As String In SelectedQueue
                 Dim dFound As Boolean = False
-                For Each WQ_user As WorkQueueAssign In Me.WorkQueueAssignChildren
+                For Each WQ_user As WorkQueueAssign In WorkQueueAssignChildren
                     Dim WorkQueue_id As Guid = New Guid(Str)
-                    If WQ_user.WorkqueueId = WorkQueue_id And WQ_user.CompanyId = Me.SelectedCompanyId Then
+                    If WQ_user.WorkqueueId = WorkQueue_id And WQ_user.CompanyId = SelectedCompanyId Then
                         dFound = True : Exit For
                     End If
                 Next
                 If Not dFound Then
                     'Assign work queue permission - Process
-                    WorkQueue.GrantProcessWQPermission(New WorkQueue(New Guid(Str)).WorkQueue.Name, Me.NetworkId)
-                    Dim CompWQ As WorkQueueAssign = Me.GetNewWorkQueueAsignChild()
+                    WorkQueue.GrantProcessWQPermission(New WorkQueue(New Guid(Str)).WorkQueue.Name, NetworkId)
+                    Dim CompWQ As WorkQueueAssign = GetNewWorkQueueAsignChild()
                     CompWQ.BeginEdit()
                     CompWQ.WorkqueueId = New Guid(Str)
                     CompWQ.CompanyId = SelectedCompanyId
@@ -1393,13 +1393,13 @@ Public Class User
     Sub UpdateWorkQueueUserAssign()
         Try
             Dim WorkQueueAssDal As New WorkQueueAssignDAL
-            WorkQueueAssDal.UpdateUserWorkQueue(Me.Dataset)
+            WorkQueueAssDal.UpdateUserWorkQueue(Dataset)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
     Public Function CheckWorkQueueAssigned(Comp_id As Guid) As Boolean
-        For Each WQ_user As WorkQueueAssign In Me.WorkQueueAssignChildren
+        For Each WQ_user As WorkQueueAssign In WorkQueueAssignChildren
             If WQ_user.CompanyId = Comp_id Then
                 Return False
             End If

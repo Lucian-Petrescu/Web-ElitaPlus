@@ -28,11 +28,11 @@
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDs As DataSet, ByVal id As Guid)
+    Public Sub Load(familyDs As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("search_config_assignment_id", id.ToByteArray)}
         Try
@@ -47,7 +47,7 @@
         Return DBHelper.Fetch(selectStmt, TableName)
     End Function
 
-    Public Function LoadSearchCriteriaFields(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal languageCode As String, ByVal searchType As String) As DataSet
+    Public Function LoadSearchCriteriaFields(companyId As Guid, dealerId As Guid, languageCode As String, searchType As String) As DataSet
 
         Dim selectStmt As String = Config("/SQL/LOAD_SEARCH_CRITERIA_FIELDS")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(ParameterNameCompanyId, companyId.ToByteArray),
@@ -70,7 +70,7 @@
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If

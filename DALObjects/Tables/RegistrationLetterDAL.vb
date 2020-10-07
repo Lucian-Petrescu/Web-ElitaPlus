@@ -32,46 +32,46 @@ Public Class RegistrationLetterDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("registration_letter_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal compIds As ArrayList, ByVal dealerId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(compIds As ArrayList, dealerId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim inClausecondition As String = ""
         Dim whereClauseConditions As String = ""
 
-        inClausecondition &= "And edealer." & MiscUtil.BuildListForSql(Me.COL_NAME_COMPANY_ID, compIds, False)
+        inClausecondition &= "And edealer." & MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds, False)
 
         If Not dealerId.Equals(Guid.Empty) Then
             whereClauseConditions &= Environment.NewLine & "AND " & "edealer.DEALER_ID = " & MiscUtil.GetDbStringFromGuid(dealerId)
         End If
 
         If Not inClausecondition = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim ds As New DataSet
         Try
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -79,15 +79,15 @@ Public Class RegistrationLetterDAL
 
     End Function
 
-    Public Function LoadMaxDay(ByVal dealerId As Guid) As DataSet
+    Public Function LoadMaxDay(dealerId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_MAX_DAY")
+        Dim selectStmt As String = Config("/SQL/LOAD_MAX_DAY")
 
         Try
             Dim ds As New DataSet
-            Dim dealerIdPar As New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, dealerId)
+            Dim dealerIdPar As New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, _
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, _
                             New DBHelper.DBHelperParameter() {dealerIdPar})
             Return ds
         Catch ex As Exception
@@ -98,19 +98,19 @@ Public Class RegistrationLetterDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "Handle Attachment File"
-    Public Sub UpdateAttachment(ByVal rowID As Guid, ByVal data As Byte())
-        Dim sql As String = Me.Config("/SQL/ADD_ATTACHMENT") '"UPDATE elp_registration_letter SET attachment_file_data = :attachment_file_data WHERE registration_letter_id = " & MiscUtil.GetDbStringFromGuid(rowID)
+    Public Sub UpdateAttachment(rowID As Guid, data As Byte())
+        Dim sql As String = Config("/SQL/ADD_ATTACHMENT") '"UPDATE elp_registration_letter SET attachment_file_data = :attachment_file_data WHERE registration_letter_id = " & MiscUtil.GetDbStringFromGuid(rowID)
         sql = sql.Replace(":registration_letter_id", MiscUtil.GetDbStringFromGuid(rowID))
         Dim con As New OracleConnection(DBHelper.ConnectString)
         Try

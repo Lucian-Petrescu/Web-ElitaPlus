@@ -78,11 +78,11 @@ Namespace SpecializedServices.GW
         <DataMember(IsRequired:=False, Name:="Endorsements", EmitDefaultValue:=False)>
         Public Property Endorsements As IEnumerable(Of CertificateEndorsementInfo)
 
-        Public Sub New(ByVal pCompGroupManager As ICompanyGroupManager)
-            Me.CompanyGroupManager = pCompGroupManager
+        Public Sub New(pCompGroupManager As ICompanyGroupManager)
+            CompanyGroupManager = pCompGroupManager
         End Sub
 
-        Public Sub New(ByVal pCertificateItem As CertificateItem, pCommonManager As CommonManager, pcompanyGroup As CompanyGroup, pEquipmentManager As EquipmentManager, ByVal pProduct As Product, pLanguage As String)
+        Public Sub New(pCertificateItem As CertificateItem, pCommonManager As CommonManager, pcompanyGroup As CompanyGroup, pEquipmentManager As EquipmentManager, pProduct As Product, pLanguage As String)
             ' Copy properties from Certificate Item to current instance
             With Me
                 .ItemNumber = pCertificateItem.ItemNumber
@@ -116,17 +116,17 @@ Namespace SpecializedServices.GW
                 .LastUseDate = pCertificateItem.LastUseDate
             End With
 
-            Me.ItemCoverages = New List(Of CertificateItemCoverageInfo)
+            ItemCoverages = New List(Of CertificateItemCoverageInfo)
 
             For Each cic As CertificateItemCoverage In pCertificateItem.ItemCoverages
-                DirectCast(Me.ItemCoverages, IList(Of CertificateItemCoverageInfo)).Add(New CertificateItemCoverageInfo(cic, pCommonManager, pProduct, pLanguage))
+                DirectCast(ItemCoverages, IList(Of CertificateItemCoverageInfo)).Add(New CertificateItemCoverageInfo(cic, pCommonManager, pProduct, pLanguage))
             Next
 
             If pCertificateItem.Endorsements.Count > 0 Then
-                Me.Endorsements = New List(Of CertificateEndorsementInfo)
+                Endorsements = New List(Of CertificateEndorsementInfo)
 
                 For Each cd As CertificateEndorsement In pCertificateItem.Endorsements
-                    DirectCast(Me.Endorsements, IList(Of CertificateEndorsementInfo)).Add(New CertificateEndorsementInfo(cd, pCommonManager, pLanguage))
+                    DirectCast(Endorsements, IList(Of CertificateEndorsementInfo)).Add(New CertificateEndorsementInfo(cd, pCommonManager, pLanguage))
                 Next
             End If
 

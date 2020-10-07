@@ -8,41 +8,41 @@ Public Class CancellationReason
     'Existing BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
-        If ElitaPlusIdentity.Current.ActiveUser.Companies.Count = 1 Then Me.SetValue(CancellationReasonDAL.COL_NAME_COMPANY_ID, ElitaPlusIdentity.Current.ActiveUser.CompanyId)
+        Dataset = New DataSet
+        Load()
+        If ElitaPlusIdentity.Current.ActiveUser.Companies.Count = 1 Then SetValue(CancellationReasonDAL.COL_NAME_COMPANY_ID, ElitaPlusIdentity.Current.ActiveUser.CompanyId)
     End Sub
 
     'Existing BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CancellationReasonDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -52,16 +52,16 @@ Public Class CancellationReason
 
     Protected Sub Load(ByVal id As Guid)
         Try
-            Me.Row = Nothing
+            Row = Nothing
             Dim dal As New CancellationReasonDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -105,7 +105,7 @@ Public Class CancellationReason
             If Not tempValue Is Nothing Then
                 tempValue = tempValue.Trim().ToUpper()
             End If
-            Me.SetValue(CancellationReasonDAL.COL_NAME_DESCRIPTION, tempValue)
+            SetValue(CancellationReasonDAL.COL_NAME_DESCRIPTION, tempValue)
         End Set
     End Property
 
@@ -131,7 +131,7 @@ Public Class CancellationReason
             If Not tempValue Is Nothing Then
                 tempValue = tempValue.Trim().ToUpper()
             End If
-            Me.SetValue(CancellationReasonDAL.COL_NAME_CODE, tempValue)
+            SetValue(CancellationReasonDAL.COL_NAME_CODE, tempValue)
         End Set
     End Property
 
@@ -148,7 +148,7 @@ Public Class CancellationReason
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CancellationReasonDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(CancellationReasonDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
@@ -165,7 +165,7 @@ Public Class CancellationReason
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CancellationReasonDAL.COL_NAME_REFUND_COMPUTE_METHOD_ID, Value)
+            SetValue(CancellationReasonDAL.COL_NAME_REFUND_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
@@ -182,7 +182,7 @@ Public Class CancellationReason
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CancellationReasonDAL.COL_NAME_REFUND_DESTINATION_ID, Value)
+            SetValue(CancellationReasonDAL.COL_NAME_REFUND_DESTINATION_ID, Value)
         End Set
     End Property
 
@@ -199,7 +199,7 @@ Public Class CancellationReason
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CancellationReasonDAL.COL_NAME_INPUT_AMT_REQ_ID, Value)
+            SetValue(CancellationReasonDAL.COL_NAME_INPUT_AMT_REQ_ID, Value)
         End Set
     End Property
 
@@ -215,7 +215,7 @@ Public Class CancellationReason
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CancellationReasonDAL.COL_DISPLAY_CODE, Value)
+            SetValue(CancellationReasonDAL.COL_DISPLAY_CODE, Value)
         End Set
     End Property
 
@@ -230,7 +230,7 @@ Public Class CancellationReason
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CancellationReasonDAL.COL_DEF_REFUND_PAYMENT_METHOD_ID, Value)
+            SetValue(CancellationReasonDAL.COL_DEF_REFUND_PAYMENT_METHOD_ID, Value)
         End Set
     End Property
 
@@ -246,7 +246,7 @@ Public Class CancellationReason
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CancellationReasonDAL.COL_NAME_IS_LAWFUL, Value)
+            SetValue(CancellationReasonDAL.COL_NAME_IS_LAWFUL, Value)
         End Set
     End Property
 
@@ -262,7 +262,7 @@ Public Class CancellationReason
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CancellationReasonDAL.COL_NAME_BENEFIT_CANCEL_REASON_CODE, Value)
+            SetValue(CancellationReasonDAL.COL_NAME_BENEFIT_CANCEL_REASON_CODE, Value)
         End Set
     End Property
 #End Region
@@ -279,12 +279,12 @@ Public Class CancellationReason
             MyBase.Save()
             Dim dal As New CancellationReasonDAL
             'dal.Update(Me.Dataset)
-            MyBase.UpdateFamily(Me.Dataset)
-            dal.UpdateFamily(Me.Dataset)
+            MyBase.UpdateFamily(Dataset)
+            dal.UpdateFamily(Dataset)
             'Reload the Data
-            If Me._isDSCreator AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso Row.RowState <> DataRowState.Detached Then
                 'Reload the Data from the DB
-                Me.Load(Me.Id)
+                Load(Id)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
@@ -296,7 +296,7 @@ Public Class CancellationReason
         Get
             Dim bDirty As Boolean
 
-            bDirty = MyBase.IsDirty OrElse Me.IsChildrenDirty
+            bDirty = MyBase.IsDirty OrElse IsChildrenDirty
 
             Return bDirty
         End Get
@@ -305,11 +305,11 @@ Public Class CancellationReason
 
 
     Public Sub Copy(ByVal original As CancellationReason)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Product")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
 
         Dim selRoleDv As DataView '= original.GetSelectedMethodOfRepair
         Dim selRoleList As New ArrayList
@@ -320,7 +320,7 @@ Public Class CancellationReason
         For n As Integer = 0 To selRoleDv.Count - 1
             selRoleList.Add(New Guid(CType(selRoleDv(n)(LookupListNew.COL_ID_NAME), Byte())).ToString)
         Next
-        Me.AttachRoles(selRoleList)
+        AttachRoles(selRoleList)
 
     End Sub
 #End Region
@@ -411,11 +411,11 @@ Public Class CancellationReason
 
     Public Sub UpdateRoles(ByVal selectedRolesGuidStrCollection As Hashtable)
         If selectedRolesGuidStrCollection.Count = 0 Then
-            If Not Me.IsDeleted Then Me.Delete()
+            If Not IsDeleted Then Delete()
         Else
             'first Pass
             Dim bo As ExcludeCancReasonByRole
-            For Each bo In Me.ExclCancelReasonByRoleChildren
+            For Each bo In ExclCancelReasonByRoleChildren
                 If Not selectedRolesGuidStrCollection.Contains(bo.RoleId.ToString) Then
                     'delete
                     bo.Delete()
@@ -425,11 +425,11 @@ Public Class CancellationReason
             'Second Pass
             Dim entry As DictionaryEntry
             For Each entry In selectedRolesGuidStrCollection
-                If Me.ExclCancelReasonByRoleChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
+                If ExclCancelReasonByRoleChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
                     'add
                     Dim Cancreasonrole As ExcludeCancReasonByRole = ExclCancelReasonByRoleChildren.GetNewChild()
                     Cancreasonrole.RoleId = New Guid(entry.Key.ToString)
-                    Cancreasonrole.CancellationReasonId = Me.Id
+                    Cancreasonrole.CancellationReasonId = Id
                     Cancreasonrole.Save()
                 End If
             Next
@@ -438,9 +438,9 @@ Public Class CancellationReason
     Public Sub AttachRoles(ByVal selectedRegionGuidStrCollection As ArrayList)
         Dim CancreasonRolestr As String
         For Each CancreasonRolestr In selectedRegionGuidStrCollection
-            Dim Cancreasonrole As ExcludeCancReasonByRole = Me.ExclCancelReasonByRoleChildren.GetNewChild
+            Dim Cancreasonrole As ExcludeCancReasonByRole = ExclCancelReasonByRoleChildren.GetNewChild
             Cancreasonrole.RoleId = New Guid(CancreasonRolestr)
-            Cancreasonrole.CancellationReasonId = Me.Id
+            Cancreasonrole.CancellationReasonId = Id
             Cancreasonrole.Save()
         Next
     End Sub
@@ -449,16 +449,16 @@ Public Class CancellationReason
     Public Function AddRolesChild(ByVal Roleid As Guid) As ExcludeCancReasonByRole
         Dim oCancreasonrole As ExcludeCancReasonByRole
 
-        oCancreasonrole = New ExcludeCancReasonByRole(Me.Dataset)
+        oCancreasonrole = New ExcludeCancReasonByRole(Dataset)
         oCancreasonrole.RoleId = Roleid
-        oCancreasonrole.CancellationReasonId = Me.Id
+        oCancreasonrole.CancellationReasonId = Id
         Return oCancreasonrole
 
     End Function
     Public Sub DetachRoles(ByVal selectedRegionGuidStrCollection As ArrayList)
         Dim CancreasonRolestr As String
         For Each CancreasonRolestr In selectedRegionGuidStrCollection
-            Dim Cancreasonrole As ExcludeCancReasonByRole = Me.ExclCancelReasonByRoleChildren.Find(New Guid(CancreasonRolestr))
+            Dim Cancreasonrole As ExcludeCancReasonByRole = ExclCancelReasonByRoleChildren.Find(New Guid(CancreasonRolestr))
             Cancreasonrole.Delete()
             Cancreasonrole.Save()
         Next
@@ -502,7 +502,7 @@ Public Class CancellationReason
 
         Dim ProdRoleBO As ExcludeCancReasonByRole
         Dim inClause As String = "(-1"
-        For Each ProdRoleBO In Me.ExclCancelReasonByRoleChildren
+        For Each ProdRoleBO In ExclCancelReasonByRoleChildren
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, ProdRoleBO.RoleId)
         Next
         inClause &= ")"

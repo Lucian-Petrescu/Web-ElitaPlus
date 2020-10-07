@@ -72,7 +72,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -80,27 +80,27 @@ Namespace Reports
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            ErrControllerMaster.Clear_Hide()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     'JavascriptCalls()
                     InitializeForm()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
         Sub PopulateRoleDropDown()
             Dim roleLkl As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("GetRoleList")
-            Me.cboRoles.Populate(roleLkl, New PopulateOptions() With
+            cboRoles.Populate(roleLkl, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -110,14 +110,14 @@ Namespace Reports
         Private Sub InitializeForm()
 
             PopulateRoleDropDown()
-            Me.rrole.Checked = True
-            Me.rIntern.Checked = True
-            Me.rActive.Checked = True
-            Me.rdReportSortOrder.Items(0).Selected = True
+            rrole.Checked = True
+            rIntern.Checked = True
+            rActive.Checked = True
+            rdReportSortOrder.Items(0).Selected = True
 
         End Sub
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
 
                 Dim sortOrder As String
@@ -129,31 +129,31 @@ Namespace Reports
                 Dim active As String
 
                 moReportFormat = ReportCeBase.GetReportFormat(Me)
-                If (moReportFormat <> ReportCeBase.RptFormat.PDF) AndAlso (moReportFormat <> ReportCeBase.RptFormat.JAVA) AndAlso (Me.rAll.Checked) Then
+                If (moReportFormat <> ReportCeBase.RptFormat.PDF) AndAlso (moReportFormat <> ReportCeBase.RptFormat.JAVA) AndAlso (rAll.Checked) Then
                     Throw New GUIException(Message.MSG_GUI_INVALID_SELECTION, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION)
                 End If
 
-                If Me.rrole.Checked Then
+                If rrole.Checked Then
                     roleCode = ALL
                 Else
-                    If Me.GetSelectedItem(Me.cboRoles).Equals(Guid.Empty) Then
+                    If GetSelectedItem(cboRoles).Equals(Guid.Empty) Then
                         Throw New GUIException(Message.MSG_GUI_INVALID_SELECTION, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION)
                     End If
                     Dim dvRoles As DataView = LookupListNew.GetRolesLookupList
-                    roleCode = LookupListNew.GetCodeFromId(dvRoles, Me.GetSelectedItem(Me.cboRoles))
+                    roleCode = LookupListNew.GetCodeFromId(dvRoles, GetSelectedItem(cboRoles))
                 End If
 
-                If Me.rIntern.Checked = True Then
+                If rIntern.Checked = True Then
                     external = "N"
-                ElseIf Me.rExtern.Checked = True Then
+                ElseIf rExtern.Checked = True Then
                     external = "Y"
                 Else
                     external = "*"
                 End If
 
-                If Me.rInActive.Checked = True Then
+                If rInActive.Checked = True Then
                     active = "N"
-                ElseIf Me.rActive.Checked = True Then
+                ElseIf rActive.Checked = True Then
                     active = "Y"
                 Else
                     active = "*"
@@ -162,7 +162,7 @@ Namespace Reports
 
                 ReportCeBase.EnableReportCe(Me, TheReportCeInputControl)
 
-                sortOrder = Me.rdReportSortOrder.SelectedValue()
+                sortOrder = rdReportSortOrder.SelectedValue()
 
                 moReportFormat = ReportCeBase.GetReportFormat(Me)
                 If (moReportFormat = ReportCeBase.RptFormat.TEXT_TAB) OrElse (moReportFormat = ReportCeBase.RptFormat.TEXT_CSV) Then
@@ -176,12 +176,12 @@ Namespace Reports
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Sub SetReportParams(ByVal oReportParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                            ByVal reportName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(oReportParams As ReportParams, repParams() As ReportCeBaseForm.RptParam,
+                            reportName As String, startIndex As Integer)
             With oReportParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_COMPANY_GROUP", .companyGroupCode, reportName)
                 repParams(startIndex + 1) = New ReportCeBaseForm.RptParam("V_ROLE", .roleCode, reportName)
@@ -193,12 +193,12 @@ Namespace Reports
 
         End Sub
 
-        Function SetParameters(ByVal roleCode As String,
-                               ByVal companyGroupCode As String,
-                               ByVal companyGroupDescription As String,
-                               ByVal sortOrder As String,
-                               ByVal external As String,
-                               ByVal active As String) As ReportCeBaseForm.Params
+        Function SetParameters(roleCode As String,
+                               companyGroupCode As String,
+                               companyGroupDescription As String,
+                               sortOrder As String,
+                               external As String,
+                               active As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim reportName As String = RPT_FILENAME
@@ -226,12 +226,12 @@ Namespace Reports
             Return params
         End Function
 
-        Function SetExpParameters(ByVal roleCode As String,
-                               ByVal companyGroupCode As String,
-                               ByVal companyGroupDescription As String,
-                               ByVal sortOrder As String,
-                                ByVal external As String,
-                                ByVal active As String) As ReportCeBaseForm.Params
+        Function SetExpParameters(roleCode As String,
+                               companyGroupCode As String,
+                               companyGroupDescription As String,
+                               sortOrder As String,
+                                external As String,
+                                active As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim reportName As String = RPT_FILENAME_EXPORT

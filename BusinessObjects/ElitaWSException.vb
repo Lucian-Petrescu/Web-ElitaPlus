@@ -136,10 +136,10 @@ Public Class ElitaWSException
 
         Dim err As String = String.Empty
         If Not InnerException Is Nothing Then err = InnerException.Source
-        Throw New SoapException(IIf(bTranslate, TranslationBase.TranslateLabelOrMessage(Me.Code), Me.Code), _
+        Throw New SoapException(IIf(bTranslate, TranslationBase.TranslateLabelOrMessage(Code), Code), _
                                 SourceException, _
                                 SourceApplicationName, _
-                                BuilErrorXML(Me.Code, err, InnerException, bTranslate), _
+                                BuilErrorXML(Code, err, InnerException, bTranslate), _
                                 InnerException)
     End Function
 
@@ -181,7 +181,7 @@ Public Class ElitaWSException
                                   Optional ByVal bTranslate As Boolean = True) As XmlNode
 
         ' Translate the error 
-        Dim errorMessage As String = IIf(bTranslate, TranslationBase.TranslateLabelOrMessage(Me.Code), Me.Code)
+        Dim errorMessage As String = IIf(bTranslate, TranslationBase.TranslateLabelOrMessage(Code), Code)
 
         Dim xmlDoc As XmlDocument = New XmlDocument
 

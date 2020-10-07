@@ -9,46 +9,46 @@ Public Class BestReplacement
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New BestReplacementDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -59,20 +59,20 @@ Public Class BestReplacement
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New BestReplacementDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -84,7 +84,7 @@ Public Class BestReplacement
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        Me.Priority = New LongType(0)
+        Priority = New LongType(0)
     End Sub
 #End Region
 
@@ -121,7 +121,7 @@ Public Class BestReplacement
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(BestReplacementDAL.COL_NAME_MIGRATION_PATH_ID, Value)
+            SetValue(BestReplacementDAL.COL_NAME_MIGRATION_PATH_ID, Value)
         End Set
     End Property
 
@@ -137,11 +137,11 @@ Public Class BestReplacement
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(BestReplacementDAL.COL_NAME_EQUIPMENT_ID, Value)
+            SetValue(BestReplacementDAL.COL_NAME_EQUIPMENT_ID, Value)
             ' Set Equipment Model
             Dim dv As DataView = LookupListNew.GetEquipmentLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
             Dim model As String = LookupListNew.GetCodeFromId(dv, Value)
-            Me.SetValue(BestReplacementDAL.COL_NAME_EQUIPMENT_MODEL, model)
+            SetValue(BestReplacementDAL.COL_NAME_EQUIPMENT_MODEL, model)
         End Set
     End Property
 
@@ -157,11 +157,11 @@ Public Class BestReplacement
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(BestReplacementDAL.COL_NAME_EQUIPMENT_MANUFACTURER_ID, Value)
+            SetValue(BestReplacementDAL.COL_NAME_EQUIPMENT_MANUFACTURER_ID, Value)
             'Set Manufacturer Description
             Dim dv As DataView = LookupListNew.GetManufacturerLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
             Dim manufacturerDescription As String = LookupListNew.GetDescriptionFromId(dv, Value)
-            Me.SetValue(BestReplacementDAL.COL_NAME_EQUIPMENT_MANUFACTURER, manufacturerDescription)
+            SetValue(BestReplacementDAL.COL_NAME_EQUIPMENT_MANUFACTURER, manufacturerDescription)
         End Set
     End Property
 
@@ -201,11 +201,11 @@ Public Class BestReplacement
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_ID, Value)
+            SetValue(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_ID, Value)
             ' Set Replacement Equipment Model
             Dim dv As DataView = LookupListNew.GetEquipmentLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
             Dim replacementModel As String = LookupListNew.GetCodeFromId(dv, Value)
-            Me.SetValue(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_MODEL, replacementModel)
+            SetValue(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_MODEL, replacementModel)
         End Set
     End Property
 
@@ -221,11 +221,11 @@ Public Class BestReplacement
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_MANUFACTURER_ID, Value)
+            SetValue(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_MANUFACTURER_ID, Value)
             'Set Replacement Manufacturer Description
             Dim dv As DataView = LookupListNew.GetManufacturerLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
             Dim replacementManufacturerDescription As String = LookupListNew.GetDescriptionFromId(dv, Value)
-            Me.SetValue(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_MANUFACTURER, replacementManufacturerDescription)
+            SetValue(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_MANUFACTURER, replacementManufacturerDescription)
         End Set
     End Property
 
@@ -265,7 +265,7 @@ Public Class BestReplacement
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(BestReplacementDAL.COL_NAME_PRIORITY, Value)
+            SetValue(BestReplacementDAL.COL_NAME_PRIORITY, Value)
         End Set
     End Property
 #End Region
@@ -274,15 +274,15 @@ Public Class BestReplacement
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New BestReplacementDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -291,7 +291,7 @@ Public Class BestReplacement
     End Sub
 
     Public Sub Copy(ByVal original As BestReplacement)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
         MyBase.CopyFrom(original)
@@ -339,12 +339,12 @@ Public Class BestReplacement
 
     Protected Function CheckForDuplicatePriorities() As Boolean
         Dim row As DataRow
-        For Each row In Me.Dataset.Tables(BestReplacementDAL.TABLE_NAME).Rows
+        For Each row In Dataset.Tables(BestReplacementDAL.TABLE_NAME).Rows
             If row.RowState <> DataRowState.Deleted And row.RowState <> DataRowState.Detached Then
                 Dim bo As New BestReplacement(row)
-                If Not Me.Priority Is Nothing AndAlso Not bo.Priority Is Nothing Then 'DEF-2109
+                If Not Priority Is Nothing AndAlso Not bo.Priority Is Nothing Then 'DEF-2109
                     ' Check if combination of Equipment ID and Priority is Unique
-                    If (not bo.Id.Equals(Me.Id)) AndAlso Me.Priority.Value = bo.Priority.Value andalso bo.EquipmentId = me.EquipmentId Then
+                    If (not bo.Id.Equals(Id)) AndAlso Priority.Value = bo.Priority.Value andalso bo.EquipmentId = EquipmentId Then
                         Return True
                     End If
                 End If
@@ -355,11 +355,11 @@ Public Class BestReplacement
 
     Protected Function CheckForDuplicateEquipmentReplacementEquipmentCombination() As Boolean
         Dim row As DataRow
-        For Each row In Me.Dataset.Tables(BestReplacementDAL.TABLE_NAME).Rows
+        For Each row In Dataset.Tables(BestReplacementDAL.TABLE_NAME).Rows
             If row.RowState <> DataRowState.Deleted And row.RowState <> DataRowState.Detached Then
                 Dim bo As New BestReplacement(row)
                 ' Check if combination of Equipment ID and Replacement Equipment is Unique
-                If Not bo.Id.Equals(Me.Id) AndAlso Me.EquipmentId.Equals(bo.EquipmentId) AndAlso Me.ReplacementEquipmentId.Equals(bo.ReplacementEquipmentId) Then
+                If Not bo.Id.Equals(Id) AndAlso EquipmentId.Equals(bo.EquipmentId) AndAlso ReplacementEquipmentId.Equals(bo.ReplacementEquipmentId) Then
                     Return True
                 End If
             End If

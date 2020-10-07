@@ -52,17 +52,17 @@ Namespace Tables
         End Property
 
         Private Sub SetStateProperties()
-            Me.State.moBonusStructureId = CType(Me.CallingParameters, Guid)
-            If Me.State.moBonusStructureId.Equals(Guid.Empty) Then
-                Me.State.IsBonusStructureNew = True
+            State.moBonusStructureId = CType(CallingParameters, Guid)
+            If State.moBonusStructureId.Equals(Guid.Empty) Then
+                State.IsBonusStructureNew = True
                 BindBoPropertiesToLabels()
-                Me.AddLabelDecorations(BonusStructure)
+                AddLabelDecorations(BonusStructure)
                 ClearAll()
                 PopulateAll()
             Else
-                Me.State.IsBonusStructureNew = False
+                State.IsBonusStructureNew = False
                 BindBoPropertiesToLabels()
-                Me.AddLabelDecorations(BonusStructure)
+                AddLabelDecorations(BonusStructure)
                 PopulateAll()
             End If
         End Sub
@@ -120,9 +120,9 @@ Namespace Tables
             Public LastOperation As DetailPageCommand
             Public moBonusStructureId As Guid
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal oBonusStructureId As Guid, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.moBonusStructureId = oBonusStructureId
+            Public Sub New(LastOp As DetailPageCommand, oBonusStructureId As Guid, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                moBonusStructureId = oBonusStructureId
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
@@ -132,18 +132,18 @@ Namespace Tables
 #Region "Properties"
         Private ReadOnly Property BonusStructure As ClaimBonusSettings
             Get
-                If Me.State.moBonusStructure Is Nothing Then
-                    If Me.State.IsBonusStructureNew = True Then
+                If State.moBonusStructure Is Nothing Then
+                    If State.IsBonusStructureNew = True Then
                         ' For creating, inserting
-                        Me.State.moBonusStructure = New ClaimBonusSettings
-                        Me.State.moBonusStructureId = Me.State.moBonusStructure.Id
+                        State.moBonusStructure = New ClaimBonusSettings
+                        State.moBonusStructureId = State.moBonusStructure.Id
                     Else
                         ' For updating, deleting
-                        Me.State.moBonusStructure = New ClaimBonusSettings(Me.State.moBonusStructureId)
+                        State.moBonusStructure = New ClaimBonusSettings(State.moBonusStructureId)
                     End If
                 End If
 
-                Return Me.State.moBonusStructure
+                Return State.moBonusStructure
             End Get
         End Property
 
@@ -170,7 +170,7 @@ Namespace Tables
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -178,50 +178,50 @@ Namespace Tables
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
 
                 If Not Page.IsPostBack Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                     UpdateBreadCrum()
-                    Me.SetStateProperties()
+                    SetStateProperties()
                 End If
 
                 BindBoPropertiesToLabels()
                 CheckIfComingFromConfirm()
-                If Not Me.IsPostBack Then
-                    Me.AddLabelDecorations(BonusStructure)
+                If Not IsPostBack Then
+                    AddLabelDecorations(BonusStructure)
                 End If
 
-                ClientScript.RegisterStartupScript(Me.Page.GetType, "startup", "bonusMethodChanged();", True)
+                ClientScript.RegisterStartupScript(Page.GetType, "startup", "bonusMethodChanged();", True)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
             If Me.State.LastOperation = DetailPageCommand.Redirect_ Then
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 ClearLabelsErrSign()
-                Me.State.LastOperation = DetailPageCommand.Nothing_
+                State.LastOperation = DetailPageCommand.Nothing_
             Else
-                Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+                ShowMissingTranslations(MasterPage.MessageController)
             End If
         End Sub
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
 
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Me.State.moBonusStructure = New ClaimBonusSettings(CType(Me.CallingParameters, Guid))
+                    State.moBonusStructure = New ClaimBonusSettings(CType(CallingParameters, Guid))
                 Else
-                    Me.State.IsBonusStructureNew = True
+                    State.IsBonusStructureNew = True
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -230,74 +230,74 @@ Namespace Tables
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnApply_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
-            If Me.State.IsBonusStructureNew = True Then
+        Private Sub btnApply_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
+            If State.IsBonusStructureNew = True Then
                 ApplyChanges()
 
-            ElseIf Me.State.IsBonusStructureNew = False Then
+            ElseIf State.IsBonusStructureNew = False Then
                 If IsDirtyBO() = True Then
                     ApplyChanges()
                 Else
-                    Me.DisplayMessage(Message.NO_CHANGES_TO_RECORD, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                    DisplayMessage(Message.NO_CHANGES_TO_RECORD, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End If
             End If
         End Sub
 
         Private Sub GoBack()
-            Dim retType As New BonusStructureDetailForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.moBonusStructureId, Me.State.boChanged)
-            Me.ReturnToCallingPage(retType)
+            Dim retType As New BonusStructureDetailForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.moBonusStructureId, State.boChanged)
+            ReturnToCallingPage(retType)
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 
         Private Sub CreateNew()
-            Me.State.ScreenSnapShotBO = Nothing
-            Me.State.moBonusStructureId = Guid.Empty
-            Me.State.IsBonusStructureNew = True
-            Me.State.moBonusStructure = New ClaimBonusSettings
+            State.ScreenSnapShotBO = Nothing
+            State.moBonusStructureId = Guid.Empty
+            State.IsBonusStructureNew = True
+            State.moBonusStructure = New ClaimBonusSettings
             ClearAll()
-            Me.SetButtonsState(True)
-            Me.PopulateAll()
+            SetButtonsState(True)
+            PopulateAll()
             DealerDropControl.ChangeEnabledControlProperty(True)
             ServiceCenterDropControl.ChangeEnabledControlProperty(True)
 
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub CreateNewCopy()
 
-            Me.PopulateBOsFromForm()
+            PopulateBOsFromForm()
 
             Dim newObj As New ClaimBonusSettings
             newObj.Copy(BonusStructure)
 
-            Me.State.moBonusStructure = newObj
-            Me.State.moBonusStructureId = Guid.Empty
-            Me.State.IsBonusStructureNew = True
+            State.moBonusStructure = newObj
+            State.moBonusStructureId = Guid.Empty
+            State.IsBonusStructureNew = True
 
             With BonusStructure
                 .BonusComputeMethodId = Guid.Empty
@@ -308,43 +308,43 @@ Namespace Tables
                 .Expiration = Nothing
             End With
 
-            Me.SetButtonsState(True)
+            SetButtonsState(True)
             ' DealerDropControl.ChangeEnabledControlProperty(True)
 
             'create the backup copy
-            Me.State.ScreenSnapShotBO = New ClaimBonusSettings
-            Me.State.ScreenSnapShotBO.Copy(BonusStructure)
+            State.ScreenSnapShotBO = New ClaimBonusSettings
+            State.ScreenSnapShotBO.Copy(BonusStructure)
 
 
 
         End Sub
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
                     CreateNewCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                HandleErrors(ex, MasterPage.MessageController)
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
 
-                Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenDelDeletePromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDelDeletePromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
 
 
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -378,10 +378,10 @@ Namespace Tables
 #Region "Populate"
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("BONUS_STRUCTURE_DETAIL")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("BONUS_STRUCTURE_DETAIL")
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("BONUS_STRUCTURE_DETAIL")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("BONUS_STRUCTURE_DETAIL")
                 End If
             End If
         End Sub
@@ -393,7 +393,7 @@ Namespace Tables
                 DealerDropControl.NothingSelected = True
                 DealerDropControl.BindData(LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies))
 
-                If Me.State.IsBonusStructureNew = True Then
+                If State.IsBonusStructureNew = True Then
 
                     DealerDropControl.ChangeEnabledControlProperty(True)
                     DealerDropControl.SelectedGuid = Guid.Empty
@@ -403,9 +403,9 @@ Namespace Tables
                     DealerDropControl.SelectedGuid = BonusStructure.DealerId
                 End If
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(BONUS_STRUCTURE_FORM001)
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(BONUS_STRUCTURE_FORM001)
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
             End Try
         End Sub
         Private Sub PopulateServiceCenter()
@@ -413,7 +413,7 @@ Namespace Tables
             Try
                 Dim dv As DataView = LookupListNew.GetServiceCenterLookupList(oCountryList)
                 ServiceCenterDropControl.SetControl(True, ServiceCenterDropControl.MODES.NEW_MODE, True, dv, TranslationBase.TranslateLabelOrMessage(LABEL_SERVICE_CENTER), True, True)
-                If Me.State.IsBonusStructureNew = True Then
+                If State.IsBonusStructureNew = True Then
                     ServiceCenterDropControl.SelectedGuid = Guid.Empty
                     ServiceCenterDropControl.ChangeEnabledControlProperty(True)
 
@@ -423,9 +423,9 @@ Namespace Tables
                     ServiceCenterDropControl.SelectedGuid = BonusStructure.ServiceCenterId
                 End If
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(BONUS_STRUCTURE_FORM001)
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(BONUS_STRUCTURE_FORM001)
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
             End Try
         End Sub
 
@@ -443,12 +443,12 @@ Namespace Tables
                 .TextFunc = AddressOf .GetCode,
                 .SortFunc = AddressOf .GetCode
                  })
-                If Me.State.IsBonusStructureNew = True Then
+                If State.IsBonusStructureNew = True Then
                     moProductCode.SelectedValue = Nothing
                     moProductCode.Enabled = True
 
                 Else
-                    BindSelectItem(Me.BonusStructure.ProductCodeId.ToString, moProductCode)
+                    BindSelectItem(BonusStructure.ProductCodeId.ToString, moProductCode)
 
                 End If
 
@@ -468,13 +468,13 @@ Namespace Tables
              .AddBlankItem = True
              })
             Try
-                If Me.State.IsBonusStructureNew = True Then
+                If State.IsBonusStructureNew = True Then
                     BindSelectItem(Nothing, moBonusMethodComputationDD)
                 Else
-                    BindSelectItem(Me.BonusStructure.BonusComputeMethodId.ToString, moBonusMethodComputationDD)
+                    BindSelectItem(BonusStructure.BonusComputeMethodId.ToString, moBonusMethodComputationDD)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -485,21 +485,21 @@ Namespace Tables
                 With BonusStructure
 
 
-                    Me.PopulateControlFromBOProperty(Me.moAVGTATText, .ScAvgTat)
-                    Me.PopulateControlFromBOProperty(Me.moPercentageOrAmountText, .Pecoramount)
-                    Me.PopulateControlFromBOProperty(Me.moPriorityText, .Priority)
-                    Me.PopulateControlFromBOProperty(Me.moreplacementpercentageText, .ScReplacementPct)
-                    Me.PopulateControlFromBOProperty(Me.mobonusamountperiodText, .BonusAmountPeriodMonth)
+                    PopulateControlFromBOProperty(moAVGTATText, .ScAvgTat)
+                    PopulateControlFromBOProperty(moPercentageOrAmountText, .Pecoramount)
+                    PopulateControlFromBOProperty(moPriorityText, .Priority)
+                    PopulateControlFromBOProperty(moreplacementpercentageText, .ScReplacementPct)
+                    PopulateControlFromBOProperty(mobonusamountperiodText, .BonusAmountPeriodMonth)
 
 
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub PopulateAll()
-            If Me.State.IsBonusStructureNew = True Then
+            If State.IsBonusStructureNew = True Then
                 PopulateDropDowns()
                 PopulateDealer()
                 PopulateServiceCenter()
@@ -519,21 +519,21 @@ Namespace Tables
 
         Protected Sub PopulateBOsFromForm()
 
-            With Me.BonusStructure
+            With BonusStructure
                 .DealerId = DealerDropControl.SelectedGuid
                 .ServiceCenterId = ServiceCenterDropControl.SelectedGuid
-                .ProductCodeId = If(String.IsNullOrEmpty(Me.moProductCode.SelectedValue), Guid.Empty, New Guid(Me.moProductCode.SelectedValue))
-                Me.PopulateBOProperty(BonusStructure, BONUS_METHOD_COMPUTATION_ID, Me.moBonusMethodComputationDD)
-                Me.PopulateBOProperty(BonusStructure, AVG_TAT, Me.moAVGTATText)
-                Me.PopulateBOProperty(BonusStructure, PERCENTAGE_OR_AMOUNT, Me.moPercentageOrAmountText)
-                Me.PopulateBOProperty(BonusStructure, PRIORITY, Me.moPriorityText)
-                Me.PopulateBOProperty(BonusStructure, SC_REPLACEMENT_PERCENTAGE, Me.moreplacementpercentageText)
-                Me.PopulateBOProperty(BonusStructure, BONUS_AMOUNT_PERIOD_MONTH, Me.mobonusamountperiodText)
-                Me.PopulateBOProperty(BonusStructure, EFFECTIVE_DATE, Me.moeffectiveText)
-                Me.PopulateBOProperty(BonusStructure, EXPIRATION_DATE, Me.moexpirationText)
+                .ProductCodeId = If(String.IsNullOrEmpty(moProductCode.SelectedValue), Guid.Empty, New Guid(moProductCode.SelectedValue))
+                PopulateBOProperty(BonusStructure, BONUS_METHOD_COMPUTATION_ID, moBonusMethodComputationDD)
+                PopulateBOProperty(BonusStructure, AVG_TAT, moAVGTATText)
+                PopulateBOProperty(BonusStructure, PERCENTAGE_OR_AMOUNT, moPercentageOrAmountText)
+                PopulateBOProperty(BonusStructure, PRIORITY, moPriorityText)
+                PopulateBOProperty(BonusStructure, SC_REPLACEMENT_PERCENTAGE, moreplacementpercentageText)
+                PopulateBOProperty(BonusStructure, BONUS_AMOUNT_PERIOD_MONTH, mobonusamountperiodText)
+                PopulateBOProperty(BonusStructure, EFFECTIVE_DATE, moeffectiveText)
+                PopulateBOProperty(BonusStructure, EXPIRATION_DATE, moexpirationText)
 
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
 
@@ -544,10 +544,10 @@ Namespace Tables
             today = DateTime.Now
 
 
-            Me.PopulateControlFromBOProperty(Me.moeffectiveText, Me.BonusStructure.Effective)
-            Me.PopulateControlFromBOProperty(Me.moexpirationText, Me.BonusStructure.Expiration)
-            Me.AddCalendarwithTime_New(btneffective, moeffectiveText, , moeffectiveText.Text)
-            Me.AddCalendarwithTime_New(btnExpiration, moexpirationText, , moexpirationText.Text)
+            PopulateControlFromBOProperty(moeffectiveText, BonusStructure.Effective)
+            PopulateControlFromBOProperty(moexpirationText, BonusStructure.Expiration)
+            AddCalendarwithTime_New(btneffective, moeffectiveText, , moeffectiveText.Text)
+            AddCalendarwithTime_New(btnExpiration, moexpirationText, , moexpirationText.Text)
 
 
         End Sub
@@ -556,7 +556,7 @@ Namespace Tables
 
 #Region "Button State"
 
-        Private Sub SetButtonsState(ByVal bIsNew As Boolean)
+        Private Sub SetButtonsState(bIsNew As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
@@ -581,7 +581,7 @@ Namespace Tables
 
             Catch ex As Exception
                 'Me.MasterPage.MessageController.AddError(ex.Message, True)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.Show()
             End Try
 
             Return bIsDirty
@@ -590,39 +590,39 @@ Namespace Tables
         Private Function ApplyChanges() As Boolean
             Dim eff As Date = Date.Now
             Try
-                Me.customvalidate()
+                customvalidate()
 
-                If Me.State.IsBonusStructureNew = False Then
+                If State.IsBonusStructureNew = False Then
 
-                    If Me.State.moBonusStructure.Effective.Value.Ticks <> CType(moeffectiveText.Text, Date).Ticks Then
+                    If State.moBonusStructure.Effective.Value.Ticks <> CType(moeffectiveText.Text, Date).Ticks Then
                         eff = CType(moeffectiveText.Text, Date).AddSeconds(1)
                     End If
 
-                    Me.State.moBonusStructure.DeleteAndSave()
+                    State.moBonusStructure.DeleteAndSave()
 
-                    Me.State.moBonusStructureId = Guid.Empty
-                    Me.State.IsBonusStructureNew = True
-                    Me.State.moBonusStructure = New ClaimBonusSettings
+                    State.moBonusStructureId = Guid.Empty
+                    State.IsBonusStructureNew = True
+                    State.moBonusStructure = New ClaimBonusSettings
 
                     moeffectiveText.Text = eff.AddSeconds(1).ToString()
                 End If
 
-                Me.PopulateBOsFromForm()
+                PopulateBOsFromForm()
 
                 If BonusStructure.IsDirty() Then
-                    Me.BonusStructure.Save()
-                    Me.State.boChanged = True
-                    If Me.State.IsBonusStructureNew = True Then
-                        Me.State.IsBonusStructureNew = False
+                    BonusStructure.Save()
+                    State.boChanged = True
+                    If State.IsBonusStructureNew = True Then
+                        State.IsBonusStructureNew = False
                     End If
                     PopulateAll()
-                    Me.SetButtonsState(Me.State.IsBonusStructureNew)
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    SetButtonsState(State.IsBonusStructureNew)
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                 Else
-                    Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                    MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Function
@@ -630,7 +630,7 @@ Namespace Tables
 
         Private Function customvalidate() As Boolean
 
-            If Me.DealerDropControl.SelectedGuid.Equals(Guid.Empty) And Me.ServiceCenterDropControl.SelectedGuid.Equals(Guid.Empty) Then
+            If DealerDropControl.SelectedGuid.Equals(Guid.Empty) And ServiceCenterDropControl.SelectedGuid.Equals(Guid.Empty) Then
                 Throw New GUIException(Message.MSG_ENTER_A_SERVICE_CENTER_OR_DEALER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_SERVICE_CENTER_OR_DEALER_MUST_BE_SELECTED_ERR)
             End If
 
@@ -648,9 +648,9 @@ Namespace Tables
                 End If
             End If
 
-            Dim ProductCodeId As Guid = If(String.IsNullOrEmpty(Me.moProductCode.SelectedValue), Guid.Empty, New Guid(Me.moProductCode.SelectedValue))
+            Dim ProductCodeId As Guid = If(String.IsNullOrEmpty(moProductCode.SelectedValue), Guid.Empty, New Guid(moProductCode.SelectedValue))
 
-            If Me.State.moBonusStructure.GetClaimBonusSettingCount(DealerDropControl.SelectedGuid, ServiceCenterDropControl.SelectedGuid, ProductCodeId, Me.State.moBonusStructureId) > 0 Then
+            If State.moBonusStructure.GetClaimBonusSettingCount(DealerDropControl.SelectedGuid, ServiceCenterDropControl.SelectedGuid, ProductCodeId, State.moBonusStructureId) > 0 Then
                 Throw New GUIException(Message.MSG_VALUE_ALREADY_IN_USE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DUPLICATE_SERVICE_CENTER_DEALER_AND_PRODUCT_CODE)
             End If
 
@@ -667,9 +667,9 @@ Namespace Tables
                     .Save()
                 End With
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(BONUS_STRUCTURE_FORM002)
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(BONUS_STRUCTURE_FORM002)
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
                 bIsOk = False
             End Try
             Return bIsOk
@@ -681,7 +681,7 @@ Namespace Tables
 #Region "State-Management"
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
@@ -690,7 +690,7 @@ Namespace Tables
                     Case MSG_VALUE_YES
                         ' Save and go back to Search Page
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             GoBack()
                         End If
                     Case MSG_VALUE_NO
@@ -701,7 +701,7 @@ Namespace Tables
         End Sub
 
         Protected Sub ComingFromNewCopy()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the New Copy Button
@@ -710,7 +710,7 @@ Namespace Tables
                     Case MSG_VALUE_YES
                         ' Save and create a new Copy BO
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             CreateNewCopy()
                         End If
                     Case MSG_VALUE_NO
@@ -721,7 +721,7 @@ Namespace Tables
 
         End Sub
         Protected Sub ComingFromNew()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the New Copy Button
@@ -730,7 +730,7 @@ Namespace Tables
                     Case MSG_VALUE_YES
                         ' Save and create a new Copy BO
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             CreateNew()
                         End If
                     Case MSG_VALUE_NO
@@ -742,32 +742,32 @@ Namespace Tables
         End Sub
         Protected Sub ComingFromDelete()
 
-            Dim confResponseDel As String = Me.HiddenDelDeletePromptResponse.Value
+            Dim confResponseDel As String = HiddenDelDeletePromptResponse.Value
 
-            If Not confResponseDel Is Nothing AndAlso confResponseDel = Me.MSG_VALUE_YES Then
+            If confResponseDel IsNot Nothing AndAlso confResponseDel = MSG_VALUE_YES Then
                 If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
                     Try
-                        Me.State.moBonusStructure.DeleteAndSave()
-                        Me.State.HasDataChanged = True
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.moBonusStructureId, Me.State.HasDataChanged))
+                        State.moBonusStructure.DeleteAndSave()
+                        State.HasDataChanged = True
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.moBonusStructureId, State.HasDataChanged))
                     Catch ex As Exception
-                        Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                        HandleErrors(ex, MasterPage.MessageController)
                     End Try
                     'Clean after consuming the action
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                    Me.HiddenDelDeletePromptResponse.Value = ""
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                    HiddenDelDeletePromptResponse.Value = ""
                 End If
-            ElseIf Not confResponseDel Is Nothing AndAlso confResponseDel = Me.MSG_VALUE_NO Then
+            ElseIf confResponseDel IsNot Nothing AndAlso confResponseDel = MSG_VALUE_NO Then
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenDelDeletePromptResponse.Value = ""
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenDelDeletePromptResponse.Value = ""
             End If
         End Sub
 
 
         Protected Sub CheckIfComingFromConfirm()
             Try
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     ' Period
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ComingFromBack()
@@ -781,10 +781,10 @@ Namespace Tables
                 End Select
 
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = String.Empty
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -794,52 +794,52 @@ Namespace Tables
 #Region "Handlers-Labels"
 
         Private Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(BonusStructure, DEALER_ID_PROPERTY, DealerDropControl.CaptionLabel)
-            Me.BindBOPropertyToLabel(BonusStructure, SERVICE_CENTER_PROPERTY, ServiceCenterDropControl.CaptionLabel)
-            Me.BindBOPropertyToLabel(BonusStructure, PRODUCT_CODE_PROPERTY, moProductCodelabel)
-            Me.BindBOPropertyToLabel(BonusStructure, BONUS_METHOD_COMPUTATION_ID, moBonusMethodComputationLabel)
-            Me.BindBOPropertyToLabel(BonusStructure, AVG_TAT, moAVGTAT)
-            Me.BindBOPropertyToLabel(BonusStructure, PERCENTAGE_OR_AMOUNT, moPercentageOrAmountLabel)
-            Me.BindBOPropertyToLabel(BonusStructure, PRIORITY, moPriorityLabel)
-            Me.BindBOPropertyToLabel(BonusStructure, SC_REPLACEMENT_PERCENTAGE, moreplacementpercentage)
-            Me.BindBOPropertyToLabel(BonusStructure, BONUS_AMOUNT_PERIOD_MONTH, mobonusamountperiod)
-            Me.BindBOPropertyToLabel(BonusStructure, EFFECTIVE_DATE, moeffective)
-            Me.BindBOPropertyToLabel(BonusStructure, EXPIRATION_DATE, moexpiration)
+            BindBOPropertyToLabel(BonusStructure, DEALER_ID_PROPERTY, DealerDropControl.CaptionLabel)
+            BindBOPropertyToLabel(BonusStructure, SERVICE_CENTER_PROPERTY, ServiceCenterDropControl.CaptionLabel)
+            BindBOPropertyToLabel(BonusStructure, PRODUCT_CODE_PROPERTY, moProductCodelabel)
+            BindBOPropertyToLabel(BonusStructure, BONUS_METHOD_COMPUTATION_ID, moBonusMethodComputationLabel)
+            BindBOPropertyToLabel(BonusStructure, AVG_TAT, moAVGTAT)
+            BindBOPropertyToLabel(BonusStructure, PERCENTAGE_OR_AMOUNT, moPercentageOrAmountLabel)
+            BindBOPropertyToLabel(BonusStructure, PRIORITY, moPriorityLabel)
+            BindBOPropertyToLabel(BonusStructure, SC_REPLACEMENT_PERCENTAGE, moreplacementpercentage)
+            BindBOPropertyToLabel(BonusStructure, BONUS_AMOUNT_PERIOD_MONTH, mobonusamountperiod)
+            BindBOPropertyToLabel(BonusStructure, EFFECTIVE_DATE, moeffective)
+            BindBOPropertyToLabel(BonusStructure, EXPIRATION_DATE, moexpiration)
             ClearLabelsErrSign()
         End Sub
 
 
         Private Sub ClearLabelsErrSign()
 
-            Me.ClearLabelErrSign(DealerDropControl.CaptionLabel)
-            Me.ClearLabelErrSign(ServiceCenterDropControl.CaptionLabel)
-            Me.ClearLabelErrSign(moProductCodelabel)
-            Me.ClearLabelErrSign(moBonusMethodComputationLabel)
-            Me.ClearLabelErrSign(moAVGTAT)
-            Me.ClearLabelErrSign(moPercentageOrAmountLabel)
-            Me.ClearLabelErrSign(moPriorityLabel)
-            Me.ClearLabelErrSign(moreplacementpercentage)
-            Me.ClearLabelErrSign(mobonusamountperiod)
-            Me.ClearLabelErrSign(moeffective)
-            Me.ClearLabelErrSign(moexpiration)
+            ClearLabelErrSign(DealerDropControl.CaptionLabel)
+            ClearLabelErrSign(ServiceCenterDropControl.CaptionLabel)
+            ClearLabelErrSign(moProductCodelabel)
+            ClearLabelErrSign(moBonusMethodComputationLabel)
+            ClearLabelErrSign(moAVGTAT)
+            ClearLabelErrSign(moPercentageOrAmountLabel)
+            ClearLabelErrSign(moPriorityLabel)
+            ClearLabelErrSign(moreplacementpercentage)
+            ClearLabelErrSign(mobonusamountperiod)
+            ClearLabelErrSign(moeffective)
+            ClearLabelErrSign(moexpiration)
 
         End Sub
 
-        Public Shared Sub SetLabelColor(ByVal lbl As Label)
+        Public Shared Sub SetLabelColor(lbl As Label)
             lbl.ForeColor = Color.Black
         End Sub
 
 
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
          Handles DealerDropControl.SelectedDropChanged
             Try
-                Me.State.DealerId = DealerDropControl.SelectedGuid
+                State.DealerId = DealerDropControl.SelectedGuid
                 If DealerDropControl.SelectedIndex > 0 Then
                     PopulateProductCode()
                 End If
             Catch ex As Exception
-                HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 

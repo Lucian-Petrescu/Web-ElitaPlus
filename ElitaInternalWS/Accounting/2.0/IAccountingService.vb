@@ -8,7 +8,7 @@ Namespace Accounting
     Public Interface IAccountingServiceV2
 
         <OperationContract(), ElitaPermission(PermissionCodes.WS_AccountingService_SendFile)>
-        Function ResendFile(ByVal accountingTransmissionId As String)
+        Function ResendFile(accountingTransmissionId As String)
 
     End Interface
 End Namespace

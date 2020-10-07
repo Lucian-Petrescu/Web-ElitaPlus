@@ -3,17 +3,17 @@
         Inherits ElitaPlusPage
 
 #Region "Page Event"
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             Try
-                If Not Me.IsPostBack Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.ShowMissingTranslations(ErrorControl)
+                If Not IsPostBack Then
+                    MasterPage.MessageController.Clear()
+                    ShowMissingTranslations(ErrorControl)
                     'Disable the Menu Navigation on this page to force the exit only by Cancel
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.UsePageTabTitleInBreadCrum = False
                     ' Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("MAINTAIN_DROPDOWN_BY_ENTITY_DETAILS_FORM")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("MAINTAIN_DROPDOWN_BY_ENTITY_DETAILS_FORM")
                     UpdateBreadCrum()
-                    Me.MenuEnabled = False
+                    MenuEnabled = False
                     SetStateProperties()
                     PopulateUserControlAvailableSelectedListItem()
 
@@ -21,15 +21,15 @@
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             'Enable the Menu Navigation Back after returning from the child
             Try
-                Me.MenuEnabled = True
+                MenuEnabled = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
@@ -37,11 +37,11 @@
 
 #Region "Controlling Logic"
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("ADMIN") & ElitaBase.Sperator &
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("ADMIN") & ElitaBase.Sperator &
                         TranslationBase.TranslateLabelOrMessage("MAINTAIN_DROPDOWN_BY_ENTITY") & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("MAINTAIN_DROPDOWN_BY_ENTITY_DETAILS_FORM")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("MAINTAIN_DROPDOWN_BY_ENTITY_DETAILS_FORM")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("MAINTAIN_DROPDOWN_BY_ENTITY_DETAILS_FORM")
 
                 End If
             End If
@@ -51,7 +51,7 @@
 #Region "Parameters"
         Public Class Parameters
             Public ListItemByEntityBO As ListItemByEntity
-            Public Sub New(ByVal listItemByEntityBO As ListItemByEntity)
+            Public Sub New(listItemByEntityBO As ListItemByEntity)
                 Me.ListItemByEntityBO = listItemByEntityBO
             End Sub
         End Class
@@ -79,15 +79,15 @@
 
         Private Sub SetStateProperties()
             Try
-                Me.State.moParams = CType(Me.CallingParameters, Parameters)
+                State.moParams = CType(CallingParameters, Parameters)
                 '    TestClaim()
-                If (Me.State.moParams Is Nothing) OrElse (Me.State.moParams.ListItemByEntityBO.ListCode.Equals(Guid.Empty)) Then
+                If (State.moParams Is Nothing) OrElse (State.moParams.ListItemByEntityBO.ListCode.Equals(Guid.Empty)) Then
                     Throw New DataNotFoundException
                 End If
 
                 PopulateFormFromBo()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 #End Region
@@ -101,57 +101,57 @@
 #End Region
 #Region "Handlers-Buttons"
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                If Me.State.IsDirty = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", ElitaPlusPage.MSG_BTN_YES_NO, ElitaPlusPage.MSG_TYPE_CONFIRM,
-                                            Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                If State.IsDirty = True Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", ElitaPlusPage.MSG_BTN_YES_NO, ElitaPlusPage.MSG_TYPE_CONFIRM,
+                                            HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ReturnToCallingPage()
+                    ReturnToCallingPage()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
-        Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
                 UpdateEntityItems()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
         Sub UpdateEntityItems()
-            Me.State.MyBo = New ListItemByEntity()
+            State.MyBo = New ListItemByEntity()
             Dim nNewListItem As New ArrayList
 
             Dim userListItemIdStr As String
-            For Each userListItemIdStr In Me.UserControlAvailableSelectedEntityListItem.SelectedList
+            For Each userListItemIdStr In UserControlAvailableSelectedEntityListItem.SelectedList
                 nNewListItem.Add(New Guid(userListItemIdStr))
             Next
 
-            If Me.UserControlAvailableSelectedEntityListItem.SelectedList.Count = 0 Then
+            If UserControlAvailableSelectedEntityListItem.SelectedList.Count = 0 Then
                 'ElitaPlusPage.SetLabelError(UserControlAvailableSelectedCompanies.SelectedTitleLabel)
                 Throw New GUIException(Message.MSG_LIST_ITEM_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_LIST_ITEM_REQUIRED)
             End If
-            With Me.State.moParams.ListItemByEntityBO
-                Me.State.MyBo.ListCode = .ListCode
-                Me.State.MyBo.EntityReference = .EntityReference
-                Me.State.MyBo.EntityReferenceId = .EntityReferenceId
+            With State.moParams.ListItemByEntityBO
+                State.MyBo.ListCode = .ListCode
+                State.MyBo.EntityReference = .EntityReference
+                State.MyBo.EntityReferenceId = .EntityReferenceId
             End With
-            Me.State.MyBo.UpdateListItem(nNewListItem)
-            Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+            State.MyBo.UpdateListItem(nNewListItem)
+            DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
 
         End Sub
-        Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        Private Sub btnCancel_Click(sender As System.Object, e As System.EventArgs) Handles btnCancel.Click
             Try
                 NavigationHistory.LastPage() 'does a pop of the last page
-                Me.ReturnToCallingPage()
+                ReturnToCallingPage()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
@@ -159,7 +159,7 @@
 #Region "Populate"
         Private Sub PopulateFormFromBo()
             Try
-                With Me.State.moParams.ListItemByEntityBO
+                With State.moParams.ListItemByEntityBO
 
                     TextBoxListCode.Text = .ListCode
                     EnableDisableControls(TextBoxListCode, True)
@@ -173,23 +173,23 @@
                 End With
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
 
         End Sub
 
         Sub PopulateUserControlAvailableSelectedListItem()
             Dim oLanguageCode As String = Codes.ENGLISH_LANG_CODE
-            Dim oEntityRefId As Guid = Me.State.moParams.ListItemByEntityBO.EntityReferenceId
-            Dim oListCode As String = Me.State.moParams.ListItemByEntityBO.ListCode
-            Dim availableDv As DataView = Me.State.MyBo.GetAvailableListItem(oLanguageCode, oEntityRefId, oListCode)
-            Dim selectedDv As DataView = Me.State.MyBo.GetSelectedListItem(oLanguageCode, oEntityRefId, oListCode)
-            Me.UserControlAvailableSelectedEntityListItem.SelectedList.Clear()
-            Me.UserControlAvailableSelectedEntityListItem.AvailableList.Clear()
-            Me.UserControlAvailableSelectedEntityListItem.SetSelectedData(selectedDv, COL_DESCRIPTION_NAME, COL_ID_NAME)
-            Me.UserControlAvailableSelectedEntityListItem.SetAvailableData(availableDv, COL_DESCRIPTION_NAME, COL_ID_NAME)
-            Me.UserControlAvailableSelectedEntityListItem.AvailableDesc = TranslationBase.TranslateLabelOrMessage(AVAILABLE_COMPANIES)
-            Me.UserControlAvailableSelectedEntityListItem.SelectedDesc = TranslationBase.TranslateLabelOrMessage(SELECTED_COMPANIES)
+            Dim oEntityRefId As Guid = State.moParams.ListItemByEntityBO.EntityReferenceId
+            Dim oListCode As String = State.moParams.ListItemByEntityBO.ListCode
+            Dim availableDv As DataView = State.MyBo.GetAvailableListItem(oLanguageCode, oEntityRefId, oListCode)
+            Dim selectedDv As DataView = State.MyBo.GetSelectedListItem(oLanguageCode, oEntityRefId, oListCode)
+            UserControlAvailableSelectedEntityListItem.SelectedList.Clear()
+            UserControlAvailableSelectedEntityListItem.AvailableList.Clear()
+            UserControlAvailableSelectedEntityListItem.SetSelectedData(selectedDv, COL_DESCRIPTION_NAME, COL_ID_NAME)
+            UserControlAvailableSelectedEntityListItem.SetAvailableData(availableDv, COL_DESCRIPTION_NAME, COL_ID_NAME)
+            UserControlAvailableSelectedEntityListItem.AvailableDesc = TranslationBase.TranslateLabelOrMessage(AVAILABLE_COMPANIES)
+            UserControlAvailableSelectedEntityListItem.SelectedDesc = TranslationBase.TranslateLabelOrMessage(SELECTED_COMPANIES)
         End Sub
 
 #End Region

@@ -6,48 +6,48 @@ Public Class ClaimShipping
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()             
         Try
            Dim dal As New ClaimShippingDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize() 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class ClaimShipping
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(id As Guid)               
         Try
             Dim dal As New ClaimShippingDAL            
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -110,9 +110,9 @@ Public Class ClaimShipping
                 Return New Guid(CType(row(ClaimShippingDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimShippingDAL.COL_NAME_CLAIM_ID, Value)
+            SetValue(ClaimShippingDAL.COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
           
@@ -127,9 +127,9 @@ Public Class ClaimShipping
                 Return New Guid(CType(row(ClaimShippingDAL.COL_NAME_SHIPPING_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimShippingDAL.COL_NAME_SHIPPING_TYPE_ID, Value)
+            SetValue(ClaimShippingDAL.COL_NAME_SHIPPING_TYPE_ID, Value)
         End Set
     End Property
           
@@ -144,9 +144,9 @@ Public Class ClaimShipping
                 Return New DateType(CType(row(ClaimShippingDAL.COL_NAME_SHIPPING_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimShippingDAL.COL_NAME_SHIPPING_DATE, Value)
+            SetValue(ClaimShippingDAL.COL_NAME_SHIPPING_DATE, Value)
         End Set
     End Property
           
@@ -161,9 +161,9 @@ Public Class ClaimShipping
                 Return CType(row(ClaimShippingDAL.COL_NAME_TRACKING_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimShippingDAL.COL_NAME_TRACKING_NUMBER, Value)
+            SetValue(ClaimShippingDAL.COL_NAME_TRACKING_NUMBER, Value)
         End Set
     End Property
 
@@ -178,9 +178,9 @@ Public Class ClaimShipping
                 Return New DateType(CType(Row(ClaimShippingDAL.COL_NAME_RECEIVED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimShippingDAL.COL_NAME_RECEIVED_DATE, Value)
+            SetValue(ClaimShippingDAL.COL_NAME_RECEIVED_DATE, Value)
         End Set
     End Property
 
@@ -189,27 +189,27 @@ Public Class ClaimShipping
     Public Property Claim As ClaimBase
         Get
             If (_claim Is Nothing) Then
-                If Not Me.ClaimId.Equals(Guid.Empty) Then
-                    Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.ClaimId, Me.Dataset)
+                If Not ClaimId.Equals(Guid.Empty) Then
+                    Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ClaimId, Dataset)
                 End If
             End If
             Return _claim
         End Get
-        Private Set(ByVal value As ClaimBase)
+        Private Set(value As ClaimBase)
             _claim = value
         End Set
     End Property
 
     Private ReadOnly Property HasReceivedDateChanged
         Get
-            If (Me.Row.HasVersion(DataRowVersion.Original)) Then
-                If (Me.Row(ClaimShippingDAL.COL_NAME_RECEIVED_DATE, DataRowVersion.Original) Is DBNull.Value) Then
-                    Return Not Me.ReceivedDate Is Nothing
+            If (Row.HasVersion(DataRowVersion.Original)) Then
+                If (Row(ClaimShippingDAL.COL_NAME_RECEIVED_DATE, DataRowVersion.Original) Is DBNull.Value) Then
+                    Return Not ReceivedDate Is Nothing
                 Else
-                    Return Me.ReceivedDate <> DirectCast(Me.Row(ClaimShippingDAL.COL_NAME_RECEIVED_DATE, DataRowVersion.Original), Date)
+                    Return ReceivedDate <> DirectCast(Row(ClaimShippingDAL.COL_NAME_RECEIVED_DATE, DataRowVersion.Original), Date)
                 End If
             Else
-                Return Not Me.ReceivedDate Is Nothing
+                Return Not ReceivedDate Is Nothing
             End If
 
         End Get
@@ -221,7 +221,7 @@ Public Class ClaimShipping
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 If HasReceivedDateChanged Then
                     With Claim
                         PublishedTask.AddEvent(companyGroupId:=.Company.CompanyGroupId, _
@@ -232,19 +232,19 @@ Public Class ClaimShipping
                                                coverageTypeId:=.CertificateItemCoverage.CoverageTypeId, _
                                                sender:="Claim Shipping", _
                                                arguments:="ClaimId:" & DALBase.GuidToSQLString(.Id), _
-                                               eventDate:=TimeZoneInfo.ConvertTimeToUtc(Me.ReceivedDate), _
+                                               eventDate:=TimeZoneInfo.ConvertTimeToUtc(ReceivedDate), _
                                                eventTypeId:=LookupListNew.GetIdFromCode(Codes.EVNT_TYP, Codes.EVNT_TYP__CUST_DEVICE_RECEPTION_DATE), _
                                                eventArgumentId:=Nothing)
                     End With
                 End If
                 Dim dal As New ClaimShippingDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -257,14 +257,14 @@ Public Class ClaimShipping
             Dim dal As New ClaimShippingDAL
 
             If (Not ClaimId.Equals(Guid.Empty)) Then
-                Return New ClaimShippingDV(dal.LoadClaimShippingData(Me.ClaimId).Tables(0))
+                Return New ClaimShippingDV(dal.LoadClaimShippingData(ClaimId).Tables(0))
             End If
         Catch ex As Exception
 
         End Try
     End Function
 
-    Public Shared Function GetLatestClaimShippingInfo(ByVal claimId As Guid, ByVal shipTypeId As Guid) As ClaimShippingDV
+    Public Shared Function GetLatestClaimShippingInfo(claimId As Guid, shipTypeId As Guid) As ClaimShippingDV
         Try
             Dim dal As New ClaimShippingDAL
             
@@ -277,7 +277,7 @@ Public Class ClaimShipping
         End Try
     End Function
 
-    Public Shared Sub UpdateClaimShippingInfo(ByVal claimShippingId As Guid, ByVal comments As String)
+    Public Shared Sub UpdateClaimShippingInfo(claimShippingId As Guid, comments As String)
         Dim dal As New ClaimShippingDAL
         dal.UpdateClaimShippingInfo(claimShippingId, comments)
     End Sub
@@ -304,13 +304,13 @@ Public Class ClaimShipping
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As ClaimShippingDV, ByVal NewBO As ClaimShipping)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As ClaimShippingDV, NewBO As ClaimShipping)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -343,15 +343,15 @@ Public Class ClaimShipping
     Public Class ClaimShippingList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As ClaimBase)
+        Public Sub New(parent As ClaimBase)
             MyBase.New(LoadTable(parent), GetType(ClaimShipping), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, ClaimShipping).ClaimId.Equals(CType(Parent, ClaimBase).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As ClaimBase) As DataTable
+        Private Shared Function LoadTable(parent As ClaimBase) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ClaimShippingList)) Then
                     Dim dal As New ClaimShippingDAL

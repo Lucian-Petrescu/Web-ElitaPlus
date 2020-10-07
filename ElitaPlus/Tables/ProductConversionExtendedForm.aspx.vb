@@ -16,33 +16,33 @@ Namespace Tables
             Public LastOperation As DetailPageCommand = ElitaPlusPage.DetailPageCommand.Back
             Public EditingBo As ProductCodeConversion
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal curEditingBo As ProductCodeConversion, Optional ByVal LastOp As DetailPageCommand = ElitaPlusPage.DetailPageCommand.Back, Optional ByVal hasDataChanged As Boolean = True)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(curEditingBo As ProductCodeConversion, Optional ByVal LastOp As DetailPageCommand = ElitaPlusPage.DetailPageCommand.Back, Optional ByVal hasDataChanged As Boolean = True)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Me.State.InputParameters = CType(Me.CallingParameters, Parameters)
-                    Me.State.moProductCodeConvId = Me.State.InputParameters.moProductCodeConversionId
+                    State.InputParameters = CType(CallingParameters, Parameters)
+                    State.moProductCodeConvId = State.InputParameters.moProductCodeConversionId
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles Me.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles Me.PageReturn
             Dim retObj As ProductConversionForm.ReturnType = CType(ReturnPar, ProductConversionForm.ReturnType)
 
-            Me.State.moProductCodeConvId = retObj.ProductCodeConversionId
-            Me.SetStateProperties()
+            State.moProductCodeConvId = retObj.ProductCodeConversionId
+            SetStateProperties()
             'Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, _
             'Me.MSG_TYPE_CONFIRM, True)
-            Me.State.LastOperation = DetailPageCommand.Redirect_
+            State.LastOperation = DetailPageCommand.Redirect_
 
             ' EnableDisableFields()
 
@@ -86,12 +86,12 @@ Namespace Tables
 
         Private Sub SetStateProperties()
             'Me.State.moProductCodeId = CType(Me.CallingParameters, Guid)                        
-            If Me.State.moProductCodeConvId.Equals(Guid.Empty) Then
-                Me.State.IsProductCodeConvNew = True
+            If State.moProductCodeConvId.Equals(Guid.Empty) Then
+                State.IsProductCodeConvNew = True
                 ClearAll()
                 SetButtonsState(True)
             Else
-                Me.State.IsProductCodeConvNew = False
+                State.IsProductCodeConvNew = False
                 SetButtonsState(False)
             End If
             PopulateAll()
@@ -101,7 +101,7 @@ Namespace Tables
 
 #Region "Gui-Validation"
 
-        Private Sub SetButtonsState(ByVal bIsNew As Boolean)
+        Private Sub SetButtonsState(bIsNew As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
@@ -120,17 +120,17 @@ Namespace Tables
         Private ReadOnly Property TheProductConv(Optional ByVal objProd As ProductCodeConversion = Nothing) As ProductCodeConversion
             Get
                 '  If objProd Is Nothing Then
-                If Me.State.MyBO Is Nothing Then
-                    If Me.State.IsProductCodeConvNew = True Then
+                If State.MyBO Is Nothing Then
+                    If State.IsProductCodeConvNew = True Then
                         ' For creating, inserting
-                        Me.State.MyBO = New ProductCodeConversion
-                        Me.State.moProductCodeConvId = Me.State.MyBO.Id
+                        State.MyBO = New ProductCodeConversion
+                        State.moProductCodeConvId = State.MyBO.Id
                     Else
                         ' For updating, deleting
                         '  Dim oProductCodeId As Guid = Me.GetGuidFromString(Me.State.moProductCodeId)
-                        Me.State.MyBO = New ProductCodeConversion(Me.State.moProductCodeConvId)
-                        Me.State.oDealer = New Dealer(Me.State.MyBO.DealerId)
-                        Me.State.ProductCodeConversionType = LookupListNew.GetCodeFromId(LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_PROD_CONV_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.State.oDealer.ConvertProductCodeId)
+                        State.MyBO = New ProductCodeConversion(State.moProductCodeConvId)
+                        State.oDealer = New Dealer(State.MyBO.DealerId)
+                        State.ProductCodeConversionType = LookupListNew.GetCodeFromId(LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_PROD_CONV_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), State.oDealer.ConvertProductCodeId)
 
                         'dv = LookupListNew.GetDealerForProductCodeConvLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
                         'dv.RowFilter = "DEALER_ID = '" + GuidControl.GuidToHexString(TheProductCodeConversion.DealerId()) + "'"
@@ -140,7 +140,7 @@ Namespace Tables
                     End If
                 End If
 
-                Return Me.State.MyBO
+                Return State.MyBO
             End Get
         End Property
 
@@ -168,7 +168,7 @@ Namespace Tables
             Public Productcode As String
             Public ExternalProductcode As String
 
-            Public Sub New(ByVal moProductCodeConversionId As Guid, ByVal DealerId As Guid, ByVal ProductcodeId As Guid, ByVal Productcode As String, ByVal ExternalProductcode As String)
+            Public Sub New(moProductCodeConversionId As Guid, DealerId As Guid, ProductcodeId As Guid, Productcode As String, ExternalProductcode As String)
                 Me.moProductCodeConversionId = moProductCodeConversionId
                 Me.DealerId = DealerId
                 Me.ProductcodeId = ProductcodeId
@@ -191,7 +191,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -199,21 +199,21 @@ Namespace Tables
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             Try
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 ' ClearLabelsErrSign()
                 If Not Page.IsPostBack Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
-                    Me.AddCalendar(Me.btnEffectiveDate, Me.txtEffectiveDate)
-                    Me.AddCalendar(Me.btnExpirationDate, Me.txtExpirationDate)
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                    AddCalendar(btnEffectiveDate, txtEffectiveDate)
+                    AddCalendar(btnExpirationDate, txtExpirationDate)
                     UpdateBreadCrum()
-                    Me.SetStateProperties()
+                    SetStateProperties()
 
-                    Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO,
-                                                                      Me.MSG_TYPE_CONFIRM, True)
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO,
+                                                                      MSG_TYPE_CONFIRM, True)
                     '  EnableDisableFields()               
                 Else
                     CheckIfComingFromDeleteConfirm()
@@ -221,18 +221,18 @@ Namespace Tables
 
                 BindBoPropertiesToLabels()
                 CheckIfComingFromConfirm()
-                If Not Me.IsPostBack Then
-                    Me.AddLabelDecorations(TheProductConv)
+                If Not IsPostBack Then
+                    AddLabelDecorations(TheProductConv)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
             If Me.State.LastOperation = DetailPageCommand.Redirect_ Then
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 ClearLabelsErrSign()
-                Me.State.LastOperation = DetailPageCommand.Nothing_
+                State.LastOperation = DetailPageCommand.Nothing_
             Else
-                Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+                ShowMissingTranslations(MasterPage.MessageController)
             End If
         End Sub
 
@@ -268,44 +268,44 @@ Namespace Tables
         Private Sub btnNew_WRITE_Click(sender As Object, e As EventArgs) Handles btnNew_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub SaveChanges()
 
             If ApplyChanges() = True Then
-                Me.State.boChanged = True
-                If Me.State.IsProductCodeConvNew = True Then
-                    Me.State.IsProductCodeConvNew = False
+                State.boChanged = True
+                If State.IsProductCodeConvNew = True Then
+                    State.IsProductCodeConvNew = False
                 End If
                 'Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Save, _
                 '                                     Me.State.moProductCodeConvId, Me.State.InputParameters, Me.State.boChanged))
 
                 Dim retType As New ProductConversionForm.ReturnType(ElitaPlusPage.DetailPageCommand.Save,
-                                                            Me.State.moProductCodeConvId, Me.State.InputParameters, Me.State.boChanged)
+                                                            State.moProductCodeConvId, State.InputParameters, State.boChanged)
             End If
         End Sub
 
         Private Sub GoBack()
 
             Dim retType As New ProductConversionForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back,
-                                                             Me.State.moProductCodeConvId, Me.State.InputParameters, Me.State.boChanged)
-            Me.ReturnToCallingPage(retType)
+                                                             State.moProductCodeConvId, State.InputParameters, State.boChanged)
+            ReturnToCallingPage(retType)
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
 
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     '  If TheProductConv.IsNew Then
                     GoBack()
@@ -314,100 +314,100 @@ Namespace Tables
                     'End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnApply_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+        Private Sub btnApply_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
             Try
                 SaveChanges()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
-                If Not Me.State.IsProductCodeConvNew Then
+                If Not State.IsProductCodeConvNew Then
                     'Reload from the DB
-                    Me.State.MyBO = New ProductCodeConversion(Me.State.moProductCodeConvId)
-                ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                    State.MyBO = New ProductCodeConversion(State.moProductCodeConvId)
+                ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                     'It was a new with copy
-                    Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                    State.MyBO.Clone(State.ScreenSnapShotBO)
                 Else
-                    Me.State.MyBO = New ProductCodeConversion
+                    State.MyBO = New ProductCodeConversion
                 End If
                 PopulateAll()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub CreateNew()
-            Me.State.ScreenSnapShotBO = Nothing
-            Me.State.moProductCodeConvId = Guid.Empty
-            Me.State.IsProductCodeConvNew = True
-            Me.State.MyBO = New ProductCodeConversion
+            State.ScreenSnapShotBO = Nothing
+            State.moProductCodeConvId = Guid.Empty
+            State.IsProductCodeConvNew = True
+            State.MyBO = New ProductCodeConversion
             ClearAll()
-            Me.SetButtonsState(True)
-            Me.PopulateAll()
+            SetButtonsState(True)
+            PopulateAll()
             DealerDropControl.ChangeEnabledControlProperty(True)
         End Sub
 
 
         Private Sub CreateNewCopy()
 
-            Me.PopulateBOsFromForm()
+            PopulateBOsFromForm()
 
             ' Dim newObjDummy As New ProductCode
             Dim newObj As New ProductCodeConversion
             newObj.Copy(TheProductConv)
 
-            Me.State.MyBO = newObj
+            State.MyBO = newObj
             'newObjDummy = TheProductCode(newObj)
 
-            Me.State.moProductCodeConvId = Guid.Empty
-            Me.State.IsProductCodeConvNew = True
+            State.moProductCodeConvId = Guid.Empty
+            State.IsProductCodeConvNew = True
 
             With TheProductConv '(newObj)
                 .ExternalProdCode = Nothing
             End With
 
-            Me.SetButtonsState(True)
+            SetButtonsState(True)
             DealerDropControl.ChangeEnabledControlProperty(True)
 
             'create the backup copy
-            Me.State.ScreenSnapShotBO = New ProductCodeConversion
-            Me.State.ScreenSnapShotBO.Copy(TheProductConv)
+            State.ScreenSnapShotBO = New ProductCodeConversion
+            State.ScreenSnapShotBO.Copy(TheProductConv)
 
         End Sub
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
                     CreateNewCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
                 If DeleteProductCode() = True Then
-                    Me.State.boChanged = True
+                    State.boChanged = True
 
                     Dim retType As New ProductConversionForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back,
-                                                            Me.State.moProductCodeConvId, Me.State.InputParameters, Me.State.boChanged)
+                                                            State.moProductCodeConvId, State.InputParameters, State.boChanged)
                     retType.BoChanged = True
-                    Me.ReturnToCallingPage(retType)
+                    ReturnToCallingPage(retType)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -422,8 +422,8 @@ Namespace Tables
                     .Save()
                 End With
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
                 bIsOk = False
             End Try
             Return bIsOk
@@ -433,12 +433,12 @@ Namespace Tables
 
 #Region "Handlers-Dropdowns"
 
-        Private Sub DealerDropChanged(ByVal DealerMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New) Handles DealerDropControl.SelectedDropChanged
+        Private Sub DealerDropChanged(DealerMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New) Handles DealerDropControl.SelectedDropChanged
             Try
                 PopulateProductCode()
-                Me.EnableDisableFields()
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -447,43 +447,43 @@ Namespace Tables
 #Region "Handlers-Labels"
 
         Private Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(TheProductConv, "DealerID", DealerDropControl.CaptionLabel)
-            Me.BindBOPropertyToLabel(TheProductConv, "ProductCodeId", Me.lblProdCode)
-            Me.BindBOPropertyToLabel(TheProductConv, "ExternalProductCode", Me.lbldealerProdCode)
-            Me.BindBOPropertyToLabel(TheProductConv, "CertificateDuration", Me.lblCertduration)
-            Me.BindBOPropertyToLabel(TheProductConv, "GrossAmount", Me.lblGrossAmt)
-            Me.BindBOPropertyToLabel(TheProductConv, "Manufacturer", Me.lblManufacturer)
-            Me.BindBOPropertyToLabel(TheProductConv, "ManufacturerWarranty", Me.lblMfgwarranty)
-            Me.BindBOPropertyToLabel(TheProductConv, "Model", Me.lblModel)
-            Me.BindBOPropertyToLabel(TheProductConv, "SalesPrice", Me.lblSalesPrice)
-            Me.BindBOPropertyToLabel(TheProductConv, "EffectiveDate", Me.lblEffectiveDate)
-            Me.BindBOPropertyToLabel(TheProductConv, "ExpirationDate", Me.lblExpirationDate)
-            Me.ClearGridHeadersAndLabelsErrSign()
+            BindBOPropertyToLabel(TheProductConv, "DealerID", DealerDropControl.CaptionLabel)
+            BindBOPropertyToLabel(TheProductConv, "ProductCodeId", lblProdCode)
+            BindBOPropertyToLabel(TheProductConv, "ExternalProductCode", lbldealerProdCode)
+            BindBOPropertyToLabel(TheProductConv, "CertificateDuration", lblCertduration)
+            BindBOPropertyToLabel(TheProductConv, "GrossAmount", lblGrossAmt)
+            BindBOPropertyToLabel(TheProductConv, "Manufacturer", lblManufacturer)
+            BindBOPropertyToLabel(TheProductConv, "ManufacturerWarranty", lblMfgwarranty)
+            BindBOPropertyToLabel(TheProductConv, "Model", lblModel)
+            BindBOPropertyToLabel(TheProductConv, "SalesPrice", lblSalesPrice)
+            BindBOPropertyToLabel(TheProductConv, "EffectiveDate", lblEffectiveDate)
+            BindBOPropertyToLabel(TheProductConv, "ExpirationDate", lblExpirationDate)
+            ClearGridHeadersAndLabelsErrSign()
 
         End Sub
 
         Private Sub ClearLabelsErrSign()
-            Me.ClearLabelErrSign(Me.DealerDropControl.CaptionLabel)
-            Me.ClearLabelErrSign(Me.lblProdCode)
-            Me.ClearLabelErrSign(Me.lblCertduration)
-            Me.ClearLabelErrSign(Me.lbldealerProdCode)
-            Me.ClearLabelErrSign(Me.lblGrossAmt)
-            Me.ClearLabelErrSign(Me.lblManufacturer)
-            Me.ClearLabelErrSign(Me.lblMfgwarranty)
-            Me.ClearLabelErrSign(Me.lblModel)
-            Me.ClearLabelErrSign(Me.lblSalesPrice)
-            Me.ClearLabelErrSign(Me.lblEffectiveDate)
-            Me.ClearLabelErrSign(Me.lblExpirationDate)
+            ClearLabelErrSign(DealerDropControl.CaptionLabel)
+            ClearLabelErrSign(lblProdCode)
+            ClearLabelErrSign(lblCertduration)
+            ClearLabelErrSign(lbldealerProdCode)
+            ClearLabelErrSign(lblGrossAmt)
+            ClearLabelErrSign(lblManufacturer)
+            ClearLabelErrSign(lblMfgwarranty)
+            ClearLabelErrSign(lblModel)
+            ClearLabelErrSign(lblSalesPrice)
+            ClearLabelErrSign(lblEffectiveDate)
+            ClearLabelErrSign(lblExpirationDate)
         End Sub
 #End Region
 
 #Region "Populate"
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("Product_Conversion")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Product_Conversion")
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("Product_Conversion")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Product_Conversion")
                 End If
             End If
         End Sub
@@ -494,7 +494,7 @@ Namespace Tables
             Try
                 Dim dv As DataView = LookupListNew.GetDealerLookupList(oCompanyList, True)
                 DealerDropControl.SetControl(True, DealerDropControl.MODES.NEW_MODE, True, dv, "*" + TranslationBase.TranslateLabelOrMessage(LABEL_DEALER), True, True)
-                If Me.State.IsProductCodeConvNew = True Then
+                If State.IsProductCodeConvNew = True Then
                     DealerDropControl.SelectedGuid = Guid.Empty
                     DealerDropControl.ChangeEnabledControlProperty(True)
                 Else
@@ -503,8 +503,8 @@ Namespace Tables
                     PopulateProductCode()
                 End If
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
             End Try
         End Sub
 
@@ -515,16 +515,16 @@ Namespace Tables
                 Dim listcontext As ListContext = New ListContext()
                 listcontext.DealerId = oDealerId
                 Dim ProdLKL As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.ProductCodeByDealer, Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-                Me.moProductCode.Populate(ProdLKL, New PopulateOptions() With
+                moProductCode.Populate(ProdLKL, New PopulateOptions() With
                 {
                 .AddBlankItem = True,
                 .TextFunc = AddressOf .GetCode,
                 .SortFunc = AddressOf .GetCode
                 })
-                BindSelectItem(TheProductConv.ProductCodeId.ToString, Me.moProductCode)
+                BindSelectItem(TheProductConv.ProductCodeId.ToString, moProductCode)
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
             End Try
         End Sub
 
@@ -541,27 +541,27 @@ Namespace Tables
                 {
                 .AddBlankItem = True
                 })
-                If Not TheProductConv.Manufacturer Is Nothing Then
-                    SetSelectedItemByText(Me.moManufacturer, TheProductConv.Manufacturer)
+                If TheProductConv.Manufacturer IsNot Nothing Then
+                    SetSelectedItemByText(moManufacturer, TheProductConv.Manufacturer)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub PopulateTexts()
 
             With TheProductConv
-                PopulateControlFromBOProperty(Me.txtCertDuration, .CertificateDuration)
-                PopulateControlFromBOProperty(Me.txtdealerProdCode, .ExternalProdCode)
-                PopulateControlFromBOProperty(Me.txtMfgwarranty, .ManufacturerWarranty)
+                PopulateControlFromBOProperty(txtCertDuration, .CertificateDuration)
+                PopulateControlFromBOProperty(txtdealerProdCode, .ExternalProdCode)
+                PopulateControlFromBOProperty(txtMfgwarranty, .ManufacturerWarranty)
                 'PopulateControlFromBOProperty(Me.moManufacturerText, .Manufacturer)
-                PopulateControlFromBOProperty(Me.txtModel, .Model)
-                PopulateControlFromBOProperty(Me.txtGrossAmt, .GrossAmount)
-                PopulateControlFromBOProperty(Me.txtSalesPrice, .SalesPrice)
-                PopulateControlFromBOProperty(Me.txtEffectiveDate,.EffectiveDate)
-                PopulateControlFromBOProperty(me.txtExpirationDate,.ExpirationDate)
+                PopulateControlFromBOProperty(txtModel, .Model)
+                PopulateControlFromBOProperty(txtGrossAmt, .GrossAmount)
+                PopulateControlFromBOProperty(txtSalesPrice, .SalesPrice)
+                PopulateControlFromBOProperty(txtEffectiveDate,.EffectiveDate)
+                PopulateControlFromBOProperty(txtExpirationDate,.ExpirationDate)
 
 
             End With
@@ -588,21 +588,21 @@ Namespace Tables
                     ' DropDowns
                     'PopulateBOProperty(TheProductConv, "DealerId", Me.moDealerDrop)
                     .DealerId = DealerDropControl.SelectedGuid
-                    Me.PopulateBOProperty(TheProductConv, "ProductCodeId", Me.moProductCode)
-                    If Not (GetSelectedDescription(Me.moManufacturer) = String.Empty And TheProductConv.Manufacturer = Nothing) Then
-                        Me.PopulateBOProperty(TheProductConv, "Manufacturer", Me.moManufacturer, False)
+                    PopulateBOProperty(TheProductConv, "ProductCodeId", moProductCode)
+                    If Not (GetSelectedDescription(moManufacturer) = String.Empty And TheProductConv.Manufacturer = Nothing) Then
+                        PopulateBOProperty(TheProductConv, "Manufacturer", moManufacturer, False)
                     End If
                     ' Texts
-                    Me.PopulateBOProperty(TheProductConv, "ExternalProdCode", Me.txtdealerProdCode)
-                    Me.PopulateBOProperty(TheProductConv, "Model", Me.txtModel)
-                    Me.PopulateBOProperty(TheProductConv, "CertificateDuration", Me.txtCertDuration)
-                    Me.PopulateBOProperty(TheProductConv, "GrossAmount", Me.txtGrossAmt)
-                    Me.PopulateBOProperty(TheProductConv, "ManufacturerWarranty", Me.txtMfgwarranty)
-                    Me.PopulateBOProperty(TheProductConv, "SalesPrice", Me.txtSalesPrice)
-                    Me.PopulateBOProperty(TheProductConv, "EffectiveDate", Me.txtEffectiveDate)
-                    Me.PopulateBOProperty(TheProductConv, "ExpirationDate", Me.txtExpirationDate)
+                    PopulateBOProperty(TheProductConv, "ExternalProdCode", txtdealerProdCode)
+                    PopulateBOProperty(TheProductConv, "Model", txtModel)
+                    PopulateBOProperty(TheProductConv, "CertificateDuration", txtCertDuration)
+                    PopulateBOProperty(TheProductConv, "GrossAmount", txtGrossAmt)
+                    PopulateBOProperty(TheProductConv, "ManufacturerWarranty", txtMfgwarranty)
+                    PopulateBOProperty(TheProductConv, "SalesPrice", txtSalesPrice)
+                    PopulateBOProperty(TheProductConv, "EffectiveDate", txtEffectiveDate)
+                    PopulateBOProperty(TheProductConv, "ExpirationDate", txtExpirationDate)
                 Catch ex As Exception
-                    If Me.ErrCollection.Count > 0 Then
+                    If ErrCollection.Count > 0 Then
                         Throw New PopulateBOErrorException
                     End If
                 End Try
@@ -619,8 +619,8 @@ Namespace Tables
                 End With
 
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
             End Try
             Return bIsDirty
         End Function
@@ -633,37 +633,37 @@ Namespace Tables
             Dim bIsDirty As Boolean = False
             Dim err As String
 
-            If Me.txtdealerProdCode.Text.Trim.Equals("") Then
+            If txtdealerProdCode.Text.Trim.Equals("") Then
                 err = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
-                Me.MasterPage.MessageController.AddError(Me.lbldealerProdCode.Text + ": " + err, False)
+                MasterPage.MessageController.AddError(lbldealerProdCode.Text + ": " + err, False)
                 bIsOk = False
             End If
 
-            If Me.moProductCode.SelectedItem Is Nothing Then
+            If moProductCode.SelectedItem Is Nothing Then
                 err = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION)
-                Me.MasterPage.MessageController.AddError(Me.lblProdCode.Text + ": " + err, False)
+                MasterPage.MessageController.AddError(lblProdCode.Text + ": " + err, False)
                 bIsOk = False
             End If
 
-            If Me.State.ProductCodeConversionType = "P" Or Me.State.ProductCodeConversionType = "EXT" Then
+            If State.ProductCodeConversionType = "P" Or State.ProductCodeConversionType = "EXT" Then
 
-                If (Not Microsoft.VisualBasic.IsNumeric(Me.txtCertDuration.Text)) Or Me.txtCertDuration.Text.Trim.Equals("") Then
+                If (Not Microsoft.VisualBasic.IsNumeric(txtCertDuration.Text)) Or txtCertDuration.Text.Trim.Equals("") Then
                     err = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_FIELD_NUMBER_REQUIRED)
-                    Me.MasterPage.MessageController.AddError(Me.lblCertduration.Text + ": " + err, False)
+                    MasterPage.MessageController.AddError(lblCertduration.Text + ": " + err, False)
                     bIsOk = False
                 End If
-                If (Not Microsoft.VisualBasic.IsNumeric(Me.txtMfgwarranty.Text)) Or Me.txtMfgwarranty.Text.Trim.Equals("") Then
+                If (Not Microsoft.VisualBasic.IsNumeric(txtMfgwarranty.Text)) Or txtMfgwarranty.Text.Trim.Equals("") Then
                     err = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_INVALID_MANUFACTURER_TERM)
-                    Me.MasterPage.MessageController.AddError(Me.lblMfgwarranty.Text + ": " + err, False)
+                    MasterPage.MessageController.AddError(lblMfgwarranty.Text + ": " + err, False)
                     bIsOk = False
                 End If
 
             End If
 
-            If Me.State.ProductCodeConversionType = "EXT" Then
-                If (Not Microsoft.VisualBasic.IsNumeric(Me.txtGrossAmt.Text)) Or Me.txtGrossAmt.Text.Trim.Equals("") Then
+            If State.ProductCodeConversionType = "EXT" Then
+                If (Not Microsoft.VisualBasic.IsNumeric(txtGrossAmt.Text)) Or txtGrossAmt.Text.Trim.Equals("") Then
                     err = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)
-                    Me.MasterPage.MessageController.AddError(Me.lblGrossAmt.Text + ": " + err, False)
+                    MasterPage.MessageController.AddError(lblGrossAmt.Text + ": " + err, False)
                     bIsOk = False
                 End If
             End If
@@ -671,14 +671,14 @@ Namespace Tables
             If Not String.IsNullOrEmpty(txtExpirationDate.Text.Trim) AndAlso Not String.IsNullOrEmpty(txtEffectiveDate.Text.Trim) Then
                 If DateHelper.GetDateValue(txtExpirationDate.Text.Trim) <  DateHelper.GetDateValue(txtEffectiveDate.Text.Trim) Then
                     err = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_EXPIRATION_DATE_CAN_NOT_LESS_THAN_EFFECTIVE_DATE)
-                    Me.MasterPage.MessageController.AddError(Me.lbldealerProdCode.Text + ": " + err, False)
+                    MasterPage.MessageController.AddError(lbldealerProdCode.Text + ": " + err, False)
                     bIsOk = False
                 End If
                 
             End If
 
             If bIsOk = False Then
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.Show()
                 Return bIsOk
             End If
 
@@ -690,12 +690,12 @@ Namespace Tables
                 If bIsOk = True Then
                     If bIsDirty = True Then
                         .Save()
-                        Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                        MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                     Else
-                        Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                        MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
                     End If
                 Else
-                    Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                    MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
                 End If
             End With
 
@@ -710,9 +710,9 @@ Namespace Tables
             txtdealerProdCode.Text = Nothing
             txtCertDuration.Text = Nothing
             txtMfgwarranty.Text = Nothing
-            Me.txtGrossAmt.Text = Nothing
-            Me.txtModel.Text = Nothing
-            Me.txtSalesPrice.Text = Nothing
+            txtGrossAmt.Text = Nothing
+            txtModel.Text = Nothing
+            txtSalesPrice.Text = Nothing
         End Sub
 
         Private Sub ClearAll()
@@ -726,47 +726,47 @@ Namespace Tables
         Protected Sub EnableDisableFields()
 
             Dim odealer As Dealer
-            If Me.State.IsProductCodeConvNew = True And Not DealerDropControl.SelectedGuid = Guid.Empty Then
+            If State.IsProductCodeConvNew = True And Not DealerDropControl.SelectedGuid = Guid.Empty Then
                 odealer = New Dealer(DealerDropControl.SelectedGuid)
-                Me.State.ProductCodeConversionType = LookupListNew.GetCodeFromId(LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_PROD_CONV_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), odealer.ConvertProductCodeId)
+                State.ProductCodeConversionType = LookupListNew.GetCodeFromId(LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_PROD_CONV_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), odealer.ConvertProductCodeId)
             End If
 
-            If Me.State.ProductCodeConversionType = "EXT" Or Me.State.ProductCodeConversionType = WITH_MNF_PRODUCT_CODE Then
-                ControlMgr.SetVisibleControl(Me, Me.trAmountRow, True)
-                ControlMgr.SetVisibleControl(Me, Me.trManufacturerRow, True)
-                ControlMgr.SetVisibleControl(Me, Me.trModelRow, True)
-                ControlMgr.SetVisibleControl(Me, Me.trSalesPriceRow, True)
-                ControlMgr.SetVisibleControl(Me, Me.trmfgwarrrow, True)
-                ControlMgr.SetVisibleControl(Me, Me.trmfgdurationrow, True)
+            If State.ProductCodeConversionType = "EXT" Or State.ProductCodeConversionType = WITH_MNF_PRODUCT_CODE Then
+                ControlMgr.SetVisibleControl(Me, trAmountRow, True)
+                ControlMgr.SetVisibleControl(Me, trManufacturerRow, True)
+                ControlMgr.SetVisibleControl(Me, trModelRow, True)
+                ControlMgr.SetVisibleControl(Me, trSalesPriceRow, True)
+                ControlMgr.SetVisibleControl(Me, trmfgwarrrow, True)
+                ControlMgr.SetVisibleControl(Me, trmfgdurationrow, True)
 
-            ElseIf Me.State.ProductCodeConversionType = "P" Then
-                ControlMgr.SetVisibleControl(Me, Me.trAmountRow, False)
-                ControlMgr.SetVisibleControl(Me, Me.trManufacturerRow, False)
-                ControlMgr.SetVisibleControl(Me, Me.trModelRow, False)
-                ControlMgr.SetVisibleControl(Me, Me.trSalesPriceRow, False)
-                ControlMgr.SetVisibleControl(Me, Me.trmfgwarrrow, True)
-                ControlMgr.SetVisibleControl(Me, Me.trmfgdurationrow, True)
+            ElseIf State.ProductCodeConversionType = "P" Then
+                ControlMgr.SetVisibleControl(Me, trAmountRow, False)
+                ControlMgr.SetVisibleControl(Me, trManufacturerRow, False)
+                ControlMgr.SetVisibleControl(Me, trModelRow, False)
+                ControlMgr.SetVisibleControl(Me, trSalesPriceRow, False)
+                ControlMgr.SetVisibleControl(Me, trmfgwarrrow, True)
+                ControlMgr.SetVisibleControl(Me, trmfgdurationrow, True)
 
-                Me.txtGrossAmt.Text = Nothing
+                txtGrossAmt.Text = Nothing
                 moManufacturer.SelectedIndex = NO_ITEM_SELECTED_INDEX
-                Me.txtModel.Text = Nothing
-                Me.txtSalesPrice.Text = Nothing
+                txtModel.Text = Nothing
+                txtSalesPrice.Text = Nothing
 
             Else
-                ControlMgr.SetVisibleControl(Me, Me.trmfgwarrrow, False)
-                ControlMgr.SetVisibleControl(Me, Me.trmfgdurationrow, False)
-                ControlMgr.SetVisibleControl(Me, Me.trAmountRow, False)
-                ControlMgr.SetVisibleControl(Me, Me.trManufacturerRow, False)
-                ControlMgr.SetVisibleControl(Me, Me.trModelRow, False)
-                ControlMgr.SetVisibleControl(Me, Me.trSalesPriceRow, False)
+                ControlMgr.SetVisibleControl(Me, trmfgwarrrow, False)
+                ControlMgr.SetVisibleControl(Me, trmfgdurationrow, False)
+                ControlMgr.SetVisibleControl(Me, trAmountRow, False)
+                ControlMgr.SetVisibleControl(Me, trManufacturerRow, False)
+                ControlMgr.SetVisibleControl(Me, trModelRow, False)
+                ControlMgr.SetVisibleControl(Me, trSalesPriceRow, False)
 
 
                 txtCertDuration.Text = Nothing
                 txtMfgwarranty.Text = Nothing
-                Me.txtGrossAmt.Text = Nothing
+                txtGrossAmt.Text = Nothing
                 moManufacturer.SelectedIndex = NO_ITEM_SELECTED_INDEX
-                Me.txtModel.Text = Nothing
-                Me.txtSalesPrice.Text = Nothing
+                txtModel.Text = Nothing
+                txtSalesPrice.Text = Nothing
             End If
 
         End Sub
@@ -776,19 +776,19 @@ Namespace Tables
 #Region "State-Management"
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and go back to Search Page
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             GoBack()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         GoBack()
                 End Select
             End If
@@ -796,19 +796,19 @@ Namespace Tables
         End Sub
 
         Protected Sub ComingFromNewCopy()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the New Copy Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and create a new Copy BO
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             CreateNewCopy()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         ' create a new BO
                         CreateNewCopy()
                 End Select
@@ -816,19 +816,19 @@ Namespace Tables
 
         End Sub
         Protected Sub ComingFromNew()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the New Copy Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and create a new Copy BO
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             CreateNew()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         ' create a new BO
                         CreateNew()
                 End Select
@@ -838,7 +838,7 @@ Namespace Tables
 
         Protected Sub CheckIfComingFromConfirm()
             Try
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     ' Period
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ComingFromBack()
@@ -849,28 +849,28 @@ Namespace Tables
                 End Select
 
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = String.Empty
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub CheckIfComingFromDeleteConfirm()
-            Dim confResponse As String = Me.HiddenDeletePromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+            Dim confResponse As String = HiddenDeletePromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
                 If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
-                    Me.State.IsEditMode = False
+                    State.IsEditMode = False
                     'Clean after consuming the action
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                    Me.HiddenDeletePromptResponse.Value = ""
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                    HiddenDeletePromptResponse.Value = ""
                 End If
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
                 'Me.State.searchDV = Nothing
                 'ReturnProductPolicyFromEditing()
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenDeletePromptResponse.Value = ""
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenDeletePromptResponse.Value = ""
             End If
         End Sub
 

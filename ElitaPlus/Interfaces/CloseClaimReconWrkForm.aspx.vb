@@ -25,7 +25,7 @@ Namespace Interfaces
         End Property
 
         Private Sub SetStateProperties()
-            Me.State.ClaimfileProcessedId = CType(Me.CallingParameters, Guid)
+            State.ClaimfileProcessedId = CType(CallingParameters, Guid)
         End Sub
 
 #End Region
@@ -107,7 +107,7 @@ Namespace Interfaces
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -117,14 +117,14 @@ Namespace Interfaces
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.moErrorController.Clear_Hide()
-            Me.SetStateProperties()
+            moErrorController.Clear_Hide()
+            SetStateProperties()
             PopulateYesNoDropDown()
             If Not Page.IsPostBack Then
-                Me.SetGridItemStyleColor(moDataGrid)
-                Me.ShowMissingTranslations(moErrorController)
+                SetGridItemStyleColor(moDataGrid)
+                ShowMissingTranslations(moErrorController)
                 BaseSetButtonsState(False)
                 PopulateReadOnly()
                 PopulateGrid()
@@ -137,37 +137,37 @@ Namespace Interfaces
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 If IsDataGPageDirty() Then
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Dim str As String = Me.State.ClaimfileProcessedId.ToString()
-                    Dim retType As New ClaimFileProcessedController.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.ClaimfileProcessedId)
-                    Me.ReturnToCallingPage(retType)
+                    Dim str As String = State.ClaimfileProcessedId.ToString()
+                    Dim retType As New ClaimFileProcessedController.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimfileProcessedId)
+                    ReturnToCallingPage(retType)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
                 SavePage()
-                Me.HiddenIsPageDirty.Value = EMPTY
+                HiddenIsPageDirty.Value = EMPTY
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
                 PopulateGrid()
-                Me.HiddenIsPageDirty.Value = EMPTY
+                HiddenIsPageDirty.Value = EMPTY
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -175,53 +175,53 @@ Namespace Interfaces
 
 #Region "Handlers-Grid"
 
-        Private Sub moDataGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
+        Private Sub moDataGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
             Try
-                Me.State.selectedPageIndex = e.NewPageIndex
+                State.selectedPageIndex = e.NewPageIndex
                 If IsDataGPageDirty() Then
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
                 Else
-                    Me.moDataGrid.CurrentPageIndex = e.NewPageIndex
+                    moDataGrid.CurrentPageIndex = e.NewPageIndex
                     PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moDataGrid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub moDataGrid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 If IsDataGPageDirty() Then
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
                 Else
                     moDataGrid.CurrentPageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                    Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-                    Me.PopulateGrid()
+                    State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                    PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
             Try
                 Dim nIndex As Integer = e.Item.ItemIndex
                 If (e.CommandName = SORT_COMMAND_NAME) Then
-                    Me.State.sortBy = CType(e.CommandArgument, String)
+                    State.sortBy = CType(e.CommandArgument, String)
                     If IsDataGPageDirty() Then
-                        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridColSort
-                        DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
+                        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridColSort
+                        DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
                     Else
                         PopulateGrid()
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moDataGrid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
+        Private Sub moDataGrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
             Dim oDateOfPayText As TextBox
@@ -231,41 +231,41 @@ Namespace Interfaces
             If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
                 '   Display Only
                 With e.Item
-                    Me.PopulateControlFromBOProperty(.Cells(Me.ID_COL), dvRow(ClaimReconWrk.COL_NAME_CLAIM_RECON_WRK_ID))
+                    PopulateControlFromBOProperty(.Cells(ID_COL), dvRow(ClaimReconWrk.COL_NAME_CLAIM_RECON_WRK_ID))
                     oTextBox = CType(e.Item.Cells(REJECT_REASON_COL).FindControl("moRejectReasonTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
                     If e.Item.ItemIndex() = 0 Then
                         SetFocus(oTextBox)
                     End If
 
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_REJECT_REASON))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_REJECT_REASON))
                     oTextBox = CType(e.Item.Cells(DEALER_CODE_COL).FindControl("moDealerCodeTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_DEALER_CODE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_DEALER_CODE))
 
                     oTextBox = CType(e.Item.Cells(CERTIFICATE_COL).FindControl("moCertificateTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_CERTIFICATE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_CERTIFICATE))
 
                     oTextBox = CType(e.Item.Cells(AUTHORIZATION_NUMBER_COL).FindControl("moAuthorizationNumberTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_AUTHORIZATION_NUMBER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_AUTHORIZATION_NUMBER))
 
                     oTextBox = CType(e.Item.Cells(SERIAL_NUMBER_COL).FindControl("moSerialNumberTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_SERIAL_NUMBER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_SERIAL_NUMBER))
 
                     oTextBox = CType(e.Item.Cells(SERVICE_CENTER_CODE_COL).FindControl("moServiceCenterCodeTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_SERVICE_CENTER_CODE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_SERVICE_CENTER_CODE))
 
                     oTextBox = CType(e.Item.Cells(AMOUNT_COL).FindControl("moAmountTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_AMOUNT))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_AMOUNT))
 
                     oTextBox = CType(e.Item.Cells(DO_NOT_PROCESS_COL).FindControl("moDoNotProcessTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_DO_NOT_PROCESS))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_DO_NOT_PROCESS))
                     ' Dim ddl As DropDownList = CType(e.Item.FindControl("moDoNotProcessTextGrid"), DropDownList)
                     ' ddl.SelectedIndex = ddl.Items.IndexOf(ddl.Items.FindByValue(oTextBox.Text))
                     'ddl.Attributes.Add("onchange", "setDirty()")
@@ -273,38 +273,38 @@ Namespace Interfaces
                     oTextBox = CType(e.Item.Cells(DATE_CLAIM_CLOSED_COL).FindControl("moDateClaimClosedTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
                     Dim oDateClaimClosed As ImageButton = CType(e.Item.Cells(DATE_CLAIM_CLOSED_COL).FindControl("ImgDateClaimClosedTextGrid"), ImageButton)
-                    If (Not oDateClaimClosed Is Nothing) Then
-                        Me.AddCalendar(oDateClaimClosed, oTextBox)
+                    If (oDateClaimClosed IsNot Nothing) Then
+                        AddCalendar(oDateClaimClosed, oTextBox)
                     End If
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_AUTHORIZATION_CREATION_DATE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_AUTHORIZATION_CREATION_DATE))
 
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_DATE_CLAIM_CLOSED))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_DATE_CLAIM_CLOSED))
 
                     oTextBox = CType(e.Item.Cells(STATUS_CODE_COL).FindControl("moStatusCodeTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_STATUS_CODE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(ClaimReconWrk.COL_NAME_STATUS_CODE))
                 End With
             End If
             BaseItemBound(sender, e)
         End Sub
 
-        Protected Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Protected Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Protected Sub BindBoPropertiesToGridHeaders(ByVal claimReconWrkInfo As ClaimReconWrk)
-            Me.BindBOPropertyToGridHeader(claimReconWrkInfo, "RejectReason", Me.moDataGrid.Columns(Me.REJECT_REASON_COL))
-            Me.BindBOPropertyToGridHeader(claimReconWrkInfo, "DealerCode", Me.moDataGrid.Columns(Me.DEALER_CODE_COL))
-            Me.BindBOPropertyToGridHeader(claimReconWrkInfo, "Certificate", Me.moDataGrid.Columns(Me.CERTIFICATE_COL))
-            Me.BindBOPropertyToGridHeader(claimReconWrkInfo, "AuthorizationNumber", Me.moDataGrid.Columns(Me.AUTHORIZATION_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(claimReconWrkInfo, "SerialNumber", Me.moDataGrid.Columns(Me.SERIAL_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(claimReconWrkInfo, "ServiceCenterCode", Me.moDataGrid.Columns(Me.SERVICE_CENTER_CODE_COL))
-            Me.BindBOPropertyToGridHeader(claimReconWrkInfo, "Amount", Me.moDataGrid.Columns(Me.AMOUNT_COL))
-            Me.BindBOPropertyToGridHeader(claimReconWrkInfo, "DoNotProcess", Me.moDataGrid.Columns(Me.DO_NOT_PROCESS_COL))
-            Me.BindBOPropertyToGridHeader(claimReconWrkInfo, "DateClaimClosed", Me.moDataGrid.Columns(Me.DATE_CLAIM_CLOSED_COL))
-            Me.BindBOPropertyToGridHeader(claimReconWrkInfo, "StatusCode", Me.moDataGrid.Columns(Me.STATUS_CODE_COL))
+        Protected Sub BindBoPropertiesToGridHeaders(claimReconWrkInfo As ClaimReconWrk)
+            BindBOPropertyToGridHeader(claimReconWrkInfo, "RejectReason", moDataGrid.Columns(REJECT_REASON_COL))
+            BindBOPropertyToGridHeader(claimReconWrkInfo, "DealerCode", moDataGrid.Columns(DEALER_CODE_COL))
+            BindBOPropertyToGridHeader(claimReconWrkInfo, "Certificate", moDataGrid.Columns(CERTIFICATE_COL))
+            BindBOPropertyToGridHeader(claimReconWrkInfo, "AuthorizationNumber", moDataGrid.Columns(AUTHORIZATION_NUMBER_COL))
+            BindBOPropertyToGridHeader(claimReconWrkInfo, "SerialNumber", moDataGrid.Columns(SERIAL_NUMBER_COL))
+            BindBOPropertyToGridHeader(claimReconWrkInfo, "ServiceCenterCode", moDataGrid.Columns(SERVICE_CENTER_CODE_COL))
+            BindBOPropertyToGridHeader(claimReconWrkInfo, "Amount", moDataGrid.Columns(AMOUNT_COL))
+            BindBOPropertyToGridHeader(claimReconWrkInfo, "DoNotProcess", moDataGrid.Columns(DO_NOT_PROCESS_COL))
+            BindBOPropertyToGridHeader(claimReconWrkInfo, "DateClaimClosed", moDataGrid.Columns(DATE_CLAIM_CLOSED_COL))
+            BindBOPropertyToGridHeader(claimReconWrkInfo, "StatusCode", moDataGrid.Columns(STATUS_CODE_COL))
 
-            Me.ClearGridHeadersAndLabelsErrSign()
+            ClearGridHeadersAndLabelsErrSign()
         End Sub
 
 #End Region
@@ -314,41 +314,41 @@ Namespace Interfaces
 #Region "Controlling Logic"
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSavePagePromptResponse.Value
+            Dim confResponse As String = HiddenSavePagePromptResponse.Value
 
             Try
                 If Not confResponse.Equals(EMPTY) Then
-                    If confResponse = Me.MSG_VALUE_YES Then
+                    If confResponse = MSG_VALUE_YES Then
                         SavePage()
                     End If
-                    Me.HiddenSavePagePromptResponse.Value = EMPTY
-                    Me.HiddenIsPageDirty.Value = EMPTY
+                    HiddenSavePagePromptResponse.Value = EMPTY
+                    HiddenIsPageDirty.Value = EMPTY
 
-                    Select Case Me.State.ActionInProgress
+                    Select Case State.ActionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Dim retType As New ClaimFileProcessedController.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.ClaimfileProcessedId)
-                            Me.ReturnToCallingPage(retType)
+                            Dim retType As New ClaimFileProcessedController.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimfileProcessedId)
+                            ReturnToCallingPage(retType)
                         Case ElitaPlusPage.DetailPageCommand.GridPageSize
-                            Me.moDataGrid.CurrentPageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                            Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                            moDataGrid.CurrentPageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+                            State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
                         Case Else
-                            Me.moDataGrid.CurrentPageIndex = Me.State.selectedPageIndex
+                            moDataGrid.CurrentPageIndex = State.selectedPageIndex
                     End Select
                     PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Function CreateBoFromGrid(ByVal index As Integer) As ClaimReconWrk
+        Private Function CreateBoFromGrid(index As Integer) As ClaimReconWrk
             Dim ClaimReconWrkId As Guid
             Dim claimReconWrkInfo As ClaimReconWrk
             Dim sModifiedDate As String
 
             moDataGrid.SelectedIndex = index
-            ClaimReconWrkId = New Guid(moDataGrid.Items(index).Cells(Me.ID_COL).Text)
-            sModifiedDate = Me.GetGridText(moDataGrid, index, Me.MODIFIED_DATE_COL)
+            ClaimReconWrkId = New Guid(moDataGrid.Items(index).Cells(ID_COL).Text)
+            sModifiedDate = GetGridText(moDataGrid, index, MODIFIED_DATE_COL)
             claimReconWrkInfo = New ClaimReconWrk(ClaimReconWrkId, sModifiedDate)
             Return claimReconWrkInfo
         End Function
@@ -356,7 +356,7 @@ Namespace Interfaces
         Private Sub SavePage()
             Dim index As Integer = 0
             Dim claimReconWrkInfo As ClaimReconWrk
-            Dim totItems As Integer = Me.moDataGrid.Items.Count
+            Dim totItems As Integer = moDataGrid.Items.Count
 
             If totItems > 0 Then
                 claimReconWrkInfo = CreateBoFromGrid(0)
@@ -374,7 +374,7 @@ Namespace Interfaces
         End Sub
 
         Function IsDataGPageDirty() As Boolean
-            Dim Result As String = Me.HiddenIsPageDirty.Value
+            Dim Result As String = HiddenIsPageDirty.Value
 
             Return Result.Equals("YES")
         End Function
@@ -383,11 +383,11 @@ Namespace Interfaces
 
 #Region "Button-Management"
 
-        Public Overrides Sub BaseSetButtonsState(ByVal bIsEdit As Boolean)
+        Public Overrides Sub BaseSetButtonsState(bIsEdit As Boolean)
             SetButtonsState(bIsEdit)
         End Sub
 
-        Private Sub SetButtonsState(ByVal bIsEdit As Boolean)
+        Private Sub SetButtonsState(bIsEdit As Boolean)
             If (bIsEdit = True) Then
                 'SaveButton_WRITE.Visible = True
                 'CancelButton.Visible = True
@@ -407,13 +407,13 @@ Namespace Interfaces
 
         Private Sub PopulateReadOnly()
             Try
-                Dim oClaimFile As ClaimFileProcessed = New ClaimFileProcessed(Me.State.ClaimfileProcessedId)
+                Dim oClaimFile As ClaimFileProcessed = New ClaimFileProcessed(State.ClaimfileProcessedId)
                 With oClaimFile
                     moDealerNameText.Text = .ClaimNameLoad
                     moFileNameText.Text = .Filename
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -435,16 +435,16 @@ Namespace Interfaces
 
             Try
                 dv = GetDV()
-                dv.Sort = Me.State.sortBy
+                dv.Sort = State.sortBy
                 recCount = dv.Count
                 Session("recCount") = recCount
-                Me.TranslateGridControls(moDataGrid)
+                TranslateGridControls(moDataGrid)
                 moDataGrid.DataSource = dv
                 moDataGrid.DataBind()
-                Me.lblRecordCount.Text = recCount & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblRecordCount.Text = recCount & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 ControlMgr.DisableAllGridControlsIfNotEditAuth(Me, moDataGrid)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
@@ -460,12 +460,12 @@ Namespace Interfaces
 
         End Function
 
-        Private Sub PopulateBOItem(ByVal ClaimReconWrkInfo As ClaimReconWrk, ByVal oPropertyName As String, ByVal oCellPosition As Integer)
-            Me.PopulateBOProperty(ClaimReconWrkInfo, oPropertyName,
-                                            CType(Me.GetSelectedGridControl(moDataGrid, oCellPosition), TextBox))
+        Private Sub PopulateBOItem(ClaimReconWrkInfo As ClaimReconWrk, oPropertyName As String, oCellPosition As Integer)
+            PopulateBOProperty(ClaimReconWrkInfo, oPropertyName,
+                                            CType(GetSelectedGridControl(moDataGrid, oCellPosition), TextBox))
         End Sub
 
-        Private Sub PopulateBOFromForm(ByVal claimReconWrkInfo As ClaimReconWrk)
+        Private Sub PopulateBOFromForm(claimReconWrkInfo As ClaimReconWrk)
             PopulateBOItem(claimReconWrkInfo, REJECT_REASON_PROPERTY, REJECT_REASON_COL)
             PopulateBOItem(claimReconWrkInfo, DEALER_CODE_PROPERTY, DEALER_CODE_COL)
             PopulateBOItem(claimReconWrkInfo, CERTIFICATE_PROPERTY, CERTIFICATE_COL)
@@ -477,13 +477,13 @@ Namespace Interfaces
             PopulateBOItem(claimReconWrkInfo, DATE_CLAIM_CLOSED_PROPERTY, DATE_CLAIM_CLOSED_COL)
             PopulateBOItem(claimReconWrkInfo, STATUS_CODE_PROPERTY, STATUS_CODE_COL)
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
-        Private Sub PopulateFormItem(ByVal oCellPosition As Integer, ByVal oPropertyValue As Object)
-            Me.PopulateControlFromBOProperty(Me.GetSelectedGridControl(moDataGrid, oCellPosition), oPropertyValue)
+        Private Sub PopulateFormItem(oCellPosition As Integer, oPropertyValue As Object)
+            PopulateControlFromBOProperty(GetSelectedGridControl(moDataGrid, oCellPosition), oPropertyValue)
         End Sub
 
 #End Region

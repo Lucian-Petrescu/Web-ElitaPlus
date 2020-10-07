@@ -34,40 +34,40 @@ Public Class OcTemplateDAL
 #End Region
 
 #Region "Load Methods"
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("oc_template_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal companyList As ArrayList,
-                             ByVal dealerId As Guid,
-                             ByVal templateGroupCodeMask As String,
-                             ByVal templateCodeMask As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_DEALERS_AND_TEMPLATE_GROUP")
+    Public Function LoadList(companyList As ArrayList,
+                             dealerId As Guid,
+                             templateGroupCodeMask As String,
+                             templateCodeMask As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_DEALERS_AND_TEMPLATE_GROUP")
         Dim inClausecondition As String = ""
         Dim whereClauseConditions As String = ""
         Dim dealerWhereClauseConditions As String = ""
 
-        inClausecondition &= "and d." & MiscUtil.BuildListForSql(Me.COL_NAME_COMPANY_ID, companyList, True)
+        inClausecondition &= "and d." & MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, companyList, True)
 
         If (Not String.IsNullOrEmpty(templateGroupCodeMask)) Then
             templateGroupCodeMask = templateGroupCodeMask.Trim()
 
-            If Me.FormatSearchMask(templateGroupCodeMask) Then
+            If FormatSearchMask(templateGroupCodeMask) Then
                 whereClauseConditions &= Environment.NewLine & "and " & "UPPER(tg.CODE)" & templateGroupCodeMask.ToUpper
             End If
         End If
@@ -75,7 +75,7 @@ Public Class OcTemplateDAL
         If (Not String.IsNullOrEmpty(templateCodeMask)) Then
             templateCodeMask = templateCodeMask.Trim()
 
-            If Me.FormatSearchMask(templateCodeMask) Then
+            If FormatSearchMask(templateCodeMask) Then
                 whereClauseConditions &= Environment.NewLine & "and " & "UPPER(t.TEMPLATE_CODE)" & templateCodeMask.ToUpper
             End If
         End If
@@ -84,7 +84,7 @@ Public Class OcTemplateDAL
             dealerWhereClauseConditions &= Environment.NewLine & "and " & "d.DEALER_ID = " & MiscUtil.GetDbStringFromGuid(dealerId)
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
+        selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
 
         If Not dealerWhereClauseConditions = "" Then
             selectStmt = selectStmt.Replace("--dynamic_where_clause_dealer", dealerWhereClauseConditions)
@@ -93,13 +93,13 @@ Public Class OcTemplateDAL
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, String.Empty)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, String.Empty)
         End If
 
         Try
-            Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            Return DBHelper.Fetch(selectStmt, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -107,27 +107,27 @@ Public Class OcTemplateDAL
 
     Public Function GetCountOfTemplatesByCodeAndGroupExludingTemplateId(templateCode As String, id As Guid, templateGroupId As Guid) As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/GET_COUNT_BY_CODE_EXCLUDING_TEMPLATE_ID")
+            Dim selectStmt As String = Config("/SQL/GET_COUNT_BY_CODE_EXCLUDING_TEMPLATE_ID")
             Dim ds As New DataSet
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("template_code", templateCode), New DBHelper.DBHelperParameter("oc_template_id", id.ToByteArray), New DBHelper.DBHelperParameter("oc_template_group_id", templateGroupId.ToByteArray)}
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Sub LoadList(ByVal ds As DataSet, ByVal templateGroupId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_TEMPLATE_GROUP_ID")
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_OC_TEMPLATE_GROUP_ID, templateGroupId.ToByteArray)})
+    Public Sub LoadList(ds As DataSet, templateGroupId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_TEMPLATE_GROUP_ID")
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_OC_TEMPLATE_GROUP_ID, templateGroupId.ToByteArray)})
     End Sub
 
-    Public Function GetAssociatedMessageCount(ByVal templateId As Guid)
+    Public Function GetAssociatedMessageCount(templateId As Guid)
         Try
-            Dim selectStmt As String = Me.Config("/SQL/GET_ASSOCIATED_MESSAGE_COUNT")
+            Dim selectStmt As String = Config("/SQL/GET_ASSOCIATED_MESSAGE_COUNT")
             Dim ds As New DataSet
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("oc_template_id", templateId.ToByteArray)}
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -136,12 +136,12 @@ Public Class OcTemplateDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
@@ -159,10 +159,10 @@ Public Class OcTemplateDAL
             'First Pass updates Deletions           
             templateParamsDAL.Update(dataset, tr, DataRowState.Deleted)
             templateRecipientDAL.Update(dataset, tr, DataRowState.Deleted)
-            MyBase.Update(dataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            MyBase.Update(dataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes 
-            Update(dataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(dataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             templateParamsDAL.Update(dataset, tr, DataRowState.Added Or DataRowState.Modified)
             templateRecipientDAL.Update(dataset, tr, DataRowState.Added Or DataRowState.Modified)
 

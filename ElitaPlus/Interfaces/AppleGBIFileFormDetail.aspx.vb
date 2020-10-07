@@ -95,34 +95,34 @@ Namespace Interfaces
         End Sub
 
         Private Sub SetSession()
-            With Me.State
+            With State
                 .PageIndex = Grid.PageIndex
                 .PageSize = Grid.PageSize
-                .PageSort = Me.State.SortExpression
-                .searchDV = Me.State.searchDV
+                .PageSort = State.SortExpression
+                .searchDV = State.searchDV
             End With
         End Sub
 #End Region
 
 #Region "Handlers-Buttons-Methods"
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
 
                 GoBack()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub GoBack()
 
-            Dim retType As New AppleGBIFileForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.FileProcessedId, False)
-            Me.ReturnToCallingPage(retType)
+            Dim retType As New AppleGBIFileForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.FileProcessedId, False)
+            ReturnToCallingPage(retType)
 
         End Sub
 
-        Private Sub SaveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+        Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
             Try
                 SavePage()
 
@@ -132,9 +132,9 @@ Namespace Interfaces
                     State.IsFileDataEdited = False
                 End If
 
-                ControlMgr.SetEnableControl(Me, Me.SaveButton_WRITE, False)
+                ControlMgr.SetEnableControl(Me, SaveButton_WRITE, False)
 
-                Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
 
                 'Select Case SaveBundles()
                 '    Case 1, 2
@@ -143,14 +143,14 @@ Namespace Interfaces
                 'Me.HiddenIsPageDirty.Value = Empty
                 'PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Protected Sub btnReprocess_Click(sender As Object, e As EventArgs) Handles btnReprocess.Click
             AppleGBIFileReconWrk.ProcessFile(State.FileProcessedId)
             ControlMgr.SetEnableControl(Me, btnReprocess, False)
 
-            Me.DisplayMessage(Message.REPROCESS_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+            DisplayMessage(Message.REPROCESS_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
 
         End Sub
 
@@ -167,28 +167,28 @@ Namespace Interfaces
 
 #Region "Page Events"
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             Try
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
 
                 If Not Page.IsPostBack Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                     UpdateBreadCrum()
                     TranslateGridHeader(Grid)
 
-                    If Not Me.State.IsReturningFromChild Then
+                    If Not State.IsReturningFromChild Then
                         ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     End If
 
-                    If Me.State.IsGridVisible Then
-                        If Not (Me.State.SelectedPageSize = DEFAULT_PAGE_SIZE) Then
-                            cboPageSize.SelectedValue = CType(Me.State.SelectedPageSize, String)
-                            Grid.PageSize = Me.State.SelectedPageSize
+                    If State.IsGridVisible Then
+                        If Not (State.SelectedPageSize = DEFAULT_PAGE_SIZE) Then
+                            cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
+                            Grid.PageSize = State.SelectedPageSize
                         End If
                     End If
-                    Me.SetGridItemStyleColor(Me.Grid)
+                    SetGridItemStyleColor(Grid)
 
                     If Not State.IsGridVisible Then
                         cboPageSize.SelectedValue = CType(State.PageSize, String)
@@ -196,7 +196,7 @@ Namespace Interfaces
                             cboPageSize.SelectedValue = CType(State.PageSize, String)
                             Grid.PageSize = State.PageSize
                         End If
-                        Me.State.IsGridVisible = True
+                        State.IsGridVisible = True
                     End If
 
                     EnableDisableControl()
@@ -212,39 +212,39 @@ Namespace Interfaces
 
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
             If Me.State.LastOperation = DetailPageCommand.Redirect_ Then
-                Me.MasterPage.MessageController.Clear_Hide()
-                Me.State.LastOperation = DetailPageCommand.Nothing_
+                MasterPage.MessageController.Clear_Hide()
+                State.LastOperation = DetailPageCommand.Nothing_
             Else
-                Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+                ShowMissingTranslations(MasterPage.MessageController)
             End If
         End Sub
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles Me.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles Me.PageReturn
             Dim retObj As ProductPriceRangeByRepairMethod.ReturnType = CType(ReturnPar, ProductPriceRangeByRepairMethod.ReturnType)
 
             'Me.State.BenefitProductCodeId = retObj.EditingId
             'Me.SetStateProperties()
-            Me.State.LastOperation = DetailPageCommand.Redirect_
+            State.LastOperation = DetailPageCommand.Redirect_
 
         End Sub
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
-                    Dim pageParameters As PageParameters = CType(Me.CallingParameters, PageParameters)
-                    If Not pageParameters Is Nothing Then
-                        Me.State.Status = pageParameters.Status
-                        Me.State.FileProcessedId = pageParameters.FileProcessedId
-                        Me.State.StartDate = pageParameters.StartDate
-                        Me.State.EndDate = pageParameters.EndDate
-                        Me.State.Filename = pageParameters.Filename
+                If CallingParameters IsNot Nothing Then
+                    Dim pageParameters As PageParameters = CType(CallingParameters, PageParameters)
+                    If pageParameters IsNot Nothing Then
+                        State.Status = pageParameters.Status
+                        State.FileProcessedId = pageParameters.FileProcessedId
+                        State.StartDate = pageParameters.StartDate
+                        State.EndDate = pageParameters.EndDate
+                        State.Filename = pageParameters.Filename
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -253,29 +253,29 @@ Namespace Interfaces
 #Region "Methods"
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("Apple_Gbi_File")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Apple_Gbi_File")
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("Apple_Gbi_File")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Apple_Gbi_File")
                 End If
             End If
         End Sub
 
         Public Sub SetSummary()
             Try
-                Me.moFileNameText.Text = Me.State.Filename
-                Me.moStatusType.Text = Me.State.Status
-                Me.moStartDateText.Text = DateHelper.GetEnglishDate(Me.State.StartDate)
-                Me.moEndDateText.Text = DateHelper.GetEnglishDate(Me.State.EndDate)
+                moFileNameText.Text = State.Filename
+                moStatusType.Text = State.Status
+                moStartDateText.Text = DateHelper.GetEnglishDate(State.StartDate)
+                moEndDateText.Text = DateHelper.GetEnglishDate(State.EndDate)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub SavePage()
             Dim index As Integer = 0
             Dim appleGBIFileReconWrkInfo As AppleGBIFileReconWrk
-            Dim totItems As Integer = Me.Grid.Rows.Count
+            Dim totItems As Integer = Grid.Rows.Count
 
             If totItems > 0 Then
                 appleGBIFileReconWrkInfo = CreateBoFromGrid(0)
@@ -308,43 +308,43 @@ Namespace Interfaces
             REM DealerReconWrk.UpdateHeaderCount(appleGBIFileReconWrkInfo.DealerfileProcessedId)
         End Sub
 
-        Private Function CreateBoFromGrid(ByVal index As Integer) As AppleGBIFileReconWrk
+        Private Function CreateBoFromGrid(index As Integer) As AppleGBIFileReconWrk
             Dim appleGBIFileReconWrkId As Guid
             Dim appleGBIFileReconWrkInfo As AppleGBIFileReconWrk
 
-            Me.Grid.SelectedIndex = index
-            appleGBIFileReconWrkId = New Guid(CType(Me.Grid.Rows(index).FindControl("moReconWrkId"), Label).Text)
+            Grid.SelectedIndex = index
+            appleGBIFileReconWrkId = New Guid(CType(Grid.Rows(index).FindControl("moReconWrkId"), Label).Text)
             appleGBIFileReconWrkInfo = New AppleGBIFileReconWrk(appleGBIFileReconWrkId)
             Return appleGBIFileReconWrkInfo
         End Function
 
-        Protected Sub BindBoPropertiesToGridHeaders(ByVal appleGBIFileReconWrkInfo As AppleGBIFileReconWrk)
+        Protected Sub BindBoPropertiesToGridHeaders(appleGBIFileReconWrkInfo As AppleGBIFileReconWrk)
 
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "Id", Me.Grid.Columns(GridDefenitionEnum.GbiClaimReconWrkId))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "RejectCode", Me.Grid.Columns(GridDefenitionEnum.RejectCode))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "RejectReason", Me.Grid.Columns(GridDefenitionEnum.RejectReason))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "CustomerId", Me.Grid.Columns(GridDefenitionEnum.CustomerId))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "ShipToId", Me.Grid.Columns(GridDefenitionEnum.ShipToId))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "AgreementId", Me.Grid.Columns(GridDefenitionEnum.AgreementId))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "UniqueIdentifier", Me.Grid.Columns(GridDefenitionEnum.UniqueIdentifier))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "OriginalSerialNumber", Me.Grid.Columns(GridDefenitionEnum.OriginalSerialNumber))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "OriginalImeiNumber", Me.Grid.Columns(GridDefenitionEnum.OriginalImeiNumber))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "NewSerialNumber", Me.Grid.Columns(GridDefenitionEnum.NewSerialNumber))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "NewImeiNumber", Me.Grid.Columns(GridDefenitionEnum.NewImeiNumber))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "RepairCompletionDate", Me.Grid.Columns(GridDefenitionEnum.RepairCompletionDate))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "ClaimType", Me.Grid.Columns(GridDefenitionEnum.ClaimType))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "Channel", Me.Grid.Columns(GridDefenitionEnum.Channel))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "IncidentFee", Me.Grid.Columns(GridDefenitionEnum.IncidentFee))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "NotifCreateDate", Me.Grid.Columns(GridDefenitionEnum.NotifCreateDate))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "RepairCompleted", Me.Grid.Columns(GridDefenitionEnum.RepairCompleted))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "RepairCompletedDate", Me.Grid.Columns(GridDefenitionEnum.RepairCompletedDate))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "ClaimCancelled", Me.Grid.Columns(GridDefenitionEnum.ClaimCancelled))
-            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "Description", Me.Grid.Columns(GridDefenitionEnum.Description))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "Id", Grid.Columns(GridDefenitionEnum.GbiClaimReconWrkId))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "RejectCode", Grid.Columns(GridDefenitionEnum.RejectCode))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "RejectReason", Grid.Columns(GridDefenitionEnum.RejectReason))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "CustomerId", Grid.Columns(GridDefenitionEnum.CustomerId))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "ShipToId", Grid.Columns(GridDefenitionEnum.ShipToId))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "AgreementId", Grid.Columns(GridDefenitionEnum.AgreementId))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "UniqueIdentifier", Grid.Columns(GridDefenitionEnum.UniqueIdentifier))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "OriginalSerialNumber", Grid.Columns(GridDefenitionEnum.OriginalSerialNumber))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "OriginalImeiNumber", Grid.Columns(GridDefenitionEnum.OriginalImeiNumber))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "NewSerialNumber", Grid.Columns(GridDefenitionEnum.NewSerialNumber))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "NewImeiNumber", Grid.Columns(GridDefenitionEnum.NewImeiNumber))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "RepairCompletionDate", Grid.Columns(GridDefenitionEnum.RepairCompletionDate))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "ClaimType", Grid.Columns(GridDefenitionEnum.ClaimType))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "Channel", Grid.Columns(GridDefenitionEnum.Channel))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "IncidentFee", Grid.Columns(GridDefenitionEnum.IncidentFee))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "NotifCreateDate", Grid.Columns(GridDefenitionEnum.NotifCreateDate))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "RepairCompleted", Grid.Columns(GridDefenitionEnum.RepairCompleted))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "RepairCompletedDate", Grid.Columns(GridDefenitionEnum.RepairCompletedDate))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "ClaimCancelled", Grid.Columns(GridDefenitionEnum.ClaimCancelled))
+            BindBOPropertyToGridHeader(appleGBIFileReconWrkInfo, "Description", Grid.Columns(GridDefenitionEnum.Description))
 
             ClearGridViewHeadersAndLabelsErrSign()
         End Sub
 
-        Private Sub PopulateBOFromForm(ByVal appleGBIFileReconWrkInfo As AppleGBIFileReconWrk)
+        Private Sub PopulateBOFromForm(appleGBIFileReconWrkInfo As AppleGBIFileReconWrk)
 
             REM PopulateBOItem(appleGBIFileReconWrkInfo, "Id", GridDefenitionEnum.GbiClaimReconWrkId)
             PopulateBOItem(appleGBIFileReconWrkInfo, "RejectCode", GridDefenitionEnum.RejectCode)
@@ -367,18 +367,18 @@ Namespace Interfaces
             PopulateBOItem(appleGBIFileReconWrkInfo, "ClaimCancelled", GridDefenitionEnum.ClaimCancelled)
             PopulateBOItem(appleGBIFileReconWrkInfo, "Description", GridDefenitionEnum.Description)
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
-        Private Sub PopulateBOItem(ByVal appleGBIFileReconWrkInfo As AppleGBIFileReconWrk, ByVal oPropertyName As String, ByVal oCellPosition As Integer)
-            Me.PopulateBOProperty(appleGBIFileReconWrkInfo, oPropertyName, CType(Me.GetSelectedGridControl(Me.Grid, oCellPosition), TextBox))
+        Private Sub PopulateBOItem(appleGBIFileReconWrkInfo As AppleGBIFileReconWrk, oPropertyName As String, oCellPosition As Integer)
+            PopulateBOProperty(appleGBIFileReconWrkInfo, oPropertyName, CType(GetSelectedGridControl(Grid, oCellPosition), TextBox))
         End Sub
 
         Private Sub EnableDisableControl()
             Try
-                Select Case Me.State.Status
+                Select Case State.Status
                     Case STATUS_FAILED
                         ControlMgr.SetEnableControl(Me, SaveButton_WRITE, True)
                         ControlMgr.SetEnableControl(Me, btnReprocess, False)
@@ -391,7 +391,7 @@ Namespace Interfaces
                 End Select
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -401,131 +401,131 @@ Namespace Interfaces
             Get
                 Return ViewState("SortDirection")?.ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.PageIndex = Grid.PageSize
-                Me.PopulateGrid()
+                State.PageIndex = Grid.PageSize
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
-                Me.State.PageIndex = e.NewPageIndex
-                Me.PopulateGrid()
+                State.PageIndex = e.NewPageIndex
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub Grid_RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+        Public Sub Grid_RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
             Try
                 'If e.CommandName = GRID_COMMAND_SHOW_PROCESSED Then
 
                 'End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Public Sub Grid_RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+        Public Sub Grid_RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 Dim oTextBox As TextBox
                 Dim oLabel As Label
-                If Not dvRow Is Nothing Then
+                If dvRow IsNot Nothing Then
                     If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
 
                         REM e.Row.Cells(GridDefenitionEnum.GbiClaimReconWrkId).Text = GetGuidStringFromByteArray(CType(dvRow(AppleGBIFileReconWrk.COL_NAME_DET_BEN_GBICLAIM_RECON_WRK_ID), Byte()))
                         oLabel = CType(e.Row.FindControl("moReconWrkId"), Label)
-                        Me.PopulateControlFromBOProperty(oLabel, GetGuidStringFromByteArray(CType(dvRow(AppleGBIFileReconWrk.COL_NAME_DET_BEN_GBICLAIM_QUEUE_ID), Byte())))
+                        PopulateControlFromBOProperty(oLabel, GetGuidStringFromByteArray(CType(dvRow(AppleGBIFileReconWrk.COL_NAME_DET_BEN_GBICLAIM_QUEUE_ID), Byte())))
 
 
-                        Me.PopulateControlFromBOProperty(GetReadOnlyTextBox(e, "moRejectCode"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_REJECT_CODE))
-                        Me.PopulateControlFromBOProperty(GetReadOnlyTextBox(e, "moRejectReason"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_REJECT_REASON))
-                        Me.PopulateControlFromBOProperty(GetTextBox(e, "moCustomerId"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_CUSTOMER_ID))
-                        Me.PopulateControlFromBOProperty(GetTextBox(e, "moShipToId"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_SHIP_TO_ID))
-                        Me.PopulateControlFromBOProperty(GetTextBox(e, "moAgreementId"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_AGREEMENT_ID))
-                        Me.PopulateControlFromBOProperty(GetReadOnlyTextBox(e, "moUniqueIdentifier"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_UNIQUE_IDENTIFIER))
-                        Me.PopulateControlFromBOProperty(GetTextBox(e, "moOriginialSerialNumber"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_ORIGINAL_SERIAL_NUMBER))
-                        Me.PopulateControlFromBOProperty(GetTextBox(e, "moOriginalImeiNumber"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_ORIGINAL_IMEI_NUMBER))
-                        Me.PopulateControlFromBOProperty(GetTextBox(e, "moNewSerialNumber"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_NEW_SERIAL_NUMBER))
-                        Me.PopulateControlFromBOProperty(GetTextBox(e, "moNewImeiNumber"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_NEW_IMEI_NUMBER))
+                        PopulateControlFromBOProperty(GetReadOnlyTextBox(e, "moRejectCode"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_REJECT_CODE))
+                        PopulateControlFromBOProperty(GetReadOnlyTextBox(e, "moRejectReason"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_REJECT_REASON))
+                        PopulateControlFromBOProperty(GetTextBox(e, "moCustomerId"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_CUSTOMER_ID))
+                        PopulateControlFromBOProperty(GetTextBox(e, "moShipToId"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_SHIP_TO_ID))
+                        PopulateControlFromBOProperty(GetTextBox(e, "moAgreementId"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_AGREEMENT_ID))
+                        PopulateControlFromBOProperty(GetReadOnlyTextBox(e, "moUniqueIdentifier"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_UNIQUE_IDENTIFIER))
+                        PopulateControlFromBOProperty(GetTextBox(e, "moOriginialSerialNumber"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_ORIGINAL_SERIAL_NUMBER))
+                        PopulateControlFromBOProperty(GetTextBox(e, "moOriginalImeiNumber"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_ORIGINAL_IMEI_NUMBER))
+                        PopulateControlFromBOProperty(GetTextBox(e, "moNewSerialNumber"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_NEW_SERIAL_NUMBER))
+                        PopulateControlFromBOProperty(GetTextBox(e, "moNewImeiNumber"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_NEW_IMEI_NUMBER))
 
                         SetTextBoxWithCalendar(dvRow, AppleGBIFileReconWrk.COL_NAME_DET_REPAIR_COMPLETION_DATE, e, "moRepairCompletionDateText", "moRepairCompletionDateImage")
 
-                        Me.PopulateControlFromBOProperty(GetTextBox(e, "moClaimType"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_CLAIM_TYPE))
-                        Me.PopulateControlFromBOProperty(GetTextBox(e, "moChannel"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_CHANNEL))
-                        Me.PopulateControlFromBOProperty(GetTextBox(e, "moIncidentFee"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_INCIDENT_FEE))
+                        PopulateControlFromBOProperty(GetTextBox(e, "moClaimType"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_CLAIM_TYPE))
+                        PopulateControlFromBOProperty(GetTextBox(e, "moChannel"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_CHANNEL))
+                        PopulateControlFromBOProperty(GetTextBox(e, "moIncidentFee"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_INCIDENT_FEE))
 
                         SetTextBoxWithCalendar(dvRow, AppleGBIFileReconWrk.COL_NAME_DET_NOTIF_CREATE_DATE, e, "moNotifCreateDateText", "moNotifCreateDateImage")
 
-                        Me.PopulateControlFromBOProperty(GetTextBox(e, "moRepairCompleted"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_REPAIR_COMPLETED))
+                        PopulateControlFromBOProperty(GetTextBox(e, "moRepairCompleted"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_REPAIR_COMPLETED))
 
                         SetTextBoxWithCalendar(dvRow, AppleGBIFileReconWrk.COL_NAME_DET_REPAIR_COMPLETED_DATE, e, "moRepairCompletedDateText", "moRepairCompletedDateImage")
 
-                        Me.PopulateControlFromBOProperty(GetReadOnlyTextBox(e, "moClaimCancelled"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_CLAIM_CANCELLED))
-                        Me.PopulateControlFromBOProperty(GetTextBox(e, "moDescription"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_DESCRIPTION))
+                        PopulateControlFromBOProperty(GetReadOnlyTextBox(e, "moClaimCancelled"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_CLAIM_CANCELLED))
+                        PopulateControlFromBOProperty(GetTextBox(e, "moDescription"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_DESCRIPTION))
                         PopulateControlFromBOProperty(GetReadOnlyTextBox(e, "moClaimNumber"), dvRow(AppleGBIFileReconWrk.COL_NAME_DET_CLAIM_NUMBER))
 
-                        Me.PopulateControlFromBOProperty(GetReadOnlyTextBox(e, "moDeviceType"), dvRow(AppleGBIFileReconWrk.COL_NAME_DEVICE_TYPE))
+                        PopulateControlFromBOProperty(GetReadOnlyTextBox(e, "moDeviceType"), dvRow(AppleGBIFileReconWrk.COL_NAME_DEVICE_TYPE))
 
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub SetTextBoxWithCalendar(dvRow As DataRowView, columnName As String, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs, txtControlName As String, calendarControlName As String)
+        Private Sub SetTextBoxWithCalendar(dvRow As DataRowView, columnName As String, e As System.Web.UI.WebControls.GridViewRowEventArgs, txtControlName As String, calendarControlName As String)
             Dim oTextBox As TextBox
 
             oTextBox = GetTextBox(e, txtControlName)
             If oTextBox IsNot Nothing Then
                 Dim oDateCompImage As ImageButton = CType(e.Row.FindControl(calendarControlName), ImageButton)
                 If (oDateCompImage IsNot Nothing) Then
-                    Me.AddCalendar(oDateCompImage, oTextBox)
+                    AddCalendar(oDateCompImage, oTextBox)
                 End If
 
                 If dvRow.Row(columnName) IsNot DBNull.Value Then
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(columnName))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(columnName))
                 End If
             End If
         End Sub
 
 
         Private Function IsFailedStatus() As Boolean
-            If Me.State.Status.Equals(STATUS_FAILED) Then
+            If State.Status.Equals(STATUS_FAILED) Then
                 Return True
             Else
                 Return False
             End If
         End Function
-        Private Function GetTextBox(ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs, ByVal controlName As String) As TextBox
+        Private Function GetTextBox(e As System.Web.UI.WebControls.GridViewRowEventArgs, controlName As String) As TextBox
             Dim oTextBox As TextBox
             oTextBox = CType(e.Row.FindControl(controlName), TextBox)
             oTextBox.Attributes.Add("onchange", "setDirty()")
-            If Me.State.Status.Equals(STATUS_FAILED) Then
+            If State.Status.Equals(STATUS_FAILED) Then
                 oTextBox.ReadOnly = False
             Else
                 oTextBox.ReadOnly = True
             End If
             Return oTextBox
         End Function
-        Private Function GetReadOnlyTextBox(ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs, ByVal controlName As String) As TextBox
+        Private Function GetReadOnlyTextBox(e As System.Web.UI.WebControls.GridViewRowEventArgs, controlName As String) As TextBox
             Dim oTextBox As TextBox
             oTextBox = CType(e.Row.FindControl(controlName), TextBox)
             oTextBox.Attributes.Add("onchange", "setDirty()")
@@ -533,24 +533,24 @@ Namespace Interfaces
             Return oTextBox
         End Function
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
-                Me.State.SortExpression = Me.SortDirection
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.SortExpression = SortDirection
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -559,43 +559,43 @@ Namespace Interfaces
         Private Sub PopulateGrid(Optional ByVal refreshData As Boolean = False)
             Try
 
-                If Me.State.searchDV Is Nothing OrElse refreshData Then GetGBIFileRecords(refreshData)
+                If State.searchDV Is Nothing OrElse refreshData Then GetGBIFileRecords(refreshData)
 
-                If (Me.State.searchDV.Count = 0) Then
+                If (State.searchDV.Count = 0) Then
 
-                    Me.State.bnoRow = True
-                    CreateHeaderForEmptyGrid(Grid, Me.SortDirection)
+                    State.bnoRow = True
+                    CreateHeaderForEmptyGrid(Grid, SortDirection)
                 Else
-                    Me.State.bnoRow = False
-                    Me.Grid.Enabled = True
-                    Me.Grid.Visible = True
+                    State.bnoRow = False
+                    Grid.Enabled = True
+                    Grid.Visible = True
                 End If
 
                 Grid.AutoGenerateColumns = False
-                Me.Grid.AllowSorting = True
-                Me.State.searchDV.Sort = Me.State.SortExpression
+                Grid.AllowSorting = True
+                State.searchDV.Sort = State.SortExpression
 
                 Grid.Columns(GridDefenitionEnum.OriginalSerialNumber).SortExpression = AppleGBIFileReconWrk.COL_NAME_DET_ORIGINAL_SERIAL_NUMBER
-                HighLightSortColumn(Grid, Me.State.SortExpression)
+                HighLightSortColumn(Grid, State.SortExpression)
 
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.Grid, Me.State.PageIndex)
+                SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, State.PageIndex)
 
-                Me.Grid.DataSource = Me.State.searchDV
-                HighLightSortColumn(Grid, Me.State.SortExpression)
-                Me.Grid.DataBind()
+                Grid.DataSource = State.searchDV
+                HighLightSortColumn(Grid, State.SortExpression)
+                Grid.DataBind()
 
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
-                ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+                ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
+                ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-                Session("recCount") = Me.State.searchDV.Count
+                Session("recCount") = State.searchDV.Count
 
                 If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -604,11 +604,11 @@ Namespace Interfaces
 
             Try
 
-                State.searchDV = AppleGBIFileReconWrk.LoadDeatils(Me.State.FileProcessedId, Me.State.Status)
+                State.searchDV = AppleGBIFileReconWrk.LoadDeatils(State.FileProcessedId, State.Status)
 
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 

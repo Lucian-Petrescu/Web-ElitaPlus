@@ -31,7 +31,7 @@ Partial Class CountryTaxUserControl
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
     Private mPercentCode As String
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -60,7 +60,7 @@ Partial Class CountryTaxUserControl
 
 #End Region
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
 
     End Sub
@@ -77,17 +77,17 @@ Partial Class CountryTaxUserControl
                 CommonConfigManager.Current.ListManager.GetList(listCode:="TCOMP",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-        Me.dlstTaxComputeMethod.Populate(ComputeMethodList,
+        dlstTaxComputeMethod.Populate(ComputeMethodList,
                                         New PopulateOptions() With
                                         {
                                             .AddBlankItem = True
                                         })
         If Not strComputeMethodCodeToFilter.Equals(String.Empty) Then
             Dim oComputeMethodToFilterId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_COMPUTE_METHOD, strComputeMethodCodeToFilter)
-            For x As Integer = Me.dlstTaxComputeMethod.Items.Count - 1 To 0 Step -1
-                Dim item As ListItem = Me.dlstTaxComputeMethod.Items(x)
+            For x As Integer = dlstTaxComputeMethod.Items.Count - 1 To 0 Step -1
+                Dim item As ListItem = dlstTaxComputeMethod.Items(x)
                 If item.Value.Equals(oComputeMethodToFilterId.ToString) = True Then
-                    Me.dlstTaxComputeMethod.Items.RemoveAt(x)
+                    dlstTaxComputeMethod.Items.RemoveAt(x)
                 End If
             Next
         End If
@@ -96,7 +96,7 @@ Partial Class CountryTaxUserControl
                 CommonConfigManager.Current.ListManager.GetList(listCode:="PERCT",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-        Me.dlstTaxPercentFlag.Populate(PercentList,
+        dlstTaxPercentFlag.Populate(PercentList,
                                         New PopulateOptions() With
                                         {
                                             .AddBlankItem = True
@@ -110,18 +110,18 @@ Partial Class CountryTaxUserControl
         UseRegion = True
         txtTaxDescription.Text = Description
 
-        CType(Me.Page, ElitaPlusPage).SetSelectedItem(dlstTaxComputeMethod, ComputeMethodID)
-        CType(Me.Page, ElitaPlusPage).SetSelectedItem(dlstTaxPercentFlag, PercentFlagID)
+        CType(Page, ElitaPlusPage).SetSelectedItem(dlstTaxComputeMethod, ComputeMethodID)
+        CType(Page, ElitaPlusPage).SetSelectedItem(dlstTaxPercentFlag, PercentFlagID)
 
         If Not UseState() Then
-            Me.txtTaxPercent.Text = CType(Percent, Double).ToString(Desimal_Format, CultureInfo.CurrentCulture)
+            txtTaxPercent.Text = CType(Percent, Double).ToString(Desimal_Format, CultureInfo.CurrentCulture)
             UseRegion = False
-            Me.lblPercent.ForeColor = Color.Black
+            lblPercent.ForeColor = Color.Black
         End If
 
         If UseManually() Then
             Dim dlbZeroes As Double = 0.0
-            Me.txtTaxPercent.Text = dlbZeroes.ToString(Desimal_Format, CultureInfo.CurrentCulture)
+            txtTaxPercent.Text = dlbZeroes.ToString(Desimal_Format, CultureInfo.CurrentCulture)
             dlstTaxPercentFlag.SelectedIndex = NOTHING_SELECTED
         End If
 
@@ -130,7 +130,7 @@ Partial Class CountryTaxUserControl
 
     Public Sub SaveProperties()
         UseRegion = UseState()
-        Description = Me.txtTaxDescription.Text
+        Description = txtTaxDescription.Text
         ComputeMethodID = LoadMethodID()
         ComputeMethodDescription = LoadMethodDescription()
         PercentFlagID = LoadPercentFlagID()
@@ -138,31 +138,31 @@ Partial Class CountryTaxUserControl
     End Sub
 
 
-    Private Sub dlstTaxComputeMethod_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dlstTaxComputeMethod.SelectedIndexChanged
+    Private Sub dlstTaxComputeMethod_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles dlstTaxComputeMethod.SelectedIndexChanged
         Dim dlbZeroes As Double = 0.0
 
         If UseManually() Then
-            Me.txtTaxPercent.Text = dlbZeroes.ToString(Desimal_Format, CultureInfo.CurrentCulture)
+            txtTaxPercent.Text = dlbZeroes.ToString(Desimal_Format, CultureInfo.CurrentCulture)
             dlstTaxPercentFlag.SelectedIndex = NOTHING_SELECTED
         End If
 
     End Sub
 
-    Private Sub dlstTaxPercentFlag_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dlstTaxPercentFlag.SelectedIndexChanged
+    Private Sub dlstTaxPercentFlag_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles dlstTaxPercentFlag.SelectedIndexChanged
 
         Dim dlbZeroes As Double = 0.0
-        Percent = Me.txtTaxPercent.Text
+        Percent = txtTaxPercent.Text
         UseRegion = True
 
         If Not UseState() Then
             UseRegion = False
             If CType(Percent, String) = "" Then
-                Me.txtTaxPercent.Text = dlbZeroes.ToString(Desimal_Format, CultureInfo.CurrentCulture)
+                txtTaxPercent.Text = dlbZeroes.ToString(Desimal_Format, CultureInfo.CurrentCulture)
             End If
         End If
 
         Try
-            Dim parentPage As CountryTaxEdit = CType(Me.Page, CountryTaxEdit)
+            Dim parentPage As CountryTaxEdit = CType(Page, CountryTaxEdit)
             parentPage.TestForRegions(UseRegion)
         Catch ex As Exception
         End Try
@@ -172,20 +172,20 @@ Partial Class CountryTaxUserControl
 
     Private Function LoadMethodID() As Guid
 
-        Return CType(Me.Page, ElitaPlusPage).GetSelectedItem(Me.dlstTaxComputeMethod)
+        Return CType(Page, ElitaPlusPage).GetSelectedItem(dlstTaxComputeMethod)
 
     End Function
 
     Private Function LoadMethodDescription() As String
 
-        Return CType(Me.Page, ElitaPlusPage).GetSelectedDescription(Me.dlstTaxComputeMethod)
+        Return CType(Page, ElitaPlusPage).GetSelectedDescription(dlstTaxComputeMethod)
 
     End Function
 
 
     Private Function LoadPercentFlagID() As Guid
 
-        Return CType(Me.Page, ElitaPlusPage).GetSelectedItem(Me.dlstTaxPercentFlag)
+        Return CType(Page, ElitaPlusPage).GetSelectedItem(dlstTaxPercentFlag)
 
     End Function
 
@@ -198,12 +198,12 @@ Partial Class CountryTaxUserControl
             dlbPercent = 0.0
         Else
             Try
-                dlbPercent = CType(Me.txtTaxPercent.Text, Double)
-                Me.lblPercent.ForeColor = Color.Black
+                dlbPercent = CType(txtTaxPercent.Text, Double)
+                lblPercent.ForeColor = Color.Black
             Catch ex As Exception
-                CType(Me.Page, ElitaPlusPage).SetLabelError(Me.lblPercent)
+                CType(Page, ElitaPlusPage).SetLabelError(lblPercent)
                 Throw New GUIException("PERCENT_MUST_BE_NUMERIC", "PERCENT_MUST_BE_NUMERIC")
-                Return Me.txtTaxPercent.Text
+                Return txtTaxPercent.Text
             End Try
         End If
 
@@ -260,7 +260,7 @@ Partial Class CountryTaxUserControl
         Get
             Return mDescription
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             mDescription = Value
         End Set
     End Property
@@ -268,7 +268,7 @@ Partial Class CountryTaxUserControl
         Get
             Return mComputeMethodDescription
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             mComputeMethodDescription = Value
         End Set
     End Property
@@ -279,7 +279,7 @@ Partial Class CountryTaxUserControl
 
             Return mPercent
         End Get
-        Set(ByVal Value As Object)
+        Set(Value As Object)
             mPercent = Value
         End Set
     End Property
@@ -288,7 +288,7 @@ Partial Class CountryTaxUserControl
         Get
             Return mComputeMethodID
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             mComputeMethodID = Value
         End Set
     End Property
@@ -297,7 +297,7 @@ Partial Class CountryTaxUserControl
         Get
             Return mPercentFlagID
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             mPercentFlagID = Value
         End Set
     End Property
@@ -306,7 +306,7 @@ Partial Class CountryTaxUserControl
         Get
             Return mIsRegion
         End Get
-        Set(ByVal Value As Boolean)
+        Set(Value As Boolean)
             mIsRegion = Value
         End Set
     End Property

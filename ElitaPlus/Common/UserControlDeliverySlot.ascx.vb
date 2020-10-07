@@ -25,7 +25,7 @@ Public Class UserControlDeliverySlot
         Get
             Return lblAvailableDeliveryTimingData.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             lblAvailableDeliveryTimingData.Text = value
         End Set
     End Property
@@ -33,7 +33,7 @@ Public Class UserControlDeliverySlot
         Get
             Return State.DeliveryDateSelected
         End Get
-        Set(ByVal value As Nullable(Of Date))
+        Set(value As Nullable(Of Date))
             State.DeliveryDateSelected = value
         End Set
     End Property
@@ -69,7 +69,7 @@ Public Class UserControlDeliverySlot
         Get
             Return State.CountryCode
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             State.CountryCode = value
         End Set
     End Property
@@ -78,7 +78,7 @@ Public Class UserControlDeliverySlot
         Get
             Return State.ServiceCenter
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             State.ServiceCenter = value
         End Set
     End Property
@@ -87,7 +87,7 @@ Public Class UserControlDeliverySlot
         Get
             Return State.CourierCode
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             State.CourierCode = value
         End Set
     End Property
@@ -96,7 +96,7 @@ Public Class UserControlDeliverySlot
         Get
             Return State.CourierProductCode
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             State.CourierProductCode = value
         End Set
     End Property
@@ -104,7 +104,7 @@ Public Class UserControlDeliverySlot
         Get
             Return State.DeliveryAddress
         End Get
-        Set(ByVal value As DeliveryAddressInfo)
+        Set(value As DeliveryAddressInfo)
             State.DeliveryAddress = value
         End Set
     End Property
@@ -114,7 +114,7 @@ Public Class UserControlDeliverySlot
         Get
             Return State.IsDeliverySlotAvailable
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             State.IsDeliverySlotAvailable = value
         End Set
     End Property
@@ -156,7 +156,7 @@ Public Class UserControlDeliverySlot
 #End Region
 #Region "Control Event"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         If (Page.IsPostBack) Then
             TranslateLabels()
         End If
@@ -169,7 +169,7 @@ Public Class UserControlDeliverySlot
     End Sub
 #End Region
 #Region "Other Event"
-    Private Function ValidateSetDeliveryDate(ByVal dtvalue As String) As Boolean
+    Private Function ValidateSetDeliveryDate(dtvalue As String) As Boolean
         If Not String.IsNullOrWhiteSpace(dtvalue) Then
             Dim desiredDeliveryDate As Date
             Try
@@ -311,7 +311,7 @@ Public Class UserControlDeliverySlot
             Dim wsResponse As GetDeliverySlotsResponse = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, GetDeliverySlotsResponse)(
                                                                                 GetClaimFulfillmentWebAppGatewayClient(),
                                                                             New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                                                            Function(ByVal c As WebAppGatewayClient)
+                                                                            Function(c As WebAppGatewayClient)
                                                                                 Return c.GetDeliverySlots(wsRequest)
                                                                             End Function)
 
@@ -349,7 +349,7 @@ Public Class UserControlDeliverySlot
 
     Private Sub EnableDisableNotSpecifyCheckBox()
         ''if selection is not allowed, then uncheck and disable the check box
-        If (Not State Is Nothing AndAlso Not State.CurrentEstimate Is Nothing AndAlso Not State.CurrentEstimate.Behavior Is Nothing) Then
+        If (State IsNot Nothing AndAlso State.CurrentEstimate IsNot Nothing AndAlso State.CurrentEstimate.Behavior IsNot Nothing) Then
             chkNotSpecify.Checked = True
 
             If (State.CurrentEstimate.Behavior.SelectionAllowed = False) Then
@@ -387,7 +387,7 @@ Public Class UserControlDeliverySlot
 
         ShowDeliveryEstimate()
     End Sub
-    Private Sub ShowFaultException(ByVal fex As FaultException)
+    Private Sub ShowFaultException(fex As FaultException)
         If fex IsNot Nothing Then
             If fex.Code IsNot Nothing Then
                 ' TODO - Standardize this fault exception handling in future based on the response from the web service
@@ -406,7 +406,7 @@ Public Class UserControlDeliverySlot
     End Sub
 
 
-    Private Sub ShowDeliveryTimeRange(ByVal de As DeliveryEstimate)
+    Private Sub ShowDeliveryTimeRange(de As DeliveryEstimate)
         Dim fastestDeliveryDateTime As String = String.Empty
         Dim fastestDeliveryDate As DeliveryDay = (From delDay As DeliveryDay In de.AvailableDeliveryDays Select delDay Order By delDay.DeliveryDate Ascending).First()
         If fastestDeliveryDate IsNot Nothing Then
@@ -469,7 +469,7 @@ Public Class UserControlDeliverySlot
         End If
     End Sub
 
-    Private Sub EnableDisableControl(ByVal bEnable As Boolean)
+    Private Sub EnableDisableControl(bEnable As Boolean)
         Page.ChangeEnabledControlProperty(txtDeliveryDate, bEnable)
         Page.ChangeEnabledControlProperty(imageBtnDeliveryDate, bEnable)
         Page.ChangeEnabledControlProperty(ddlDeliverySlots, bEnable)
@@ -488,11 +488,11 @@ Public Class UserControlDeliverySlot
 
     Private Sub UserControlDeliverySlot_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
         ' hide courier and delivery slot based on estimate data
-        If Not State.CurrentEstimate Is Nothing AndAlso String.IsNullOrEmpty(State.CurrentEstimate.CourierCode) = True Then
+        If State.CurrentEstimate IsNot Nothing AndAlso String.IsNullOrEmpty(State.CurrentEstimate.CourierCode) = True Then
             trCourierProduct.Attributes("style") = "display: none"
         End If
 
-        If Not State.CurrentEstimate Is Nothing AndAlso State.CurrentEstimate.Behavior.UseDeliverySlot = False Then
+        If State.CurrentEstimate IsNot Nothing AndAlso State.CurrentEstimate.Behavior.UseDeliverySlot = False Then
             trDeliverySlot.Attributes("style") = "display: none"
         End If
 

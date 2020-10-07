@@ -78,13 +78,13 @@ Public Class VscTableProcessedDAL
 
 #Region "Signatures"
 
-    Public Delegate Sub AsyncCaller(ByVal oVscTableProcessedData As VscTableProcessedData, ByVal selectStmt As String)
+    Public Delegate Sub AsyncCaller(oVscTableProcessedData As VscTableProcessedData, selectStmt As String)
 
 #End Region
 
 #Region "StoreProcedures Control"
 
-    Private Sub AsyncExecuteSP(ByVal oVscTableProcessedData As VscTableProcessedData, ByVal selectStmt As String)
+    Private Sub AsyncExecuteSP(oVscTableProcessedData As VscTableProcessedData, selectStmt As String)
         'Dim inputParameters(TOTAL_PARAM_SP) As DBHelperParameter
         'Dim outputParameter(0) As DBHelperParameter
 
@@ -102,7 +102,7 @@ Public Class VscTableProcessedDAL
         'End If
     End Sub
 
-    Private Sub ExecuteSP(ByVal oVscTableProcessedData As VscTableProcessedData, ByVal selectStmt As String)
+    Private Sub ExecuteSP(oVscTableProcessedData As VscTableProcessedData, selectStmt As String)
         Dim inputParameters(TOTAL_PARAM_SP) As DBHelperParameter
         Dim outputParameter(TOTAL_OUTPUT_PARAM_SP) As DBHelperParameter
         '   Dim ds As New DataSet
@@ -112,16 +112,16 @@ Public Class VscTableProcessedDAL
             '  inputParameters(FILENAME) = New DBHelperParameter(COL_NAME_FILENAME, .filename)
             inputParameters(INTERFACE_STATUS_ID) = _
                 New DBHelperParameter(InterfaceStatusWrkDAL.COL_NAME_INTERFACE_STATUS_ID, .interfaceStatus_id.ToByteArray)
-            outputParameter(Me.P_RETURN) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME_P_RETURN, GetType(Integer))
-            outputParameter(Me.P_EXCEPTION_MSG) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME_P_EXCEPTION_MSG, GetType(String), 50)
+            outputParameter(P_RETURN) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_P_RETURN, GetType(Integer))
+            outputParameter(P_EXCEPTION_MSG) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_P_EXCEPTION_MSG, GetType(String), 50)
             ' outputParameter(Me.P_CURSOR) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME_P_CURSOR, GetType(DataSet))
             '  outputParameter(0) = New DBHelperParameter(COL_NAME_RETURN, GetType(Integer))
         End With
         ' Call DBHelper Store Procedure
         'DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, ds, Me.TABLE_NAME)
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
-        If outputParameter(Me.P_RETURN).Value <> 0 Then
-            Dim e As New ApplicationException("Return Value = " & outputParameter(Me.P_RETURN).Value)
+        If outputParameter(P_RETURN).Value <> 0 Then
+            Dim e As New ApplicationException("Return Value = " & outputParameter(P_RETURN).Value)
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, e)
         End If
         ' Return ds
@@ -132,11 +132,11 @@ Public Class VscTableProcessedDAL
     '    aSyncHandler.BeginInvoke(oVscTableProcessedData, selectStmt, Nothing, Nothing)
     'End Sub
 
-    Public Sub ProcessFileRecords(ByVal oVscTableProcessedData As VscTableProcessedData)
+    Public Sub ProcessFileRecords(oVscTableProcessedData As VscTableProcessedData)
         ' Dim ds As DataSet
         Dim selectStmt As String
 
-        selectStmt = Me.Config("/SQL/PROCESS_FILE_" & oVscTableProcessedData.layout)
+        selectStmt = Config("/SQL/PROCESS_FILE_" & oVscTableProcessedData.layout)
 
         Try
             ExecuteSP(oVscTableProcessedData, selectStmt)

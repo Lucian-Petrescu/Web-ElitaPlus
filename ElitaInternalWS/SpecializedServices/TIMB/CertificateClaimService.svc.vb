@@ -55,10 +55,10 @@ Namespace SpecializedServices.Timb
 
 
         Public Sub New(<Dependency(ElitaWebServiceConstants.SPECIALIZED_SERVICE_CLAIM_MANAGER)>
-                            ByVal pClaimManager As IClaimManager,
+                            pClaimManager As IClaimManager,
                        <Dependency(ElitaWebServiceConstants.SPECIALIZED_SERVICE_TIMB_CLAIM_REPOSITORY)>
-                            ByVal pClaimRepository As IClaimRepository(Of DataEntities.Claim),
-                       ByVal pCompanyManager As ICompanyManager)
+                            pClaimRepository As IClaimRepository(Of DataEntities.Claim),
+                       pCompanyManager As ICompanyManager)
 
             If (pClaimManager Is Nothing) Then
                 Throw New ArgumentNullException("pClaimManager")
@@ -89,7 +89,7 @@ Namespace SpecializedServices.Timb
             Throw New NotSupportedException()
         End Function
 
-        Public Function GetCertClaimInfo(ByVal request As CertificateClaimRequest) As CertClaimInfoResponseDC _
+        Public Function GetCertClaimInfo(request As CertificateClaimRequest) As CertClaimInfoResponseDC _
                 Implements ICertificateClaimService.GetCertClaimInfo
 
             request.Validate("request").HandleFault()

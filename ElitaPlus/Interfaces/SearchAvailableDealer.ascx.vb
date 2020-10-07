@@ -2,10 +2,10 @@
     Inherits System.Web.UI.UserControl
 
 #Region "Event Declaration"
-    Public Delegate Sub SearchFilterEventHandler(ByVal sender As Object, ByVal Args As SearchAvailableDealerEventArgs)
-    Public Delegate Sub SaveDealerListDetail(ByVal sender As Object, ByVal Args As SearchAvailableDealerEventArgs)
-    Public Delegate Sub CancelButtonClicked(ByVal sender As Object, ByVal args As SearchAvailableDealerEventArgs)
-    Public Delegate Sub CustomPopulateDropDown(ByVal sender As Object, ByVal args As SearchAvailableDealerEventArgs)
+    Public Delegate Sub SearchFilterEventHandler(sender As Object, Args As SearchAvailableDealerEventArgs)
+    Public Delegate Sub SaveDealerListDetail(sender As Object, Args As SearchAvailableDealerEventArgs)
+    Public Delegate Sub CancelButtonClicked(sender As Object, args As SearchAvailableDealerEventArgs)
+    Public Delegate Sub CustomPopulateDropDown(sender As Object, args As SearchAvailableDealerEventArgs)
 
     Public Event ExecuteDealerSearchFilter As SearchFilterEventHandler
     Public Event EventSaveDealerListDetail As SaveDealerListDetail
@@ -31,18 +31,18 @@
 
     Public Property dvAvailableDealer As DataView
         Get
-            Return Me._dvAvailableDealer
+            Return _dvAvailableDealer
         End Get
-        Set(ByVal value As DataView)
-            Me._dvAvailableDealer = value
+        Set(value As DataView)
+            _dvAvailableDealer = value
         End Set
     End Property
 
     Public Property dvSelectedDealer As DataView
         Get
-            Return Me._dvSelectedDealer
+            Return _dvSelectedDealer
         End Get
-        Set(ByVal value As DataView)
+        Set(value As DataView)
             _dvSelectedDealer = value
         End Set
     End Property
@@ -57,7 +57,7 @@
         Get
             Return _ShowCancelButton
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             _ShowCancelButton = value
         End Set
     End Property
@@ -66,7 +66,7 @@
         Get
             Return _ShowUpButton
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             _ShowUpButton = value
         End Set
     End Property
@@ -75,7 +75,7 @@
         Get
             Return _ShowDownButton
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             _ShowDownButton = value
         End Set
     End Property
@@ -84,20 +84,20 @@
 
 #Region "Event Handlers"
 
-    Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.Click
+    Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Dim args As New SearchAvailableDealerEventArgs(Me)
-        RaiseEvent EventSaveDealerListDetail(Me.btnSave, args)
+        RaiseEvent EventSaveDealerListDetail(btnSave, args)
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         UserControlAvailableSelectedDealerCodes.BackColor = "#d5d6e4"
         If Not Page.IsPostBack Then
             PopulateuserControl()
             GetAvailableDealer()
-            Me.btnCancel.Visible = Me.ShowCancelButton
-            Me.UserControlAvailableSelectedDealerCodes.ShowUpButton = Me.ShowUpButton
-            Me.UserControlAvailableSelectedDealerCodes.ShowDownButton = Me.ShowDownButton
-            BindSelected(Me.dvSelectedDealer)
+            btnCancel.Visible = ShowCancelButton
+            UserControlAvailableSelectedDealerCodes.ShowUpButton = ShowUpButton
+            UserControlAvailableSelectedDealerCodes.ShowDownButton = ShowDownButton
+            BindSelected(dvSelectedDealer)
         End If
     End Sub
 #End Region
@@ -108,8 +108,8 @@
 
     Private Sub GetAvailableDealer(Optional ByVal pControl As SearchAvailableDealer = Nothing)
         Dim args As New SearchAvailableDealerEventArgs(pControl)
-        RaiseEvent ExecuteDealerSearchFilter(Me.btnSearch, args)
-        If Not args.dvAvailableDealer Is Nothing Then
+        RaiseEvent ExecuteDealerSearchFilter(btnSearch, args)
+        If args.dvAvailableDealer IsNot Nothing Then
             UserControlAvailableSelectedDealerCodes.SetAvailableData(args.dvAvailableDealer, "DESCRIPTION", "ID")
         End If
     End Sub
@@ -118,8 +118,8 @@
         GetAvailableDealer(Me)
     End Sub
 
-    Public Sub BindSelected(ByVal dvSelected As DataView)
-        If Not dvSelected Is Nothing Then
+    Public Sub BindSelected(dvSelected As DataView)
+        If dvSelected IsNot Nothing Then
             With UserControlAvailableSelectedDealerCodes
                 .SetSelectedData(dvSelected, COL_NAME_DESCRIPTION, COL_NAME_ID)
                 .RemoveSelectedFromAvailable()
@@ -128,11 +128,11 @@
     End Sub
 #End Region
 
-    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         clearControls()
         Dim args As New SearchAvailableDealerEventArgs(Me)
         RaiseEvent EventCancelButtonClicked(btnCancel, args)
-        BindSelected(Me.dvSelectedDealer)
+        BindSelected(dvSelectedDealer)
     End Sub
 
 End Class
@@ -147,10 +147,10 @@ Public Class SearchAvailableDealerEventArgs
 #End Region
 
 #Region "Constructor"
-    Sub New(ByVal pObject As SearchAvailableDealer)
-        If Not pObject Is Nothing Then
+    Sub New(pObject As SearchAvailableDealer)
+        If pObject IsNot Nothing Then
             With pObject
-                Me.listSelectedDealer = .listSelectedDealer
+                listSelectedDealer = .listSelectedDealer
             End With
         End If
     End Sub
@@ -161,7 +161,7 @@ Public Class SearchAvailableDealerEventArgs
         Get
             Return _dvResults
         End Get
-        Set(ByVal value As DataView)
+        Set(value As DataView)
             _dvResults = value
         End Set
     End Property
@@ -170,7 +170,7 @@ Public Class SearchAvailableDealerEventArgs
         Get
             Return _selectedDealer
         End Get
-        Set(ByVal value As ArrayList)
+        Set(value As ArrayList)
             _selectedDealer = value
         End Set
     End Property

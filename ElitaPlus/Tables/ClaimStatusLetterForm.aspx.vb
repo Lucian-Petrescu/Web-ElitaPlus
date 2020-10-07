@@ -35,14 +35,14 @@ Namespace Tables
         End Property
 
         Private Sub SetStateProperties()
-            Me.State.moClaimStatusLetterId = CType(Me.CallingParameters, Guid)
-            If Me.State.moClaimStatusLetterId.Equals(Guid.Empty) Then
-                Me.State.IsClaimStatusLetterNew = True
+            State.moClaimStatusLetterId = CType(CallingParameters, Guid)
+            If State.moClaimStatusLetterId.Equals(Guid.Empty) Then
+                State.IsClaimStatusLetterNew = True
                 ClearAll()
                 SetButtonsState(True)
                 ClaimStatus = True
             Else
-                Me.State.IsClaimStatusLetterNew = False
+                State.IsClaimStatusLetterNew = False
                 SetButtonsState(False)
             End If
             PopulateAll()
@@ -97,13 +97,13 @@ Namespace Tables
         Private ReadOnly Property TheClaimStatusLetter() As ClaimStatusLetter
             Get
                 If moClaimStatusLetter Is Nothing Then
-                    If Me.State.IsClaimStatusLetterNew = True Then
+                    If State.IsClaimStatusLetterNew = True Then
                         ' For creating, inserting
                         moClaimStatusLetter = New ClaimStatusLetter
-                        Me.State.moClaimStatusLetterId = moClaimStatusLetter.Id
+                        State.moClaimStatusLetterId = moClaimStatusLetter.Id
                     Else
                         ' For updating, deleting
-                        moClaimStatusLetter = New ClaimStatusLetter(Me.State.moClaimStatusLetterId)
+                        moClaimStatusLetter = New ClaimStatusLetter(State.moClaimStatusLetterId)
                     End If
                 End If
 
@@ -125,23 +125,23 @@ Namespace Tables
             Get
                 Return rbUseClaimStatus.Checked
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 If Value = True Then
-                    ControlMgr.SetVisibleControl(Me, Me.ExtendedClaimStatusDropdownList, True)
-                    ControlMgr.SetVisibleControl(Me, Me.moClaimStatusLabel, True)
-                    ControlMgr.SetVisibleControl(Me, Me.cboGroupId, False)
-                    ControlMgr.SetVisibleControl(Me, Me.moGroupIdLabel, False)
-                    ControlMgr.SetVisibleControl(Me, Me.cboNotificationTypeId, False)
-                    ControlMgr.SetVisibleControl(Me, Me.moNotificationTypeLabel, False)
-                    ControlMgr.SetVisibleControl(Me, Me.Mandatory1, False)
+                    ControlMgr.SetVisibleControl(Me, ExtendedClaimStatusDropdownList, True)
+                    ControlMgr.SetVisibleControl(Me, moClaimStatusLabel, True)
+                    ControlMgr.SetVisibleControl(Me, cboGroupId, False)
+                    ControlMgr.SetVisibleControl(Me, moGroupIdLabel, False)
+                    ControlMgr.SetVisibleControl(Me, cboNotificationTypeId, False)
+                    ControlMgr.SetVisibleControl(Me, moNotificationTypeLabel, False)
+                    ControlMgr.SetVisibleControl(Me, Mandatory1, False)
                 Else
-                    ControlMgr.SetVisibleControl(Me, Me.ExtendedClaimStatusDropdownList, False)
-                    ControlMgr.SetVisibleControl(Me, Me.moClaimStatusLabel, False)
-                    ControlMgr.SetVisibleControl(Me, Me.cboGroupId, True)
-                    ControlMgr.SetVisibleControl(Me, Me.moGroupIdLabel, True)
-                    ControlMgr.SetVisibleControl(Me, Me.cboNotificationTypeId, True)
-                    ControlMgr.SetVisibleControl(Me, Me.moNotificationTypeLabel, True)
-                    ControlMgr.SetVisibleControl(Me, Me.Mandatory1, True)
+                    ControlMgr.SetVisibleControl(Me, ExtendedClaimStatusDropdownList, False)
+                    ControlMgr.SetVisibleControl(Me, moClaimStatusLabel, False)
+                    ControlMgr.SetVisibleControl(Me, cboGroupId, True)
+                    ControlMgr.SetVisibleControl(Me, moGroupIdLabel, True)
+                    ControlMgr.SetVisibleControl(Me, cboNotificationTypeId, True)
+                    ControlMgr.SetVisibleControl(Me, moNotificationTypeLabel, True)
+                    ControlMgr.SetVisibleControl(Me, Mandatory1, True)
                 End If
 
                 rbUseClaimStatus.Checked = Value
@@ -158,34 +158,34 @@ Namespace Tables
 
 #Region "Handlers-Init"
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             Try
                 ' moRecipientText.Attributes.Add("onchange", "ValidateEmail('" + moRecipientText.ClientID + "');")
-                Me.ErrControllerMaster.Clear_Hide()
+                ErrControllerMaster.Clear_Hide()
                 ClearLabelsErrSign()
                 If Not Page.IsPostBack Then
-                    Me.SetStateProperties()
-                    Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, _
-                                                                        Me.MSG_TYPE_CONFIRM, True)
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.TranslateGridHeader(Grid)
-                    Me.TranslateGridControls(Grid)
+                    SetStateProperties()
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, _
+                                                                        MSG_TYPE_CONFIRM, True)
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
+                    TranslateGridHeader(Grid)
+                    TranslateGridControls(Grid)
                 End If
 
                 BindBoPropertiesToLabels()
                 CheckIfComingFromConfirm()
 
-                If Not Me.IsPostBack Then
-                    Me.AddLabelDecorations(Me.TheClaimStatusLetter)
+                If Not IsPostBack Then
+                    AddLabelDecorations(TheClaimStatusLetter)
                 End If
 
-                Me.RenderTextEditor()
-                Me.PopulateGrid()
+                RenderTextEditor()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
         Public Function RenderTextEditor() As String
@@ -205,96 +205,96 @@ Namespace Tables
 
 #Region "Handlers-Buttons"
 
-        Protected Sub btnApply_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnApply_WRITE.Click
+        Protected Sub btnApply_WRITE_Click(sender As Object, e As EventArgs) Handles btnApply_WRITE.Click
             ApplyChanges()
         End Sub
 
         Private Sub GoBack()
             Dim retType As New ClaimStatusLetterSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, _
-                                                                                Me.State.moClaimStatusLetterId, Me.State.boChanged)
-            Me.ReturnToCallingPage(retType)
+                                                                                State.moClaimStatusLetterId, State.boChanged)
+            ReturnToCallingPage(retType)
         End Sub
 
-        Protected Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
+        Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, _
-                                                Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, _
+                                                HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUndo_WRITE.Click
+        Protected Sub btnUndo_WRITE_Click(sender As Object, e As EventArgs) Handles btnUndo_WRITE.Click
             Try
                 PopulateAll()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub CreateNew()
-            Me.State.moClaimStatusLetterId = Guid.Empty
-            Me.State.IsClaimStatusLetterNew = True
+            State.moClaimStatusLetterId = Guid.Empty
+            State.IsClaimStatusLetterNew = True
             ClearAll()
-            Me.SetButtonsState(True)
-            Me.PopulateAll()
+            SetButtonsState(True)
+            PopulateAll()
             TheDealerControl.ChangeEnabledControlProperty(True)
 
         End Sub
 
-        Protected Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew_WRITE.Click
+        Protected Sub btnNew_WRITE_Click(sender As Object, e As EventArgs) Handles btnNew_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub CreateNewCopy()
-            Me.State.moClaimStatusLetterId = Guid.Empty
-            Me.State.IsClaimStatusLetterNew = True
+            State.moClaimStatusLetterId = Guid.Empty
+            State.IsClaimStatusLetterNew = True
 
-            Me.SetButtonsState(True)
+            SetButtonsState(True)
             TheDealerControl.ChangeEnabledControlProperty(True)
 
         End Sub
 
-        Protected Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCopy_WRITE.Click
+        Protected Sub btnCopy_WRITE_Click(sender As Object, e As EventArgs) Handles btnCopy_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
                     CreateNewCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDelete_WRITE.Click
+        Protected Sub btnDelete_WRITE_Click(sender As Object, e As EventArgs) Handles btnDelete_WRITE.Click
             Try
                 If DeleteClaimStatusLetter() = True Then
-                    Me.State.boChanged = True
+                    State.boChanged = True
                     Dim retType As New ClaimStatusLetterSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Delete, _
-                                    Me.State.moClaimStatusLetterId)
+                                    State.moClaimStatusLetterId)
                     retType.BoChanged = True
-                    Me.ReturnToCallingPage(retType)
+                    ReturnToCallingPage(retType)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -313,7 +313,7 @@ Namespace Tables
             moRecipientText.Text = Nothing
             ServiceCenterRecipientDropdown.SelectedIndex = 0
             IsActiveDropdownlList.SelectedIndex = 0
-            Me.emailText = ""
+            emailText = ""
             ExtendedClaimStatusDropdownList.SelectedIndex = 0
             cboGroupId.SelectedIndex = 0
             cboNotificationTypeId.SelectedIndex = 0
@@ -343,7 +343,7 @@ Namespace Tables
                                         "multipleDropControl_lb_DropDown", _
                                         False, _
                                         0)
-            If Me.State.IsClaimStatusLetterNew = True Then
+            If State.IsClaimStatusLetterNew = True Then
                 TheDealerControl.SelectedGuid = Guid.Empty
                 TheDealerControl.ChangeEnabledControlProperty(True)
             Else
@@ -360,12 +360,12 @@ Namespace Tables
                 listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                 listcontext.LanguageId = ElitaPlusIdentity.Current.ActiveUser.LanguageId
                 Dim StatLKl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ClaimStatusByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-                Me.ExtendedClaimStatusDropdownList.Populate(StatLKl, New PopulateOptions() With
+                ExtendedClaimStatusDropdownList.Populate(StatLKl, New PopulateOptions() With
                  {
                 .AddBlankItem = True
                       })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -374,7 +374,7 @@ Namespace Tables
             Try
                 With TheClaimStatusLetter
 
-                    If Me.State.IsClaimStatusLetterNew = True Then
+                    If State.IsClaimStatusLetterNew = True Then
                         ClaimStatus = True
                     Else
                         ClaimStatus = .UseClaimStatus = "Y"
@@ -387,19 +387,19 @@ Namespace Tables
                     End If
 
                     If ClaimStatus Then
-                        Me.SetSelectedItem(Me.ExtendedClaimStatusDropdownList, .ClaimStatusByGroupId)
-                        Me.SetSelectedItem(Me.cboGroupId, Guid.Empty)
-                        Me.SetSelectedItem(Me.cboNotificationTypeId, Guid.Empty)
+                        SetSelectedItem(ExtendedClaimStatusDropdownList, .ClaimStatusByGroupId)
+                        SetSelectedItem(cboGroupId, Guid.Empty)
+                        SetSelectedItem(cboNotificationTypeId, Guid.Empty)
                     Else
-                        Me.SetSelectedItem(Me.cboGroupId, .GroupOwnerId)
-                        Me.SetSelectedItem(Me.cboNotificationTypeId, .NotificationTypeId)
-                        Me.SetSelectedItem(Me.ExtendedClaimStatusDropdownList, Guid.Empty)
+                        SetSelectedItem(cboGroupId, .GroupOwnerId)
+                        SetSelectedItem(cboNotificationTypeId, .NotificationTypeId)
+                        SetSelectedItem(ExtendedClaimStatusDropdownList, Guid.Empty)
                     End If
-                    Me.SetSelectedItem(Me.IsActiveDropdownlList, .IsActive)
+                    SetSelectedItem(IsActiveDropdownlList, .IsActive)
                 End With
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -408,7 +408,7 @@ Namespace Tables
             Dim OWNERdv As ListItem() = CommonConfigManager.Current.ListManager.GetList(EXTOWN, Thread.CurrentPrincipal.GetLanguageCode())
             Dim NotificatioTypes As ListItem() = CommonConfigManager.Current.ListManager.GetList("NOTIFICATION_TYPES", Thread.CurrentPrincipal.GetLanguageCode())
 
-            If Me.State.IsClaimStatusLetterNew = True Then
+            If State.IsClaimStatusLetterNew = True Then
 
                 ServiceCenterRecipientDropdown.Populate(yesNoLkL, New PopulateOptions() With
                                                       {
@@ -461,10 +461,10 @@ Namespace Tables
         End Sub
 
         Protected Sub PopulateBOsFromForm()
-            With Me.TheClaimStatusLetter
+            With TheClaimStatusLetter
                 emailText = Request.Params("EmailText")
 
-                If Not (Not .EmailText Is Nothing AndAlso Not emailText Is Nothing AndAlso emailText.Replace(Environment.NewLine, "") = .EmailText.Replace(Environment.NewLine, "")) Then
+                If Not (.EmailText IsNot Nothing AndAlso emailText IsNot Nothing AndAlso emailText.Replace(Environment.NewLine, "") = .EmailText.Replace(Environment.NewLine, "")) Then
                     .EmailText = emailText
                 End If
 
@@ -474,20 +474,20 @@ Namespace Tables
                     .UseClaimStatus = "N"
                 End If
 
-                Me.PopulateBOProperty(TheClaimStatusLetter, CLAIM_STATUS_BY_GROUP_ID_PROPERTY, Me.ExtendedClaimStatusDropdownList)
-                Me.PopulateBOProperty(TheClaimStatusLetter, CLAIM_GROUP_OWNER_ID_PROPERTY, Me.cboGroupId)
-                Me.PopulateBOProperty(TheClaimStatusLetter, NOTIFICATION_TYPE_ID, Me.cboNotificationTypeId)
-                Me.PopulateBOProperty(TheClaimStatusLetter, DEALER_ID_PROPERTY, Me.TheDealerControl.SelectedGuid)
-                Me.PopulateBOProperty(TheClaimStatusLetter, LETTER_TYPE_PROPERTY, Me.moLetterTypeText)
-                Me.PopulateBOProperty(TheClaimStatusLetter, NUMBER_OF_DAYS_PROPERTY, Me.moNumberOfDaysText)
-                Me.PopulateBOProperty(TheClaimStatusLetter, EMAIL_SUBJECT_PROPERTY, Me.moEmailSubjectText)
+                PopulateBOProperty(TheClaimStatusLetter, CLAIM_STATUS_BY_GROUP_ID_PROPERTY, ExtendedClaimStatusDropdownList)
+                PopulateBOProperty(TheClaimStatusLetter, CLAIM_GROUP_OWNER_ID_PROPERTY, cboGroupId)
+                PopulateBOProperty(TheClaimStatusLetter, NOTIFICATION_TYPE_ID, cboNotificationTypeId)
+                PopulateBOProperty(TheClaimStatusLetter, DEALER_ID_PROPERTY, TheDealerControl.SelectedGuid)
+                PopulateBOProperty(TheClaimStatusLetter, LETTER_TYPE_PROPERTY, moLetterTypeText)
+                PopulateBOProperty(TheClaimStatusLetter, NUMBER_OF_DAYS_PROPERTY, moNumberOfDaysText)
+                PopulateBOProperty(TheClaimStatusLetter, EMAIL_SUBJECT_PROPERTY, moEmailSubjectText)
 
-                Me.PopulateBOProperty(TheClaimStatusLetter, USE_SERVICE_CENTER_EMAIL_PROPERTY, Me.ServiceCenterRecipientDropdown)
-                Me.PopulateBOProperty(TheClaimStatusLetter, IS_ACTIVE_PROPERTY, Me.IsActiveDropdownlList)
-                Me.PopulateBOProperty(TheClaimStatusLetter, EMAIL_TO_PROPERTY, Me.moRecipientText)
-                Me.PopulateBOProperty(TheClaimStatusLetter, EMAIL_FROM_PROPERTY, Me.moSenderText)
+                PopulateBOProperty(TheClaimStatusLetter, USE_SERVICE_CENTER_EMAIL_PROPERTY, ServiceCenterRecipientDropdown)
+                PopulateBOProperty(TheClaimStatusLetter, IS_ACTIVE_PROPERTY, IsActiveDropdownlList)
+                PopulateBOProperty(TheClaimStatusLetter, EMAIL_TO_PROPERTY, moRecipientText)
+                PopulateBOProperty(TheClaimStatusLetter, EMAIL_FROM_PROPERTY, moSenderText)
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
 
@@ -495,29 +495,29 @@ Namespace Tables
 
         Protected Sub PopulateGrid()
             Dim dvDropdown As DataView = LookupListNew.DropdownLookupList(CLAIM_STATUS_LETTER_VARIABLES, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            Me.Grid.AutoGenerateColumns = False
-            Me.Grid.DataSource = dvDropdown
-            Me.Grid.DataBind()
+            Grid.AutoGenerateColumns = False
+            Grid.DataSource = dvDropdown
+            Grid.DataBind()
             If dvDropdown.Count > 0 Then
-                Me.State.bnoRow = True
+                State.bnoRow = True
             Else
-                Me.State.bnoRow = False
+                State.bnoRow = False
             End If
         End Sub
 
-        Public Shared Sub SetLabelColor(ByVal lbl As Label)
+        Public Shared Sub SetLabelColor(lbl As Label)
             lbl.ForeColor = Color.Black
         End Sub
 
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-            If Not dvRow Is Nothing Then 'And Not Me.State.bnoRow Then
+            If dvRow IsNot Nothing Then 'And Not Me.State.bnoRow Then
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    e.Row.Cells(Me.GRID_COL_DESCRIPTION_IDX).Text = dvRow(GRID_COL_DESCRIPTION_PROPERTY).ToString
-                    e.Row.Cells(Me.GRID_COL_CODE_IDX).Text = "{" & dvRow(GRID_COL_CODE_PROPERTY).ToString & "}"
-                    e.Row.Cells(Me.GRID_COL_COPY_TO_CLIPBOARD_IDX).Attributes.Add("onclick", "return CopyToClipboard('{" & dvRow(GRID_COL_CODE_PROPERTY).ToString & "}');")
+                    e.Row.Cells(GRID_COL_DESCRIPTION_IDX).Text = dvRow(GRID_COL_DESCRIPTION_PROPERTY).ToString
+                    e.Row.Cells(GRID_COL_CODE_IDX).Text = "{" & dvRow(GRID_COL_CODE_PROPERTY).ToString & "}"
+                    e.Row.Cells(GRID_COL_COPY_TO_CLIPBOARD_IDX).Attributes.Add("onclick", "return CopyToClipboard('{" & dvRow(GRID_COL_CODE_PROPERTY).ToString & "}');")
                 End If
             End If
         End Sub
@@ -525,10 +525,10 @@ Namespace Tables
 
 #Region "Gui-Validation"
 
-        Private Sub SetButtonsState(ByVal bIsNew As Boolean)
+        Private Sub SetButtonsState(bIsNew As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
-            ControlMgr.SetEnableControl(Me, Me.btnDelete_WRITE, Not bIsNew)
+            ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
             TheDealerControl.ChangeEnabledControlProperty(bIsNew)
         End Sub
 #End Region
@@ -543,7 +543,7 @@ Namespace Tables
                     bIsDirty = .IsDirty
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
             Return bIsDirty
         End Function
@@ -552,21 +552,21 @@ Namespace Tables
             Dim isOK As Boolean = True
             Try
 
-                Me.PopulateBOsFromForm()
+                PopulateBOsFromForm()
                 If TheClaimStatusLetter.IsDirty() Then
-                    Me.TheClaimStatusLetter.Save()
-                    Me.State.boChanged = True
-                    If Me.State.IsClaimStatusLetterNew = True Then
-                        Me.State.IsClaimStatusLetterNew = False
+                    TheClaimStatusLetter.Save()
+                    State.boChanged = True
+                    If State.IsClaimStatusLetterNew = True Then
+                        State.IsClaimStatusLetterNew = False
                     End If
                     PopulateAll()
-                    Me.SetButtonsState(Me.State.IsClaimStatusLetterNew)
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    SetButtonsState(State.IsClaimStatusLetterNew)
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
                 isOK = False
             End Try
             Return isOK
@@ -583,7 +583,7 @@ Namespace Tables
                 End With
             Catch ex As Exception
                 TheClaimStatusLetter.RejectChanges()
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
                 bIsOk = False
             End Try
             Return bIsOk
@@ -594,33 +594,33 @@ Namespace Tables
 #Region "Handlers-Labels"
 
         Private Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(TheClaimStatusLetter, DEALER_ID_PROPERTY, Me.TheDealerControl.CaptionLabel)
-            Me.BindBOPropertyToLabel(TheClaimStatusLetter, LETTER_TYPE_PROPERTY, Me.moLetterTypeLabel)
-            Me.BindBOPropertyToLabel(TheClaimStatusLetter, NUMBER_OF_DAYS_PROPERTY, Me.moNumberOfDaysLabel)
-            Me.BindBOPropertyToLabel(TheClaimStatusLetter, EMAIL_SUBJECT_PROPERTY, Me.moEmailSubjectLabel)
-            Me.BindBOPropertyToLabel(TheClaimStatusLetter, EMAIL_TEXT_PROPERTY, Me.moEmailTextLabel)
-            Me.BindBOPropertyToLabel(TheClaimStatusLetter, EMAIL_FROM_PROPERTY, Me.moSenderLabel)
-            Me.BindBOPropertyToLabel(TheClaimStatusLetter, EMAIL_TO_PROPERTY, Me.moRecipientLabel)
-            Me.BindBOPropertyToLabel(TheClaimStatusLetter, USE_SERVICE_CENTER_EMAIL_PROPERTY, Me.moServiceCenterRecipientLabel)
-            Me.BindBOPropertyToLabel(TheClaimStatusLetter, IS_ACTIVE_PROPERTY, Me.moActiveLabel)
-            Me.BindBOPropertyToLabel(TheClaimStatusLetter, NOTIFICATION_TYPE_ID_PROPERTY, Me.moNotificationTypeLabel)
-            Me.BindBOPropertyToLabel(TheClaimStatusLetter, CLAIM_STATUS_BY_GROUP_ID_PROPERTY, Me.moClaimStatusLabel)
-            Me.BindBOPropertyToLabel(TheClaimStatusLetter, CLAIM_GROUP_OWNER_ID_PROPERTY, Me.moGroupIdLabel)
+            BindBOPropertyToLabel(TheClaimStatusLetter, DEALER_ID_PROPERTY, TheDealerControl.CaptionLabel)
+            BindBOPropertyToLabel(TheClaimStatusLetter, LETTER_TYPE_PROPERTY, moLetterTypeLabel)
+            BindBOPropertyToLabel(TheClaimStatusLetter, NUMBER_OF_DAYS_PROPERTY, moNumberOfDaysLabel)
+            BindBOPropertyToLabel(TheClaimStatusLetter, EMAIL_SUBJECT_PROPERTY, moEmailSubjectLabel)
+            BindBOPropertyToLabel(TheClaimStatusLetter, EMAIL_TEXT_PROPERTY, moEmailTextLabel)
+            BindBOPropertyToLabel(TheClaimStatusLetter, EMAIL_FROM_PROPERTY, moSenderLabel)
+            BindBOPropertyToLabel(TheClaimStatusLetter, EMAIL_TO_PROPERTY, moRecipientLabel)
+            BindBOPropertyToLabel(TheClaimStatusLetter, USE_SERVICE_CENTER_EMAIL_PROPERTY, moServiceCenterRecipientLabel)
+            BindBOPropertyToLabel(TheClaimStatusLetter, IS_ACTIVE_PROPERTY, moActiveLabel)
+            BindBOPropertyToLabel(TheClaimStatusLetter, NOTIFICATION_TYPE_ID_PROPERTY, moNotificationTypeLabel)
+            BindBOPropertyToLabel(TheClaimStatusLetter, CLAIM_STATUS_BY_GROUP_ID_PROPERTY, moClaimStatusLabel)
+            BindBOPropertyToLabel(TheClaimStatusLetter, CLAIM_GROUP_OWNER_ID_PROPERTY, moGroupIdLabel)
 
         End Sub
 
         Private Sub ClearLabelsErrSign()
-            Me.ClearLabelErrSign(Me.TheDealerControl.CaptionLabel)
-            Me.ClearLabelErrSign(Me.moLetterTypeLabel)
-            Me.ClearLabelErrSign(Me.moNumberOfDaysLabel)
-            Me.ClearLabelErrSign(Me.moEmailSubjectLabel)
-            Me.ClearLabelErrSign(Me.moEmailTextLabel)
-            Me.ClearLabelErrSign(Me.moClaimStatusLabel)
-            Me.ClearLabelErrSign(Me.moSenderLabel)
-            Me.ClearLabelErrSign(Me.moRecipientLabel)
-            Me.ClearLabelErrSign(Me.moActiveLabel)
-            Me.ClearLabelErrSign(Me.moNotificationTypeLabel)
-            Me.ClearLabelErrSign(Me.moGroupIdLabel)
+            ClearLabelErrSign(TheDealerControl.CaptionLabel)
+            ClearLabelErrSign(moLetterTypeLabel)
+            ClearLabelErrSign(moNumberOfDaysLabel)
+            ClearLabelErrSign(moEmailSubjectLabel)
+            ClearLabelErrSign(moEmailTextLabel)
+            ClearLabelErrSign(moClaimStatusLabel)
+            ClearLabelErrSign(moSenderLabel)
+            ClearLabelErrSign(moRecipientLabel)
+            ClearLabelErrSign(moActiveLabel)
+            ClearLabelErrSign(moNotificationTypeLabel)
+            ClearLabelErrSign(moGroupIdLabel)
 
         End Sub
 #End Region
@@ -628,19 +628,19 @@ Namespace Tables
 #Region "State-Management"
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             GoBack()
                         End If
 
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         GoBack()
                 End Select
             End If
@@ -648,16 +648,16 @@ Namespace Tables
         End Sub
 
         Protected Sub ComingFromNewCopy()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             CreateNewCopy()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         CreateNewCopy()
                 End Select
             End If
@@ -666,7 +666,7 @@ Namespace Tables
 
         Protected Sub CheckIfComingFromConfirm()
             Try
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ComingFromBack()
                     Case ElitaPlusPage.DetailPageCommand.New_
@@ -675,31 +675,31 @@ Namespace Tables
                         ComingFromNewCopy()
                 End Select
 
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = String.Empty
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
 #End Region
 #Region "Handlers-rb"
-        Private Sub rbUseClaimStatus_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles rbUseClaimStatus.CheckedChanged
+        Private Sub rbUseClaimStatus_CheckedChanged(sender As Object, e As System.EventArgs) Handles rbUseClaimStatus.CheckedChanged
 
             ClaimStatus = rbUseClaimStatus.Checked
-            Me.SetSelectedItem(Me.ExtendedClaimStatusDropdownList, TheClaimStatusLetter.ClaimStatusByGroupId)
-            Me.SetSelectedItem(Me.cboGroupId, NOTHING_SELECTED)
-            Me.SetSelectedItem(Me.cboNotificationTypeId, NOTHING_SELECTED)
+            SetSelectedItem(ExtendedClaimStatusDropdownList, TheClaimStatusLetter.ClaimStatusByGroupId)
+            SetSelectedItem(cboGroupId, NOTHING_SELECTED)
+            SetSelectedItem(cboNotificationTypeId, NOTHING_SELECTED)
 
         End Sub
 
-        Private Sub rbUseGroup_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles rbUseGroup.CheckedChanged
+        Private Sub rbUseGroup_CheckedChanged(sender As Object, e As System.EventArgs) Handles rbUseGroup.CheckedChanged
 
             ClaimStatus = rbUseClaimStatus.Checked
-            Me.SetSelectedItem(Me.ExtendedClaimStatusDropdownList, NOTHING_SELECTED)
-            Me.SetSelectedItem(Me.cboGroupId, TheClaimStatusLetter.GroupOwnerId)
-            Me.SetSelectedItem(Me.cboNotificationTypeId, TheClaimStatusLetter.NotificationTypeId)
+            SetSelectedItem(ExtendedClaimStatusDropdownList, NOTHING_SELECTED)
+            SetSelectedItem(cboGroupId, TheClaimStatusLetter.GroupOwnerId)
+            SetSelectedItem(cboNotificationTypeId, TheClaimStatusLetter.NotificationTypeId)
         End Sub
 #End Region
     End Class

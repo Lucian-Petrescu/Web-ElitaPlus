@@ -26,7 +26,7 @@
         End Property
 
         Private Sub SetStateProperties()
-            Me.State.ServiceNotificationfileProcessedId = CType(Me.CallingParameters, Guid)
+            State.ServiceNotificationfileProcessedId = CType(CallingParameters, Guid)
         End Sub
 
 #End Region
@@ -150,7 +150,7 @@
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -160,17 +160,17 @@
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.moErrorController.Clear_Hide()
-            Me.SetStateProperties()
+            moErrorController.Clear_Hide()
+            SetStateProperties()
             If Not Page.IsPostBack Then
-                Me.SortDirection = EMPTY
-                Me.SetGridItemStyleColor(moDataGrid)
-                Me.ShowMissingTranslations(moErrorController)
+                SortDirection = EMPTY
+                SetGridItemStyleColor(moDataGrid)
+                ShowMissingTranslations(moErrorController)
                 BaseSetButtonsState(False)
-                Me.TranslateGridHeader(moDataGrid)
-                Me.TranslateGridControls(moDataGrid)
+                TranslateGridHeader(moDataGrid)
+                TranslateGridControls(moDataGrid)
                 PopulateReadOnly()
                 PopulateGrid()
 
@@ -193,7 +193,7 @@
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
@@ -202,39 +202,39 @@
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 If IsDataGPageDirty() Then
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Dim str As String = Me.State.ServiceNotificationfileProcessedId.ToString()
-                    Dim retType As New SvrNotificationFileProcessedController.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.ServiceNotificationfileProcessedId)
-                    Me.ReturnToCallingPage(retType)
+                    Dim str As String = State.ServiceNotificationfileProcessedId.ToString()
+                    Dim retType As New SvrNotificationFileProcessedController.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ServiceNotificationfileProcessedId)
+                    ReturnToCallingPage(retType)
                 End If
             Catch ex As Exception
             Catch ex As Threading.ThreadAbortException
 
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
                 SavePage()
-                Me.HiddenIsPageDirty.Value = EMPTY
+                HiddenIsPageDirty.Value = EMPTY
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
                 PopulateGrid()
-                Me.HiddenIsPageDirty.Value = EMPTY
+                HiddenIsPageDirty.Value = EMPTY
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -242,73 +242,73 @@
 
 #Region "Handlers-Grid"
 
-        Private Sub moDataGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moDataGrid.PageIndexChanging
+        Private Sub moDataGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moDataGrid.PageIndexChanging
             Try
-                Me.State.selectedPageIndex = e.NewPageIndex
+                State.selectedPageIndex = e.NewPageIndex
                 If IsDataGPageDirty() Then
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
                 Else
-                    Me.moDataGrid.PageIndex = e.NewPageIndex
+                    moDataGrid.PageIndex = e.NewPageIndex
                     PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moDataGrid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub moDataGrid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 If IsDataGPageDirty() Then
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
                 Else
                     moDataGrid.PageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                    Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-                    Me.PopulateGrid()
+                    State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                    PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles moDataGrid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles moDataGrid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
 
 
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
-        Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
             Try
                 Dim nIndex As Integer = e.Item.ItemIndex
                 If (e.CommandName = SORT_COMMAND_NAME) Then
-                    Me.State.sortBy = CType(e.CommandArgument, String)
+                    State.sortBy = CType(e.CommandArgument, String)
                     If IsDataGPageDirty() Then
-                        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridColSort
-                        DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
+                        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridColSort
+                        DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
                     Else
                         PopulateGrid()
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Protected Sub ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles moDataGrid.RowDataBound
+        Protected Sub ItemBound(source As Object, e As GridViewRowEventArgs) Handles moDataGrid.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim oDateOfPayText As TextBox
@@ -319,25 +319,25 @@
             If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 '   Display Only
                 With e.Row
-                    Me.PopulateControlFromBOProperty(.FindControl("moDealerReconWrkIdLabel"), dvRow(SvcNotificationReconWrk.COL_NAME_SVC_NOTIFICATION_RECON_WRK_ID))
+                    PopulateControlFromBOProperty(.FindControl("moDealerReconWrkIdLabel"), dvRow(SvcNotificationReconWrk.COL_NAME_SVC_NOTIFICATION_RECON_WRK_ID))
                     oLabel = CType(e.Row.Cells(REJECT_REASON_COL).FindControl("moRejectReasonTextGrid"), Label)
                     oLabel.Attributes.Add("onchange", "setDirty()")
                     If e.Row.RowIndex() = 0 Then
                         SetFocus(oLabel)
                     End If
-                    Me.PopulateControlFromBOProperty(oLabel, dvRow(SvcNotificationReconWrk.COL_NAME_REJECT_REASON))
+                    PopulateControlFromBOProperty(oLabel, dvRow(SvcNotificationReconWrk.COL_NAME_REJECT_REASON))
 
                     oTextBox = CType(e.Row.Cells(SVC_NOTIFICATION_TYPE).FindControl("moServiceNotificationTypeTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_SVC_NOTIFICATION_TYPE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_SVC_NOTIFICATION_TYPE))
 
                     oTextBox = CType(e.Row.Cells(CREATED_ON).FindControl("moCreatedOnDate"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
                     Dim oReplacementDate As ImageButton = CType(e.Row.Cells(CREATED_ON).FindControl("ImgReplacementDateTextGrid"), ImageButton)
-                    If (Not oReplacementDate Is Nothing) Then
-                        Me.AddCalendar(oReplacementDate, oTextBox)
+                    If (oReplacementDate IsNot Nothing) Then
+                        AddCalendar(oReplacementDate, oTextBox)
                     End If
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CREATED_ON))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CREATED_ON))
 
                     oTextBox = CType(e.Row.Cells(CHANGED_ON).FindControl("moChangedOnDate"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
@@ -345,27 +345,27 @@
                     'If (Not oChangedOnDate Is Nothing) Then
                     '    Me.AddCalendar(oChangedOnDate, oTextBox)
                     'End If
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CHANGED_ON))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CHANGED_ON))
 
                     oTextBox = CType(e.Row.Cells(DESCRIPTION_COL).FindControl("moDescriptionTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_DESCRIPTION))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_DESCRIPTION))
 
                     oTextBox = CType(e.Row.Cells(PRP_COD_AMT_COL).FindControl("moAmountTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_PRP_COD_AMT))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_PRP_COD_AMT))
 
                     oLabel = CType(e.Row.Cells(REJECT_CODE_COL).FindControl("moRejectcodeTextGrid"), Label)
                     oLabel.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oLabel, dvRow(SvcNotificationReconWrk.COL_NAME_REJECT_CODE))
+                    PopulateControlFromBOProperty(oLabel, dvRow(SvcNotificationReconWrk.COL_NAME_REJECT_CODE))
 
                     oTextBox = CType(e.Row.Cells(SVC_NOTIFICATION_NUMBER).FindControl("moServiceNotificationNumberTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_SVC_NOTIFICATION_NUMBER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_SVC_NOTIFICATION_NUMBER))
 
                     oTextBox = CType(e.Row.Cells(ARTICLE_NUMBER).FindControl("moArticleNumberTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_ARTICLE_NUMBER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_ARTICLE_NUMBER))
 
                     'oTextBox = CType(e.Row.Cells(CLAIM_LOADED).FindControl("moClaimLoadedTextGrid"), TextBox)
                     'oTextBox.Attributes.Add("onchange", "setDirty()")
@@ -377,87 +377,87 @@
 
                     oTextBox = CType(e.Row.Cells(CUST_ACCT_NUMBER).FindControl("moAccountCustomerNumberTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_ACCT_NUMBER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_ACCT_NUMBER))
 
                     oTextBox = CType(e.Row.Cells(CUST_NAME_1).FindControl("moCustomerName1TextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_NAME_1))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_NAME_1))
 
                     oTextBox = CType(e.Row.Cells(CUST_NAME_2).FindControl("moCustomerName2TextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_NAME_2))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_NAME_2))
 
                     oTextBox = CType(e.Row.Cells(CUST_CITY).FindControl("moCustomerCityTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_CITY))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_CITY))
 
                     oTextBox = CType(e.Row.Cells(CUST_POSTAL_CODE).FindControl("moCustomerPostalCode"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_POSTAL_CODE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_POSTAL_CODE))
 
                     oTextBox = CType(e.Row.Cells(CUST_REGION).FindControl("moCustomerRegion"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_REGION))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_REGION))
 
                     oTextBox = CType(e.Row.Cells(CUST_ADDRESS).FindControl("moCustomerAddress"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_ADDRESS))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_ADDRESS))
 
                     oTextBox = CType(e.Row.Cells(CUST_PHONE_NUMBER).FindControl("moCustomerPhoneNumber"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_PHONE_NUMBER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_PHONE_NUMBER))
 
                     oTextBox = CType(e.Row.Cells(CUST_FAX_NUMBER).FindControl("moCustomerFaxNumber"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_FAX_NUMBER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CUST_FAX_NUMBER))
 
                     oTextBox = CType(e.Row.Cells(EQUIPMENT).FindControl("moEquipment"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_EQUIPMENT))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_EQUIPMENT))
 
                     oTextBox = CType(e.Row.Cells(MFG_NAME).FindControl("moMfgName"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_MFG_NAME))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_MFG_NAME))
 
                     oTextBox = CType(e.Row.Cells(MODEL_NUMBER).FindControl("moModelNumber"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_MODEL_NUMBER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_MODEL_NUMBER))
 
                     oTextBox = CType(e.Row.Cells(MFG_PART_NUMBER).FindControl("moMfgPartNumber"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_MFG_PART_NUMBER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_MFG_PART_NUMBER))
 
                     oTextBox = CType(e.Row.Cells(SERIAL_NUMBER).FindControl("moSerialNumber"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_SERIAL_NUMBER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_SERIAL_NUMBER))
 
                     oTextBox = CType(e.Row.Cells(SVC_NOTIFICATION_STATUS).FindControl("moSvcNotificationStatus"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_SVC_NOTIFICATION_STATUS))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_SVC_NOTIFICATION_STATUS))
 
                     oTextBox = CType(e.Row.Cells(SEQ_TASK_NUMBER).FindControl("moSeqTaskNumber"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_SEQ_TASK_NUMBER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_SEQ_TASK_NUMBER))
 
                     oTextBox = CType(e.Row.Cells(SEQ_TASK_DESCRIPTION).FindControl("moSeqTaskDescription"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_SEQ_TASK_DESCRIPTION))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_SEQ_TASK_DESCRIPTION))
 
                     oTextBox = CType(e.Row.Cells(CONSECUTIVE_ACTIVITY_NUMBER).FindControl("moConsecutiveActivityNumber"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CONSECUTIVE_ACTIVITY_NUMBER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_CONSECUTIVE_ACTIVITY_NUMBER))
 
                     oTextBox = CType(e.Row.Cells(ACTIVITY_TEXT).FindControl("moActivityText"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_ACTIVITY_TEXT))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_ACTIVITY_TEXT))
 
                     oTextBox = CType(e.Row.Cells(PROBLEM_DESCRIPTION).FindControl("moProblemDescription"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_PROBLEM_DESCRIPTION))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_PROBLEM_DESCRIPTION))
 
                     oTextBox = CType(e.Row.Cells(SITE_COL).FindControl("moSite"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_SITE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_SITE))
 
 
                     'oTextBox = CType(e.Row.Cells(OP_INDICATOR).FindControl("moOpIndicator"), TextBox)
@@ -466,7 +466,7 @@
 
                     oTextBox = CType(e.Row.Cells(TRANSACTION_NUMBER).FindControl("moTransactionNumber"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_TRANSACTION_NUMBER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(SvcNotificationReconWrk.COL_NAME_TRANSACTION_NUMBER))
 
 
                 End With
@@ -474,51 +474,51 @@
             BaseItemBound(source, e)
         End Sub
 
-        Protected Sub ItemCreated(ByVal source As Object, ByVal e As GridViewRowEventArgs)
+        Protected Sub ItemCreated(source As Object, e As GridViewRowEventArgs)
             BaseItemCreated(source, e)
         End Sub
 
-        Protected Sub BindBoPropertiesToGridHeaders(ByVal notificationReconWrkInfo As SvcNotificationReconWrk)
+        Protected Sub BindBoPropertiesToGridHeaders(notificationReconWrkInfo As SvcNotificationReconWrk)
 
 
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cREASON, Me.moDataGrid.Columns(Me.REJECT_REASON_COL))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cDESCRIPTION, Me.moDataGrid.Columns(Me.DESCRIPTION_COL))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cSITE, Me.moDataGrid.Columns(Me.SITE_COL))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cPRP_COD_AMT, Me.moDataGrid.Columns(Me.PRP_COD_AMT_COL))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cREASON, moDataGrid.Columns(REJECT_REASON_COL))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cDESCRIPTION, moDataGrid.Columns(DESCRIPTION_COL))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cSITE, moDataGrid.Columns(SITE_COL))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cPRP_COD_AMT, moDataGrid.Columns(PRP_COD_AMT_COL))
             'Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cMODIFIED_DATE, Me.moDataGrid.Columns(Me.MODIFIED_DATE))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cREJECT_CODE, Me.moDataGrid.Columns(Me.REJECT_CODE_COL))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cSVC_NOTIFICATION_NUMBER, Me.moDataGrid.Columns(Me.SVC_NOTIFICATION_NUMBER))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cARTICLE_NUMBER, Me.moDataGrid.Columns(Me.ARTICLE_NUMBER))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cREJECT_CODE, moDataGrid.Columns(REJECT_CODE_COL))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cSVC_NOTIFICATION_NUMBER, moDataGrid.Columns(SVC_NOTIFICATION_NUMBER))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cARTICLE_NUMBER, moDataGrid.Columns(ARTICLE_NUMBER))
             ' Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cCLAIM_LOADED, Me.moDataGrid.Columns(Me.CLAIM_LOADED))
             ' Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cENTIRE_RECORD, Me.moDataGrid.Columns(Me.ENTIRE_RECORD))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_ACCT_NUMBER, Me.moDataGrid.Columns(Me.CUST_ACCT_NUMBER))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_NAME_1, Me.moDataGrid.Columns(Me.CUST_NAME_1))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_NAME_2, Me.moDataGrid.Columns(Me.CUST_NAME_2))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_CITY, Me.moDataGrid.Columns(Me.CUST_CITY))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_POSTAL_CODE, Me.moDataGrid.Columns(Me.CUST_POSTAL_CODE))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_REGION, Me.moDataGrid.Columns(Me.CUST_REGION))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_ADDRESS, Me.moDataGrid.Columns(Me.CUST_ADDRESS))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_PHONE_NUMBER, Me.moDataGrid.Columns(Me.CUST_PHONE_NUMBER))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_FAX_NUMBER, Me.moDataGrid.Columns(Me.CUST_FAX_NUMBER))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cEQUIPMENT, Me.moDataGrid.Columns(Me.EQUIPMENT))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cMFG_NAME, Me.moDataGrid.Columns(Me.MFG_NAME))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cMODEL_NUMBER, Me.moDataGrid.Columns(Me.MODEL_NUMBER))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cMFG_PART_NUMBER, Me.moDataGrid.Columns(Me.MFG_PART_NUMBER))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cSERIAL_NUMBER, Me.moDataGrid.Columns(Me.SERIAL_NUMBER))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cSVC_NOTIFICATION_STATUS, Me.moDataGrid.Columns(Me.SVC_NOTIFICATION_STATUS))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cSEQ_TASK_NUMBER, Me.moDataGrid.Columns(Me.SEQ_TASK_NUMBER))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cSEQ_TASK_DESCRIPTION, Me.moDataGrid.Columns(Me.SEQ_TASK_DESCRIPTION))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cCONSECUTIVE_ACTIVITY_NUMBER, Me.moDataGrid.Columns(Me.CONSECUTIVE_ACTIVITY_NUMBER))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cACTIVITY_TEXT, Me.moDataGrid.Columns(Me.ACTIVITY_TEXT))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cPROBLEM_DESCRIPTION, Me.moDataGrid.Columns(Me.PROBLEM_DESCRIPTION))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_ACCT_NUMBER, moDataGrid.Columns(CUST_ACCT_NUMBER))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_NAME_1, moDataGrid.Columns(CUST_NAME_1))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_NAME_2, moDataGrid.Columns(CUST_NAME_2))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_CITY, moDataGrid.Columns(CUST_CITY))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_POSTAL_CODE, moDataGrid.Columns(CUST_POSTAL_CODE))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_REGION, moDataGrid.Columns(CUST_REGION))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_ADDRESS, moDataGrid.Columns(CUST_ADDRESS))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_PHONE_NUMBER, moDataGrid.Columns(CUST_PHONE_NUMBER))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cCUST_FAX_NUMBER, moDataGrid.Columns(CUST_FAX_NUMBER))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cEQUIPMENT, moDataGrid.Columns(EQUIPMENT))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cMFG_NAME, moDataGrid.Columns(MFG_NAME))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cMODEL_NUMBER, moDataGrid.Columns(MODEL_NUMBER))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cMFG_PART_NUMBER, moDataGrid.Columns(MFG_PART_NUMBER))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cSERIAL_NUMBER, moDataGrid.Columns(SERIAL_NUMBER))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cSVC_NOTIFICATION_STATUS, moDataGrid.Columns(SVC_NOTIFICATION_STATUS))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cSEQ_TASK_NUMBER, moDataGrid.Columns(SEQ_TASK_NUMBER))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cSEQ_TASK_DESCRIPTION, moDataGrid.Columns(SEQ_TASK_DESCRIPTION))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cCONSECUTIVE_ACTIVITY_NUMBER, moDataGrid.Columns(CONSECUTIVE_ACTIVITY_NUMBER))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cACTIVITY_TEXT, moDataGrid.Columns(ACTIVITY_TEXT))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cPROBLEM_DESCRIPTION, moDataGrid.Columns(PROBLEM_DESCRIPTION))
             'Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cOP_INDICATOR, Me.moDataGrid.Columns(Me.OP_INDICATOR))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cTRANSACTION_NUMBER, Me.moDataGrid.Columns(Me.TRANSACTION_NUMBER))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cSVC_NOTIFICATION_TYPE, Me.moDataGrid.Columns(Me.SVC_NOTIFICATION_TYPE))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cCREATED_ON, Me.moDataGrid.Columns(Me.CREATED_ON))
-            Me.BindBOPropertyToGridHeader(notificationReconWrkInfo, cCHANGED_ON, Me.moDataGrid.Columns(Me.CHANGED_ON))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cTRANSACTION_NUMBER, moDataGrid.Columns(TRANSACTION_NUMBER))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cSVC_NOTIFICATION_TYPE, moDataGrid.Columns(SVC_NOTIFICATION_TYPE))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cCREATED_ON, moDataGrid.Columns(CREATED_ON))
+            BindBOPropertyToGridHeader(notificationReconWrkInfo, cCHANGED_ON, moDataGrid.Columns(CHANGED_ON))
 
 
-            Me.ClearGridViewHeadersAndLabelsErrSign()
+            ClearGridViewHeadersAndLabelsErrSign()
         End Sub
 
 #End Region
@@ -528,34 +528,34 @@
 #Region "Controlling Logic"
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSavePagePromptResponse.Value
+            Dim confResponse As String = HiddenSavePagePromptResponse.Value
 
             Try
                 If Not confResponse.Equals(EMPTY) Then
-                    If confResponse = Me.MSG_VALUE_YES Then
+                    If confResponse = MSG_VALUE_YES Then
                         SavePage()
                     End If
-                    Me.HiddenSavePagePromptResponse.Value = EMPTY
-                    Me.HiddenIsPageDirty.Value = EMPTY
+                    HiddenSavePagePromptResponse.Value = EMPTY
+                    HiddenIsPageDirty.Value = EMPTY
 
-                    Select Case Me.State.ActionInProgress
+                    Select Case State.ActionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Dim retType As New SvrNotificationFileProcessedController.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.ServiceNotificationfileProcessedId)
-                            Me.ReturnToCallingPage(retType)
+                            Dim retType As New SvrNotificationFileProcessedController.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ServiceNotificationfileProcessedId)
+                            ReturnToCallingPage(retType)
                         Case ElitaPlusPage.DetailPageCommand.GridPageSize
-                            Me.moDataGrid.PageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                            Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                            moDataGrid.PageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+                            State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
                         Case Else
-                            Me.moDataGrid.PageIndex = Me.State.selectedPageIndex
+                            moDataGrid.PageIndex = State.selectedPageIndex
                     End Select
                     PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Function CreateBoFromGrid(ByVal index As Integer) As SvcNotificationReconWrk
+        Private Function CreateBoFromGrid(index As Integer) As SvcNotificationReconWrk
             Dim NotificationReconWrkId As Guid
             Dim notificationReconWrkInfo As SvcNotificationReconWrk
             Dim sModifiedDate As String
@@ -572,7 +572,7 @@
         Private Sub SavePage()
             Dim index As Integer = 0
             Dim notificationReconWrkInfo As SvcNotificationReconWrk
-            Dim totItems As Integer = Me.moDataGrid.Rows.Count
+            Dim totItems As Integer = moDataGrid.Rows.Count
 
             If totItems > 0 Then
                 notificationReconWrkInfo = CreateBoFromGrid(0)
@@ -591,7 +591,7 @@
         End Sub
 
         Function IsDataGPageDirty() As Boolean
-            Dim Result As String = Me.HiddenIsPageDirty.Value
+            Dim Result As String = HiddenIsPageDirty.Value
 
             Return Result.Equals("YES")
         End Function
@@ -600,11 +600,11 @@
 
 #Region "Button-Management"
 
-        Public Overrides Sub BaseSetButtonsState(ByVal bIsEdit As Boolean)
+        Public Overrides Sub BaseSetButtonsState(bIsEdit As Boolean)
             SetButtonsState(bIsEdit)
         End Sub
 
-        Private Sub SetButtonsState(ByVal bIsEdit As Boolean)
+        Private Sub SetButtonsState(bIsEdit As Boolean)
             If (bIsEdit = True) Then
                 'SaveButton_WRITE.Visible = True
                 'CancelButton.Visible = True
@@ -624,13 +624,13 @@
 
         Private Sub PopulateReadOnly()
             Try
-                Dim oNotificationFile As ServiceNotificationFileProcessed = New ServiceNotificationFileProcessed(Me.State.ServiceNotificationfileProcessedId)
+                Dim oNotificationFile As ServiceNotificationFileProcessed = New ServiceNotificationFileProcessed(State.ServiceNotificationfileProcessedId)
                 With oNotificationFile
                     moDealerNameText.Text = .COL_NAME_DEALERFILE_PROCESSED_ID
                     moFileNameText.Text = .Filename
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -642,19 +642,19 @@
             Try
                 dv = GetDV()
                 'dv.Sort = Me.State.sortBy
-                If Not Me.SortDirection.Equals(EMPTY) Then
-                    dv.Sort = Me.SortDirection
-                    HighLightSortColumn(moDataGrid, Me.SortDirection)
+                If Not SortDirection.Equals(EMPTY) Then
+                    dv.Sort = SortDirection
+                    HighLightSortColumn(moDataGrid, SortDirection)
                 End If
                 recCount = dv.Count
                 Session("recCount") = recCount
-                Me.TranslateGridControls(moDataGrid)
+                TranslateGridControls(moDataGrid)
                 moDataGrid.DataSource = dv
                 moDataGrid.DataBind()
-                Me.lblRecordCount.Text = recCount & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblRecordCount.Text = recCount & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 ControlMgr.DisableAllGridControlsIfNotEditAuth(Me, moDataGrid)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
@@ -670,12 +670,12 @@
 
         End Function
 
-        Private Sub PopulateBOItem(ByVal NotificationReconWrkInfo As SvcNotificationReconWrk, ByVal oPropertyName As String, ByVal oCellPosition As Integer)
-            Me.PopulateBOProperty(NotificationReconWrkInfo, oPropertyName,
-                                            CType(Me.GetSelectedGridControl(moDataGrid, oCellPosition), TextBox))
+        Private Sub PopulateBOItem(NotificationReconWrkInfo As SvcNotificationReconWrk, oPropertyName As String, oCellPosition As Integer)
+            PopulateBOProperty(NotificationReconWrkInfo, oPropertyName,
+                                            CType(GetSelectedGridControl(moDataGrid, oCellPosition), TextBox))
         End Sub
 
-        Private Sub PopulateBOFromForm(ByVal notificationReconWrkInfo As SvcNotificationReconWrk)
+        Private Sub PopulateBOFromForm(notificationReconWrkInfo As SvcNotificationReconWrk)
 
             'PopulateBOItem(notificationReconWrkInfo, cREASON, REJECT_REASON_COL)
             PopulateBOItem(notificationReconWrkInfo, cDESCRIPTION, DESCRIPTION_COL)
@@ -722,13 +722,13 @@
             PopulateBOItem(notificationReconWrkInfo, cTRANSACTION_NUMBER, TRANSACTION_NUMBER)
             PopulateBOItem(notificationReconWrkInfo, cSVC_NOTIFICATION_TYPE, SVC_NOTIFICATION_TYPE)
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
-        Private Sub PopulateFormItem(ByVal oCellPosition As Integer, ByVal oPropertyValue As Object)
-            Me.PopulateControlFromBOProperty(Me.GetSelectedGridControl(moDataGrid, oCellPosition), oPropertyValue)
+        Private Sub PopulateFormItem(oCellPosition As Integer, oPropertyValue As Object)
+            PopulateControlFromBOProperty(GetSelectedGridControl(moDataGrid, oCellPosition), oPropertyValue)
         End Sub
 
 #End Region

@@ -59,7 +59,7 @@ Namespace Reports
         End Sub
         'NOTE: The following placeholder declaration is required by the Web Form Designer.
         'Do not delete or move it.
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -69,12 +69,12 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear_Hide()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            MasterPage.MessageController.Clear_Hide()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
 
                     currentAccountingMonth = AccountingCloseInfo.GetAccountingCloseDate(ElitaPlusIdentity.Current.ActiveUser.CompanyId, Date.Today).Month
                     currentAccountingYear = AccountingCloseInfo.GetAccountingCloseDate(ElitaPlusIdentity.Current.ActiveUser.CompanyId, Date.Today).Year
@@ -83,17 +83,17 @@ Namespace Reports
                     InitializeForm()
                     UpdateBreadCrum()
                     TheReportCeInputControl.ExcludeExport()
-                    Me.SetFormTab(PAGETAB)
+                    SetFormTab(PAGETAB)
                     ClearErrLabels()
                 Else
                     currentAccountingMonth = CType(ViewState("CURRENTACCOUNTINGMONTH"), Integer)
                     currentAccountingYear = CType(ViewState("CURRENTACCOUNTINGYEAR"), Integer)
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
         Private Sub InitializeForm()
@@ -105,21 +105,21 @@ Namespace Reports
         End Sub
 
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
 
         End Sub
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -129,8 +129,8 @@ Namespace Reports
 
 #Region "Clear"
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(MonthYearLabel)
-            Me.ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(MonthYearLabel)
+            ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
         End Sub
 #End Region
 
@@ -156,7 +156,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(False, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 'HideHtmlElement("ddSeparator")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 'UserCompanyMultipleDrop.Visible = False
                 ' OnFromDrop_Changed(UserCompanyMultipleDrop)
             End If
@@ -168,7 +168,7 @@ Namespace Reports
                 CommonConfigManager.Current.ListManager.GetList(listCode:="MONTH",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-            Me.MonthDropDownList.Populate(MonthList.ToArray(),
+            MonthDropDownList.Populate(MonthList.ToArray(),
                                          New PopulateOptions() With
                                          {
                                            .AddBlankItem = True,
@@ -186,7 +186,7 @@ Namespace Reports
                                                                Where x.Description = currentAccountingYear.ToString() Or x.Description = (currentAccountingYear - 1).ToString()
                                                                Select x).ToArray()
 
-            Me.YearDropDownList.Populate(filteredYearList,
+            YearDropDownList.Populate(filteredYearList,
                                          New PopulateOptions() With
                                          {
                                            .AddBlankItem = True,
@@ -198,8 +198,8 @@ Namespace Reports
 #End Region
 
 #Region "Report Generation"
-        Function SetParameters(ByVal companyCode As String, ByVal BeginMonthAndYear As String, ByVal EndMonthAndYear As String,
-                                 ByVal selectedReportingPeriod As String, ByVal dealerCode As String, dealerForCur As Guid, rptCurrency As Guid) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, BeginMonthAndYear As String, EndMonthAndYear As String,
+                                 selectedReportingPeriod As String, dealerCode As String, dealerForCur As Guid, rptCurrency As Guid) As ReportCeBaseForm.Params
             Dim params As New ReportCeBaseForm.Params
             Dim reportName As String = RPT_FILENAME
             Dim moReportFormat As ReportCeBaseForm.RptFormat
@@ -240,8 +240,8 @@ Namespace Reports
             Dim dealerForCur As Guid = Guid.Empty
             Dim rptCurrency As Guid = Guid.Empty
 
-            Dim selectedYear As String = Me.GetSelectedDescription(Me.YearDropDownList)
-            Dim selectedMonthID As Guid = Me.GetSelectedItem(Me.MonthDropDownList)
+            Dim selectedYear As String = GetSelectedDescription(YearDropDownList)
+            Dim selectedMonthID As Guid = GetSelectedItem(MonthDropDownList)
             Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
 
             If selectedMonthID.Equals(Guid.Empty) OrElse selectedYear.Equals(String.Empty) Then
@@ -258,23 +258,23 @@ Namespace Reports
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
             End If
 
-            If Me.rdoMTD.Checked Then
+            If rdoMTD.Checked Then
                 EndMonthAndYear = selectedMonth & selectedYear
                 BeginMonthAndYear = EndMonthAndYear
-                selectedReportingPeriod = Me.MTD
-            ElseIf Me.rdoQTD.Checked Then
+                selectedReportingPeriod = MTD
+            ElseIf rdoQTD.Checked Then
                 If CType(selectedMonth, Integer) Mod 3 <> 0 Then
                     ElitaPlusPage.SetLabelError(MonthYearLabel)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_MONTH_FOR_QUARTER_END_ERR)
                 Else
                     EndMonthAndYear = selectedMonth & selectedYear
                     BeginMonthAndYear = (CType(selectedMonth, Integer) - 2).ToString & selectedYear
-                    selectedReportingPeriod = Me.QTD
+                    selectedReportingPeriod = QTD
                 End If
             Else
                 EndMonthAndYear = selectedMonth & selectedYear
                 BeginMonthAndYear = "01" & selectedYear
-                selectedReportingPeriod = Me.YTD
+                selectedReportingPeriod = YTD
             End If
             ReportCeBase.EnableReportCe(Me, TheReportCeInputControl)
 

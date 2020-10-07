@@ -117,7 +117,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -127,32 +127,32 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     moReportCeInputControl.populateReportLanguages(RPT_FILENAME)
                 End If
                 EnableOrDisableControls()
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
         Private Sub InitializeForm()
             PopulateCommentTypeDropDown()
             PopulateDealerDropDown()
             PopulateServiceCenterDropDown()
-            Me.rCommentType.Checked = True
-            Me.rsvccenter.Checked = True
-            Me.rdealer.Checked = True
-            Me.rAllUsers.Checked = True
-            Me.RadiobuttonAllClaims.Checked = True
-            Me.PopulateControlFromBOProperty(Me.txtActiveDays, Me.DEFAULT_NUMBER_ACTIVE_DAYS)
+            rCommentType.Checked = True
+            rsvccenter.Checked = True
+            rdealer.Checked = True
+            rAllUsers.Checked = True
+            RadiobuttonAllClaims.Checked = True
+            PopulateControlFromBOProperty(txtActiveDays, DEFAULT_NUMBER_ACTIVE_DAYS)
         End Sub
 
 #End Region
@@ -181,7 +181,7 @@ Namespace Reports
                 oListContext.CountryId = _country
                 Dim oServiceCenterListForCountry As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceCenterListByCountry", context:=oListContext)
                 If oServiceCenterListForCountry.Count > 0 Then
-                    If Not oServiceCenterList Is Nothing Then
+                    If oServiceCenterList IsNot Nothing Then
                         oServiceCenterList.AddRange(oServiceCenterListForCountry)
                     Else
                         oServiceCenterList = oServiceCenterListForCountry.Clone()
@@ -189,7 +189,7 @@ Namespace Reports
                 End If
             Next
 
-            Me.cboSvcCenter.Populate(oServiceCenterList.ToArray(), New PopulateOptions() With
+            cboSvcCenter.Populate(oServiceCenterList.ToArray(), New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = True
                                                    })
@@ -198,7 +198,7 @@ Namespace Reports
 
         Sub PopulateCommentTypeDropDown()
             Dim commentTypes As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="COMMT", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-            Me.cboCommentType.Populate(commentTypes, New PopulateOptions() With
+            cboCommentType.Populate(commentTypes, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -210,22 +210,22 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 Dim userId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
                 Dim languageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
                 ''Dim langCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_LANGUAGES, languageId)
                 Dim langCultureValue As String = LookupListNew.GetCodeFromId(LookupListNew.LK_LANGUAGE_CULTURES, languageId)
                 Dim dealerId As Guid = DealerMultipleDrop.SelectedGuid
-                Dim serviceCenterId As Guid = Me.GetSelectedItem(Me.cboSvcCenter)
+                Dim serviceCenterId As Guid = GetSelectedItem(cboSvcCenter)
                 Dim daysFromLastComment As String
                 Dim daysFromLastCommentNumber As Integer
-                Dim commentTypeId As Guid = Me.GetSelectedItem(Me.cboCommentType)
+                Dim commentTypeId As Guid = GetSelectedItem(cboCommentType)
                 Dim includeAllClaims As String = NO
                 Dim params As ReportCeBaseForm.Params
                 Dim createdby As String
 
-                If Me.rCommentType.Checked Then
+                If rCommentType.Checked Then
                     commentTypeId = Guid.Empty
                 Else
                     If commentTypeId.Equals(Guid.Empty) Then
@@ -233,7 +233,7 @@ Namespace Reports
                     End If
                 End If
 
-                If Me.rdealer.Checked Then
+                If rdealer.Checked Then
                     dealerId = Guid.Empty
                 Else
                     If dealerId.Equals(Guid.Empty) Then
@@ -241,7 +241,7 @@ Namespace Reports
                     End If
                 End If
 
-                If Me.rsvccenter.Checked Then
+                If rsvccenter.Checked Then
                     serviceCenterId = Guid.Empty
                 Else
                     If serviceCenterId.Equals(Guid.Empty) Then
@@ -252,19 +252,19 @@ Namespace Reports
                 If txtActiveDays.Text.Trim.ToString = String.Empty Then
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER_OF_ACTIVE_DAYS_ERR)
                 Else
-                    daysFromLastComment = Me.txtActiveDays.Text.Trim()
-                    daysFromLastCommentNumber = CType(Me.txtActiveDays.Text, Integer)
+                    daysFromLastComment = txtActiveDays.Text.Trim()
+                    daysFromLastCommentNumber = CType(txtActiveDays.Text, Integer)
                     If ((daysFromLastCommentNumber < 0) OrElse (daysFromLastCommentNumber > 999)) Then
                         Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER_OF_ACTIVE_DAYS_ERR)
                     End If
                 End If
 
-                If Me.RadiobuttonExcludeRepairedClaims.Checked Then
+                If RadiobuttonExcludeRepairedClaims.Checked Then
                     includeAllClaims = YES
                 End If
 
 
-                If Me.rAllUsers.Checked Then
+                If rAllUsers.Checked Then
                     createdby = Nothing
                 Else
                     createdby = txtUserId.Text.Trim.ToString()
@@ -294,7 +294,7 @@ Namespace Reports
                 Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -302,8 +302,8 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Sub SetReportParams(ByVal oReportParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                            ByVal reportName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(oReportParams As ReportParams, repParams() As ReportCeBaseForm.RptParam,
+                            reportName As String, startIndex As Integer)
             With oReportParams
                 If (.dealerId.Equals(Guid.Empty)) Then
                     repParams(startIndex) = New ReportCeBaseForm.RptParam("V_DEALER_ID", Nothing, reportName)
@@ -332,10 +332,10 @@ Namespace Reports
             End With
         End Sub
 
-        Function SetParameters(ByVal dealerId As Guid, ByVal serviceCenterId As Guid, ByVal commentTypeId As Guid,
-                                ByVal daysFromLastComment As String, ByVal includeAllClaims As String,
-                                ByVal createdBy As String, ByVal languageId As Guid, ByVal languageCultureValue As String,
-                                ByVal userId As Guid) _
+        Function SetParameters(dealerId As Guid, serviceCenterId As Guid, commentTypeId As Guid,
+                                daysFromLastComment As String, includeAllClaims As String,
+                                createdBy As String, languageId As Guid, languageCultureValue As String,
+                                userId As Guid) _
                             As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
@@ -344,7 +344,7 @@ Namespace Reports
             Dim params As New ReportCeBaseForm.Params
             Dim repParams(TOTALPARAMS) As ReportCeBaseForm.RptParam
             Dim oReportParams As ReportParams
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
 
             With oReportParams
@@ -374,10 +374,10 @@ Namespace Reports
             Return params
         End Function
 
-        Function SetExpParameters(ByVal dealerId As Guid, ByVal serviceCenterId As Guid, ByVal commentTypeId As Guid,
-                                ByVal daysFromLastComment As String, ByVal includeAllClaims As String,
-                                ByVal createdBy As String, ByVal languageId As Guid, ByVal languageCultureValue As String,
-                                ByVal userId As Guid) _
+        Function SetExpParameters(dealerId As Guid, serviceCenterId As Guid, commentTypeId As Guid,
+                                daysFromLastComment As String, includeAllClaims As String,
+                                createdBy As String, languageId As Guid, languageCultureValue As String,
+                                userId As Guid) _
                             As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
@@ -386,7 +386,7 @@ Namespace Reports
             reportName = moReportCeInputControl.getReportName(RPT_FILENAME_EXPORT, True)
             Dim params As New ReportCeBaseForm.Params
             Dim repParams(TOTALEXPPARAMS) As ReportCeBaseForm.RptParam
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
             Dim oReportParams As ReportParams
 
             With oReportParams
@@ -417,7 +417,7 @@ Namespace Reports
 #End Region
 
         Private Sub EnableOrDisableControls()
-            If Me.rdealer.Checked = True Then
+            If rdealer.Checked = True Then
                 DealerMultipleDrop.SelectedIndex = -1
             End If
         End Sub

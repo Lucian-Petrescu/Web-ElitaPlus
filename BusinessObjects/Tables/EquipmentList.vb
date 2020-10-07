@@ -8,40 +8,40 @@ Public Class EquipmentList
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New EquipmentListDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             SetValue(dal.COL_NAME_EFFECTIVE, EquipmentListDetail.GetCurrentDateTime())
             SetValue(dal.COL_NAME_EXPIRATION, EQUIPMENT_EXPIRATION_DEFAULT)
@@ -54,20 +54,20 @@ Public Class EquipmentList
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New EquipmentListDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -106,7 +106,7 @@ Public Class EquipmentList
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentListDAL.COL_NAME_CODE, Value)
+            SetValue(EquipmentListDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
@@ -122,7 +122,7 @@ Public Class EquipmentList
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentListDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(EquipmentListDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -138,7 +138,7 @@ Public Class EquipmentList
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentListDAL.COL_NAME_COMMENTS, Value)
+            SetValue(EquipmentListDAL.COL_NAME_COMMENTS, Value)
         End Set
     End Property
 
@@ -154,7 +154,7 @@ Public Class EquipmentList
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(EquipmentListDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(EquipmentListDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
@@ -170,7 +170,7 @@ Public Class EquipmentList
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(EquipmentListDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(EquipmentListDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 #End Region
@@ -185,16 +185,16 @@ Public Class EquipmentList
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New EquipmentListDAL
                 'dal.Update(Me.Row) 'Original code generated replced by the code below
-                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
+                dal.UpdateFamily(Dataset) 'New Code Added Manually
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -205,12 +205,12 @@ Public Class EquipmentList
     'Added manually to the code
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 
     Public Sub Copy(ByVal original As EquipmentList)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Detail List")
         End If
 
@@ -229,25 +229,25 @@ Public Class EquipmentList
             End If
 
             '' Check Equipment is valid and lies with in the new future lsit
-            If detail.Expiration < DateHelper.GetDateValue(Me.Effective.ToString()) Then
+            If detail.Expiration < DateHelper.GetDateValue(Effective.ToString()) Then
                 Continue For
             End If
 
-            Dim newDetail As EquipmentListDetail = Me.BestEquipmentListChildren.GetNewChild
+            Dim newDetail As EquipmentListDetail = BestEquipmentListChildren.GetNewChild
             newDetail.Copy(detail)
-            newDetail.EquipmentListId = Me.Id
+            newDetail.EquipmentListId = Id
 
             '' Set Effective date, Equipment list or Equipment, which ever is future date
             SelectedEquipmetEffective = EquipmentListDetail.GetEquipmentEffective(newDetail.EquipmentId)
-            If SelectedEquipmetEffective < Me.Effective Then
-                newDetail.Effective = Me.Effective
+            If SelectedEquipmetEffective < Effective Then
+                newDetail.Effective = Effective
             Else
                 newDetail.Effective = SelectedEquipmetEffective
             End If
 
             '' Set Expiration date, Equipment list or Equipment, which ever is earlier
             SelectedEquipmetExpiration = EquipmentListDetail.GetEquipmentExpiration(newDetail.EquipmentId)
-            SelectedEquipmetListExpiration = Me.Expiration
+            SelectedEquipmetListExpiration = Expiration
             If SelectedEquipmetExpiration < SelectedEquipmetListExpiration Then
                 newDetail.Expiration = SelectedEquipmetExpiration
             Else
@@ -354,14 +354,14 @@ Public Class EquipmentList
     End Property
 
     Public Function GetChild(ByVal childId As Guid) As EquipmentListDetail
-        Return CType(Me.BestEquipmentListChildren.GetChild(childId), EquipmentListDetail)
+        Return CType(BestEquipmentListChildren.GetChild(childId), EquipmentListDetail)
     End Function
 
     Public Function GetNewChild() As EquipmentListDetail
-        Dim newEquipmentListDetail As EquipmentListDetail = CType(Me.BestEquipmentListChildren.GetNewChild, EquipmentListDetail)
-        newEquipmentListDetail.EquipmentListId = Me.Id
-        newEquipmentListDetail.Effective = Me.Effective
-        newEquipmentListDetail.Expiration = Me.Expiration
+        Dim newEquipmentListDetail As EquipmentListDetail = CType(BestEquipmentListChildren.GetNewChild, EquipmentListDetail)
+        newEquipmentListDetail.EquipmentListId = Id
+        newEquipmentListDetail.Effective = Effective
+        newEquipmentListDetail.Expiration = Expiration
         Return newEquipmentListDetail
     End Function
 
@@ -536,11 +536,11 @@ Public Class EquipmentList
             Dim dv As EquipmentList.EquipmentSearchDV = New EquipmentList.EquipmentSearchDV(EquipDal.LoadList(Code, String.Empty, Effective, _
                    String.Empty, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
-            If Not Me.Code Is Nothing And Not Me.Effective Is Nothing Then
+            If Not Code Is Nothing And Not Effective Is Nothing Then
                 For Each dr As DataRow In dv.Table.Rows
-                    If ((dr(EquipmentListDAL.COL_NAME_CODE).ToString.ToUpper = Me.Code.ToUpper) And _
-                        (dr(EquipmentListDAL.COL_NAME_EFFECTIVE) = DateHelper.GetDateValue(Me.Effective).ToString("dd-MMM-yyyy")) And _
-                        Not DirectCast(dr(EquipmentListDAL.COL_NAME_EQUIPMENT_LIST_ID), Byte()).SequenceEqual(Me.Id.ToByteArray)) Then
+                    If ((dr(EquipmentListDAL.COL_NAME_CODE).ToString.ToUpper = Code.ToUpper) And _
+                        (dr(EquipmentListDAL.COL_NAME_EFFECTIVE) = DateHelper.GetDateValue(Effective).ToString("dd-MMM-yyyy")) And _
+                        Not DirectCast(dr(EquipmentListDAL.COL_NAME_EQUIPMENT_LIST_ID), Byte()).SequenceEqual(Id.ToByteArray)) Then
                         Return True
                     End If
                 Next
@@ -561,9 +561,9 @@ Public Class EquipmentList
                    String.Empty, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
             For Each dr As DataRow In dv.Table.Rows
-                If ((Not dr(EquipmentDAL.COL_NAME_CODE) = Me.Code) And _
-                    (Not dr(EquipmentDAL.COL_NAME_EFFECTIVE) >= Equals(Me.Effective)) And _
-                    (Not dr(EquipmentDAL.COL_NAME_EXPIRATION) <= Equals(Me.Expiration))) Then
+                If ((Not dr(EquipmentDAL.COL_NAME_CODE) = Code) And _
+                    (Not dr(EquipmentDAL.COL_NAME_EFFECTIVE) >= Equals(Effective)) And _
+                    (Not dr(EquipmentDAL.COL_NAME_EXPIRATION) <= Equals(Expiration))) Then
                     Return True
                 End If
             Next
@@ -578,7 +578,7 @@ Public Class EquipmentList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
         If Not Code Is String.Empty Then
-            If EquipDal.IsListToDealer(Code, Me.Id).Tables(0).Rows.Count > 0 Then
+            If EquipDal.IsListToDealer(Code, Id).Tables(0).Rows.Count > 0 Then
                 Return True
             End If
         End If

@@ -37,38 +37,38 @@ Namespace Reports
 
         Public Property ReportWindowName As String
             Get
-                Return Me.State.ReportWindowName
+                Return State.ReportWindowName
             End Get
-            Set(ByVal value As String)
-                Me.State.ReportWindowName = value
-                TitleTextLabel.Text = Me.ReportWindowName
+            Set(value As String)
+                State.ReportWindowName = value
+                TitleTextLabel.Text = ReportWindowName
             End Set
         End Property
 
         Public Property ReportFileName As String
             Get
-                Return Me.State.ReportFileName
+                Return State.ReportFileName
             End Get
-            Set(ByVal value As String)
-                Me.State.ReportFileName = value
+            Set(value As String)
+                State.ReportFileName = value
             End Set
         End Property
 
         Public Property LoadStatus As String
             Get
-                Return Me.State.LoadStatus
+                Return State.LoadStatus
             End Get
-            Set(ByVal value As String)
-                Me.State.LoadStatus = value
+            Set(value As String)
+                State.LoadStatus = value
             End Set
         End Property
 
         Public Property FileProcessedId As Guid
             Get
-                Return Me.State.FileProcessedId
+                Return State.FileProcessedId
             End Get
-            Set(ByVal value As Guid)
-                Me.State.FileProcessedId = value
+            Set(value As Guid)
+                State.FileProcessedId = value
             End Set
         End Property
 
@@ -97,7 +97,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -107,50 +107,50 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub ExportFileProcessedForm_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles Me.PageCall
+        Private Sub ExportFileProcessedForm_PageCall(CallFromUrl As String, CallingPar As Object) Handles Me.PageCall
             Dim callingParam As MyState
             callingParam = CType(CallingPar, MyState)
-            Me.State.FileProcessedId = callingParam.FileProcessedId
-            Me.State.LoadStatus = callingParam.LoadStatus
-            Me.State.ReportFileName = callingParam.ReportFileName
-            Me.ReportWindowName = callingParam.ReportWindowName
-            Me.State.oReturnType = callingParam.oReturnType
+            State.FileProcessedId = callingParam.FileProcessedId
+            State.LoadStatus = callingParam.LoadStatus
+            State.ReportFileName = callingParam.ReportFileName
+            ReportWindowName = callingParam.ReportWindowName
+            State.oReturnType = callingParam.oReturnType
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Me.State.oReturnType.LastOperation = ElitaPlusPage.DetailPageCommand.Back
-                Me.ReturnToCallingPage(Me.State.oReturnType)
+                State.oReturnType.LastOperation = ElitaPlusPage.DetailPageCommand.Back
+                ReturnToCallingPage(State.oReturnType)
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -161,14 +161,14 @@ Namespace Reports
 #Region "Populate"
 
         Private Sub InitializeForm()
-            Me.TheRptCeInputControl.SetExportOnly()
+            TheRptCeInputControl.SetExportOnly()
         End Sub
 
 #End Region
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal fileProcessedId As Guid, ByVal loadStatus As String) As ReportCeBaseForm.Params
+        Function SetParameters(fileProcessedId As Guid, loadStatus As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim moReportFormat As ReportCeBaseForm.RptFormat
@@ -182,8 +182,8 @@ Namespace Reports
                                      New ReportCeBaseForm.RptParam("P_LOAD_STATUS", loadStatus)}
 
             With params
-                .msRptName = Me.ReportFileName 'RPT_FILENAME_EXPORT
-                .msRptWindowName = TranslationBase.TranslateLabelOrMessage(Me.ReportWindowName)
+                .msRptName = ReportFileName 'RPT_FILENAME_EXPORT
+                .msRptWindowName = TranslationBase.TranslateLabelOrMessage(ReportWindowName)
                 .moRptFormat = moReportFormat
                 .moAction = ReportCeBaseForm.RptAction.SCHEDULE_VIEW
                 .moRptParams = repParams
@@ -194,7 +194,7 @@ Namespace Reports
         Private Sub GenerateReport()
             ReportCeBase.EnableReportCe(Me, TheRptCeInputControl)
 
-            Dim params As ReportCeBaseForm.Params = SetParameters(Me.State.FileProcessedId, Me.State.LoadStatus)
+            Dim params As ReportCeBaseForm.Params = SetParameters(State.FileProcessedId, State.LoadStatus)
             Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
 
         End Sub

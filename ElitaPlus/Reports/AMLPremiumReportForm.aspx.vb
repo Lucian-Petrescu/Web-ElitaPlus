@@ -69,7 +69,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -81,49 +81,49 @@ Namespace Reports
 #Region "Handlers-Init"
 
         Private Sub InitializeForm()
-            Me.txtActiveCerts.Text = "5"
+            txtActiveCerts.Text = "5"
             PopulateCompaniesDropdown()
             TheReportCeInputControl.populateReportLanguages(RPT_FILENAME)
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.MasterPage.MessageController.Clear_Hide()
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+            MasterPage.MessageController.Clear_Hide()
             ClearErrLabels()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             If UserCompanyMultipleDrop.Visible = False Then
                 ControlMgr.SetVisibleControl(Me, trcomp, False)
             End If
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     UpdateBreadCrum()
                     'JavascriptCalls()
                     InitializeForm()
-                    Me.AddCalendar(Me.BtnBeginDate, Me.BeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.EndDateText)
+                    AddCalendar(BtnBeginDate, BeginDateText)
+                    AddCalendar(BtnEndDate, EndDateText)
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(DOCTITLE)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(DOCTITLE)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End Sub
 
 #End Region
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -137,9 +137,9 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(BeginDateLabel)
-            Me.ClearLabelErrSign(EndDateLabel)
-            Me.ClearLabelErrSign(lblActiveCerts)
+            ClearLabelErrSign(BeginDateLabel)
+            ClearLabelErrSign(EndDateLabel)
+            ClearLabelErrSign(lblActiveCerts)
         End Sub
 
 #End Region
@@ -151,7 +151,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, ALL + " " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True, )
             If dv.Count.Equals(ONE_ITEM) Then
                 ControlMgr.SetVisibleControl(Me, trcomp, False)
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
             End If
         End Sub
@@ -159,9 +159,9 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal compcode As String, certificatesBy As String,
-                                 ByVal begindate As String, ByVal endDate As String,
-                                 ByVal activeCerts_TaxId As Integer, ByVal sortOrder As String) As ReportCeBaseForm.Params
+        Function SetParameters(compcode As String, certificatesBy As String,
+                                 begindate As String, endDate As String,
+                                 activeCerts_TaxId As Integer, sortOrder As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim culturevalue As String = TheReportCeInputControl.getCultureValue(False, GuidControl.GuidToHexString(UserCompanyMultipleDrop.SelectedGuid))
@@ -190,9 +190,9 @@ Namespace Reports
             End With
             Return params
         End Function
-        Function SetExpParameters(ByVal compcode As String, certificatesBy As String,
-                                ByVal begindate As String, ByVal endDate As String,
-                                ByVal activeCerts_TaxId As Integer, ByVal sortOrder As String) As ReportCeBaseForm.Params
+        Function SetExpParameters(compcode As String, certificatesBy As String,
+                                begindate As String, endDate As String,
+                                activeCerts_TaxId As Integer, sortOrder As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim culturevalue As String = TheReportCeInputControl.getCultureValue(True, GuidControl.GuidToHexString(UserCompanyMultipleDrop.SelectedGuid))
@@ -253,8 +253,8 @@ Namespace Reports
             If txtActiveCerts.Text.Trim.ToString = String.Empty Then
                 ElitaPlusPage.SetLabelError(lblActiveCerts)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER)
-            ElseIf IsNumeric(Me.txtActiveCerts.Text) Then
-                activeCerts = CType(Me.txtActiveCerts.Text, Integer)
+            ElseIf IsNumeric(txtActiveCerts.Text) Then
+                activeCerts = CType(txtActiveCerts.Text, Integer)
                 If ((activeCerts < 0) OrElse (activeCerts > 999)) Then
                     ElitaPlusPage.SetLabelError(lblActiveCerts)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER)
@@ -264,7 +264,7 @@ Namespace Reports
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER)
             End If
 
-            sortOrder = Me.rdReportSortOrder.SelectedValue()
+            sortOrder = rdReportSortOrder.SelectedValue()
             ReportCeBase.EnableReportCe(Me, TheReportCeInputControl)
 
             moReportFormat = ReportCeBase.GetReportFormat(Me)

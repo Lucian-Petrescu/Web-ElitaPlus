@@ -38,7 +38,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -76,12 +76,12 @@ Namespace Reports
             PopulateDropDowns()
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear_Hide()
-            Me.ClearLabelsErrSign()
+            MasterPage.MessageController.Clear_Hide()
+            ClearLabelsErrSign()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     TheReportExtractInputControl.ViewVisible = False
                     TheReportExtractInputControl.PdfVisible = False
@@ -90,28 +90,28 @@ Namespace Reports
                     MasterPage.UsePageTabTitleInBreadCrum = False
                     UpdateBreadCrum()
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnClaimCreatedBeginDate, Me.moClaimCreatedBeginDateText)
-                    Me.AddCalendar(Me.BtnClaimCreatedEndDate, Me.moClaimCreatedEndDateText)
-                    Me.AddCalendar(Me.BtnClaimClosedBeginDate, Me.moClaimClosedBeginDateText)
-                    Me.AddCalendar(Me.BtnClaimClosedEndDate, Me.moClaimClosedEndDateText)
-                    Me.AddCalendar(Me.BtnExtStatusBeginDate, Me.moExtStatusBeginDateText)
-                    Me.AddCalendar(Me.BtnExtStatusEndDate, Me.moExtStatusEndDateText)
+                    AddCalendar(BtnClaimCreatedBeginDate, moClaimCreatedBeginDateText)
+                    AddCalendar(BtnClaimCreatedEndDate, moClaimCreatedEndDateText)
+                    AddCalendar(BtnClaimClosedBeginDate, moClaimClosedBeginDateText)
+                    AddCalendar(BtnClaimClosedEndDate, moClaimClosedEndDateText)
+                    AddCalendar(BtnExtStatusBeginDate, moExtStatusBeginDateText)
+                    AddCalendar(BtnExtStatusEndDate, moExtStatusEndDateText)
 
                 Else
                     btnGenRpt.Enabled = True
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
 
         End Sub
 
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End Sub
 
 #End Region
@@ -128,14 +128,14 @@ Namespace Reports
                 oListContext.CompanyId = _company
                 Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
-                    If Not oDealerList Is Nothing Then
+                    If oDealerList IsNot Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
                     Else
                         oDealerList = oDealerListForCompany.Clone()
                     End If
                 End If
             Next
-            Me.cboDealer.Populate(oDealerList.ToArray(), New PopulateOptions() With
+            cboDealer.Populate(oDealerList.ToArray(), New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -145,7 +145,7 @@ Namespace Reports
             Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
             oListContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
             Dim oExtendedStatusList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ExtendedStatusByCompanyGroup", context:=oListContext)
-            Me.cboExtendedStatus.Populate(oExtendedStatusList.ToArray(), New PopulateOptions() With
+            cboExtendedStatus.Populate(oExtendedStatusList.ToArray(), New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -158,28 +158,28 @@ Namespace Reports
 
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(moClaimCreatedBeginDateLabel)
-                Me.ClearLabelErrSign(moClaimCreatedEndDateLabel)
-                Me.ClearLabelErrSign(moClaimClosedBeginDateLabel)
-                Me.ClearLabelErrSign(moClaimClosedEndDateLabel)
-                Me.ClearLabelErrSign(moExtStatusBeginDateLabel)
-                Me.ClearLabelErrSign(moExtStatusEndDateLabel)
-                Me.ClearLabelErrSign(moDealerLabel)
-                Me.ClearLabelErrSign(moExtendedLabel)
+                ClearLabelErrSign(moClaimCreatedBeginDateLabel)
+                ClearLabelErrSign(moClaimCreatedEndDateLabel)
+                ClearLabelErrSign(moClaimClosedBeginDateLabel)
+                ClearLabelErrSign(moClaimClosedEndDateLabel)
+                ClearLabelErrSign(moExtStatusBeginDateLabel)
+                ClearLabelErrSign(moExtStatusEndDateLabel)
+                ClearLabelErrSign(moDealerLabel)
+                ClearLabelErrSign(moExtendedLabel)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -190,11 +190,11 @@ Namespace Reports
             Dim companyCode As String = ElitaPlusIdentity.Current.ActiveUser.Company.Code
             Dim langCode As String = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
 
-            Dim selectedDealerId As Guid = Me.GetSelectedItem(Me.cboDealer)
+            Dim selectedDealerId As Guid = GetSelectedItem(cboDealer)
             Dim dvDealer As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "CODE")
             Dim dealerCode As String = LookupListNew.GetCodeFromId(dvDealer, selectedDealerId)
 
-            Dim selectedExtendedStatusId As Guid = Me.GetSelectedItem(Me.cboExtendedStatus)
+            Dim selectedExtendedStatusId As Guid = GetSelectedItem(cboExtendedStatus)
             Dim dvExtendedStatus As DataView = LookupListNew.GetExtendedStatusByGroupLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             Dim extendedStatusCode As String = LookupListNew.GetCodeFromId(dvExtendedStatus, selectedExtendedStatusId)
 
@@ -274,12 +274,12 @@ Namespace Reports
             reportParams.AppendFormat("pi_extended_status_code => '{0}',", extendedStatusCode)
             reportParams.AppendFormat("pi_language_code => '{0}'", langCode)
 
-            Me.State.MyBO = New ReportRequests
-            Me.State.ForEdit = True
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "CLAIM_DETAIL_BY_EXTENDED_STATUS_BY_DEALER")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "r_claimdetailbyExtStatusByDlr.Export")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
-            Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
+            State.MyBO = New ReportRequests
+            State.ForEdit = True
+            PopulateBOProperty(State.MyBO, "ReportType", "CLAIM_DETAIL_BY_EXTENDED_STATUS_BY_DEALER")
+            PopulateBOProperty(State.MyBO, "ReportProc", "r_claimdetailbyExtStatusByDlr.Export")
+            PopulateBOProperty(State.MyBO, "ReportParameters", reportParams.ToString())
+            PopulateBOProperty(State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
 
             ScheduleReport()
         End Sub
@@ -287,24 +287,24 @@ Namespace Reports
         Private Sub ScheduleReport()
             Try
                 Dim scheduleDate As DateTime = TheReportExtractInputControl.GetSchedDate()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
 
-                    Me.State.IsNew = False
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.CreateJob(scheduleDate)
+                    State.IsNew = False
+                    State.HasDataChanged = True
+                    State.MyBO.CreateJob(scheduleDate)
 
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
 
                     btnGenRpt.Enabled = False
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -312,7 +312,7 @@ Namespace Reports
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Try
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub

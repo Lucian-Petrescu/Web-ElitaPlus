@@ -28,13 +28,13 @@ Public Class CertificateDocumentForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As CertImage
         Public BoChanged As Boolean = False
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As CertImage, Optional ByVal boChanged As Boolean = False)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As CertImage, Optional ByVal boChanged As Boolean = False)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.BoChanged = boChanged
         End Sub
-        Public Sub New(ByVal LastOp As DetailPageCommand)
-            Me.LastOperation = LastOp
+        Public Sub New(LastOp As DetailPageCommand)
+            LastOperation = LastOp
         End Sub
     End Class
 #End Region
@@ -64,15 +64,15 @@ Public Class CertificateDocumentForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
 
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
 
-                Me.State.CertificateBO = CType(Me.CallingParameters, Certificate)
+                State.CertificateBO = CType(CallingParameters, Certificate)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -81,44 +81,44 @@ Public Class CertificateDocumentForm
 #Region "Page Events"
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.BreadCrum & TranslationBase.TranslateLabelOrMessage("Certificate") & ElitaBase.Sperator & Me.MasterPage.PageTab
+        If (State IsNot Nothing) Then
+            MasterPage.BreadCrum = MasterPage.BreadCrum & TranslationBase.TranslateLabelOrMessage("Certificate") & ElitaBase.Sperator & MasterPage.PageTab
         End If
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
         Try
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("CERTIFICATE_IMAGES")
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CERTIFICATE_SUMMARY")
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("CERTIFICATE_IMAGES")
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CERTIFICATE_SUMMARY")
 
             UpdateBreadCrum()
-            Me.MasterPage.MessageController.Clear()
+            MasterPage.MessageController.Clear()
 
             lblGrdHdr.Text = TranslationBase.TranslateLabelOrMessage("CERTIFICATE_IMAGES")
 
-            If Not Me.IsPostBack Then
-                Me.TranslateGridHeader(Me.CertificateDocumentsGridView)
+            If Not IsPostBack Then
+                TranslateGridHeader(CertificateDocumentsGridView)
                 PopulateFormFromBO()
                 'check if the user has access to delete the images 
                
-                Me.State.AllowDeleteOfImage = Me.CanSetControlEnabled(HiddenIsDeleteImagesAllowed.ID)
+                State.AllowDeleteOfImage = CanSetControlEnabled(HiddenIsDeleteImagesAllowed.ID)
 
-                Me.PopulateGrid()
+                PopulateGrid()
                 Dim oDocumentTypeDropDown As ListItem() = CommonConfigManager.Current.ListManager.GetList("DTYP", Thread.CurrentPrincipal.GetLanguageCode())
                 DocumentTypeDropDown.Populate(oDocumentTypeDropDown, New PopulateOptions() With
                                                   {
                                                     .AddBlankItem = False
                                                    })
-                Me.ClearForm()
+                ClearForm()
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
 #End Region
@@ -128,16 +128,16 @@ Public Class CertificateDocumentForm
     Private Sub PopulateFormFromBO()
         Dim cssClassName As String
         Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-        With Me.State.CertificateBO
-            Me.PopulateControlFromBOProperty(Me.lblCustomerNameValue, .CustomerName)
-            Me.PopulateControlFromBOProperty(Me.lblCertificateNumberValue, .CertNumber)
-            Me.PopulateControlFromBOProperty(Me.lblDealerNameValue, .Dealer.DealerName)
-            Me.PopulateControlFromBOProperty(Me.lblCertificateStatusValue, LookupListNew.GetDescrionFromListCode(LookupListNew.LK_CERTIFICATE_STATUS, .StatusCode))
-            Me.PopulateControlFromBOProperty(Me.lblWorkPhoneNumberValue, .WorkPhone)
-            Me.PopulateControlFromBOProperty(Me.lblDealerGroupValue, .Dealer.DealerGroupName)
-            Me.PopulateControlFromBOProperty(Me.lblCompanyNameValue, .Company.Description)
+        With State.CertificateBO
+            PopulateControlFromBOProperty(lblCustomerNameValue, .CustomerName)
+            PopulateControlFromBOProperty(lblCertificateNumberValue, .CertNumber)
+            PopulateControlFromBOProperty(lblDealerNameValue, .Dealer.DealerName)
+            PopulateControlFromBOProperty(lblCertificateStatusValue, LookupListNew.GetDescrionFromListCode(LookupListNew.LK_CERTIFICATE_STATUS, .StatusCode))
+            PopulateControlFromBOProperty(lblWorkPhoneNumberValue, .WorkPhone)
+            PopulateControlFromBOProperty(lblDealerGroupValue, .Dealer.DealerGroupName)
+            PopulateControlFromBOProperty(lblCompanyNameValue, .Company.Description)
 
-            If (Me.State.CertificateBO.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE) Then
+            If (State.CertificateBO.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE) Then
                 cssClassName = "StatActive"
             Else
                 cssClassName = "StatClosed"
@@ -153,64 +153,64 @@ Public Class CertificateDocumentForm
     Public Sub PopulateGrid()
 
         Try
-            If (Me.State.CertificateImagesView Is Nothing) Then
-                Me.State.CertificateImagesView = Me.State.CertificateBO.GetCertificateImagesView(Me.State.AllowDeleteOfImage)
+            If (State.CertificateImagesView Is Nothing) Then
+                State.CertificateImagesView = State.CertificateBO.GetCertificateImagesView(State.AllowDeleteOfImage)
 
             End If
 
 
-            Me.CertificateDocumentsGridView.AutoGenerateColumns = False
-            Me.CertificateDocumentsGridView.PageSize = Me.State.PageSize
-            Me.ValidSearchResultCountNew(Me.State.CertificateImagesView.Count, True)
-            Me.HighLightSortColumn(Me.CertificateDocumentsGridView, Me.State.SortExpression, Me.IsNewUI)
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.CertificateImagesView, Me.State.selectedImageId, Me.CertificateDocumentsGridView, Me.State.PageIndex)
-            Me.CertificateDocumentsGridView.DataSource = Me.State.CertificateImagesView
-            Me.CertificateDocumentsGridView.DataBind()
+            CertificateDocumentsGridView.AutoGenerateColumns = False
+            CertificateDocumentsGridView.PageSize = State.PageSize
+            ValidSearchResultCountNew(State.CertificateImagesView.Count, True)
+            HighLightSortColumn(CertificateDocumentsGridView, State.SortExpression, IsNewUI)
+            SetPageAndSelectedIndexFromGuid(State.CertificateImagesView, State.selectedImageId, CertificateDocumentsGridView, State.PageIndex)
+            CertificateDocumentsGridView.DataSource = State.CertificateImagesView
+            CertificateDocumentsGridView.DataBind()
 
-            If (Me.State.CertificateImagesView.Count > 0) Then
-                Me.State.IsGridVisible = True
+            If (State.CertificateImagesView.Count > 0) Then
+                State.IsGridVisible = True
                 dvGridPager.Visible = True
             Else
-                Me.State.IsGridVisible = False
+                State.IsGridVisible = False
                 dvGridPager.Visible = False
             End If
-            ControlMgr.SetVisibleControl(Me, CertificateDocumentsGridView, Me.State.IsGridVisible)
-            If Me.CertificateDocumentsGridView.Visible Then
-                Me.lblRecordCount.Text = Me.State.CertificateImagesView.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
-                If Me.State.AllowDeleteOfImage Then
-                    Me.CertificateDocumentsGridView.Columns(GRID_COL_DELETE_ACTION_IDX).Visible = True
+            ControlMgr.SetVisibleControl(Me, CertificateDocumentsGridView, State.IsGridVisible)
+            If CertificateDocumentsGridView.Visible Then
+                lblRecordCount.Text = State.CertificateImagesView.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If State.AllowDeleteOfImage Then
+                    CertificateDocumentsGridView.Columns(GRID_COL_DELETE_ACTION_IDX).Visible = True
                 Else
-                    Me.CertificateDocumentsGridView.Columns(GRID_COL_DELETE_ACTION_IDX).Visible = False
+                    CertificateDocumentsGridView.Columns(GRID_COL_DELETE_ACTION_IDX).Visible = False
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub CertificateDocumentsGridView_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles CertificateDocumentsGridView.RowCreated
+    Private Sub CertificateDocumentsGridView_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles CertificateDocumentsGridView.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub CertificateDocumentsGridView_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles CertificateDocumentsGridView.RowDataBound
+    Private Sub CertificateDocumentsGridView_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles CertificateDocumentsGridView.RowDataBound
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim btnLinkImage As LinkButton
             Dim btnAddRemoveImage As LinkButton
             If (e.Row.RowType = DataControlRowType.DataRow) OrElse (e.Row.RowType = DataControlRowType.Separator) Then
                 'Link to the image 
-                If (Not e.Row.Cells(GRID_COL_IMAGE_ID_IDX).FindControl("btnImageLink") Is Nothing) Then
+                If (e.Row.Cells(GRID_COL_IMAGE_ID_IDX).FindControl("btnImageLink") IsNot Nothing) Then
                     btnLinkImage = CType(e.Row.Cells(0).FindControl("btnImageLink"), LinkButton)
                     btnLinkImage.Text = CType(dvRow(Certificate.CertificateImagesView.COL_FILE_NAME), String)
-                    btnLinkImage.CommandArgument = String.Format("{0};{1}", GetGuidStringFromByteArray(CType(dvRow(Certificate.CertificateImagesView.COL_IMAGE_ID), Byte())), Me.State.CertificateBO.Id)
+                    btnLinkImage.CommandArgument = String.Format("{0};{1}", GetGuidStringFromByteArray(CType(dvRow(Certificate.CertificateImagesView.COL_IMAGE_ID), Byte())), State.CertificateBO.Id)
                 End If
 
-                If (Not e.Row.Cells(GRID_COL_FILE_SIZE_IDX).FindControl("btnImageLink") Is Nothing) AndAlso
-                    (Not dvRow(Certificate.CertificateImagesView.COL_FILE_SIZE_BYTES) Is Nothing) Then
+                If (e.Row.Cells(GRID_COL_FILE_SIZE_IDX).FindControl("btnImageLink") IsNot Nothing) AndAlso
+                    (dvRow(Certificate.CertificateImagesView.COL_FILE_SIZE_BYTES) IsNot Nothing) Then
                     Dim fileSize As Long = CType(dvRow(Certificate.CertificateImagesView.COL_FILE_SIZE_BYTES), Long)
                     Dim fileSizeLabel As Label = CType(e.Row.Cells(GRID_COL_FILE_SIZE_IDX).FindControl("FileSizeLabel"), Label)
                     If (fileSize > 1048576) Then
@@ -228,7 +228,7 @@ Public Class CertificateDocumentForm
 
                 btnAddRemoveImage = CType(e.Row.Cells(0).FindControl("btnAddRemoveImage"), LinkButton)
 
-                If Me.State.AllowDeleteOfImage Then
+                If State.AllowDeleteOfImage Then
                     btnAddRemoveImage.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Certificate.CertificateImagesView.COL_CERT_IMAGE_ID), Byte()))
                     If CType(dvRow(Certificate.CertificateImagesView.COL_DELETE_FLAG), String) = "Y" Then
                         btnAddRemoveImage.Text = TranslationBase.TranslateLabelOrMessage("UNDO_DELETE_IMAGE")
@@ -242,11 +242,11 @@ Public Class CertificateDocumentForm
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub CertificateDocumentsGridView_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles CertificateDocumentsGridView.RowCommand
+    Protected Sub CertificateDocumentsGridView_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles CertificateDocumentsGridView.RowCommand
         If (e.CommandName = SELECT_ACTION_IMAGE) Then
             If Not e.CommandArgument.ToString().Equals(String.Empty) Then
                 Dim args() As String = CType(e.CommandArgument, String).Split(";".ToCharArray())
@@ -257,14 +257,14 @@ Public Class CertificateDocumentForm
                 pdfIframe.Attributes(ATTRIB_SRC) = PDF_URL + String.Format("{0}&CertificateId={1}", imageIdString, certificateIdString)
 
                 Dim x As String = "<script language='JavaScript'> revealModal('modalCertificateImages') </script>"
-                Me.RegisterStartupScript("Startup", x)
+                RegisterStartupScript("Startup", x)
             End If
         ElseIf (e.CommandName = DELETE_IMAGE OrElse e.CommandName = UNDO_DELETE_IMAGE) Then
             If Not e.CommandArgument.ToString().Equals(String.Empty) Then
                 Dim certificateImageIdString As String = CType(e.CommandArgument, String)
                 Dim certificateImageID As Guid = GetGuidFromString(certificateImageIdString)
                 Dim oCertImage As CertImage
-                oCertImage = DirectCast(Me.State.CertificateBO.CertificateImagesList.GetChild(certificateImageID), CertImage)   
+                oCertImage = DirectCast(State.CertificateBO.CertificateImagesList.GetChild(certificateImageID), CertImage)   
                 ' delete the document or reactivate the document
                 If e.CommandName = DELETE_IMAGE Then      
                     oCertImage.DeleteFlag = "Y"
@@ -272,60 +272,60 @@ Public Class CertificateDocumentForm
                     oCertImage.DeleteFlag = "N"
                 End If
                 oCertImage.UpdateDocumentDeleteFlag(ElitaPlusIdentity.Current.ActiveUser.NetworkId)
-                Me.State.CertificateImagesView = Nothing
-                Me.PopulateGrid()
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                State.CertificateImagesView = Nothing
+                PopulateGrid()
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
             End If
         End If
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles CertificateDocumentsGridView.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles CertificateDocumentsGridView.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.State.CertificateImagesView.Sort = Me.State.SortExpression
-            Me.PopulateGrid()
-        Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-        End Try
-
-    End Sub
-
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CertificateDocumentsGridView.PageIndexChanged
-        Try
-            Me.State.PageIndex = CertificateDocumentsGridView.PageIndex
-            Me.State.selectedImageId = Guid.Empty
+            State.PageIndex = 0
+            State.CertificateImagesView.Sort = State.SortExpression
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+
+    End Sub
+
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles CertificateDocumentsGridView.PageIndexChanged
+        Try
+            State.PageIndex = CertificateDocumentsGridView.PageIndex
+            State.selectedImageId = Guid.Empty
+            PopulateGrid()
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles CertificateDocumentsGridView.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles CertificateDocumentsGridView.PageIndexChanging
         Try
             CertificateDocumentsGridView.PageIndex = e.NewPageIndex
             State.PageIndex = CertificateDocumentsGridView.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
-            Me.State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(CertificateDocumentsGridView, State.CertificateImagesView.Count, State.PageSize)
-            Me.CertificateDocumentsGridView.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageSize = CType(cboPageSize.SelectedValue, Integer)
+            State.PageIndex = NewCurrentPageIndex(CertificateDocumentsGridView, State.CertificateImagesView.Count, State.PageSize)
+            CertificateDocumentsGridView.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -333,46 +333,46 @@ Public Class CertificateDocumentForm
 
 #Region "Button Click"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.Back(ElitaPlusPage.DetailPageCommand.Back)
+            Back(ElitaPlusPage.DetailPageCommand.Back)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub Back(ByVal cmd As ElitaPlusPage.DetailPageCommand)
+    Protected Sub Back(cmd As ElitaPlusPage.DetailPageCommand)
         Dim retType As New Certificates.CertificateForm.ReturnType(cmd, Nothing, False)
-        Me.ReturnToCallingPage(retType)
+        ReturnToCallingPage(retType)
     End Sub
 
     Private Sub ClearForm()
-        Me.PopulateControlFromBOProperty(Me.DocumentTypeDropDown, LookupListNew.GetIdFromCode(LookupListNew.LK_DOCUMENT_TYPES, Codes.DOCUMENT_TYPE__OTHER))
-        Me.PopulateControlFromBOProperty(Me.ScanDateTextBox, GetLongDateFormattedString(DateTime.Now))
-        Me.CommentTextBox.Text = String.Empty
+        PopulateControlFromBOProperty(DocumentTypeDropDown, LookupListNew.GetIdFromCode(LookupListNew.LK_DOCUMENT_TYPES, Codes.DOCUMENT_TYPE__OTHER))
+        PopulateControlFromBOProperty(ScanDateTextBox, GetLongDateFormattedString(DateTime.Now))
+        CommentTextBox.Text = String.Empty
     End Sub
 
-    Protected Sub ClearButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ClearButton.Click
+    Protected Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
         Try
-            Me.ClearForm()
+            ClearForm()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub AddImageButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles AddImageButton.Click
+    Protected Sub AddImageButton_Click(sender As Object, e As EventArgs) Handles AddImageButton.Click
         Try
             Dim valid As Boolean = True
-            If (Me.DocumentTypeDropDown.SelectedIndex = -1) Then
-                Me.MasterPage.MessageController.AddError("DOCUMENT_TYPE_IS_REQUIRED")
+            If (DocumentTypeDropDown.SelectedIndex = -1) Then
+                MasterPage.MessageController.AddError("DOCUMENT_TYPE_IS_REQUIRED")
                 valid = False
             End If
 
-            If (Me.ImageFileUpload.Value Is Nothing) OrElse _
-               (Me.ImageFileUpload.PostedFile.ContentLength = 0) Then
-                Me.MasterPage.MessageController.AddError("INVALID_FILE_OR_FILE_NOT_ACCESSABLE")
+            If (ImageFileUpload.Value Is Nothing) OrElse _
+               (ImageFileUpload.PostedFile.ContentLength = 0) Then
+                MasterPage.MessageController.AddError("INVALID_FILE_OR_FILE_NOT_ACCESSABLE")
                 valid = False
             End If
 
@@ -381,23 +381,23 @@ Public Class CertificateDocumentForm
             Dim fileName As String
 
             Try
-                Dim file As System.IO.FileInfo = New System.IO.FileInfo(Me.ImageFileUpload.PostedFile.FileName)
+                Dim file As System.IO.FileInfo = New System.IO.FileInfo(ImageFileUpload.PostedFile.FileName)
                 fileName = file.Name
             Catch ex As Exception
                 fileName = String.Empty
             End Try
 
-            Me.State.CertificateBO.AttachImage(
-                New Guid(Me.DocumentTypeDropDown.SelectedValue),
+            State.CertificateBO.AttachImage(
+                New Guid(DocumentTypeDropDown.SelectedValue),
                 DateTime.Now,
                 fileName,
-                Me.CommentTextBox.Text,
+                CommentTextBox.Text,
                 ElitaPlusIdentity.Current.ActiveUser.UserName,
                 fileData)
 
-            Me.State.CertificateImagesView = Nothing
-            Me.ClearForm()
-            Me.PopulateGrid()
+            State.CertificateImagesView = Nothing
+            ClearForm()
+            PopulateGrid()
         Catch ex As Threading.ThreadAbortException
         Catch ex As BOValidationException
             ' Remove Mandatory Fields Validations for Hash, File Type and File Name
@@ -407,9 +407,9 @@ Public Class CertificateDocumentForm
                     ex.ValidationErrorList().Where(Function(ve) (Not ((ve.Message = Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR) AndAlso (removeProperties.Contains(ve.PropertyName))))).ToArray(), _
                     ex.BusinessObjectName,
                     ex.UniqueId)
-            Me.HandleErrors(newException, Me.MasterPage.MessageController)
+            HandleErrors(newException, MasterPage.MessageController)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub

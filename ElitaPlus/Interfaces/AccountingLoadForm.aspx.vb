@@ -105,23 +105,23 @@ Partial Public Class AccountingLoadForm
 
 #Region "Page Init"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
         'Put user code to initialize the page here
-        Me.ErrControllerMaster.Clear_Hide()
+        ErrControllerMaster.Clear_Hide()
 
         Try
-            Me.DisplayProgressBarOnClick(Me.btnExecute, ElitaPlusWebApp.Message.MSG_PERFORMING_REQUEST)
+            DisplayProgressBarOnClick(btnExecute, ElitaPlusWebApp.Message.MSG_PERFORMING_REQUEST)
 
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
 
                 PopulateAll()
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
@@ -139,27 +139,27 @@ Partial Public Class AccountingLoadForm
             UserCompanyMultipleDrop.NothingSelected = True
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, UserCompanyMultipleDrop.NO_CAPTION, True)
             If dv.Count.Equals(ONE_ITEM) Then
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.ChangeEnabledControlProperty(False)
             End If
 
             'Fill dropdowns based on Events and Accounting Companies
-            Me.State.dvYesNo = LookupListNew.DropdownLookupList(YESNO, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False)
+            State.dvYesNo = LookupListNew.DropdownLookupList(YESNO, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False)
 
-            Me.ddlVendorFiles.DataSource = Me.State.dvYesNo
-            Me.ddlVendorFiles.DataValueField = BusinessObjectsNew.LookupListNew.COL_CODE_NAME
-            Me.ddlVendorFiles.DataTextField = BusinessObjectsNew.LookupListNew.COL_DESCRIPTION_NAME
-            Me.ddlVendorFiles.DataBind()
+            ddlVendorFiles.DataSource = State.dvYesNo
+            ddlVendorFiles.DataValueField = BusinessObjectsNew.LookupListNew.COL_CODE_NAME
+            ddlVendorFiles.DataTextField = BusinessObjectsNew.LookupListNew.COL_DESCRIPTION_NAME
+            ddlVendorFiles.DataBind()
 
-            Me.ddlAccountingEvents.DataSource = Me.State.dvYesNo
-            Me.ddlAccountingEvents.DataValueField = BusinessObjectsNew.LookupListNew.COL_CODE_NAME
-            Me.ddlAccountingEvents.DataTextField = BusinessObjectsNew.LookupListNew.COL_DESCRIPTION_NAME
-            Me.ddlAccountingEvents.DataBind()
+            ddlAccountingEvents.DataSource = State.dvYesNo
+            ddlAccountingEvents.DataValueField = BusinessObjectsNew.LookupListNew.COL_CODE_NAME
+            ddlAccountingEvents.DataTextField = BusinessObjectsNew.LookupListNew.COL_DESCRIPTION_NAME
+            ddlAccountingEvents.DataBind()
 
             PopulateEvents()
 
         Catch ex As Exception
-            Me.ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
+            ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
         End Try
 
 
@@ -168,15 +168,15 @@ Partial Public Class AccountingLoadForm
     Private Sub PopulateEvents()
 
         Try
-            Me.rptEvents.DataSource = BusinessObjectsNew.LookupListNew.DropdownLookupList(BusinessObjectsNew.LookupListNew.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            Me.rptEvents.DataBind()
+            rptEvents.DataSource = BusinessObjectsNew.LookupListNew.DropdownLookupList(BusinessObjectsNew.LookupListNew.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            rptEvents.DataBind()
 
         Catch ex As Exception
-            Me.ErrControllerMaster.AddErrorAndShow(ex.Message)
+            ErrControllerMaster.AddErrorAndShow(ex.Message)
         End Try
     End Sub
 
-    Private Sub rptEvents_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.RepeaterItemEventArgs) Handles rptEvents.ItemDataBound
+    Private Sub rptEvents_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.RepeaterItemEventArgs) Handles rptEvents.ItemDataBound
 
         Dim lbl, lblID, lblWorksheet As Label
         Dim ddl, ddlSheets As DropDownList
@@ -190,36 +190,36 @@ Partial Public Class AccountingLoadForm
                 dr = CType(e.Item.DataItem, System.Data.DataRowView).Row
 
                 ctl = e.Item.FindControl(RPT_LBL)
-                If Not ctl Is Nothing Then
+                If ctl IsNot Nothing Then
                     lbl = CType(ctl, Label)
                     lbl.Text = dr(BusinessObjectsNew.LookupListNew.COL_DESCRIPTION_NAME).ToString + ":"
                 End If
 
                 ctl = e.Item.FindControl(RPT_LBLID)
-                If Not ctl Is Nothing Then
+                If ctl IsNot Nothing Then
                     lblID = CType(ctl, Label)
                     lblID.Text = GuidControl.ByteArrayToGuid(dr(BusinessObjectsNew.LookupListNew.COL_ID_NAME)).ToString
                 End If
 
                 ctl = e.Item.FindControl(RPT_DDL)
-                If Not ctl Is Nothing Then
+                If ctl IsNot Nothing Then
                     ddl = CType(ctl, DropDownList)
-                    ddl.DataSource = Me.State.dvYesNo
+                    ddl.DataSource = State.dvYesNo
                     ddl.DataValueField = BusinessObjectsNew.LookupListNew.COL_CODE_NAME
                     ddl.DataTextField = BusinessObjectsNew.LookupListNew.COL_DESCRIPTION_NAME
                     ddl.DataBind()
                 End If
 
                 ctl = e.Item.FindControl(RPT_LBLWORKSHEET)
-                If Not ctl Is Nothing Then
+                If ctl IsNot Nothing Then
                     lblWorksheet = CType(ctl, Label)
                     lblWorksheet.Text = TranslationBase.TranslateLabelOrMessage(lblWorksheet.Text)
                 End If
               
-                If Not Me.State.WorksheetTables Is Nothing AndAlso Me.State.WorksheetTables.Count > 0 Then
+                If State.WorksheetTables IsNot Nothing AndAlso State.WorksheetTables.Count > 0 Then
 
                     ctl = e.Item.FindControl(RPT_DDLSHEETS)
-                    If Not ctl Is Nothing Then ddlSheets = CType(ctl, DropDownList)
+                    If ctl IsNot Nothing Then ddlSheets = CType(ctl, DropDownList)
 
                     PopulateWorksheets(ddlSheets)
                     ddl.Enabled = True
@@ -228,17 +228,17 @@ Partial Public Class AccountingLoadForm
             End If
 
         Catch ex As Exception
-            Me.ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
+            ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
         End Try
     End Sub
 
-    Private Sub PopulateWorksheets(ByVal ctl As DropDownList)
+    Private Sub PopulateWorksheets(ctl As DropDownList)
 
-        ctl.DataSource = Me.State.WorksheetTables
+        ctl.DataSource = State.WorksheetTables
         ctl.DataBind()
 
-        ctl.Items.Add(New ListItem("", Me.NOTHING_SELECTED))
-        ctl.SelectedValue = Me.NOTHING_SELECTED
+        ctl.Items.Add(New ListItem("", NOTHING_SELECTED))
+        ctl.SelectedValue = NOTHING_SELECTED
         ctl.Enabled = True
 
     End Sub
@@ -247,37 +247,37 @@ Partial Public Class AccountingLoadForm
 
 #Region "EVENT HANDLERS"
 
-    Private Sub btnValidate_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnValidate.Click
+    Private Sub btnValidate_Click(sender As Object, e As System.EventArgs) Handles btnValidate.Click
 
         UploadFile()
 
     End Sub
 
 
-    Private Sub btnExecute_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnExecute.Click
+    Private Sub btnExecute_Click(sender As Object, e As System.EventArgs) Handles btnExecute.Click
 
         Try
             'Set AccountingCompanyId
-            Dim _co As New Company(Me.moUserCompanyMultipleDrop.SelectedGuid)
-            Me.State.SelectedCompany = _co
-            Me.State.AccountingCompanyId = _co.AcctCompanyId
+            Dim _co As New Company(moUserCompanyMultipleDrop.SelectedGuid)
+            State.SelectedCompany = _co
+            State.AccountingCompanyId = _co.AcctCompanyId
 
             'Validate selections
             If Not ValidateWorksheetSelections() Then Exit Sub
 
             'Load Sheets
             If LoadWorksheets() Then
-                Me.AddInfoMsg(Message.MSG_INTERFACES_HAS_COMPLETED)
+                AddInfoMsg(Message.MSG_INTERFACES_HAS_COMPLETED)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
       
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
-        Me.ReturnToTabHomePage()
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+        ReturnToTabHomePage()
     End Sub
 
 #End Region
@@ -289,9 +289,9 @@ Partial Public Class AccountingLoadForm
         Try
 
             'Dim str As String = MiscUtil.ReplaceSpaceByUnderscore(Me.filinput.PostedFile.FileName)
-            Dim str As String = Me.filinput.PostedFile.FileName
+            Dim str As String = filinput.PostedFile.FileName
             If Str.Trim.Length = 0 Then
-                Me.ErrControllerMaster.AddErrorAndShow(Message.MSG_INVALID_FILE_NAME)
+                ErrControllerMaster.AddErrorAndShow(Message.MSG_INVALID_FILE_NAME)
                 Exit Sub
             End If
 
@@ -299,44 +299,44 @@ Partial Public Class AccountingLoadForm
             Dim webServerFile As String = webServerPath & "\" & System.IO.Path.GetFileName(str)
 
             MiscUtil.CreateFolder(webServerPath)
-            Me.filinput.PostedFile.SaveAs(webServerFile)
+            filinput.PostedFile.SaveAs(webServerFile)
 
             If ValidateFile(webServerFile) Then
-                Me.btnExecute.Enabled = True
-                Me.State.FileLocation = webServerFile
+                btnExecute.Enabled = True
+                State.FileLocation = webServerFile
             End If
 
         Catch ex As Exception
-            Me.ErrControllerMaster.AddErrorAndShow(ex.Message)
+            ErrControllerMaster.AddErrorAndShow(ex.Message)
         End Try
 
     End Sub
 
-    Private Function ValidateFile(ByVal FileName As String) As Boolean
+    Private Function ValidateFile(FileName As String) As Boolean
 
         Dim olconn As New OleDb.OleDbConnection
         Dim olAd As New OleDb.OleDbDataAdapter
         Dim dt As New DataTable
 
-        Me.State.ConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & FileName & ";Extended Properties=""Excel 8.0;HDR=Yes;IMEX=1"""
-        olconn.ConnectionString = Me.State.ConnectionString
+        State.ConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & FileName & ";Extended Properties=""Excel 8.0;HDR=Yes;IMEX=1"""
+        olconn.ConnectionString = State.ConnectionString
 
         Try
             olconn.Open()
-            Me.State.WorksheetTables = New ArrayList
+            State.WorksheetTables = New ArrayList
             dt = olconn.GetSchema("TABLES")
             For Each dr As DataRow In dt.Rows
                 If dr("TABLE_NAME").ToString.EndsWith("$") Then
-                    Me.State.WorksheetTables.Add(dr("TABLE_NAME").ToString.Remove(dr("TABLE_NAME").ToString.LastIndexOf(CChar("$"))))
+                    State.WorksheetTables.Add(dr("TABLE_NAME").ToString.Remove(dr("TABLE_NAME").ToString.LastIndexOf(CChar("$"))))
                 End If
             Next
 
             PopulateEvents()
 
-            If Me.State.WorksheetTables.Count > 0 Then
+            If State.WorksheetTables.Count > 0 Then
 
-                Me.ddlAccountingEvents.Enabled = True
-                Me.ddlVendorFiles.Enabled = True
+                ddlAccountingEvents.Enabled = True
+                ddlVendorFiles.Enabled = True
                 PopulateWorksheets(ddlWorksheetVendor)
                 PopulateWorksheets(ddlWorksheetEvents)
 
@@ -360,17 +360,17 @@ Partial Public Class AccountingLoadForm
 
         Try
 
-            If Me.ddlAccountingEvents.SelectedValue = YES_STRING Then
-                If Me.ddlWorksheetEvents.SelectedValue = Me.NOTHING_SELECTED Then
+            If ddlAccountingEvents.SelectedValue = YES_STRING Then
+                If ddlWorksheetEvents.SelectedValue = NOTHING_SELECTED Then
                     isValid = False
-                    arrErrors.Add(TranslationBase.TranslateLabelOrMessage(Message.MSG_WORKSHEET_REQUIRED) & ": " & Me.lblAccountingEvent.Text.Remove(Me.lblAccountingEvent.Text.LastIndexOf(":")))
+                    arrErrors.Add(TranslationBase.TranslateLabelOrMessage(Message.MSG_WORKSHEET_REQUIRED) & ": " & lblAccountingEvent.Text.Remove(lblAccountingEvent.Text.LastIndexOf(":")))
                 End If
             End If
 
-            If Me.ddlVendorFiles.SelectedValue = YES_STRING Then
-                If Me.ddlWorksheetVendor.SelectedValue = Me.NOTHING_SELECTED Then
+            If ddlVendorFiles.SelectedValue = YES_STRING Then
+                If ddlWorksheetVendor.SelectedValue = NOTHING_SELECTED Then
                     isValid = False
-                    arrErrors.Add(TranslationBase.TranslateLabelOrMessage(Message.MSG_WORKSHEET_REQUIRED) & ": " & Me.lblVendorFiles.Text.Remove(Me.lblVendorFiles.Text.LastIndexOf(":")))
+                    arrErrors.Add(TranslationBase.TranslateLabelOrMessage(Message.MSG_WORKSHEET_REQUIRED) & ": " & lblVendorFiles.Text.Remove(lblVendorFiles.Text.LastIndexOf(":")))
                 End If
             End If
 
@@ -379,19 +379,19 @@ Partial Public Class AccountingLoadForm
             Dim lbl As Label
             Dim ctl As Control
 
-            For Each rptItem In Me.rptEvents.Items
+            For Each rptItem In rptEvents.Items
 
-                ctl = rptItem.FindControl(Me.RPT_DDL)
-                If Not ctl Is Nothing Then
+                ctl = rptItem.FindControl(RPT_DDL)
+                If ctl IsNot Nothing Then
                     ddl = CType(ctl, DropDownList)
                     If ddl.SelectedValue = YES_STRING Then
-                        ctl = rptItem.FindControl(Me.RPT_DDLSHEETS)
-                        If Not ctl Is Nothing Then
+                        ctl = rptItem.FindControl(RPT_DDLSHEETS)
+                        If ctl IsNot Nothing Then
                             ddlSheets = CType(ctl, DropDownList)
-                            If ddlSheets.SelectedValue = Me.NOTHING_SELECTED Then
+                            If ddlSheets.SelectedValue = NOTHING_SELECTED Then
                                 isValid = False
-                                ctl = rptItem.FindControl(Me.RPT_LBL)
-                                If Not ctl Is Nothing Then
+                                ctl = rptItem.FindControl(RPT_LBL)
+                                If ctl IsNot Nothing Then
                                     lbl = CType(ctl, Label)
                                     arrErrors.Add(TranslationBase.TranslateLabelOrMessage(Message.MSG_WORKSHEET_REQUIRED) & ": " & lbl.Text.Remove(lbl.Text.LastIndexOf(":")))
                                 End If
@@ -404,12 +404,12 @@ Partial Public Class AccountingLoadForm
             If isValid Then
                 Return True
             Else
-                Me.ErrControllerMaster.AddErrorAndShow(CType(arrErrors.ToArray(GetType(String)), String()), False)
+                ErrControllerMaster.AddErrorAndShow(CType(arrErrors.ToArray(GetType(String)), String()), False)
                 Return False
             End If
 
         Catch ex As Exception
-            Me.ErrControllerMaster.AddErrorAndShow(ex.Message)
+            ErrControllerMaster.AddErrorAndShow(ex.Message)
             Return False
         End Try
     End Function
@@ -419,15 +419,15 @@ Partial Public Class AccountingLoadForm
         Dim oleConn As New OleDb.OleDbConnection
 
         Try
-            oleConn.ConnectionString = Me.State.ConnectionString
+            oleConn.ConnectionString = State.ConnectionString
             oleConn.Open()
 
-            If Me.ddlVendorFiles.SelectedValue = YES_STRING Then
-                LoadVendors(oleConn, Me.ddlWorksheetVendor.SelectedItem.Text + "$")
+            If ddlVendorFiles.SelectedValue = YES_STRING Then
+                LoadVendors(oleConn, ddlWorksheetVendor.SelectedItem.Text + "$")
             End If
 
-            If Me.ddlAccountingEvents.SelectedValue = YES_STRING Then
-                LoadEvents(oleConn, Me.ddlWorksheetEvents.SelectedItem.Text + "$")
+            If ddlAccountingEvents.SelectedValue = YES_STRING Then
+                LoadEvents(oleConn, ddlWorksheetEvents.SelectedItem.Text + "$")
             End If
 
             Dim rptItem As RepeaterItem
@@ -435,17 +435,17 @@ Partial Public Class AccountingLoadForm
             Dim lblId As Label
             Dim ctl As Control
 
-            For Each rptItem In Me.rptEvents.Items
+            For Each rptItem In rptEvents.Items
 
-                ctl = rptItem.FindControl(Me.RPT_DDL)
-                If Not ctl Is Nothing Then
+                ctl = rptItem.FindControl(RPT_DDL)
+                If ctl IsNot Nothing Then
                     ddl = CType(ctl, DropDownList)
                     If ddl.SelectedValue = YES_STRING Then
-                        ctl = rptItem.FindControl(Me.RPT_DDLSHEETS)
-                        If Not ctl Is Nothing Then
+                        ctl = rptItem.FindControl(RPT_DDLSHEETS)
+                        If ctl IsNot Nothing Then
                             ddlSheets = CType(ctl, DropDownList)
-                            ctl = rptItem.FindControl(Me.RPT_LBLID)
-                            If Not ctl Is Nothing Then
+                            ctl = rptItem.FindControl(RPT_LBLID)
+                            If ctl IsNot Nothing Then
                                 lblId = CType(ctl, Label)
                                 LoadEventDetails(oleConn, ddlSheets.SelectedItem.Text + "$", New Guid(lblId.Text))
                             End If
@@ -464,7 +464,7 @@ Partial Public Class AccountingLoadForm
 
     End Function
 
-    Private Function LoadVendors(ByVal oleConn As OleDb.OleDbConnection, ByVal SheetName As String) As Boolean
+    Private Function LoadVendors(oleConn As OleDb.OleDbConnection, SheetName As String) As Boolean
 
         Dim strSQL As String = "Select * from [" & SheetName & "]"
         Dim olAd As New OleDb.OleDbDataAdapter
@@ -487,11 +487,11 @@ Partial Public Class AccountingLoadForm
             iRowCount = ClearColumnsAndRows(dt)
 
             If dt.Columns.Contains(DALObjects.ServiceCenterDAL.COL_NAME_SERVICE_CENTER_ID) Then
-                dt.Columns(DALObjects.ServiceCenterDAL.COL_NAME_SERVICE_CENTER_ID).ColumnName = Me.COL_CODE
+                dt.Columns(DALObjects.ServiceCenterDAL.COL_NAME_SERVICE_CENTER_ID).ColumnName = COL_CODE
             End If
 
-            If dt.Columns.Contains(Me.COL_TYPE_CELL) Then
-                dt.Columns(Me.COL_TYPE_CELL).ColumnName = Me.COL_BRANCH_CODE
+            If dt.Columns.Contains(COL_TYPE_CELL) Then
+                dt.Columns(COL_TYPE_CELL).ColumnName = COL_BRANCH_CODE
             End If
 
             For Each dr As DataRow In dt.Rows
@@ -505,20 +505,20 @@ Partial Public Class AccountingLoadForm
 
                     Select Case dr(COL_TYPE).ToString
 
-                        Case Me.BRANCH_STRING
-                            _as = New AcctSetting(Me.State.AccountingCompanyId, dr(COL_CODE).ToString, dr(Me.COL_BRANCH_CODE).ToString, dr(Me.COL_ACCT_TYPE).ToString)
+                        Case BRANCH_STRING
+                            _as = New AcctSetting(State.AccountingCompanyId, dr(COL_CODE).ToString, dr(COL_BRANCH_CODE).ToString, dr(COL_ACCT_TYPE).ToString)
 
-                        Case Me.DEALER_GROUP_STRING
-                            _as = New AcctSetting(Me.State.AccountingCompanyId, dr(COL_CODE).ToString, _as.VendorType.DealerGroup, dr(Me.COL_ACCT_TYPE).ToString)
+                        Case DEALER_GROUP_STRING
+                            _as = New AcctSetting(State.AccountingCompanyId, dr(COL_CODE).ToString, _as.VendorType.DealerGroup, dr(COL_ACCT_TYPE).ToString)
 
-                        Case Me.DEALER_STRING
-                            _as = New AcctSetting(Me.State.AccountingCompanyId, dr(COL_CODE).ToString, _as.VendorType.Dealer, dr(Me.COL_ACCT_TYPE).ToString)
+                        Case DEALER_STRING
+                            _as = New AcctSetting(State.AccountingCompanyId, dr(COL_CODE).ToString, _as.VendorType.Dealer, dr(COL_ACCT_TYPE).ToString)
 
-                        Case Me.SERVICE_CENTER_STRING
-                            _as = New AcctSetting(Me.State.AccountingCompanyId, dr(COL_CODE).ToString, _as.VendorType.ServiceCenter, dr(Me.COL_ACCT_TYPE).ToString)
+                        Case SERVICE_CENTER_STRING
+                            _as = New AcctSetting(State.AccountingCompanyId, dr(COL_CODE).ToString, _as.VendorType.ServiceCenter, dr(COL_ACCT_TYPE).ToString)
 
-                        Case Me.COMMISSION_ENTITY_STRING
-                            _as = New AcctSetting(Me.State.AccountingCompanyId, dr(COL_CODE).ToString, _as.VendorType.CommissionEntity, dr(Me.COL_ACCT_TYPE).ToString)
+                        Case COMMISSION_ENTITY_STRING
+                            _as = New AcctSetting(State.AccountingCompanyId, dr(COL_CODE).ToString, _as.VendorType.CommissionEntity, dr(COL_ACCT_TYPE).ToString)
 
                         Case Else
                             ValidRow = False
@@ -527,21 +527,21 @@ Partial Public Class AccountingLoadForm
 
                     If _as.IsNew Then
 
-                        _as.AcctCompanyId = Me.State.AccountingCompanyId
+                        _as.AcctCompanyId = State.AccountingCompanyId
 
                         Select Case dr(COL_TYPE).ToString
 
-                            Case Me.DEALER_STRING, Me.BRANCH_STRING
+                            Case DEALER_STRING, BRANCH_STRING
 
                                 Dim dealerdv As Dealer.DealerSearchDV
-                                dealerdv = Dealer.getList(String.Empty, dr(Me.COL_CODE).ToString, Nothing, Me.State.SelectedCompany.CompanyGroupId)
-                                If Not dealerdv Is Nothing AndAlso dealerdv.Count = 1 Then
+                                dealerdv = Dealer.getList(String.Empty, dr(COL_CODE).ToString, Nothing, State.SelectedCompany.CompanyGroupId)
+                                If dealerdv IsNot Nothing AndAlso dealerdv.Count = 1 Then
                                     _as.DealerId = GuidControl.ByteArrayToGuid(CType(dealerdv(0)(dealerdv.COL_DEALER_ID), Byte()))
 
-                                    If dr(COL_TYPE).ToString = Me.BRANCH_STRING Then
+                                    If dr(COL_TYPE).ToString = BRANCH_STRING Then
                                         Dim branchdv As Branch.BranchSearchDV
-                                        branchdv = Branch.getList(String.Empty, dr(Me.COL_BRANCH_CODE).ToString, _as.DealerId)
-                                        If Not branchdv Is Nothing AndAlso branchdv.Count = 1 Then
+                                        branchdv = Branch.getList(String.Empty, dr(COL_BRANCH_CODE).ToString, _as.DealerId)
+                                        If branchdv IsNot Nothing AndAlso branchdv.Count = 1 Then
                                             _as.BranchId = GuidControl.ByteArrayToGuid(CType(branchdv(0)(branchdv.COL_BRANCH_ID), Byte()))
                                         Else
                                             ValidRow = False
@@ -552,31 +552,31 @@ Partial Public Class AccountingLoadForm
                                     ValidRow = False
                                 End If
 
-                            Case Me.SERVICE_CENTER_STRING
+                            Case SERVICE_CENTER_STRING
 
                                 Dim svcCenterdv As ServiceCenter.ServiceCenterSearchDV
-                                svcCenterdv = ServiceCenter.getList(dr(COL_CODE).ToString, String.Empty, String.Empty, String.Empty, String.Empty, Me.State.SelectedCompany.CountryId)
-                                If Not svcCenterdv Is Nothing AndAlso svcCenterdv.Count = 1 Then
+                                svcCenterdv = ServiceCenter.getList(dr(COL_CODE).ToString, String.Empty, String.Empty, String.Empty, String.Empty, State.SelectedCompany.CountryId)
+                                If svcCenterdv IsNot Nothing AndAlso svcCenterdv.Count = 1 Then
                                     _as.ServiceCenterId = GuidControl.ByteArrayToGuid(CType(svcCenterdv(0)(svcCenterdv.COL_SERVICE_CENTER_ID), Byte()))
                                 Else
                                     ValidRow = False
                                 End If
 
-                            Case Me.DEALER_GROUP_STRING
+                            Case DEALER_GROUP_STRING
 
                                 Dim dGroupdv As New DealerGroup.DealerGroupSearchDV(DealerGroup.LoadList(String.Empty, dr(COL_CODE).ToString).Table)
 
-                                If Not dGroupdv Is Nothing AndAlso dGroupdv.Count = 1 Then
+                                If dGroupdv IsNot Nothing AndAlso dGroupdv.Count = 1 Then
                                     _as.DealerGroupId = GuidControl.ByteArrayToGuid(CType(dGroupdv(0)(dGroupdv.COL_DEALER_GROUP_ID), Byte()))
                                 Else
                                     ValidRow = False
                                 End If
 
-                            Case Me.COMMISSION_ENTITY_STRING
+                            Case COMMISSION_ENTITY_STRING
 
-                                Dim commEntdv As New CommissionEntity.CommissionEntitySearchDV(CommissionEntity.getList(dr(COL_CODE).ToString, Nothing, Me.State.SelectedCompany.CompanyGroupId).Table)
+                                Dim commEntdv As New CommissionEntity.CommissionEntitySearchDV(CommissionEntity.getList(dr(COL_CODE).ToString, Nothing, State.SelectedCompany.CompanyGroupId).Table)
 
-                                If Not commEntdv Is Nothing AndAlso commEntdv.Count = 1 Then
+                                If commEntdv IsNot Nothing AndAlso commEntdv.Count = 1 Then
                                     _as.CommissionEntityId = GuidControl.ByteArrayToGuid(CType(commEntdv(0)(commEntdv.COL_COMMISSION_ENTITY_ID), Byte()))
                                 Else
                                     ValidRow = False
@@ -594,50 +594,50 @@ Partial Public Class AccountingLoadForm
                         If dr.Table.Columns(COL_BANK_ACCOUNT) IsNot Nothing AndAlso dr(COL_BANK_ACCOUNT) IsNot Nothing AndAlso dr(COL_BANK_ACCOUNT).ToString.Trim.Length > 0 Then
 
                             Select Case dr(COL_TYPE).ToString
-                                Case Me.DEALER_STRING
+                                Case DEALER_STRING
                                     vParent = New Dealer(_as.DealerId)
                                     If Not CType(vParent, Dealer).BankInfoId.Equals(Guid.Empty) Then
                                         _bi = New BankInfo(CType(vParent, Dealer).BankInfoId)
                                     Else
                                         _bi = New BankInfo
-                                        _bi.CountryID = Me.State.SelectedCompany.CountryId
-                                        _bi.SourceCountryID = Me.State.SelectedCompany.CountryId
+                                        _bi.CountryID = State.SelectedCompany.CountryId
+                                        _bi.SourceCountryID = State.SelectedCompany.CountryId
                                     End If
-                                Case Me.BRANCH_STRING
+                                Case BRANCH_STRING
                                     vParent = New Branch(_as.BranchId)
                                     If Not CType(vParent, Branch).BankInfoId.Equals(Guid.Empty) Then
                                         _bi = New BankInfo(CType(vParent, Branch).BankInfoId)
                                     Else
                                         _bi = New BankInfo
-                                        _bi.CountryID = Me.State.SelectedCompany.CountryId
-                                        _bi.SourceCountryID = Me.State.SelectedCompany.CountryId
+                                        _bi.CountryID = State.SelectedCompany.CountryId
+                                        _bi.SourceCountryID = State.SelectedCompany.CountryId
                                     End If
-                                Case Me.SERVICE_CENTER_STRING
+                                Case SERVICE_CENTER_STRING
                                     vParent = New ServiceCenter(_as.ServiceCenterId)
                                     If Not CType(vParent, ServiceCenter).BankInfoId.Equals(Guid.Empty) Then
                                         _bi = New BankInfo(CType(vParent, ServiceCenter).BankInfoId)
                                     Else
                                         _bi = New BankInfo
-                                        _bi.CountryID = Me.State.SelectedCompany.CountryId
-                                        _bi.SourceCountryID = Me.State.SelectedCompany.CountryId
+                                        _bi.CountryID = State.SelectedCompany.CountryId
+                                        _bi.SourceCountryID = State.SelectedCompany.CountryId
                                     End If
-                                Case Me.DEALER_GROUP_STRING
+                                Case DEALER_GROUP_STRING
                                     vParent = New DealerGroup(_as.DealerGroupId)
                                     If Not CType(vParent, DealerGroup).BankInfoId.Equals(Guid.Empty) Then
                                         _bi = New BankInfo(CType(vParent, DealerGroup).BankInfoId)
                                     Else
                                         _bi = New BankInfo
-                                        _bi.CountryID = Me.State.SelectedCompany.CountryId
-                                        _bi.SourceCountryID = Me.State.SelectedCompany.CountryId
+                                        _bi.CountryID = State.SelectedCompany.CountryId
+                                        _bi.SourceCountryID = State.SelectedCompany.CountryId
                                     End If
-                                Case Me.COMMISSION_ENTITY_STRING
+                                Case COMMISSION_ENTITY_STRING
                                     vParent = New CommissionEntity(_as.CommissionEntityId)
                                     If Not CType(vParent, CommissionEntity).BankInfoId.Equals(Guid.Empty) Then
                                         _bi = New BankInfo(CType(vParent, CommissionEntity).BankInfoId)
                                     Else
                                         _bi = New BankInfo
-                                        _bi.CountryID = Me.State.SelectedCompany.CountryId
-                                        _bi.SourceCountryID = Me.State.SelectedCompany.CountryId
+                                        _bi.CountryID = State.SelectedCompany.CountryId
+                                        _bi.SourceCountryID = State.SelectedCompany.CountryId
                                     End If
                             End Select
 
@@ -685,19 +685,19 @@ Partial Public Class AccountingLoadForm
                                 _bi.Save()
                                 If boolSaveParent Then
                                     Select Case dr(COL_TYPE).ToString
-                                        Case Me.DEALER_STRING
+                                        Case DEALER_STRING
                                             CType(vParent, Dealer).BankInfoId = _bi.Id
                                             CType(vParent, Dealer).Save()
-                                        Case Me.DEALER_GROUP_STRING
+                                        Case DEALER_GROUP_STRING
                                             CType(vParent, DealerGroup).BankInfoId = _bi.Id
                                             CType(vParent, DealerGroup).Save()
-                                        Case Me.BRANCH_STRING
+                                        Case BRANCH_STRING
                                             CType(vParent, Branch).BankInfoId = _bi.Id
                                             CType(vParent, Branch).Save()
-                                        Case Me.COMMISSION_ENTITY_STRING
+                                        Case COMMISSION_ENTITY_STRING
                                             CType(vParent, CommissionEntity).BankInfoId = _bi.Id
                                             CType(vParent, CommissionEntity).Save()
-                                        Case Me.SERVICE_CENTER_STRING
+                                        Case SERVICE_CENTER_STRING
                                             CType(vParent, ServiceCenter).BankInfoId = _bi.Id
                                             CType(vParent, ServiceCenter).Save()
                                     End Select
@@ -710,7 +710,7 @@ Partial Public Class AccountingLoadForm
                             For i As Integer = 0 To ex.ValidationErrorList.Length - 1
                                 valList(i) = New ValidationError(SheetName.Replace("$", "") & ", Line " & iRowCount.ToString & ", " & ex.ValidationErrorList(i).PropertyName & ": |" & ex.ValidationErrorList(i).Message, ex.ValidationErrorList(i).BusinessObjectType, ex.ValidationErrorList(i).ValidationAttributeType, ex.ValidationErrorList(i).PropertyName, ex.ValidationErrorList(i).OffendingValue)
                             Next
-                            Me.HandleErrors(New BOValidationException(valList, ex.BusinessObjectName), Me.ErrControllerMaster)
+                            HandleErrors(New BOValidationException(valList, ex.BusinessObjectName), ErrControllerMaster)
                         End Try
 
                     End If
@@ -724,12 +724,12 @@ Partial Public Class AccountingLoadForm
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Function
 
-    Private Function LoadEvents(ByVal oleConn As OleDb.OleDbConnection, ByVal SheetName As String) As Boolean
+    Private Function LoadEvents(oleConn As OleDb.OleDbConnection, SheetName As String) As Boolean
 
         Dim strSQL As String = "Select * from [" & SheetName & "]"
         Dim olAd As New OleDb.OleDbDataAdapter
@@ -757,8 +757,8 @@ Partial Public Class AccountingLoadForm
 
                     'Check if the event exists for the accounting company/business unit combination.  If it exists, load the existing record for update.  If 
                     '   it does not exist, create a new record.
-                    aedv = AcctEvent.getList(eventTypeId, Me.State.AccountingCompanyId)
-                    If Not aedv Is Nothing AndAlso aedv.Count = 1 Then
+                    aedv = AcctEvent.getList(eventTypeId, State.AccountingCompanyId)
+                    If aedv IsNot Nothing AndAlso aedv.Count = 1 Then
                         _ae = New AcctEvent(GuidControl.ByteArrayToGuid(CType(aedv(0)(aedv.COL_EVENT_ID), Byte())))
                     Else
                         _ae = New AcctEvent
@@ -766,7 +766,7 @@ Partial Public Class AccountingLoadForm
                         _ae.AcctEventTypeId = eventTypeId
 
                         'Set Accounting Company
-                        _ae.AcctCompanyId = Me.State.AccountingCompanyId
+                        _ae.AcctCompanyId = State.AccountingCompanyId
 
                     End If
 
@@ -781,7 +781,7 @@ Partial Public Class AccountingLoadForm
                         For i As Integer = 0 To ex.ValidationErrorList.Length - 1
                             valList(i) = New ValidationError(SheetName.Replace("$", "") & ", Line " & iRowCount.ToString & ", " & ex.ValidationErrorList(i).PropertyName & ": |" & ex.ValidationErrorList(i).Message, ex.ValidationErrorList(i).BusinessObjectType, ex.ValidationErrorList(i).ValidationAttributeType, ex.ValidationErrorList(i).PropertyName, ex.ValidationErrorList(i).OffendingValue)
                         Next
-                        Me.HandleErrors(New BOValidationException(valList, ex.BusinessObjectName), Me.ErrControllerMaster)
+                        HandleErrors(New BOValidationException(valList, ex.BusinessObjectName), ErrControllerMaster)
                     End Try
 
                 Else
@@ -792,12 +792,12 @@ Partial Public Class AccountingLoadForm
             Next
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Function
 
-    Private Function LoadEventDetails(ByVal oleConn As OleDb.OleDbConnection, ByVal SheetName As String, ByVal EventTypeId As Guid) As Boolean
+    Private Function LoadEventDetails(oleConn As OleDb.OleDbConnection, SheetName As String, EventTypeId As Guid) As Boolean
 
         Dim strSQL As String = "Select * from [" & SheetName & "]"
         Dim olAd As New OleDb.OleDbDataAdapter
@@ -837,11 +837,11 @@ Partial Public Class AccountingLoadForm
 
                     'Check if the event exists for the accounting company/business unit combination.  If it exists, load the existing record for update.  If 
                     '   it does not exist, throw an error as this is our parent key
-                    aedv = AcctEvent.getList(EventTypeId, Me.State.AccountingCompanyId)
-                    If Not aedv Is Nothing AndAlso aedv.Count = 1 Then
+                    aedv = AcctEvent.getList(EventTypeId, State.AccountingCompanyId)
+                    If aedv IsNot Nothing AndAlso aedv.Count = 1 Then
                         _ae = New AcctEvent(GuidControl.ByteArrayToGuid(CType(aedv(0)(aedv.COL_EVENT_ID), Byte())))
                     Else
-                        Me.ErrControllerMaster.AddErrorAndShow(Message.GUI_MSG_NO_EVENT_EXISTS)
+                        ErrControllerMaster.AddErrorAndShow(Message.GUI_MSG_NO_EVENT_EXISTS)
                         Return False
                     End If
 
@@ -883,7 +883,7 @@ Partial Public Class AccountingLoadForm
                         For i As Integer = 0 To ex.ValidationErrorList.Length - 1
                             valList(i) = New ValidationError(SheetName.Replace("$", "") & ", Line " & iRowCount.ToString & ", " & ex.ValidationErrorList(i).PropertyName & ": |" & ex.ValidationErrorList(i).Message, ex.ValidationErrorList(i).BusinessObjectType, ex.ValidationErrorList(i).ValidationAttributeType, ex.ValidationErrorList(i).PropertyName, ex.ValidationErrorList(i).OffendingValue)
                         Next
-                        Me.HandleErrors(New BOValidationException(valList, ex.BusinessObjectName), Me.ErrControllerMaster)
+                        HandleErrors(New BOValidationException(valList, ex.BusinessObjectName), ErrControllerMaster)
                     End Try
                 Else
                     Exit For
@@ -892,7 +892,7 @@ Partial Public Class AccountingLoadForm
                 iRowCount += 1
             Next
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Function
@@ -903,10 +903,10 @@ Partial Public Class AccountingLoadForm
         Dim dc As DataColumn
         Dim i, cnt As Integer
 
-        If dt.Columns.IndexOf(Me.EXCLUDE_ROW) > 0 Then
+        If dt.Columns.IndexOf(EXCLUDE_ROW) > 0 Then
             For i = dt.Rows.Count - 1 To 0 Step -1
                 dr = dt.Rows(i)
-                If dr(Me.EXCLUDE_ROW).ToString = Me.EXCLUDE_ROW_VALUE Then
+                If dr(EXCLUDE_ROW).ToString = EXCLUDE_ROW_VALUE Then
                     dt.Rows.Remove(dr)
                     cnt += 1
                 End If
@@ -917,34 +917,34 @@ Partial Public Class AccountingLoadForm
 
     End Function
 
-    Private Function GetEvent(ByVal EventName As String) As String
+    Private Function GetEvent(EventName As String) As String
 
-        If Me.EventMap Is Nothing Then
-            Me.EventMap = New Collections.Specialized.StringDictionary
-            Me.EventMap.Add(Me.EVENT_SHEET_UPR, Me.EVENT_UPR)
-            Me.EventMap.Add(Me.EVENT_SHEET_REFUNDS, Me.EVENT_REFUNDS)
-            Me.EventMap.Add(Me.EVENT_SHEET_PREM, Me.EVENT_PREM)
-            Me.EventMap.Add(Me.EVENT_SHEET_IBNR, Me.EVENT_IBNR)
-            Me.EventMap.Add(Me.EVENT_SHEET_CLAIMRES, Me.EVENT_CLAIMRES)
-            Me.EventMap.Add(Me.EVENT_SHEET_CLAIM, Me.EVENT_CLAIM)
-            Me.EventMap.Add(Me.EVENT_SHEET_INVOICING, Me.EVENT_INVOICING)
+        If EventMap Is Nothing Then
+            EventMap = New Collections.Specialized.StringDictionary
+            EventMap.Add(EVENT_SHEET_UPR, EVENT_UPR)
+            EventMap.Add(EVENT_SHEET_REFUNDS, EVENT_REFUNDS)
+            EventMap.Add(EVENT_SHEET_PREM, EVENT_PREM)
+            EventMap.Add(EVENT_SHEET_IBNR, EVENT_IBNR)
+            EventMap.Add(EVENT_SHEET_CLAIMRES, EVENT_CLAIMRES)
+            EventMap.Add(EVENT_SHEET_CLAIM, EVENT_CLAIM)
+            EventMap.Add(EVENT_SHEET_INVOICING, EVENT_INVOICING)
         End If
 
-        Return Me.EventMap(EventName)
+        Return EventMap(EventName)
 
     End Function
 
-    Private Function GetBusinessUnit(ByVal BusinessUnitName As String) As Guid
+    Private Function GetBusinessUnit(BusinessUnitName As String) As Guid
 
         Dim dv As AcctBusinessUnit.AcctBusinessUnitSearchDV
 
-        dv = AcctBusinessUnit.getList(Me.State.AccountingCompanyId, BusinessUnitName)
+        dv = AcctBusinessUnit.getList(State.AccountingCompanyId, BusinessUnitName)
 
-        If Not dv Is Nothing AndAlso dv.Count = 1 Then
+        If dv IsNot Nothing AndAlso dv.Count = 1 Then
             Return GuidControl.ByteArrayToGuid(CType(dv(0)(dv.COL_ACCT_BUSINESS_UNIT_ID), Byte()))
         Else
             Dim _bu As New AcctBusinessUnit
-            _bu.AcctCompanyId = Me.State.AccountingCompanyId
+            _bu.AcctCompanyId = State.AccountingCompanyId
             _bu.BusinessUnit = BusinessUnitName
             _bu.Code = BusinessUnitName
             _bu.SuppressVendors = NO_STRING

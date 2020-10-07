@@ -54,97 +54,97 @@ Public Class ClaimPaymentGroupForm
 
 #Region "Page Parameters"
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                Me.State.selectedPymntGroupId = CType(Me.CallingParameters, Guid)
+            If CallingParameters IsNot Nothing Then
+                State.selectedPymntGroupId = CType(CallingParameters, Guid)
 
-                If Not Me.State.selectedPymntGroupId.Equals(Guid.Empty) Then
-                    Me.State.MyPaymentGroupBO = New ClaimPaymentGroup(Me.State.selectedPymntGroupId)
+                If Not State.selectedPymntGroupId.Equals(Guid.Empty) Then
+                    State.MyPaymentGroupBO = New ClaimPaymentGroup(State.selectedPymntGroupId)
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
     Private Sub EnableDisableButtons()
-        If Not Me.State.MyPaymentGroupBO Is Nothing Then
-            If Me.State.MyPaymentGroupBO.PaymentGroupStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYMENT_GRP_STAT, _
+        If State.MyPaymentGroupBO IsNot Nothing Then
+            If State.MyPaymentGroupBO.PaymentGroupStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYMENT_GRP_STAT, _
                                                                                 Codes.PYMNT_GRP_STATUS_APPROVED_FOR_PAYMENT) Then
-                Me.btnCreatePayment.Enabled = False
-                Me.btnAddPayables.Enabled = False
+                btnCreatePayment.Enabled = False
+                btnAddPayables.Enabled = False
             End If
         Else
             'Its a New Payment Group having no Payables
-            Me.btnCreatePayment.Enabled = False
+            btnCreatePayment.Enabled = False
         End If
     End Sub
 
 
 #Region "Page_Events"
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.IsReturningFromChild = True
-            If Not Me.ReturnedValues Is Nothing Then
-                Me.State.selectedPymntGroupId = CType(Me.ReturnedValues, Guid)
-                If Not Me.State.selectedPymntGroupId.Equals(Guid.Empty) Then
-                    Me.State.MyPaymentGroupBO = New ClaimPaymentGroup(Me.State.selectedPymntGroupId)
+            IsReturningFromChild = True
+            If ReturnedValues IsNot Nothing Then
+                State.selectedPymntGroupId = CType(ReturnedValues, Guid)
+                If Not State.selectedPymntGroupId.Equals(Guid.Empty) Then
+                    State.MyPaymentGroupBO = New ClaimPaymentGroup(State.selectedPymntGroupId)
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & _
-                    TranslationBase.TranslateLabelOrMessage("PAYMENT_GROUP_SEARCH") & Me.MasterPage.PageTab & ElitaBase.Sperator & _
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & _
+                    TranslationBase.TranslateLabelOrMessage("PAYMENT_GROUP_SEARCH") & MasterPage.PageTab & ElitaBase.Sperator & _
                     TranslationBase.TranslateLabelOrMessage("PAYMENT_GROUP_DETAIL")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("PAYMENT_GROUP_DETAIL")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("PAYMENT_GROUP_DETAIL")
             End If
         End If
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         Try
-            Me.MasterPage.MessageController.Clear()
-            If Not Me.IsPostBack Then
+            MasterPage.MessageController.Clear()
+            If Not IsPostBack Then
 
-                Me.AddCalendar_New(Me.imgExpectedPymntDate, Me.moExpectedPaymentDate)
+                AddCalendar_New(imgExpectedPymntDate, moExpectedPaymentDate)
 
                 EnableDisableButtons()
 
-                If Me.State.MyPaymentGroupBO Is Nothing Then
-                    Me.State.MyPaymentGroupBO = New ClaimPaymentGroup()
+                If State.MyPaymentGroupBO Is Nothing Then
+                    State.MyPaymentGroupBO = New ClaimPaymentGroup()
                 End If
                 'BindBoPropertiesToLabels()
                 UpdateBreadCrum()
-                Me.State.MyPagedDataSource = New PagedDataSource
-                Me.State.MyPagedDataSource.AllowPaging = True
-                Me.State.MyPagedDataSource.PageSize = Me.State.PageSize
+                State.MyPagedDataSource = New PagedDataSource
+                State.MyPagedDataSource.AllowPaging = True
+                State.MyPagedDataSource.PageSize = State.PageSize
                 'Me.AddLabelDecorations(Me.State.MyPaymentGroupBO)
             Else
-                If ((Not Me.Request("__EVENTARGUMENT") Is Nothing) AndAlso (Me.Request("__EVENTARGUMENT").StartsWith(PAGE_COMMAND_NAME))) Then
-                    Me.State.PageIndex = Integer.Parse(Me.Request("__EVENTARGUMENT").Split(New Char() {":"c})(1))
+                If ((Request("__EVENTARGUMENT") IsNot Nothing) AndAlso (Request("__EVENTARGUMENT").StartsWith(PAGE_COMMAND_NAME))) Then
+                    State.PageIndex = Integer.Parse(Request("__EVENTARGUMENT").Split(New Char() {":"c})(1))
                 End If
                 CheckIfComingFromDeleteConfirm()
             End If
 
-            Me.State.searchDV = Nothing
+            State.searchDV = Nothing
             PopulateHeader()
-            If Not Me.State.selectedPymntGroupId.Equals(Guid.Empty) Or Me.IsReturningFromChild Then
+            If Not State.selectedPymntGroupId.Equals(Guid.Empty) Or IsReturningFromChild Then
                 PopulateGrid()
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
     'Protected Sub BindBoPropertiesToLabels()
@@ -164,27 +164,27 @@ Public Class ClaimPaymentGroupForm
 
 #Region "Button Click Handlers"
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.ReturnToCallingPage()
+            ReturnToCallingPage()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnAddPayables_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAddPayables.Click
-        Me.callPage(ClaimSelectPayables.URL, Me.State.selectedPymntGroupId)
+    Private Sub btnAddPayables_Click(sender As Object, e As System.EventArgs) Handles btnAddPayables.Click
+        callPage(ClaimSelectPayables.URL, State.selectedPymntGroupId)
     End Sub
 
-    Private Sub btnCreatePayment_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCreatePayment.Click
+    Private Sub btnCreatePayment_Click(sender As Object, e As System.EventArgs) Handles btnCreatePayment.Click
         Try
-            Me.State.MyPaymentGroupBO.processClaimAuthorizations()
+            State.MyPaymentGroupBO.processClaimAuthorizations()
             EnableDisableButtons()
-            Me.MasterPage.MessageController.AddSuccess(Me.MSG_PAYMENT_GROUP_PAID, True)
-            Me.State.searchDV = Nothing
+            MasterPage.MessageController.AddSuccess(MSG_PAYMENT_GROUP_PAID, True)
+            State.searchDV = Nothing
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -193,7 +193,7 @@ Public Class ClaimPaymentGroupForm
 
 #Region "Web Methods"
     <WebMethod(), Script.Services.ScriptMethod()> _
-    Public Shared Function GetClaimAuthLineItems(ByVal claimAuthId As String) As String
+    Public Shared Function GetClaimAuthLineItems(claimAuthId As String) As String
         Try
             Dim claimAuthLineItems As DataView
             Dim ds As DataSet
@@ -227,50 +227,50 @@ Public Class ClaimPaymentGroupForm
     Private Sub PopulateGrid(Optional ByVal updatePageIndex As Boolean = False)
         Dim recCount As Integer
         Try
-            If (Me.State.searchDV Is Nothing) Then
-                Me.State.searchDV = ClaimPaymentGroupDetail.GetPaymentGroupDetail(Me.State.selectedPymntGroupId)
+            If (State.searchDV Is Nothing) Then
+                State.searchDV = ClaimPaymentGroupDetail.GetPaymentGroupDetail(State.selectedPymntGroupId)
                 updatePageIndex = True
             End If
 
-            recCount = Me.State.searchDV.Count
+            recCount = State.searchDV.Count
             If (updatePageIndex) Then
-                Me.State.PageIndex = NewCurrentPageIndex(Me.State.PageIndex, Me.State.MyPagedDataSource.PageSize, Me.State.PageSize)
+                State.PageIndex = NewCurrentPageIndex(State.PageIndex, State.MyPagedDataSource.PageSize, State.PageSize)
             End If
 
-            Me.State.searchDV.Sort = Me.State.SortExpressionItem
-            Me.State.MyPagedDataSource.DataSource = Me.State.searchDV
-            Me.State.MyPagedDataSource.AllowPaging = True
-            Me.State.MyPagedDataSource.PageSize = Me.State.PageSize
-            Me.State.MyPagedDataSource.CurrentPageIndex = Me.State.PageIndex
-            Me.moPaymentRepeater.DataSource = Me.State.MyPagedDataSource
-            Me.moPaymentRepeater.DataBind()
+            State.searchDV.Sort = State.SortExpressionItem
+            State.MyPagedDataSource.DataSource = State.searchDV
+            State.MyPagedDataSource.AllowPaging = True
+            State.MyPagedDataSource.PageSize = State.PageSize
+            State.MyPagedDataSource.CurrentPageIndex = State.PageIndex
+            moPaymentRepeater.DataSource = State.MyPagedDataSource
+            moPaymentRepeater.DataBind()
 
             If (recCount = 0) Then
-                Me.btnCreatePayment.Enabled = False
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
+                btnCreatePayment.Enabled = False
+                MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
                 ControlMgr.SetVisibleControl(Me, moSearchResults, False)
             Else
-                If Not Me.State.MyPaymentGroupBO.PaymentGroupStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYMENT_GRP_STAT, _
+                If Not State.MyPaymentGroupBO.PaymentGroupStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYMENT_GRP_STAT, _
                                                                                                     Codes.PYMNT_GRP_STATUS_APPROVED_FOR_PAYMENT) Then
-                    Me.btnCreatePayment.Enabled = True
+                    btnCreatePayment.Enabled = True
                 End If
                 ControlMgr.SetVisibleControl(Me, moSearchResults, True)
                 lblRecordCount.Text = recCount & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub PopulateHeader()
         Try
-            If Not Me.State.selectedPymntGroupId.Equals(Guid.Empty) Then
-                moPaymentGroupNumber.Text = Me.State.MyPaymentGroupBO.PaymentGroupNumber
-                moPaymentGroupTotal.Text = Me.State.MyPaymentGroupBO.PaymentGroupTotal.ToString
-                moPaymentGroupDate.Text = Me.GetDateFormattedString(CDate(Me.State.MyPaymentGroupBO.PaymentGroupDate))
+            If Not State.selectedPymntGroupId.Equals(Guid.Empty) Then
+                moPaymentGroupNumber.Text = State.MyPaymentGroupBO.PaymentGroupNumber
+                moPaymentGroupTotal.Text = State.MyPaymentGroupBO.PaymentGroupTotal.ToString
+                moPaymentGroupDate.Text = GetDateFormattedString(CDate(State.MyPaymentGroupBO.PaymentGroupDate))
                 moPaymentGroupStatus.Text = LookupListNew.GetDescriptionFromId(LookupListCache.LK_PAYMENT_GRP_STAT, _
-                                                                               Me.State.MyPaymentGroupBO.PaymentGroupStatusId)
+                                                                               State.MyPaymentGroupBO.PaymentGroupStatusId)
                 moExpectedPaymentDate.Enabled = False
                 imgExpectedPymntDate.Visible = False
             Else
@@ -279,18 +279,18 @@ Public Class ClaimPaymentGroupForm
                 moPaymentGroupNumber.Text = String.Empty
                 moPaymentGroupTotal.Text = CStr(0D)
                 'New Payment Group's Date is the System Date
-                moPaymentGroupDate.Text = Me.GetDateFormattedString(Date.Now)
+                moPaymentGroupDate.Text = GetDateFormattedString(Date.Now)
                 'Default Payment Group Status is Open
                 moPaymentGroupStatus.Text = LookupListNew.GetDescriptionFromId(LookupListCache.LK_PAYMENT_GRP_STAT, _
                                                                                LookupListNew.GetIdFromCode(LookupListNew.LK_PAYMENT_GRP_STAT, _
                                                                                                            Codes.PYMNT_GRP_STATUS_OPEN))
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub PopulatePaymentStatusDropdown(ByVal DropDown As DropDownList)
+    Private Sub PopulatePaymentStatusDropdown(DropDown As DropDownList)
         Try
             Dim paymentStatus As ListItem() = CommonConfigManager.Current.ListManager.GetList("PMTGRPSTAT", Thread.CurrentPrincipal.GetLanguageCode(), Nothing)
             DropDown.Populate(paymentStatus, New PopulateOptions() With
@@ -299,11 +299,11 @@ Public Class ClaimPaymentGroupForm
                                                    })
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub moPaymentRepeater_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.RepeaterCommandEventArgs) Handles moPaymentRepeater.ItemCommand
+    Private Sub moPaymentRepeater_ItemCommand(source As Object, e As System.Web.UI.WebControls.RepeaterCommandEventArgs) Handles moPaymentRepeater.ItemCommand
         Dim index As Integer
         Try
             Select Case e.CommandName
@@ -316,32 +316,32 @@ Public Class ClaimPaymentGroupForm
                 Case DELETE_PAYABLE_COMMAND
                     If Not e.CommandArgument.ToString().Equals(String.Empty) Then
 
-                        Me.PopulateGrid()
+                        PopulateGrid()
                         'Clear the SelectedItemStyle to remove the highlight from the previously saved row
                         'moPaymentRepeater.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
 
                         'Save the Id in the Session
-                        Me.State.selectedPymntGroupDetailId = New Guid(e.CommandArgument.ToString())
+                        State.selectedPymntGroupDetailId = New Guid(e.CommandArgument.ToString())
 
-                        Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenDeletePromptResponse)
-                        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                        DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
+                        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
                     End If
                 Case SORT_COMMAND_NAME
-                    If Me.State.SortExpressionItem.StartsWith(e.CommandArgument.ToString()) Then
-                        If Me.State.SortExpressionItem.StartsWith(e.CommandArgument.ToString() & " DESC") Then
-                            Me.State.SortExpressionItem = e.CommandArgument.ToString()
+                    If State.SortExpressionItem.StartsWith(e.CommandArgument.ToString()) Then
+                        If State.SortExpressionItem.StartsWith(e.CommandArgument.ToString() & " DESC") Then
+                            State.SortExpressionItem = e.CommandArgument.ToString()
                         Else
-                            Me.State.SortExpressionItem = e.CommandArgument.ToString() & " DESC"
+                            State.SortExpressionItem = e.CommandArgument.ToString() & " DESC"
                         End If
                     Else
-                        Me.State.SortExpressionItem = e.CommandArgument.ToString()
+                        State.SortExpressionItem = e.CommandArgument.ToString()
                     End If
                     PopulateGrid()
             End Select
            
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -350,16 +350,16 @@ Public Class ClaimPaymentGroupForm
         Dim oInvRecon As InvoiceReconciliation
         Dim oClaimAuthBO As ClaimAuthorization
 
-        Me.State.MyPymntGrpDetailChildBO = Me.State.MyPaymentGroupBO.GetPymntGroupDetailChild(Me.State.selectedPymntGroupDetailId)
+        State.MyPymntGrpDetailChildBO = State.MyPaymentGroupBO.GetPymntGroupDetailChild(State.selectedPymntGroupDetailId)
 
         Try
-            oClaimAuthBO = New ClaimAuthorization(Me.State.MyPymntGrpDetailChildBO.ClaimAuthorizationId)
+            oClaimAuthBO = New ClaimAuthorization(State.MyPymntGrpDetailChildBO.ClaimAuthorizationId)
 
             'Get all the Invoice Recons for the Claim Authorization and Mark them back to Reconciled
             For Each ClaimAuthItem As ClaimAuthItem In oClaimAuthBO.ClaimAuthorizationItemChildren
                 If Not ClaimAuthItem.InvoiceReconciliationId = Guid.Empty Then
                     oInvRecon = New InvoiceReconciliation(ClaimAuthItem.InvoiceReconciliationId)
-                    Me.State.MyPaymentGroupBO.PaymentGroupTotal = Me.State.MyPaymentGroupBO.PaymentGroupTotal.Value - oInvRecon.ReconciledAmount.Value
+                    State.MyPaymentGroupBO.PaymentGroupTotal = State.MyPaymentGroupBO.PaymentGroupTotal.Value - oInvRecon.ReconciledAmount.Value
                     oInvRecon.ReconciliationStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_INV_RECON_STAT, _
                                                                                    Codes.INVOICE_RECON_STATUS_RECONCILED)
                     oInvRecon.Save()
@@ -373,24 +373,24 @@ Public Class ClaimPaymentGroupForm
             oClaimAuthBO.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled
             oClaimAuthBO.Save()
 
-            Me.State.MyPymntGrpDetailChildBO.Delete()
-            Me.State.MyPymntGrpDetailChildBO.Save()
-            Me.State.MyPymntGrpDetailChildBO.EndEdit()
-            Me.State.selectedPymntGroupDetailId = Guid.Empty
+            State.MyPymntGrpDetailChildBO.Delete()
+            State.MyPymntGrpDetailChildBO.Save()
+            State.MyPymntGrpDetailChildBO.EndEdit()
+            State.selectedPymntGroupDetailId = Guid.Empty
 
         Catch ex As Exception
-            Me.State.MyPaymentGroupBO.RejectChanges()
+            State.MyPaymentGroupBO.RejectChanges()
             Throw ex
         End Try
 
-        Me.State.MyPaymentGroupBO.Save()
-        Me.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_DELETED_OK, True)
-        Me.State.searchDV = Nothing
+        State.MyPaymentGroupBO.Save()
+        MasterPage.MessageController.AddSuccess(MSG_RECORD_DELETED_OK, True)
+        State.searchDV = Nothing
         PopulateGrid()
     End Sub
 
 
-    Protected Sub moPaymentRepeater_ItemDataBound(ByVal sender As Object, ByVal e As RepeaterItemEventArgs) Handles moPaymentRepeater.ItemDataBound
+    Protected Sub moPaymentRepeater_ItemDataBound(sender As Object, e As RepeaterItemEventArgs) Handles moPaymentRepeater.ItemDataBound
 
         Select Case e.Item.ItemType
             Case ListItemType.Item, ListItemType.AlternatingItem
@@ -407,24 +407,24 @@ Public Class ClaimPaymentGroupForm
                 DirectCast(e.Item.FindControl("lblItemCount"), Label).Text = ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.Count(pymntDR)
                 DirectCast(e.Item.FindControl("lblTotalAmount"), Label).Text = GetAmountFormattedDoubleString(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.InvoiceReconciledAmount(pymntDR).Value.ToString)
                 DirectCast(e.Item.FindControl("lblInvoiceDate"), Label).Text = GetDateFormattedStringNullable(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.InvoiceDate(pymntDR).Value)
-                If Not ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.DueDate(pymntDR) Is Nothing Then
+                If ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.DueDate(pymntDR) IsNot Nothing Then
                     DirectCast(e.Item.FindControl("lblInvoiceDueDate"), Label).Text = GetDateFormattedStringNullable(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.DueDate(pymntDR).Value)
                 Else
                     DirectCast(e.Item.FindControl("lblInvoiceDueDate"), Label).Text = String.Empty
                 End If
-                If Me.State.MyPaymentGroupBO.PaymentGroupStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYMENT_GRP_STAT, Codes.PYMNT_GRP_STATUS_APPROVED_FOR_PAYMENT) Then
+                If State.MyPaymentGroupBO.PaymentGroupStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYMENT_GRP_STAT, Codes.PYMNT_GRP_STATUS_APPROVED_FOR_PAYMENT) Then
                     DirectCast(e.Item.FindControl("btnDeletePayable"), LinkButton).Visible = False
                 End If
             Case ListItemType.Header
                 BaseItemCreated(DirectCast(sender, Repeater), e)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moSvcCenterCodeSort"), LinkButton), Me.State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_SERVICE_CENTER_CODE)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moClaimNumberSort"), LinkButton), Me.State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_CLAIM_NUMBER)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moAuthorizationNumberSort"), LinkButton), Me.State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_AUTHORIZATION_NUMBER)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moInvoiceNumberSort"), LinkButton), Me.State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_INVOICE_NUMBER)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moInvoiceDateSort"), LinkButton), Me.State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_INVOICE_DATE)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moTotalAmountSort"), LinkButton), Me.State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_RECONCILED_AMOUNT)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moItemCountSort"), LinkButton), Me.State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_COUNT)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moInvoiceDueDateSort"), LinkButton), Me.State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_DUE_DATE)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moSvcCenterCodeSort"), LinkButton), State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_SERVICE_CENTER_CODE)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moClaimNumberSort"), LinkButton), State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_CLAIM_NUMBER)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moAuthorizationNumberSort"), LinkButton), State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_AUTHORIZATION_NUMBER)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moInvoiceNumberSort"), LinkButton), State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_INVOICE_NUMBER)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moInvoiceDateSort"), LinkButton), State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_INVOICE_DATE)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moTotalAmountSort"), LinkButton), State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_RECONCILED_AMOUNT)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moItemCountSort"), LinkButton), State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_COUNT)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moInvoiceDueDateSort"), LinkButton), State.SortExpressionItem, ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_DUE_DATE)
             Case ListItemType.Footer
                 BaseItemCreated(DirectCast(sender, Repeater), e)
         End Select
@@ -433,28 +433,28 @@ Public Class ClaimPaymentGroupForm
 
 #End Region
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
-            Me.State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.PopulateGrid(True)
+            State.PageSize = CType(cboPageSize.SelectedValue, Integer)
+            PopulateGrid(True)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub CheckIfComingFromDeleteConfirm()
-        Dim confResponse As String = Me.HiddenDeletePromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+        Dim confResponse As String = HiddenDeletePromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
             If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
                 DoDelete()
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenDeletePromptResponse.Value = ""
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenDeletePromptResponse.Value = ""
             End If
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenDeletePromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenDeletePromptResponse.Value = ""
         End If
     End Sub
 End Class

@@ -32,13 +32,13 @@ Partial Public Class CertAddDealerSelectForm
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrControllerMaster.Clear_Hide()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        ErrControllerMaster.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
 
                 populateControls()
                 'Else
@@ -48,21 +48,21 @@ Partial Public Class CertAddDealerSelectForm
                 'End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 
-    Private Sub Page_LoadComplete(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LoadComplete
+    Private Sub Page_LoadComplete(sender As Object, e As System.EventArgs) Handles Me.LoadComplete
         If ErrControllerMaster.Visible Then
-            Me.spanFiller.Text = "<tr><td colspan=""2"" style=""height:300px"">&nbsp;</td></tr>"
+            spanFiller.Text = "<tr><td colspan=""2"" style=""height:300px"">&nbsp;</td></tr>"
         Else
-            Me.spanFiller.Text = "<tr><td colspan=""2"" style=""height:1px"">&nbsp;</td></tr>"
+            spanFiller.Text = "<tr><td colspan=""2"" style=""height:1px"">&nbsp;</td></tr>"
         End If
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
-        Me.IsReturningFromChild = True
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
+        IsReturningFromChild = True
         If ReturnPar Is Nothing Then
             State.DealerID = Guid.Empty
         Else
@@ -109,16 +109,16 @@ Partial Public Class CertAddDealerSelectForm
             'dv.Sort = "CODE"
             'BindListControlToDataView(Me.ddlDealerCode, dv, "CODE", "ID", True)
 
-            Me.ddlDealer.Attributes.Add("onchange", "UpdateList('" & Me.ddlDealerCode.ClientID & "')")
-            Me.ddlDealerCode.Attributes.Add("onchange", "UpdateList('" & Me.ddlDealer.ClientID & "')")
+            ddlDealer.Attributes.Add("onchange", "UpdateList('" & ddlDealerCode.ClientID & "')")
+            ddlDealerCode.Attributes.Add("onchange", "UpdateList('" & ddlDealer.ClientID & "')")
 
-            If Me.State.DealerID <> Guid.Empty Then
-                Me.PopulateControlFromBOProperty(ddlDealerCode, State.DealerID)
-                Me.PopulateControlFromBOProperty(ddlDealer, State.DealerID)
+            If State.DealerID <> Guid.Empty Then
+                PopulateControlFromBOProperty(ddlDealerCode, State.DealerID)
+                PopulateControlFromBOProperty(ddlDealer, State.DealerID)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -137,7 +137,7 @@ Partial Public Class CertAddDealerSelectForm
             oListContext.CompanyId = UserCompanies(Index)
             Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:=ListCodes.DealerListWithManualEnrollByCompany, context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
-                If Not oDealerList Is Nothing Then
+                If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
                 Else
                     oDealerList = oDealerListForCompany.Clone()
@@ -153,25 +153,25 @@ Partial Public Class CertAddDealerSelectForm
 #End Region
 
 #Region "button click events"
-    Private Sub btnAdd_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAdd.Click
+    Private Sub btnAdd_Click(sender As Object, e As System.EventArgs) Handles btnAdd.Click
         Try
-            Me.State.DealerID = Me.GetSelectedItem(Me.ddlDealer)
+            State.DealerID = GetSelectedItem(ddlDealer)
             If State.DealerID = Guid.Empty Then
-                Me.ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
+                ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
             Else
                 'Me.callPage(CertAddDetails.URL, Me.State.DealerID)
-                Me.callPage(CertAddDetailsForm.URL, New CertAddDetailsForm.Parameters(Me.State.DealerID, Me.ddlDealer.SelectedItem.Text))
+                callPage(CertAddDetailsForm.URL, New CertAddDetailsForm.Parameters(State.DealerID, ddlDealer.SelectedItem.Text))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
-        Me.ddlDealer.SelectedIndex = 0
-        Me.ddlDealerCode.SelectedIndex = 0
-        Me.State.DealerID = Guid.Empty
+    Private Sub btnClearSearch_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
+        ddlDealer.SelectedIndex = 0
+        ddlDealerCode.SelectedIndex = 0
+        State.DealerID = Guid.Empty
     End Sub
 #End Region
 

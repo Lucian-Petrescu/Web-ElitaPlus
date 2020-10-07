@@ -52,7 +52,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -62,36 +62,36 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     TheRptCeInputControl.ExcludeExport()
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -100,9 +100,9 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(CompanyMultipleDrop.CaptionLabel)
-            Me.ClearLabelErrSign(moBeginDateLabel)
-            Me.ClearLabelErrSign(moEndDateLabel)
+            ClearLabelErrSign(CompanyMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(moBeginDateLabel)
+            ClearLabelErrSign(moEndDateLabel)
         End Sub
 
 #End Region
@@ -126,9 +126,9 @@ Namespace Reports
             Dim t As Date = Date.Now.AddDays(-Date.Today.Day + 1)
             t = t.AddMonths(-Date.Today.Month + 1)
             t = t.AddYears(-1)
-            Me.moBeginDateText.Text = GetDateFormattedString(t)
+            moBeginDateText.Text = GetDateFormattedString(t)
             rJournalFiles.Checked = True
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Now.AddDays(-1))
+            moEndDateText.Text = GetDateFormattedString(Date.Now.AddDays(-1))
             TheRptCeInputControl.populateReportLanguages(RPT_FILENAME)
         End Sub
 
@@ -136,8 +136,8 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal CompanyId As String, ByVal CompanyDesc As String, ByVal beginDate As String,
-                                  ByVal endDate As String, ByVal filetype As String) As ReportCeBaseForm.Params
+        Function SetParameters(CompanyId As String, CompanyDesc As String, beginDate As String,
+                                  endDate As String, filetype As String) As ReportCeBaseForm.Params
 
 
             Dim culturevalue As String = TheRptCeInputControl.getCultureValue(False)
@@ -156,7 +156,7 @@ Namespace Reports
                                      New ReportCeBaseForm.RptParam("V_FILE_TYPE", filetype),
                                      New ReportCeBaseForm.RptParam("LANG_CULTURE_VALUE", culturevalue)}
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             With params
                 .msRptName = reportName

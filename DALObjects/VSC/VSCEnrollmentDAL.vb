@@ -221,11 +221,11 @@ Public Class VSCEnrollmentDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
+    Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("enrollment_id", id.ToByteArray)}
         Try
@@ -354,7 +354,7 @@ Public Class VSCEnrollmentDAL
 
     End Function
 
-    Public Function Certificate(ByVal id As Guid) As Boolean
+    Public Function Certificate(id As Guid) As Boolean
 
         Dim selectStmt As String = Config("/SQL/CERTIFICATE")
 
@@ -390,7 +390,7 @@ Public Class VSCEnrollmentDAL
 
     End Function
 
-    Public Sub Certificate(ByVal id As Guid, ByVal CollectionMethodCode As String, ByVal PaymentInstrumentCode As String)
+    Public Sub Certificate(id As Guid, CollectionMethodCode As String, PaymentInstrumentCode As String)
 
         Dim selectStmt As String = Config("/SQL/CERTIFICATE")
         Dim inputParameters() As DBHelper.DBHelperParameter
@@ -416,7 +416,7 @@ Public Class VSCEnrollmentDAL
 
     End Sub
 
-    Public Sub FlushEnroll(ByVal id As Guid)
+    Public Sub FlushEnroll(id As Guid)
 
         Dim selectStmt As String = Config("/SQL/FLUSHENROLL")
         Dim inputParameters() As DBHelper.DBHelperParameter
@@ -439,7 +439,7 @@ Public Class VSCEnrollmentDAL
         End Try
     End Sub
 
-    Public Function AddManufacturerCoverage(ByVal certId As Guid) As Guid
+    Public Function AddManufacturerCoverage(certId As Guid) As Guid
 
         Dim selectStmt As String = Config("/SQL/AddManufacturerCoverage")
         Dim inputParameters() As DBHelper.DBHelperParameter
@@ -463,7 +463,7 @@ Public Class VSCEnrollmentDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
@@ -475,7 +475,7 @@ Public Class VSCEnrollmentDAL
 
 #Region "Private Methods"
 
-    Function SetParameter(ByVal name As String, ByVal value As Object) As DBHelper.DBHelperParameter
+    Function SetParameter(name As String, value As Object) As DBHelper.DBHelperParameter
 
         name = name.Trim
         If value Is Nothing Then value = DBNull.Value
@@ -485,7 +485,7 @@ Public Class VSCEnrollmentDAL
 
     End Function
 
-    Function Base64ToGuid(ByVal strGuid As String) As Guid
+    Function Base64ToGuid(strGuid As String) As Guid
 
         Return New Guid(Convert.FromBase64String(strGuid))
 

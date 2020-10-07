@@ -24,31 +24,31 @@ Namespace Tables.Accounting.AccountPayable
         Public Sub New()
 
             MyBase.New()
-            Me.Dataset = New DataSet
-            Me.Load()
+            Dataset = New DataSet
+            Load()
 
         End Sub
         Public Sub New(ByVal vendorCode As String , ByVal poNumber As string, ByVal poLineId As Guid,ByVal companyId As Guid)
 
             MyBase.New()
-            Me.Dataset = New DataSet
-            Me.Load(vendorCode,poNumber,poLineId,companyId)
+            Dataset = New DataSet
+            Load(vendorCode,poNumber,poLineId,companyId)
 
         End Sub
         Public Sub New(ByVal vendorCode As String , ByVal poNumber As string, ByVal poLineId As Guid, ByVal companyId As Guid, ByVal familyDs As DataSet)
             MyBase.New(False)
-            Me.Dataset = familyDS
-            Me.Load(vendorCode,poNumber,poLineId,companyId)
+            Dataset = familyDS
+            Load(vendorCode,poNumber,poLineId,companyId)
         End Sub
         
         Public Sub New(ByVal familyDs As DataSet)
             MyBase.New(False)
-            Me.Dataset = familyDS
-            Me.Load()
+            Dataset = familyDS
+            Load()
         End Sub
         Public Sub New(ByVal row As DataRow)
             MyBase.New(False)
-            Me.Dataset = row.Table.DataSet
+            Dataset = row.Table.DataSet
             Me.Row = row
         End Sub
 
@@ -56,11 +56,11 @@ Namespace Tables.Accounting.AccountPayable
             Dim dal As PoAdjustmentDAL = New PoAdjustmentDAL
             Dim ds As DataSet = New DataSet
 
-            Me.Dataset = dal.LoadSchema(ds)
+            Dataset = dal.LoadSchema(ds)
 
-            Dim newRow As DataRow = Me.Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME).NewRow
-            Me.Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME).NewRow
+            Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(PoAdjustmentDAL.PO_LINE_ID_COL, Guid.NewGuid)
         End Sub
 
@@ -68,22 +68,22 @@ Namespace Tables.Accounting.AccountPayable
 
             Try
                 Dim dal As New PoAdjustmentDAL
-                If Me._isDSCreator Then
-                    If Not Me.Row Is Nothing Then
-                        Me.Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME).Rows.Remove(Me.Row)
+                If _isDSCreator Then
+                    If Not Row Is Nothing Then
+                        Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME).Rows.Remove(Row)
                     End If
                 End If
-                Me.Row = Nothing
-                If Not Me.Dataset Is Nothing Then
-                    If Me.Dataset.Tables.IndexOf(PoAdjustmentDAL.PO_LINES_TABLE_NAME) >= 0 Then
-                        Me.Row = FindRow(apPoLineId.ToByteArray(), PoAdjustmentDAL.PO_LINE_ID_COL, Me.Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME))
+                Row = Nothing
+                If Not Dataset Is Nothing Then
+                    If Dataset.Tables.IndexOf(PoAdjustmentDAL.PO_LINES_TABLE_NAME) >= 0 Then
+                        Row = FindRow(apPoLineId.ToByteArray(), PoAdjustmentDAL.PO_LINE_ID_COL, Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME))
                     End If
                 End If
-                If Me.Row Is Nothing Then 
-                    dal.Load(Me.Dataset, vendorCode,apPoNumber,poCompany)
-                    Me.Row = FindRow(apPoLineId, PoAdjustmentDAL.PO_LINE_ID_COL, Me.Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME))
+                If Row Is Nothing Then 
+                    dal.Load(Dataset, vendorCode,apPoNumber,poCompany)
+                    Row = FindRow(apPoLineId, PoAdjustmentDAL.PO_LINE_ID_COL, Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME))
                 End If
-                If Me.Row Is Nothing Then
+                If Row Is Nothing Then
                     Throw New DataNotFoundException
                 End If
             Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -108,7 +108,7 @@ Namespace Tables.Accounting.AccountPayable
                 Return New Guid(CType(Row(PoAdjustmentDAL.PO_LINE_ID_COL), Byte()))
             End Get
             Set(ByVal value As Guid)
-               Me.SetValue(PoAdjustmentDAL.PO_LINE_ID_COL, value)
+               SetValue(PoAdjustmentDAL.PO_LINE_ID_COL, value)
             End Set
         End Property
 
@@ -119,7 +119,7 @@ Namespace Tables.Accounting.AccountPayable
                 Return Row(PoAdjustmentDAL.DESCRIPTION_COL)
             End Get
             Set(ByVal value As String)
-                Me.SetValue(PoAdjustmentDAL.DESCRIPTION_COL, value)
+                SetValue(PoAdjustmentDAL.DESCRIPTION_COL, value)
             End Set
         End Property
 
@@ -130,7 +130,7 @@ Namespace Tables.Accounting.AccountPayable
                 Return Row(PoAdjustmentDAL.VENDOR_COL)
             End Get
             Set(ByVal value As String)
-                Me.SetValue(PoAdjustmentDAL.VENDOR_COL, value)
+                SetValue(PoAdjustmentDAL.VENDOR_COL, value)
             End Set
         End Property
         <ValueMandatory(""), ValidStringLength("", Max:=100)>
@@ -140,7 +140,7 @@ Namespace Tables.Accounting.AccountPayable
                 Return Row(PoAdjustmentDAL.PO_NUMBER_COL)
             End Get
             Set(ByVal value As String)
-                Me.SetValue(PoAdjustmentDAL.PO_NUMBER_COL, value)
+                SetValue(PoAdjustmentDAL.PO_NUMBER_COL, value)
             End Set
         End Property
         <ValueMandatory(""),ValidStringLength("", Max:=100)>
@@ -150,7 +150,7 @@ Namespace Tables.Accounting.AccountPayable
                 Return Row(PoAdjustmentDAL.LINE_NUMBER_COL)
             End Get
             Set(ByVal value As String)
-                Me.SetValue(PoAdjustmentDAL.LINE_NUMBER_COL, value)
+                SetValue(PoAdjustmentDAL.LINE_NUMBER_COL, value)
             End Set
         End Property
         <ValueMandatory(""),ValidStringLength("", Max:=100)>
@@ -160,7 +160,7 @@ Namespace Tables.Accounting.AccountPayable
                 Return Row(PoAdjustmentDAL.ITEM_CODE_COL)
             End Get
             Set(ByVal value As String)
-                Me.SetValue(PoAdjustmentDAL.ITEM_CODE_COL, value)
+                SetValue(PoAdjustmentDAL.ITEM_CODE_COL, value)
             End Set
         End Property
       Public Property Quantity() As Decimal
@@ -169,7 +169,7 @@ Namespace Tables.Accounting.AccountPayable
                 Return Row(PoAdjustmentDAL.QUANTITY_COL)
             End Get
             Set(ByVal value As Decimal)
-                Me.SetValue(PoAdjustmentDAL.QUANTITY_COL, value)
+                SetValue(PoAdjustmentDAL.QUANTITY_COL, value)
             End Set
         End Property
         Public Property UnitPrice() As Decimal
@@ -178,7 +178,7 @@ Namespace Tables.Accounting.AccountPayable
                 Return Row(PoAdjustmentDAL.UNIT_PRICE_COL)
             End Get
             Set(ByVal value As Decimal)
-                Me.SetValue(PoAdjustmentDAL.UNIT_PRICE_COL, value)
+                SetValue(PoAdjustmentDAL.UNIT_PRICE_COL, value)
             End Set
         End Property
         Public Property ExtendedPrice() As Decimal
@@ -187,7 +187,7 @@ Namespace Tables.Accounting.AccountPayable
                 Return Row(PoAdjustmentDAL.EXTENDED_PRICE_COL)
             End Get
             Set(ByVal value As Decimal)
-                Me.SetValue(PoAdjustmentDAL.EXTENDED_PRICE_COL, value)
+                SetValue(PoAdjustmentDAL.EXTENDED_PRICE_COL, value)
             End Set
         End Property
         Public Property CompanyId() As Guid
@@ -196,7 +196,7 @@ Namespace Tables.Accounting.AccountPayable
                 Return New Guid(CType(Row(PoAdjustmentDAL.COMPANY_ID_COL), Byte()))
             End Get
             Set(ByVal value As Guid)
-                Me.SetValue(PoAdjustmentDAL.COMPANY_ID_COL, value)
+                SetValue(PoAdjustmentDAL.COMPANY_ID_COL, value)
             End Set
         End Property
         <ValidStringLength("", Max:=30)>
@@ -206,7 +206,7 @@ Namespace Tables.Accounting.AccountPayable
                 Return Row(PoAdjustmentDAL.MODIFIED_BY_COL)
             End Get
             Set(ByVal value As String)
-                Me.SetValue(PoAdjustmentDAL.MODIFIED_BY_COL, value)
+                SetValue(PoAdjustmentDAL.MODIFIED_BY_COL, value)
             End Set
         End Property
 
@@ -216,12 +216,12 @@ Namespace Tables.Accounting.AccountPayable
         Public Overrides Sub Save()
             Try
                 MyBase.Save()
-                If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+                If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                     Dim dal As New PoAdjustmentDAL
                     dal.UpdateApLine(PoNumber,PoLineId,CompanyId,Quantity,ModifiedBy)
                     'Reload the Data from the DB
-                    If Me.Row.RowState <> DataRowState.Detached Then
-                        Me.Load(Vendor,PoNumber,PoLineId,CompanyId)
+                    If Row.RowState <> DataRowState.Detached Then
+                        Load(Vendor,PoNumber,PoLineId,CompanyId)
                     End If
                 End If
             Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

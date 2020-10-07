@@ -11,19 +11,19 @@ Public MustInherit Class MasterBase
     Private Const STYLE_BLOCK As String = "STYLE_BLOCK"
     Private Const TILED_STYLE_BLOCK As String = "TILED_STYLE_BLOCK"
 
-    Private Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
         'Include the stylesheet and scripts in the master page
-        Dim cs As ClientScriptManager = Me.Page.ClientScript
+        Dim cs As ClientScriptManager = Page.ClientScript
 
-        If (Not (Me.GetType().BaseType.Equals(GetType(ElitaBase)))) Then
+        If (Not ([GetType]().BaseType.Equals(GetType(ElitaBase)))) Then
             If Not cs.IsClientScriptBlockRegistered(STYLE_BLOCK) Then
-                cs.RegisterClientScriptBlock(Me.GetType, STYLE_BLOCK, "<STYLE TYPE=""text/css"">@import url(""" & Request.ApplicationPath & STYLESHEET & """);</STYLE>")
+                cs.RegisterClientScriptBlock([GetType], STYLE_BLOCK, "<STYLE TYPE=""text/css"">@import url(""" & Request.ApplicationPath & STYLESHEET & """);</STYLE>")
             End If
         End If
 
         If Not cs.IsClientScriptBlockRegistered(TILED_STYLE_BLOCK) Then
-            cs.RegisterClientScriptBlock(Me.GetType, TILED_STYLE_BLOCK, "<STYLE TYPE=""text/css"">@import url(""" & Request.ApplicationPath & TILED_STYLESHEET & """);</STYLE>")
+            cs.RegisterClientScriptBlock([GetType], TILED_STYLE_BLOCK, "<STYLE TYPE=""text/css"">@import url(""" & Request.ApplicationPath & TILED_STYLESHEET & """);</STYLE>")
         End If
 
         If Not cs.IsClientScriptIncludeRegistered(SCRIPT_BLOCK) Then
@@ -36,7 +36,7 @@ Public MustInherit Class MasterBase
 
     'Must Override properties for the base pages to access the controls
     Public MustOverride ReadOnly Property ErrController() As ErrorController
-    Public MustOverride ReadOnly Property PageForm(ByVal FormName As String) As HtmlForm
+    Public MustOverride ReadOnly Property PageForm(FormName As String) As HtmlForm
     Public MustOverride Property PageTitle() As String
     Public MustOverride Property PageTab() As String
 
@@ -56,7 +56,7 @@ Public MustInherit Class MasterBase
         Get
             Return Nothing
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
 
         End Set
     End Property
@@ -65,7 +65,7 @@ Public MustInherit Class MasterBase
         Get
             Return Nothing
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
 
         End Set
     End Property
@@ -74,7 +74,7 @@ Public MustInherit Class MasterBase
         Get
             Return Nothing
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
 
         End Set
     End Property

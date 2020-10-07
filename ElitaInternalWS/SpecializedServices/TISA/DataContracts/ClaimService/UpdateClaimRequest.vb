@@ -63,7 +63,7 @@ Namespace SpecializedServices.Tisa
 
     Friend Module UpdateClaimExtensions
         <Extension()>
-        Friend Function GetExtendedStatusCode(ByVal pUpdateActionType As UpdateActionType) As String
+        Friend Function GetExtendedStatusCode(pUpdateActionType As UpdateActionType) As String
 
             Select Case pUpdateActionType
                 Case UpdateActionType.UnderMFW

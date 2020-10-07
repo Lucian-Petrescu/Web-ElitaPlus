@@ -35,7 +35,7 @@ Public NotInheritable Class ConfigReader
     'xPath paramter.
     'Example of valid values for the xPath Parameter are : 
     '   "/SQL/WORK_REQUEST/LOAD"
-    Public Shared Function GetNodeValue(ByVal describedType As Type, ByVal xPath As String) As String
+    Public Shared Function GetNodeValue(describedType As Type, xPath As String) As String
 
         Dim node As XmlNode = GetNode(describedType, xPath)
 
@@ -52,7 +52,7 @@ Public NotInheritable Class ConfigReader
     'xPath paramter.
     'Example of valid values for the xPath Parameter are : 
     '   "/SQL/WORK_REQUEST/LOAD"
-    Public Shared Function GetNode(ByVal describedType As Type, ByVal xPath As String) As XmlNode
+    Public Shared Function GetNode(describedType As Type, xPath As String) As XmlNode
 
         'Load the sql xml embedded resource 
         Dim xmlDoc As XmlDocument = ConfigDocument(describedType)
@@ -65,7 +65,7 @@ Public NotInheritable Class ConfigReader
 
     'returns an xml document either from the cache (hashtable) or if it is not there
     'then it is loaded.
-    Public Shared ReadOnly Property ConfigDocument(ByVal describedType As Type) As XmlDocument
+    Public Shared ReadOnly Property ConfigDocument(describedType As Type) As XmlDocument
         Get
             'only allow one thread (aspnet session) to access the shared hashtable at a time
             SyncLock describedType
@@ -104,8 +104,8 @@ Public NotInheritable Class ConfigReader
         End Get
     End Property
 
-    Public Shared Sub AddNodeAttribute(ByVal describedType As Type, ByVal oNode As Xml.XmlNode, _
-    ByVal oAttrName As String, ByVal oAttrContent As String)
+    Public Shared Sub AddNodeAttribute(describedType As Type, oNode As Xml.XmlNode, _
+    oAttrName As String, oAttrContent As String)
         'Load the sql xml embedded resource 
         Dim xmlDoc As XmlDocument = ConfigDocument(describedType)
         Dim oAttr As XmlAttribute = xmlDoc.CreateAttribute(oAttrName)

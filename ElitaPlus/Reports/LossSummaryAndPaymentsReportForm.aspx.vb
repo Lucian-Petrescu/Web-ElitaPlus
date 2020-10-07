@@ -96,7 +96,7 @@ Namespace Reports
         End Sub
         'NOTE: The following placeholder declaration is required by the Web Form Designer.
         'Do not delete or move it.
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -106,13 +106,13 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
-            Me.MasterPage.MessageController.Clear_Hide()
-            Me.ClearLabelsError()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            MasterPage.MessageController.Clear_Hide()
+            ClearLabelsError()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
 
                     currentAccountingMonth = AccountingCloseInfo.GetAccountingCloseDate(ElitaPlusIdentity.Current.ActiveUser.CompanyId, Date.Today).Month
                     currentAccountingYear = AccountingCloseInfo.GetAccountingCloseDate(ElitaPlusIdentity.Current.ActiveUser.CompanyId, Date.Today).Year
@@ -123,7 +123,7 @@ Namespace Reports
                     UpdateBreadCrum()
                     JavascriptCalls()
 
-                    Me.AddCalendar_New(Me.imgCutOffDate, Me.txtCutOffDate)
+                    AddCalendar_New(imgCutOffDate, txtCutOffDate)
 
                 Else
                     currentAccountingMonth = CType(ViewState("CURRENTACCOUNTINGMONTH"), Integer)
@@ -141,12 +141,12 @@ Namespace Reports
                     End If
                 End If
 
-                Me.InstallDisplayNewReportProgressBar()
+                InstallDisplayNewReportProgressBar()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
         Private Sub InitializeForm()
@@ -167,7 +167,7 @@ Namespace Reports
 #End Region
 #Region "Handlers-DropDown"
 
-        Protected Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New) _
+        Protected Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New) _
              Handles moUserCompanyMultipleDrop.SelectedDropChanged
             Try
                 PopulateDealerDropDown()
@@ -175,7 +175,7 @@ Namespace Reports
                 btnGenRpt.Enabled = True
 
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -183,13 +183,13 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
-                Me.ClearLabelsError()
+                ClearLabelsError()
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -200,14 +200,14 @@ Namespace Reports
 #Region "Clear"
         Private Sub ClearLabelsError()
             Try
-                Me.ClearLabelErrSign(MonthYearLabel)
-                Me.ClearLabelErrSign(lblCutOff)
-                Me.ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
-                Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
-                Me.ClearLabelErrSign(lblSelectAllDealers)
+                ClearLabelErrSign(MonthYearLabel)
+                ClearLabelErrSign(lblCutOff)
+                ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(lblSelectAllDealers)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -230,7 +230,7 @@ Namespace Reports
             'dvM.Sort = "CODE"
             ' BindListControlToDataView(Me.MonthDropDownList, dvM, , , True)
             Dim monthLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("MONTH", Thread.CurrentPrincipal.GetLanguageCode())
-            Me.MonthDropDownList.Populate(monthLkl, New PopulateOptions() With
+            MonthDropDownList.Populate(monthLkl, New PopulateOptions() With
            {
               .AddBlankItem = True,
               .SortFunc = AddressOf PopulateOptions.GetCode
@@ -253,7 +253,7 @@ Namespace Reports
                                                   Where x.Description = currentAccountingYear.ToString() Or x.Description = (currentAccountingYear - 1).ToString()
                                                   Select x).ToArray()
 
-            Me.YearDropDownList.Populate(filteredYearList, New PopulateOptions() With
+            YearDropDownList.Populate(filteredYearList, New PopulateOptions() With
              {
             .AddBlankItem = True,
             .BlankItemValue = "0",
@@ -275,9 +275,9 @@ Namespace Reports
 #End Region
 
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
 
         End Sub
 #Region "Report Generation"
@@ -296,11 +296,11 @@ Namespace Reports
             Dim dealerCode As String = DealerMultipleDrop.SelectedCode
             Dim selectedDealerId As Guid = DealerMultipleDrop.SelectedGuid
 
-            Dim selectedYear As String = GetSelectedDescription(Me.YearDropDownList)
-            Dim selectedMonthID As Guid = GetSelectedItem(Me.MonthDropDownList)
+            Dim selectedYear As String = GetSelectedDescription(YearDropDownList)
+            Dim selectedMonthID As Guid = GetSelectedItem(MonthDropDownList)
             Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
 
-            If Me.rdoAccountingPeriod.Checked Then
+            If rdoAccountingPeriod.Checked Then
                 ' Code when Accountingperiod reporting period is selected
                 selectedReportingPeriod = AccountingPeriod
 
@@ -321,7 +321,7 @@ Namespace Reports
 
                 AccountingMonthAndYear = selectedMonth & selectedYear
 
-            ElseIf Me.rdoCutOff.Checked
+            ElseIf rdoCutOff.Checked
                 ' Code when Cutoff reporting period is selected
                 selectedReportingPeriod = CutOff
 
@@ -368,12 +368,12 @@ Namespace Reports
             reportParams.AppendFormat("pi_dealer_code => '{0}',", dealerCode)
             reportParams.AppendFormat("pi_reporting_type => '{0}'", selectedReportingtype)
 
-            Me.State.MyBO = New ReportRequests
-            Me.State.ForEdit = True
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "LOSS_SUMMARY_AND_PAYMENTS_REPORTFORM")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "r_loss_summary_and_payments.Report")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
-            Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
+            State.MyBO = New ReportRequests
+            State.ForEdit = True
+            PopulateBOProperty(State.MyBO, "ReportType", "LOSS_SUMMARY_AND_PAYMENTS_REPORTFORM")
+            PopulateBOProperty(State.MyBO, "ReportProc", "r_loss_summary_and_payments.Report")
+            PopulateBOProperty(State.MyBO, "ReportParameters", reportParams.ToString())
+            PopulateBOProperty(State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
 
             ScheduleReport()
         End Sub
@@ -381,17 +381,17 @@ Namespace Reports
         Private Sub ScheduleReport()
             Try
                 Dim scheduleDate As DateTime = TheReportExtractInputControl.GetSchedDate()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
 
-                    Me.State.IsNew = False
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.CreateJob(scheduleDate)
+                    State.IsNew = False
+                    State.HasDataChanged = True
+                    State.MyBO.CreateJob(scheduleDate)
 
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
 
                     btnGenRpt.Enabled = False
@@ -399,7 +399,7 @@ Namespace Reports
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region

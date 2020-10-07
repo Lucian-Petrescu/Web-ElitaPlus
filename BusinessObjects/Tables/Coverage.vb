@@ -9,46 +9,46 @@ Public Class Coverage
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CoverageDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -59,20 +59,20 @@ Public Class Coverage
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New CoverageDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -84,10 +84,10 @@ Public Class Coverage
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        Me.DeductibleBasedOnId = LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, "FIXED")
+        DeductibleBasedOnId = LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, "FIXED")
         Me.DeductiblePercent = 0
         Me.Deductible = 0
-        Me.Inuseflag = "N"
+        Inuseflag = "N"
     End Sub
 
     Private mbUniqueFieldsChanged As Boolean
@@ -133,7 +133,7 @@ Public Class Coverage
     Public ReadOnly Property AttributeValues As AttributeValueList(Of IAttributable) Implements IAttributable.AttributeValues
         Get
             If (_AttributeValueList Is Nothing) Then
-                _AttributeValueList = New AttributeValueList(Of IAttributable)(Me.Dataset, Me)
+                _AttributeValueList = New AttributeValueList(Of IAttributable)(Dataset, Me)
             End If
             Return _AttributeValueList
         End Get
@@ -167,7 +167,7 @@ Public Class Coverage
         End Get
         Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID, value)
+            SetValue(CoverageDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID, value)
         End Set
     End Property
 
@@ -182,7 +182,7 @@ Public Class Coverage
         End Get
         Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID, value)
+            SetValue(CoverageDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID, value)
         End Set
     End Property
     Public Property MethodOfRepairId() As Guid
@@ -196,7 +196,7 @@ Public Class Coverage
         End Get
         Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_METHOD_OF_REPAIR_ID, value)
+            SetValue(CoverageDAL.COL_NAME_METHOD_OF_REPAIR_ID, value)
         End Set
     End Property
 
@@ -211,7 +211,7 @@ Public Class Coverage
         End Get
         Set(ByVal value As string)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_FULFILLMENT_PROVIDER_XCD, value)
+            SetValue(CoverageDAL.COL_NAME_FULFILLMENT_PROVIDER_XCD, value)
         End Set
     End Property
     Public Property FulfillmentProfileCode() As string
@@ -225,7 +225,7 @@ Public Class Coverage
         End Get
         Set(ByVal value As string)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_FULFILLMENT_PROFILE_CODE, value)
+            SetValue(CoverageDAL.COL_NAME_FULFILLMENT_PROFILE_CODE, value)
         End Set
     End Property
     '<ValueMandatory("")> _
@@ -240,7 +240,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_ITEM_ID, Value)
+            SetValue(CoverageDAL.COL_NAME_ITEM_ID, Value)
         End Set
     End Property
 
@@ -256,7 +256,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_PRODUCT_ITEM_ID, Value)
+            SetValue(CoverageDAL.COL_NAME_PRODUCT_ITEM_ID, Value)
         End Set
     End Property
 
@@ -273,7 +273,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
+            SetValue(CoverageDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
@@ -290,7 +290,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_CERTIFICATE_DURATION, Value)
+            SetValue(CoverageDAL.COL_NAME_CERTIFICATE_DURATION, Value)
         End Set
     End Property
 
@@ -307,7 +307,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_COVERAGE_DURATION, Value)
+            SetValue(CoverageDAL.COL_NAME_COVERAGE_DURATION, Value)
         End Set
     End Property
 
@@ -324,7 +324,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(CoverageDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
@@ -341,7 +341,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(CoverageDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
@@ -357,7 +357,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_OFFSET_METHOD_ID, Value)
+            SetValue(CoverageDAL.COL_NAME_OFFSET_METHOD_ID, Value)
         End Set
     End Property
 
@@ -372,7 +372,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_OFFSET_METHOD, Value)
+            SetValue(CoverageDAL.COL_NAME_OFFSET_METHOD, Value)
         End Set
     End Property
 
@@ -388,7 +388,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_MARKUP_DISTRIBUTION_PERCENT, Value)
+            SetValue(CoverageDAL.COL_NAME_MARKUP_DISTRIBUTION_PERCENT, Value)
         End Set
     End Property
 
@@ -404,7 +404,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_OFFSET_TO_START, Value)
+            SetValue(CoverageDAL.COL_NAME_OFFSET_TO_START, Value)
         End Set
     End Property
 
@@ -420,7 +420,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_OFFSET_TO_START_DAYS, Value)
+            SetValue(CoverageDAL.COL_NAME_OFFSET_TO_START_DAYS, Value)
         End Set
     End Property
 
@@ -436,7 +436,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_OPTIONAL_ID, Value)
+            SetValue(CoverageDAL.COL_NAME_OPTIONAL_ID, Value)
         End Set
     End Property
 
@@ -452,7 +452,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_IS_CLAIM_ALLOWED_ID, Value)
+            SetValue(CoverageDAL.COL_NAME_IS_CLAIM_ALLOWED_ID, Value)
         End Set
     End Property
 
@@ -468,7 +468,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_LIABILITY_LIMIT, Value)
+            SetValue(CoverageDAL.COL_NAME_LIABILITY_LIMIT, Value)
         End Set
     End Property
 
@@ -485,7 +485,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_DEDUCTIBLE, Value)
+            SetValue(CoverageDAL.COL_NAME_DEDUCTIBLE, Value)
         End Set
     End Property
 
@@ -503,7 +503,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(CoverageDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
@@ -519,7 +519,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_PRODUCT_CODE_ID, Value)
+            SetValue(CoverageDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
     End Property
 
@@ -535,7 +535,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_RISK_TYPE_ID, Value)
+            SetValue(CoverageDAL.COL_NAME_RISK_TYPE_ID, Value)
         End Set
     End Property
 
@@ -559,7 +559,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_EARNING_CODE_ID, Value)
+            SetValue(CoverageDAL.COL_NAME_EARNING_CODE_ID, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=MIN_OFFSET, Max:=MAX_PERCENT, MaxExclusive:=False)>
@@ -574,7 +574,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_DEDUCTIBLE_PERCENT, Value)
+            SetValue(CoverageDAL.COL_NAME_DEDUCTIBLE_PERCENT, Value)
         End Set
     End Property
 
@@ -590,7 +590,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_LIABILITY_LIMIT_PERCENT, Value)
+            SetValue(CoverageDAL.COL_NAME_LIABILITY_LIMIT_PERCENT, Value)
         End Set
     End Property
 
@@ -606,7 +606,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_REPAIR_DISCOUNT_PCT, Value)
+            SetValue(CoverageDAL.COL_NAME_REPAIR_DISCOUNT_PCT, Value)
         End Set
     End Property
 
@@ -622,7 +622,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_REPLACEMENT_DISCOUNT_PCT, Value)
+            SetValue(CoverageDAL.COL_NAME_REPLACEMENT_DISCOUNT_PCT, Value)
         End Set
     End Property
 
@@ -638,7 +638,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_USE_COVERAGE_START_DATE_ID, Value)
+            SetValue(CoverageDAL.COL_NAME_USE_COVERAGE_START_DATE_ID, Value)
         End Set
     End Property
     <ValidateCoverageClaimLimit("")>
@@ -653,7 +653,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_COVERAGE_CLAIM_LIMIT, Value)
+            SetValue(CoverageDAL.COL_NAME_COVERAGE_CLAIM_LIMIT, Value)
         End Set
     End Property
     Public Property PerIncidentLiabilityLimitCap() As Decimal
@@ -667,7 +667,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Decimal)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_PER_INCIDENT_LIABILITY_LIMIT_CAP, Value)
+            SetValue(CoverageDAL.COL_NAME_PER_INCIDENT_LIABILITY_LIMIT_CAP, Value)
         End Set
     End Property
     Public Property CoverageLiabilityLimit() As Decimal
@@ -681,7 +681,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Decimal)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_COVERAGE_LIABILITY_LIMIT, Value)
+            SetValue(CoverageDAL.COL_NAME_COVERAGE_LIABILITY_LIMIT, Value)
         End Set
     End Property
 
@@ -697,7 +697,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_COVERAGE_LIABILITY_LIMIT_PERCENT, Value)
+            SetValue(CoverageDAL.COL_NAME_COVERAGE_LIABILITY_LIMIT_PERCENT, Value)
         End Set
     End Property
 
@@ -712,7 +712,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_PROD_LIABILITY_LIMIT_BASE_ID, Value)
+            SetValue(CoverageDAL.COL_NAME_PROD_LIABILITY_LIMIT_BASE_ID, Value)
         End Set
     End Property
 
@@ -738,7 +738,7 @@ Public Class Coverage
         End Get
         Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_AGENT_CODE, value)
+            SetValue(CoverageDAL.COL_NAME_AGENT_CODE, value)
         End Set
     End Property
 
@@ -754,7 +754,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_RECOVER_DEVICE_ID, Value)
+            SetValue(CoverageDAL.COL_NAME_RECOVER_DEVICE_ID, Value)
         End Set
     End Property
     Public Property IsReInsuredId() As Guid
@@ -768,7 +768,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_IS_REINSURED_ID, Value)
+            SetValue(CoverageDAL.COL_NAME_IS_REINSURED_ID, Value)
         End Set
     End Property
 
@@ -784,7 +784,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_INUSEFLAG, Value)
+            SetValue(CoverageDAL.COL_NAME_INUSEFLAG, Value)
         End Set
     End Property
 
@@ -799,7 +799,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_TAX_TYPE_XCD, Value)
+            SetValue(CoverageDAL.COL_NAME_TAX_TYPE_XCD, Value)
         End Set
     End Property
 
@@ -814,7 +814,7 @@ Public Class Coverage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageDAL.COL_NAME_DEALER_MARKUP, Value)
+            SetValue(CoverageDAL.COL_NAME_DEALER_MARKUP, Value)
         End Set
     End Property
 #End Region
@@ -823,23 +823,23 @@ Public Class Coverage
 
     Public Sub ClearAttributeValues()
         _AttributeValueList = Nothing
-        Me.Dataset.Tables.Remove(AttributeDAL.TABLE_NAME)
-        Me.Dataset.Tables.Remove(AttributeValueDAL.TABLE_NAME)
+        Dataset.Tables.Remove(AttributeDAL.TABLE_NAME)
+        Dataset.Tables.Remove(AttributeValueDAL.TABLE_NAME)
     End Sub
 
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso (Me.IsDirty OrElse Me.IsFamilyDirty) AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso (IsDirty OrElse IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CoverageDAL
-                dal.UpdateFamily(Me.Dataset)
+                dal.UpdateFamily(Dataset)
                 'dal.Update(Me.Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -917,7 +917,7 @@ Public Class Coverage
                 recCount = ds.Tables(0).Rows.Count
                 If recCount > 0 Then
                     maxExpiration = ds.Tables(0).Rows(recCount - 1)("COVERAGE_EXPIRATION")
-                    If Me.Expiration.Value <> maxExpiration Then
+                    If Expiration.Value <> maxExpiration Then
                         Return False
                     End If
                 End If
@@ -941,7 +941,7 @@ Public Class Coverage
                 recCount = ds.Tables(0).Rows.Count
                 If recCount > 0 Then
                     minEffective = ds.Tables(0).Rows(0)("COVERAGE_EFFECTIVE")
-                    If Me.Effective.Value <> minEffective Then
+                    If Effective.Value <> minEffective Then
                         Return False
                     End If
                 End If
@@ -1370,7 +1370,7 @@ Public Class Coverage
                 If (Not ds Is Nothing AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(CompanyDAL.TABLE_NAME_FLAG_REQAGENT).Rows.Count > 0) Then
                     Dim RequiresAgentCodeId As Guid = New Guid(CType(ds.Tables(CompanyDAL.TABLE_NAME_FLAG_REQAGENT).Rows(0)(CompanyDAL.COL_NAME_REQUIRE_AGENT_CODE_ID), Byte())) 'ds.Tables(0).Rows(0)(0)
                     If (RequiresAgentCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
-                        Dim mandatAttr As New ValueMandatoryAttribute(Me.DisplayName)
+                        Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                         Return mandatAttr.IsValid(valueToCheck, objectToValidate)
                     End If
 

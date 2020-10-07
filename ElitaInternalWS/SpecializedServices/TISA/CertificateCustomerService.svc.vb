@@ -16,9 +16,9 @@ Namespace SpecializedServices.Tisa
         Private Property DealerManager As IDealerManager
 
 
-        Public Sub New(ByVal pCertificateManager As ICertificateManager,
-                       ByVal pCompanyManager As ICompanyManager,
-                       ByVal pDealerManager As IDealerManager)
+        Public Sub New(pCertificateManager As ICertificateManager,
+                       pCompanyManager As ICompanyManager,
+                       pDealerManager As IDealerManager)
 
             If (pCertificateManager Is Nothing) Then
                 Throw New ArgumentNullException("pCertificateManager")
@@ -30,9 +30,9 @@ Namespace SpecializedServices.Tisa
                 Throw New ArgumentNullException("pDealerManager")
             End If
 
-            Me.CertificateManager = pCertificateManager
-            Me.CompanyManager = pCompanyManager
-            Me.DealerManager = pDealerManager
+            CertificateManager = pCertificateManager
+            CompanyManager = pCompanyManager
+            DealerManager = pDealerManager
 
         End Sub
         Public Function GetCertificateCustomer(request As CustomerByCertificateRequest) As CustomerResponse Implements ICertificateCustomerService.GetCertificateCustomer
@@ -69,7 +69,7 @@ Namespace SpecializedServices.Tisa
             End If
 
             ''''Locate Certificate
-            CertList = Me.CertificateManager.GetCertificate(request.CompanyCode,
+            CertList = CertificateManager.GetCertificate(request.CompanyCode,
                                                                                 request.DealerCode,
                                                                                 request.CertificateNumber,
                                                                                 request.IdentificationNumber,

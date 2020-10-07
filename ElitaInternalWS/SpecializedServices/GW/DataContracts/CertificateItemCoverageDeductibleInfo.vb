@@ -25,9 +25,9 @@ Namespace SpecializedServices.GW
 
         End Sub
 
-        Public Sub New(ByVal pCertficateItemCoverageDed As CertificateItemCoverageDeductible,
-                       ByVal pCommonManager As CommonManager,
-                       ByVal pLangauge As String)
+        Public Sub New(pCertficateItemCoverageDed As CertificateItemCoverageDeductible,
+                       pCommonManager As CommonManager,
+                       pLangauge As String)
             With Me
                 .Deductible = pCertficateItemCoverageDed.Deductible
                 .MethodOfRepairCode = pCertficateItemCoverageDed.MethodOfRepairId.ToCode(pCommonManager, ListCodes.MethodOfRepair, pLangauge)

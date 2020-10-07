@@ -26,18 +26,18 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
     End Sub
 
     Private Sub New(ByVal threadCount As Integer, ByVal transactionSize As Integer, ByVal useCustomSave As Boolean)
-        Me._threadCount = Math.Min(threadCount, Me.MaximumThreadCount)
+        _threadCount = Math.Min(threadCount, MaximumThreadCount)
         If (transactionSize = 0) Then
-            Me._transactionSize = 0
+            _transactionSize = 0
         Else
-            Me._transactionSize = Math.Min(transactionSize, Me.MaximumTransactionSize)
+            _transactionSize = Math.Min(transactionSize, MaximumTransactionSize)
         End If
-        Me._useCustomSave = useCustomSave
-        Me._transactionSize = transactionSize
-        Me._familyDs = New DataSet
-        Me._syncRoot = New Object
-        Me._trace = New StringBuilder()
-        Me._interfaceStatusId = Nothing
+        _useCustomSave = useCustomSave
+        _transactionSize = transactionSize
+        _familyDs = New DataSet
+        _syncRoot = New Object
+        _trace = New StringBuilder()
+        _interfaceStatusId = Nothing
     End Sub
 
     Friend Sub New()
@@ -121,8 +121,8 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
 
     Private ReadOnly Property InterfaceStatus As InterfaceStatusWrk
         Get
-            If (Me.InterfaceStatusId.HasValue) Then
-                Return New InterfaceStatusWrk(Me.InterfaceStatusId.Value)
+            If (InterfaceStatusId.HasValue) Then
+                Return New InterfaceStatusWrk(InterfaceStatusId.Value)
             Else
                 Return Nothing
             End If
@@ -148,10 +148,10 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
     End Function
 
     Public Function ProcessAsync(ByVal id As Guid) As Guid
-        Dim oProcessDelegate As New ProcessDelegate(AddressOf Me.Process)
-        Me.InterfaceStatusId = InterfaceStatusWrk.CreateInterfaceStatus(InterfaceStatusWrkDAL.DESC_PROCESS)
+        Dim oProcessDelegate As New ProcessDelegate(AddressOf Process)
+        InterfaceStatusId = InterfaceStatusWrk.CreateInterfaceStatus(InterfaceStatusWrkDAL.DESC_PROCESS)
         oProcessDelegate.BeginInvoke(id, Nothing, Nothing)
-        Return Me.InterfaceStatusId.Value
+        Return InterfaceStatusId.Value
     End Function
 
     Public Sub Process(ByVal id As Guid)
@@ -159,36 +159,36 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
             Dim beforeRecord As TRecon = Nothing
             Dim keyChangedResult As KeyChangeReturnType
             ' Update Interface Status to Running
-            If (Me.InterfaceStatusId.HasValue) Then
-                With Me.InterfaceStatus
+            If (InterfaceStatusId.HasValue) Then
+                With InterfaceStatus
                     .Status = InterfaceStatusWrkDAL.STATUS_RUNNING
                     .Save()
                 End With
             End If
 
             BeforeCreateFileLoadHeader()
-            Me.Header = CreateFileLoadHeader(id)
+            Header = CreateFileLoadHeader(id)
             AfterCreateFileLoadHeader()
 
             ' Update Interface Status Active File Name
-            If (Me.InterfaceStatusId.HasValue) Then
-                With Me.InterfaceStatus
-                    .Active_Filename = Me.Header.FileName.Trim().PadRight(50).Substring(0, 50)
+            If (InterfaceStatusId.HasValue) Then
+                With InterfaceStatus
+                    .Active_Filename = Header.FileName.Trim().PadRight(50).Substring(0, 50)
                     .Save()
                 End With
             End If
 
             _recordsProcessed = 0
             ' Read Recon Records
-            For Each item As IFileLoadReconWork In Me.Header.Children
+            For Each item As IFileLoadReconWork In Header.Children
                 Dim reconRecord As IFileLoadReconWork
                 Dim response As ProcessResult
                 Dim familyDataSet As DataSet
                 Try
-                    reconRecord = CreateFileLoadDetail(item.Id, Me.Header)
+                    reconRecord = CreateFileLoadDetail(item.Id, Header)
 
                     If (reconRecord.Loaded = "V") Then
-                        If (Me._useCustomSave) Then
+                        If (_useCustomSave) Then
                             familyDataSet = Nothing
                         Else
                             familyDataSet = reconRecord.FamilyDataSet
@@ -233,19 +233,19 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
                 End Select
 
 
-                If ((Me._useCustomSave) OrElse (Me.TransactionSize <> 0 AndAlso Me.RecordsProcessed >= Me.TransactionSize)) Then
-                    Me.Save(familyDataSet, reconRecord)
-                    Me.RecordsProcessed = 0
+                If ((_useCustomSave) OrElse (TransactionSize <> 0 AndAlso RecordsProcessed >= TransactionSize)) Then
+                    Save(familyDataSet, reconRecord)
+                    RecordsProcessed = 0
                 End If
             Next
-            If (Me.RecordsProcessed > 0) Then
+            If (RecordsProcessed > 0) Then
                 '' The FamilyDataSet argumnet will always be Header because if the code is running with UseCustomSave = True then RecordsProcessed will always be 0
-                Me.Save(Me.Header.FamilyDataSet, Nothing)
+                Save(Header.FamilyDataSet, Nothing)
             End If
 
             ' Update Interface Status to Success
-            If (Me.InterfaceStatusId.HasValue) Then
-                With Me.InterfaceStatus
+            If (InterfaceStatusId.HasValue) Then
+                With InterfaceStatus
                     .Status = InterfaceStatusWrkDAL.STATUS_SUCCESS
                     .Save()
                 End With
@@ -253,8 +253,8 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
         Catch ex As Exception
             Common.AppConfig.Log(ex)
             ' Update Interface Status to Failed
-            If (Me.InterfaceStatusId.HasValue) Then
-                With Me.InterfaceStatus
+            If (InterfaceStatusId.HasValue) Then
+                With InterfaceStatus
                     .Status = InterfaceStatusWrkDAL.STATUS_FAILURE
                     .Save()
                 End With
@@ -266,31 +266,31 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
     Protected Sub Save(ByVal familyDataSet As DataSet, ByVal reconRecord As TRecon)
         Dim argument As Object
         argument = BeforeSave(familyDataSet)
-        If (Me._useCustomSave) Then
+        If (_useCustomSave) Then
             If (reconRecord.Loaded = "L") Then
-                Me.CustomSave(Me.Header)
+                CustomSave(Header)
             Else
-                Me.Header.Save()
+                Header.Save()
             End If
         Else
-            Me.Header.Save()
+            Header.Save()
         End If
             AfterSave(argument, familyDataSet)
     End Sub
 
     Private Sub IncrementRejected()
         SyncLock (_syncRoot)
-            Me.Header.Rejected = Me.Header.Rejected.Value + 1
-            Me.Header.Validated = Me.Header.Validated.Value - 1
-            Me.RecordsProcessed = Me.RecordsProcessed + 1
+            Header.Rejected = Header.Rejected.Value + 1
+            Header.Validated = Header.Validated.Value - 1
+            RecordsProcessed = RecordsProcessed + 1
         End SyncLock
     End Sub
 
     Private Sub IncrementLoaded()
         SyncLock (_syncRoot)
-            Me.Header.Loaded = Me.Header.Loaded.Value + 1
-            Me.Header.Validated = Me.Header.Validated.Value - 1
-            Me.RecordsProcessed = Me.RecordsProcessed + 1
+            Header.Loaded = Header.Loaded.Value + 1
+            Header.Validated = Header.Validated.Value - 1
+            RecordsProcessed = RecordsProcessed + 1
         End SyncLock
     End Sub
 

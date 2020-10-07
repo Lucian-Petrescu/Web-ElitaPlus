@@ -10,46 +10,46 @@ Public Class Rule
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New RuleDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -60,20 +60,20 @@ Public Class Rule
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New RuleDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -85,11 +85,11 @@ Public Class Rule
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        Me.Code = String.Empty
-        Me.Description = String.Empty
-        Me.RuleExecutionPoint = String.Empty
-        Me.Effective = Date.Now
-        Me.Expiration = New Date(2499, 12, 31, 23, 59, 59)
+        Code = String.Empty
+        Description = String.Empty
+        RuleExecutionPoint = String.Empty
+        Effective = Date.Now
+        Expiration = New Date(2499, 12, 31, 23, 59, 59)
     End Sub
 #End Region
 
@@ -120,7 +120,7 @@ Public Class Rule
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(RuleDAL.COL_NAME_CODE, Value)
+            SetValue(RuleDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
@@ -137,7 +137,7 @@ Public Class Rule
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(RuleDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(RuleDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -154,7 +154,7 @@ Public Class Rule
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(RuleDAL.COL_NAME_RULE_TYPE_ID, Value)
+            SetValue(RuleDAL.COL_NAME_RULE_TYPE_ID, Value)
         End Set
     End Property
 
@@ -171,7 +171,7 @@ Public Class Rule
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(RuleDAL.COL_NAME_RULE_CATEGORY_ID, Value)
+            SetValue(RuleDAL.COL_NAME_RULE_CATEGORY_ID, Value)
         End Set
     End Property
 
@@ -188,7 +188,7 @@ Public Class Rule
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(RuleDAL.COL_NAME_RULE_EXECUTION_POINT, Value)
+            SetValue(RuleDAL.COL_NAME_RULE_EXECUTION_POINT, Value)
         End Set
     End Property
 
@@ -205,7 +205,7 @@ Public Class Rule
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(RuleDAL.COL_NAME_RULE_DATA_SET, Value)
+            SetValue(RuleDAL.COL_NAME_RULE_DATA_SET, Value)
         End Set
     End Property
 
@@ -222,7 +222,7 @@ Public Class Rule
         End Get
         Set(ByVal Value As DateTimeType)
             CheckDeleted()
-            Me.SetValue(RuleDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(RuleDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
@@ -239,7 +239,7 @@ Public Class Rule
         End Get
         Set(ByVal Value As DateTimeType)
             CheckDeleted()
-            Me.SetValue(RuleDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(RuleDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
@@ -253,15 +253,15 @@ Public Class Rule
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New RuleDAL
-                dal.UpdateFamily(Me.Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -271,39 +271,39 @@ Public Class Rule
 
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 
     Public Sub Copy(ByVal original As Assurant.ElitaPlus.BusinessObjectsNew.Rule)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Rule")
         End If
         MyBase.CopyFrom(original)
-        Me.Effective = Date.Now
-        Me.Expiration = New Date(2499, 12, 31, 23, 59, 59)
+        Effective = Date.Now
+        Expiration = New Date(2499, 12, 31, 23, 59, 59)
         'copy the children
 
         'Rule issue
         For Each detail As RuleIssue In original.IssueRuleChildren
-            Dim newDetail As RuleIssue = Me.IssueRuleChildren.GetNewChild
+            Dim newDetail As RuleIssue = IssueRuleChildren.GetNewChild
             Dim tempGuid As Guid = newDetail.Id
             newDetail.Copy(detail)
-            newDetail.RuleId = Me.Id
+            newDetail.RuleId = Id
             newDetail.IssueId = detail.IssueId
-            newDetail.Effective = Me.Effective
-            newDetail.Expiration = Me.Expiration
+            newDetail.Effective = Effective
+            newDetail.Expiration = Expiration
             newDetail.Save()
         Next
 
         'Rule Process
         For Each detail As RuleProcess In original.ProcessRuleChildren
-            Dim newDetail As RuleProcess = Me.ProcessRuleChildren.GetNewChild
+            Dim newDetail As RuleProcess = ProcessRuleChildren.GetNewChild
             newDetail.Copy(detail)
-            newDetail.RuleId = Me.Id
+            newDetail.RuleId = Id
             newDetail.ProcessId = detail.ProcessId
-            newDetail.Effective = Me.Effective.Value
-            newDetail.Expiration = Me.Expiration.Value
+            newDetail.Effective = Effective.Value
+            newDetail.Expiration = Expiration.Value
             newDetail.Save()
         Next
     End Sub
@@ -335,7 +335,7 @@ Public Class Rule
 
     Public Function IsIssueAssignedtoRule() As Boolean
         Try
-            Return (New RuleDAL).IsIssueAssignedtoRule(Me.Id)
+            Return (New RuleDAL).IsIssueAssignedtoRule(Id)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
 
@@ -371,15 +371,15 @@ Public Class Rule
         Try
             Dim overlap As New OverlapValidationVisitorDAL
             Dim ds As New DataSet
-            ds = overlap.LoadList(Me.Id, Me.GetType.Name, Me.Code, Me.Effective, Me.Expiration, Guid.Empty)
+            ds = overlap.LoadList(Id, [GetType].Name, Code, Effective, Expiration, Guid.Empty)
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dtrow As DataRow In ds.Tables(0).Rows
                     Dim rId As Guid = New Guid(CType(dtrow(RuleDAL.COL_NAME_RULE_ID), Byte()))
-                    Dim ExpRule As New Rule(rId, Me.Dataset)
+                    Dim ExpRule As New Rule(rId, Dataset)
 
-                    If Me.Effective.Value < ExpRule.Expiration.Value Then
+                    If Effective.Value < ExpRule.Expiration.Value Then
                         'Expire overlapping Rule 1 second before current Rule
-                        ExpRule.Accept(New ExpirationVisitor(Me.Effective))
+                        ExpRule.Accept(New ExpirationVisitor(Effective))
                     End If
 
                     'If ExpQuestion.IsDirty Then
@@ -504,13 +504,13 @@ Public Class Rule
     Public Function GetIssueRuleSelectionView() As IssueRuleDetailView
         Dim t As DataTable = IssueRuleDetailView.CreateTable
 
-        For Each detail As RuleIssue In Me.IssueRuleChildren
+        For Each detail As RuleIssue In IssueRuleChildren
             Dim row As DataRow = t.NewRow
 
             row(IssueRuleDetailView.COL_NAME_RULE_ISSUE_ID) = detail.Id.ToByteArray
             row(IssueRuleDetailView.COL_NAME_RULE_ID) = detail.RuleId.ToByteArray
             row(IssueRuleDetailView.COL_NAME_ISSUE_ID) = detail.IssueId.ToByteArray
-            If Me.IsNew Then
+            If IsNew Then
                 row(IssueRuleDetailView.COL_NAME_DESCRIPTION) = (New Issue(detail.IssueId)).Description
             Else
                 row(IssueRuleDetailView.COL_NAME_DESCRIPTION) = detail.Description
@@ -552,15 +552,15 @@ Public Class Rule
     End Class
 
     Public Function GetRuleDetailChild(ByVal childId As Guid) As RuleIssue
-        Return CType(Me.IssueRuleChildren.GetChild(childId), RuleIssue)
+        Return CType(IssueRuleChildren.GetChild(childId), RuleIssue)
     End Function
 
     Public Function GetNewRuleDetailChild() As RuleIssue
-        Dim newRuleDetail As RuleIssue = CType(Me.IssueRuleChildren.GetNewChild, RuleIssue)
+        Dim newRuleDetail As RuleIssue = CType(IssueRuleChildren.GetNewChild, RuleIssue)
         With newRuleDetail
-            .RuleId = Me.Id
+            .RuleId = Id
             .Effective = DateTime.Now
-            .Expiration = Me.Expiration
+            .Expiration = Expiration
         End With
         Return newRuleDetail
     End Function
@@ -569,7 +569,7 @@ Public Class Rule
         Try
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find
-            For Each issuerule As RuleIssue In Me.IssueRuleChildren
+            For Each issuerule As RuleIssue In IssueRuleChildren
                 Dim dFound As Boolean = False
                 For Each Str As String In issuelist
                     Dim issue_id As Guid = New Guid(Str)
@@ -588,14 +588,14 @@ Public Class Rule
             'next now add those items which are there in user control but we don't have it
             For Each Str As String In issuelist
                 Dim dFound As Boolean = False
-                For Each issuerule As RuleIssue In Me.IssueRuleChildren
+                For Each issuerule As RuleIssue In IssueRuleChildren
                     Dim issue_id As Guid = New Guid(Str)
                     If issuerule.IssueId = issue_id Then
                         dFound = True : Exit For
                     End If
                 Next
                 If Not dFound Then
-                    Dim newIssuerule As RuleIssue = Me.GetNewRuleDetailChild
+                    Dim newIssuerule As RuleIssue = GetNewRuleDetailChild
                     newIssuerule.BeginEdit()
                     newIssuerule.IssueId = New Guid(Str)
                     newIssuerule.EndEdit()
@@ -620,13 +620,13 @@ Public Class Rule
     Public Function GetProcessRuleSelectionView() As ProcessRuleDetailView
         Dim t As DataTable = ProcessRuleDetailView.CreateTable
 
-        For Each detail As RuleProcess In Me.ProcessRuleChildren
+        For Each detail As RuleProcess In ProcessRuleChildren
             Dim row As DataRow = t.NewRow
 
             row(ProcessRuleDetailView.COL_NAME_RULE_PROCESS_ID) = detail.Id.ToByteArray
             row(ProcessRuleDetailView.COL_NAME_RULE_ID) = detail.RuleId.ToByteArray
             row(ProcessRuleDetailView.COL_NAME_PROCESS_ID) = detail.ProcessId.ToByteArray
-            If Me.IsNew Then
+            If IsNew Then
                 row(ProcessRuleDetailView.COL_NAME_DESCRIPTION) = (New Process(detail.ProcessId)).Description
             Else
                 row(ProcessRuleDetailView.COL_NAME_DESCRIPTION) = detail.Description
@@ -671,15 +671,15 @@ Public Class Rule
     End Class
 
     Public Function GetRuleProcessChild(ByVal childId As Guid) As RuleProcess
-        Return CType(Me.ProcessRuleChildren.GetChild(childId), RuleProcess)
+        Return CType(ProcessRuleChildren.GetChild(childId), RuleProcess)
     End Function
 
     Public Function GetNewRuleProcessChild() As RuleProcess
-        Dim newRuleProcess As RuleProcess = CType(Me.ProcessRuleChildren.GetNewChild, RuleProcess)
+        Dim newRuleProcess As RuleProcess = CType(ProcessRuleChildren.GetNewChild, RuleProcess)
         With newRuleProcess
-            .RuleId = Me.Id
+            .RuleId = Id
             .Effective = DateTime.Now
-            .Expiration = Me.Expiration.Value
+            .Expiration = Expiration.Value
         End With
         Return newRuleProcess
     End Function
@@ -688,7 +688,7 @@ Public Class Rule
         Try
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find
-            For Each processrule As RuleProcess In Me.ProcessRuleChildren
+            For Each processrule As RuleProcess In ProcessRuleChildren
                 Dim dFound As Boolean = False
                 For Each Str As String In processlist
                     Dim process_id As Guid = New Guid(Str)
@@ -707,14 +707,14 @@ Public Class Rule
             'next now add those items which are there in user control but we don't have it
             For Each Str As String In processlist
                 Dim dFound As Boolean = False
-                For Each processrule As RuleProcess In Me.ProcessRuleChildren
+                For Each processrule As RuleProcess In ProcessRuleChildren
                     Dim process_id As Guid = New Guid(Str)
                     If processrule.ProcessId = process_id Then
                         dFound = True : Exit For
                     End If
                 Next
                 If Not dFound Then
-                    Dim newProcessrule As RuleProcess = Me.GetNewRuleProcessChild
+                    Dim newProcessrule As RuleProcess = GetNewRuleProcessChild
                     newProcessrule.BeginEdit()
                     newProcessrule.ProcessId = New Guid(Str)
                     newProcessrule.EndEdit()

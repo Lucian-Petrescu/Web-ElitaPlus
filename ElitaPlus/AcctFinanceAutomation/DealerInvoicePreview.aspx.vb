@@ -5,7 +5,7 @@ Imports System.Xml.Xsl
 Public Class DealerInvoicePreview
     Inherits System.Web.UI.Page
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         Dim strQSValue As String, dealerID As Guid, strXSLTName As String
         strQSValue = Request.QueryString("DealerID").Trim
         If strQSValue <> String.Empty Then
@@ -54,20 +54,20 @@ Public Class DealerInvoicePreview
 
             'strXML = AfaInvoiceData.GetDealerInvoiceData(dealerID, strQSValue)
             If strXML.Trim = String.Empty Then
-                Me.Controls.Remove(xmlSource)
+                Controls.Remove(xmlSource)
                 literalNotFound.Text = "<h2>Dealer " & objDealer.DealerName & " (" & objDealer.Dealer & ") has no invoice available for accounting period of " & strQSValue & "</h2>"
             ElseIf isDetailedReport = False AndAlso strHTML.Trim <> String.Empty Then
-                Me.Controls.Remove(xmlSource)
+                Controls.Remove(xmlSource)
                 literalNotFound.Text = strHTML
             ElseIf isDetailedReport = True AndAlso strCSV.Trim <> String.Empty Then
-                Me.Controls.Remove(xmlSource)
+                Controls.Remove(xmlSource)
                 literalNotFound.Text = strCSV
             Else
                 Dim xdoc As New System.Xml.XmlDocument
                 xdoc.LoadXml(strXML)
                 xmlSource.TransformSource = strXSLTName
                 xmlSource.Document = xdoc
-                Me.Controls.Remove(literalNotFound)
+                Controls.Remove(literalNotFound)
 
                 Dim objXSLTransform As New XslTransform
                 objXSLTransform.Load(Server.MapPath(strXSLTName))

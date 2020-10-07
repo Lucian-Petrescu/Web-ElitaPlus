@@ -33,7 +33,7 @@ Public Class TabFormDAL
 
 #Region "StoreProcedures Control"
 
-    Private Function ExecuteSP(ByVal selectStmt As String, ByVal userId As String) As TabFormData
+    Private Function ExecuteSP(selectStmt As String, userId As String) As TabFormData
         Dim oTabFormData As New TabFormData
 
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
@@ -57,13 +57,13 @@ Public Class TabFormDAL
         Return oTabFormData
     End Function
 
-    Public Function LoadTabs(ByVal userId As String) As TabFormData
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_TABS_PROCEDURE")
+    Public Function LoadTabs(userId As String) As TabFormData
+        Dim selectStmt As String = Config("/SQL/LOAD_TABS_PROCEDURE")
         Return ExecuteSP(selectStmt, userId)
     End Function
 
-    Public Function LoadForms(ByVal userId As String) As TabFormData
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_FORMS_PROCEDURE")
+    Public Function LoadForms(userId As String) As TabFormData
+        Dim selectStmt As String = Config("/SQL/LOAD_FORMS_PROCEDURE")
         Return ExecuteSP(selectStmt, userId)
     End Function
 
@@ -72,12 +72,12 @@ Public Class TabFormDAL
 #Region "Clear Methods"
 
     Public Sub ClearTabs()
-        Dim deleteStmt As String = Me.Config("/SQL/CLEAR_NEW_TABS")
+        Dim deleteStmt As String = Config("/SQL/CLEAR_NEW_TABS")
        DBHelper.Execute(deleteStmt, Nothing)
     End Sub
 
     Public Sub ClearForms()
-       Dim deleteStmt As String = Me.Config("/SQL/CLEAR_NEW_FORMS")
+       Dim deleteStmt As String = Config("/SQL/CLEAR_NEW_FORMS")
         DBHelper.Execute(deleteStmt, Nothing)
     End Sub
 
@@ -88,24 +88,24 @@ Public Class TabFormDAL
 
     Public Function LoadNewTabList() As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/GET_NEW_TABS")
+            Dim selectStmt As String = Config("/SQL/GET_NEW_TABS")
             Dim ds As New DataSet
 
-            ds = DBHelper.Fetch(selectStmt, Me.TAB_TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TAB_TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadNewFormList(ByVal languageID As Guid) As DataSet
+    Public Function LoadNewFormList(languageID As Guid) As DataSet
         Try
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("language_id", languageID.ToByteArray)}
-            Dim selectStmt As String = Me.Config("/SQL/GET_NEW_FORMS")
+            Dim selectStmt As String = Config("/SQL/GET_NEW_FORMS")
             Dim ds As New DataSet
 
             'ds = DBHelper.Fetch(selectStmt, Me.FORM_TABLE_NAME)
-            DBHelper.Fetch(ds, selectStmt, Me.FORM_TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, FORM_TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -116,16 +116,16 @@ Public Class TabFormDAL
 
 #Region "New application form maitenance"
     Public Sub SaveNewForm(ByRef intErrCode As Integer, ByRef strErrMsg As String, _
-                           ByVal strUser As String, ByVal New_Form_Id As Guid, _
-                           ByVal strTab As String, ByVal strCode As String, _
-                           ByVal strEnglish As String, ByVal strRelativeURL As String, _
-                           ByVal strNavAllowed As String, ByVal strApproved As String, _
-                           ByVal strFormCategory As String, _
-                           ByVal strQueryString As String)
+                           strUser As String, New_Form_Id As Guid, _
+                           strTab As String, strCode As String, _
+                           strEnglish As String, strRelativeURL As String, _
+                           strNavAllowed As String, strApproved As String, _
+                           strFormCategory As String, _
+                           strQueryString As String)
         Dim sqlStmt As String
         strErrMsg = ""
         intErrCode = 0
-        sqlStmt = Me.Config("/SQL/SAVE_NEW_FORM_PROCEDURE")
+        sqlStmt = Config("/SQL/SAVE_NEW_FORM_PROCEDURE")
         Try
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                             New DBHelper.DBHelperParameter("P_RETURN_CODE", intErrCode.GetType), _
@@ -187,9 +187,9 @@ Public Class TabFormDAL
         End Try
     End Sub
 
-    Public Sub DeleteNewForm(ByRef intErrCode As Integer, ByRef strErrMsg As String, ByVal New_Form_Id As Guid)
+    Public Sub DeleteNewForm(ByRef intErrCode As Integer, ByRef strErrMsg As String, New_Form_Id As Guid)
         Dim sqlStmt As String
-        sqlStmt = Me.Config("/SQL/DELETE_NEW_FORM_PROCEDURE")
+        sqlStmt = Config("/SQL/DELETE_NEW_FORM_PROCEDURE")
         strErrMsg = ""
         intErrCode = 0
         Try

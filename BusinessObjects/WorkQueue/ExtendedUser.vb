@@ -3,7 +3,7 @@
 Namespace Auth
     Partial Public Class ExtendedUser
         Public Function HasPermission(ByVal permission As Permission) As Boolean
-            If (Not Me.IsActive) Then
+            If (Not IsActive) Then
                 Return False
             End If
 
@@ -14,7 +14,7 @@ Namespace Auth
 
         Public Function GetDistinctPermissions() As IQueryable(Of Auth.Permission)
             Dim permissions = New List(Of Permission)(Me.Permissions)
-            For Each grp As Auth.ExtendedGroup In Me.Groups
+            For Each grp As Auth.ExtendedGroup In Groups
                 permissions.AddRange(grp.Permissions)
             Next
             Return permissions.Distinct(New PermissionComparer()).AsQueryable()

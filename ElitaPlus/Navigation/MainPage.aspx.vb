@@ -16,7 +16,7 @@ Partial Class MainPage
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -29,7 +29,7 @@ Partial Class MainPage
     Private Const LANGUAGE_FLAG_FOLDER_PATH As String = "/Navigation/images/flags/"
     Private Const DEFAULT_FLAG_IMAGE As String = "us_Flag.png"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
         Try
 
@@ -49,7 +49,7 @@ Partial Class MainPage
 
 
             If Not Page.IsPostBack() Then
-                Me.AppHomeUrl = Me.Request.Url.AbsolutePath
+                AppHomeUrl = Request.Url.AbsolutePath
 
                 'load the data to the drop down
                 LoadLanguageInfo()
@@ -57,13 +57,13 @@ Partial Class MainPage
                 'add the title to the drop down for images
                 BindTitles()
 
-                Me.lblCompany.Text = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Description
+                lblCompany.Text = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Description
 
                 ' Add environment
-                Me.lblEnv.Text += EnvironmentContext.Current.EnvironmentName
+                lblEnv.Text += EnvironmentContext.Current.EnvironmentName
                 'Added to display the separate paths in Test and Model
                 If ((EnvironmentContext.Current.Environment <> Environments.Development) AndAlso (EnvironmentContext.Current.Environment <> Environments.Production)) Then
-                    Me.lblEnv.Text += " - " + AppConfig.ConnType
+                    lblEnv.Text += " - " + AppConfig.ConnType
                 End If
 
                 ' Added build version
@@ -74,7 +74,7 @@ Partial Class MainPage
                 sBuildArr = sBuildNum.Split(CChar("."))
                 sBuildNum = String.Empty
                 sBuildNum = sBuildArr(0).ToString() + "." + sBuildArr(1).ToString() + "." + sBuildArr(2).ToString()
-                Me.lblBuild.Text += sBuildNum
+                lblBuild.Text += sBuildNum
 
 
             End If
@@ -86,15 +86,15 @@ Partial Class MainPage
 
             serverURL.Value = ELPWebConstants.APPLICATION_PATH & "/"
 
-            If Not Session("RedirectUrl") Is Nothing Then
-                Me.Navigation_Content.Attributes.Add("src", Session("RedirectUrl").ToString())
+            If Session("RedirectUrl") IsNot Nothing Then
+                Navigation_Content.Attributes.Add("src", Session("RedirectUrl").ToString())
                 Session.Remove("RedirectUrl")
             Else
-                Me.Navigation_Content.Attributes.Add("src", "HomeForm.aspx")
+                Navigation_Content.Attributes.Add("src", "HomeForm.aspx")
             End If
 
 
-            Me.btnExit.Text = TranslationBase.TranslateLabelOrMessage("LOGOUT")
+            btnExit.Text = TranslationBase.TranslateLabelOrMessage("LOGOUT")
 
             ''user noification chages REQ-5279
             'If UserNotification.UserHasNotifications(Guid.Empty) Then
@@ -105,13 +105,13 @@ Partial Class MainPage
             'End If
 
         Catch ex As DataNotFoundException
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
 
         Catch ex As ApplicationException
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
 
         Catch ex As NullReferenceException
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
 
         End Try
 
@@ -119,7 +119,7 @@ Partial Class MainPage
 
     End Sub
 
-    Protected Sub menuLangDll_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
+    Protected Sub menuLangDll_SelectedIndexChanged(sender As Object, e As EventArgs) _
     Handles menuLangDll.SelectedIndexChanged
 
         Dim LanguageIDGuid As Guid
@@ -137,7 +137,7 @@ Partial Class MainPage
         Session(ELPWebConstants.MENUSTATE) = ELPWebConstants.enumMenu_State.View_Page_Mode
 
         'basepage method to send reload script to the header
-        Me.ReloadHeader()
+        ReloadHeader()
 
     End Sub
 
@@ -153,7 +153,7 @@ Partial Class MainPage
         Dim LanguageList As DataElements.ListItem() =
                 CommonConfigManager.Current.ListManager.GetList(listCode:=ListCodes.LanguageList)
 
-        Me.menuLangDll.Populate(LanguageList.ToArray(),
+        menuLangDll.Populate(LanguageList.ToArray(),
                                 New PopulateOptions() With
                                 {
                                     .AddBlankItem = True
@@ -170,7 +170,7 @@ Partial Class MainPage
                 Dim sFlagImage As String
                 Dim languageCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_LANGUAGES, New Guid(li.Value))
 
-                If Not languageCode Is Nothing Then
+                If languageCode IsNot Nothing Then
                     sFlagImage = LANGUAGE_FLAG_FOLDER_PATH & languageCode.Trim & "_Flag.png"
                     Dim temp As String = Server.MapPath(ELPWebConstants.APPLICATION_PATH & sFlagImage)
                     If File.Exists(temp) Then
@@ -196,7 +196,7 @@ Partial Class MainPage
         Dim Script As New System.Text.StringBuilder()
         Script.Append("<script type=""text/javascript""> $(document).ready(function () { try { oHandler = $(""#menuLangDll"").msDropDown({ mainCSS: 'dd2' }).data(""dd""); $(""#ver"").html($.msDropDown.version); } catch (e) { alert(""Error: "" + e.message); }}); ToggleMenus(); </" & "script>")
         ' Register script
-        Page.ClientScript.RegisterStartupScript(Me.GetType(), "ddlLangMenu", Script.ToString())
+        Page.ClientScript.RegisterStartupScript([GetType](), "ddlLangMenu", Script.ToString())
 
     End Sub
 

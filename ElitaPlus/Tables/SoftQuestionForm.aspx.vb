@@ -13,7 +13,7 @@ Partial Class SoftQuestionForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -22,7 +22,7 @@ Partial Class SoftQuestionForm
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         If Not Page.IsPostBack Then
             txtSoftQuestion.Text = CType(Session("SoftQuestion"), String)
             Dim strLevel As String = CType(Session("Level"), String)
@@ -35,7 +35,7 @@ Partial Class SoftQuestionForm
         EnableDisableValues()
     End Sub
 
-    Private Sub LoadSoftQuestionGroup(ByVal bLoadAvailGroups As Boolean)
+    Private Sub LoadSoftQuestionGroup(bLoadAvailGroups As Boolean)
         Dim i As Integer
         Dim softQuestionData As DataView
         If bLoadAvailGroups Then
@@ -50,7 +50,7 @@ Partial Class SoftQuestionForm
             cboSoftQuestionGroup.Items.Add(New ListItem(softQuestionData(i)(SoftQuestion.SoftQuestionDV.COL_NAME_DESCRIPTION).ToString, tempGUID.ToString()))
         Next
         Dim softQuestionGrpID As String = ""
-        If Not Session("SoftQuestionGroupID") Is Nothing Then
+        If Session("SoftQuestionGroupID") IsNot Nothing Then
             softQuestionGrpID = CType(Session("SoftQuestionGroupID"), String)
             Dim selItem As ListItem = cboSoftQuestionGroup.Items.FindByValue(softQuestionGrpID)
             cboSoftQuestionGroup.SelectedIndex = cboSoftQuestionGroup.Items.IndexOf(selItem)
@@ -62,7 +62,7 @@ Partial Class SoftQuestionForm
 
     Private Sub EnableDisableValues()
         Dim strLevel As String = ""
-        If Not Session("Level") Is Nothing Then
+        If Session("Level") IsNot Nothing Then
             strLevel = CType(Session("Level"), String)
         End If
 
@@ -89,7 +89,7 @@ Partial Class SoftQuestionForm
 #Region "Button Clicks"
 
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
             Dim strSoftQuestion As String = txtSoftQuestion.Text
             'Dim softQuestionGroupID As String = CType(Session("SoftQuestionGroupID"), String)
@@ -136,7 +136,7 @@ Partial Class SoftQuestionForm
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "parent.SaveSoftQuestion();" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("SaveSoftQuestion", sJavaScript)
+        RegisterStartupScript("SaveSoftQuestion", sJavaScript)
 
     End Sub
 

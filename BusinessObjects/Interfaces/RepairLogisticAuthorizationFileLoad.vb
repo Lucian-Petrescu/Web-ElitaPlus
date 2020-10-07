@@ -35,8 +35,8 @@ Public Class RepairLogisticAuthorizationFileLoad
 #End Region
 
     Protected Overrides Function CreateFileLoadHeader(ByVal fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
-        Me.ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
-        Return Me.ClaimLoadFileProcessed
+        ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
+        Return ClaimLoadFileProcessed
     End Function
 
     Protected Overrides Function CreateFileLoadDetail(ByVal fileLoadDetailId As System.Guid, ByVal headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk
@@ -47,7 +47,7 @@ Public Class RepairLogisticAuthorizationFileLoad
 
     Protected Overrides Sub CustomSave(ByVal headerRecord As ClaimloadFileProcessed)
         MyBase.CustomSave(headerRecord)
-        headerRecord.Save(Me.Claim)
+        headerRecord.Save(Claim)
     End Sub
 
     Protected Overrides Function ProcessDetailRecord(ByVal reconRecord As ClaimloadReconWrk, ByVal familyDataSet As DataSet) As ProcessResult

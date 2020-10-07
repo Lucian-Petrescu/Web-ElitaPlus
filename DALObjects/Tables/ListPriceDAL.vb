@@ -33,44 +33,44 @@
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_LIST_PRICE_ID, id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_ALL")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_ALL")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadPriceList(ByVal dealerId As Guid, ByVal strManufacturerName As String, _
-                             ByVal strModelNumber As String, ByVal strSku As String, ByVal fromDate As String, _
-                             ByVal toDate As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_PRICE")
+    Public Function LoadPriceList(dealerId As Guid, strManufacturerName As String, _
+                             strModelNumber As String, strSku As String, fromDate As String, _
+                             toDate As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_PRICE")
         'Me.Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
 
         whereClauseConditions &= Environment.NewLine & "AND d.dealer_id = " & MiscUtil.GetDbStringFromGuid(dealerId, True)
 
-        If Me.FormatSearchMask(strSku) Then
-            whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & Me.COL_NAME_SKU_NUMBER & ") " & strSku.ToUpper
+        If FormatSearchMask(strSku) Then
+            whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & COL_NAME_SKU_NUMBER & ") " & strSku.ToUpper
         End If
 
-        If Me.FormatSearchMask(strManufacturerName) Then
-            whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & Me.COL_NAME_MANUFACTURER_NAME & ") " & strManufacturerName.ToUpper
+        If FormatSearchMask(strManufacturerName) Then
+            whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & COL_NAME_MANUFACTURER_NAME & ") " & strManufacturerName.ToUpper
         End If
 
-        If Me.FormatSearchMask(strModelNumber) Then
-            whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & Me.COL_NAME_MODEL_NUMBER & ") " & strModelNumber.ToUpper
+        If FormatSearchMask(strModelNumber) Then
+            whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & COL_NAME_MODEL_NUMBER & ") " & strModelNumber.ToUpper
         End If
 
         If (Not (fromDate.Equals(String.Empty))) AndAlso (Not (toDate.Equals(String.Empty))) Then
@@ -79,53 +79,53 @@
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadRepairAuthAmount(ByVal dealerID As Guid, ByVal strSKUNum As String, ByVal dtEffective As Date) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_REPAIR_AUTH_AMT")
+    Public Function LoadRepairAuthAmount(dealerID As Guid, strSKUNum As String, dtEffective As Date) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_REPAIR_AUTH_AMT")
         Dim ds As New DataSet
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
             New DBHelper.DBHelperParameter("dealer_id", dealerID.ToByteArray), _
             New DBHelper.DBHelperParameter("sku_number", strSKUNum), _
             New DBHelper.DBHelperParameter("effective", dtEffective.ToString("yyyyMMdd"))}
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadListAll(ByVal languageId As Guid, ByVal dealerId As Guid, ByVal strManufacturerName As String, _
-                             ByVal strModelNumber As String, ByVal strSku As String, ByVal fromDate As String, _
-                             ByVal toDate As String, ByVal AmtTypeID As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_ALL")
+    Public Function LoadListAll(languageId As Guid, dealerId As Guid, strManufacturerName As String, _
+                             strModelNumber As String, strSku As String, fromDate As String, _
+                             toDate As String, AmtTypeID As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_ALL")
         Dim whereClauseConditions As String = ""
 
         whereClauseConditions &= Environment.NewLine & "AND d.dealer_id = " & MiscUtil.GetDbStringFromGuid(dealerId, True)
 
-        If Me.FormatSearchMask(strSku) Then
-            whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & Me.COL_NAME_SKU_NUMBER & ") " & strSku.ToUpper
+        If FormatSearchMask(strSku) Then
+            whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & COL_NAME_SKU_NUMBER & ") " & strSku.ToUpper
         End If
 
-        If Me.FormatSearchMask(strManufacturerName) Then
-            whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & Me.COL_NAME_MANUFACTURER_NAME & ") " & strManufacturerName.ToUpper
+        If FormatSearchMask(strManufacturerName) Then
+            whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & COL_NAME_MANUFACTURER_NAME & ") " & strManufacturerName.ToUpper
         End If
 
-        If Me.FormatSearchMask(strModelNumber) Then
-            whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & Me.COL_NAME_MODEL_NUMBER & ") " & strModelNumber.ToUpper
+        If FormatSearchMask(strModelNumber) Then
+            whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & COL_NAME_MODEL_NUMBER & ") " & strModelNumber.ToUpper
         End If
 
         If (Not (fromDate.Equals(String.Empty))) AndAlso (Not (toDate.Equals(String.Empty))) Then
@@ -138,9 +138,9 @@
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
@@ -149,13 +149,13 @@
         Dim ds As New DataSet
         Try
             'Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 #End Region
 End Class

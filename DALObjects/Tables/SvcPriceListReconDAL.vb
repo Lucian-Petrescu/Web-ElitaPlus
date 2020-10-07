@@ -46,16 +46,16 @@ Public Class SvcPriceListReconDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
 
-        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(Me.PAR_IN_NAME_SVC_PRICE_LIST_RECON_ID, OracleDbType.Raw, id.ToByteArray, ParameterDirection.Input),
+        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(PAR_IN_NAME_SVC_PRICE_LIST_RECON_ID, OracleDbType.Raw, id.ToByteArray, ParameterDirection.Input),
                                                                      New OracleParameter("po_resultcursor", OracleDbType.RefCursor, ParameterDirection.Output),
-                                                                     New OracleParameter(Me.PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int32, ParameterDirection.Output)}
+                                                                     New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int32, ParameterDirection.Output)}
 
         Try
             FetchStoredProcedure("Load",
@@ -67,15 +67,15 @@ Public Class SvcPriceListReconDAL
         End Try
     End Sub
 
-    Public Function Load(ByVal id As Guid) As DataSet
+    Public Function Load(id As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+        Dim selectStmt As String = Config("/SQL/LOAD")
 
         Dim ds As New DataSet
 
-        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(Me.PAR_IN_NAME_SVC_PRICE_LIST_RECON_ID, OracleDbType.Raw, id.ToByteArray, ParameterDirection.Input),
+        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(PAR_IN_NAME_SVC_PRICE_LIST_RECON_ID, OracleDbType.Raw, id.ToByteArray, ParameterDirection.Input),
                                                                      New OracleParameter("po_resultcursor", OracleDbType.RefCursor, ParameterDirection.Output),
-                                                                     New OracleParameter(Me.PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int16, ParameterDirection.Output)}
+                                                                     New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int16, ParameterDirection.Output)}
 
 
         FetchStoredProcedure("Load",
@@ -86,12 +86,12 @@ Public Class SvcPriceListReconDAL
         Return ds
     End Function
 
-    Public Sub LoadListByServiceCenter(ByVal familyDS As DataSet, ByVal servicecenterid As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_SVC")
+    Public Sub LoadListByServiceCenter(familyDS As DataSet, servicecenterid As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_SVC")
         Dim ds As New DataSet
-        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(Me.PAR_IN_NAME_SERVICE_CENTER_ID, OracleDbType.Raw, servicecenterid.ToByteArray, ParameterDirection.Input),
+        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(PAR_IN_NAME_SERVICE_CENTER_ID, OracleDbType.Raw, servicecenterid.ToByteArray, ParameterDirection.Input),
                                                                      New OracleParameter("po_svc_pl_recon_table", OracleDbType.RefCursor, ParameterDirection.Output),
-                                                                     New OracleParameter(Me.PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int32, ParameterDirection.Output)}
+                                                                     New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int32, ParameterDirection.Output)}
         FetchStoredProcedure("Load",
                               selectStmt,
                               parameters,
@@ -99,15 +99,15 @@ Public Class SvcPriceListReconDAL
 
     End Sub
 
-    Public Function LoadList(ByVal ServiceCenterCode As String, ByVal PriceListCode As String, ByVal CountryID As Guid) As DataSet
+    Public Function LoadList(ServiceCenterCode As String, PriceListCode As String, CountryID As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
-        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(Me.PAR_IN_NAME_SERVICE_CENTER_CODE, OracleDbType.Varchar2, ParameterDirection.Input),
-                                                                     New OracleParameter(Me.PAR_IN_NAME_PRICE_LIST_CODE, OracleDbType.Varchar2, ParameterDirection.Input),
-                                                                     New OracleParameter(Me.PAR_IN_NAME_COUNTRY_ID, OracleDbType.Raw, CountryID.ToByteArray, ParameterDirection.Input),
+        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(PAR_IN_NAME_SERVICE_CENTER_CODE, OracleDbType.Varchar2, ParameterDirection.Input),
+                                                                     New OracleParameter(PAR_IN_NAME_PRICE_LIST_CODE, OracleDbType.Varchar2, ParameterDirection.Input),
+                                                                     New OracleParameter(PAR_IN_NAME_COUNTRY_ID, OracleDbType.Raw, CountryID.ToByteArray, ParameterDirection.Input),
                                                                      New OracleParameter("po_resultcursor", OracleDbType.RefCursor, ParameterDirection.Output),
-                                                                     New OracleParameter(Me.PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int16, ParameterDirection.Output)}
+                                                                     New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int16, ParameterDirection.Output)}
 
         Return FetchStoredProcedure("LoadList",
                                     selectStmt,
@@ -115,12 +115,12 @@ Public Class SvcPriceListReconDAL
 
     End Function
 
-    Public Function LoadListBySvc(ByVal servicecenterid As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_SVC")
+    Public Function LoadListBySvc(servicecenterid As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_SVC")
         Dim ds As New DataSet
-        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(Me.PAR_IN_NAME_SERVICE_CENTER_ID, OracleDbType.Raw, servicecenterid.ToByteArray, ParameterDirection.Input),
+        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(PAR_IN_NAME_SERVICE_CENTER_ID, OracleDbType.Raw, servicecenterid.ToByteArray, ParameterDirection.Input),
                                                                      New OracleParameter("po_resultcursor", OracleDbType.RefCursor, ParameterDirection.Output),
-                                                                     New OracleParameter(Me.PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int32, ParameterDirection.Output)}
+                                                                     New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int32, ParameterDirection.Output)}
         FetchStoredProcedure("loadListBySVC",
                               selectStmt,
                               parameters,
@@ -129,12 +129,12 @@ Public Class SvcPriceListReconDAL
 
     End Function
 
-    Public Function GetLatestStatus(ByVal servicecenterid As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LATEST_STATUS")
+    Public Function GetLatestStatus(servicecenterid As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LATEST_STATUS")
         ' Dim ds As New DataSet
-        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(Me.PAR_IN_NAME_SERVICE_CENTER_ID, OracleDbType.Raw, servicecenterid.ToByteArray, ParameterDirection.Input),
+        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(PAR_IN_NAME_SERVICE_CENTER_ID, OracleDbType.Raw, servicecenterid.ToByteArray, ParameterDirection.Input),
                                                                      New OracleParameter("po_resultcursor", OracleDbType.RefCursor, ParameterDirection.Output),
-                                                                     New OracleParameter(Me.PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int32, ParameterDirection.Output)}
+                                                                     New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int32, ParameterDirection.Output)}
         Dim ds As New DataSet
         FetchStoredProcedure("Load",
                               selectStmt,
@@ -147,7 +147,7 @@ Public Class SvcPriceListReconDAL
 
 #Region "Private Methods"
 
-    Function SetParameter(ByVal name As String, ByVal value As Object) As DBHelper.DBHelperParameter
+    Function SetParameter(name As String, value As Object) As DBHelper.DBHelperParameter
 
         name = name.Trim
         If value Is Nothing Then value = DBNull.Value
@@ -161,8 +161,8 @@ Public Class SvcPriceListReconDAL
 
 #Region "Public Members"
 
-    Public Function Add(ByVal svc_price_list_recon_id As Guid, ByVal servicenterId As Guid, ByVal price_list_id As Guid, ByVal status_xcd As String, ByVal Requested_By As String) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/INSERT")
+    Public Function Add(svc_price_list_recon_id As Guid, servicenterId As Guid, price_list_id As Guid, status_xcd As String, Requested_By As String) As Integer
+        Dim selectStmt As String = Config("/SQL/INSERT")
 
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                             New DBHelper.DBHelperParameter("pi_svc_price_list_recon_id", svc_price_list_recon_id.ToByteArray),
@@ -181,9 +181,9 @@ Public Class SvcPriceListReconDAL
         Return retVal
     End Function
 
-    Public Function LoadList(ByVal ParentProductCodeId As Guid, ByVal familyDS As DataSet)
+    Public Function LoadList(ParentProductCodeId As Guid, familyDS As DataSet)
 
-        Dim selectStmt As String = Me.Config("/SQL/ChildListByParentID")
+        Dim selectStmt As String = Config("/SQL/ChildListByParentID")
         ' Dim ds As DataSet
         Dim dcPk As DataColumnCollection
 
@@ -192,14 +192,14 @@ Public Class SvcPriceListReconDAL
 
         Try
 
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Overloads Function Update_Status(ByVal svc_price_list_recon_id As Guid, ByVal status_xcd As String, ByVal status_changed_by As String) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_STATUS")
+    Public Overloads Function Update_Status(svc_price_list_recon_id As Guid, status_xcd As String, status_changed_by As String) As Integer
+        Dim selectStmt As String = Config("/SQL/UPDATE_STATUS")
 
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                             New DBHelper.DBHelperParameter("pi_svc_price_list_recon_id", svc_price_list_recon_id.ToByteArray),
@@ -220,19 +220,19 @@ Public Class SvcPriceListReconDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.UpdateFromSP(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.UpdateFromSP(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
 #End Region
 
     Private Function FetchStoredProcedure(methodName As String, storedProc As String, parameters() As OracleParameter, Optional familyDS As DataSet = Nothing) As DataSet
-        Dim tbl As String = Me.TABLE_NAME
+        Dim tbl As String = TABLE_NAME
         Dim ds As DataSet = If(familyDS Is Nothing, New DataSet(), familyDS)
 
         ds.Tables.Add(tbl)
@@ -246,7 +246,7 @@ Public Class SvcPriceListReconDAL
                     OracleDbHelper.Fetch(cmd, tbl, ds)
                 End Using
             End Using
-            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(Me.PAR_OUT_NAME_RETURN_CODE))
+            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
             If (Not par Is Nothing AndAlso par.Value = 200) Then
                 Throw New ElitaPlusException("SVC_PL_RECON - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
             End If
@@ -257,13 +257,13 @@ Public Class SvcPriceListReconDAL
         Return ds
     End Function
 
-    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
         command.AddParameter("pi_svc_price_list_recon_id", OracleDbType.Raw, sourceColumn:=TABLE_KEY_NAME)
         command.AddParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int32, ParameterDirection.Output)
     End Sub
 
 
-    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter("pi_svc_price_list_recon_id", OracleDbType.Raw, sourceColumn:=TABLE_KEY_NAME)
             .AddParameter("pi_service_center_id", OracleDbType.Raw, sourceColumn:=COL_NAME_SERVICE_CENTER_ID)
@@ -275,7 +275,7 @@ Public Class SvcPriceListReconDAL
         End With
     End Sub
 
-    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, tableName As String)
         With command
 
             .AddParameter("pi_svc_price_list_recon_id", OracleDbType.Raw, sourceColumn:=TABLE_KEY_NAME)

@@ -73,48 +73,48 @@ Partial Public Class InvoiceControlListForm
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrControllerMaster.Clear_Hide()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        ErrControllerMaster.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
-                Me.AddCalendar(Me.btnInvDateStart, Me.txtInvDateStart)
-                Me.AddCalendar(Me.btnInvDateEnd, Me.txtInvDateEnd)
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
+                AddCalendar(btnInvDateStart, txtInvDateStart)
+                AddCalendar(btnInvDateEnd, txtInvDateEnd)
 
                 populateSearchControls()
 
-                If Me.IsReturningFromChild And State.IsGridVisible Then
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                    Grid.PageSize = Me.State.PageSize
-                    Me.PopulateGrid(State.HasDataChanged)
+                If IsReturningFromChild And State.IsGridVisible Then
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
+                    Grid.PageSize = State.PageSize
+                    PopulateGrid(State.HasDataChanged)
                 End If
             Else
                 If State.errLabel <> "" Then
-                    Me.ClearLabelErrSign(CType(Me.FindControl(State.errLabel), Label))
+                    ClearLabelErrSign(CType(FindControl(State.errLabel), Label))
                     State.errLabel = ""
                 End If
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 
-    Private Sub Page_LoadComplete(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LoadComplete
+    Private Sub Page_LoadComplete(sender As Object, e As System.EventArgs) Handles Me.LoadComplete
         If ErrControllerMaster.Visible Then
-            Me.spanFiller.Text = "<tr><td colspan=""2"" style=""height:200px"">&nbsp;</td></tr>"
+            spanFiller.Text = "<tr><td colspan=""2"" style=""height:200px"">&nbsp;</td></tr>"
         Else
-            Me.spanFiller.Text = "<tr><td colspan=""2"" style=""height:1px"">&nbsp;</td></tr>"
+            spanFiller.Text = "<tr><td colspan=""2"" style=""height:1px"">&nbsp;</td></tr>"
         End If
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
-        Me.MenuEnabled = True
-        Me.IsReturningFromChild = True
-        If Not ReturnPar Is Nothing Then
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
+        MenuEnabled = True
+        IsReturningFromChild = True
+        If ReturnPar IsNot Nothing Then
             State.HasDataChanged = CType(ReturnPar, Boolean)
         Else
             State.HasDataChanged = False
@@ -127,9 +127,9 @@ Partial Public Class InvoiceControlListForm
     Private Sub populateSearchControls()
         Try
             Dim dv As DataView = LookupListNew.GetDealerLookupList(Authentication.CurrentUser.Companies)
-            BindListControlToDataView(Me.ddlDealer, dv, "DESCRIPTION", "ID", True)
+            BindListControlToDataView(ddlDealer, dv, "DESCRIPTION", "ID", True)
             dv.Sort = "CODE"
-            BindListControlToDataView(Me.ddlDealerCode, dv, "CODE", "ID", True)
+            BindListControlToDataView(ddlDealerCode, dv, "CODE", "ID", True)
 
 
             'Dim DealerList As New Collections.Generic.List(Of DataElements.ListItem)
@@ -164,13 +164,13 @@ Partial Public Class InvoiceControlListForm
             '                .AddBlankItem = True
             '            })
 
-            Me.ddlDealer.Attributes.Add("onchange", "UpdateList('" & Me.ddlDealerCode.ClientID & "')")
-            Me.ddlDealerCode.Attributes.Add("onchange", "UpdateList('" & Me.ddlDealer.ClientID & "')")
+            ddlDealer.Attributes.Add("onchange", "UpdateList('" & ddlDealerCode.ClientID & "')")
+            ddlDealerCode.Attributes.Add("onchange", "UpdateList('" & ddlDealer.ClientID & "')")
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
-    Public Function formatDateTime(ByVal objDate As Object) As String
+    Public Function formatDateTime(objDate As Object) As String
         Dim strRet As String = objDate.ToString
         Try
             Dim dtVal As DateTime = CType(objDate, DateTime)
@@ -181,52 +181,52 @@ Partial Public Class InvoiceControlListForm
     End Function
     Private Sub PopulateGrid(Optional ByVal refreshData As Boolean = False)
 
-        If Me.State.searchDV Is Nothing OrElse refreshData Then SearchInvoice(refreshData)
+        If State.searchDV Is Nothing OrElse refreshData Then SearchInvoice(refreshData)
 
-        Me.Grid.AutoGenerateColumns = False
-        Me.Grid.AllowSorting = True
-        Me.State.searchDV.Sort = Me.State.SortExpression
-        Me.Grid.Columns(Me.GRID_COL_DEALER_IDX).SortExpression = COL_DEALER_NAME
-        Me.Grid.Columns(Me.GRID_COL_BRANCH_IDX).SortExpression = COL_BRANCH_NAME
-        Me.Grid.Columns(Me.GRID_COL_INVOICE_DATE_IDX).SortExpression = COL_CREATED_DATE
-        Me.Grid.Columns(Me.GRID_COL_INVOICE_NUMBER_IDX).SortExpression = COL_INVOICE_NUMBER
-        Me.Grid.Columns(Me.GRID_COL_CREDIT_NOTE_NUMBER_IDX).SortExpression = COL_CREDIT_NOTE_NUMBER
-        Me.Grid.Columns(Me.GRID_COL_CNEW_PREMIUM_TOTAL_IDX).SortExpression = COL_NEW_PREMIUM_TOTAL
-        Me.Grid.Columns(Me.GRID_COL_CANCEL_PREMIUM_TOTAL_IDX).SortExpression = COL_CANCEL_TOTAL_CERT
+        Grid.AutoGenerateColumns = False
+        Grid.AllowSorting = True
+        State.searchDV.Sort = State.SortExpression
+        Grid.Columns(GRID_COL_DEALER_IDX).SortExpression = COL_DEALER_NAME
+        Grid.Columns(GRID_COL_BRANCH_IDX).SortExpression = COL_BRANCH_NAME
+        Grid.Columns(GRID_COL_INVOICE_DATE_IDX).SortExpression = COL_CREATED_DATE
+        Grid.Columns(GRID_COL_INVOICE_NUMBER_IDX).SortExpression = COL_INVOICE_NUMBER
+        Grid.Columns(GRID_COL_CREDIT_NOTE_NUMBER_IDX).SortExpression = COL_CREDIT_NOTE_NUMBER
+        Grid.Columns(GRID_COL_CNEW_PREMIUM_TOTAL_IDX).SortExpression = COL_NEW_PREMIUM_TOTAL
+        Grid.Columns(GRID_COL_CANCEL_PREMIUM_TOTAL_IDX).SortExpression = COL_CANCEL_TOTAL_CERT
 
-        SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.InvoiceID, Me.Grid, Me.State.PageIndex, (Grid.EditItemIndex > GRID_NO_SELECTEDITEM_INX))
+        SetPageAndSelectedIndexFromGuid(State.searchDV, State.InvoiceID, Grid, State.PageIndex, (Grid.EditItemIndex > GRID_NO_SELECTEDITEM_INX))
 
-        Me.State.PageIndex = Me.Grid.CurrentPageIndex
-        Me.Grid.DataSource = Me.State.searchDV
-        HighLightSortColumn(Grid, Me.State.SortExpression)
-        Me.Grid.DataBind()
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        State.PageIndex = Grid.CurrentPageIndex
+        Grid.DataSource = State.searchDV
+        HighLightSortColumn(Grid, State.SortExpression)
+        Grid.DataBind()
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-        If Me.Grid.Visible Then
-            Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        If Grid.Visible Then
+            lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
         End If
 
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
 
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
 
-            Me.State.PageIndex = 0
+            State.PageIndex = 0
 
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
@@ -243,28 +243,28 @@ Partial Public Class InvoiceControlListForm
             State.SearchedStartDate = Date.MinValue
             State.SearchedEndDate = Date.MinValue
 
-            DealerID = Me.GetSelectedItem(Me.ddlDealer)
+            DealerID = GetSelectedItem(ddlDealer)
 
-            strInvNum = Me.txtInvNum.Text.Trim()
+            strInvNum = txtInvNum.Text.Trim()
 
-            strTemp = Me.txtInvDateStart.Text.Trim()
+            strTemp = txtInvDateStart.Text.Trim()
             If strTemp <> "" Then
                 ' If Not Date.TryParse(strTemp, dtStart) Then
                 If DateHelper.IsDate(strTemp) = False Then
-                    Me.SetLabelError(Me.lblInvDate)
-                    State.errLabel = Me.lblInvDate.UniqueID
+                    SetLabelError(lblInvDate)
+                    State.errLabel = lblInvDate.UniqueID
                     Throw New GUIException(Message.MSG_INVALID_DATE, Message.MSG_INVALID_DATE)
                 End If
             Else
                 dtStart = Date.MinValue
             End If
 
-            strTemp = Me.txtInvDateEnd.Text.Trim()
+            strTemp = txtInvDateEnd.Text.Trim()
             If strTemp <> "" Then
                 ' If Not Date.TryParse(strTemp, dtEnd) Then
                 If DateHelper.IsDate(strTemp) = False Then
-                    Me.SetLabelError(Me.lblInvDate)
-                    State.errLabel = Me.lblInvDate.UniqueID
+                    SetLabelError(lblInvDate)
+                    State.errLabel = lblInvDate.UniqueID
                     Throw New GUIException(Message.MSG_INVALID_DATE, Message.MSG_INVALID_DATE)
                 End If
             Else
@@ -288,78 +288,78 @@ Partial Public Class InvoiceControlListForm
 #End Region
 
 #Region "Grid Handler"
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
         Dim lblControl As Label
         Try
             If e.CommandName = "SelectAction" Then
-                lblControl = CType(Me.Grid.Items(e.Item.ItemIndex).Cells(Me.GRID_COL_INVOICE_IDX).FindControl(Me.GRID_CONTROL_NAME_INVOICE_IDX), Label)
-                Me.State.InvoiceID = New Guid(lblControl.Text)
-                Me.callPage(InvoiceControlDetailForm.URL, Me.State.InvoiceID)
+                lblControl = CType(Grid.Items(e.Item.ItemIndex).Cells(GRID_COL_INVOICE_IDX).FindControl(GRID_CONTROL_NAME_INVOICE_IDX), Label)
+                State.InvoiceID = New Guid(lblControl.Text)
+                callPage(InvoiceControlDetailForm.URL, State.InvoiceID)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.InvoiceID = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.InvoiceID = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.CurrentPageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.CurrentPageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
 #End Region
 
 #Region "Button click Handler"
-    Protected Sub btnNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew.Click
+    Protected Sub btnNew_Click(sender As System.Object, e As System.EventArgs) Handles btnNew.Click
         Try
-            Me.callPage(InvoiceControlNewForm.URL)
+            callPage(InvoiceControlNewForm.URL)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.InvoiceID = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.HasDataChanged = False
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            State.InvoiceID = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.HasDataChanged = False
+            PopulateGrid()
         Catch ex As Exception
-            Me.State.IsGridVisible = False
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.State.IsGridVisible)
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            State.IsGridVisible = False
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, State.IsGridVisible)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
-        Me.ddlDealer.SelectedIndex = 0
-        Me.ddlDealerCode.SelectedIndex = 0
-        Me.txtInvNum.Text = ""
-        Me.txtInvDateStart.Text = ""
-        Me.txtInvDateEnd.Text = ""
+    Protected Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+        ddlDealer.SelectedIndex = 0
+        ddlDealerCode.SelectedIndex = 0
+        txtInvNum.Text = ""
+        txtInvDateStart.Text = ""
+        txtInvDateEnd.Text = ""
     End Sub
 
 #End Region

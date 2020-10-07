@@ -40,8 +40,8 @@ Public Class GetClaimsReadyFromSC
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
     End Sub
 
     'Initialization code for new objects
@@ -51,10 +51,10 @@ Public Class GetClaimsReadyFromSC
     Private Sub Load(ByVal ds As GetClaimsReadyFromSCDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As BOValidationException
             Throw ex
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -70,7 +70,7 @@ Public Class GetClaimsReadyFromSC
         Try
             If ds.GetClaimsReadyFromSC.Count = 0 Then Exit Sub
             With ds.GetClaimsReadyFromSC.Item(0)
-                Me.RouteCode = .ROUTE_NUMBER
+                RouteCode = .ROUTE_NUMBER
             End With
         Catch ex As BOValidationException
             Throw ex
@@ -88,9 +88,9 @@ Public Class GetClaimsReadyFromSC
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
 
-            Dim dsRoute As DataSet = Route.GetRouteByCode(Me.RouteCode)
+            Dim dsRoute As DataSet = Route.GetRouteByCode(RouteCode)
             If dsRoute Is Nothing Or dsRoute.Tables.Count <= 0 Or dsRoute.Tables(0).Rows.Count <> 1 Then
                 Throw New BOValidationException("GetClaimsReadyFromSC Error: ", Common.ErrorCodes.WS_ROUTE_NOT_FOUND)
             Else
@@ -98,9 +98,9 @@ Public Class GetClaimsReadyFromSC
             End If
 
             Dim headerBO As New PickupListHeader
-            Dim dsHeader As DataSet = headerBO.GetClaimsReadyFromSC(Me.RouteId)
+            Dim dsHeader As DataSet = headerBO.GetClaimsReadyFromSC(RouteId)
 
-            dsHeader.DataSetName = Me.DATASET_NAME
+            dsHeader.DataSetName = DATASET_NAME
 
             Dim excludeTags As ArrayList = New ArrayList()
             excludeTags.Add("/GetClaimsReadyFromSC/PICKLIST/ROUTE_ID")
@@ -141,7 +141,7 @@ Public Class GetClaimsReadyFromSC
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_ROUTE_NUMBER, Value)
+            SetValue(COL_ROUTE_NUMBER, Value)
         End Set
     End Property
 

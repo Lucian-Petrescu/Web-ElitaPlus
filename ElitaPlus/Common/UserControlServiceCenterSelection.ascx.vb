@@ -56,10 +56,10 @@ Public Class UserControlServiceCenterSelection
 
     End Class
 #End Region
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         Dim parentControl = Parent
 
-        Debug.WriteLine($"Loading UserControlQuestion ID: {Me.ID}")
+        Debug.WriteLine($"Loading UserControlQuestion ID: {ID}")
         While (Not TypeOf parentControl Is ElitaPlusPage And parentControl IsNot Nothing)
             parentControl = parentControl.Parent
         End While
@@ -322,7 +322,7 @@ Public Class UserControlServiceCenterSelection
 #End Region
 
 #Region "Control Events"
-    Private Sub GridServiceCenter_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GridServiceCenter.Sorting
+    Private Sub GridServiceCenter_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GridServiceCenter.Sorting
         Try
             If SortExpression.StartsWith(e.SortExpression) Then
                 If SortExpression.EndsWith(" DESC") Then
@@ -334,14 +334,14 @@ Public Class UserControlServiceCenterSelection
                 SortExpression = e.SortExpression
             End If
             PageIndex = 0
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
             HandleLocalException(ex)
         End Try
 
     End Sub
 
-    Private Sub GridServiceCenter_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridServiceCenter.PageIndexChanged
+    Private Sub GridServiceCenter_PageIndexChanged(sender As Object, e As System.EventArgs) Handles GridServiceCenter.PageIndexChanged
         Try
             PageIndex = GridServiceCenter.PageIndex
             PopulateGrid()
@@ -349,7 +349,7 @@ Public Class UserControlServiceCenterSelection
             HandleLocalException(ex)
         End Try
     End Sub
-    Private Sub GridServiceCenter_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridServiceCenter.PageIndexChanging
+    Private Sub GridServiceCenter_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridServiceCenter.PageIndexChanging
         Try
             GridServiceCenter.PageIndex = e.NewPageIndex
             PageIndex = GridServiceCenter.PageIndex
@@ -368,7 +368,7 @@ Public Class UserControlServiceCenterSelection
         ' get the selected device into the state
         EnableControlinGridview(GridServiceCenter)
     End Sub
-    Private Sub moSearchByDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moSearchByDrop.SelectedIndexChanged
+    Private Sub moSearchByDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moSearchByDrop.SelectedIndexChanged
         Try
             Debug.WriteLine("Index Changed")
             EnableDisableFields()
@@ -402,14 +402,14 @@ Public Class UserControlServiceCenterSelection
         End If
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Dim list As IList = GridServiceCenter.DataSource
 
             PageSize = CType(cboPageSize.SelectedValue, Integer)
             PageIndex = NewCurrentPageIndexFunc(GridServiceCenter, list?.Count, PageSize)
             GridServiceCenter.PageIndex = PageIndex
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
             HandleLocalException(ex)
         End Try
@@ -492,7 +492,7 @@ Public Class UserControlServiceCenterSelection
             Dim wsResponse As FulfillmentServicesCenter() = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, FulfillmentServicesCenter())(
                 GetClaimFulfillmentWebAppGatewayClient(),
                 New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                Function(ByVal c As WebAppGatewayClient)
+                Function(c As WebAppGatewayClient)
                     Return c.SearchServiceCenters(wsRequest)
                 End Function)
 
@@ -527,7 +527,7 @@ Public Class UserControlServiceCenterSelection
         End Try
     End Sub
 
-    Private Sub DeselectRadioButtonGridview(ByVal gridViewTarget As GridView, ByVal rdobuttonName As String)
+    Private Sub DeselectRadioButtonGridview(gridViewTarget As GridView, rdobuttonName As String)
         'deselect all radiobutton in gridview
         For i As Integer = 0 To gridViewTarget.Rows.Count - 1
             Dim rb As System.Web.UI.WebControls.RadioButton
@@ -535,7 +535,7 @@ Public Class UserControlServiceCenterSelection
             rb.Checked = False
         Next
     End Sub
-    Private Sub EnableControlinGridview(ByVal gridViewTarget As GridView)
+    Private Sub EnableControlinGridview(gridViewTarget As GridView)
         For i As Integer = 0 To gridViewTarget.Rows.Count - 1
             Dim rdo As System.Web.UI.WebControls.RadioButton
             rdo = CType(gridViewTarget.Rows(i).FindControl("rdoServiceCenter"), System.Web.UI.WebControls.RadioButton)
@@ -554,7 +554,7 @@ Public Class UserControlServiceCenterSelection
 
                     SelectedServiceCenter = oServiceCenter
 
-                    If Not ServiceCenterSelectedFunc Is Nothing Then
+                    If ServiceCenterSelectedFunc IsNot Nothing Then
                         ServiceCenterSelectedFunc.Invoke(selected)
                     End If
 
@@ -569,8 +569,8 @@ Public Class UserControlServiceCenterSelection
         UpdateRecordCount(0)
     End Sub
     Private Sub UpdateRecordCount(records As Integer)
-        If Me.GridServiceCenter.Visible Then
-            Me.lblRecordCount.Text = $"{records} {TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)}"
+        If GridServiceCenter.Visible Then
+            lblRecordCount.Text = $"{records} {TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)}"
         End If
     End Sub
 #End Region

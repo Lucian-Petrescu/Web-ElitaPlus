@@ -15,13 +15,13 @@ Namespace Tables
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
             Dim strCaller As String = Request.QueryString.Get("CALLER")
             If strCaller = CALLER_CERT_ITEM Then
-                Me.MenuEnabled = False
+                MenuEnabled = False
             End If
         End Sub
 
@@ -33,14 +33,14 @@ Namespace Tables
             Public EditingBo As Equipment
             Public HasDataChanged As Boolean
             Public SKU As String
-            Public Sub New(ByVal LastOp As DetailPageCommand,
-                           ByVal hasDataChanged As Boolean,
-                           ByVal equip As Equipment,
-                           ByVal strSKU As String)
-                Me.LastOperation = LastOp
-                Me.EditingBo = equip
+            Public Sub New(LastOp As DetailPageCommand,
+                           hasDataChanged As Boolean,
+                           equip As Equipment,
+                           strSKU As String)
+                LastOperation = LastOp
+                EditingBo = equip
                 Me.HasDataChanged = hasDataChanged
-                Me.SKU = strSKU
+                SKU = strSKU
             End Sub
         End Class
 #End Region
@@ -98,69 +98,69 @@ Namespace Tables
         Protected Shadows ReadOnly Property State() As MyState
             Get
                 If Request.QueryString.Get("CALLER") = CALLER_CERT_ITEM Then
-                    If Me.NavController.State Is Nothing Then Me.NavController.State = New MyState
-                    Return CType(Me.NavController.State, MyState)
+                    If NavController.State Is Nothing Then NavController.State = New MyState
+                    Return CType(NavController.State, MyState)
                 Else
                     Return CType(MyBase.State, MyState)
                 End If
             End Get
         End Property
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
+                MenuEnabled = True
+                IsReturningFromChild = True
                 Dim retObj As EquipmentForm.ReturnType = CType(ReturnPar, EquipmentForm.ReturnType)
-                Me.State.HasDataChanged = retObj.HasDataChanged
+                State.HasDataChanged = retObj.HasDataChanged
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                        If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
-                                Me.State.SelectedEquipmentId = retObj.EditingBo.Id
+                                State.SelectedEquipmentId = retObj.EditingBo.Id
                             End If
-                            Me.State.IsGridVisible = True
+                            State.IsGridVisible = True
                         End If
                     Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                        DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub SaveGuiState()
             Try
-                Me.State.Model = Me.moModelText.Text
-                Me.State.Description = Me.moDescriptionText.Text
-                Me.State.ManufacturerName = Me.GetSelectedDescription(moManufacturerDrop)
-                Me.State.EquipmentClassName = Me.GetSelectedDescription(moEquipmentClassDrop)
-                Me.State.EquipmentTypeName = Me.GetSelectedDescription(moEquipmentTypeDrop)
+                State.Model = moModelText.Text
+                State.Description = moDescriptionText.Text
+                State.ManufacturerName = GetSelectedDescription(moManufacturerDrop)
+                State.EquipmentClassName = GetSelectedDescription(moEquipmentClassDrop)
+                State.EquipmentTypeName = GetSelectedDescription(moEquipmentTypeDrop)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub RestoreGuiState()
-            Me.moDescriptionText.Text = Me.State.Model
-            Me.moDescriptionText.Text = Me.State.Description
-            Me.SetSelectedItemByText(moManufacturerDrop, Me.State.ManufacturerName)
-            Me.SetSelectedItemByText(moEquipmentClassDrop, Me.State.EquipmentClassName)
-            Me.SetSelectedItemByText(moEquipmentTypeDrop, Me.State.EquipmentTypeName)
+            moDescriptionText.Text = State.Model
+            moDescriptionText.Text = State.Description
+            SetSelectedItemByText(moManufacturerDrop, State.ManufacturerName)
+            SetSelectedItemByText(moEquipmentClassDrop, State.EquipmentClassName)
+            SetSelectedItemByText(moEquipmentTypeDrop, State.EquipmentTypeName)
         End Sub
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Select Case Me.State.Caller_Form
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    Select Case State.Caller_Form
                         Case CALLER_CERT_ITEM
-                            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Certificates")
-                            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+                            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Certificates")
+                            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                                 TranslationBase.TranslateLabelOrMessage("Item") & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("CHANGE_EQUIPMENT")
-                            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CHANGE_EQUIPMENT")
+                            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CHANGE_EQUIPMENT")
                         Case Else
-                            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+                            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                                 TranslationBase.TranslateLabelOrMessage("EQUIPMENT_SEARCH")
-                            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("EQUIPMENT_SEARCH")
+                            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("EQUIPMENT_SEARCH")
                     End Select
                 End If
             End If
@@ -168,40 +168,40 @@ Namespace Tables
 #End Region
 
 #Region "Page_Events"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                Me.MasterPage.MessageController.Clear_Hide()
-                If Not Me.IsPostBack Then
-                    Me.State.Caller_Form = Request.QueryString.Get("CALLER")
+                MasterPage.MessageController.Clear_Hide()
+                If Not IsPostBack Then
+                    State.Caller_Form = Request.QueryString.Get("CALLER")
 
-                    Me.SetDefaultButton(Me.moModelText, btnSearch)
-                    Me.SetDefaultButton(Me.moDescriptionText, btnSearch)
+                    SetDefaultButton(moModelText, btnSearch)
+                    SetDefaultButton(moDescriptionText, btnSearch)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     PopulateDropDowns()
-                    Me.RestoreGuiState()
-                    If Not (Me.State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Then
-                        Me.State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE
-                        cboPageSize.SelectedValue = CType(Me.State.SelectedPageSize, String)
-                        Grid.PageSize = Me.State.SelectedPageSize
+                    RestoreGuiState()
+                    If Not (State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Then
+                        State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE
+                        cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
+                        Grid.PageSize = State.SelectedPageSize
                     End If
-                    Me.SetGridItemStyleColor(Me.Grid)
+                    SetGridItemStyleColor(Grid)
                     UpdateBreadCrum()
-                    If Me.State.Caller_Form = CALLER_CERT_ITEM Then
+                    If State.Caller_Form = CALLER_CERT_ITEM Then
                         ShowHideControls(True)
                         'set the equipmetn list code in state
-                        Dim Cert As Certificate = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE), Certificate)
-                        If Not Cert Is Nothing Then
-                            Me.State.Equip_List_code = Cert.Dealer.EquipmentListCode
+                        Dim Cert As Certificate = CType(NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE), Certificate)
+                        If Cert IsNot Nothing Then
+                            State.Equip_List_code = Cert.Dealer.EquipmentListCode
 
                             Dim ManufacturerList As DataElements.ListItem() =
                                 CommonConfigManager.Current.ListManager.GetList(listCode:=ListCodes.ManufacturerByEquipment,
                                                                 context:=New ListContext() With
                                                                 {
-                                                                  .EquipmentListCode = Me.State.Equip_List_code
+                                                                  .EquipmentListCode = State.Equip_List_code
                                                                 })
 
-                            Me.moManufacturerDrop.Populate(ManufacturerList.ToArray(),
+                            moManufacturerDrop.Populate(ManufacturerList.ToArray(),
                                 New PopulateOptions() With
                                 {
                                     .AddBlankItem = True
@@ -211,9 +211,9 @@ Namespace Tables
                         End If
                     End If
                 End If
-                Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+                ShowMissingTranslations(MasterPage.MessageController)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Private Sub ShowHideControls(toggle As Boolean)
@@ -221,7 +221,7 @@ Namespace Tables
                 btnback_WRITE.Visible = toggle
                 btnAdd_WRITE.Visible = Not toggle
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -239,7 +239,7 @@ Namespace Tables
                                                                   .CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                                                                 })
 
-            Me.moManufacturerDrop.Populate(ManufacturerList.ToArray(),
+            moManufacturerDrop.Populate(ManufacturerList.ToArray(),
                                 New PopulateOptions() With
                                 {
                                     .AddBlankItem = True
@@ -271,50 +271,50 @@ Namespace Tables
         End Sub
 
         Public Sub PopulateGrid()
-            If ((Me.State.SearchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-                Me.State.SearchDV = Equipment.GetList(Me.moDescriptionText.Text, Me.moModelText.Text, Me.State.ManufacturerName, Me.State.EquipmentClassName,
-                    Me.State.EquipmentTypeName, txtSKU.Text, Me.State.Equip_List_code)
+            If ((State.SearchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+                State.SearchDV = Equipment.GetList(moDescriptionText.Text, moModelText.Text, State.ManufacturerName, State.EquipmentClassName,
+                    State.EquipmentTypeName, txtSKU.Text, State.Equip_List_code)
             End If
-            Me.State.SearchDV.Sort = Me.State.SortExpression
+            State.SearchDV.Sort = State.SortExpression
 
-            Me.Grid.AutoGenerateColumns = False
-            Me.Grid.Columns(Me.GRID_COL_DESCRIPTION_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_DESCRIPTION
-            Me.Grid.Columns(Me.GRID_COL_MODEL_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_MODEL
-            Me.Grid.Columns(Me.GRID_COL_SKU_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_SKU
-            Me.Grid.Columns(Me.GRID_COL_MANUFACTURER_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_MANUFACTURER
-            Me.Grid.Columns(Me.GRID_COL_EQUIPMENT_CLASS_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_EQUIPMENT_CLASS
-            Me.Grid.Columns(Me.GRID_COL_EQUIPMENT_TYPE_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_EQUIPMENT_TYPE
+            Grid.AutoGenerateColumns = False
+            Grid.Columns(GRID_COL_DESCRIPTION_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_DESCRIPTION
+            Grid.Columns(GRID_COL_MODEL_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_MODEL
+            Grid.Columns(GRID_COL_SKU_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_SKU
+            Grid.Columns(GRID_COL_MANUFACTURER_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_MANUFACTURER
+            Grid.Columns(GRID_COL_EQUIPMENT_CLASS_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_EQUIPMENT_CLASS
+            Grid.Columns(GRID_COL_EQUIPMENT_TYPE_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_EQUIPMENT_TYPE
 
-            Me.Grid.Columns(Me.GRID_COL_COLOR_XCD_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_COLOR_XCD_ID
-            Me.Grid.Columns(Me.GRID_COL_MEMORY_XCD_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_MEMORY_XCD_ID
-            Me.Grid.Columns(Me.GRID_COL_CARRIER_XCD_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_CARRIER_XCD_ID
+            Grid.Columns(GRID_COL_COLOR_XCD_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_COLOR_XCD_ID
+            Grid.Columns(GRID_COL_MEMORY_XCD_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_MEMORY_XCD_ID
+            Grid.Columns(GRID_COL_CARRIER_XCD_IDX).SortExpression = Equipment.EquipmentSearchDV.COL_NAME_CARRIER_XCD_ID
 
 
 
-            SetPageAndSelectedIndexFromGuid(Me.State.SearchDV, Me.State.SelectedEquipmentId, Me.Grid, Me.State.PageIndex)
-            Me.SortAndBindGrid()
+            SetPageAndSelectedIndexFromGuid(State.SearchDV, State.SelectedEquipmentId, Grid, State.PageIndex)
+            SortAndBindGrid()
         End Sub
 
         Private Sub SortAndBindGrid()
-            Me.State.PageIndex = Me.Grid.CurrentPageIndex
-            Me.Grid.DataSource = Me.State.SearchDV
-            HighLightSortColumn(Grid, Me.State.SortExpression)
-            Me.Grid.DataBind()
+            State.PageIndex = Grid.CurrentPageIndex
+            Grid.DataSource = State.SearchDV
+            HighLightSortColumn(Grid, State.SortExpression)
+            Grid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            Session("recCount") = Me.State.SearchDV.Count
+            Session("recCount") = State.SearchDV.Count
 
-            If Me.State.SearchDV.Count > 0 Then
+            If State.SearchDV.Count > 0 Then
 
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             Else
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
         End Sub
@@ -323,102 +323,102 @@ Namespace Tables
 #Region " Datagrid Related "
 
         'The Binding Logic is here  
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    e.Item.Cells(Me.GRID_COL_EQUIPMENT_ID_IDX).Text = New Guid(CType(dvRow(Equipment.EquipmentSearchDV.COL_NAME_EQUIPMENT_ID), Byte())).ToString
-                    e.Item.Cells(Me.GRID_COL_MODEL_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_MODEL).ToString
+                    e.Item.Cells(GRID_COL_EQUIPMENT_ID_IDX).Text = New Guid(CType(dvRow(Equipment.EquipmentSearchDV.COL_NAME_EQUIPMENT_ID), Byte())).ToString
+                    e.Item.Cells(GRID_COL_MODEL_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_MODEL).ToString
                     'e.Item.Cells(Me.GRID_COL_DESCRIPTION_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_DESCRIPTION).ToString
-                    If (Not e.Item.Cells(Me.GRID_COL_DESCRIPTION_IDX).FindControl(GRID_COL_CTRL_EQUIPMENT_DESC) Is Nothing) Then
-                        btnEditItem = CType(e.Item.Cells(Me.GRID_COL_DESCRIPTION_IDX).FindControl(GRID_COL_CTRL_EQUIPMENT_DESC), LinkButton)
+                    If (e.Item.Cells(GRID_COL_DESCRIPTION_IDX).FindControl(GRID_COL_CTRL_EQUIPMENT_DESC) IsNot Nothing) Then
+                        btnEditItem = CType(e.Item.Cells(GRID_COL_DESCRIPTION_IDX).FindControl(GRID_COL_CTRL_EQUIPMENT_DESC), LinkButton)
                         btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Equipment.EquipmentSearchDV.COL_NAME_EQUIPMENT_ID), Byte()))
                         btnEditItem.CommandName = SELECT_ACTION_COMMAND
                         btnEditItem.Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_DESCRIPTION).ToString
                     End If
-                    e.Item.Cells(Me.GRID_COL_SKU_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_SKU).ToString
-                    e.Item.Cells(Me.GRID_COL_MANUFACTURER_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_MANUFACTURER).ToString
-                    e.Item.Cells(Me.GRID_COL_EQUIPMENT_TYPE_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_EQUIPMENT_TYPE).ToString
-                    e.Item.Cells(Me.GRID_COL_EQUIPMENT_CLASS_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_EQUIPMENT_CLASS).ToString
-                    e.Item.Cells(Me.GRID_COL_RISK_TYPE_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_RISK_TYPE_ID).ToString
+                    e.Item.Cells(GRID_COL_SKU_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_SKU).ToString
+                    e.Item.Cells(GRID_COL_MANUFACTURER_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_MANUFACTURER).ToString
+                    e.Item.Cells(GRID_COL_EQUIPMENT_TYPE_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_EQUIPMENT_TYPE).ToString
+                    e.Item.Cells(GRID_COL_EQUIPMENT_CLASS_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_EQUIPMENT_CLASS).ToString
+                    e.Item.Cells(GRID_COL_RISK_TYPE_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_RISK_TYPE_ID).ToString
 
-                    e.Item.Cells(Me.GRID_COL_COLOR_XCD_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_COLOR_XCD_ID).ToString
-                    e.Item.Cells(Me.GRID_COL_MEMORY_XCD_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_MEMORY_XCD_ID).ToString
-                    e.Item.Cells(Me.GRID_COL_CARRIER_XCD_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_CARRIER_XCD_ID).ToString
+                    e.Item.Cells(GRID_COL_COLOR_XCD_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_COLOR_XCD_ID).ToString
+                    e.Item.Cells(GRID_COL_MEMORY_XCD_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_MEMORY_XCD_ID).ToString
+                    e.Item.Cells(GRID_COL_CARRIER_XCD_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_CARRIER_XCD_ID).ToString
                     
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.PopulateGrid()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+        Private Sub Grid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
 
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
             Try
                 If e.CommandName = "SelectAction" Then
-                    If Me.State.Caller_Form = CALLER_CERT_ITEM Then
-                        Me.State.SelectedEquipmentId = New Guid(e.Item.Cells(Me.GRID_COL_EQUIPMENT_ID_IDX).Text)
-                        Me.State.selectedEquipmentsku = e.Item.Cells(Me.GRID_COL_SKU_IDX).Text
-                        If Not e.Item.Cells(Me.GRID_COL_RISK_TYPE_IDX).Text Is Nothing AndAlso Not e.Item.Cells(Me.GRID_COL_RISK_TYPE_IDX).Text = "" Then
-                            Me.State.selectedRiskTypeId = New Guid(e.Item.Cells(Me.GRID_COL_RISK_TYPE_IDX).Text)
+                    If State.Caller_Form = CALLER_CERT_ITEM Then
+                        State.SelectedEquipmentId = New Guid(e.Item.Cells(GRID_COL_EQUIPMENT_ID_IDX).Text)
+                        State.selectedEquipmentsku = e.Item.Cells(GRID_COL_SKU_IDX).Text
+                        If e.Item.Cells(GRID_COL_RISK_TYPE_IDX).Text IsNot Nothing AndAlso Not e.Item.Cells(GRID_COL_RISK_TYPE_IDX).Text = "" Then
+                            State.selectedRiskTypeId = New Guid(e.Item.Cells(GRID_COL_RISK_TYPE_IDX).Text)
                         End If
                         'navigate back to cert item form
                         Dim retobj As Certificates.CertItemDetailForm.ReturnType = New Certificates.CertItemDetailForm.ReturnType(
-                                ElitaPlusPage.DetailPageCommand.Save, Me.State.SelectedEquipmentId,
-                                Me.State.selectedEquipmentsku, True, "equipment_selected", Me.State.selectedRiskTypeId)
-                        Me.NavController.Navigate(Me, "equipment_selected", retobj)
+                                ElitaPlusPage.DetailPageCommand.Save, State.SelectedEquipmentId,
+                                State.selectedEquipmentsku, True, "equipment_selected", State.selectedRiskTypeId)
+                        NavController.Navigate(Me, "equipment_selected", retobj)
                     Else
-                        Me.State.SelectedEquipmentId = New Guid(e.Item.Cells(Me.GRID_COL_EQUIPMENT_ID_IDX).Text)
-                        Me.callPage(EquipmentForm.URL, Me.State.SelectedEquipmentId)
+                        State.SelectedEquipmentId = New Guid(e.Item.Cells(GRID_COL_EQUIPMENT_ID_IDX).Text)
+                        callPage(EquipmentForm.URL, State.SelectedEquipmentId)
                     End If
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+        Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(source As System.Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
             Try
-                Me.State.PageIndex = e.NewPageIndex
-                Me.State.SelectedEquipmentId = Guid.Empty
-                Me.PopulateGrid()
+                State.PageIndex = e.NewPageIndex
+                State.SelectedEquipmentId = Guid.Empty
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -426,38 +426,38 @@ Namespace Tables
 
 #Region "Button Clicks "
 
-        Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Protected Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
             Try
-                Me.State.PageIndex = 0
-                Me.State.SelectedEquipmentId = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.SearchDV = Nothing
-                Me.State.HasDataChanged = False
-                Me.SaveGuiState()
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                State.SelectedEquipmentId = Guid.Empty
+                State.IsGridVisible = True
+                State.SearchDV = Nothing
+                State.HasDataChanged = False
+                SaveGuiState()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+        Protected Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
             Try
-                Me.callPage(EquipmentForm.URL)
+                callPage(EquipmentForm.URL)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+        Protected Sub btnClearSearch_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
             Try
-                Me.moModelText.Text = ""
-                Me.moDescriptionText.Text = ""
-                Me.moManufacturerDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
-                Me.moEquipmentClassDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
-                Me.moEquipmentTypeDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
-                Me.txtSKU.Text = ""
+                moModelText.Text = ""
+                moDescriptionText.Text = ""
+                moManufacturerDrop.SelectedIndex = BLANK_ITEM_SELECTED
+                moEquipmentClassDrop.SelectedIndex = BLANK_ITEM_SELECTED
+                moEquipmentTypeDrop.SelectedIndex = BLANK_ITEM_SELECTED
+                txtSKU.Text = ""
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -471,11 +471,11 @@ Namespace Tables
         Private Sub btnback_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnback_WRITE.Click
             Try
                 Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, False, Nothing, String.Empty)
-                Me.NavController.Navigate(Me, "back", retObj)
+                NavController.Navigate(Me, "back", retObj)
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 

@@ -14,7 +14,7 @@ Partial Class ExchangeRateListForm
 
         End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -74,60 +74,60 @@ Partial Class ExchangeRateListForm
         End Get
     End Property
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
-            If Me.State.searchDV Is Nothing Then
-                Me.State.IsGridVisible = False
+            MenuEnabled = True
+            IsReturningFromChild = True
+            If State.searchDV Is Nothing Then
+                State.IsGridVisible = False
             Else
-                Me.State.IsGridVisible = True
+                State.IsGridVisible = True
             End If
             Dim retObj As ExchangeRateForm.ReturnType = CType(ReturnPar, ExchangeRateForm.ReturnType)
-            Me.State.HasDataChanged = retObj.HasDataChanged
+            State.HasDataChanged = retObj.HasDataChanged
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
+                    If retObj IsNot Nothing Then
                             'If Not retObj.EditingBo.IsNew Then
-                            Me.State.SelectedCurencyConversionId = retObj.EditingBo.Id
+                            State.SelectedCurencyConversionId = retObj.EditingBo.Id
                             '    End If
-                            Me.State.IsGridVisible = True
+                            State.IsGridVisible = True
                             PopulateDealerDropDown()
                         End If
                     Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                        AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
                 End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 #End Region
 
 #Region "Page_Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             ClearErrLabels()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.AddCalendar(Me.btnFromDate, Me.txtFromDate)
-                    Me.AddCalendar(Me.btnToDate, Me.txtToDate)
+                    AddCalendar(btnFromDate, txtFromDate)
+                    AddCalendar(btnToDate, txtToDate)
                     PopulateDealerDropDown()
-                    If Me.State.IsGridVisible Then
-                        If Not (Me.State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
-                            cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                            Grid.PageSize = Me.State.selectedPageSize
+                    If State.IsGridVisible Then
+                        If Not (State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
+                            cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                            Grid.PageSize = State.selectedPageSize
                         End If
-                        Me.PopulateGrid()
+                        PopulateGrid()
                     End If
-                    Me.SetGridItemStyleColor(Me.Grid)
+                    SetGridItemStyleColor(Grid)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
     End Sub
 #End Region
 
@@ -149,67 +149,67 @@ Partial Class ExchangeRateListForm
             TheDealerControl.Caption = "* " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_DEALERCODE)
             TheDealerControl.NothingSelected = True
             TheDealerControl.BindData(oDataView)
-            TheDealerControl.SelectedGuid = Me.State.SelectedDealerId
+            TheDealerControl.SelectedGuid = State.SelectedDealerId
             TheDealerControl.AutoPostBackDD = True
         End Sub
 
     Public Sub PopulateGrid()
 
-            If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-                Me.State.SelectedDealerId = TheDealerControl.SelectedGuid
-                Me.State.searchDV = Me.State.MyBO.GetList(Me.State.SelectedDealerId, Me.State.FromDateMask, Me.State.TomDateMask)
+            If ((State.searchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+                State.SelectedDealerId = TheDealerControl.SelectedGuid
+                State.searchDV = State.MyBO.GetList(State.SelectedDealerId, State.FromDateMask, State.TomDateMask)
             End If
 
             ' If Me.State.searchDV.Count = 0 Then Exit Sub
 
-            Me.State.searchDV.Sort = Me.State.SortExpression
-            Me.Grid.AutoGenerateColumns = False
+            State.searchDV.Sort = State.SortExpression
+            Grid.AutoGenerateColumns = False
             'Me.Grid.Columns(Me.GRID_COL_DEALER_CODE_IDX).SortExpression = CurrencyConversion.CurrencyRateDV.COL_DEALER_CODE
             'Me.Grid.Columns(Me.GRID_COL_DEALER_NAME_IDX).SortExpression = CurrencyConversion.CurrencyRateDV.COL_DEALER_NAME
-            Me.Grid.Columns(Me.GRID_COL_EFFECTIVE_IDX).SortExpression = CurrencyConversion.CurrencyRateDV.COL_EFFECTIVE
+            Grid.Columns(GRID_COL_EFFECTIVE_IDX).SortExpression = CurrencyConversion.CurrencyRateDV.COL_EFFECTIVE
             ' Me.Grid.Columns(Me.GRID_COL_CURRENCY_CONVERSION_ID_IDX) = GetGuidStringFromByteArray(CType(dvRow(CurrencyConversion.CurrencyRateDV.COL_NAME_CURRENCY_CONVERSION_ID), Byte()))
 
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.SelectedCurencyConversionId, Me.Grid, Me.State.PageIndex)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.SelectedCurencyConversionId, Grid, State.PageIndex)
 
-            Me.SortAndBindGrid()
+            SortAndBindGrid()
 
     End Sub
 
     Private Sub SortAndBindGrid()
-        Me.State.PageIndex = Me.Grid.CurrentPageIndex
-        Me.Grid.DataSource = Me.State.searchDV
-        HighLightSortColumn(Grid, Me.State.SortExpression)
-        Me.Grid.DataBind()
+        State.PageIndex = Grid.CurrentPageIndex
+        Grid.DataSource = State.searchDV
+        HighLightSortColumn(Grid, State.SortExpression)
+        Grid.DataBind()
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
-        If Me.State.searchDV.Count > 0 Then
+        If State.searchDV.Count > 0 Then
 
-            If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         Else
-            If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
     End Sub
 
 
     'This method will change the Page Index and the Selected Index
-    Public Function FindDVSelectedRowIndex(ByVal dv As CurrencyConversion.CurrencyRateDV) As Integer
+    Public Function FindDVSelectedRowIndex(dv As CurrencyConversion.CurrencyRateDV) As Integer
         Try
-            If Me.State.SelectedCurencyConversionId.Equals(Guid.Empty) Then
+            If State.SelectedCurencyConversionId.Equals(Guid.Empty) Then
                 Return -1
             Else
                 'Jump to the Right Page
                 Dim i As Integer
                 For i = 0 To dv.Count - 1
-                    If New Guid(CType(dv(i)(CurrencyConversion.CurrencyRateDV.COL_NAME_CURRENCY_CONVERSION_ID), Byte())).Equals(Me.State.SelectedCurencyConversionId) Then
+                    If New Guid(CType(dv(i)(CurrencyConversion.CurrencyRateDV.COL_NAME_CURRENCY_CONVERSION_ID), Byte())).Equals(State.SelectedCurencyConversionId) Then
                         Return i
                     End If
                 Next
@@ -227,87 +227,87 @@ Partial Class ExchangeRateListForm
 #Region " Datagrid Related "
 
     'The Binding LOgic is here
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
         Try
             If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                e.Item.Cells(Me.GRID_COL_CURRENCY_CONVERSION_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(CurrencyConversion.CurrencyRateDV.COL_NAME_CURRENCY_CONVERSION_ID), Byte()))
-                e.Item.Cells(Me.GRID_COL_DEALER_CODE_IDX).Text = dvRow(CurrencyConversion.CurrencyRateDV.COL_DEALER_CODE).ToString
-                e.Item.Cells(Me.GRID_COL_DEALER_NAME_IDX).Text = dvRow(CurrencyConversion.CurrencyRateDV.COL_DEALER_NAME).ToString
-                    e.Item.Cells(Me.GRID_COL_EFFECTIVE_IDX).Text = Me.GetDateFormattedString(DateHelper.GetDateValue(dvRow(CurrencyConversion.CurrencyRateDV.COL_EFFECTIVE).ToString()))
+                e.Item.Cells(GRID_COL_CURRENCY_CONVERSION_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(CurrencyConversion.CurrencyRateDV.COL_NAME_CURRENCY_CONVERSION_ID), Byte()))
+                e.Item.Cells(GRID_COL_DEALER_CODE_IDX).Text = dvRow(CurrencyConversion.CurrencyRateDV.COL_DEALER_CODE).ToString
+                e.Item.Cells(GRID_COL_DEALER_NAME_IDX).Text = dvRow(CurrencyConversion.CurrencyRateDV.COL_DEALER_NAME).ToString
+                    e.Item.Cells(GRID_COL_EFFECTIVE_IDX).Text = GetDateFormattedString(DateHelper.GetDateValue(dvRow(CurrencyConversion.CurrencyRateDV.COL_EFFECTIVE).ToString()))
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" Then
-                Me.State.SelectedCurencyConversionId = New Guid(e.Item.Cells(Me.GRID_COL_CURRENCY_CONVERSION_ID_IDX).Text)
-                Me.callPage(ExchangeRateForm.URL, Me.State.SelectedCurencyConversionId)
+                State.SelectedCurencyConversionId = New Guid(e.Item.Cells(GRID_COL_CURRENCY_CONVERSION_ID_IDX).Text)
+                callPage(ExchangeRateForm.URL, State.SelectedCurencyConversionId)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+    Private Sub Grid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.SelectedCurencyConversionId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.SelectedCurencyConversionId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region
 
 #Region " Button Clicks "
 
-        Private Sub btnSearch_Click1(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Private Sub btnSearch_Click1(sender As Object, e As System.EventArgs) Handles btnSearch.Click
             Try
-                Me.State.PageIndex = 0
-                Me.State.SelectedCurencyConversionId = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.searchDV = Nothing
-                Me.State.HasDataChanged = False
-                Me.State.MyBO = New CurrencyConversion
+                State.PageIndex = 0
+                State.SelectedCurencyConversionId = Guid.Empty
+                State.IsGridVisible = True
+                State.searchDV = Nothing
+                State.HasDataChanged = False
+                State.MyBO = New CurrencyConversion
 
                 If txtFromDate.Text <> "" And txtToDate.Text = "" Then
                     txtToDate = txtFromDate
@@ -323,40 +323,40 @@ Partial Class ExchangeRateListForm
                 'Dates
                 'High date must be higher than low date.
                 If txtFromDate.Text <> "" Or txtToDate.Text <> "" Then
-                    ValidateBeginEndDate(Me.lblFromDate, Me.txtFromDate.Text, Me.lblToDate, Me.txtToDate.Text)
+                    ValidateBeginEndDate(lblFromDate, txtFromDate.Text, lblToDate, txtToDate.Text)
                 End If
 
                 If txtFromDate.Text <> "" Then
-                    Me.State.FromDateMask = DateHelper.GetDateValue(Me.txtFromDate.Text).ToString(SP_DATE_FORMAT)
+                    State.FromDateMask = DateHelper.GetDateValue(txtFromDate.Text).ToString(SP_DATE_FORMAT)
                 End If
 
                 If txtToDate.Text <> "" Then
-                    Me.State.TomDateMask = DateHelper.GetDateValue(Me.txtToDate.Text).ToString(SP_DATE_FORMAT)
+                    State.TomDateMask = DateHelper.GetDateValue(txtToDate.Text).ToString(SP_DATE_FORMAT)
                 End If
 
-                Me.PopulateGrid()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
 
-        Private Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+        Private Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
             Try
-                Me.callPage(ExchangeRateForm.URL)
+                callPage(ExchangeRateForm.URL)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+        Private Sub btnClearSearch_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
             Try
                 ' Me.cboDealer.SelectedIndex = 0
-                TheDealerControl.SelectedIndex = Me.BLANK_ITEM_SELECTED
-                Me.txtFromDate.Text = String.Empty
-                Me.txtToDate.Text = String.Empty
+                TheDealerControl.SelectedIndex = BLANK_ITEM_SELECTED
+                txtFromDate.Text = String.Empty
+                txtToDate.Text = String.Empty
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -367,7 +367,7 @@ Partial Class ExchangeRateListForm
 
 #End Region
 
-    Public Shared Sub ValidateBeginEndDate(ByVal beginLbl As Label, ByVal beginDate As String, ByVal endLbl As Label, ByVal endDate As String)
+    Public Shared Sub ValidateBeginEndDate(beginLbl As Label, beginDate As String, endLbl As Label, endDate As String)
         Dim tempEndDate As Date
         Dim tempBeginDate As Date
 
@@ -383,11 +383,11 @@ Partial Class ExchangeRateListForm
     End Sub
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(Me.lblFromDate)
-            Me.ClearLabelErrSign(Me.lblToDate)
+            ClearLabelErrSign(lblFromDate)
+            ClearLabelErrSign(lblToDate)
         End Sub
 
-        Private Sub Grid_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Grid.SelectedIndexChanged
+        Private Sub Grid_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles Grid.SelectedIndexChanged
 
         End Sub
 

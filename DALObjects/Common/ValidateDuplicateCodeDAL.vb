@@ -1,8 +1,8 @@
 ﻿Imports Assurant.Common.Types
 Public Class ValidateDuplicateCodeDAL
     Inherits DALBase
-    Public Function ValidateDuplicateCode(ByVal objTypeName As String, ByVal effectivedate As DateTimeType, ByVal Code As String, ByVal iD As Guid) As DataView
-        Dim selectStmt As String = Me.Config("/SQL/" & objTypeName)
+    Public Function ValidateDuplicateCode(objTypeName As String, effectivedate As DateTimeType, Code As String, iD As Guid) As DataView
+        Dim selectStmt As String = Config("/SQL/" & objTypeName)
         Dim whereClauseConditions As String = ""
 
         Dim parameters() As OracleParameter = _

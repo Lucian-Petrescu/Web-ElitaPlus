@@ -13,8 +13,8 @@ Namespace Security
 
 #End Region
 
-        Public Sub New(ByVal oUserName As String, ByVal oPassword As String, ByVal isAuthenticated As Boolean, _
-                       ByVal authenticationType As String)
+        Public Sub New(oUserName As String, oPassword As String, isAuthenticated As Boolean, _
+                       authenticationType As String)
             MyBase.New(oUserName, authenticationType)
             Password = oPassword
             _isAuthenticated = isAuthenticated
@@ -32,7 +32,7 @@ Namespace Security
             Get
                 Return msPassword
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 msPassword = value
             End Set
         End Property

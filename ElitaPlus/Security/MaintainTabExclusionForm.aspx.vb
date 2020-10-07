@@ -41,7 +41,7 @@ Namespace Security
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -59,11 +59,11 @@ Namespace Security
                                             Request.ApplicationPath & PATH_TO_ICONS & drv("TAB_ICON_IMG").ToString)
                 newNode.PopulateOnDemand = True
                 newNode.Expanded = False
-                Me.tvFormList.Nodes.Add(newNode)
+                tvFormList.Nodes.Add(newNode)
             Next
         End Sub
 
-        Private Sub populateRolePermission(ByVal tabNode As SysWebUICtls.TreeNode)
+        Private Sub populateRolePermission(tabNode As SysWebUICtls.TreeNode)
             Dim dv As DataView = RoleAuthTabsExclusion.GetPermissionsByTabID(New Guid(tabNode.Value))
 
             Dim strTabExcluded As String
@@ -80,7 +80,7 @@ Namespace Security
             Next
         End Sub
 
-        Private Sub tvFormList_TreeNodePopulate(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.TreeNodeEventArgs) Handles tvFormList.TreeNodePopulate
+        Private Sub tvFormList_TreeNodePopulate(sender As Object, e As System.Web.UI.WebControls.TreeNodeEventArgs) Handles tvFormList.TreeNodePopulate
             Try
                 Select Case e.Node.Depth
                     Case 0
@@ -94,19 +94,19 @@ Namespace Security
 
 #Region "Handlers"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
             'Put user code to initialize the page here
-            Me.ErrControllerMaster.Clear_Hide()
+            ErrControllerMaster.Clear_Hide()
             'Put user code to initialize the page here
             If Not Page.IsPostBack Then
-                Me.SetFormTab(Me.PAGETAB)
-                Me.SetFormTitle(Me.PAGETITLE)
+                SetFormTab(PAGETAB)
+                SetFormTitle(PAGETITLE)
                 populateTabs()
             End If
         End Sub
 
-        Private Sub BtnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSave_WRITE.Click
+        Private Sub BtnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnSave_WRITE.Click
             Try
                 ProcessChanges()
             Catch ex As Exception
@@ -114,7 +114,7 @@ Namespace Security
             End Try
         End Sub
 
-        Private Sub BtnReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnReset.Click
+        Private Sub BtnReset_Click(sender As System.Object, e As System.EventArgs) Handles BtnReset.Click
             tvFormList.Nodes.Clear()
             populateTabs()
         End Sub
@@ -164,7 +164,7 @@ Namespace Security
             ReloadControlPermissions(changedNotes)
         End Sub
 
-        Sub ReloadControlPermissions(ByVal changedNodes As SysWebUICtls.TreeNodeCollection)
+        Sub ReloadControlPermissions(changedNodes As SysWebUICtls.TreeNodeCollection)
             For Each tabNode As SysWebUICtls.TreeNode In tvFormList.Nodes
                 If IsFormPermissionChanged(changedNodes, tabNode) Then
                     tabNode.ChildNodes.Clear()
@@ -173,7 +173,7 @@ Namespace Security
             Next
         End Sub
 
-        Function IsFormPermissionChanged(ByVal changedNodes As SysWebUICtls.TreeNodeCollection, ByVal tabNode As SysWebUICtls.TreeNode) As Boolean
+        Function IsFormPermissionChanged(changedNodes As SysWebUICtls.TreeNodeCollection, tabNode As SysWebUICtls.TreeNode) As Boolean
             Dim blnChanged As Boolean = False
             For Each objNode As TreeNode In changedNodes
                 If objNode.Value = tabNode.Value Then

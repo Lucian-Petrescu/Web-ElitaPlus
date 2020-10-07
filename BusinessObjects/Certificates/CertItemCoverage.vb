@@ -16,15 +16,15 @@ Public Class CertItemCoverage
             Get
                 Return m_expressionId
             End Get
-            Set(ByVal value As Nullable(Of Guid))
+            Set
                 m_expressionId = value
             End Set
         End Property
 
         Public ReadOnly Property DeductibleAmount As DecimalType
             Get
-                If (Me.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__FIXED) Then
-                    Return Me.Deductible
+                If (DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__FIXED) Then
+                    Return Deductible
                 Else
                     Return New DecimalType(0D)
                 End If
@@ -33,10 +33,10 @@ Public Class CertItemCoverage
 
         Public ReadOnly Property DeductiblePercentage As DecimalType
             Get
-                If (Me.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__FIXED) Then
+                If (DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__FIXED) Then
                     Return New DecimalType(0D)
                 Else
-                    Return Me.Deductible
+                    Return Deductible
                 End If
             End Get
         End Property
@@ -45,9 +45,9 @@ Public Class CertItemCoverage
             Get
                 Return m_deductibleBasedOnId
             End Get
-            Set(ByVal value As Guid)
+            Set
                 m_deductibleBasedOnId = value
-                m_deductibleBasedOn = LookupListNew.GetCodeFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, Me.DeductibleBasedOnId)
+                m_deductibleBasedOn = LookupListNew.GetCodeFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, DeductibleBasedOnId)
             End Set
         End Property
 
@@ -65,7 +65,7 @@ Public Class CertItemCoverage
                     Return m_deductible
                 End If
             End Get
-            Set(ByVal value As DecimalType)
+            Set
                 m_deductible = value
             End Set
         End Property
@@ -75,54 +75,54 @@ Public Class CertItemCoverage
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
-    Public Sub New(ByVal CertEndorseBO As CertEndorse)
+    Public Sub New(CertEndorseBO As CertEndorse)
         MyBase.New(False)
-        Me.Dataset = CertEndorseBO.Dataset
-        Me.Load()
+        Dataset = CertEndorseBO.Dataset
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CertItemCoverageDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -130,23 +130,23 @@ Public Class CertItemCoverage
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CertItemCoverageDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -164,7 +164,7 @@ Public Class CertItemCoverage
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CertItemCoverageDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -175,7 +175,7 @@ Public Class CertItemCoverage
     End Property
 
     <ValueMandatory("")> _
-    Public Property CertItemId() As Guid
+    Public Property CertItemId As Guid
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_CERT_ITEM_ID) Is DBNull.Value Then
@@ -184,14 +184,14 @@ Public Class CertItemCoverage
                 Return New Guid(CType(Row(CertItemCoverageDAL.COL_NAME_CERT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_CERT_ITEM_ID, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_CERT_ITEM_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DeductibleBasedOnId() As Guid
+    Public Property DeductibleBasedOnId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID) Is DBNull.Value Then
@@ -200,14 +200,14 @@ Public Class CertItemCoverage
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID, value)
+            SetValue(ContractDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID, value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-        Public Property CertId() As Guid
+        Public Property CertId As Guid
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_CERT_ID) Is DBNull.Value Then
@@ -216,14 +216,14 @@ Public Class CertItemCoverage
                 Return New Guid(CType(Row(CertItemCoverageDAL.COL_NAME_CERT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_CERT_ID, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_CERT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -232,30 +232,30 @@ Public Class CertItemCoverage
                 Return New Guid(CType(Row(CertItemCoverageDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property CoverageTypeCode() As String
+    Public ReadOnly Property CoverageTypeCode As String
         Get
-            Return LookupListNew.GetCodeFromId(LookupListNew.LK_COVERAGE_TYPES, Me.CoverageTypeId)
+            Return LookupListNew.GetCodeFromId(LookupListNew.LK_COVERAGE_TYPES, CoverageTypeId)
         End Get
     End Property
 
-    Public Property ModifiedById() As String
+    Public Property ModifiedById As String
         Get
             If Row(DALBase.COL_NAME_MODIFIED_BY) Is DBNull.Value Then Return Nothing
             Return CType(Row(DALBase.COL_NAME_MODIFIED_BY), String)
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_MODIFIED_BY, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_MODIFIED_BY, Value)
         End Set
     End Property
 
-    Public Property OriginalRegionId() As Guid
+    Public Property OriginalRegionId As Guid
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_ORIGINAL_REGION_ID) Is DBNull.Value Then
@@ -264,15 +264,15 @@ Public Class CertItemCoverage
                 Return New Guid(CType(Row(CertItemCoverageDAL.COL_NAME_ORIGINAL_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_ORIGINAL_REGION_ID, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_ORIGINAL_REGION_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidCoverageDates("")> _
-    Public Property BeginDate() As DateType
+    Public Property BeginDate As DateType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_BEGIN_DATE) Is DBNull.Value Then
@@ -281,15 +281,15 @@ Public Class CertItemCoverage
                 Return New DateType(CType(Row(CertItemCoverageDAL.COL_NAME_BEGIN_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_BEGIN_DATE, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_BEGIN_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property EndDate() As DateType
+    Public Property EndDate As DateType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_END_DATE) Is DBNull.Value Then
@@ -298,15 +298,15 @@ Public Class CertItemCoverage
                 Return New DateType(CType(Row(CertItemCoverageDAL.COL_NAME_END_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_END_DATE, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_END_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property LiabilityLimits() As DecimalType
+    Public Property LiabilityLimits As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_LIABILITY_LIMITS) Is DBNull.Value Then
@@ -315,15 +315,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_LIABILITY_LIMITS), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_LIABILITY_LIMITS, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_LIABILITY_LIMITS, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Deductible() As DecimalType
+    Public Property Deductible As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_DEDUCTIBLE) Is DBNull.Value Then
@@ -332,13 +332,13 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_DEDUCTIBLE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_DEDUCTIBLE, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_DEDUCTIBLE, Value)
         End Set
     End Property
 
-    Public Property DeductiblePercent() As DecimalType
+    Public Property DeductiblePercent As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_DEDUCTIBLE_PERCENT) Is DBNull.Value Then
@@ -347,14 +347,14 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_DEDUCTIBLE_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_DEDUCTIBLE_PERCENT, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_DEDUCTIBLE_PERCENT, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property GrossAmtReceived() As DecimalType
+    Public Property GrossAmtReceived As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_GROSS_AMT_RECEIVED) Is DBNull.Value Then
@@ -363,15 +363,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_GROSS_AMT_RECEIVED), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_GROSS_AMT_RECEIVED, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_GROSS_AMT_RECEIVED, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property PremiumWritten() As DecimalType
+    Public Property PremiumWritten As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_PREMIUM_WRITTEN) Is DBNull.Value Then
@@ -380,15 +380,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_PREMIUM_WRITTEN), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_PREMIUM_WRITTEN, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_PREMIUM_WRITTEN, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property OriginalPremium() As DecimalType
+    Public Property OriginalPremium As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_ORIGINAL_PREMIUM) Is DBNull.Value Then
@@ -397,15 +397,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_ORIGINAL_PREMIUM), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_ORIGINAL_PREMIUM, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_ORIGINAL_PREMIUM, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property LossCost() As DecimalType
+    Public Property LossCost As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_LOSS_COST) Is DBNull.Value Then
@@ -414,15 +414,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_LOSS_COST), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_LOSS_COST, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_LOSS_COST, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Commission() As DecimalType
+    Public Property Commission As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_COMMISSION) Is DBNull.Value Then
@@ -431,15 +431,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_COMMISSION), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_COMMISSION, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_COMMISSION, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property AdminExpense() As DecimalType
+    Public Property AdminExpense As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_ADMIN_EXPENSE) Is DBNull.Value Then
@@ -448,15 +448,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_ADMIN_EXPENSE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_ADMIN_EXPENSE, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_ADMIN_EXPENSE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property MarketingExpense() As DecimalType
+    Public Property MarketingExpense As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_MARKETING_EXPENSE) Is DBNull.Value Then
@@ -465,15 +465,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_MARKETING_EXPENSE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_MARKETING_EXPENSE, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_MARKETING_EXPENSE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Other() As DecimalType
+    Public Property Other As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_OTHER) Is DBNull.Value Then
@@ -482,15 +482,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_OTHER), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_OTHER, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_OTHER, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property SalesTax() As DecimalType
+    Public Property SalesTax As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_SALES_TAX) Is DBNull.Value Then
@@ -499,15 +499,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_SALES_TAX), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_SALES_TAX, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_SALES_TAX, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Tax1() As DecimalType
+    Public Property Tax1 As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_TAX1) Is DBNull.Value Then
@@ -516,15 +516,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_TAX1), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_TAX1, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_TAX1, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Tax2() As DecimalType
+    Public Property Tax2 As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_TAX2) Is DBNull.Value Then
@@ -533,15 +533,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_TAX2), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_TAX2, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_TAX2, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Tax3() As DecimalType
+    Public Property Tax3 As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_TAX3) Is DBNull.Value Then
@@ -550,15 +550,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_TAX3), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_TAX3, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_TAX3, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Tax4() As DecimalType
+    Public Property Tax4 As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_TAX4) Is DBNull.Value Then
@@ -567,15 +567,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_TAX4), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_TAX4, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_TAX4, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Tax5() As DecimalType
+    Public Property Tax5 As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_TAX5) Is DBNull.Value Then
@@ -584,15 +584,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_TAX5), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_TAX5, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_TAX5, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Tax6() As DecimalType
+    Public Property Tax6 As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_TAX6) Is DBNull.Value Then
@@ -601,15 +601,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_TAX6), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_TAX6, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_TAX6, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property MtdPayments() As DecimalType
+    Public Property MtdPayments As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_MTD_PAYMENTS) Is DBNull.Value Then
@@ -618,15 +618,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_MTD_PAYMENTS), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_MTD_PAYMENTS, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_MTD_PAYMENTS, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property YtdPayments() As DecimalType
+    Public Property YtdPayments As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_YTD_PAYMENTS) Is DBNull.Value Then
@@ -635,15 +635,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_YTD_PAYMENTS), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_YTD_PAYMENTS, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_YTD_PAYMENTS, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property AssurantGwp() As DecimalType
+    Public Property AssurantGwp As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_ASSURANT_GWP) Is DBNull.Value Then
@@ -652,15 +652,15 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_ASSURANT_GWP), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_ASSURANT_GWP, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_ASSURANT_GWP, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property MarkupCommission() As DecimalType
+    Public Property MarkupCommission As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_MARKUP_COMMISSION) Is DBNull.Value Then
@@ -669,13 +669,13 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_MARKUP_COMMISSION), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_MARKUP_COMMISSION, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_MARKUP_COMMISSION, Value)
         End Set
     End Property
 
-    Public Property DealerDiscountAmt() As DecimalType
+    Public Property DealerDiscountAmt As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_DEALER_DISCOUNT_AMT) Is DBNull.Value Then
@@ -684,13 +684,13 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_DEALER_DISCOUNT_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_DEALER_DISCOUNT_AMT, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_DEALER_DISCOUNT_AMT, Value)
         End Set
     End Property
 
-    Public Property DealerDiscountPercent() As DecimalType
+    Public Property DealerDiscountPercent As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_DEALER_DISCOUNT_PERCENT) Is DBNull.Value Then
@@ -699,13 +699,13 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_DEALER_DISCOUNT_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_DEALER_DISCOUNT_PERCENT, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_DEALER_DISCOUNT_PERCENT, Value)
         End Set
     End Property
 
-    Public Property IsClaimAllowed() As Guid
+    Public Property IsClaimAllowed As Guid
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_IS_CLAIM_ALLOWED) Is DBNull.Value Then
@@ -714,13 +714,13 @@ Public Class CertItemCoverage
                 Return New Guid(CType(Row(CertItemCoverageDAL.COL_NAME_IS_CLAIM_ALLOWED), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_IS_CLAIM_ALLOWED, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_IS_CLAIM_ALLOWED, Value)
         End Set
     End Property
 
-    Public Property IsDiscount() As Guid
+    Public Property IsDiscount As Guid
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_IS_DISCOUNT) Is DBNull.Value Then
@@ -729,14 +729,14 @@ Public Class CertItemCoverage
                 Return New Guid(CType(Row(CertItemCoverageDAL.COL_NAME_IS_DISCOUNT), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_IS_DISCOUNT, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_IS_DISCOUNT, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-      Public Property CompanyId() As Guid
+      Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -745,13 +745,13 @@ Public Class CertItemCoverage
                 Return New Guid(CType(Row(CertItemCoverageDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
     <ValidNumericRange("", Max:=9999)> _
-    Public Property RepairDiscountPct() As LongType
+    Public Property RepairDiscountPct As LongType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_REPAIR_DISCOUNT_PCT) Is DBNull.Value Then
@@ -760,14 +760,14 @@ Public Class CertItemCoverage
                 Return New LongType(CType(Row(CertItemCoverageDAL.COL_NAME_REPAIR_DISCOUNT_PCT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_REPAIR_DISCOUNT_PCT, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_REPAIR_DISCOUNT_PCT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=9999)> _
-    Public Property ReplacementDiscountPct() As LongType
+    Public Property ReplacementDiscountPct As LongType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_REPLACEMENT_DISCOUNT_PCT) Is DBNull.Value Then
@@ -776,13 +776,13 @@ Public Class CertItemCoverage
                 Return New LongType(CType(Row(CertItemCoverageDAL.COL_NAME_REPLACEMENT_DISCOUNT_PCT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_REPLACEMENT_DISCOUNT_PCT, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_REPLACEMENT_DISCOUNT_PCT, Value)
         End Set
     End Property
 
-    Public Property MarkupCommissionVat() As DecimalType
+    Public Property MarkupCommissionVat As DecimalType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_MARKUP_COMMISSION_VAT) Is DBNull.Value Then
@@ -791,13 +791,13 @@ Public Class CertItemCoverage
                 Return New DecimalType(CType(Row(CertItemCoverageDAL.COL_NAME_MARKUP_COMMISSION_VAT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_MARKUP_COMMISSION_VAT, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_MARKUP_COMMISSION_VAT, Value)
         End Set
     End Property
 
-    Public Property MethodOfRepairId() As Guid
+    Public Property MethodOfRepairId As Guid
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_METHOD_OF_REPAIR_ID) Is DBNull.Value Then
@@ -806,12 +806,12 @@ Public Class CertItemCoverage
                 Return New Guid(CType(Row(CertItemCoverageDAL.COL_NAME_METHOD_OF_REPAIR_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
         End Set
     End Property
-    Public Property CoverageRemainLiabilityLimit() As String
+    Public Property CoverageRemainLiabilityLimit As String
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_COVERAGE_REMAIN_LIABILITY_LIMIT) Is DBNull.Value Then
@@ -820,12 +820,12 @@ Public Class CertItemCoverage
                 Return New String(CType(Row(CertItemCoverageDAL.COL_NAME_COVERAGE_REMAIN_LIABILITY_LIMIT), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
         End Set
     End Property
-    Public Property CoverageLiabilityLimit() As String
+    Public Property CoverageLiabilityLimit As String
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_COVERAGE_LIABILITY_LIMIT) Is DBNull.Value Then
@@ -834,14 +834,14 @@ Public Class CertItemCoverage
                 Return New String(CType(Row(CertItemCoverageDAL.COL_NAME_COVERAGE_LIABILITY_LIMIT), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=999)> _
-    Public Property CoverageDuration() As LongType
+    Public Property CoverageDuration As LongType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_COVERAGE_DURATION) Is DBNull.Value Then
@@ -850,14 +850,14 @@ Public Class CertItemCoverage
                 Return New LongType(CType(Row(CertItemCoverageDAL.COL_NAME_COVERAGE_DURATION), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_COVERAGE_DURATION, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_COVERAGE_DURATION, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=999)> _
-    Public Property NoOfRenewals() As LongType
+    Public Property NoOfRenewals As LongType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_NO_OF_RENEWALS) Is DBNull.Value Then
@@ -866,13 +866,13 @@ Public Class CertItemCoverage
                 Return New LongType(CType(Row(CertItemCoverageDAL.COL_NAME_NO_OF_RENEWALS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_NO_OF_RENEWALS, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_NO_OF_RENEWALS, Value)
         End Set
     End Property
 
-    Public Property RenewalDate() As DateType
+    Public Property RenewalDate As DateType
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_RENEWAL_DATE) Is DBNull.Value Then
@@ -881,16 +881,16 @@ Public Class CertItemCoverage
                 Return New DateType(CType(Row(CertItemCoverageDAL.COL_NAME_RENEWAL_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_RENEWAL_DATE, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_RENEWAL_DATE, Value)
         End Set
     End Property
 
     Public ReadOnly Property IsCoverageEffective As Boolean
         Get
-            If (Not Me.BeginDate Is Nothing AndAlso Not Me.EndDate Is Nothing) Then
-                If Date.Today >= Me.BeginDate.Value AndAlso Date.Today <= Me.EndDate.Value Then
+            If (Not BeginDate Is Nothing AndAlso Not EndDate Is Nothing) Then
+                If Date.Today >= BeginDate.Value AndAlso Date.Today <= EndDate.Value Then
                     Return True
                 Else
                     Return False
@@ -902,7 +902,7 @@ Public Class CertItemCoverage
     End Property
 
     '5623
-    Public Function IsCoverageEffectiveForGracePeriod(ByVal ReportedDate As DateType) As Boolean
+    Public Function IsCoverageEffectiveForGracePeriod(ReportedDate As DateType) As Boolean
 
         Dim oDealer As New Dealer(Certificate.DealerId)
         Dim ClaimBO As Claim = ClaimFacade.Instance.CreateClaim(Of Claim)()
@@ -911,9 +911,9 @@ Public Class CertItemCoverage
         Dim gracePeriodMonths As Integer = If(oDealer.GracePeriodMonths, 0)
 
         Dim dtGracePeriodEndDate As Date = EndDate.Value.AddMonths(gracePeriodMonths).AddDays(gracePeriodDays)
-        If (Not Me.BeginDate Is Nothing AndAlso Not Me.EndDate Is Nothing) Then
+        If (Not BeginDate Is Nothing AndAlso Not EndDate Is Nothing) Then
 
-            If ReportedDate >= Me.BeginDate.Value AndAlso ReportedDate <= dtGracePeriodEndDate Then
+            If ReportedDate >= BeginDate.Value AndAlso ReportedDate <= dtGracePeriodEndDate Then
                 Return True
             Else
                 Return False
@@ -921,7 +921,7 @@ Public Class CertItemCoverage
         End If
     End Function
 
-    Public ReadOnly Property ReinsuranceStatusId() As Guid
+    Public ReadOnly Property ReinsuranceStatusId As Guid
         Get
             If Row(CertItemCoverageDAL.COL_NAME_REINSURANCE_STATUS_ID) Is DBNull.Value Then
                 Return Nothing
@@ -931,7 +931,7 @@ Public Class CertItemCoverage
         End Get
     End Property
 
-    Public ReadOnly Property ReinsuranceRejectReason() As String
+    Public ReadOnly Property ReinsuranceRejectReason As String
         Get
             If Row(CertItemCoverageDAL.COL_NAME_REINSURANCE_REJECT_REASON) Is DBNull.Value Then
                 Return Nothing
@@ -941,7 +941,7 @@ Public Class CertItemCoverage
         End Get
     End Property
 
-    Public Property DeductibleExpressionId() As Guid
+    Public Property DeductibleExpressionId As Guid
         Get
             CheckDeleted()
             If Row(CertItemCoverageDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID) Is DBNull.Value Then
@@ -950,12 +950,12 @@ Public Class CertItemCoverage
                 Return New Guid(CType(Row(CertItemCoverageDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertItemCoverageDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID, Value)
+            SetValue(CertItemCoverageDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID, Value)
         End Set
     End Property
-    Public ReadOnly Property FulfillmentProfileCode() As String
+    Public ReadOnly Property FulfillmentProfileCode As String
         Get
             If Row(CertItemCoverageDAL.COL_NAME_FULFILLMENT_PROFILE_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -972,15 +972,15 @@ Public Class CertItemCoverage
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CertItemCoverageDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -1003,7 +1003,7 @@ Public Class CertItemCoverage
     '    End Try
     'End Function
 
-    Public Shared Function GetClaims(ByVal certItemCoverageId As Guid) As DataView
+    Public Shared Function GetClaims(certItemCoverageId As Guid) As DataView
         Try
             Dim dal As New CertItemCoverageDAL
             Dim ds As New DataSet
@@ -1016,7 +1016,7 @@ Public Class CertItemCoverage
         End Try
     End Function
 
-    Public Shared Function GetAllClaims(ByVal certItemCoverageId As Guid) As DataView
+    Public Shared Function GetAllClaims(certItemCoverageId As Guid) As DataView
         Try
             Dim dal As New CertItemCoverageDAL
             Dim ds As New DataSet
@@ -1029,7 +1029,7 @@ Public Class CertItemCoverage
         End Try
     End Function
 
-    Public Shared Function GetItemCoverages(ByVal certId As Guid) As CertItemCoverageSearchDV
+    Public Shared Function GetItemCoverages(certId As Guid) As CertItemCoverageSearchDV
         Try
             Dim dal As New CertItemCoverageDAL
             Dim ds As DataSet
@@ -1042,7 +1042,7 @@ Public Class CertItemCoverage
         End Try
     End Function
 
-    Public Shared Function GetItemCoveragesWithProdSplitWarr(ByVal certId As Guid) As CertItemCoverageSearchDV
+    Public Shared Function GetItemCoveragesWithProdSplitWarr(certId As Guid) As CertItemCoverageSearchDV
         Try
             Dim dal As New CertItemCoverageDAL
             Dim ds As DataSet
@@ -1054,7 +1054,7 @@ Public Class CertItemCoverage
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetEligibleCoverages(ByVal certId As Guid, ByVal dateOfLoss As Date) As CertItemCoverageSearchDV
+    Public Shared Function GetEligibleCoverages(certId As Guid, dateOfLoss As Date) As CertItemCoverageSearchDV
         Try
             Dim dal As New CertItemCoverageDAL
             Dim ds As DataSet
@@ -1067,7 +1067,7 @@ Public Class CertItemCoverage
         End Try
     End Function
 
-    Public Shared Function GetMainItemCoverages(ByVal certId As Guid) As CertItemCoverageSearchDV
+    Public Shared Function GetMainItemCoverages(certId As Guid) As CertItemCoverageSearchDV
         Try
             Dim dal As New CertItemCoverageDAL
             Dim ds As DataSet
@@ -1080,7 +1080,7 @@ Public Class CertItemCoverage
         End Try
     End Function
 
-    Public Shared Function GetClaimCoverageType(ByVal certId As Guid, ByVal certItemCoverageId As Guid, ByVal lossDate As Date, ByVal claimStatus As String, ByVal invoiceProcessDate As Date) As CertItemCoverageSearchDV
+    Public Shared Function GetClaimCoverageType(certId As Guid, certItemCoverageId As Guid, lossDate As Date, claimStatus As String, invoiceProcessDate As Date) As CertItemCoverageSearchDV
         Try
             Dim dal As New CertItemCoverageDAL
             Dim ds As DataSet
@@ -1093,7 +1093,7 @@ Public Class CertItemCoverage
         End Try
     End Function
 
-    Public Shared Function GetCurrentProductCodeCoverages(ByVal certId As Guid) As CertItemCoverageSearchDV
+    Public Shared Function GetCurrentProductCodeCoverages(certId As Guid) As CertItemCoverageSearchDV
         Try
             Dim dal As New CertItemCoverageDAL
             Dim ds As DataSet
@@ -1106,7 +1106,7 @@ Public Class CertItemCoverage
         End Try
     End Function
 
-    Public Shared Function GetClaimWaitingPeriod(ByVal certItemCoverageId As Guid, ByRef ignoreWaitingPeriodID As Guid) As Integer
+    Public Shared Function GetClaimWaitingPeriod(certItemCoverageId As Guid, ByRef ignoreWaitingPeriodID As Guid) As Integer
         Try
             Dim dal As New CertItemCoverageDAL
             Dim dv As New DataView
@@ -1146,7 +1146,7 @@ Public Class CertItemCoverage
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -1155,7 +1155,7 @@ Public Class CertItemCoverage
 #End Region
 
 #Region "Public Methods"
-    Public Shared Function GetDeductible(ByVal certItemCoverageId As Guid, ByVal methodOfRepairId As Guid) As DeductibleType
+    Public Shared Function GetDeductible(certItemCoverageId As Guid, methodOfRepairId As Guid) As DeductibleType
         Try
             Dim returnValue As New DeductibleType
             returnValue.DeductibleBasedOnId = LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, "FIXED")
@@ -1206,15 +1206,15 @@ Public Class CertItemCoverage
 #Region "List Methods"
     Public Class ItemCovList
         Inherits BusinessObjectListEnumerableBase(Of Certificate, CertItemCoverage)
-        Public Sub New(ByVal parent As Certificate)
+        Public Sub New(parent As Certificate)
             MyBase.New(parent.Dataset.Tables(CertItemCoverageDAL.TABLE_NAME), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return True
         End Function
     End Class
-    Public Shared Function GetItemCovListForCertificate(ByVal certId As Guid, ByVal parent As BusinessObjectBase) As ItemCovList
+    Public Shared Function GetItemCovListForCertificate(certId As Guid, parent As BusinessObjectBase) As ItemCovList
         If parent.Dataset.Tables.IndexOf(CertItemCoverageDAL.TABLE_NAME) < 0 Then
             Dim dal As New CertItemCoverageDAL
             dal.LoadAllItemCoveragesForCertificate(certId, parent.Dataset)
@@ -1222,7 +1222,7 @@ Public Class CertItemCoverage
         Return New ItemCovList(parent)
     End Function
 
-    Public Shared Function GetItemCovListWithChildOrParentForCertificate(ByVal certId As Guid, ByVal parent As BusinessObjectBase) As ItemCovList
+    Public Shared Function GetItemCovListWithChildOrParentForCertificate(certId As Guid, parent As BusinessObjectBase) As ItemCovList
         If parent.Dataset.Tables.IndexOf(CertItemCoverageDAL.TABLE_NAME) < 0 Then
             Dim dal As New CertItemCoverageDAL
             dal.LoadAllItemCoveragesWithChildOrParentForCertificate(certId, parent.Dataset)
@@ -1231,19 +1231,19 @@ Public Class CertItemCoverage
     End Function
 
 
-    Public Shared Function LoadAllItemCoveragesForGalaxyCertificate(ByVal certId As Guid) As DataSet
+    Public Shared Function LoadAllItemCoveragesForGalaxyCertificate(certId As Guid) As DataSet
         Dim compId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
         Dim dal As New CertItemCoverageDAL
         Return dal.LoadAllItemCoveragesForGalaxyCertificate(certId, compId)
     End Function
 
-    Public Shared Function LoadAllItemCoveragesForGalaxyClaim(ByVal certId As Guid) As DataSet
+    Public Shared Function LoadAllItemCoveragesForGalaxyClaim(certId As Guid) As DataSet
         Dim compId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
         Dim dal As New CertItemCoverageDAL
         Return dal.LoadAllItemCoveragesForGalaxyClaim(certId, compId)
     End Function
 
-    Public Shared Function LoadAllItemCoveragesForGalaxyClaimUpdate(ByVal masterClaimNumber As String) As DataSet
+    Public Shared Function LoadAllItemCoveragesForGalaxyClaimUpdate(masterClaimNumber As String) As DataSet
         Dim compId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
         Dim dal As New CertItemCoverageDAL
         Return dal.LoadAllItemCoveragesForGalaxyClaimUpdate(masterClaimNumber, compId)
@@ -1257,11 +1257,11 @@ Public Class CertItemCoverage
     Public NotInheritable Class ValidCoverageDates
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_BEGIN_END_DATE_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CertItemCoverage = CType(objectToValidate, CertItemCoverage)
             If Not (obj.BeginDate Is Nothing Or obj.EndDate Is Nothing) Then
                 If obj.BeginDate.Value > obj.EndDate.Value Then
@@ -1283,20 +1283,20 @@ Public Class CertItemCoverage
     Public Property Dealer As Dealer
         Get
             If (_dealer Is Nothing) Then
-                If Not Me.Certificate Is Nothing Then
-                    Me.Dealer = New Dealer(Me.Certificate.DealerId, Me.Dataset)
-                ElseIf Not Me.CertificateItem Is Nothing Then
-                    Me.Certificate = New Certificate(Me.CertificateItem.CertId, Me.Dataset)
-                    Me.Dealer = New Dealer(Me.Certificate.DealerId, Me.Dataset)
+                If Not Certificate Is Nothing Then
+                    Me.Dealer = New Dealer(Certificate.DealerId, Dataset)
+                ElseIf Not CertificateItem Is Nothing Then
+                    Certificate = New Certificate(CertificateItem.CertId, Dataset)
+                    Me.Dealer = New Dealer(Certificate.DealerId, Dataset)
                 Else
-                    Me.CertificateItem = New CertItem(Me.CertItemId, Me.Dataset)
-                    Me.Certificate = New Certificate(Me.CertificateItem.CertId, Me.Dataset)
-                    Me.Dealer = New Dealer(Me.Certificate.DealerId, Me.Dataset)
+                    CertificateItem = New CertItem(CertItemId, Dataset)
+                    Certificate = New Certificate(CertificateItem.CertId, Dataset)
+                    Me.Dealer = New Dealer(Certificate.DealerId, Dataset)
                 End If
             End If
             Return _dealer
         End Get
-        Private Set(ByVal value As Dealer)
+        Private Set
             _dealer = value
         End Set
     End Property
@@ -1304,32 +1304,32 @@ Public Class CertItemCoverage
     Public Property Certificate As Certificate
         Get
             If (_certificate Is Nothing) Then
-                If Not Me.CertificateItem Is Nothing Then
-                    Me.Certificate = New Certificate(Me.CertificateItem.CertId, Me.Dataset)
+                If Not CertificateItem Is Nothing Then
+                    Me.Certificate = New Certificate(CertificateItem.CertId, Dataset)
                 Else
-                    Me.CertificateItem = New CertItem(Me.CertItemId, Me.Dataset)
-                    Me.Certificate = New Certificate(Me.CertificateItem.CertId, Me.Dataset)
+                    CertificateItem = New CertItem(CertItemId, Dataset)
+                    Me.Certificate = New Certificate(CertificateItem.CertId, Dataset)
                 End If
             End If
             Return _certificate
         End Get
-        Private Set(ByVal value As Certificate)
+        Private Set
             _certificate = value
-            Me.Dealer = Nothing
+            Dealer = Nothing
         End Set
     End Property
 
     Public Property CertificateItem As CertItem
         Get
             If (_certItem Is Nothing) Then
-                Me.CertificateItem = New CertItem(Me.CertItemId, Me.Dataset)
+                Me.CertificateItem = New CertItem(CertItemId, Dataset)
             End If
             Return _certItem
         End Get
-        Private Set(ByVal value As CertItem)
+        Private Set
             _certItem = value
-            Me.Certificate = Nothing
-            Me.Dealer = Nothing
+            Certificate = Nothing
+            Dealer = Nothing
         End Set
     End Property
 #End Region
@@ -1368,7 +1368,7 @@ Public Class CertItemCoverage
         countySuperUser = ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__COUNTY_SUPERUSER)
         otherAllowedRoles = callCenterAgent OrElse callCenterSupervisor OrElse claimsRole OrElse claimsAnalyst OrElse claimSupport OrElse commentsRole OrElse csrRole OrElse csr2Role OrElse countySuperUser
 
-        oContract = Contract.GetContract(Me.Certificate.DealerId, Me.Certificate.WarrantySalesDate.Value)
+        oContract = Contract.GetContract(Certificate.DealerId, Certificate.WarrantySalesDate.Value)
         Dim oDealer As New Dealer(Certificate.DealerId)
 
         'Req-1016 - Start
@@ -1376,14 +1376,14 @@ Public Class CertItemCoverage
         Dim singlePremiumId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_PERIOD_RENEW, Codes.PERIOD_RENEW__SINGLE_PREMIUM)
         'Req-1016 - end
 
-        If Me.Certificate.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE OrElse (Me.Certificate.StatusCode <> Codes.CERTIFICATE_STATUS__ACTIVE AndAlso (claimsManager OrElse IHQSup OrElse otherAllowedRoles)) Then
+        If Certificate.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE OrElse (Certificate.StatusCode <> Codes.CERTIFICATE_STATUS__ACTIVE AndAlso (claimsManager OrElse IHQSup OrElse otherAllowedRoles)) Then
 
-            coverageType = LookupListNew.GetCodeFromId(LookupListNew.GetCoverageTypeLookupList(Authentication.LangId), Me.CoverageTypeId)
+            coverageType = LookupListNew.GetCodeFromId(LookupListNew.GetCoverageTypeLookupList(Authentication.LangId), CoverageTypeId)
 
-            If Me.Certificate.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED AndAlso oDealer.IsGracePeriodSpecified Then
+            If Certificate.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED AndAlso oDealer.IsGracePeriodSpecified Then
                 'If oDealer.IsGracePeriodSpecified Then
-                If coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER AndAlso coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER_MAIN_PARTS AndAlso Not (Me.IsCoverageEffectiveForGracePeriod(ReportedDate)) Then
-                    If Date.Today > Me.BeginDate.Value Then
+                If coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER AndAlso coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER_MAIN_PARTS AndAlso Not (IsCoverageEffectiveForGracePeriod(ReportedDate)) Then
+                    If Date.Today > BeginDate.Value Then
                         If ((Not claimsManager) And (Not officeManager) And (Not IHQSup) And (Not otherAllowedRoles)) Then
                             flag = False
                         End If
@@ -1393,8 +1393,8 @@ Public Class CertItemCoverage
                         warningMsg.Add("COVERAGE IS NOT IN EFFECT")
                     End If
                 End If
-            ElseIf coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER AndAlso coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER_MAIN_PARTS AndAlso Not (Me.IsCoverageEffective) Then
-                If Date.Today > Me.BeginDate.Value Then
+            ElseIf coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER AndAlso coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER_MAIN_PARTS AndAlso Not (IsCoverageEffective) Then
+                If Date.Today > BeginDate.Value Then
                     If ((Not claimsManager) And (Not officeManager) And (Not IHQSup) And (Not otherAllowedRoles)) Then
                         flag = False
                     End If
@@ -1410,7 +1410,7 @@ Public Class CertItemCoverage
             End If
 
             'Manufacturer missing
-            If Me.Certificate.Product.AllowRegisteredItems = Codes.EXT_YESNO_N AndAlso IsManufacturerMissing() Then
+            If Certificate.Product.AllowRegisteredItems = Codes.EXT_YESNO_N AndAlso IsManufacturerMissing() Then
                 flag = flag And False
                 errMsg.Add("MANUFACTURER NAME IS MISSING")
             End If
@@ -1421,11 +1421,11 @@ Public Class CertItemCoverage
                 errMsg.Add("zip_is_missing")
             End If
 
-            If Date.Today < Me.BeginDate.Value Then
+            If Date.Today < BeginDate.Value Then
                 flag = flag And False
             End If
 
-            If Me.Certificate.IsCompanyTypeInsurance Then
+            If Certificate.IsCompanyTypeInsurance Then
                 If IsCustomerNameMissing() OrElse IsIdentificationNumberMissing() Then
                     flag = flag And False
                     errMsg.Add("CUSTOMER_NAME_OR_TAX_ID_MISSING")
@@ -1433,9 +1433,9 @@ Public Class CertItemCoverage
             End If
 
             ' Check if Compute Deductible by List Price and SKU is Missing
-            If (Me.DeductibleBasedOnId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, "LIST"))) Then
-                If Not Me.CertificateItem.IsEquipmentRequired Then
-                    If (Len(Trim(Me.CertificateItem.SkuNumber)) = 0) Then
+            If (DeductibleBasedOnId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, "LIST"))) Then
+                If Not CertificateItem.IsEquipmentRequired Then
+                    If (Len(Trim(CertificateItem.SkuNumber)) = 0) Then
                         flag = flag And False
                         errMsg.Add("SKU_IS_REQUIRED")
                     End If
@@ -1447,10 +1447,10 @@ Public Class CertItemCoverage
             'oContract = Contract.GetCurrentContract(Me.moCertificate.DealerId)
             If Not oContract Is Nothing Then
                 Dim ignoreWaitingPeriodID As Guid
-                Dim intClaimWaitingPeriod As Integer = Me.GetClaimWaitingPeriod(Me.Id, ignoreWaitingPeriodID)
-                tempDate = Me.Certificate.WarrantySalesDate.Value
+                Dim intClaimWaitingPeriod As Integer = GetClaimWaitingPeriod(Id, ignoreWaitingPeriodID)
+                tempDate = Certificate.WarrantySalesDate.Value
                 dDate = tempDate.AddDays(intClaimWaitingPeriod)
-                If (Me.Certificate.WarrantySalesDate.Equals(Me.Certificate.ProductSalesDate)) And ignoreWaitingPeriodID.Equals(yesId) Then
+                If (Certificate.WarrantySalesDate.Equals(Certificate.ProductSalesDate)) And ignoreWaitingPeriodID.Equals(yesId) Then
                 Else
                     If dDate > System.DateTime.Now And Not claimsManager Then
                         flag = flag And False
@@ -1459,10 +1459,10 @@ Public Class CertItemCoverage
                 End If
 
                 If ((Not oContract.RecurringPremiumId.Equals(emptyGuid)) And (Not oContract.RecurringPremiumId.Equals(singlePremiumId))) Then
-                    If Not Me.Certificate.DatePaidFor Is Nothing Then
-                        susp = Date.Today.Subtract(Me.Certificate.DatePaidFor.Value).Days
+                    If Not Certificate.DatePaidFor Is Nothing Then
+                        susp = Date.Today.Subtract(Certificate.DatePaidFor.Value).Days
                     Else
-                        susp = Date.Today.Subtract(Me.Certificate.CreatedDate.Value).Days
+                        susp = Date.Today.Subtract(Certificate.CreatedDate.Value).Days
                     End If
 
                     'Check user roles
@@ -1491,7 +1491,7 @@ Public Class CertItemCoverage
         End If
 
         If coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER Then
-            If Me.Certificate.StatusCode <> Codes.CERTIFICATE_STATUS__ACTIVE Then
+            If Certificate.StatusCode <> Codes.CERTIFICATE_STATUS__ACTIVE Then
                 If (IsManufacturerMissing()) Or (IsZipMissing()) Then
                     flag = flag And False
                 ElseIf Not claimsManager AndAlso Not officeManager AndAlso Not IHQSup AndAlso Not otherAllowedRoles Then
@@ -1501,7 +1501,7 @@ Public Class CertItemCoverage
         End If
 
         If Not (IsManufacturerMissing()) AndAlso Not (IsZipMissing()) Then
-            If Date.Today > Me.BeginDate.Value AndAlso Date.Today > Me.EndDate.Value Then
+            If Date.Today > BeginDate.Value AndAlso Date.Today > EndDate.Value Then
                 If oContract Is Nothing Then
                     flag = flag And False
                     errMsg.Add(ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND)
@@ -1522,11 +1522,11 @@ Public Class CertItemCoverage
             flag = flag And False
             errMsg.Add("DEPRECIATION_SCHEDULE_NOT_DEFINED")
         End If
-        If Me.CertificateItem.ItemDescription Is Nothing AndAlso isRequiredItemDescription.Equals((New Company(Me.CompanyId)).RequireItemDescriptionId) Then
+        If CertificateItem.ItemDescription Is Nothing AndAlso isRequiredItemDescription.Equals((New Company(CompanyId)).RequireItemDescriptionId) Then
             flag = flag And False
             errMsg.Add("ITEM_DESCRIPTION_IS_MISSING")
         End If
-        If Me.CertificateItem.IsCustomerAddressRequired Then
+        If CertificateItem.IsCustomerAddressRequired Then
             flag = flag And False
             errMsg.Add("CUSTOMER_ADDRESS_REQUIRED")
         End If
@@ -1537,8 +1537,8 @@ Public Class CertItemCoverage
 
     Public Function IsManufacturerMissing() As Boolean
 
-        If Not Me.CertificateItem.IsEquipmentRequired Then
-            If Me.CertificateItem.ManufacturerId.Equals(Guid.Empty) Then
+        If Not CertificateItem.IsEquipmentRequired Then
+            If CertificateItem.ManufacturerId.Equals(Guid.Empty) Then
                 Return True
             Else
                 Return False
@@ -1550,7 +1550,7 @@ Public Class CertItemCoverage
     End Function
 
     Public Function IsCustomerNameMissing() As Boolean
-        If Me.Certificate.CustomerName Is Nothing Then
+        If Certificate.CustomerName Is Nothing Then
             Return True
         Else
             Return False
@@ -1558,7 +1558,7 @@ Public Class CertItemCoverage
     End Function
 
     Public Function IsIdentificationNumberMissing() As Boolean
-        If Me.Certificate.IdentificationNumber Is Nothing Then
+        If Certificate.IdentificationNumber Is Nothing Then
             Return True
         Else
             Return False
@@ -1568,9 +1568,9 @@ Public Class CertItemCoverage
     Public Function IsZipMissing() As Boolean
         Dim addr As Address
 
-        addr = Me.Certificate.AddressChild(False)
+        addr = Certificate.AddressChild(False)
         If Not addr Is Nothing Then
-            If Me.Certificate.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE AndAlso _
+            If Certificate.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE AndAlso _
                 addr.PostalCode = "" Then
                 Return True
             Else
@@ -1586,7 +1586,7 @@ Public Class CertItemCoverage
     Public Function GetClaims() As Boolean
         Dim claimsDV As DataView
 
-        claimsDV = Me.GetAllClaims(Me.Id)
+        claimsDV = GetAllClaims(Id)
 
         If claimsDV.Count > 0 Then
             Return True
@@ -1599,7 +1599,7 @@ Public Class CertItemCoverage
         Dim claimsDV As DataView
 
         Dim ClaimBO As Claim = ClaimFacade.Instance.CreateClaim(Of Claim)()
-        claimsDV = ClaimBO.GetCertClaims(Me.CertId)
+        claimsDV = ClaimBO.GetCertClaims(CertId)
 
         If claimsDV.Count > 0 Then
             Return True
@@ -1609,7 +1609,7 @@ Public Class CertItemCoverage
     End Function
 
     Public Function IsInvoiceNumberMissing() As Boolean
-        If Me.Certificate.InvoiceNumber Is Nothing Then
+        If Certificate.InvoiceNumber Is Nothing Then
             Return True
         Else
             Return False
@@ -1617,16 +1617,16 @@ Public Class CertItemCoverage
     End Function
 
     Public Function IsProductSalesDateMissing() As Boolean
-        If Me.Certificate.ProductSalesDate Is Nothing Then
+        If Certificate.ProductSalesDate Is Nothing Then
             Return True
         Else
             Return False
         End If
     End Function
 
-    Public Function IsDepreciationScheduleNotDefined(ByVal ContractID As Guid) As Boolean
+    Public Function IsDepreciationScheduleNotDefined(ContractID As Guid) As Boolean
 
-        Dim al As ArrayList = Claim.CalculateLiabilityLimit(Me.CertId, ContractID, Me.Id)
+        Dim al As ArrayList = Claim.CalculateLiabilityLimit(CertId, ContractID, Id)
         If CType(al(1), Integer) <> 0 Then
             Return True
         Else
@@ -1637,7 +1637,7 @@ Public Class CertItemCoverage
 
     Public Function IsPossibleWarrantyClaim(ByRef msg As String) As Boolean
 
-        Dim claimsDV As DataView = Me.GetAllClaims(Me.Id)
+        Dim claimsDV As DataView = GetAllClaims(Id)
 
         Dim oClaim As ClaimBase
 
@@ -1692,8 +1692,8 @@ Public Class CertItemCoverage
         Dim oContract As Contract
         Dim CoverageType As String
 
-        oContract = Contract.GetContract(Me.Certificate.DealerId, Me.Certificate.WarrantySalesDate.Value)
-        CoverageType = LookupListNew.GetCodeFromId(LookupListNew.GetCoverageTypeLookupList(Authentication.LangId), Me.CoverageTypeId)
+        oContract = Contract.GetContract(Certificate.DealerId, Certificate.WarrantySalesDate.Value)
+        CoverageType = LookupListNew.GetCodeFromId(LookupListNew.GetCoverageTypeLookupList(Authentication.LangId), CoverageTypeId)
 
         Dim ClaimControl As Boolean = False
 
@@ -1704,7 +1704,7 @@ Public Class CertItemCoverage
         End If
 
         If CoverageType <> Codes.COVERAGE_TYPE__MANUFACTURER Then
-            If Not Me.Certificate.MethodOfRepairId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)) _
+            If Not Certificate.MethodOfRepairId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)) _
                And ClaimControl Then
                 msg = Messages.MSG_DEALER_USER_CLAIM_INTERFACES
                 Return True

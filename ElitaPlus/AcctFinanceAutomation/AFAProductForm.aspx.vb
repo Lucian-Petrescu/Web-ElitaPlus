@@ -53,10 +53,10 @@ Public Class AFAProductForm
 
 #Region "Bread Crum"
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(SUMMARYTITLE)
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+        MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(SUMMARYTITLE)
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
     End Sub
 #End Region
 
@@ -95,7 +95,7 @@ Public Class AFAProductForm
 
     Public ReadOnly Property IsGridInEditMode() As Boolean
         Get
-            Return Me.Grid.EditIndex > Me.NO_ITEM_SELECTED_INDEX
+            Return Grid.EditIndex > NO_ITEM_SELECTED_INDEX
         End Get
     End Property
 
@@ -104,26 +104,26 @@ Public Class AFAProductForm
 
 #Region "Page Events"
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
             'Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            IsReturningFromChild = True
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.MasterPage.MessageController.Clear()
-        Me.Form.DefaultButton = btnSearch.UniqueID
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        MasterPage.MessageController.Clear()
+        Form.DefaultButton = btnSearch.UniqueID
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 UpdateBreadCrum()
                 ControlMgr.SetVisibleControl(Me, moSearchResults, False)
 
-                Me.State.PageIndex = 0
-                Me.TranslateGridHeader(Grid)
-                Me.TranslateGridControls(Grid)
+                State.PageIndex = 0
+                TranslateGridHeader(Grid)
+                TranslateGridControls(Grid)
                 ' Me.BindCodeNameToListControl(ddlDealer, LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, True, "Code"), , , , True)
                 Dim oDealerList = GetDealerListByCompanyForUser()
                 Dim dealerTextFunc As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
@@ -134,17 +134,17 @@ Public Class AFAProductForm
                                             .TextFunc = dealerTextFunc,
                                             .AddBlankItem = True
                                            })
-                If Me.IsReturningFromChild Then
+                If IsReturningFromChild Then
                     PopulateSearchFieldsFromState()
-                    Me.State.searchDV = Nothing
-                    Me.PopulateGrid()
+                    State.searchDV = Nothing
+                    PopulateGrid()
                 End If
             Else
                 CheckIfComingFromDeleteConfirm()
                 BindBoPropertiesToGridHeaders()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
         'Me.ShowMissingTranslations(Me.MasterPage.MessageController)
     End Sub
@@ -161,7 +161,7 @@ Public Class AFAProductForm
             oListContext.CompanyId = UserCompanies(Index)
             Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
-                If Not oDealerList Is Nothing Then
+                If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
                 Else
                     oDealerList = oDealerListForCompany.Clone()
@@ -179,11 +179,11 @@ Public Class AFAProductForm
 #Region "Helper functions"
 
     Public Sub PopulateSearchFieldsFromState()
-        Me.SetSelectedItem(ddlDealer, Me.State.DealerIdInSearch)
-        txtProductCode.Text = Me.State.searchProdCode
+        SetSelectedItem(ddlDealer, State.DealerIdInSearch)
+        txtProductCode.Text = State.searchProdCode
     End Sub
 
-    Public Sub PopulateProductTypeDropdown(ByVal ddlProdType As DropDownList)
+    Public Sub PopulateProductTypeDropdown(ddlProdType As DropDownList)
 
         Dim productTypeLk As DataView
         Try
@@ -196,35 +196,35 @@ Public Class AFAProductForm
               .ValueFunc = AddressOf .GetCode
              })
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub CheckIfComingFromDeleteConfirm()
-        Dim confResponse As String = Me.HiddenDeletePromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+        Dim confResponse As String = HiddenDeletePromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
             If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
                 DoDelete()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Delete
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Delete
             End Select
         End If
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenDeletePromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenDeletePromptResponse.Value = ""
     End Sub
 
     Private Sub DoDelete()
         'Do the delete here
-        Me.State.ActionInProgress = DetailPageCommand.Nothing_
+        State.ActionInProgress = DetailPageCommand.Nothing_
         'Save the RiskTypeId in the Session
 
-        Dim obj As AfAProduct = New AfAProduct(Me.State.productID)
+        Dim obj As AfAProduct = New AfAProduct(State.productID)
 
         obj.Delete()
 
@@ -232,68 +232,68 @@ Public Class AFAProductForm
 
         obj.Save()
 
-        Me.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_DELETED_OK, True)
+        MasterPage.MessageController.AddSuccess(MSG_RECORD_DELETED_OK, True)
 
-        Me.State.PageIndex = Grid.PageIndex
+        State.PageIndex = Grid.PageIndex
 
         'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-        Me.State.IsAfterSave = True
-        Me.State.searchDV = Nothing
+        State.IsAfterSave = True
+        State.searchDV = Nothing
         PopulateGrid()
-        Me.State.PageIndex = Grid.PageIndex
-        Me.State.IsEditMode = False
+        State.PageIndex = Grid.PageIndex
+        State.IsEditMode = False
         SetControlState()
     End Sub
 
     Private Sub SetControlState()
-        If (Me.State.IsEditMode) Then
+        If (State.IsEditMode) Then
             ControlMgr.SetVisibleControl(Me, btnNew, False)
             ControlMgr.SetEnableControl(Me, btnSearch, False)
             ControlMgr.SetEnableControl(Me, btnClearSearch, False)
-            Me.MenuEnabled = False
-            If (Me.cboPageSize.Enabled) Then
+            MenuEnabled = False
+            If (cboPageSize.Enabled) Then
                 ControlMgr.SetEnableControl(Me, cboPageSize, False)
             End If
         Else
             ControlMgr.SetVisibleControl(Me, btnNew, True)
             ControlMgr.SetEnableControl(Me, btnSearch, True)
             ControlMgr.SetEnableControl(Me, btnClearSearch, True)
-            Me.MenuEnabled = True
-            If Not (Me.cboPageSize.Enabled) Then
-                ControlMgr.SetEnableControl(Me, Me.cboPageSize, True)
+            MenuEnabled = True
+            If Not (cboPageSize.Enabled) Then
+                ControlMgr.SetEnableControl(Me, cboPageSize, True)
             End If
         End If
     End Sub
 
     Protected Sub BindBoPropertiesToGridHeaders()
-        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "DealerId", Me.Grid.Columns(Me.GRID_COL_DEALER_CODE_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "Code", Me.Grid.Columns(Me.GRID_COL_CODE_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "Description", Me.Grid.Columns(Me.GRID_COL_DESC_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "ProductType", Me.Grid.Columns(Me.GRID_COL_PROD_TYPE_IDX))
-        Me.ClearGridViewHeadersAndLabelsErrSign()
+        BindBOPropertyToGridHeader(State.MyBO, "DealerId", Grid.Columns(GRID_COL_DEALER_CODE_IDX))
+        BindBOPropertyToGridHeader(State.MyBO, "Code", Grid.Columns(GRID_COL_CODE_IDX))
+        BindBOPropertyToGridHeader(State.MyBO, "Description", Grid.Columns(GRID_COL_DESC_IDX))
+        BindBOPropertyToGridHeader(State.MyBO, "ProductType", Grid.Columns(GRID_COL_PROD_TYPE_IDX))
+        ClearGridViewHeadersAndLabelsErrSign()
     End Sub
 
     Private Sub ReturnFromEditing()
 
         Grid.EditIndex = NO_ROW_SELECTED_INDEX
 
-        If (Me.Grid.PageCount = 0) Then
+        If (Grid.PageCount = 0) Then
             'if returning to the "1st time in" screen
             ControlMgr.SetVisibleControl(Me, Grid, False)
         Else
             ControlMgr.SetVisibleControl(Me, Grid, True)
         End If
 
-        Me.State.IsEditMode = False
-        Me.PopulateGrid()
-        Me.State.PageIndex = Grid.PageIndex
+        State.IsEditMode = False
+        PopulateGrid()
+        State.PageIndex = Grid.PageIndex
         SetControlState()
     End Sub
 
     Private Sub RemoveNewRowFromSearchDV()
         Dim rowind As Integer = NO_ITEM_SELECTED_INDEX
         With State
-            If Not .searchDV Is Nothing Then
+            If .searchDV IsNot Nothing Then
                 rowind = FindSelectedRowIndexFromGuid(.searchDV, .productID)
             End If
         End With
@@ -304,18 +304,18 @@ Public Class AFAProductForm
         Dim objtxt As TextBox
         Dim ddlDealer As DropDownList
         Dim ddlProdType As DropDownList
-        With Me.State.MyBO
+        With State.MyBO
 
             State.MyBO.DealerId = State.DealerIdInSearch
 
-            objtxt = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_CODE_IDX).FindControl(GRID_CTRL_NAME_EDIT_CODE), TextBox)
+            objtxt = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_CODE_IDX).FindControl(GRID_CTRL_NAME_EDIT_CODE), TextBox)
             objtxt.Text = objtxt.Text.ToUpper
             PopulateBOProperty(State.MyBO, "Code", objtxt)
 
-            objtxt = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_DESC_IDX).FindControl(GRID_CTRL_NAME_EDIT_DESC), TextBox)
+            objtxt = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_DESC_IDX).FindControl(GRID_CTRL_NAME_EDIT_DESC), TextBox)
             PopulateBOProperty(State.MyBO, "Description", objtxt)
 
-            ddlProdType = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_PROD_TYPE_IDX).FindControl(GRID_CTRL_NAME_EDIT_PROD_TYPE_LIST), DropDownList)
+            ddlProdType = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_PROD_TYPE_IDX).FindControl(GRID_CTRL_NAME_EDIT_PROD_TYPE_LIST), DropDownList)
             If ddlProdType.SelectedItem.Text = String.Empty Then
                 State.MyBO.ProductType = String.Empty
             Else
@@ -323,7 +323,7 @@ Public Class AFAProductForm
             End If
 
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Function
@@ -339,71 +339,71 @@ Public Class AFAProductForm
             'Refresh the DataView and Call SetPageAndSelectedIndexFromGuid() to go to the Page 
             'where the most recently saved Record exists in the DataView
             With State
-                If (.searchDV Is Nothing) AndAlso Not Me.State.IsGridAddNew = True Then
+                If (.searchDV Is Nothing) AndAlso Not State.IsGridAddNew = True Then
                     .searchDV = AfAProduct.getList(.DealerIdInSearch, .searchProdCode)
                     blnNewSearch = True
                 End If
             End With
 
-            If Not State.searchDV Is Nothing Then
-                Me.State.searchDV.Sort = Me.State.SortExpression
-                If (Me.State.IsAfterSave) Then
-                    Me.State.IsAfterSave = False
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.productID, Me.Grid, Me.State.PageIndex)
-                ElseIf (Me.State.IsEditMode) Then
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.productID, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+            If State.searchDV IsNot Nothing Then
+                State.searchDV.Sort = State.SortExpression
+                If (State.IsAfterSave) Then
+                    State.IsAfterSave = False
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.productID, Grid, State.PageIndex)
+                ElseIf (State.IsEditMode) Then
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.productID, Grid, State.PageIndex, State.IsEditMode)
                 Else
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.Grid, Me.State.PageIndex)
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, State.PageIndex)
                 End If
             End If
 
-            Me.Grid.AutoGenerateColumns = False
-            Me.Grid.Columns(Me.GRID_COL_CODE_IDX).SortExpression = AfAProduct.AFAProductSearchDV.COL_CODE
-            Me.Grid.Columns(Me.GRID_COL_DESC_IDX).SortExpression = AfAProduct.AFAProductSearchDV.COL_DESCRIPTION
+            Grid.AutoGenerateColumns = False
+            Grid.Columns(GRID_COL_CODE_IDX).SortExpression = AfAProduct.AFAProductSearchDV.COL_CODE
+            Grid.Columns(GRID_COL_DESC_IDX).SortExpression = AfAProduct.AFAProductSearchDV.COL_DESCRIPTION
             SortAndBindGrid(blnNewSearch)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
     Private Sub SortAndBindGrid(Optional ByVal blnShowErr As Boolean = True)
 
-        Me.TranslateGridControls(Grid)
+        TranslateGridControls(Grid)
 
-        If Not State.searchDV Is Nothing AndAlso (Me.State.searchDV.Count = 0) Then
-            Me.State.searchDV = Nothing
-            Me.State.MyBO = New AfAProduct
-            State.MyBO.AddNewRowToSearchDV(Me.State.searchDV, Me.State.MyBO)
-            Me.Grid.DataSource = Me.State.searchDV
-            Me.Grid.DataBind()
-            Me.Grid.Rows(0).Visible = False
-            Me.State.IsGridAddNew = True
-            Me.State.IsGridVisible = False
+        If State.searchDV IsNot Nothing AndAlso (State.searchDV.Count = 0) Then
+            State.searchDV = Nothing
+            State.MyBO = New AfAProduct
+            State.MyBO.AddNewRowToSearchDV(State.searchDV, State.MyBO)
+            Grid.DataSource = State.searchDV
+            Grid.DataBind()
+            Grid.Rows(0).Visible = False
+            State.IsGridAddNew = True
+            State.IsGridVisible = False
             If blnShowErr Then
-                Me.MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
+                MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
             End If
         Else
-            Me.Grid.Enabled = True
-            Me.Grid.PageSize = Me.State.PageSize
-            Me.Grid.DataSource = Me.State.searchDV
-            Me.State.IsGridVisible = True
-            HighLightSortColumn(Grid, Me.State.SortExpression)
-            Me.Grid.DataBind()
+            Grid.Enabled = True
+            Grid.PageSize = State.PageSize
+            Grid.DataSource = State.searchDV
+            State.IsGridVisible = True
+            HighLightSortColumn(Grid, State.SortExpression)
+            Grid.DataBind()
         End If
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-        ControlMgr.SetVisibleControl(Me, moSearchResults, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, moSearchResults, State.IsGridVisible)
 
-        If Not State.searchDV Is Nothing Then
-            Session("recCount") = Me.State.searchDV.Count
+        If State.searchDV IsNot Nothing Then
+            Session("recCount") = State.searchDV.Count
 
-            If Me.Grid.Visible Then
-                If (Me.State.IsGridAddNew) Then
-                    Me.lblRecordCount.Text = (Me.State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                If (State.IsGridAddNew) Then
+                    lblRecordCount.Text = (State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 Else
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
         End If
@@ -412,168 +412,168 @@ Public Class AFAProductForm
 
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            If (Not (Me.State.IsEditMode)) Then
-                Me.State.PageIndex = Grid.PageIndex
-                Me.State.productID = Guid.Empty
-                Me.State.selectedAFAProductId = Guid.Empty
-                Me.PopulateGrid()
+            If (Not (State.IsEditMode)) Then
+                State.PageIndex = Grid.PageIndex
+                State.productID = Guid.Empty
+                State.selectedAFAProductId = Guid.Empty
+                PopulateGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_Sorting(sender As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            Dim spaceIndex As Integer = Me.State.SortExpression.LastIndexOf(" ")
+            Dim spaceIndex As Integer = State.SortExpression.LastIndexOf(" ")
 
 
-            If spaceIndex > 0 AndAlso Me.State.SortExpression.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" ASC") Then
-                    Me.State.SortExpression = e.SortExpression + " DESC"
+            If spaceIndex > 0 AndAlso State.SortExpression.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" ASC") Then
+                    State.SortExpression = e.SortExpression + " DESC"
                 Else
-                    Me.State.SortExpression = e.SortExpression + " ASC"
+                    State.SortExpression = e.SortExpression + " ASC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression + " ASC"
+                State.SortExpression = e.SortExpression + " ASC"
             End If
 
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim strID As String
-            Dim dealerLabel As Label = CType(e.Row.FindControl(Me.GRID_CTRL_NAME_LABEL_DEALER), Label)
-            Dim dealerEditLabel As Label = CType(e.Row.FindControl(Me.GRID_CTRL_NAME_EDIT_DEALER), Label)
+            Dim dealerLabel As Label = CType(e.Row.FindControl(GRID_CTRL_NAME_LABEL_DEALER), Label)
+            Dim dealerEditLabel As Label = CType(e.Row.FindControl(GRID_CTRL_NAME_EDIT_DEALER), Label)
             Dim ddlProductType As DropDownList = CType(e.Row.FindControl(GRID_CTRL_NAME_EDIT_PROD_TYPE_LIST), DropDownList)
 
             Dim dealerId As Guid
             Dim objDealer As Dealer
             Dim btnEditItem As LinkButton
 
-            If Not dvRow Is Nothing Then
+            If dvRow IsNot Nothing Then
                 strID = GetGuidStringFromByteArray(CType(dvRow(AfAProduct.AFAProductSearchDV.COL_AFA_PRODUCT_ID), Byte()))
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    CType(e.Row.Cells(Me.GRID_COL_PRODUCT_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_PRODUCT_ID), Label).Text = strID
+                    CType(e.Row.Cells(GRID_COL_PRODUCT_ID_IDX).FindControl(GRID_CTRL_NAME_LABEL_PRODUCT_ID), Label).Text = strID
 
-                    If (Me.State.IsEditMode = True AndAlso Me.State.productID.ToString.Equals(strID)) Then
+                    If (State.IsEditMode = True AndAlso State.productID.ToString.Equals(strID)) Then
 
-                        CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_CODE), TextBox).Text = dvRow(AfAProduct.AFAProductSearchDV.COL_CODE).ToString
+                        CType(e.Row.Cells(GRID_COL_CODE_IDX).FindControl(GRID_CTRL_NAME_EDIT_CODE), TextBox).Text = dvRow(AfAProduct.AFAProductSearchDV.COL_CODE).ToString
 
-                        objDealer = New Dealer(Me.State.DealerIdInSearch)
-                        Me.PopulateControlFromBOProperty(dealerEditLabel, objDealer.Dealer)
-                        CType(e.Row.Cells(Me.GRID_COL_DEALER_CODE_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_DEALER), Label).Visible = True
+                        objDealer = New Dealer(State.DealerIdInSearch)
+                        PopulateControlFromBOProperty(dealerEditLabel, objDealer.Dealer)
+                        CType(e.Row.Cells(GRID_COL_DEALER_CODE_IDX).FindControl(GRID_CTRL_NAME_EDIT_DEALER), Label).Visible = True
 
-                        CType(e.Row.Cells(Me.GRID_COL_DESC_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_DESC), TextBox).Text = dvRow(AfAProduct.AFAProductSearchDV.COL_DESCRIPTION).ToString
+                        CType(e.Row.Cells(GRID_COL_DESC_IDX).FindControl(GRID_CTRL_NAME_EDIT_DESC), TextBox).Text = dvRow(AfAProduct.AFAProductSearchDV.COL_DESCRIPTION).ToString
 
                         'PRODUCT_TYPE
                         PopulateProductTypeDropdown(ddlProductType)
-                        If (Me.State.IsGridAddNew) OrElse (dvRow(AfAProduct.AFAProductSearchDV.COL_PRODUCT_TYPE) Is DBNull.Value) Then
-                            ddlProductType.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+                        If (State.IsGridAddNew) OrElse (dvRow(AfAProduct.AFAProductSearchDV.COL_PRODUCT_TYPE) Is DBNull.Value) Then
+                            ddlProductType.SelectedIndex = NO_ITEM_SELECTED_INDEX
                         Else
-                            Me.SetSelectedItem(ddlProductType, dvRow(AfAProduct.AFAProductSearchDV.COL_PRODUCT_TYPE).ToString)
+                            SetSelectedItem(ddlProductType, dvRow(AfAProduct.AFAProductSearchDV.COL_PRODUCT_TYPE).ToString)
                         End If
 
                     Else
                         dealerId = New Guid(CType(dvRow(AfAProduct.AFAProductSearchDV.COL_DEALER_ID), Byte()))
                         objDealer = New Dealer(dealerId)
-                        Me.PopulateControlFromBOProperty(dealerLabel, objDealer.Dealer)
+                        PopulateControlFromBOProperty(dealerLabel, objDealer.Dealer)
 
-                        If (Not e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_CTRL_NAME_LINKBTN_CODE) Is Nothing) Then
-                            btnEditItem = CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(GRID_CTRL_NAME_LINKBTN_CODE), LinkButton)
+                        If (e.Row.Cells(GRID_COL_CODE_IDX).FindControl(GRID_CTRL_NAME_LINKBTN_CODE) IsNot Nothing) Then
+                            btnEditItem = CType(e.Row.Cells(GRID_COL_CODE_IDX).FindControl(GRID_CTRL_NAME_LINKBTN_CODE), LinkButton)
                             btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(AfAProduct.AFAProductSearchDV.COL_AFA_PRODUCT_ID), Byte()))
                             btnEditItem.CommandName = EDIT_INVRATE_COMMAND
                             btnEditItem.Text = dvRow(AfAProduct.AFAProductSearchDV.COL_CODE).ToString
                         End If
 
-                        CType(e.Row.Cells(Me.GRID_COL_DESC_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_DESC), Label).Text = dvRow(AfAProduct.AFAProductSearchDV.COL_DESCRIPTION).ToString
+                        CType(e.Row.Cells(GRID_COL_DESC_IDX).FindControl(GRID_CTRL_NAME_LABEL_DESC), Label).Text = dvRow(AfAProduct.AFAProductSearchDV.COL_DESCRIPTION).ToString
 
-                        CType(e.Row.Cells(Me.GRID_COL_PROD_TYPE_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_PROD_TYPE), Label).Text =
+                        CType(e.Row.Cells(GRID_COL_PROD_TYPE_IDX).FindControl(GRID_CTRL_NAME_LABEL_PROD_TYPE), Label).Text =
                             LookupListNew.GetDescrionFromListCode(LookupListNew.LK_AFA_PRODUCT_TYPE, dvRow(AfAProduct.AFAProductSearchDV.COL_PRODUCT_TYPE).ToString)
 
                     End If
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
 
         Try
             Dim index As Integer
-            If (e.CommandName = Me.EDIT_COMMAND) Then
+            If (e.CommandName = EDIT_COMMAND) Then
                 index = CInt(e.CommandArgument)
                 'Do the Edit here
 
                 'Set the IsEditMode flag to TRUE
-                Me.State.IsEditMode = True
+                State.IsEditMode = True
 
-                Me.State.productID = New Guid(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_PRODUCT_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_PRODUCT_ID), Label).Text)
-                Me.State.MyBO = New AfAProduct(Me.State.productID)
+                State.productID = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_PRODUCT_ID_IDX).FindControl(GRID_CTRL_NAME_LABEL_PRODUCT_ID), Label).Text)
+                State.MyBO = New AfAProduct(State.productID)
 
-                Me.PopulateGrid()
+                PopulateGrid()
 
-                Me.State.PageIndex = Grid.PageIndex
+                State.PageIndex = Grid.PageIndex
 
-                Me.SetControlState()
+                SetControlState()
 
             ElseIf e.CommandName = EDIT_INVRATE_COMMAND Then
                 If Not e.CommandArgument.ToString().Equals(String.Empty) Then
-                    Me.State.selectedAFAProductId = New Guid(e.CommandArgument.ToString())
-                    Me.callPage(InvoiceRateForm.URL, Me.State.selectedAFAProductId)
+                    State.selectedAFAProductId = New Guid(e.CommandArgument.ToString())
+                    callPage(InvoiceRateForm.URL, State.selectedAFAProductId)
                 End If
 
-            ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+            ElseIf (e.CommandName = DELETE_COMMAND) Then
                 index = CInt(e.CommandArgument)
-                Me.State.productID = New Guid(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_PRODUCT_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_PRODUCT_ID), Label).Text)
-                Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenDeletePromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                State.productID = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_PRODUCT_ID_IDX).FindControl(GRID_CTRL_NAME_LABEL_PRODUCT_ID), Label).Text)
+                DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
 
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -581,12 +581,12 @@ Public Class AFAProductForm
 
 #Region "Control Handler"
 
-    Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+    Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
 
-            ddlDealer.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
-            Me.txtProductCode.Text = String.Empty
-            Grid.EditIndex = Me.NO_ITEM_SELECTED_INDEX
+            ddlDealer.SelectedIndex = NO_ROW_SELECTED_INDEX
+            txtProductCode.Text = String.Empty
+            Grid.EditIndex = NO_ITEM_SELECTED_INDEX
 
             With State
                 .IsGridAddNew = False
@@ -596,14 +596,14 @@ Public Class AFAProductForm
                 .searchProdCode = String.Empty
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
-            If Me.GetSelectedItem(ddlDealer) = Guid.Empty Then
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_DEALER_REQUIRED)
+            If GetSelectedItem(ddlDealer) = Guid.Empty Then
+                MasterPage.MessageController.AddInformation(Message.MSG_DEALER_REQUIRED)
                 Exit Sub
             End If
             With State
@@ -615,83 +615,83 @@ Public Class AFAProductForm
                 .HasDataChanged = False
                 .IsGridAddNew = False
                 'get search control value
-                .DealerIdInSearch = Me.GetSelectedItem(ddlDealer)
+                .DealerIdInSearch = GetSelectedItem(ddlDealer)
                 .searchProdCode = txtProductCode.Text.Trim
-                Me.State.selectedAFAProductId = Guid.Empty
+                State.selectedAFAProductId = Guid.Empty
             End With
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub ddlDealer_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlDealer.SelectedIndexChanged
-        Me.State.DealerIdInSearch = Me.GetSelectedItem(ddlDealer)
-        If Me.State.DealerIdInSearch.Equals(Guid.Empty) Then
-            If Not Me.State.searchDV Is Nothing Then
-                Me.State.searchDV = Nothing
+    Private Sub ddlDealer_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddlDealer.SelectedIndexChanged
+        State.DealerIdInSearch = GetSelectedItem(ddlDealer)
+        If State.DealerIdInSearch.Equals(Guid.Empty) Then
+            If State.searchDV IsNot Nothing Then
+                State.searchDV = Nothing
                 PopulateGrid()
             End If
         End If
     End Sub
 
-    Protected Sub btnNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew.Click
+    Protected Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
 
         Try
-            If Me.State.DealerIdInSearch.Equals(Guid.Empty) Then
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_DEALER_REQUIRED)
+            If State.DealerIdInSearch.Equals(Guid.Empty) Then
+                MasterPage.MessageController.AddInformation(Message.MSG_DEALER_REQUIRED)
                 Return
             End If
-            Me.State.IsEditMode = True
-            Me.State.IsGridVisible = True
-            Me.State.IsGridAddNew = True
+            State.IsEditMode = True
+            State.IsGridVisible = True
+            State.IsGridAddNew = True
             AddNew()
-            Me.SetControlState()
+            SetControlState()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
     Private Sub AddNew()
-        If Me.State.MyBO Is Nothing OrElse Me.State.MyBO.IsNew = False Then
-            Me.State.MyBO = New AfAProduct
-            State.MyBO.AddNewRowToSearchDV(Me.State.searchDV, Me.State.MyBO)
+        If State.MyBO Is Nothing OrElse State.MyBO.IsNew = False Then
+            State.MyBO = New AfAProduct
+            State.MyBO.AddNewRowToSearchDV(State.searchDV, State.MyBO)
         End If
-        Me.State.productID = Me.State.MyBO.Id
-        Me.State.selectedAFAProductId = Guid.Empty
+        State.productID = State.MyBO.Id
+        State.selectedAFAProductId = Guid.Empty
         State.IsGridAddNew = True
         PopulateGrid()
         'Set focus on the Code TextBox for the EditItemIndex row
-        Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.productID, Me.Grid,
-        Me.State.PageIndex, Me.State.IsEditMode)
+        SetPageAndSelectedIndexFromGuid(State.searchDV, State.productID, Grid,
+        State.PageIndex, State.IsEditMode)
         ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
-        SetGridControls(Me.Grid, False)
+        SetGridControls(Grid, False)
     End Sub
 
-    Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnSave_Click(sender As Object, e As EventArgs)
 
         Try
             PopulateBOFromForm()
-            If (Me.State.MyBO.IsDirty) Then
-                Me.State.MyBO.Save()
-                Me.State.IsAfterSave = True
-                Me.State.IsGridAddNew = False
-                Me.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_SAVED_OK, True)
-                Me.State.searchDV = Nothing
-                Me.State.MyBO = Nothing
-                Me.ReturnFromEditing()
+            If (State.MyBO.IsDirty) Then
+                State.MyBO.Save()
+                State.IsAfterSave = True
+                State.IsGridAddNew = False
+                MasterPage.MessageController.AddSuccess(MSG_RECORD_SAVED_OK, True)
+                State.searchDV = Nothing
+                State.MyBO = Nothing
+                ReturnFromEditing()
             Else
-                Me.MasterPage.MessageController.AddWarning(Me.MSG_RECORD_NOT_SAVED, True)
-                Me.ReturnFromEditing()
+                MasterPage.MessageController.AddWarning(MSG_RECORD_NOT_SAVED, True)
+                ReturnFromEditing()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs)
         Try
             With State
                 If .IsGridAddNew Then
@@ -701,7 +701,7 @@ Public Class AFAProductForm
                     .searchDV = Nothing
                 End If
                 .productID = Guid.Empty
-                Me.State.MyBO = Nothing
+                State.MyBO = Nothing
                 .IsEditMode = False
                 .ActionInProgress = DetailPageCommand.Cancel
             End With
@@ -710,9 +710,9 @@ Public Class AFAProductForm
             PopulateGrid()
 
             SetControlState()
-            Me.State.ActionInProgress = DetailPageCommand.Nothing_
+            State.ActionInProgress = DetailPageCommand.Nothing_
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region

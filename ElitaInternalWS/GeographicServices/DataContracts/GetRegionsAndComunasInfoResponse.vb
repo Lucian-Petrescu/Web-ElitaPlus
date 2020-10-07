@@ -11,7 +11,7 @@ Namespace GeographicServices
         <DataMember(IsRequired:=True, Name:="RegionsAndComunas")>
         Public Property RegionsAndComunas As IEnumerable(Of RegionsAndComunasInfo)
 
-        Friend Sub New(ByVal RegionsAndComunasDV As DataView)
+        Friend Sub New(RegionsAndComunasDV As DataView)
 
             If RegionsAndComunasDV IsNot Nothing AndAlso RegionsAndComunasDV.Count > 0 Then
                 RegionsAndComunasDV.Sort = "region_code"

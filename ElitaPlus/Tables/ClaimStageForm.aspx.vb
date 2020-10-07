@@ -50,20 +50,20 @@ Namespace Tables
             Public LastOperation As DetailPageCommand
             Public EditingBo As ClaimStage
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As ClaimStage, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As ClaimStage, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
 
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End Sub
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             If mbIsFirstPass = True Then
                 mbIsFirstPass = False
             Else
@@ -71,46 +71,46 @@ Namespace Tables
                 Return
             End If
 
-            Me.MasterPage.MessageController.Clear()
-            Me.UpdateBreadCrum()
+            MasterPage.MessageController.Clear()
+            UpdateBreadCrum()
 
             Try
-                If Not Me.IsPostBack Then
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New ClaimStage
+                If Not IsPostBack Then
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New ClaimStage
                     End If
 
                     ' Setting Calendar
-                    Me.AddCalendarwithTime_New(Me.imgEffectiveDate, txtEffectiveDate)
-                    Me.AddCalendarwithTime_New(Me.imgExpirationDate, txtExpirationDate)
+                    AddCalendarwithTime_New(imgEffectiveDate, txtEffectiveDate)
+                    AddCalendarwithTime_New(imgExpirationDate, txtExpirationDate)
 
                     PopulateDropdowns()
                     PopulateFormFromBOs()
                     EnableDisableFields()
 
-                    AddLabelDecorations(Me.State.MyBO)
+                    AddLabelDecorations(State.MyBO)
                 End If
                 BindBoPropertiesToLabels()
                 CheckIfComingFromSaveConfirm()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 CleanPopupInput()
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Dim objID As Guid = CType(Me.CallingParameters, Guid)
+                    Dim objID As Guid = CType(CallingParameters, Guid)
                     If objID <> Guid.Empty Then
-                        Me.State.MyBO = New ClaimStage(objID, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                        State.MyBO = New ClaimStage(objID, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -121,10 +121,10 @@ Namespace Tables
 
         Private Sub CleanPopupInput()
             Try
-                If Not Me.State Is Nothing Then
+                If State IsNot Nothing Then
                     'Clean after consuming the action 
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                    Me.HiddenSaveChangesPromptResponse.Value = ""
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                    HiddenSaveChangesPromptResponse.Value = ""
                 End If
             Catch ex As Exception
 
@@ -133,65 +133,65 @@ Namespace Tables
 
         Protected Sub BindBoPropertiesToLabels()
             Try
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "StageNameId", Me.lblStageName)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "CompanyGroupId", Me.lblCompnayGrp)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "CompanyId", Me.lblCompany)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "DealerId", Me.lblDealer)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "ProductCode", Me.lblProdCode)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "CoverageTypeId", Me.lblCoverageType)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "EffectiveDate", Me.lblEffectiveDate)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "ExpirationDate", Me.lblExpirationDate)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "Sequence", Me.lblSequence)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "ScreenId", Me.lblScreen)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "PortalId", Me.lblPortal)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "StatusStartId", Me.lblStartStatus)
+                BindBOPropertyToLabel(State.MyBO, "StageNameId", lblStageName)
+                BindBOPropertyToLabel(State.MyBO, "CompanyGroupId", lblCompnayGrp)
+                BindBOPropertyToLabel(State.MyBO, "CompanyId", lblCompany)
+                BindBOPropertyToLabel(State.MyBO, "DealerId", lblDealer)
+                BindBOPropertyToLabel(State.MyBO, "ProductCode", lblProdCode)
+                BindBOPropertyToLabel(State.MyBO, "CoverageTypeId", lblCoverageType)
+                BindBOPropertyToLabel(State.MyBO, "EffectiveDate", lblEffectiveDate)
+                BindBOPropertyToLabel(State.MyBO, "ExpirationDate", lblExpirationDate)
+                BindBOPropertyToLabel(State.MyBO, "Sequence", lblSequence)
+                BindBOPropertyToLabel(State.MyBO, "ScreenId", lblScreen)
+                BindBOPropertyToLabel(State.MyBO, "PortalId", lblPortal)
+                BindBOPropertyToLabel(State.MyBO, "StatusStartId", lblStartStatus)
 
-                Me.ClearGridViewHeadersAndLabelsErrorSign()
+                ClearGridViewHeadersAndLabelsErrorSign()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
             Try
-                Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-                Dim actionInProgress As ElitaPlusPage.DetailPageCommand = Me.State.ActionInProgress
-                If Not confResponse Is Nothing AndAlso (confResponse = Me.MSG_VALUE_YES OrElse confResponse.ToUpper = "OK") Then
+                Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+                Dim actionInProgress As ElitaPlusPage.DetailPageCommand = State.ActionInProgress
+                If confResponse IsNot Nothing AndAlso (confResponse = MSG_VALUE_YES OrElse confResponse.ToUpper = "OK") Then
                     If actionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                        Me.State.MyBO.Save()
+                        State.MyBO.Save()
                         State.HasDataChanged = True
                     End If
-                    Select Case Me.State.ActionInProgress
+                    Select Case State.ActionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                         Case ElitaPlusPage.DetailPageCommand.New_
-                            Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
-                            Me.CreateNew()
+                            MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                            CreateNew()
                         Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                            Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
-                            Me.CreateNewWithCopy()
+                            MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                            CreateNewWithCopy()
                             'Case ElitaPlusPage.DetailPageCommand.Delete
                             'DoDelete()
                         Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                            Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                            ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                     End Select
-                ElseIf Not confResponse Is Nothing AndAlso (confResponse = Me.MSG_VALUE_NO OrElse confResponse.ToUpper = "CANCEL") Then
-                    Select Case Me.State.ActionInProgress
+                ElseIf confResponse IsNot Nothing AndAlso (confResponse = MSG_VALUE_NO OrElse confResponse.ToUpper = "CANCEL") Then
+                    Select Case State.ActionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                         Case ElitaPlusPage.DetailPageCommand.New_
-                            Me.CreateNew()
+                            CreateNew()
                         Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                            Me.CreateNewWithCopy()
+                            CreateNewWithCopy()
                         Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                            Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                            MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
                     End Select
                 End If
                 'Clean after consuming the action
                 CleanPopupInput()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -220,13 +220,13 @@ Namespace Tables
                                                   Where list.Contains(x.ListItemId)
                                                   Select x).ToArray()
 
-                Me.ddlCompany.Populate(filteredList, New PopulateOptions() With
+                ddlCompany.Populate(filteredList, New PopulateOptions() With
                   {
                    .AddBlankItem = True
                   })
                 'Me.BindListControlToDataView(Me.ddlDealer, LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "Code"), , , True)
                 Dim oDealerList = GetDealerListByCompanyForUser()
-                Me.ddlDealer.Populate(oDealerList, New PopulateOptions() With
+                ddlDealer.Populate(oDealerList, New PopulateOptions() With
                                            {
                                             .AddBlankItem = True
                                            })
@@ -257,15 +257,15 @@ Namespace Tables
                 listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                 listcontext.LanguageId = langId
                 Dim claimLKl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ClaimStatusByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-                Me.ddlStartStatus.Populate(claimLKl, New PopulateOptions() With
+                ddlStartStatus.Populate(claimLKl, New PopulateOptions() With
                 {
                 .AddBlankItem = True
                 })
                 '' Available Claim Stage End Status - CLMSTAT
-                Me.BindAvailableStageEndStatus()
+                BindAvailableStageEndStatus()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
@@ -281,7 +281,7 @@ Namespace Tables
                 oListContext.CompanyId = UserCompanies(Index)
                 Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
-                    If Not oDealerList Is Nothing Then
+                    If oDealerList IsNot Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
                     Else
                         oDealerList = oDealerListForCompany.Clone()
@@ -295,57 +295,57 @@ Namespace Tables
         End Function
 
         Protected Sub CreateNew()
-            Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-            Me.State.MyBO = New ClaimStage
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+            State.MyBO = New ClaimStage
+            PopulateFormFromBOs()
+            EnableDisableFields()
         End Sub
 
         Protected Sub CreateNewWithCopy()
 
-            Me.PopulateBOsFromForm()
-            Me.BindAvailableStageEndStatus()
-            Me.BindSelectedStageEndStatus()
+            PopulateBOsFromForm()
+            BindAvailableStageEndStatus()
+            BindSelectedStageEndStatus()
 
             'create the backup copy
-            Me.State.ScreenSnapShotBO = New ClaimStage
-            Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
+            State.ScreenSnapShotBO = New ClaimStage
+            State.ScreenSnapShotBO.Clone(State.MyBO)
 
             Dim newObj As New ClaimStage
 
-            newObj.CopyFrom(Me.State.MyBO)
+            newObj.CopyFrom(State.MyBO)
 
-            Me.State.MyBO = newObj
-            Me.PopulateFormFromBOsWithoutChild()
-            Me.EnableDisableFields()
+            State.MyBO = newObj
+            PopulateFormFromBOsWithoutChild()
+            EnableDisableFields()
         End Sub
 
         Protected Sub PopulateFormFromBOs()
-            Me.PopulateFormFromBOsWithoutChild()
-            Me.BindAvailableStageEndStatus()
-            Me.BindSelectedStageEndStatus()
+            PopulateFormFromBOsWithoutChild()
+            BindAvailableStageEndStatus()
+            BindSelectedStageEndStatus()
         End Sub
 
         Protected Sub PopulateFormFromBOsWithoutChild()
-            With Me.State.MyBO
-                Me.PopulateControlFromBOProperty(Me.ddlStageName, .StageNameId)
-                Me.PopulateControlFromBOProperty(Me.ddlCompanyGroup, .CompanyGroupId)
-                Me.PopulateControlFromBOProperty(Me.ddlCompany, .CompanyId)
-                Me.PopulateControlFromBOProperty(Me.ddlDealer, .DealerId)
-                Me.PopulateControlFromBOProperty(Me.ddlCoverageType, .CoverageTypeId)
-                Me.PopulateControlFromBOProperty(Me.txtProdCode, .ProductCode)
-                Me.PopulateControlFromBOProperty(Me.txtEffectiveDate, .EffectiveDate)
-                Me.PopulateControlFromBOProperty(Me.txtExpirationDate, .ExpirationDate)
-                Me.PopulateControlFromBOProperty(Me.ddlScreen, .ScreenId)
-                Me.PopulateControlFromBOProperty(Me.ddlPortal, .PortalId)
-                Me.PopulateControlFromBOProperty(Me.txtSequence, .Sequence)
-                Me.PopulateControlFromBOProperty(Me.ddlStartStatus, .StartStatusId)
+            With State.MyBO
+                PopulateControlFromBOProperty(ddlStageName, .StageNameId)
+                PopulateControlFromBOProperty(ddlCompanyGroup, .CompanyGroupId)
+                PopulateControlFromBOProperty(ddlCompany, .CompanyId)
+                PopulateControlFromBOProperty(ddlDealer, .DealerId)
+                PopulateControlFromBOProperty(ddlCoverageType, .CoverageTypeId)
+                PopulateControlFromBOProperty(txtProdCode, .ProductCode)
+                PopulateControlFromBOProperty(txtEffectiveDate, .EffectiveDate)
+                PopulateControlFromBOProperty(txtExpirationDate, .ExpirationDate)
+                PopulateControlFromBOProperty(ddlScreen, .ScreenId)
+                PopulateControlFromBOProperty(ddlPortal, .PortalId)
+                PopulateControlFromBOProperty(txtSequence, .Sequence)
+                PopulateControlFromBOProperty(ddlStartStatus, .StartStatusId)
             End With
         End Sub
 
         Protected Sub EnableDisableFields()
 
-            If Me.State.MyBO.IsNew Then
+            If State.MyBO.IsNew Then
                 'ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
@@ -359,24 +359,24 @@ Namespace Tables
 
         Protected Sub PopulateBOsFromForm()
 
-            With Me.State.MyBO
-                Me.PopulateBOProperty(Me.State.MyBO, "StageNameId", ddlStageName)
-                Me.PopulateBOProperty(Me.State.MyBO, "CompanyGroupId", Me.ddlCompanyGroup)
-                Me.PopulateBOProperty(Me.State.MyBO, "CompanyId", Me.ddlCompany)
-                Me.PopulateBOProperty(Me.State.MyBO, "DealerId", ddlDealer)
-                Me.PopulateBOProperty(Me.State.MyBO, "ProductCode", Me.txtProdCode)
-                Me.PopulateBOProperty(Me.State.MyBO, "CoverageTypeId", Me.ddlCoverageType)
-                Me.PopulateBOProperty(Me.State.MyBO, "Sequence", Me.txtSequence)
-                Me.PopulateBOProperty(Me.State.MyBO, "EffectiveDate", Me.txtEffectiveDate)
-                Me.PopulateBOProperty(Me.State.MyBO, "ExpirationDate", Me.txtExpirationDate)
-                Me.PopulateBOProperty(Me.State.MyBO, "ScreenId", Me.ddlScreen)
-                Me.PopulateBOProperty(Me.State.MyBO, "PortalId", Me.ddlPortal)
-                Me.PopulateBOProperty(Me.State.MyBO, "StartStatusId", Me.ddlStartStatus)
+            With State.MyBO
+                PopulateBOProperty(State.MyBO, "StageNameId", ddlStageName)
+                PopulateBOProperty(State.MyBO, "CompanyGroupId", ddlCompanyGroup)
+                PopulateBOProperty(State.MyBO, "CompanyId", ddlCompany)
+                PopulateBOProperty(State.MyBO, "DealerId", ddlDealer)
+                PopulateBOProperty(State.MyBO, "ProductCode", txtProdCode)
+                PopulateBOProperty(State.MyBO, "CoverageTypeId", ddlCoverageType)
+                PopulateBOProperty(State.MyBO, "Sequence", txtSequence)
+                PopulateBOProperty(State.MyBO, "EffectiveDate", txtEffectiveDate)
+                PopulateBOProperty(State.MyBO, "ExpirationDate", txtExpirationDate)
+                PopulateBOProperty(State.MyBO, "ScreenId", ddlScreen)
+                PopulateBOProperty(State.MyBO, "PortalId", ddlPortal)
+                PopulateBOProperty(State.MyBO, "StartStatusId", ddlStartStatus)
 
                 ' if actual selected rows are not in the selected list, they must have been removed. 
                 ' if the original selected status list (db) are not in Control Selected list
                 ' so they must have removed.
-                Dim selEndStatus As DataView = Me.State.MyBO.GetSelectedStageEndStatusList(.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                Dim selEndStatus As DataView = State.MyBO.GetSelectedStageEndStatusList(.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 For iRow As Integer = 0 To selEndStatus.Count - 1
                     Dim EndStatusId As Guid = New Guid(CType(selEndStatus(iRow)("ID"), Byte()))
                     If UC_END_STATUS_AVASEL.SelectedListListBox.Items.FindByValue(EndStatusId.ToString) Is Nothing Then
@@ -405,15 +405,15 @@ Namespace Tables
 
             End With
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
         Private Sub BindSelectedStageEndStatus()
-            Dim dvSelected As DataView = Me.State.MyBO.GetSelectedStageEndStatusList(Me.State.MyBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not dvSelected Is Nothing Then
-                With Me.UC_END_STATUS_AVASEL
+            Dim dvSelected As DataView = State.MyBO.GetSelectedStageEndStatusList(State.MyBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            If dvSelected IsNot Nothing Then
+                With UC_END_STATUS_AVASEL
                     .SetSelectedData(dvSelected, UC_END_STATUS_AVASEL_SEL_TEXT_COLUMN, UC_END_STATUS_AVASEL_SEL_GUID_COLUMN)
                     .RemoveSelectedFromAvailable()
                 End With
@@ -421,9 +421,9 @@ Namespace Tables
         End Sub
 
         Private Sub BindAvailableStageEndStatus()
-            Dim dvSelected As DataView = Me.State.MyBO.GetAvailableStageEndStatusList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not dvSelected Is Nothing Then
-                With Me.UC_END_STATUS_AVASEL
+            Dim dvSelected As DataView = State.MyBO.GetAvailableStageEndStatusList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            If dvSelected IsNot Nothing Then
+                With UC_END_STATUS_AVASEL
                     .SetAvailableData(dvSelected, UC_END_STATUS_AVASEL_AVA_TEXT_COLUMN, UC_END_STATUS_AVASEL_AVA_GUID_COLUMN)
                 End With
             End If
@@ -432,39 +432,39 @@ Namespace Tables
 #End Region
 
 #Region "Button event handlers"
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
                     If (Not State.MyBO.IsNew) OrElse (State.MyBO.IsNew AndAlso State.MyBO.DirtyColumns.Count > 1) Then
-                        Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                        DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                     Else
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     End If
                 Else
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+                HandleErrors(ex, MasterPage.MessageController)
+                DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.LastErrMsg = MasterPage.MessageController.Text
             End Try
         End Sub
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -496,55 +496,55 @@ Namespace Tables
         '    End Try
         'End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If (Me.State.MyBO.IsDirty) Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
-                Else
-                    Me.CreateNew()
-                End If
-            Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            End Try
-        End Sub
-
-        Private Sub btnSave_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
-            Try
-                If Me.UC_END_STATUS_AVASEL.SelectedListListBox.Items.Count <= 0 Then
-                    Throw New GUIException(ElitaPlus.Common.ErrorCodes.STAGE_END_STATUS_REQUIRED, ElitaPlus.Common.ErrorCodes.STAGE_END_STATUS_REQUIRED)
-                End If
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = True
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
-                Else
-                    Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
-                End If
-            Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            End Try
-        End Sub
-
-        Private Sub btnUndo_Write_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
-            Try
-                If Not Me.State.MyBO.IsNew Then
-                    'Reload from the DB
-                    Me.State.MyBO = New ClaimStage(Me.State.MyBO.Id)
-                ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
-                    'It was a new with copy
-                    Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                PopulateBOsFromForm()
+                If (State.MyBO.IsDirty) Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Private Sub btnSave_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+            Try
+                If UC_END_STATUS_AVASEL.SelectedListListBox.Items.Count <= 0 Then
+                    Throw New GUIException(ElitaPlus.Common.ErrorCodes.STAGE_END_STATUS_REQUIRED, ElitaPlus.Common.ErrorCodes.STAGE_END_STATUS_REQUIRED)
+                End If
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
+                    State.HasDataChanged = True
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                Else
+                    MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                End If
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Private Sub btnUndo_Write_Click(sender As Object, e As System.EventArgs) Handles btnUndo_Write.Click
+            Try
+                If Not State.MyBO.IsNew Then
+                    'Reload from the DB
+                    State.MyBO = New ClaimStage(State.MyBO.Id)
+                ElseIf State.ScreenSnapShotBO IsNot Nothing Then
+                    'It was a new with copy
+                    State.MyBO.Clone(State.ScreenSnapShotBO)
+                Else
+                    CreateNew()
+                End If
+                PopulateFormFromBOs()
+                EnableDisableFields()
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region

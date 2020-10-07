@@ -9,52 +9,52 @@ Public Class CountryTax
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CountryTaxDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
             With ElitaPlusIdentity.Current.ActiveUser
-                Me.CountryId = .Country(.FirstCompanyID).Id
+                CountryId = .Country(.FirstCompanyID).Id
             End With
-            Me.CompanyTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMPANY_TYPE, COMPANY_TYPE_SERVICES)
+            CompanyTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMPANY_TYPE, COMPANY_TYPE_SERVICES)
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -64,20 +64,20 @@ Public Class CountryTax
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New CountryTaxDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -176,7 +176,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
@@ -192,7 +192,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX_TYPE_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX_TYPE_ID, Value)
         End Set
     End Property
 
@@ -208,7 +208,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_EFFECTIVE_DATE, Value)
+            SetValue(CountryTaxDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
@@ -224,7 +224,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_EXPIRATION_DATE, Value)
+            SetValue(CountryTaxDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
@@ -240,7 +240,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX1_DESCRIPTION, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX1_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -255,7 +255,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX1_PERCENT_FLAG_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX1_PERCENT_FLAG_ID, Value)
         End Set
     End Property
 
@@ -271,7 +271,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX1_COMPUTE_METHOD_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX1_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
@@ -287,7 +287,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX1_PERCENT, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX1_PERCENT, Value)
         End Set
     End Property
 
@@ -303,7 +303,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX2_DESCRIPTION, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX2_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -318,7 +318,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX2_COMPUTE_METHOD_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX2_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
@@ -333,7 +333,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX2_PERCENT_FLAG_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX2_PERCENT_FLAG_ID, Value)
         End Set
     End Property
 
@@ -349,7 +349,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX2_PERCENT, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX2_PERCENT, Value)
         End Set
     End Property
 
@@ -365,7 +365,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX3_DESCRIPTION, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX3_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -380,7 +380,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX3_COMPUTE_METHOD_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX3_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
@@ -395,7 +395,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX3_PERCENT_FLAG_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX3_PERCENT_FLAG_ID, Value)
         End Set
     End Property
 
@@ -411,7 +411,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX3_PERCENT, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX3_PERCENT, Value)
         End Set
     End Property
 
@@ -427,7 +427,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX4_DESCRIPTION, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX4_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -442,7 +442,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX4_COMPUTE_METHOD_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX4_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
@@ -457,7 +457,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX4_PERCENT_FLAG_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX4_PERCENT_FLAG_ID, Value)
         End Set
     End Property
 
@@ -473,7 +473,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX4_PERCENT, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX4_PERCENT, Value)
         End Set
     End Property
 
@@ -489,7 +489,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX5_DESCRIPTION, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX5_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -506,7 +506,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_APPLY_WITHHOLDING_FLAG, Value)
+            SetValue(CountryTaxDAL.COL_NAME_APPLY_WITHHOLDING_FLAG, Value)
         End Set
     End Property
 
@@ -521,7 +521,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX5_COMPUTE_METHOD_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX5_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
@@ -536,7 +536,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX5_PERCENT_FLAG_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX5_PERCENT_FLAG_ID, Value)
         End Set
     End Property
 
@@ -552,7 +552,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX5_PERCENT, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX5_PERCENT, Value)
         End Set
     End Property
 
@@ -568,7 +568,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX6_DESCRIPTION, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX6_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -583,7 +583,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX6_COMPUTE_METHOD_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX6_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
@@ -598,7 +598,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX6_PERCENT_FLAG_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX6_PERCENT_FLAG_ID, Value)
         End Set
     End Property
 
@@ -614,7 +614,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_TAX6_PERCENT, Value)
+            SetValue(CountryTaxDAL.COL_NAME_TAX6_PERCENT, Value)
         End Set
     End Property
 
@@ -630,7 +630,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_COMPANY_TYPE_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_COMPANY_TYPE_ID, Value)
         End Set
     End Property
 
@@ -646,7 +646,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_PRODUCT_TAX_TYPE_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_PRODUCT_TAX_TYPE_ID, Value)
         End Set
     End Property
     'REQ-1150
@@ -661,7 +661,7 @@ Public Class CountryTax
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(CountryTaxDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
@@ -714,28 +714,28 @@ Public Class CountryTax
                 If Row(sColName) Is DBNull.Value Then
                     .Description = Nothing
                 Else
-                    .Description = Me.Row(sColName)
+                    .Description = Row(sColName)
                 End If
 
                 sColName = String.Format(Col_TaxGroup_ComputeMethod, taxGroupNum)
                 If Row(sColName) Is DBNull.Value Then
                     .CompMethod = Nothing
                 Else
-                    .CompMethod = New Guid(CType(Me.Row(sColName), Byte()))
+                    .CompMethod = New Guid(CType(Row(sColName), Byte()))
                 End If
 
                 sColName = String.Format(Col_TaxGroup_PercentFlag, taxGroupNum)
                 If Row(sColName) Is DBNull.Value Then
                     .PercentFlag = Nothing
                 Else
-                    .PercentFlag = New Guid(CType(Me.Row(sColName), Byte()))
+                    .PercentFlag = New Guid(CType(Row(sColName), Byte()))
                 End If
 
                 sColName = String.Format(Col_TaxGroup_Percent, taxGroupNum)
                 If Row(sColName) Is DBNull.Value Then
                     .Percent = Nothing
                 Else
-                    .Percent = Me.Row(sColName)
+                    .Percent = Row(sColName)
                 End If
 
 
@@ -757,15 +757,15 @@ Public Class CountryTax
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CountryTaxDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -788,31 +788,31 @@ Public Class CountryTax
         NewExpirationDate = myCal.AddDays(NewExpirationDate, -1)
         NewExpirationDate = myCal.AddYears(NewExpirationDate, 1)
 
-        Me.EffectiveDate = NewEffectivedate
-        Me.ExpirationDate = NewExpirationDate
+        EffectiveDate = NewEffectivedate
+        ExpirationDate = NewExpirationDate
 
     End Sub
 
     Public Sub Copy(ByVal original As CountryTax)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing country tax")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
     Public Sub DeleteAndSave()
-        Me.CheckDeleted()
+        CheckDeleted()
         'Added for Def - 809
         CheckRegionTax()
         'end
 
-        Me.BeginEdit()
+        BeginEdit()
         Try
-            Me.Delete()
-            Me.Save()
+            Delete()
+            Save()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Me.cancelEdit()
+            cancelEdit()
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Sub
@@ -823,7 +823,7 @@ Public Class CountryTax
             Dim dal As New CountryTaxDAL
             Dim recCount As Integer
 
-            recCount = dal.GetRegionTaxCount(Me.CountryId, Me.TaxTypeId, Me.ProductTaxTypeId, Me.DealerId)
+            recCount = dal.GetRegionTaxCount(CountryId, TaxTypeId, ProductTaxTypeId, DealerId)
             If recCount > 0 Then
                 Dim errors() As ValidationError = {New ValidationError("Cannot be deleted as Region Tax records exist for this Country Tax.", GetType(CountryTax), Nothing, "", Nothing)}
                 Throw New BOValidationException(errors, GetType(CountryTax).FullName, Nothing)
@@ -862,8 +862,8 @@ Public Class CountryTax
     Public Function GetMaxExpirationDate(Optional ByVal UseCurrentDate As Boolean = False) As Date
         Try
             Dim dal As New CountryTaxDAL
-            Return dal.LoadMaxExpirationDate(Me.CountryId, Me.TaxTypeId, Me.CompanyTypeId, UseCurrentDate, _
-                                             Me.ProductTaxTypeId, Me.DealerId)
+            Return dal.LoadMaxExpirationDate(CountryId, TaxTypeId, CompanyTypeId, UseCurrentDate, _
+                                             ProductTaxTypeId, DealerId)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
@@ -872,8 +872,8 @@ Public Class CountryTax
     Public Sub GetMinEffDateAndMaxExpDate(ByRef MinEffDate As Date, ByRef MaxExpDate As Date, ByRef RcdCount As Integer)
         Try
             Dim dal As New CountryTaxDAL
-            dal.LoadMinEffDateMaxExpDate(MinEffDate, MaxExpDate, RcdCount, Me.CountryId, _
-                                         Me.TaxTypeId, Me.CompanyTypeId, Me.ProductTaxTypeId, Me.DealerId)
+            dal.LoadMinEffDateMaxExpDate(MinEffDate, MaxExpDate, RcdCount, CountryId, _
+                                         TaxTypeId, CompanyTypeId, ProductTaxTypeId, DealerId)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
@@ -915,12 +915,12 @@ Public Class CountryTax
 
         Public Sub New(ByVal fieldDisplayName As String, ByVal taxGroupID As Integer)
             MyBase.New(fieldDisplayName, String.Format(ALL_ENTRIES_REQUIRED, taxGroupID))
-            Me.TaxGroupNum = taxGroupID
+            TaxGroupNum = taxGroupID
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As CountryTax = CType(objectToValidate, CountryTax)
-            Dim oTG As TaxGroupData = obj.TaxGroup(Me.TaxGroupNum)
+            Dim oTG As TaxGroupData = obj.TaxGroup(TaxGroupNum)
 
             If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(TAX_COMPUTE_METHOD, _
                        ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), oTG.CompMethod) = MANUAL_COMPUTE_METHOD Then
@@ -948,13 +948,13 @@ Public Class CountryTax
 
         Public Sub New(ByVal fieldDisplayName As String, ByVal taxGroupID As Integer)
             MyBase.New(fieldDisplayName, String.Format(PERCENT_GREATER_THAN_ZERO, taxGroupID))
-            Me.TaxGroupNum = taxGroupID
+            TaxGroupNum = taxGroupID
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As CountryTax = CType(objectToValidate, CountryTax)
 
-            Dim oTG As TaxGroupData = obj.TaxGroup(Me.TaxGroupNum)
+            Dim oTG As TaxGroupData = obj.TaxGroup(TaxGroupNum)
 
             If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(TAX_COMPUTE_METHOD, _
                        ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), oTG.CompMethod) = MANUAL_COMPUTE_METHOD Then

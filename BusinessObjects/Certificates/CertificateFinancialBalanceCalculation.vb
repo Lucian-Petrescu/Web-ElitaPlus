@@ -2,7 +2,7 @@
 
 Friend Interface ICalculateFinancialBalance
 
-    Function Calculate(ByVal pCertificate As Certificate) As Decimal
+    Function Calculate(pCertificate As Certificate) As Decimal
 
     Property SerialNumber As String
 
@@ -36,7 +36,7 @@ Friend NotInheritable Class PRCalculateFinancialBalance
 
     Public Property SerialNumber As String Implements ICalculateFinancialBalance.SerialNumber
 
-    Private Function Calculate(ByVal pCertificate As Certificate) As Decimal Implements ICalculateFinancialBalance.Calculate
+    Private Function Calculate(pCertificate As Certificate) As Decimal Implements ICalculateFinancialBalance.Calculate
 
         Dim dal As New CertItemDAL
         Dim ds As DataSet
@@ -46,8 +46,8 @@ Friend NotInheritable Class PRCalculateFinancialBalance
 
         'Dim dv As CertItemSearchDV = pCertificate.CertItems
 
-        If Not pCertificate.Items.Where(Function(i) i.SerialNumber = Me.SerialNumber).OrderByDescending(Function(i) i.EffectiveDate).First().OriginalRetailPrice Is Nothing Then
-            originalRetailPrice = pCertificate.Items.Where(Function(i) i.SerialNumber = Me.SerialNumber).OrderByDescending(Function(i) i.EffectiveDate).First().OriginalRetailPrice
+        If Not pCertificate.Items.Where(Function(i) i.SerialNumber = SerialNumber).OrderByDescending(Function(i) i.EffectiveDate).First().OriginalRetailPrice Is Nothing Then
+            originalRetailPrice = pCertificate.Items.Where(Function(i) i.SerialNumber = SerialNumber).OrderByDescending(Function(i) i.EffectiveDate).First().OriginalRetailPrice
         Else
             originalRetailPrice = 0.0
         End If
@@ -123,7 +123,7 @@ End Class
 
 Friend NotInheritable Class CalculateFinancialBalanceFactory
 
-    Friend Shared Function GetCalculator(ByVal pCalculationMethod As String) As ICalculateFinancialBalance
+    Friend Shared Function GetCalculator(pCalculationMethod As String) As ICalculateFinancialBalance
         Select Case pCalculationMethod
             Case Codes.UPG_FINANCE_BAL_COMP_METH__PR
                 Return New PRCalculateFinancialBalance()

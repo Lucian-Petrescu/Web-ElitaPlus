@@ -22,7 +22,7 @@ Namespace Certificates
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -44,9 +44,9 @@ Namespace Certificates
             Public LastOperation As DetailPageCommand
             Public EditingBo As Rewards
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Rewards, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As Rewards, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
@@ -96,81 +96,81 @@ Namespace Certificates
                 Return CType(MyBase.State, MyState)
             End Get
         End Property
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
-                    Me.State.MyBO = New Rewards(CType(Me.CallingParameters, Guid))
+                If CallingParameters IsNot Nothing Then
+                    State.MyBO = New Rewards(CType(CallingParameters, Guid))
 
-                    Me.State.IsEditMode = True
+                    State.IsEditMode = True
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
+                MenuEnabled = True
                 Dim retObj As RewardDetailsForm.ReturnType = CType(ReturnPar, RewardDetailsForm.ReturnType)
-                Me.State.HasDataChanged = retObj.HasDataChanged
+                State.HasDataChanged = retObj.HasDataChanged
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                        If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
-                                Me.State.RewardId = retObj.EditingBo.Id
+                                State.RewardId = retObj.EditingBo.Id
                             End If
                         End If
                     Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                        DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 #Region "Page Events"
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             Try
 
-                Me.UpdateBreadcrum()
-                Me.MasterPage.MessageController.Clear()
+                UpdateBreadcrum()
+                MasterPage.MessageController.Clear()
 
-                If Not Me.IsPostBack Then
-                    Me.MenuEnabled = False
+                If Not IsPostBack Then
+                    MenuEnabled = False
                     ' Me.AddControlMsg(Me.btnDelete, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
 
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New Rewards
-                        Me.State.IsNew = True
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New Rewards
+                        State.IsNew = True
                     End If
 
-                    Me.PopulateDropdowns()
-                    Me.PopulateFormFromBOs()
+                    PopulateDropdowns()
+                    PopulateFormFromBOs()
                     'Me.EnableDisableFields(True)
 
                 End If
 
-                Me.CheckIfComingFromSaveConfirm()
-                Me.BindBoPropertiesToLabels()
+                CheckIfComingFromSaveConfirm()
+                BindBoPropertiesToLabels()
 
-                If Not Me.IsPostBack Then
-                    Me.AddLabelDecorations(Me.State.MyBO)
+                If Not IsPostBack Then
+                    AddLabelDecorations(State.MyBO)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
 
         End Sub
 #End Region
 
         Private Sub UpdateBreadcrum()
             'Breadcrumb and titles
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("REWARD_SEARCH")
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("REWARD_DETAILS")
-            Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("CERTIFICATES") & ElitaBase.Sperator & Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("EDIT_REWARD_DETAILS")
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("REWARD_SEARCH")
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("REWARD_DETAILS")
+            MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("CERTIFICATES") & ElitaBase.Sperator & MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("EDIT_REWARD_DETAILS")
 
         End Sub
 
@@ -182,18 +182,18 @@ Namespace Certificates
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Dim myBo As Rewards = Me.State.MyBO
+                Dim myBo As Rewards = State.MyBO
                 Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, False)
-                Me.NavController = Nothing
-                Me.ReturnToCallingPage(retObj)
+                NavController = Nothing
+                ReturnToCallingPage(retObj)
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Nothing)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+                HandleErrors(ex, MasterPage.MessageController)
+                DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Nothing)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.LastErrMsg = MasterPage.MessageController.Text
             End Try
         End Sub
 
@@ -204,30 +204,30 @@ Namespace Certificates
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         ''' 
-        Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+        Private Sub btnSave_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
             Try
 
-                Me.PopulateBOsFormFrom()
-                Me.State.MyBO.Validate()
+                PopulateBOsFormFrom()
+                State.MyBO.Validate()
 
-                If (Me.State.MyBO.IsDirty OrElse Me.State.MyBO.IsFamilyDirty) Then
-                    Me.State.HasDataChanged = True
-                    if Not Me.State.MyBO.RewardPymtModeXcd Is Nothing AndAlso Me.State.MyBO.RewardPymtModeXcd = Codes.REWARD_PYMT_MODE__GIFTCARD AndAlso
-                        Not Me.State.MyBO.RewardStatusXcd Is Nothing AndAlso Me.State.MyBO.RewardStatusXcd = Codes.REWARD_STATUS__APPROVED then
+                If (State.MyBO.IsDirty OrElse State.MyBO.IsFamilyDirty) Then
+                    State.HasDataChanged = True
+                    if State.MyBO.RewardPymtModeXcd IsNot Nothing AndAlso State.MyBO.RewardPymtModeXcd = Codes.REWARD_PYMT_MODE__GIFTCARD AndAlso
+State.MyBO.RewardStatusXcd IsNot Nothing AndAlso State.MyBO.RewardStatusXcd = Codes.REWARD_STATUS__APPROVED then
                         GetGiftCardInfo()
                     End If
 
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = False
-                    Me.PopulateFormFromBOs()
+                    State.MyBO.Save()
+                    State.HasDataChanged = False
+                    PopulateFormFromBOs()
 
-                      Me.ClearGridViewHeadersAndLabelsErrSign()
-                    Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
+                      ClearGridViewHeadersAndLabelsErrSign()
+                    MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
                 Else
-                    Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_SAVED)
+                    MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_SAVED)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -237,18 +237,18 @@ Namespace Certificates
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub btnUndo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
-                If Not Me.State.MyBO.IsNew Then
+                If Not State.MyBO.IsNew Then
                     'Reload from the DB
-                    Me.State.MyBO = New Rewards(Me.State.MyBO.Id)
+                    State.MyBO = New Rewards(State.MyBO.Id)
                 Else
-                    Me.State.MyBO = New Rewards
+                    State.MyBO = New Rewards
                 End If
-                Me.PopulateFormFromBOs()
+                PopulateFormFromBOs()
                 'Me.EnableDisableFields(True)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -261,16 +261,16 @@ Namespace Certificates
         ''' </summary>
         ''' <remarks></remarks>
         Protected Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "RewardTypeXcd", Me.moRewardTypelbl)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "CertNumber", Me.moCertNumberlbl)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "RewardStatusXcd", Me.moRewardStatuslbl)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "RewardPymtModeXcd", Me.moRewardPayModelbl)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "FormSignedXcd", Me.moFormSignedlbl)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "SubscriptionFormSignedXcd", Me.moSubscFormSignedlbl)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "RibSignedXcd", Me.moRibSignedlbl)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "SequenceNumber", Me.moSeqNumberlbl)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "InvoiceSignedXcd", Me.moInvoiceSignedlbl)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "RewardAmount", Me.moRewardAmountlbl)
+            BindBOPropertyToLabel(State.MyBO, "RewardTypeXcd", moRewardTypelbl)
+            BindBOPropertyToLabel(State.MyBO, "CertNumber", moCertNumberlbl)
+            BindBOPropertyToLabel(State.MyBO, "RewardStatusXcd", moRewardStatuslbl)
+            BindBOPropertyToLabel(State.MyBO, "RewardPymtModeXcd", moRewardPayModelbl)
+            BindBOPropertyToLabel(State.MyBO, "FormSignedXcd", moFormSignedlbl)
+            BindBOPropertyToLabel(State.MyBO, "SubscriptionFormSignedXcd", moSubscFormSignedlbl)
+            BindBOPropertyToLabel(State.MyBO, "RibSignedXcd", moRibSignedlbl)
+            BindBOPropertyToLabel(State.MyBO, "SequenceNumber", moSeqNumberlbl)
+            BindBOPropertyToLabel(State.MyBO, "InvoiceSignedXcd", moInvoiceSignedlbl)
+            BindBOPropertyToLabel(State.MyBO, "RewardAmount", moRewardAmountlbl)
 
 
         End Sub
@@ -280,79 +280,79 @@ Namespace Certificates
         ''' </summary>
         ''' <remarks></remarks>
         Protected Sub PopulateBOsFormFrom()
-            With Me.State.MyBO
-                Me.PopulateBOProperty(Me.State.MyBO, "RewardTypeXcd", Me.moRewardTypeDD, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "RewardAmount", Me.moRewardAmountTxt)
-                Me.PopulateBOProperty(Me.State.MyBO, "CertNumber", Me.moCertNumberTxt.Text)
-                Me.PopulateBOProperty(Me.State.MyBO, "SequenceNumber", Me.moSeqNumberTxt.Text)
-                Me.PopulateBOProperty(Me.State.MyBO, "RewardStatusXcd", Me.moRewardStatusDD, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "RewardPymtModeXcd", Me.moRewardPayModeDD, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "FormSignedXcd", Me.moFormSignedDD, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "SubscriptionFormSignedXcd", Me.moSubscFormSignedDD, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "InvoiceSignedXcd", Me.moInvoiceSignedDD, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "RibSignedXcd", Me.moRibSignedDD, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "RewardPymtModeXcd", Me.moRewardPayModeDD, False, True)
+            With State.MyBO
+                PopulateBOProperty(State.MyBO, "RewardTypeXcd", moRewardTypeDD, False, True)
+                PopulateBOProperty(State.MyBO, "RewardAmount", moRewardAmountTxt)
+                PopulateBOProperty(State.MyBO, "CertNumber", moCertNumberTxt.Text)
+                PopulateBOProperty(State.MyBO, "SequenceNumber", moSeqNumberTxt.Text)
+                PopulateBOProperty(State.MyBO, "RewardStatusXcd", moRewardStatusDD, False, True)
+                PopulateBOProperty(State.MyBO, "RewardPymtModeXcd", moRewardPayModeDD, False, True)
+                PopulateBOProperty(State.MyBO, "FormSignedXcd", moFormSignedDD, False, True)
+                PopulateBOProperty(State.MyBO, "SubscriptionFormSignedXcd", moSubscFormSignedDD, False, True)
+                PopulateBOProperty(State.MyBO, "InvoiceSignedXcd", moInvoiceSignedDD, False, True)
+                PopulateBOProperty(State.MyBO, "RibSignedXcd", moRibSignedDD, False, True)
+                PopulateBOProperty(State.MyBO, "RewardPymtModeXcd", moRewardPayModeDD, False, True)
 
             End With
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
 
         End Sub
 
         Protected Sub PopulateFormFromBOs()
-            With Me.State.MyBO
+            With State.MyBO
                 ' Me.moRewardTypeDD.PopulateOld("REWARD_TYPE", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.None, String.Empty, ListValueType.Description)
-                Me.moRewardTypeDD.Populate(CommonConfigManager.Current.ListManager.GetList("REWARD_TYPE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                moRewardTypeDD.Populate(CommonConfigManager.Current.ListManager.GetList("REWARD_TYPE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                  {
                    .ValueFunc = AddressOf .GetExtendedCode
                  })
-                BindSelectItem(.RewardTypeXcd, Me.moRewardTypeDD)
-                Me.PopulateControlFromBOProperty(moRewardAmountTxt, .RewardAmount)
-                Me.PopulateControlFromBOProperty(moCertNumberTxt, .CertNumber)
+                BindSelectItem(.RewardTypeXcd, moRewardTypeDD)
+                PopulateControlFromBOProperty(moRewardAmountTxt, .RewardAmount)
+                PopulateControlFromBOProperty(moCertNumberTxt, .CertNumber)
                 ''  Me.moRewardStatusDD.PopulateOld("REWARD_STATUS", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.None, String.Empty, ListValueType.Description)
-                Me.moRewardStatusDD.Populate(CommonConfigManager.Current.ListManager.GetList("REWARD_STATUS", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                moRewardStatusDD.Populate(CommonConfigManager.Current.ListManager.GetList("REWARD_STATUS", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                  {
                    .ValueFunc = AddressOf .GetExtendedCode
                  })
-                BindSelectItem(.RewardStatusXcd, Me.moRewardStatusDD)
+                BindSelectItem(.RewardStatusXcd, moRewardStatusDD)
                 ' Me.moRibSignedDD.PopulateOld("DOCUMENT_STATUS", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.None, String.Empty, ListValueType.Description)
-                Me.moRibSignedDD.Populate(CommonConfigManager.Current.ListManager.GetList("DOCUMENT_STATUS", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                moRibSignedDD.Populate(CommonConfigManager.Current.ListManager.GetList("DOCUMENT_STATUS", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                  {
                    .ValueFunc = AddressOf .GetExtendedCode
                  })
-                BindSelectItem(.RibSignedXcd, Me.moRibSignedDD)
+                BindSelectItem(.RibSignedXcd, moRibSignedDD)
 
                 ' Me.moInvoiceSignedDD.PopulateOld("DOCUMENT_STATUS", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.None, String.Empty, ListValueType.Description)
-                Me.moInvoiceSignedDD.Populate(CommonConfigManager.Current.ListManager.GetList("DOCUMENT_STATUS", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                moInvoiceSignedDD.Populate(CommonConfigManager.Current.ListManager.GetList("DOCUMENT_STATUS", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                  {
                    .ValueFunc = AddressOf .GetExtendedCode
                  })
-                BindSelectItem(.InvoiceSignedXcd, Me.moInvoiceSignedDD)
+                BindSelectItem(.InvoiceSignedXcd, moInvoiceSignedDD)
                 ' moFormSignedDD.PopulateOld("DOCUMENT_STATUS", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.None, String.Empty, ListValueType.Description)
                 moFormSignedDD.Populate(CommonConfigManager.Current.ListManager.GetList("DOCUMENT_STATUS", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                  {
                    .ValueFunc = AddressOf .GetExtendedCode
                  })
-                BindSelectItem(.FormSignedXcd, Me.moFormSignedDD)
+                BindSelectItem(.FormSignedXcd, moFormSignedDD)
                 ' moSubscFormSignedDD.PopulateOld("DOCUMENT_STATUS", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.None, String.Empty, ListValueType.Description)
                 moSubscFormSignedDD.Populate(CommonConfigManager.Current.ListManager.GetList("DOCUMENT_STATUS", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                  {
                    .ValueFunc = AddressOf .GetExtendedCode
                  })
-                BindSelectItem(.SubscriptionFormSignedXcd, Me.moSubscFormSignedDD)
+                BindSelectItem(.SubscriptionFormSignedXcd, moSubscFormSignedDD)
                 'Me.moRewardPayModeDD.PopulateOld("REWARD_PYMT_MODE", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.None, String.Empty, ListValueType.Description)
-                Me.moRewardPayModeDD.Populate(CommonConfigManager.Current.ListManager.GetList("REWARD_PYMT_MODE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                moRewardPayModeDD.Populate(CommonConfigManager.Current.ListManager.GetList("REWARD_PYMT_MODE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                  {
                    .ValueFunc = AddressOf .GetExtendedCode
                  })
-                BindSelectItem(.RewardPymtModeXcd, Me.moRewardPayModeDD)
-                Me.PopulateControlFromBOProperty(moSeqNumberTxt, .SequenceNumber)
-                Me.PopulateControlFromBOProperty(moIbanNumberTxt, .IbanNumber)
-                Me.PopulateControlFromBOProperty(moSwiftCodeTxt, .SwiftCode)
+                BindSelectItem(.RewardPymtModeXcd, moRewardPayModeDD)
+                PopulateControlFromBOProperty(moSeqNumberTxt, .SequenceNumber)
+                PopulateControlFromBOProperty(moIbanNumberTxt, .IbanNumber)
+                PopulateControlFromBOProperty(moSwiftCodeTxt, .SwiftCode)
 
-                Me.EnableDisableFields(True)
+                EnableDisableFields(True)
 
                 If (.RewardStatusXcd = Codes.REWARD_STATUS__GIFT_CARD_SENT Or .RewardStatusXcd = Codes.REWARD_STATUS__SEPA_XFER_SENT) Then
                     ControlMgr.SetEnableControl(Me, moRewardStatusDD, False)
@@ -370,16 +370,16 @@ Namespace Certificates
             End With
         End Sub
 
-        Sub EnableDisableButtons(ByVal enableToggle As Boolean)
+        Sub EnableDisableButtons(enableToggle As Boolean)
             ControlMgr.SetEnableControl(Me, btnApply_WRITE, enableToggle)
             ControlMgr.SetEnableControl(Me, btnUndo_WRITE, enableToggle)
             ControlMgr.SetEnableControl(Me, btnBack, enableToggle)
         End Sub
 
-        Protected Sub EnableDisableFields(ByVal toggle As Boolean)
+        Protected Sub EnableDisableFields(toggle As Boolean)
 
-            Me.EnableDisableButtons(toggle)
-            If Me.State.IsEditMode Then
+            EnableDisableButtons(toggle)
+            If State.IsEditMode Then
                 ControlMgr.SetEnableControl(Me, btnUndo_WRITE, True)
             Else
                 ControlMgr.SetEnableControl(Me, btnUndo_WRITE, False)
@@ -387,9 +387,9 @@ Namespace Certificates
 
         End Sub
         Protected Sub CreateNew()
-            Me.State.MyBO = New Rewards
-            Me.PopulateFormFromBOs()
-            Me.State.IsEditMode = False
+            State.MyBO = New Rewards
+            PopulateFormFromBOs()
+            State.IsEditMode = False
             'Me.EnableDisableFields(True)
         End Sub
 
@@ -398,31 +398,31 @@ Namespace Certificates
 
             'Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
 
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
-                Me.BindBoPropertiesToLabels()
-                Me.State.MyBO.Save()
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
+                BindBoPropertiesToLabels()
+                State.MyBO.Save()
             End If
 
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNew()
+                    MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.Accept
-                    If Me.State.MyBO.IsDirty Then
-                        Me.State.MyBO.Save()
-                        Me.State.HasDataChanged = True
-                        Me.PopulateFormFromBOs()
-                        Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
+                    If State.MyBO.IsDirty Then
+                        State.MyBO.Save()
+                        State.HasDataChanged = True
+                        PopulateFormFromBOs()
+                        MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
                     Else
-                        Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_SAVED)
+                        MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_SAVED)
                     End If
             End Select
 
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
         End Sub
 
         Protected Sub PopulateDropdowns()
@@ -437,13 +437,13 @@ Namespace Certificates
              Dim Referenceinfo As New CertificateReference()
              
 
-            Referenceinfo.CompanyCode=Me.State.MyBO.Company
-            Referenceinfo.CertificateNumber=Me.State.MyBO.CertNumber
-            Referenceinfo.DealerCode=Me.State.MyBO.Dealer
+            Referenceinfo.CompanyCode=State.MyBO.Company
+            Referenceinfo.CertificateNumber=State.MyBO.CertNumber
+            Referenceinfo.DealerCode=State.MyBO.Dealer
 
             GiftRequest.ReferenceType = EntityTypes.Certificate
             GiftRequest.PurposeCode="Rewards"
-            GiftRequest.Amount=Me.State.MyBO.RewardAmount
+            GiftRequest.Amount=State.MyBO.RewardAmount
             GiftRequest.Reference = Referenceinfo
 
 
@@ -453,11 +453,11 @@ Namespace Certificates
                 GiftCardResponse = WcfClientHelper.Execute(Of GiftCardServiceClient, IGiftCardService, GiftCardResponse)(
                                                                 GetClient(),
                                                                 New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = ElitaPlusIdentity.Current.ActiveUser.NetworkId}},
-                                                                Function(ByVal c As GiftCardServiceClient)
+                                                                Function(c As GiftCardServiceClient)
                                                                     Return c.ProcureGiftCard(GiftRequest)
                                                                 End Function)
 
-                Me.State.MyBO.GiftCardRequestId=GiftCardResponse.GiftCardId
+                State.MyBO.GiftCardRequestId=GiftCardResponse.GiftCardId
 
             Catch ex As FaultException
                 Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR, TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR) & " - " & ex.Message)

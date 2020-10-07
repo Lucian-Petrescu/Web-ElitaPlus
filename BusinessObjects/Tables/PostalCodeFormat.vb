@@ -8,40 +8,40 @@ Public Class PostalCodeFormat
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New PostalCodeFormatDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize(True)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -52,20 +52,20 @@ Public Class PostalCodeFormat
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New PostalCodeFormatDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
             Initialize(False)
@@ -79,13 +79,13 @@ Public Class PostalCodeFormat
     Private _regularExpression As RegularExpression
     'Initialization code for new objects
     Private Sub Initialize(ByVal blnNew As Boolean)
-        If Me._regularExpression Is Nothing Then
+        If _regularExpression Is Nothing Then
             If blnNew Then
-                _regularExpression = New RegularExpression(Me.Dataset)
+                _regularExpression = New RegularExpression(Dataset)
             Else
-                _regularExpression = New RegularExpression(Me.RegularExpressionId, Me.Dataset)
+                _regularExpression = New RegularExpression(RegularExpressionId, Dataset)
             End If
-            Me.RegularExpressionId = Me._regularExpression.Id
+            RegularExpressionId = _regularExpression.Id
         End If
     End Sub
 
@@ -120,7 +120,7 @@ Public Class PostalCodeFormat
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PostalCodeFormatDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(PostalCodeFormatDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -137,7 +137,7 @@ Public Class PostalCodeFormat
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(PostalCodeFormatDAL.COL_NAME_LOCATOR_START_POSITION, Value)
+            SetValue(PostalCodeFormatDAL.COL_NAME_LOCATOR_START_POSITION, Value)
         End Set
     End Property
 
@@ -154,7 +154,7 @@ Public Class PostalCodeFormat
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(PostalCodeFormatDAL.COL_NAME_LOCATOR_LENGTH, Value)
+            SetValue(PostalCodeFormatDAL.COL_NAME_LOCATOR_LENGTH, Value)
         End Set
     End Property
 
@@ -172,9 +172,9 @@ Public Class PostalCodeFormat
         Set(ByVal Value As Boolean)
             CheckDeleted()
             If Value Then
-                Me.SetValue(PostalCodeFormatDAL.COL_NAME_REFORMAT_FILE_INPUT_FLAG, "Y")
+                SetValue(PostalCodeFormatDAL.COL_NAME_REFORMAT_FILE_INPUT_FLAG, "Y")
             Else
-                Me.SetValue(PostalCodeFormatDAL.COL_NAME_REFORMAT_FILE_INPUT_FLAG, "N")
+                SetValue(PostalCodeFormatDAL.COL_NAME_REFORMAT_FILE_INPUT_FLAG, "N")
             End If
         End Set
     End Property
@@ -190,9 +190,9 @@ Public Class PostalCodeFormat
         Set(ByVal Value As Boolean)
             CheckDeleted()
             If Value Then
-                Me.SetValue(PostalCodeFormatDAL.COL_NAME_COMUNA_ENABLED, "Y")
+                SetValue(PostalCodeFormatDAL.COL_NAME_COMUNA_ENABLED, "Y")
             Else
-                Me.SetValue(PostalCodeFormatDAL.COL_NAME_COMUNA_ENABLED, "N")
+                SetValue(PostalCodeFormatDAL.COL_NAME_COMUNA_ENABLED, "N")
             End If
         End Set
     End Property
@@ -209,14 +209,14 @@ Public Class PostalCodeFormat
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PostalCodeFormatDAL.COL_NAME_REGULAR_EXPRESSION_ID, Value)
+            SetValue(PostalCodeFormatDAL.COL_NAME_REGULAR_EXPRESSION_ID, Value)
         End Set
     End Property
 
     Public Function RegularExpressionBO() As RegularExpression
 
-        If Me._regularExpression Is Nothing Then
-            _regularExpression = New RegularExpression(Me.RegularExpressionId)
+        If _regularExpression Is Nothing Then
+            _regularExpression = New RegularExpression(RegularExpressionId)
         End If
         Return _regularExpression
 
@@ -315,12 +315,12 @@ Public Class PostalCodeFormat
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me.IsFamilyDirty Then Me.RegularExpressionBO.Save()
-            If Me._isDSCreator AndAlso (Me.IsDirty Or Me.IsFamilyDirty) AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If IsFamilyDirty Then RegularExpressionBO.Save()
+            If _isDSCreator AndAlso (IsDirty Or IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New PostalCodeFormatDAL
-                dal.UpdateFamily(Me.Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then Me.Load(Me.Id)
+                If Row.RowState <> DataRowState.Detached Then Load(Id)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)

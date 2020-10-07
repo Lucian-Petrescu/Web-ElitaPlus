@@ -16,7 +16,7 @@ Namespace CustomerReg
         Implements CustomerReg.ICustomerRegistration
 
 
-        Public Function Hello(ByVal name As String) As String Implements ICustomerRegistration.Hello
+        Public Function Hello(name As String) As String Implements ICustomerRegistration.Hello
             Try
                 Dim sRet As String
 
@@ -42,7 +42,7 @@ Namespace CustomerReg
             End Try
         End Function
 
-        Public Function LoginBody(ByVal networkID As String, ByVal password As String, ByVal group As String) As String Implements ICustomerRegistration.LoginBody
+        Public Function LoginBody(networkID As String, password As String, group As String) As String Implements ICustomerRegistration.LoginBody
             Try
                 Dim sRet As String
 
@@ -55,7 +55,7 @@ Namespace CustomerReg
             End Try
         End Function
 
-        Public Function FindRegistration(ByVal customerRegItemSearch As CustRegItemSearchDC) As CustRegistrationDC Implements ICustomerRegistration.FindRegistration
+        Public Function FindRegistration(customerRegItemSearch As CustRegItemSearchDC) As CustRegistrationDC Implements ICustomerRegistration.FindRegistration
             Try
                 Dim dsCustReg As DataSet
                 Dim row As DataRow
@@ -120,7 +120,7 @@ Namespace CustomerReg
 
         End Function
 
-        Public Function CreateRegistration(ByVal customerRegistration As CustRegistrationDC) As String Implements ICustomerRegistration.CreateRegistration
+        Public Function CreateRegistration(customerRegistration As CustRegistrationDC) As String Implements ICustomerRegistration.CreateRegistration
             Try
                 Dim returnMessage As String
 
@@ -162,7 +162,7 @@ Namespace CustomerReg
             End Try
         End Function
 
-        Public Function UpdateRegistration(ByVal customerRegistration As CustRegistrationDC) As String Implements ICustomerRegistration.UpdateRegistration
+        Public Function UpdateRegistration(customerRegistration As CustRegistrationDC) As String Implements ICustomerRegistration.UpdateRegistration
             Try
                 Dim returnMessage As String
                 Dim id As Guid
@@ -207,7 +207,7 @@ Namespace CustomerReg
             End Try
         End Function
 
-        Public Function FindItem(ByVal customerRegItemSearch As CustRegItemSearchDC) As System.Collections.Generic.List(Of CustItemDC) Implements ICustomerRegistration.FindItem
+        Public Function FindItem(customerRegItemSearch As CustRegItemSearchDC) As System.Collections.Generic.List(Of CustItemDC) Implements ICustomerRegistration.FindItem
             Try
                 Dim dsCustItem As DataSet
                 Dim row As DataRow
@@ -267,7 +267,7 @@ Namespace CustomerReg
             End Try
         End Function
 
-        Public Function CreateItem(ByVal customerItem As CustItemDC) As String Implements ICustomerRegistration.CreateItem
+        Public Function CreateItem(customerItem As CustItemDC) As String Implements ICustomerRegistration.CreateItem
             Try
                 Dim returnMessage As String
                 Dim registrationId As Guid
@@ -312,7 +312,7 @@ Namespace CustomerReg
             End Try
         End Function
 
-        Public Function DeleteItem(ByVal customerItemDelete As CustItemDeleteActivateDC) As System.Collections.Generic.List(Of CustItemDC) Implements ICustomerRegistration.DeleteItem
+        Public Function DeleteItem(customerItemDelete As CustItemDeleteActivateDC) As System.Collections.Generic.List(Of CustItemDC) Implements ICustomerRegistration.DeleteItem
             Try
                 Dim dsCustItem As DataSet
                 Dim row As DataRow
@@ -385,7 +385,7 @@ Namespace CustomerReg
             End Try
         End Function
 
-        Public Function ActivateItem(ByVal customerItemActivate As CustItemDeleteActivateDC) As String Implements ICustomerRegistration.ActivateItem
+        Public Function ActivateItem(customerItemActivate As CustItemDeleteActivateDC) As String Implements ICustomerRegistration.ActivateItem
             Try
                 Dim returnMessage As String = String.Empty
                 Dim registrationId As Guid = Guid.Empty

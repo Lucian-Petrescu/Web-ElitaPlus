@@ -16,7 +16,7 @@ Partial Class InterfaceStatusForm
     ' Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         ' Do not modify it using the code editor.
         InitializeComponent()
@@ -80,42 +80,42 @@ Partial Class InterfaceStatusForm
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.ErrorCtrl.Clear_Hide()
-        Me.SetStateProperties()
+        ErrorCtrl.Clear_Hide()
+        SetStateProperties()
         Try
-            If Not Me.IsPostBack Then
-                Me.SortDirection = Me.State.SortExpression
-                Me.SetDefaultButton(Me.SearchActiveFileTextBox, btnSearch)
+            If Not IsPostBack Then
+                SortDirection = State.SortExpression
+                SetDefaultButton(SearchActiveFileTextBox, btnSearch)
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                        Grid.PageSize = Me.State.selectedPageSize
+                If State.IsGridVisible Then
+                    If Not (State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                        Grid.PageSize = State.selectedPageSize
                     End If
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
-                Me.SetGridItemStyleColor(Me.Grid)
+                SetGridItemStyleColor(Grid)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
-        Me.MenuEnabled = True
-        Me.IsReturningFromChild = True
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
+        MenuEnabled = True
+        IsReturningFromChild = True
         Dim retObj As CountryForm.ReturnType = CType(ReturnPar, CountryForm.ReturnType)
-        Me.State.HasDataChanged = retObj.HasDataChanged
+        State.HasDataChanged = retObj.HasDataChanged
         Select Case retObj.LastOperation
             Case ElitaPlusPage.DetailPageCommand.Back
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
                     If Not retObj.EditingBo.IsNew Then
-                        Me.State.InterfacestatusId = retObj.EditingBo.Id
+                        State.InterfacestatusId = retObj.EditingBo.Id
                     End If
-                    Me.State.IsGridVisible = True
+                    State.IsGridVisible = True
                 End If
 
         End Select
@@ -126,50 +126,50 @@ Partial Class InterfaceStatusForm
 #Region "Controlling Logic"
 
     Public Sub PopulateGrid()
-        If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-            Me.State.searchDV = InterfaceStatusWrk.getList(Me.State.activefilename)
+        If ((State.searchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+            State.searchDV = InterfaceStatusWrk.getList(State.activefilename)
 
         End If
-        Me.State.searchDV.Sort = Me.State.SortExpression
-        If Not (Me.State.searchDV Is Nothing) Then
-            Me.State.searchDV.Sort = Me.SortDirection
-            Me.Grid.AutoGenerateColumns = False
+        State.searchDV.Sort = State.SortExpression
+        If Not (State.searchDV Is Nothing) Then
+            State.searchDV.Sort = SortDirection
+            Grid.AutoGenerateColumns = False
 
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.InterfacestatusId, Me.Grid, Me.State.PageIndex)
-            Me.SortAndBindGrid()
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.InterfacestatusId, Grid, State.PageIndex)
+            SortAndBindGrid()
         End If
     End Sub
 
     Private Sub SortAndBindGrid()
-        Me.State.PageIndex = Me.Grid.PageIndex
+        State.PageIndex = Grid.PageIndex
 
-        If (Me.State.searchDV.Count = 0) Then
+        If (State.searchDV.Count = 0) Then
 
-            Me.State.bnoRow = True
-            CreateHeaderForEmptyGrid(Grid, Me.SortDirection)
+            State.bnoRow = True
+            CreateHeaderForEmptyGrid(Grid, SortDirection)
         Else
-            Me.State.bnoRow = False
-            Me.Grid.Enabled = True
-            Me.Grid.DataSource = Me.State.searchDV
-            HighLightSortColumn(Grid, Me.SortDirection)
-            Me.Grid.DataBind()
+            State.bnoRow = False
+            Grid.Enabled = True
+            Grid.DataSource = State.searchDV
+            HighLightSortColumn(Grid, SortDirection)
+            Grid.DataBind()
         End If
         If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
-        If Me.State.searchDV.Count > 0 Then
+        If State.searchDV.Count > 0 Then
 
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         Else
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
     End Sub
@@ -183,22 +183,22 @@ Partial Class InterfaceStatusForm
         Get
             Return ViewState("SortDirection").ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
 
     'The Binding Logic is here
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-        If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+        If dvRow IsNot Nothing And Not State.bnoRow Then
             If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                e.Row.Cells(Me.GRID_COL_ACTIVE_FILE_IDX).Text = dvRow(InterfaceStatusWrk.InterfaceStatusSearchDV.COL_ACTIVE_FILE).ToString
-                e.Row.Cells(Me.GRID_COL_DESCRIPTION_IDX).Text = dvRow(InterfaceStatusWrk.InterfaceStatusSearchDV.COL_DESCRIPTION).ToString
-                e.Row.Cells(Me.GRID_COL_STATUS_IDX).Text = dvRow(InterfaceStatusWrk.InterfaceStatusSearchDV.COL_STATUS).ToString
-                e.Row.Cells(Me.GRID_COL_CREATED_DATE_IDX).Text = dvRow(InterfaceStatusWrk.InterfaceStatusSearchDV.COL_CREATED_DATE).ToString
-                e.Row.Cells(Me.GRID_COL_INTERFACE_STATUS_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(InterfaceStatusWrk.InterfaceStatusSearchDV.COL_INTERFACE_STATUS_ID), Byte()))
+                e.Row.Cells(GRID_COL_ACTIVE_FILE_IDX).Text = dvRow(InterfaceStatusWrk.InterfaceStatusSearchDV.COL_ACTIVE_FILE).ToString
+                e.Row.Cells(GRID_COL_DESCRIPTION_IDX).Text = dvRow(InterfaceStatusWrk.InterfaceStatusSearchDV.COL_DESCRIPTION).ToString
+                e.Row.Cells(GRID_COL_STATUS_IDX).Text = dvRow(InterfaceStatusWrk.InterfaceStatusSearchDV.COL_STATUS).ToString
+                e.Row.Cells(GRID_COL_CREATED_DATE_IDX).Text = dvRow(InterfaceStatusWrk.InterfaceStatusSearchDV.COL_CREATED_DATE).ToString
+                e.Row.Cells(GRID_COL_INTERFACE_STATUS_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(InterfaceStatusWrk.InterfaceStatusSearchDV.COL_INTERFACE_STATUS_ID), Byte()))
             End If
 
             ' Def-3458
@@ -206,12 +206,12 @@ Partial Class InterfaceStatusForm
             Dim ts As TimeSpan
             ts = DateTime.Now.Subtract(CType(dvRow(InterfaceStatusWrk.InterfaceStatusSearchDV.COL_CREATED_DATE), DateTime))
 
-            If e.Row.Cells(Me.GRID_COL_DESCRIPTION_IDX).Text = "Process" Then
+            If e.Row.Cells(GRID_COL_DESCRIPTION_IDX).Text = "Process" Then
                 If ts.TotalHours > MaxHourvalue Then
-                    e.Row.Cells(Me.GRID_COL_RESET_IDX).FindControl("chkbxreset").Visible = True
+                    e.Row.Cells(GRID_COL_RESET_IDX).FindControl("chkbxreset").Visible = True
                     e.Row.Enabled = True
                 Else
-                    e.Row.Cells(Me.GRID_COL_RESET_IDX).FindControl("chkbxreset").Visible = False
+                    e.Row.Cells(GRID_COL_RESET_IDX).FindControl("chkbxreset").Visible = False
                     e.Row.Enabled = False
                 End If
 
@@ -220,47 +220,47 @@ Partial Class InterfaceStatusForm
 
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+            Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
-            If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                If Me.SortDirection.EndsWith(" ASC") Then
-                    Me.SortDirection = e.SortExpression + " DESC"
+            If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If SortDirection.EndsWith(" ASC") Then
+                    SortDirection = e.SortExpression + " DESC"
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
             Else
-                Me.SortDirection = e.SortExpression + " ASC"
+                SortDirection = e.SortExpression + " ASC"
             End If
-            Me.State.SortExpression = Me.SortDirection
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.SortExpression = SortDirection
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.InterfacestatusId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.InterfacestatusId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region
@@ -268,23 +268,23 @@ Partial Class InterfaceStatusForm
 #Region " Button Clicks "
     Private Sub SetStateProperties()
 
-        Me.State.activefilename = SearchActiveFileTextBox.Text()
+        State.activefilename = SearchActiveFileTextBox.Text()
     End Sub
 
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.InterfacestatusId = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.HasDataChanged = False
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            State.InterfacestatusId = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.HasDataChanged = False
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click1(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click1(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
         ClearSearchCriteria()
     End Sub
     Private Sub ClearSearchCriteria()
@@ -293,34 +293,34 @@ Partial Class InterfaceStatusForm
             SearchActiveFileTextBox.Text = String.Empty
 
             'Update Page State
-            With Me.State
+            With State
                 .activefilename = SearchActiveFileTextBox.Text
 
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
 
-    Protected Sub chkbxreset_checkedchanged(ByVal sender As Object, ByVal e As System.EventArgs) 'Handles chkbxreset.CheckedChanged
+    Protected Sub chkbxreset_checkedchanged(sender As Object, e As System.EventArgs) 'Handles chkbxreset.CheckedChanged
         Dim row As Integer
         Dim resetchk As CheckBox
         Dim InterfaceStatusWrkId As Guid
         Dim interfaceStatusWrk As InterfaceStatusWrk
         Dim gv As GridViewRow = CType(CType(sender, Control).Parent.Parent, GridViewRow)
         row = gv.RowIndex
-        resetchk = CType(Me.Grid.Rows(row).Cells(Me.GRID_COL_RESET_IDX).FindControl("chkbxreset"), CheckBox)
-        InterfaceStatusWrkId = New Guid(Me.Grid.Rows(row).Cells(Me.GRID_COL_INTERFACE_STATUS_IDX).Text)
+        resetchk = CType(Grid.Rows(row).Cells(GRID_COL_RESET_IDX).FindControl("chkbxreset"), CheckBox)
+        InterfaceStatusWrkId = New Guid(Grid.Rows(row).Cells(GRID_COL_INTERFACE_STATUS_IDX).Text)
         If resetchk.Checked = True Then
             interfaceStatusWrk = New InterfaceStatusWrk(InterfaceStatusWrkId)
-            Me.PopulateBOProperty(interfaceStatusWrk, STATUS_PROPERTY, "Failure")
-            Me.PopulateBOProperty(interfaceStatusWrk, ACTIVE_FILENAME_PROPERTY, String.Empty)
+            PopulateBOProperty(interfaceStatusWrk, STATUS_PROPERTY, "Failure")
+            PopulateBOProperty(interfaceStatusWrk, ACTIVE_FILENAME_PROPERTY, String.Empty)
             interfaceStatusWrk.Save()
-            Me.State.HasDataChanged = True
-            Me.PopulateGrid()
-            Me.State.HasDataChanged = False
+            State.HasDataChanged = True
+            PopulateGrid()
+            State.HasDataChanged = False
 
             'Grid.Rows(row).Cells(GRID_COL_ACTIVE_FILE_IDX).Text = " "
             'Grid.Rows(row).Cells(GRID_COL_STATUS_IDX).Text = "Failure"
@@ -335,14 +335,14 @@ Partial Class InterfaceStatusForm
 
 #Region "Helpers"
 
-    Private Sub ShowInfoMsgBox(ByVal strMsg As String, Optional ByVal Translate As Boolean = True)
+    Private Sub ShowInfoMsgBox(strMsg As String, Optional ByVal Translate As Boolean = True)
         Dim translatedMsg As String = strMsg
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
         Dim sJavaScript As String
         sJavaScript = "<SCRIPT>" & Environment.NewLine
-        sJavaScript &= "setTimeout(""showMessage('" & translatedMsg & "', '" & "AlertWindow" & "', '" & Me.MSG_BTN_OK & "', '" & Me.MSG_TYPE_INFO & "', '" & "null" & "')"", 0);" & Environment.NewLine
+        sJavaScript &= "setTimeout(""showMessage('" & translatedMsg & "', '" & "AlertWindow" & "', '" & MSG_BTN_OK & "', '" & MSG_TYPE_INFO & "', '" & "null" & "')"", 0);" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+        RegisterStartupScript("ShowConfirmation", sJavaScript)
     End Sub
 #End Region
 

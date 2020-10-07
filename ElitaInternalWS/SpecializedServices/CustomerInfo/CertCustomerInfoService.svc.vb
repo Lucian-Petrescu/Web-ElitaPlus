@@ -10,7 +10,7 @@ Imports Assurant.ElitaPlus.Business
 Public Class CertCustomerInfoService
     Implements ICertCustomerInfoService
 
-    Public Function GetCertCustomerInfo(ByVal request As GetCertificateRequest) As CertCustomerInfoResponse Implements ICertCustomerInfoService.GetCertCustomerInfo
+    Public Function GetCertCustomerInfo(request As GetCertificateRequest) As CertCustomerInfoResponse Implements ICertCustomerInfoService.GetCertCustomerInfo
 
         ' Validate Incoming Request for Mandatory Fields (DataAnnotations)
         Dim req As CertificateNumberLookup = DirectCast(request.CertificateSearch, CertificateNumberLookup)

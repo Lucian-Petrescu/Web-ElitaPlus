@@ -87,8 +87,8 @@ Public Class GVSTransactionUpdate
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -99,10 +99,10 @@ Public Class GVSTransactionUpdate
     Private Sub Load(ByVal ds As GVSTransactionUpdateDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -119,9 +119,9 @@ Public Class GVSTransactionUpdate
         Try
             If ds.TRANSACTION_HEADER.Count = 0 Or ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
             With ds.TRANSACTION_HEADER.Item(0)
-                Me.TransactionId = .TRANSACTION_ID
-                Me.GVSOriginalTransNo = .GVS_ORIGINAL_TRANS_NO
-                Me.FunctionTypeCode = .FUNCTION_TYPE
+                TransactionId = .TRANSACTION_ID
+                GVSOriginalTransNo = .GVS_ORIGINAL_TRANS_NO
+                FunctionTypeCode = .FUNCTION_TYPE
             End With
 
         Catch ex As BOValidationException

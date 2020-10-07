@@ -10,7 +10,7 @@ Public Class AcselXToElitaClaimFileLoadTask
 #End Region
 
 #Region "Constructors"
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 #End Region
@@ -20,7 +20,7 @@ Public Class AcselXToElitaClaimFileLoadTask
         Get
             Return _claimLoadFileProcessedId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _claimLoadFileProcessedId = value
         End Set
     End Property
@@ -29,7 +29,7 @@ Public Class AcselXToElitaClaimFileLoadTask
         Get
             Return _acselXToEliatClaimFileLoad
         End Get
-        Set(ByVal value As AcselXToElitaClaimFileLoad)
+        Set(value As AcselXToElitaClaimFileLoad)
             _acselXToEliatClaimFileLoad = value
         End Set
     End Property
@@ -42,14 +42,14 @@ Public Class AcselXToElitaClaimFileLoadTask
             Dim claimLoadFileProcessedId As Guid
             If (String.IsNullOrEmpty(MyBase.PublishedTask(PublishedTask.CLAIMLOAD_FILE_PROCESSED_ID))) Then
                 Logger.AddError("Argument Claim Load File Processed ID is not supplied in Argument")
-                Me.FailReason = "Argument Claim Load File Processed ID is not supplied in Argument"
+                FailReason = "Argument Claim Load File Processed ID is not supplied in Argument"
                 Throw New ArgumentException("Argument Claim Load File Processed ID is not supplied in Argument")
             Else
                 claimLoadFileProcessedId = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(MyBase.PublishedTask(PublishedTask.CLAIMLOAD_FILE_PROCESSED_ID)))
             End If
             Me.ClaimLoadFileProcessedId = claimLoadFileProcessedId
-            Me._acselXToEliatClaimFileLoad = New AcselXToElitaClaimFileLoad()
-            Me._acselXToEliatClaimFileLoad.Process(Me.ClaimLoadFileProcessedId)
+            _acselXToEliatClaimFileLoad = New AcselXToElitaClaimFileLoad()
+            _acselXToEliatClaimFileLoad.Process(Me.ClaimLoadFileProcessedId)
         Catch ex As Exception
             Logger.AddError(ex)
             Throw

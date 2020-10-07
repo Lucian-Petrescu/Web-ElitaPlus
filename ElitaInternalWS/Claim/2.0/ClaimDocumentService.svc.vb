@@ -6,7 +6,7 @@ Namespace Claims
     Public Class ClaimDocumentServiceV2
         Implements IClaimDocumentServiceV2
 
-        Public Function AttachDocument(ByVal request As AttachDocumentRequest) As AttachDocumentResponse Implements IClaimDocumentServiceV2.AttachDocument
+        Public Function AttachDocument(request As AttachDocumentRequest) As AttachDocumentResponse Implements IClaimDocumentServiceV2.AttachDocument
 
             ExtensionMethods.Validate(request)
 
@@ -53,7 +53,7 @@ Namespace Claims
 
         End Function
 
-        Public Function DownloadDocument(ByVal request As DownloadDocumentRequest) As DownloadDocumentResponse Implements IClaimDocumentServiceV2.DownloadDocument
+        Public Function DownloadDocument(request As DownloadDocumentRequest) As DownloadDocumentResponse Implements IClaimDocumentServiceV2.DownloadDocument
             Dim response As New DownloadDocumentResponse()
 
             Dim oClaim As ClaimBase = ClaimServiceHelper.GetClaim(request.ClaimsSearch)

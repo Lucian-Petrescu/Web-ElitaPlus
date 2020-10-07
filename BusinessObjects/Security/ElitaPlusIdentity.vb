@@ -81,7 +81,7 @@ Public Class ElitaPlusIdentity
 #Region " Public Members"
     Public ReadOnly Property BaseUrl
         Get
-            Return Me.ServiceOrderImageHostName.ToLowerInvariant().Replace("elitalogos/".ToLowerInvariant(), String.Empty)
+            Return ServiceOrderImageHostName.ToLowerInvariant().Replace("elitalogos/".ToLowerInvariant(), String.Empty)
         End Get
     End Property
 
@@ -90,7 +90,7 @@ Public Class ElitaPlusIdentity
     Public ReadOnly Property EmailAddress As String
         Get
             If (_emailAddress = Nothing) Then
-                _emailAddress = PopulateLDAPProperties(Me.ActiveUser.NetworkId)
+                _emailAddress = PopulateLDAPProperties(ActiveUser.NetworkId)
             End If
             Return _emailAddress
         End Get
@@ -151,7 +151,7 @@ Public Class ElitaPlusIdentity
     <Obsolete("Create/Use one of extension method from Assurant.Elita.Security.IdentityExtensions")>
     Public ReadOnly Property ActiveUser() As User
         Get
-            Return Me._user
+            Return _user
         End Get
     End Property
 
@@ -159,19 +159,19 @@ Public Class ElitaPlusIdentity
         Get
             '  Dim sUserName As String = "DB Connection Problem Or the User is Invalid "
             Dim sUserName As String = Nothing
-            If Not Me._user Is Nothing Then
-                sUserName = Me._user.UserName
+            If Not _user Is Nothing Then
+                sUserName = _user.UserName
             End If
             Return sUserName
         End Get
     End Property
 
     Public Function isInRole(ByVal roleCode As String) As Boolean
-        Return Me._user.isInRole(roleCode)
+        Return _user.isInRole(roleCode)
     End Function
 
     Public Sub CreateUser(ByVal userNetworkID As String)
-        Me._user = New User(userNetworkID)
+        _user = New User(userNetworkID)
     End Sub
 
     Public Function IsValidUser() As Boolean

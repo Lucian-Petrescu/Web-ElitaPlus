@@ -131,7 +131,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -143,48 +143,48 @@ Namespace Reports
 
         Private Sub InitializeForm()
             Dim t As Date = Date.Now.AddDays(-6)
-            Me.BeginDateText.Text = GetDateFormattedString(t)
-            Me.EndDateText.Text = GetDateFormattedString(Date.Now)
-            Me.RadiobuttonByReportingPeriod.Checked = True
-            Me.RadiobuttonClaims.Checked = True
-            Me.chkSvcCode.Checked = False
+            BeginDateText.Text = GetDateFormattedString(t)
+            EndDateText.Text = GetDateFormattedString(Date.Now)
+            RadiobuttonByReportingPeriod.Checked = True
+            RadiobuttonClaims.Checked = True
+            chkSvcCode.Checked = False
             PopulateCompaniesDropdown()
             PopulateDealerDropDown()
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            ErrControllerMaster.Clear_Hide()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     JavascriptCalls()
-                    Me.SetFormTab(PAGETAB)
+                    SetFormTab(PAGETAB)
                     InitializeForm()
                     TheReportCeInputControl.populateReportLanguages(RPT_FILENAME)
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginDate, Me.BeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.EndDateText)
+                    AddCalendar(BtnBeginDate, BeginDateText)
+                    AddCalendar(BtnEndDate, EndDateText)
                 Else
                     ClearErrLabels()
                 End If
                 CheckQuerystringForCurrencyReports()
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
 
         End Sub
 
         Private Sub CheckQuerystringForCurrencyReports()
             ShowHideControls(False)
-            Me.SetFormTitle(PAGETITLE)
+            SetFormTitle(PAGETITLE)
 
-            If (Not Request.QueryString("CALLER") Is Nothing) Then
+            If (Request.QueryString("CALLER") IsNot Nothing) Then
                 If (Request.QueryString("CALLER") = "CR") Then
                     queryStringCaller = Request.QueryString("CALLER")
-                    Me.SetFormTitle(PAGETITLEWITHCURRENCY)
+                    SetFormTitle(PAGETITLEWITHCURRENCY)
                     ShowHideControls(True)
                 End If
             End If
@@ -193,12 +193,12 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -206,25 +206,25 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Protected Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Protected Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
              Handles multipleCompDropControl.SelectedDropChanged
             Try
                 rbnSelectAllComp.Checked = False
                 PopulateDealerDropDown()
                 PopulateCurrencyDropdown()
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub OnFromDealerDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Protected Sub OnFromDealerDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
             Handles multipleDealerDropControl.SelectedDropChanged
             Try
                 If multipleDealerDropControl.SelectedCode <> "" Or multipleDealerDropControl.SelectedDesc <> "" Then
                     rbnSelectAllComp.Checked = False
                 End If
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
@@ -234,10 +234,10 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(BeginDateLabel)
-            Me.ClearLabelErrSign(EndDateLabel)
-            Me.ClearLabelErrSign(InvoiceNumberLabel)
-            Me.ClearLabelErrSign(lblCurrency)
+            ClearLabelErrSign(BeginDateLabel)
+            ClearLabelErrSign(EndDateLabel)
+            ClearLabelErrSign(InvoiceNumberLabel)
+            ClearLabelErrSign(lblCurrency)
         End Sub
 
 #End Region
@@ -295,8 +295,8 @@ Namespace Reports
                                                                   .CompanyId = UserCompanyMultipleDrop.SelectedGuid
                                                                 })
 
-                Me.ddlCurrency.Populate(Currency.ToArray(), populateOptions)
-                Me.ddlDealerCurrency.Populate(Currency.ToArray(), populateOptions)
+                ddlCurrency.Populate(Currency.ToArray(), populateOptions)
+                ddlDealerCurrency.Populate(Currency.ToArray(), populateOptions)
             Else
                 Dim Currency As DataElements.ListItem() =
                     CommonConfigManager.Current.ListManager.GetList(listCode:="GetCurrencyByCompany",
@@ -305,16 +305,16 @@ Namespace Reports
                                                                   .CompanyId = UserCompanyMultipleDrop.SelectedGuid
                                                                 })
 
-                Me.ddlCurrency.Populate(Currency.ToArray(), populateOptions)
-                Me.ddlDealerCurrency.Populate(Currency.ToArray(), populateOptions)
+                ddlCurrency.Populate(Currency.ToArray(), populateOptions)
+                ddlDealerCurrency.Populate(Currency.ToArray(), populateOptions)
             End If
         End Sub
 
-        Sub BindPayee(ByVal invoiceNumber As String)
+        Sub BindPayee(invoiceNumber As String)
             Try
-                If Not invoiceNumber Is Nothing AndAlso invoiceNumber.Trim.Length > 0 Then
-                    Me.PayeeLabel.Visible = True
-                    Me.cboPayee.Visible = True
+                If invoiceNumber IsNot Nothing AndAlso invoiceNumber.Trim.Length > 0 Then
+                    PayeeLabel.Visible = True
+                    cboPayee.Visible = True
                     Dim PayeeList As New Collections.Generic.List(Of DataElements.ListItem)
                     For Each Company_id As Guid In ElitaPlusIdentity.Current.ActiveUser.Companies
                         Dim Payee As DataElements.ListItem() =
@@ -326,7 +326,7 @@ Namespace Reports
                                                         })
 
                         If Payee.Count > 0 Then
-                            If Not PayeeList Is Nothing Then
+                            If PayeeList IsNot Nothing Then
                                 PayeeList.AddRange(Payee)
                             Else
                                 PayeeList = Payee.Clone()
@@ -334,7 +334,7 @@ Namespace Reports
                         End If
                     Next
 
-                    Me.cboPayee.Populate(PayeeList.ToArray(),
+                    cboPayee.Populate(PayeeList.ToArray(),
                         New PopulateOptions() With
                         {
                             .AddBlankItem = False
@@ -354,36 +354,36 @@ Namespace Reports
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub HidePayeeRow()
-            Me.cboPayee.Items.Clear()
-            Me.PayeeLabel.Visible = False
-            Me.cboPayee.Visible = False
+            cboPayee.Items.Clear()
+            PayeeLabel.Visible = False
+            cboPayee.Visible = False
         End Sub
-        Private Sub InvoiceNumberTextbox_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles InvoiceNumberTextbox.TextChanged
+        Private Sub InvoiceNumberTextbox_TextChanged(sender As Object, e As System.EventArgs) Handles InvoiceNumberTextbox.TextChanged
 
-            Me.BindPayee(Me.InvoiceNumberTextbox.Text)
+            BindPayee(InvoiceNumberTextbox.Text)
             'Me.InvoiceNumberTextbox.Attributes.Add(onchange, 
         End Sub
 
-        Public Function toggleDisplay(ByVal rowParam As String) As String
+        Public Function toggleDisplay(rowParam As String) As String
 
             Select Case rowParam
                 Case INVOICE_ROW
-                    If (Me.RadiobuttonByInvoiceNumber.Checked) Then
+                    If (RadiobuttonByInvoiceNumber.Checked) Then
                         Return "style='display:block;'"
                     End If
                 Case PAYEE_ROW
-                    If ((Me.RadiobuttonByInvoiceNumber.Checked) AndAlso
+                    If ((RadiobuttonByInvoiceNumber.Checked) AndAlso
                          Not InvoiceNumberTextbox.Equals(String.Empty)) Then
                         ' Me.InvoiceNumberTextbox.Text.is(showPayeeRowFlag)) Then
                         Return "style='display:block;'"
                     End If
                 Case PERIOD_ROW
-                    If (Me.RadiobuttonByReportingPeriod.Checked) Then
+                    If (RadiobuttonByReportingPeriod.Checked) Then
                         Return "style='display:block;'"
                     End If
             End Select
@@ -398,8 +398,8 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Sub SetReportParams(ByVal rptParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                        ByVal rptName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(rptParams As ReportParams, repParams() As ReportCeBaseForm.RptParam,
+                        rptName As String, startIndex As Integer)
             With rptParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("PI_USER_KEY", .userId, rptName)
                 repParams(startIndex + 1) = New ReportCeBaseForm.RptParam("PI_REPORT_TYPE", .reportType, rptName)
@@ -420,8 +420,8 @@ Namespace Reports
 
         End Sub
 
-        Sub SetReportExpParams(ByVal rptParams As ReportExpParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                            ByVal rptName As String, ByVal startIndex As Integer)
+        Sub SetReportExpParams(rptParams As ReportExpParams, repParams() As ReportCeBaseForm.RptParam,
+                            rptName As String, startIndex As Integer)
             With rptParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("PI_USER_KEY", .userId, rptName)
                 repParams(startIndex + 1) = New ReportCeBaseForm.RptParam("PI_REPORT_TYPE", .reportType, rptName)
@@ -443,10 +443,10 @@ Namespace Reports
 
         End Sub
 
-        Function SetParameters(ByVal userId As String, ByVal invoiceNumber As String, ByVal payee As String,
-                               ByVal beginDate As String, ByVal endDate As String, ByVal selectionType As String,
-                               ByVal svccode As String, ByVal taxtype As String, ByVal culturecode As String,
-                               ByVal customerAddress As String, ByVal companyCode As String, dealerCode As String, dealerForCur As Guid, rptCurrency As Guid) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, invoiceNumber As String, payee As String,
+                               beginDate As String, endDate As String, selectionType As String,
+                               svccode As String, taxtype As String, culturecode As String,
+                               customerAddress As String, companyCode As String, dealerCode As String, dealerForCur As Guid, rptCurrency As Guid) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             'Dim reportName As String = RPT_FILENAME
@@ -486,11 +486,11 @@ Namespace Reports
             Return params
         End Function
 
-        Function SetExpParameters(ByVal userId As String, ByVal invoiceNumber As String, ByVal payee As String,
-                                  ByVal beginDate As String, ByVal endDate As String, ByVal selectionType As String,
-                                  ByVal svccode As String, ByVal taxtype As String, ByVal culturecode As String,
-                                  ByVal customerAddress As String, ByVal companyCode As String, dealerCode As String, dealerForCur As Guid,
-                                  rptCurrency As Guid, ByVal infoType As String) As ReportCeBaseForm.Params
+        Function SetExpParameters(userId As String, invoiceNumber As String, payee As String,
+                                  beginDate As String, endDate As String, selectionType As String,
+                                  svccode As String, taxtype As String, culturecode As String,
+                                  customerAddress As String, companyCode As String, dealerCode As String, dealerForCur As Guid,
+                                  rptCurrency As Guid, infoType As String) As ReportCeBaseForm.Params
 
             Dim reportName As String
             Dim params As New ReportCeBaseForm.Params
@@ -579,7 +579,7 @@ Namespace Reports
                     End If
 
                     If ddlDealerCurrency.SelectedIndex > 0 Then
-                        dealerForCur = New Guid(Me.ddlDealerCurrency.SelectedValue)
+                        dealerForCur = New Guid(ddlDealerCurrency.SelectedValue)
                     End If
                 End If
 
@@ -588,7 +588,7 @@ Namespace Reports
                     ElitaPlusPage.SetLabelError(lblCurrency)
                     Throw New GUIException(Message.MSG_GUI_INVALID_SELECTION, Assurant.ElitaPlus.Common.ErrorCodes.GUI_CURRENCY_MUST_BE_SELECTED_ERR)
                 Else
-                    rptCurrency = New Guid(Me.ddlCurrency.SelectedValue)
+                    rptCurrency = New Guid(ddlCurrency.SelectedValue)
                 End If
 
             End If
@@ -599,13 +599,13 @@ Namespace Reports
                 culturecode = TheReportCeInputControl.getCultureValue(True)
             End If
 
-            If (Me.RadiobuttonByReportingPeriod.Checked) Then
+            If (RadiobuttonByReportingPeriod.Checked) Then
                 selectionType = BY_REPORTING_PERIOD
             Else
                 selectionType = BY_INVOICE_NUMBER
             End If
 
-            If (Me.RadiobuttonClaims.Checked) Then
+            If (RadiobuttonClaims.Checked) Then
                 infoType = CLAIMS_INFORMATION
             Else
                 infoType = INVOICE_INFORMATION
@@ -636,13 +636,13 @@ Namespace Reports
                 End If
             End If
 
-            If Me.chkSvcCode.Checked = True Then
+            If chkSvcCode.Checked = True Then
                 svccode = YES
             Else
                 svccode = NO
             End If
 
-            If Me.chkCustomerAddress.Checked = True Then
+            If chkCustomerAddress.Checked = True Then
                 customerAddress = YES
             Else
                 customerAddress = NO
@@ -693,7 +693,7 @@ Namespace Reports
 #End Region
 
         Private Sub rbnSelectAllComp_CheckedChanged(sender As Object, e As System.EventArgs) Handles rbnSelectAllComp.CheckedChanged
-            If Me.rbnSelectAllComp.Checked Then
+            If rbnSelectAllComp.Checked Then
                 'remove the company selection
                 UserCompanyMultipleDrop.SelectedIndex = -1
                 UserCompanyMultipleDrop.SelectedGuid = Guid.Empty

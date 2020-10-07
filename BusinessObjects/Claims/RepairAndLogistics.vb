@@ -6,48 +6,48 @@ Public Class RepairAndLogistics
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New RepairAndLogisticsDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class RepairAndLogistics
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RepairAndLogisticsDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -110,9 +110,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CUSTOMER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_CUSTOMER_NAME, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_CUSTOMER_NAME, Value)
         End Set
     End Property
 
@@ -127,9 +127,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_COVERAGE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_COVERAGE_TYPE, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_COVERAGE_TYPE, Value)
         End Set
     End Property
 
@@ -144,9 +144,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_PRODUCT_CODE, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
@@ -161,9 +161,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIM_NUMBER, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
@@ -178,9 +178,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIM_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIM_STATUS, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIM_STATUS, Value)
         End Set
     End Property
 
@@ -195,9 +195,9 @@ Public Class RepairAndLogistics
                 Return New DateType(CType(Row(RepairAndLogisticsDAL.COL_NAME_DATE_OF_CLAIM), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(Value As DateType)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_DATE_OF_CLAIM, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_DATE_OF_CLAIM, Value)
         End Set
     End Property
 
@@ -212,9 +212,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_POS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_POS, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_POS, Value)
         End Set
     End Property
 
@@ -229,9 +229,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_SERVICE_CENTER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_SERVICE_CENTER, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_SERVICE_CENTER, Value)
         End Set
     End Property
 
@@ -246,9 +246,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_MANUFACTURER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_MANUFACTURER, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_MANUFACTURER, Value)
         End Set
     End Property
 
@@ -263,9 +263,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_MODEL, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_MODEL, Value)
         End Set
     End Property
 
@@ -280,9 +280,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_SKU), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_SKU, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_SKU, Value)
         End Set
     End Property
 
@@ -297,9 +297,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_SERIAL_NUMBER, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_SERIAL_NUMBER, Value)
         End Set
     End Property
 
@@ -313,9 +313,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_IMEI_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_IMEI_NUMBER, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_IMEI_NUMBER, Value)
         End Set
     End Property
 
@@ -329,9 +329,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_PROBLEM_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_PROBLEM_DESCRIPTION, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_PROBLEM_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -346,9 +346,9 @@ Public Class RepairAndLogistics
                 Return New DateType(CType(Row(RepairAndLogisticsDAL.COL_NAME_DEVICE_RECEPTION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(Value As DateType)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_DEVICE_RECEPTION_DATE, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_DEVICE_RECEPTION_DATE, Value)
         End Set
     End Property
 
@@ -363,9 +363,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_REPLACEMENT_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACEMENT_TYPE, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACEMENT_TYPE, Value)
         End Set
     End Property
 
@@ -380,9 +380,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_MANUFACTURER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_MANUFACTURER, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_MANUFACTURER, Value)
         End Set
     End Property
 
@@ -397,9 +397,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_MODEL, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_MODEL, Value)
         End Set
     End Property
 
@@ -414,9 +414,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_SERIAL_NUMBER, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_SERIAL_NUMBER, Value)
         End Set
     End Property
 
@@ -430,9 +430,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_IMEI_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_IMEI_NUMBER, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_IMEI_NUMBER, Value)
         End Set
     End Property
 
@@ -446,9 +446,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_SKU), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_SKU, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_SKU, Value)
         End Set
     End Property
 
@@ -463,9 +463,9 @@ Public Class RepairAndLogistics
                 Return New DecimalType(CType(Row(RepairAndLogisticsDAL.COL_NAME_LABOR_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_LABOR_AMOUNT, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_LABOR_AMOUNT, Value)
         End Set
     End Property
 
@@ -480,9 +480,9 @@ Public Class RepairAndLogistics
                 Return New DecimalType(CType(Row(RepairAndLogisticsDAL.COL_NAME_PART_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_PART_AMOUNT, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_PART_AMOUNT, Value)
         End Set
     End Property
 
@@ -497,9 +497,9 @@ Public Class RepairAndLogistics
                 Return New DecimalType(CType(Row(RepairAndLogisticsDAL.COL_NAME_SERVICE_CHARGE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_SERVICE_CHARGE, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_SERVICE_CHARGE, Value)
         End Set
     End Property
 
@@ -514,9 +514,9 @@ Public Class RepairAndLogistics
                 Return New DecimalType(CType(Row(RepairAndLogisticsDAL.COL_NAME_SHIPPING_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_SHIPPING_AMOUNT, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_SHIPPING_AMOUNT, Value)
         End Set
     End Property
 
@@ -531,9 +531,9 @@ Public Class RepairAndLogistics
                 Return New DecimalType(CType(Row(RepairAndLogisticsDAL.COL_NAME_AUTHORIZED_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_AUTHORIZED_AMOUNT, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_AUTHORIZED_AMOUNT, Value)
         End Set
     End Property
 
@@ -548,9 +548,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_SERVICE_LEVEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_SERVICE_LEVEL, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_SERVICE_LEVEL, Value)
         End Set
     End Property
 
@@ -565,9 +565,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_PROBLEM_FOUND), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_PROBLEM_FOUND, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_PROBLEM_FOUND, Value)
         End Set
     End Property
 
@@ -580,9 +580,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_VERIFICATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_VERIFICATION_NUMBER, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_VERIFICATION_NUMBER, Value)
         End Set
     End Property
 
@@ -595,9 +595,9 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_COMPANY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_COMPANY, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_COMPANY, Value)
         End Set
     End Property
 
@@ -610,9 +610,9 @@ Public Class RepairAndLogistics
                 Return New LongType(CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIM_VERIFICATION_NUM_LENGTH), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set(Value As LongType)
             CheckDeleted()
-            Me.SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIM_VERIFICATION_NUM_LENGTH, Value)
+            SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIM_VERIFICATION_NUM_LENGTH, Value)
         End Set
     End Property
 
@@ -625,15 +625,15 @@ Public Class RepairAndLogistics
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New RepairAndLogisticsDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -642,7 +642,7 @@ Public Class RepairAndLogistics
     End Sub
 
 
-    Public Function UpdateVerificationNumber(ByVal strVerificationNumber As String, ByVal claimId As Nullable(Of Guid), ByVal claimAuthorizationId As Nullable(Of Guid)) As Boolean
+    Public Function UpdateVerificationNumber(strVerificationNumber As String, claimId As Nullable(Of Guid), claimAuthorizationId As Nullable(Of Guid)) As Boolean
         Try
             If ((claimAuthorizationId.HasValue) AndAlso (Not claimAuthorizationId.Value.Equals(Guid.Empty))) Then
                 Dim oClaimAuthorization As ClaimAuthorization
@@ -660,10 +660,10 @@ Public Class RepairAndLogistics
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getListFromArray(ByVal claimNumber As String, ByVal serialNumber As String, ByVal customerName As String, _
-                                   ByVal taxID As String, ByVal authorizationNumber As String, _
-                                   ByVal cellPhoneNumber As String, ByVal serviceCenterIds As ArrayList, _
-                                   ByVal claimAuthorizationNumber As String, Optional ByVal sortBy As String = "CLNUM") As RepairLogisticsSearchDV
+    Public Shared Function getListFromArray(claimNumber As String, serialNumber As String, customerName As String, _
+                                   taxID As String, authorizationNumber As String, _
+                                   cellPhoneNumber As String, serviceCenterIds As ArrayList, _
+                                   claimAuthorizationNumber As String, Optional ByVal sortBy As String = "CLNUM") As RepairLogisticsSearchDV
 
         Try
             Dim dal As New RepairAndLogisticsDAL
@@ -753,7 +753,7 @@ Public Class RepairAndLogistics
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

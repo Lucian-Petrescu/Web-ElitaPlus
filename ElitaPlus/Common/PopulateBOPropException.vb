@@ -15,28 +15,28 @@ Imports System.Runtime.Serialization
 #End Region
 
 #Region "Constructors"
-    Public Sub New(ByVal BoPropName As String, ByVal oControl As Control, ByVal lbl As Label, Optional ByVal innerExc As Exception = Nothing)
+    Public Sub New(BoPropName As String, oControl As Control, lbl As Label, Optional ByVal innerExc As Exception = Nothing)
         MyBase.New("Error Populating as business property", ErrorCodes.POPULATE_PROP_ERR, innerExc)
-        Me._propName = BoPropName
-        Me._oCtrl = oControl
-        Me._lblCtrl = lbl
+        _propName = BoPropName
+        _oCtrl = oControl
+        _lblCtrl = lbl
     End Sub
 
-    Public Sub New(ByVal BoPropName As String, ByVal oControl As Control, ByVal gridColumn As DataGridColumn, Optional ByVal innerExc As Exception = Nothing)
+    Public Sub New(BoPropName As String, oControl As Control, gridColumn As DataGridColumn, Optional ByVal innerExc As Exception = Nothing)
         MyBase.New("Error Populating as business property", ErrorCodes.POPULATE_PROP_ERR, innerExc)
-        Me._propName = BoPropName
-        Me._oCtrl = oControl
-        Me._gridColumn = gridColumn
+        _propName = BoPropName
+        _oCtrl = oControl
+        _gridColumn = gridColumn
     End Sub
 
-    Public Sub New(ByVal BoPropName As String, ByVal oControl As Control, ByVal gridColumn As DataControlField, Optional ByVal innerExc As Exception = Nothing)
+    Public Sub New(BoPropName As String, oControl As Control, gridColumn As DataControlField, Optional ByVal innerExc As Exception = Nothing)
         MyBase.New("Error Populating as business property", ErrorCodes.POPULATE_PROP_ERR, innerExc)
-        Me._propName = BoPropName
-        Me._oCtrl = oControl
-        Me._gridViewField = gridColumn
+        _propName = BoPropName
+        _oCtrl = oControl
+        _gridViewField = gridColumn
     End Sub
 
-    Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+    Protected Sub New(info As SerializationInfo, context As StreamingContext)
         MyBase.New(info, context)
     End Sub
 #End Region
@@ -46,25 +46,25 @@ Imports System.Runtime.Serialization
 #Region "Properties"
     Public ReadOnly Property BoPropName() As String
         Get
-            Return Me._propName
+            Return _propName
         End Get
     End Property
 
     Public ReadOnly Property Control() As Control
         Get
-            Return Me._oCtrl
+            Return _oCtrl
         End Get
     End Property
 
     Public ReadOnly Property LabelControl() As Label
         Get
-            Return Me._lblCtrl
+            Return _lblCtrl
         End Get
     End Property
 
     Public ReadOnly Property GridColumnControl() As DataGridColumn
         Get
-            Return Me._gridColumn
+            Return _gridColumn
         End Get
     End Property
 #End Region

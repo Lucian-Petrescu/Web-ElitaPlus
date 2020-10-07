@@ -44,8 +44,8 @@ Public Class GetComunas
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -56,10 +56,10 @@ Public Class GetComunas
     Private Sub Load(ByVal ds As GetComunasDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -76,7 +76,7 @@ Public Class GetComunas
         Try
             If ds.GetComunas.Count = 0 Then Exit Sub
             With ds.GetComunas.Item(0)
-                If Not .Iscountry_codeNull Then Me.CountryCode = .country_code
+                If Not .Iscountry_codeNull Then CountryCode = .country_code
             End With
 
         Catch ex As BOValidationException
@@ -95,15 +95,15 @@ Public Class GetComunas
 
     Public Property CountryCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_COUNTRY_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COUNTRY_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_COUNTRY_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_COUNTRY_CODE), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_COUNTRY_CODE, Value)
+            SetValue(DATA_COL_NAME_COUNTRY_CODE, Value)
         End Set
     End Property
 
@@ -113,26 +113,26 @@ Public Class GetComunas
 
     Public Overrides Function ProcessWSRequest() As String
         'if the country code was not provided, get it from the user object.
-        If Me.CountryCode Is Nothing OrElse Me.CountryCode.Equals(String.Empty) Then
+        If CountryCode Is Nothing OrElse CountryCode.Equals(String.Empty) Then
             Dim objCountry As Country = ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
-            Me.CountryCode = objCountry.Code
+            CountryCode = objCountry.Code
         End If
-        Dim objCountryDV As DataView = Country.getList("", Me.CountryCode)
+        Dim objCountryDV As DataView = Country.getList("", CountryCode)
         Try
-            Me.Validate()
+            Validate()
 
             If objCountryDV Is Nothing Then
                 Throw New BOValidationException("GetComunas Error: ", ERROR_ACCESSING_DATABASE)
             ElseIf objCountryDV.Count <> 1 Then
                 Throw New BOValidationException("GetComunas Error: ", COUNTRY_NOT_FOUND)
             Else
-                Dim country_id As New Guid(CType(objCountryDV.Table.Rows(0).Item(Me.COL_NAME_COUNTRY_ID), Byte()))
+                Dim country_id As New Guid(CType(objCountryDV.Table.Rows(0).Item(COL_NAME_COUNTRY_ID), Byte()))
                 Dim objComunaCodeDS As DataSet = ComunaCode.LoadList(country_id)
                 If objComunaCodeDS Is Nothing Then
                     Throw New BOValidationException("GetComunas Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf objComunaCodeDS.Tables.Count > 0 AndAlso objComunaCodeDS.Tables(0).Rows.Count > 0 Then
-                    objComunaCodeDS.Tables(0).Columns.Remove(Me.COL_NAME_REGION_ID)
-                    objComunaCodeDS.Tables(0).Columns.Remove(Me.COL_NAME_COMUNA_CODE_ID)
+                    objComunaCodeDS.Tables(0).Columns.Remove(COL_NAME_REGION_ID)
+                    objComunaCodeDS.Tables(0).Columns.Remove(COL_NAME_COMUNA_CODE_ID)
                     Return (XMLHelper.FromDatasetToXML(objComunaCodeDS))
                 ElseIf objComunaCodeDS.Tables.Count > 0 AndAlso objComunaCodeDS.Tables(0).Rows.Count = 0 Then
                     Throw New BOValidationException("GetComunas Error: ", COMUNAS_NOT_FOUND_ERROR)

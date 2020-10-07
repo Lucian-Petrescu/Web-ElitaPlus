@@ -43,22 +43,22 @@ Partial Class CommPlanExtractForm
     End Property
 
     Private Sub SetStateProperties()
-        State.InputParameters = CType(Me.CallingParameters, Parameters)
+        State.InputParameters = CType(CallingParameters, Parameters)
 
         If State.InputParameters IsNot Nothing Then
-            Me.State.moIsNewCommPlanExt = State.InputParameters.CommPlanExtId
+            State.moIsNewCommPlanExt = State.InputParameters.CommPlanExtId
         End If
 
-        If Me.State.moIsNewCommPlanExt.Equals(Guid.Empty) Then
-            Me.State.IsCommPlanExtNew = True
+        If State.moIsNewCommPlanExt.Equals(Guid.Empty) Then
+            State.IsCommPlanExtNew = True
             BindBoPropertiesToLabels()
-            Me.AddLabelDecorations(TheCommPlanExt)
+            AddLabelDecorations(TheCommPlanExt)
             ClearAll()
             PopulateAll()
         Else
-            Me.State.IsCommPlanExtNew = False
+            State.IsCommPlanExtNew = False
             BindBoPropertiesToLabels()
-            Me.AddLabelDecorations(TheCommPlanExt)
+            AddLabelDecorations(TheCommPlanExt)
             PopulateAll()
         End If
     End Sub
@@ -77,9 +77,9 @@ Partial Class CommPlanExtractForm
         Public LastOperation As DetailPageCommand
         Public moCommissPlanId As Guid
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal oCommissPlanId As Guid, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.moCommissPlanId = oCommissPlanId
+        Public Sub New(LastOp As DetailPageCommand, oCommissPlanId As Guid, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            moCommissPlanId = oCommissPlanId
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -90,7 +90,7 @@ Partial Class CommPlanExtractForm
     Public Class Parameters
         Public CommPlanId As Guid
         Public CommPlanExtId As Guid
-        Public Sub New(ByVal commplanid As Guid, ByVal commplanextid As Guid)
+        Public Sub New(commplanid As Guid, commplanextid As Guid)
             Me.CommPlanId = commplanid
             Me.CommPlanExtId = commplanextid
         End Sub
@@ -101,18 +101,18 @@ Partial Class CommPlanExtractForm
     Private ReadOnly Property TheCommPlanExt As CommPlanExtract
 
         Get
-            If Me.State.MyBO Is Nothing Then
-                If Me.State.IsCommPlanExtNew = True Then
+            If State.MyBO Is Nothing Then
+                If State.IsCommPlanExtNew = True Then
                     ' For creating, inserting
-                    Me.State.MyBO = New CommPlanExtract
-                    Me.State.moIsNewCommPlanExt = Me.State.MyBO.Id
+                    State.MyBO = New CommPlanExtract
+                    State.moIsNewCommPlanExt = State.MyBO.Id
                 Else
                     ' For updating, deleting
-                    Me.State.MyBO = New CommPlanExtract(Me.State.moIsNewCommPlanExt)
+                    State.MyBO = New CommPlanExtract(State.moIsNewCommPlanExt)
                 End If
             End If
 
-            Return Me.State.MyBO
+            Return State.MyBO
         End Get
     End Property
 
@@ -136,7 +136,7 @@ Partial Class CommPlanExtractForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -144,63 +144,63 @@ Partial Class CommPlanExtractForm
 
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         'Put user code to initialize the page here
         Try
-            Me.MasterPage.MessageController.Clear_Hide()
+            MasterPage.MessageController.Clear_Hide()
             ClearLabelsErrSign()
             If Not Page.IsPostBack Then
-                Me.MasterPage.MessageController.Clear()
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                MasterPage.MessageController.Clear()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                 UpdateBreadCrum()
-                Me.SetStateProperties()
-                Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO,
+                SetStateProperties()
+                AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO,
             MSG_TYPE_CONFIRM, True)
 
-                If Me.State.IsCommPlanExtNew = True Then
+                If State.IsCommPlanExtNew = True Then
                     CreateNew()
                 End If
                 PopulateFormFromBOs()
-                Me.AddCalendar(Me.BtnCommiEffectDate, Me.txtCommiEffectDate)
-                Me.AddCalendar(Me.BtnCommiExpDate, Me.txtCommiExpDate)
+                AddCalendar(BtnCommiEffectDate, txtCommiEffectDate)
+                AddCalendar(BtnCommiExpDate, txtCommiExpDate)
             End If
 
             EnableDisableCommPerAmt()
             BindBoPropertiesToLabels()
             CheckIfComingFromConfirm()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(TheCommPlanExt)
+            If Not IsPostBack Then
+                AddLabelDecorations(TheCommPlanExt)
             End If
             DisableCommPerAmtTxt()
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
 
         End Try
         If Me.State.LastOperation = DetailPageCommand.Redirect_ Then
-            Me.MasterPage.MessageController.Clear_Hide()
+            MasterPage.MessageController.Clear_Hide()
             'ClearLabelsErrSign()
-            Me.State.LastOperation = DetailPageCommand.Nothing_
+            State.LastOperation = DetailPageCommand.Nothing_
         Else
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End If
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
 
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                State.InputParameters = CType(Me.CallingParameters, Parameters)
-                State.MyBO = New CommPlanExtract(Me.State.InputParameters.CommPlanExtId)
+                State.InputParameters = CType(CallingParameters, Parameters)
+                State.MyBO = New CommPlanExtract(State.InputParameters.CommPlanExtId)
             Else
-                Me.State.IsCommPlanExtNew = True
+                State.IsCommPlanExtNew = True
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -209,121 +209,121 @@ Partial Class CommPlanExtractForm
 
 #Region "Handlers-Buttons"
 
-    Private Sub btnApply_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+    Private Sub btnApply_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
         ApplyChanges()
     End Sub
 
     Private Sub GoBack()
-        Dim retType As New CommPlanExtractForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.CommissionPlanId, Me.State.boChanged)
-        Me.ReturnToCallingPage(retType)
+        Dim retType As New CommPlanExtractForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO.CommissionPlanId, State.boChanged)
+        ReturnToCallingPage(retType)
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
             If IsDirtyBO() = True Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
-                                            Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                            HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
                 GoBack()
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+    Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
         Try
-            If Not Me.State.IsCommPlanExtNew Then
+            If Not State.IsCommPlanExtNew Then
                 'Reload from the DB
-                Me.State.MyBO = New CommPlanExtract(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New CommPlanExtract(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
                 CreateNew()
             End If
             PopulateAll()
             PopulateFormFromBOs()
-            Me.SetButtonsState(Me.State.IsCommPlanExtNew)
+            SetButtonsState(State.IsCommPlanExtNew)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing
-        Me.State.IsCommPlanExtNew = True
-        Me.State.MyBO = New CommPlanExtract
+        State.ScreenSnapShotBO = Nothing
+        State.IsCommPlanExtNew = True
+        State.MyBO = New CommPlanExtract
         ClearAll()
-        Me.SetButtonsState(True)
-        Me.PopulateAll()
-        Me.PopulateBOsFromForm()
+        SetButtonsState(True)
+        PopulateAll()
+        PopulateBOsFromForm()
         PopulateFormFromBOs()
         EnableDisableCommPerAmt()
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
             If IsDirtyBO() = True Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
                 CreateNew()
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub CreateNewCopy()
 
-        Me.PopulateBOsFromForm()
+        PopulateBOsFromForm()
 
         Dim newObj As New CommPlanExtract
         newObj.Copy(TheCommPlanExt)
 
-        Me.State.MyBO = newObj
-        Me.State.moIsNewCommPlanExt = Guid.Empty
-        Me.State.IsCommPlanExtNew = True
+        State.MyBO = newObj
+        State.moIsNewCommPlanExt = Guid.Empty
+        State.IsCommPlanExtNew = True
 
-        Me.SetButtonsState(True)
+        SetButtonsState(True)
         PopulateFormFromBOs()
         EnableDisableCommPerAmt()
 
         'create the backup copy
-        Me.State.ScreenSnapShotBO = New CommPlanExtract
-        Me.State.ScreenSnapShotBO.Copy(TheCommPlanExt)
+        State.ScreenSnapShotBO = New CommPlanExtract
+        State.ScreenSnapShotBO.Copy(TheCommPlanExt)
 
     End Sub
 
-    Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
         Try
             If IsDirtyBO() = True Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
                 CreateNewCopy()
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+            HandleErrors(ex, MasterPage.MessageController)
+            DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
         End Try
     End Sub
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            Me.State.MyBO.DeleteAndSave()
-            Me.State.HasDataChanged = True
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO.CommissionPlanId, Me.State.HasDataChanged))
+            State.MyBO.DeleteAndSave()
+            State.HasDataChanged = True
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO.CommissionPlanId, State.HasDataChanged))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -355,10 +355,10 @@ Partial Class CommPlanExtractForm
 #Region "Populate"
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("COMM_PLAN_EXTRACT")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("COMM_PLAN_EXTRACT")
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("COMM_PLAN_EXTRACT")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("COMM_PLAN_EXTRACT")
             End If
         End If
     End Sub
@@ -386,9 +386,9 @@ Partial Class CommPlanExtractForm
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.MasterPage.MessageController.AddError(COMMPLANEXTRACT_LIST_FORM001)
-            Me.MasterPage.MessageController.AddError(ex.Message, False)
-            Me.MasterPage.MessageController.Show()
+            MasterPage.MessageController.AddError(COMMPLANEXTRACT_LIST_FORM001)
+            MasterPage.MessageController.AddError(ex.Message, False)
+            MasterPage.MessageController.Show()
         End Try
     End Sub
 
@@ -398,21 +398,21 @@ Partial Class CommPlanExtractForm
                 BindSelectItem(.AmountSourceXcd, ddlAmtXcd)
                 BindSelectItem(.CommExtractPackageId.ToString, ddlCommiExtType)
                 BindSelectItem(.CommAtRateXcd, ddlCommRateXcd)
-                Me.PopulateControlFromBOProperty(Me.txtCommPlanCode, .Code)
-                Me.PopulateControlFromBOProperty(Me.txtCommPlanDesc, .Description)
-                Me.PopulateControlFromBOProperty(Me.txtCommiEffectDate, .EffectiveDate)
-                Me.PopulateControlFromBOProperty(Me.txtCommiExpDate, .ExpirationDate)
-                Me.PopulateControlFromBOProperty(Me.txtCyclRunDay, .CycleRunDay)
-                Me.PopulateControlFromBOProperty(Me.txtCyclCutOffDay, .CycleCutOffDay)
-                Me.PopulateControlFromBOProperty(Me.txtlblSeqNumber, .SequenceNumber)
-                Me.PopulateControlFromBOProperty(Me.txtCommiPerct, .CommissionPercentage)
-                Me.PopulateControlFromBOProperty(Me.txtCommiAmt, .CommissionAmount)
-                Me.PopulateControlFromBOProperty(Me.txtCyclFreXcd, .CycleFrequencyXcd)
-                Me.PopulateControlFromBOProperty(Me.txtCyclSrcXcd, .CycleCutOffSourceXcd)
+                PopulateControlFromBOProperty(txtCommPlanCode, .Code)
+                PopulateControlFromBOProperty(txtCommPlanDesc, .Description)
+                PopulateControlFromBOProperty(txtCommiEffectDate, .EffectiveDate)
+                PopulateControlFromBOProperty(txtCommiExpDate, .ExpirationDate)
+                PopulateControlFromBOProperty(txtCyclRunDay, .CycleRunDay)
+                PopulateControlFromBOProperty(txtCyclCutOffDay, .CycleCutOffDay)
+                PopulateControlFromBOProperty(txtlblSeqNumber, .SequenceNumber)
+                PopulateControlFromBOProperty(txtCommiPerct, .CommissionPercentage)
+                PopulateControlFromBOProperty(txtCommiAmt, .CommissionAmount)
+                PopulateControlFromBOProperty(txtCyclFreXcd, .CycleFrequencyXcd)
+                PopulateControlFromBOProperty(txtCyclSrcXcd, .CycleCutOffSourceXcd)
             End With
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -422,23 +422,23 @@ Partial Class CommPlanExtractForm
 
     Protected Sub PopulateBOsFromForm()
 
-        With Me.TheCommPlanExt
-            Me.PopulateBOProperty(Me.State.MyBO, "Code", Me.txtCommPlanCode)
-            Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.txtCommPlanDesc)
-            Me.PopulateBOProperty(Me.State.MyBO, "EffectiveDate", Me.txtCommiEffectDate)
-            Me.PopulateBOProperty(Me.State.MyBO, "ExpirationDate", Me.txtCommiExpDate)
-            Me.PopulateBOProperty(Me.State.MyBO, "CycleRunDay", Me.txtCyclRunDay)
-            Me.PopulateBOProperty(Me.State.MyBO, "CycleCutOffDay", Me.txtCyclCutOffDay)
-            Me.PopulateBOProperty(Me.State.MyBO, "SequenceNumber", Me.txtlblSeqNumber)
-            Me.PopulateBOProperty(Me.State.MyBO, "CommissionPercentage", Me.txtCommiPerct)
-            Me.PopulateBOProperty(Me.State.MyBO, "CommissionAmount", Me.txtCommiAmt)
-            Me.PopulateBOProperty(Me.State.MyBO, "AmountSourceXcd", Me.ddlAmtXcd, False, True)
-            Me.PopulateBOProperty(Me.State.MyBO, "CommExtractPackageId", Me.ddlCommiExtType)
-            Me.PopulateBOProperty(Me.State.MyBO, "CommTitleXcd", GetSelectedDescription(ddlCommiExtType))
-            Me.PopulateBOProperty(Me.State.MyBO, "CommAtRateXcd", Me.ddlCommRateXcd, False, True)
+        With TheCommPlanExt
+            PopulateBOProperty(State.MyBO, "Code", txtCommPlanCode)
+            PopulateBOProperty(State.MyBO, "Description", txtCommPlanDesc)
+            PopulateBOProperty(State.MyBO, "EffectiveDate", txtCommiEffectDate)
+            PopulateBOProperty(State.MyBO, "ExpirationDate", txtCommiExpDate)
+            PopulateBOProperty(State.MyBO, "CycleRunDay", txtCyclRunDay)
+            PopulateBOProperty(State.MyBO, "CycleCutOffDay", txtCyclCutOffDay)
+            PopulateBOProperty(State.MyBO, "SequenceNumber", txtlblSeqNumber)
+            PopulateBOProperty(State.MyBO, "CommissionPercentage", txtCommiPerct)
+            PopulateBOProperty(State.MyBO, "CommissionAmount", txtCommiAmt)
+            PopulateBOProperty(State.MyBO, "AmountSourceXcd", ddlAmtXcd, False, True)
+            PopulateBOProperty(State.MyBO, "CommExtractPackageId", ddlCommiExtType)
+            PopulateBOProperty(State.MyBO, "CommTitleXcd", GetSelectedDescription(ddlCommiExtType))
+            PopulateBOProperty(State.MyBO, "CommAtRateXcd", ddlCommRateXcd, False, True)
 
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
 
@@ -447,14 +447,14 @@ Partial Class CommPlanExtractForm
 
 #Region "Gui-Validation"
 
-    Private Sub SetButtonsState(ByVal bIsNew As Boolean)
+    Private Sub SetButtonsState(bIsNew As Boolean)
         ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
         ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
     End Sub
 
     Private Sub EnableDisableCommPerAmt()
-        If Me.ddlCommRateXcd.SelectedValue.Equals("YESNO-Y") Then
+        If ddlCommRateXcd.SelectedValue.Equals("YESNO-Y") Then
 
             lblCommiAmt.Visible = False
             txtCommiAmt.Visible = False
@@ -470,7 +470,7 @@ Partial Class CommPlanExtractForm
     End Sub
 
     Public Sub ValidateCommPerandAmt()
-        If (txtCommiPerct.Text.Equals(String.Empty) And txtCommiAmt.Text.Equals(String.Empty) AndAlso Me.ddlCommRateXcd.SelectedValue.Equals("YESNO-N")) Then
+        If (txtCommiPerct.Text.Equals(String.Empty) And txtCommiAmt.Text.Equals(String.Empty) AndAlso ddlCommRateXcd.SelectedValue.Equals("YESNO-N")) Then
             ElitaPlusPage.SetLabelError(lblCommiPerct)
             ElitaPlusPage.SetLabelError(lblCommiAmt)
             Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COMM_PERC_AMT_ERR)
@@ -481,9 +481,9 @@ Partial Class CommPlanExtractForm
         If (txtCommiAmt.Text.Equals(String.Empty) And txtCommiPerct.Text.Equals(String.Empty)) Then
             txtCommiAmt.Enabled = True
             txtCommiPerct.Enabled = True
-        ElseIf (txtCommiPerct.Text.Equals(String.Empty) And Me.ddlCommRateXcd.SelectedValue.Equals("YESNO-N")) Then
+        ElseIf (txtCommiPerct.Text.Equals(String.Empty) And ddlCommRateXcd.SelectedValue.Equals("YESNO-N")) Then
             txtCommiPerct.Enabled = False
-        ElseIf (txtCommiAmt.Text.Equals(String.Empty) And Me.ddlCommRateXcd.SelectedValue.Equals("YESNO-N")) Then
+        ElseIf (txtCommiAmt.Text.Equals(String.Empty) And ddlCommRateXcd.SelectedValue.Equals("YESNO-N")) Then
             txtCommiAmt.Enabled = False
         End If
     End Sub
@@ -503,9 +503,9 @@ Partial Class CommPlanExtractForm
             End With
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.MasterPage.MessageController.AddError(COMMPLANEXTRACT_LIST_FORM001)
-            Me.MasterPage.MessageController.AddError(ex.Message, False)
-            Me.MasterPage.MessageController.Show()
+            MasterPage.MessageController.AddError(COMMPLANEXTRACT_LIST_FORM001)
+            MasterPage.MessageController.AddError(ex.Message, False)
+            MasterPage.MessageController.Show()
         End Try
         Return bIsDirty
     End Function
@@ -514,27 +514,27 @@ Partial Class CommPlanExtractForm
 
         Try
 
-            Me.PopulateBOsFromForm()
+            PopulateBOsFromForm()
             If TheCommPlanExt.IsDirty() Then
                 ValidateDates()
                 ValidateCommPerandAmt()
-                Me.State.MyBO.CommissionPlanId = State.InputParameters.CommPlanId
-                Me.State.MyBO.Save()
-                Me.State.boChanged = True
-                If Me.State.IsCommPlanExtNew = True Then
-                    Me.State.IsCommPlanExtNew = False
+                State.MyBO.CommissionPlanId = State.InputParameters.CommPlanId
+                State.MyBO.Save()
+                State.boChanged = True
+                If State.IsCommPlanExtNew = True Then
+                    State.IsCommPlanExtNew = False
                 End If
                 PopulateAll()
                 PopulateFormFromBOs()
                 EnableDisableCommPerAmt()
-                Me.SetButtonsState(Me.State.IsCommPlanExtNew)
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                SetButtonsState(State.IsCommPlanExtNew)
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
             Else
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Function
@@ -555,7 +555,7 @@ Partial Class CommPlanExtractForm
 #Region "State-Management"
 
     Protected Sub ComingFromBack()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
         If Not confResponse = String.Empty Then
             ' Return from the Back Button
@@ -564,7 +564,7 @@ Partial Class CommPlanExtractForm
                 Case MSG_VALUE_YES
                     ' Save and go back to Search Page
                     If ApplyChanges() = True Then
-                        Me.State.boChanged = True
+                        State.boChanged = True
                         GoBack()
                     End If
                 Case MSG_VALUE_NO
@@ -575,7 +575,7 @@ Partial Class CommPlanExtractForm
     End Sub
 
     Protected Sub ComingFromNewCopy()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
         If Not confResponse = String.Empty Then
             ' Return from the New Copy Button
@@ -584,7 +584,7 @@ Partial Class CommPlanExtractForm
                 Case MSG_VALUE_YES
                     ' Save and create a new Copy BO
                     If ApplyChanges() = True Then
-                        Me.State.boChanged = True
+                        State.boChanged = True
                         CreateNewCopy()
                     End If
                 Case MSG_VALUE_NO
@@ -595,7 +595,7 @@ Partial Class CommPlanExtractForm
 
     End Sub
     Protected Sub ComingFromNew()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
         If Not confResponse = String.Empty Then
             ' Return from the New Copy Button
@@ -604,7 +604,7 @@ Partial Class CommPlanExtractForm
                 Case MSG_VALUE_YES
                     ' Save and create a new Copy BO
                     If ApplyChanges() = True Then
-                        Me.State.boChanged = True
+                        State.boChanged = True
                         CreateNew()
                     End If
                 Case MSG_VALUE_NO
@@ -618,7 +618,7 @@ Partial Class CommPlanExtractForm
 
     Protected Sub CheckIfComingFromConfirm()
         Try
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                     ' Period
                 Case ElitaPlusPage.DetailPageCommand.Back
                     ComingFromBack()
@@ -629,10 +629,10 @@ Partial Class CommPlanExtractForm
             End Select
 
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = String.Empty
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -641,39 +641,39 @@ Partial Class CommPlanExtractForm
 #Region "Handlers-Labels"
 
     Private Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Code", Me.lblCommPlanCode)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Description", Me.lblCommPlanDescr)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "EffectiveDate", Me.lblCommiEffectDate)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ExpirationDate", Me.lblCommiExpDate)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CycleFrequencyXcd", Me.lblCyclFreqXcd)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CycleRunDay", Me.lblCyclRunDay)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CycleCutOffDay", Me.lblCyclCutOffDay)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CycleCutOffSourceXcd", Me.lblCyclSrcXcd)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AmountSourceXcd", Me.lblAmtXcd)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CommTitleXcd", Me.lblCommiExtType)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CommAtRateXcd", Me.lblCommRateXcd)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "SequenceNumber", Me.lblSeqNumber)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CommissionPercentage", Me.lblCommiPerct)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CommissionAmount", Me.lblCommiAmt)
+        BindBOPropertyToLabel(State.MyBO, "Code", lblCommPlanCode)
+        BindBOPropertyToLabel(State.MyBO, "Description", lblCommPlanDescr)
+        BindBOPropertyToLabel(State.MyBO, "EffectiveDate", lblCommiEffectDate)
+        BindBOPropertyToLabel(State.MyBO, "ExpirationDate", lblCommiExpDate)
+        BindBOPropertyToLabel(State.MyBO, "CycleFrequencyXcd", lblCyclFreqXcd)
+        BindBOPropertyToLabel(State.MyBO, "CycleRunDay", lblCyclRunDay)
+        BindBOPropertyToLabel(State.MyBO, "CycleCutOffDay", lblCyclCutOffDay)
+        BindBOPropertyToLabel(State.MyBO, "CycleCutOffSourceXcd", lblCyclSrcXcd)
+        BindBOPropertyToLabel(State.MyBO, "AmountSourceXcd", lblAmtXcd)
+        BindBOPropertyToLabel(State.MyBO, "CommTitleXcd", lblCommiExtType)
+        BindBOPropertyToLabel(State.MyBO, "CommAtRateXcd", lblCommRateXcd)
+        BindBOPropertyToLabel(State.MyBO, "SequenceNumber", lblSeqNumber)
+        BindBOPropertyToLabel(State.MyBO, "CommissionPercentage", lblCommiPerct)
+        BindBOPropertyToLabel(State.MyBO, "CommissionAmount", lblCommiAmt)
     End Sub
 
     Private Sub ClearLabelsErrSign()
-        Me.ClearLabelErrSign(lblCommPlanCode)
-        Me.ClearLabelErrSign(lblCommPlanDescr)
-        Me.ClearLabelErrSign(lblCommiEffectDate)
-        Me.ClearLabelErrSign(lblCommiExpDate)
-        Me.ClearLabelErrSign(lblCyclFreqXcd)
-        Me.ClearLabelErrSign(lblCyclRunDay)
-        Me.ClearLabelErrSign(lblCyclCutOffDay)
-        Me.ClearLabelErrSign(lblCyclSrcXcd)
-        Me.ClearLabelErrSign(lblAmtXcd)
-        Me.ClearLabelErrSign(lblCommiExtType)
-        Me.ClearLabelErrSign(lblSeqNumber)
-        Me.ClearLabelErrSign(lblCommiPerct)
-        Me.ClearLabelErrSign(lblCommiAmt)
+        ClearLabelErrSign(lblCommPlanCode)
+        ClearLabelErrSign(lblCommPlanDescr)
+        ClearLabelErrSign(lblCommiEffectDate)
+        ClearLabelErrSign(lblCommiExpDate)
+        ClearLabelErrSign(lblCyclFreqXcd)
+        ClearLabelErrSign(lblCyclRunDay)
+        ClearLabelErrSign(lblCyclCutOffDay)
+        ClearLabelErrSign(lblCyclSrcXcd)
+        ClearLabelErrSign(lblAmtXcd)
+        ClearLabelErrSign(lblCommiExtType)
+        ClearLabelErrSign(lblSeqNumber)
+        ClearLabelErrSign(lblCommiPerct)
+        ClearLabelErrSign(lblCommiAmt)
     End Sub
 
-    Public Shared Sub SetLabelColor(ByVal lbl As Label)
+    Public Shared Sub SetLabelColor(lbl As Label)
         lbl.ForeColor = Color.Black
     End Sub
 

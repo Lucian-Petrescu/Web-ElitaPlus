@@ -112,8 +112,8 @@ Namespace Tables
             Public ScheduleBO As Schedule
             Public HasDataChanged As Boolean
 
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal ScheduleBO As Schedule, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
+            Public Sub New(LastOp As DetailPageCommand, ScheduleBO As Schedule, hasDataChanged As Boolean)
+                LastOperation = LastOp
                 Me.ScheduleBO = ScheduleBO
                 Me.HasDataChanged = hasDataChanged
             End Sub
@@ -121,35 +121,35 @@ Namespace Tables
 #End Region
 
 #Region "Page Parameters"
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
+                MenuEnabled = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
-                    Me.State.ScheduleId = CType(Me.CallingParameters, Guid)
+                If CallingParameters IsNot Nothing Then
+                    State.ScheduleId = CType(CallingParameters, Guid)
 
-                    If Me.State.ScheduleId.Equals(Guid.Empty) Then
-                        Me.State.Action = Me.INIT_LOAD
+                    If State.ScheduleId.Equals(Guid.Empty) Then
+                        State.Action = INIT_LOAD
                     Else
-                        Me.State.MyBO = New Schedule(Me.State.ScheduleId)
+                        State.MyBO = New Schedule(State.ScheduleId)
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub UpdateReadOnlyFlag()
             Dim dt As DataTable
-            Me.State.IsReadOnly = False
+            State.IsReadOnly = False
             ' Find all the Work Queues which are using this Schedule as of today or in future.
-            dt = EntitySchedule.GetList(Me.State.MyBO.Id, EntitySchedule.TABLE_NAME_WORKQUEUE)
+            dt = EntitySchedule.GetList(State.MyBO.Id, EntitySchedule.TABLE_NAME_WORKQUEUE)
             ' For each Work Queue, check if User is in Admin Role, if not then ReadOnly = True
             For Each dr As DataRow In dt.Rows
                 Dim wqId As Guid
@@ -157,8 +157,8 @@ Namespace Tables
                 wqId = New Guid(CType(dr(EntityScheduleDAL.COL_NAME_ENTITY_ID), Byte()))
                 wq = New WorkQueue(wqId)
                 If (Not ElitaPlusIdentity.Current.ActiveUser.isInRole(wq.WorkQueue.AdminRole)) Then
-                    Me.State.NoAdminRoleWorkQueueName = wq.WorkQueue.Name
-                    Me.State.IsReadOnly = True
+                    State.NoAdminRoleWorkQueueName = wq.WorkQueue.Name
+                    State.IsReadOnly = True
                     Return
                 End If
             Next
@@ -169,36 +169,36 @@ Namespace Tables
 #Region "Page_Events"
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("GENERAL_INFORMATION") & _
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("GENERAL_INFORMATION") & _
                                           ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("SEARCH_SCHEDULE") & _
                                           ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("SCHEDULE_DETAILS")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("SCHEDULE_DETAILS")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("SCHEDULE_DETAILS")
             End If
         End Sub
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             Try
-                Me.MasterPage.MessageController.Clear()
-                If Not Me.IsPostBack Then
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New Schedule
+                MasterPage.MessageController.Clear()
+                If Not IsPostBack Then
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New Schedule
                     End If
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("TABLES")
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("TABLES")
                     UpdateBreadCrum()
 
-                    Me.State.PageIndex = 0
+                    State.PageIndex = 0
 
                     PopulateHeader()
                     PopulateGrid()
                     SetButtonsState()
                     SetLowerButtonsState()
                     'PopulateHeader determines if the Schedule Form is Read Only
-                    If Me.State.IsReadOnly Then
-                        Me.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ERROR_NO_ADMIN_ROLE_ON_WORKQUEUE)
-                        Me.MasterPage.MessageController.AddWarning(Me.State.NoAdminRoleWorkQueueName)
+                    If State.IsReadOnly Then
+                        MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ERROR_NO_ADMIN_ROLE_ON_WORKQUEUE)
+                        MasterPage.MessageController.AddWarning(State.NoAdminRoleWorkQueueName)
                     End If
                 Else
                     CheckIfComingFromDeleteConfirm()
@@ -207,16 +207,16 @@ Namespace Tables
                 CheckIfComingFromSaveConfirm()
 
                 If Not Page.IsPostBack Then
-                    Me.AddLabelDecorations(Me.State.MyBO)
+                    AddLabelDecorations(State.MyBO)
                 End If
 
             Catch ex As Exception
                 ' Clean Popup Input
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = ""
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = ""
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
 
@@ -226,39 +226,39 @@ Namespace Tables
 
         Private Sub PopulateGrid()
             Try
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = GetDV()
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = GetDV()
                 End If
 
-                If Me.State.IsAfterEditSave And Me.State.IsAfterFinalSave Then
-                    Me.State.IsAfterEditSave = False
-                    Me.State.IsAfterFinalSave = False
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.Grid, Me.State.PageIndex)
-                ElseIf (Me.State.IsEditMode) Then
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+                If State.IsAfterEditSave And State.IsAfterFinalSave Then
+                    State.IsAfterEditSave = False
+                    State.IsAfterFinalSave = False
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, State.PageIndex)
+                ElseIf (State.IsEditMode) Then
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, State.PageIndex, State.IsEditMode)
                 Else
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.Grid, Me.State.PageIndex)
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, State.PageIndex)
                 End If
 
-                Me.Grid.AutoGenerateColumns = False
+                Grid.AutoGenerateColumns = False
 
-                Me.State.SortExpression = ScheduleDetail.ScheduleDetailSearchDV.COL_DAY_OF_WEEK_ID
+                State.SortExpression = ScheduleDetail.ScheduleDetailSearchDV.COL_DAY_OF_WEEK_ID
 
-                Me.SortAndBindGrid()
+                SortAndBindGrid()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub BindBoPropertiesToGridHeaders()
-            Me.BindBOPropertyToGridHeader(Me.State.MyScheduleDetailChildBO, "DayOfWeekId", Me.Grid.Columns(Me.DAY_OF_WEEK_COL))
-            Me.BindBOPropertyToGridHeader(Me.State.MyScheduleDetailChildBO, "FromTime", Me.Grid.Columns(Me.FROM_TIME_COL))
-            Me.BindBOPropertyToGridHeader(Me.State.MyScheduleDetailChildBO, "ToTime", Me.Grid.Columns(Me.TO_TIME_COL))
-            Me.ClearGridViewHeadersAndLabelsErrSign()
+            BindBOPropertyToGridHeader(State.MyScheduleDetailChildBO, "DayOfWeekId", Grid.Columns(DAY_OF_WEEK_COL))
+            BindBOPropertyToGridHeader(State.MyScheduleDetailChildBO, "FromTime", Grid.Columns(FROM_TIME_COL))
+            BindBOPropertyToGridHeader(State.MyScheduleDetailChildBO, "ToTime", Grid.Columns(TO_TIME_COL))
+            ClearGridViewHeadersAndLabelsErrSign()
         End Sub
 
-        Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim moEditImageButton As ImageButton
@@ -274,53 +274,53 @@ Namespace Tables
 
             Try
 
-                If Not dvRow Is Nothing And (Not Me.State.bnoRow) Then
+                If dvRow IsNot Nothing And (Not State.bnoRow) Then
                     If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then
-                        If (Me.State.IsEditMode AndAlso _
-                           Me.State.Id.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_SCHEDULE_DETAIL_ID), Byte())))) Then
-                            Me.PopulateControlFromBOProperty(scheduleDetailLabel, dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_SCHEDULE_DETAIL_ID))
-                            Me.PopulateControlFromBOProperty(e.Row.Cells(Me.SCHEDULE_ID_COL), dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_SCHEDULE_ID))
+                        If (State.IsEditMode AndAlso _
+                           State.Id.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_SCHEDULE_DETAIL_ID), Byte())))) Then
+                            PopulateControlFromBOProperty(scheduleDetailLabel, dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_SCHEDULE_DETAIL_ID))
+                            PopulateControlFromBOProperty(e.Row.Cells(SCHEDULE_ID_COL), dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_SCHEDULE_ID))
 
                             PopulateDayOfWeekDropdown(dayOfWeekList)
-                            If Not Me.State.DayofWeek Is Nothing Then
-                                Me.SetSelectedItemByText(dayOfWeekList, Me.State.DayofWeek)
+                            If State.DayofWeek IsNot Nothing Then
+                                SetSelectedItemByText(dayOfWeekList, State.DayofWeek)
                             Else
-                                dayOfWeekList.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+                                dayOfWeekList.SelectedIndex = NO_ITEM_SELECTED_INDEX
                             End If
 
-                            If Not Me.State.MyScheduleDetailChildBO Is Nothing AndAlso Not dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_FROM_TIME) Is DBNull.Value _
-                                AndAlso Not dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_TO_TIME) Is DBNull.Value Then
-                                fromTimeTextBox.Text = CType(Me.State.MyScheduleDetailChildBO.FromTime, Date).ToString(Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern)
-                                toTimeTextBox.Text = CType(Me.State.MyScheduleDetailChildBO.ToTime, Date).ToString(Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern)
+                            If State.MyScheduleDetailChildBO IsNot Nothing AndAlso dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_FROM_TIME) IsNot DBNull.Value _
+                                AndAlso dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_TO_TIME) IsNot DBNull.Value Then
+                                fromTimeTextBox.Text = CType(State.MyScheduleDetailChildBO.FromTime, Date).ToString(Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern)
+                                toTimeTextBox.Text = CType(State.MyScheduleDetailChildBO.ToTime, Date).ToString(Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern)
                             Else
                                 fromTimeTextBox.Text = ""
                                 toTimeTextBox.Text = ""
                             End If
                         Else
-                            Me.PopulateControlFromBOProperty(scheduleDetailLabel, dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_SCHEDULE_DETAIL_ID))
+                            PopulateControlFromBOProperty(scheduleDetailLabel, dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_SCHEDULE_DETAIL_ID))
 
                             dayOfWeekId = New Guid(CType(dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_DAY_OF_WEEK_ID), Byte()))
-                            Me.PopulateControlFromBOProperty(dayOfWeekLabel, LookupListNew.GetDescriptionFromId(LookupListCache.LK_DAYS_OF_WEEK, dayOfWeekId))
+                            PopulateControlFromBOProperty(dayOfWeekLabel, LookupListNew.GetDescriptionFromId(LookupListCache.LK_DAYS_OF_WEEK, dayOfWeekId))
 
-                            If Not dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_FROM_TIME) Is DBNull.Value Then
+                            If dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_FROM_TIME) IsNot DBNull.Value Then
                                 fromTime = CType(dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_FROM_TIME), Date).ToString(Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern)
                             Else
                                 fromTime = ""
                             End If
-                            Me.PopulateControlFromBOProperty(e.Row.Cells(Me.FROM_TIME_COL), fromTime)
+                            PopulateControlFromBOProperty(e.Row.Cells(FROM_TIME_COL), fromTime)
 
-                            If Not dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_TO_TIME) Is DBNull.Value Then
+                            If dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_TO_TIME) IsNot DBNull.Value Then
                                 toTime = CType(dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_TO_TIME), Date).ToString(Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern)
                             Else
                                 toTime = ""
                             End If
-                            Me.PopulateControlFromBOProperty(e.Row.Cells(Me.TO_TIME_COL), toTime)
+                            PopulateControlFromBOProperty(e.Row.Cells(TO_TIME_COL), toTime)
 
-                            Me.PopulateControlFromBOProperty(e.Row.Cells(Me.SCHEDULE_ID_COL), dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_SCHEDULE_ID))
+                            PopulateControlFromBOProperty(e.Row.Cells(SCHEDULE_ID_COL), dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_SCHEDULE_ID))
 
                             moEditImageButton = CType(e.Row.FindControl(EDIT_IMAGE_CONTROL_NAME), ImageButton)
                             moDeleteImageButton = CType(e.Row.FindControl(DELETE_IMAGE_CONTROL_NAME), ImageButton)
-                            If (Me.State.IsReadOnly) Then
+                            If (State.IsReadOnly) Then
                                 ControlMgr.SetVisibleControl(Me, moEditImageButton, False)
                                 ControlMgr.SetVisibleControl(Me, moDeleteImageButton, False)
                             End If
@@ -329,84 +329,84 @@ Namespace Tables
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Protected Sub RowCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Protected Sub RowCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
 
             Try
                 Dim index As Integer
 
-                If (e.CommandName = Me.EDIT_COMMAND) Then
+                If (e.CommandName = EDIT_COMMAND) Then
                     'Do the Edit here
                     index = CInt(e.CommandArgument)
                     'Set the IsEditMode flag to TRUE
-                    Me.State.IsEditMode = True
-                    Me.State.DayofWeek = CType(Me.Grid.Rows(index).Cells(Me.DAY_OF_WEEK_COL).FindControl(Me.DAY_OF_WEEK_LABEL_CONTROL), Label).Text
-                    Me.State.Id = New Guid(CType(Me.Grid.Rows(index).Cells(Me.SCHEDULE_DETAIL_ID_COL).FindControl(Me.SCHEDULE_DETAIL_ID_CONTROL_NAME), Label).Text)
+                    State.IsEditMode = True
+                    State.DayofWeek = CType(Grid.Rows(index).Cells(DAY_OF_WEEK_COL).FindControl(DAY_OF_WEEK_LABEL_CONTROL), Label).Text
+                    State.Id = New Guid(CType(Grid.Rows(index).Cells(SCHEDULE_DETAIL_ID_COL).FindControl(SCHEDULE_DETAIL_ID_CONTROL_NAME), Label).Text)
 
-                    Me.State.MyScheduleDetailChildBO = Me.State.MyBO.GetScheduleDetailChild(Me.State.Id)
-                    Me.State.MyScheduleDetailChildBO.BeginEdit()
-                    Me.PopulateGrid()
-                    Me.State.PageIndex = Grid.PageIndex
+                    State.MyScheduleDetailChildBO = State.MyBO.GetScheduleDetailChild(State.Id)
+                    State.MyScheduleDetailChildBO.BeginEdit()
+                    PopulateGrid()
+                    State.PageIndex = Grid.PageIndex
                     'Disable all Edit and Delete icon buttons on the Grid
-                    SetGridControls(Me.Grid, False)
+                    SetGridControls(Grid, False)
 
-                    If Me.Grid.SelectedRow.RowIndex >= 0 Then
+                    If Grid.SelectedRow.RowIndex >= 0 Then
                         'Set focus on the Description TextBox for the EditItemIndex row
-                        Me.SetFocusOnEditableFieldInGrid(Me.Grid, Me.DAY_OF_WEEK_COL, Me.DAY_OF_WEEK_LIST_CONTROL, Me.Grid.SelectedRow.RowIndex)
+                        SetFocusOnEditableFieldInGrid(Grid, DAY_OF_WEEK_COL, DAY_OF_WEEK_LIST_CONTROL, Grid.SelectedRow.RowIndex)
                     End If
 
-                    If Me.Grid.EditIndex >= 0 Then
-                        Me.AssignSelectedRecordFromBO()
+                    If Grid.EditIndex >= 0 Then
+                        AssignSelectedRecordFromBO()
                     End If
 
-                    Me.SetButtonsState()
-                    Me.SetLowerButtonsState()
+                    SetButtonsState()
+                    SetLowerButtonsState()
 
-                ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+                ElseIf (e.CommandName = DELETE_COMMAND) Then
 
                     'Do the delete here
                     index = CInt(e.CommandArgument)
 
-                    Me.PopulateGrid()
-                    Me.State.PageIndex = Grid.PageIndex
+                    PopulateGrid()
+                    State.PageIndex = Grid.PageIndex
 
                     'Clear the SelectedItemStyle to remove the highlight from the previously saved row
-                    Grid.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
+                    Grid.SelectedIndex = NO_ROW_SELECTED_INDEX
                     'Save the Id in the Session
-                    Me.State.Id = New Guid(CType(Me.Grid.Rows(index).Cells(Me.SCHEDULE_DETAIL_ID_COL).FindControl(Me.SCHEDULE_DETAIL_ID_CONTROL_NAME), Label).Text)
-                    Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenDeletePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                    State.Id = New Guid(CType(Grid.Rows(index).Cells(SCHEDULE_DETAIL_ID_COL).FindControl(SCHEDULE_DETAIL_ID_CONTROL_NAME), Label).Text)
+                    DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
 
-                ElseIf (e.CommandName = Me.SAVE_COMMAND) Then
+                ElseIf (e.CommandName = SAVE_COMMAND) Then
 
-                    Me.State.DayofWeek = Me.GetSelectedDescription(CType(Me.GetSelectedGridControl(Grid, DAY_OF_WEEK_COL), DropDownList))
+                    State.DayofWeek = GetSelectedDescription(CType(GetSelectedGridControl(Grid, DAY_OF_WEEK_COL), DropDownList))
 
                     SaveRecord()
 
-                    Me.PopulateGrid()
-                    Me.State.PageIndex = Grid.PageIndex
+                    PopulateGrid()
+                    State.PageIndex = Grid.PageIndex
 
-                ElseIf (e.CommandName = Me.CANCEL_COMMAND) Then
+                ElseIf (e.CommandName = CANCEL_COMMAND) Then
                     CancelRecord()
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Protected Sub RowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+        Protected Sub RowCreated(sender As Object, e As GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As GridView, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As GridView, cellPosition As Integer, controlName As String, itemIndex As Integer)
 
-            If controlName = Me.DAY_OF_WEEK_LIST_CONTROL Then
+            If controlName = DAY_OF_WEEK_LIST_CONTROL Then
                 'Set focus on the Day of Week Dropdownlist for the EditItemIndex row
                 Dim desc As DropDownList = CType(grid.Rows(itemIndex).Cells(cellPosition).FindControl(controlName), DropDownList)
                 SetFocus(desc)
@@ -419,17 +419,17 @@ Namespace Tables
         End Sub
 
         Private Sub SortAndBindGrid()
-            Me.State.PageIndex = Me.Grid.PageIndex
-            If (Me.State.searchDV.Count = 0) Then
-                Me.State.bnoRow = True
-                If Me.State.MyScheduleDetailChildBO Is Nothing Then
-                    Me.State.MyScheduleDetailChildBO = Me.State.MyBO.GetNewScheduleDetailChild
-                    Me.State.Id = Me.State.MyScheduleDetailChildBO.Id
+            State.PageIndex = Grid.PageIndex
+            If (State.searchDV.Count = 0) Then
+                State.bnoRow = True
+                If State.MyScheduleDetailChildBO Is Nothing Then
+                    State.MyScheduleDetailChildBO = State.MyBO.GetNewScheduleDetailChild
+                    State.Id = State.MyScheduleDetailChildBO.Id
                 End If
 
-                Me.State.searchDV = Me.State.MyScheduleDetailChildBO.GetNewDataViewRow(Me.State.searchDV, Me.State.Id, Me.State.MyScheduleDetailChildBO)
+                State.searchDV = State.MyScheduleDetailChildBO.GetNewDataViewRow(State.searchDV, State.Id, State.MyScheduleDetailChildBO)
 
-                Grid.DataSource = Me.State.searchDV
+                Grid.DataSource = State.searchDV
                 'Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
                 Grid.DataBind()
                 'TranslateGridHeader(Grid)
@@ -437,11 +437,11 @@ Namespace Tables
                 Grid.Rows(0).Visible = False
                 ''BindBoPropertiesToGridHeaders()
             Else
-                Me.State.bnoRow = False
-                Me.Grid.DataSource = Me.State.searchDV
+                State.bnoRow = False
+                Grid.DataSource = State.searchDV
                 'HighLightSortColumn(Grid, Me.State.SortExpression)
-                Me.Grid.DataBind()
-                If (Me.State.searchDV.Count = 1) And Me.State.AddingNewRow And Me.State.Canceling Then
+                Grid.DataBind()
+                If (State.searchDV.Count = 1) And State.AddingNewRow And State.Canceling Then
                     Grid.Rows(0).Visible = False
                 Else
                     Grid.Rows(0).Visible = True
@@ -461,48 +461,48 @@ Namespace Tables
 
             Dim dv As DataView
 
-            Me.State.searchDV = GetGridDataView()
-            Me.State.searchDV.Sort = Grid.DataMember()
+            State.searchDV = GetGridDataView()
+            State.searchDV.Sort = Grid.DataMember()
 
-            Return (Me.State.searchDV)
+            Return (State.searchDV)
 
         End Function
 
         Private Function GetGridDataView() As DataView
-            Return Me.State.MyBO.GetScheduleDetailSelectionView()
+            Return State.MyBO.GetScheduleDetailSelectionView()
         End Function
 
-        Private Sub Grid_Sorting(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_Sorting(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.State.Id = Guid.Empty
-                Me.State.PageIndex = 0
+                State.Id = Guid.Empty
+                State.PageIndex = 0
 
-                Me.PopulateGrid()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub Grid_PageIndexChanging(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
-                If (Not (Me.State.IsEditMode)) Then
-                    Me.State.PageIndex = e.NewPageIndex
-                    Me.Grid.PageIndex = Me.State.PageIndex
-                    Me.PopulateGrid()
-                    Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+                If (Not (State.IsEditMode)) Then
+                    State.PageIndex = e.NewPageIndex
+                    Grid.PageIndex = State.PageIndex
+                    PopulateGrid()
+                    Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -513,16 +513,16 @@ Namespace Tables
         Private Sub PopulateHeader()
             UpdateReadOnlyFlag()
             TranslateGridHeader(Grid)
-            If (Not Me.State.ScheduleId = Guid.Empty) And (Not Me.State.MyBO Is Nothing) Then
+            If (Not State.ScheduleId = Guid.Empty) And (State.MyBO IsNot Nothing) Then
                 moScheduleCode.Enabled = False
-                moScheduleCode.Text = Me.State.MyBO.Code
+                moScheduleCode.Text = State.MyBO.Code
 
-                If Not Me.State.IsReadOnly Then
+                If Not State.IsReadOnly Then
                     moScheduleDescription.Enabled = True
                 Else
                     moScheduleDescription.Enabled = False
                 End If
-                moScheduleDescription.Text = Me.State.MyBO.Description
+                moScheduleDescription.Text = State.MyBO.Description
                 'TranslateGridHeader(Grid)
             Else
                 moScheduleCode.Enabled = True
@@ -531,10 +531,10 @@ Namespace Tables
                 moScheduleDescription.Enabled = True
                 moScheduleDescription.Text = String.Empty
 
-                If Me.State.Action <> Me.COPY_SCHEDULE Then
-                    Me.State.Action = Me.INIT_LOAD
-                    Me.State.IsEditMode = False
-                    Me.State.searchDV = Nothing
+                If State.Action <> COPY_SCHEDULE Then
+                    State.Action = INIT_LOAD
+                    State.IsEditMode = False
+                    State.searchDV = Nothing
                 End If
             End If
 
@@ -562,7 +562,7 @@ Namespace Tables
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -570,44 +570,44 @@ Namespace Tables
 
             Dim dv As DataView
 
-            Me.State.searchDV = GetGridDataView()
-            If Me.State.MyScheduleDetailChildBO Is Nothing Then
-                Me.State.MyScheduleDetailChildBO = Me.State.MyBO.GetNewScheduleDetailChild
-                Me.State.Id = Me.State.MyScheduleDetailChildBO.Id
+            State.searchDV = GetGridDataView()
+            If State.MyScheduleDetailChildBO Is Nothing Then
+                State.MyScheduleDetailChildBO = State.MyBO.GetNewScheduleDetailChild
+                State.Id = State.MyScheduleDetailChildBO.Id
             End If
 
             ' To ensure we begin and end edit
-            Me.State.MyScheduleDetailChildBO.BeginEdit()
+            State.MyScheduleDetailChildBO.BeginEdit()
 
-            Me.State.searchDV = Me.State.MyScheduleDetailChildBO.GetNewDataViewRow(Me.State.searchDV, Me.State.Id, Me.State.MyScheduleDetailChildBO)
-            Grid.DataSource = Me.State.searchDV
+            State.searchDV = State.MyScheduleDetailChildBO.GetNewDataViewRow(State.searchDV, State.Id, State.MyScheduleDetailChildBO)
+            Grid.DataSource = State.searchDV
 
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, State.PageIndex, State.IsEditMode)
             Grid.DataBind()
 
-            Me.State.PageIndex = Grid.PageIndex
+            State.PageIndex = Grid.PageIndex
 
-            If Me.State.bnoRow = True Then
+            If State.bnoRow = True Then
                 'ControlMgr.SetVisibleControl(Me, Grid1, False)
                 ControlMgr.SetVisibleControl(Me, Grid, True)
             End If
 
-            SetGridControls(Me.Grid, False)
+            SetGridControls(Grid, False)
 
-            If Me.Grid.EditIndex >= 0 Then
+            If Grid.EditIndex >= 0 Then
                 'Set focus on the Days of Week List Control for the EditItemIndex row
-                Me.SetFocusOnEditableFieldInGrid(Me.Grid, Me.DAY_OF_WEEK_COL, Me.DAY_OF_WEEK_LIST_CONTROL, Me.Grid.EditIndex)
-                Me.AssignSelectedRecordFromBO()
+                SetFocusOnEditableFieldInGrid(Grid, DAY_OF_WEEK_COL, DAY_OF_WEEK_LIST_CONTROL, Grid.EditIndex)
+                AssignSelectedRecordFromBO()
             End If
 
-            Me.TranslateGridControls(Grid)
-            Me.SetButtonsState()
-            Me.SetLowerButtonsState()
+            TranslateGridControls(Grid)
+            SetButtonsState()
+            SetLowerButtonsState()
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
         End Sub
 
         Protected Sub PopulateBOfromForm()
-            With Me.State.MyBO
+            With State.MyBO
                 .Code = moScheduleCode.Text
                 .Description = moScheduleDescription.Text
             End With
@@ -617,7 +617,7 @@ Namespace Tables
         Protected Sub PopulateFormfromBO()
             'UpdateReadOnlyFlag()
             'PopulateScheduleDetailGrid()
-            With Me.State.MyBO
+            With State.MyBO
                 moScheduleCode.Text = .Code
                 moScheduleDescription.Text = .Description
             End With
@@ -630,45 +630,45 @@ Namespace Tables
             Dim toTimeText As TextBox
             Dim scheduleIDLabel As Label
             Dim scheduleDetailIDLabel As Label
-            Dim gridRowIdx As Integer = Me.Grid.EditIndex
+            Dim gridRowIdx As Integer = Grid.EditIndex
             Try
-                With Me.State.MyScheduleDetailChildBO
-                    fromTimeText = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.FROM_TIME_COL).FindControl(Me.FROM_TIME_CONTROL_NAME), TextBox)
-                    toTimeText = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.TO_TIME_COL).FindControl(Me.TO_TIME_CONTROL_NAME), TextBox)
-                    dayOfWeekList = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.DAY_OF_WEEK_COL).FindControl(Me.DAY_OF_WEEK_LIST_CONTROL), DropDownList)
+                With State.MyScheduleDetailChildBO
+                    fromTimeText = CType(Grid.Rows(gridRowIdx).Cells(FROM_TIME_COL).FindControl(FROM_TIME_CONTROL_NAME), TextBox)
+                    toTimeText = CType(Grid.Rows(gridRowIdx).Cells(TO_TIME_COL).FindControl(TO_TIME_CONTROL_NAME), TextBox)
+                    dayOfWeekList = CType(Grid.Rows(gridRowIdx).Cells(DAY_OF_WEEK_COL).FindControl(DAY_OF_WEEK_LIST_CONTROL), DropDownList)
                     PopulateDayOfWeekDropdown(dayOfWeekList)
 
-                    If Not Me.State.DayofWeek Is Nothing Then
-                        Me.SetSelectedItemByText(dayOfWeekList, Me.State.DayofWeek)
+                    If State.DayofWeek IsNot Nothing Then
+                        SetSelectedItemByText(dayOfWeekList, State.DayofWeek)
                     Else
-                        dayOfWeekList.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+                        dayOfWeekList.SelectedIndex = NO_ITEM_SELECTED_INDEX
                     End If
 
-                    If (Not fromTimeText Is Nothing) And (Not .FromTime Is Nothing) And (Not .FromTime Is String.Empty) Then
+                    If (fromTimeText IsNot Nothing) And (.FromTime IsNot Nothing) And (.FromTime IsNot String.Empty) Then
                         fromTimeText.Text = CDate(.FromTime).ToString(Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern)
                     End If
-                    If (Not toTimeText Is Nothing) And (Not .ToTime Is Nothing) And (Not .ToTime Is String.Empty) Then
+                    If (toTimeText IsNot Nothing) And (.ToTime IsNot Nothing) And (.ToTime IsNot String.Empty) Then
                         toTimeText.Text = CDate(.ToTime).ToString(Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern)
                     End If
 
-                    scheduleDetailIDLabel = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.SCHEDULE_DETAIL_ID_COL).FindControl(Me.SCHEDULE_DETAIL_ID_CONTROL_NAME), Label)
+                    scheduleDetailIDLabel = CType(Grid.Rows(gridRowIdx).Cells(SCHEDULE_DETAIL_ID_COL).FindControl(SCHEDULE_DETAIL_ID_CONTROL_NAME), Label)
                     scheduleDetailIDLabel.Text = .Id.ToString
 
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub AssignBOFromSelectedRecord(ByVal strFromTime As String, ByVal strToTime As String)
+        Private Sub AssignBOFromSelectedRecord(strFromTime As String, strToTime As String)
 
-            Me.State.MyScheduleDetailChildBO.FromTime = DateTime.Parse(String.Format("{0} {1}", DateTime.MinValue.ToString( _
+            State.MyScheduleDetailChildBO.FromTime = DateTime.Parse(String.Format("{0} {1}", DateTime.MinValue.ToString( _
                                                              Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern), strFromTime))
-            Me.State.MyScheduleDetailChildBO.ToTime = DateTime.Parse(String.Format("{0} {1}", DateTime.MinValue.ToString( _
+            State.MyScheduleDetailChildBO.ToTime = DateTime.Parse(String.Format("{0} {1}", DateTime.MinValue.ToString( _
                                                            Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern), strToTime))
 
-            Me.State.MyScheduleDetailChildBO.DayOfWeekId = Me.GetSelectedItem(CType(Me.GetSelectedGridControl(Grid, DAY_OF_WEEK_COL), DropDownList))
+            State.MyScheduleDetailChildBO.DayOfWeekId = GetSelectedItem(CType(GetSelectedGridControl(Grid, DAY_OF_WEEK_COL), DropDownList))
 
         End Sub
 
@@ -676,21 +676,21 @@ Namespace Tables
             Dim strFromTime As String
             Dim strToTime As String
             Try
-                strFromTime = CType(Me.GetSelectedGridControl(Grid, FROM_TIME_COL), TextBox).Text
-                strToTime = CType(Me.GetSelectedGridControl(Grid, TO_TIME_COL), TextBox).Text
+                strFromTime = CType(GetSelectedGridControl(Grid, FROM_TIME_COL), TextBox).Text
+                strToTime = CType(GetSelectedGridControl(Grid, TO_TIME_COL), TextBox).Text
 
                 If Not System.Text.RegularExpressions.Regex.IsMatch(strFromTime, ElitaPlus.Common.RegExConstants.TIME_REGEX, _
                                                                 System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.MessageController.AddWarning(String.Format("{0}: {1}", _
+                    MasterPage.MessageController.Clear()
+                    MasterPage.MessageController.AddWarning(String.Format("{0}: {1}", _
                                            TranslationBase.TranslateLabelOrMessage("FROM_TIME"), _
                                            TranslationBase.TranslateLabelOrMessage("FROM_TIME_INVALID"), False))
                     Exit Sub
                 End If
                 If Not System.Text.RegularExpressions.Regex.IsMatch(strToTime, ElitaPlus.Common.RegExConstants.TIME_REGEX, _
                                                                 System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.MessageController.AddWarning(String.Format("{0}: {1}", _
+                    MasterPage.MessageController.Clear()
+                    MasterPage.MessageController.AddWarning(String.Format("{0}: {1}", _
                                            TranslationBase.TranslateLabelOrMessage("TO_TIME"), _
                                            TranslationBase.TranslateLabelOrMessage("TO_TIME_INVALID"), False))
                     Exit Sub
@@ -699,32 +699,32 @@ Namespace Tables
                 AssignBOFromSelectedRecord(strFromTime, strToTime)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub CancelRecord()
             Try
                 ' To implement BeginEdit and CancelEdit
-                Me.State.MyScheduleDetailChildBO.cancelEdit()
-                If Me.State.MyScheduleDetailChildBO.IsSaveNew Then
-                    Me.State.MyScheduleDetailChildBO.Delete()
-                    Me.State.MyScheduleDetailChildBO.Save()
+                State.MyScheduleDetailChildBO.cancelEdit()
+                If State.MyScheduleDetailChildBO.IsSaveNew Then
+                    State.MyScheduleDetailChildBO.Delete()
+                    State.MyScheduleDetailChildBO.Save()
                 End If
-                Me.State.MyScheduleDetailChildBO = Nothing
+                State.MyScheduleDetailChildBO = Nothing
 
-                Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
-                Me.State.Canceling = True
-                If (Me.State.AddingNewRow) Then
-                    Me.State.AddingNewRow = False
-                    Me.State.searchDV = Nothing
+                Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                State.Canceling = True
+                If (State.AddingNewRow) Then
+                    State.AddingNewRow = False
+                    State.searchDV = Nothing
                 End If
 
                 ReturnFromEditing()
                 SetLowerButtonsState()
-                Me.State.Canceling = False
+                State.Canceling = False
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -733,21 +733,21 @@ Namespace Tables
             Dim strFromTime As String
             Dim strToTime As String
             Try
-                strFromTime = CType(Me.GetSelectedGridControl(Grid, FROM_TIME_COL), TextBox).Text
-                strToTime = CType(Me.GetSelectedGridControl(Grid, TO_TIME_COL), TextBox).Text
+                strFromTime = CType(GetSelectedGridControl(Grid, FROM_TIME_COL), TextBox).Text
+                strToTime = CType(GetSelectedGridControl(Grid, TO_TIME_COL), TextBox).Text
 
                 If Not System.Text.RegularExpressions.Regex.IsMatch(strFromTime, ElitaPlus.Common.RegExConstants.TIME_REGEX, _
                                                                 System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.MessageController.AddWarning(String.Format("{0}: {1}", _
+                    MasterPage.MessageController.Clear()
+                    MasterPage.MessageController.AddWarning(String.Format("{0}: {1}", _
                                            TranslationBase.TranslateLabelOrMessage("FROM_TIME"), _
                                            TranslationBase.TranslateLabelOrMessage("FROM_TIME_INVALID"), False))
                     Exit Sub
                 End If
                 If Not System.Text.RegularExpressions.Regex.IsMatch(strToTime, ElitaPlus.Common.RegExConstants.TIME_REGEX, _
                                                                 System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.MessageController.AddWarning(String.Format("{0}: {1}", _
+                    MasterPage.MessageController.Clear()
+                    MasterPage.MessageController.AddWarning(String.Format("{0}: {1}", _
                                            TranslationBase.TranslateLabelOrMessage("TO_TIME"), _
                                            TranslationBase.TranslateLabelOrMessage("TO_TIME_INVALID"), False))
                     Exit Sub
@@ -755,124 +755,124 @@ Namespace Tables
 
                 AssignBOFromSelectedRecord(strFromTime, strToTime)
 
-                If Me.State.MyScheduleDetailChildBO.IsDirty Then
-                    Me.State.MyScheduleDetailChildBO.Save()
-                    Me.State.MyScheduleDetailChildBO.EndEdit()
-                    Me.State.IsAfterEditSave = True
-                    Me.State.IsEditMode = False
-                    Me.State.AddingNewRow = False
-                    Me.State.bnoRow = False
-                    Me.State.searchDV = Nothing
-                    Me.State.Action = ""
-                    Me.State.MyScheduleDetailChildBO = Nothing
+                If State.MyScheduleDetailChildBO.IsDirty Then
+                    State.MyScheduleDetailChildBO.Save()
+                    State.MyScheduleDetailChildBO.EndEdit()
+                    State.IsAfterEditSave = True
+                    State.IsEditMode = False
+                    State.AddingNewRow = False
+                    State.bnoRow = False
+                    State.searchDV = Nothing
+                    State.Action = ""
+                    State.MyScheduleDetailChildBO = Nothing
                 End If
                 SetLowerButtonsState()
-                Me.ReturnFromEditing()
+                ReturnFromEditing()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
         Private Sub DoDelete()
 
-            Me.State.MyScheduleDetailChildBO = Me.State.MyBO.GetScheduleDetailChild(Me.State.Id)
+            State.MyScheduleDetailChildBO = State.MyBO.GetScheduleDetailChild(State.Id)
             Try
-                Me.State.MyScheduleDetailChildBO.Delete()
-                Me.State.MyScheduleDetailChildBO.Save()
-                Me.State.MyScheduleDetailChildBO.EndEdit()
-                Me.State.SelectedScheduleDetailChildId = Guid.Empty
-                Me.State.MyScheduleDetailChildBO = Nothing
+                State.MyScheduleDetailChildBO.Delete()
+                State.MyScheduleDetailChildBO.Save()
+                State.MyScheduleDetailChildBO.EndEdit()
+                State.SelectedScheduleDetailChildId = Guid.Empty
+                State.MyScheduleDetailChildBO = Nothing
             Catch ex As Exception
-                Me.State.MyBO.RejectChanges()
+                State.MyBO.RejectChanges()
                 Throw ex
             End Try
 
-            Me.State.PageIndex = Grid.PageIndex
+            State.PageIndex = Grid.PageIndex
 
             'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-            Me.State.IsAfterEditSave = True
-            Me.State.IsEditMode = False
-            Me.State.searchDV = Nothing
+            State.IsAfterEditSave = True
+            State.IsEditMode = False
+            State.searchDV = Nothing
             SetLowerButtonsState()
-            Me.ReturnFromEditing()
-            Me.State.PageIndex = Grid.PageIndex
+            ReturnFromEditing()
+            State.PageIndex = Grid.PageIndex
         End Sub
 
         Private Sub ReturnFromEditing()
 
             Grid.EditIndex = NO_ROW_SELECTED_INDEX
-            If Me.Grid.PageCount = 0 Then
+            If Grid.PageCount = 0 Then
                 'if returning to the "1st time in" screen
                 ControlMgr.SetVisibleControl(Me, Grid, False)
             Else
                 ControlMgr.SetVisibleControl(Me, Grid, True)
             End If
 
-            Me.State.IsEditMode = False
-            Me.State.searchDV = Nothing
-            Me.PopulateGrid()
-            Me.State.PageIndex = Grid.PageIndex
+            State.IsEditMode = False
+            State.searchDV = Nothing
+            PopulateGrid()
+            State.PageIndex = Grid.PageIndex
             SetButtonsState()
         End Sub
 
         Private Sub SetButtonsState()
 
-            If Me.State.IsEditMode Then
+            If State.IsEditMode Then
                 ControlMgr.SetEnableControl(Me, BtnNew_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnBack, False)
-                Me.MenuEnabled = False
-            ElseIf Me.State.IsReadOnly Then
+                MenuEnabled = False
+            ElseIf State.IsReadOnly Then
                 ControlMgr.SetEnableControl(Me, BtnNew_WRITE, False)
                 'Diable the Edit and Delete Buttons as disabled
             Else
-                If Me.State.Action <> Me.COPY_SCHEDULE Then
+                If State.Action <> COPY_SCHEDULE Then
                     ControlMgr.SetEnableControl(Me, BtnNew_WRITE, True)
                 Else
                     ControlMgr.SetEnableControl(Me, BtnNew_WRITE, False)
                 End If
 
                 ControlMgr.SetEnableControl(Me, btnBack, True)
-                Me.MenuEnabled = True
+                MenuEnabled = True
             End If
 
         End Sub
 
         Private Sub SetLowerButtonsState()
             'Me.State.IsAfterSave
-            If Me.State.IsEditMode = True Then
+            If State.IsEditMode = True Then
                 btnBack.Enabled = False
                 btnApply_WRITE.Enabled = False
                 btnButtomNew_WRITE.Enabled = False
                 btnCopy_WRITE.Enabled = False
                 btnUndo_WRITE.Enabled = False
-            ElseIf Me.State.IsReadOnly Then
+            ElseIf State.IsReadOnly Then
                 btnBack.Enabled = True
                 btnApply_WRITE.Enabled = False
                 btnButtomNew_WRITE.Enabled = False
                 btnCopy_WRITE.Enabled = True
                 btnUndo_WRITE.Enabled = False
             Else
-                If Me.State.Action = Me.NEW_SCHEDULE Or _
-                   Me.State.Action = Me.INIT_LOAD Then
+                If State.Action = NEW_SCHEDULE Or _
+                   State.Action = INIT_LOAD Then
                     btnBack.Enabled = True
                     btnApply_WRITE.Enabled = True
                     btnButtomNew_WRITE.Enabled = False
                     btnCopy_WRITE.Enabled = False
                     btnUndo_WRITE.Enabled = False
-                ElseIf Me.State.Action = Me.COPY_SCHEDULE Then
+                ElseIf State.Action = COPY_SCHEDULE Then
                     btnBack.Enabled = False
                     btnApply_WRITE.Enabled = True
                     btnButtomNew_WRITE.Enabled = False
                     btnCopy_WRITE.Enabled = False
                     btnUndo_WRITE.Enabled = True
-                ElseIf Me.State.IsAfterEditSave = True Then
+                ElseIf State.IsAfterEditSave = True Then
                     btnBack.Enabled = True
                     btnUndo_WRITE.Enabled = True
                     btnApply_WRITE.Enabled = True
                     btnButtomNew_WRITE.Enabled = False
                     btnCopy_WRITE.Enabled = False
-                ElseIf Me.State.IsAfterFinalSave = True Then
+                ElseIf State.IsAfterFinalSave = True Then
                     btnBack.Enabled = True
                     btnUndo_WRITE.Enabled = False
                     btnApply_WRITE.Enabled = True
@@ -889,142 +889,142 @@ Namespace Tables
         End Sub
 
         Protected Sub CheckIfComingFromDeleteConfirm()
-            Dim confResponse As String = Me.HiddenDeletePromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+            Dim confResponse As String = HiddenDeletePromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
                 If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
                     DoDelete()
                     'Clean after consuming the action
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                    Me.HiddenDeletePromptResponse.Value = ""
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                    HiddenDeletePromptResponse.Value = ""
                 End If
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
                 'Me.State.searchDV = Nothing
                 SetLowerButtonsState()
-                Me.ReturnFromEditing()
+                ReturnFromEditing()
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenDeletePromptResponse.Value = ""
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenDeletePromptResponse.Value = ""
             End If
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
 
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-                If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
-                    Me.State.MyBO.Save()
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+                If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
+                    State.MyBO.Save()
                 End If
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
                         'Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
-                        Me.ReturnToCallingPage()
+                        ReturnToCallingPage()
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                        Me.CreateNew()
+                        DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                        Me.CreateNewWithCopy()
+                        DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
                         'Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
-                        Me.ReturnToCallingPage()
+                        ReturnToCallingPage()
                     Case ElitaPlusPage.DetailPageCommand.Accept
-                        If (Me.State.IsEditMode) Then
-                            Me.PopulateMyScheduleDetailChildBOFromDetail()
-                            Me.State.MyScheduleDetailChildBO.Save()
-                            Me.State.MyScheduleDetailChildBO.EndEdit()
-                            Me.State.IsEditMode = False
+                        If (State.IsEditMode) Then
+                            PopulateMyScheduleDetailChildBOFromDetail()
+                            State.MyScheduleDetailChildBO.Save()
+                            State.MyScheduleDetailChildBO.EndEdit()
+                            State.IsEditMode = False
                         End If
-                        Me.SetLowerButtonsState()
-                        Me.ReturnFromEditing()
+                        SetLowerButtonsState()
+                        ReturnFromEditing()
                         'Me.EnableDisableFields()
                         'Me.PopulateScheduleDetailGrid()
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
                         'Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
-                        Me.ReturnToCallingPage()
+                        ReturnToCallingPage()
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.CreateNew()
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.CreateNewWithCopy()
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                        MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
                     Case ElitaPlusPage.DetailPageCommand.Accept
-                        If (Me.State.IsEditMode) Then
-                            Me.State.MyScheduleDetailChildBO.cancelEdit()
-                            If Me.State.MyScheduleDetailChildBO.IsSaveNew Then
-                                Me.State.MyScheduleDetailChildBO.Delete()
-                                Me.State.MyScheduleDetailChildBO.Save()
+                        If (State.IsEditMode) Then
+                            State.MyScheduleDetailChildBO.cancelEdit()
+                            If State.MyScheduleDetailChildBO.IsSaveNew Then
+                                State.MyScheduleDetailChildBO.Delete()
+                                State.MyScheduleDetailChildBO.Save()
                             End If
-                            Me.State.IsEditMode = False
+                            State.IsEditMode = False
                         End If
-                        Me.SetLowerButtonsState()
-                        Me.ReturnFromEditing()
+                        SetLowerButtonsState()
+                        ReturnFromEditing()
                         'Me.EnableDisableFields()
                         'Me.PopulateScheduleDetailGrid()
                 End Select
             End If
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = ""
         End Sub
 
 #End Region
 
 #Region "Button Click Handlers"
 
-        Private Sub NewButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNew_WRITE.Click
+        Private Sub NewButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnNew_WRITE.Click
 
             Try
-                Me.State.IsEditMode = True
-                Me.State.AddingNewRow = True
+                State.IsEditMode = True
+                State.AddingNewRow = True
                 ' '' ''Me.State.bnoRow = True
                 AddNew()
                 SetButtonsState()
                 SetLowerButtonsState()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Me.PopulateBOfromForm()
+                PopulateBOfromForm()
                 'Me.PopulateGrid()
                 'Me.State.PageIndex = Grid.PageIndex
-                If (Not Me.State.bnoRow) And Me.State.MyBO.IsDirty Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                If (Not State.bnoRow) And State.MyBO.IsDirty Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ReturnToCallingPage()
+                    ReturnToCallingPage()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
                 Dim scheduleBO As New Schedule
-                Me.ReturnToCallingPage()
+                ReturnToCallingPage()
             End Try
         End Sub
 
-        Private Sub btnButtomNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnButtomNew_WRITE.Click
+        Private Sub btnButtomNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnButtomNew_WRITE.Click
             Try
-                Me.State.Action = Me.NEW_SCHEDULE
-                Me.State.ScheduleId = Guid.Empty
-                Me.State.IsEditMode = False
-                Me.State.AddingNewRow = False
-                Me.State.searchDV = Nothing
+                State.Action = NEW_SCHEDULE
+                State.ScheduleId = Guid.Empty
+                State.IsEditMode = False
+                State.AddingNewRow = False
+                State.searchDV = Nothing
 
-                Me.PopulateBOfromForm()
+                PopulateBOfromForm()
 
-                If Not Me.State.bnoRow And Me.State.MyBO.IsDirty Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                If Not State.bnoRow And State.MyBO.IsDirty Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
-                    Me.CreateNew()
+                    CreateNew()
                 End If
 
                 PopulateGrid()
@@ -1033,136 +1033,136 @@ Namespace Tables
                 SetLowerButtonsState()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub CreateNew()
-            Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-            Me.State.MyBO = New Schedule
-            Me.PopulateBOfromForm()
+            State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+            State.MyBO = New Schedule
+            PopulateBOfromForm()
             'Me.EnableDisableFields()
         End Sub
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
-                Me.State.Action = Me.COPY_SCHEDULE
-                Me.State.CopyScheduleId = Me.State.ScheduleId
-                Me.State.ScheduleId = Guid.Empty
+                State.Action = COPY_SCHEDULE
+                State.CopyScheduleId = State.ScheduleId
+                State.ScheduleId = Guid.Empty
 
-                Me.PopulateBOfromForm()
-                If Not Me.State.bnoRow And Me.State.MyBO.IsDirty Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                PopulateBOfromForm()
+                If Not State.bnoRow And State.MyBO.IsDirty Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 End If
                 PopulateHeader()
                 SetButtonsState()
                 SetLowerButtonsState()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub CreateNewWithCopy()
 
-            Me.PopulateBOfromForm()
+            PopulateBOfromForm()
 
             Dim newObj As New Schedule
-            newObj.Copy(Me.State.MyBO)
+            newObj.Copy(State.MyBO)
 
-            Me.State.MyBO = newObj
-            Me.PopulateFormfromBO()
+            State.MyBO = newObj
+            PopulateFormfromBO()
 
             'Me.PopulateGrid()
 
             'Populate the Schedule Detail
-            Dim dv As DataView = ScheduleDetail.LoadScheduleDetail(Me.State.CopyScheduleId)
+            Dim dv As DataView = ScheduleDetail.LoadScheduleDetail(State.CopyScheduleId)
             Dim dt As DataTable = dv.Table
             For Each row As DataRow In dt.Rows
-                Me.State.MyScheduleDetailChildBO = Me.State.MyBO.GetNewScheduleDetailChild
-                Me.State.Id = Me.State.MyScheduleDetailChildBO.Id
-                Me.State.MyScheduleDetailChildBO.ScheduleId = Me.State.MyBO.Id
-                Me.State.MyScheduleDetailChildBO.FromTime = CType(row(ScheduleDetail.ScheduleDetailSearchDV.COL_FROM_TIME), Date)
-                Me.State.MyScheduleDetailChildBO.ToTime = CType(row(ScheduleDetail.ScheduleDetailSearchDV.COL_TO_TIME), Date)
-                Me.State.MyScheduleDetailChildBO.DayOfWeekId = New Guid(CType(row(ScheduleDetail.ScheduleDetailSearchDV.COL_DAY_OF_WEEK_ID), Byte()))
-                Me.State.MyScheduleDetailChildBO.Save()
+                State.MyScheduleDetailChildBO = State.MyBO.GetNewScheduleDetailChild
+                State.Id = State.MyScheduleDetailChildBO.Id
+                State.MyScheduleDetailChildBO.ScheduleId = State.MyBO.Id
+                State.MyScheduleDetailChildBO.FromTime = CType(row(ScheduleDetail.ScheduleDetailSearchDV.COL_FROM_TIME), Date)
+                State.MyScheduleDetailChildBO.ToTime = CType(row(ScheduleDetail.ScheduleDetailSearchDV.COL_TO_TIME), Date)
+                State.MyScheduleDetailChildBO.DayOfWeekId = New Guid(CType(row(ScheduleDetail.ScheduleDetailSearchDV.COL_DAY_OF_WEEK_ID), Byte()))
+                State.MyScheduleDetailChildBO.Save()
             Next
 
-            Me.State.searchDV = Nothing
-            Me.PopulateGrid()
+            State.searchDV = Nothing
+            PopulateGrid()
 
         End Sub
 
-        Private Sub btnApply_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+        Private Sub btnApply_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
             Try
-                Me.PopulateBOfromForm()
+                PopulateBOfromForm()
                 ' We are enforcing to save the schedule Detail before saving the Schedule
-                If Me.State.bnoRow And Not Me.State.MyScheduleDetailChildBO Is Nothing Then
-                    If Not Me.State.MyScheduleDetailChildBO.IsValid Then
-                        Me.State.MyScheduleDetailChildBO.BeginEdit()
-                        Me.State.MyScheduleDetailChildBO.Delete()
-                        Me.State.MyScheduleDetailChildBO.Save()
-                        Me.State.MyScheduleDetailChildBO.EndEdit()
-                        Me.State.MyScheduleDetailChildBO = Nothing
+                If State.bnoRow And State.MyScheduleDetailChildBO IsNot Nothing Then
+                    If Not State.MyScheduleDetailChildBO.IsValid Then
+                        State.MyScheduleDetailChildBO.BeginEdit()
+                        State.MyScheduleDetailChildBO.Delete()
+                        State.MyScheduleDetailChildBO.Save()
+                        State.MyScheduleDetailChildBO.EndEdit()
+                        State.MyScheduleDetailChildBO = Nothing
                     End If
                 End If
-                If Me.State.MyBO.IsDirty And (Me.State.MyScheduleDetailChildBO Is Nothing Or Me.State.CopyScheduleId <> Guid.Empty) Then
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = True
-                    Me.PopulateFormfromBO()
+                If State.MyBO.IsDirty And (State.MyScheduleDetailChildBO Is Nothing Or State.CopyScheduleId <> Guid.Empty) Then
+                    State.MyBO.Save()
+                    State.HasDataChanged = True
+                    PopulateFormfromBO()
 
-                    Me.State.IsEditMode = False
-                    Me.State.IsAfterFinalSave = True
-                    If Me.State.Action = Me.COPY_SCHEDULE Then
-                        Me.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_COPIED_OK, True)
+                    State.IsEditMode = False
+                    State.IsAfterFinalSave = True
+                    If State.Action = COPY_SCHEDULE Then
+                        MasterPage.MessageController.AddSuccess(MSG_RECORD_COPIED_OK, True)
                     Else
-                        Me.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_SAVED_OK, True)
+                        MasterPage.MessageController.AddSuccess(MSG_RECORD_SAVED_OK, True)
                     End If
-                    Me.State.Action = ""
-                    Me.State.CopyScheduleId = Guid.Empty 'To Clear the last Copy performed
-                    Me.State.ScheduleId = Me.State.MyBO.Id
-                    Me.State.searchDV = Nothing
-                    Me.PopulateHeader()
+                    State.Action = ""
+                    State.CopyScheduleId = Guid.Empty 'To Clear the last Copy performed
+                    State.ScheduleId = State.MyBO.Id
+                    State.searchDV = Nothing
+                    PopulateHeader()
                 Else
-                    Me.MasterPage.MessageController.AddInformation(Me.MSG_RECORD_NOT_SAVED, True)
+                    MasterPage.MessageController.AddInformation(MSG_RECORD_NOT_SAVED, True)
                 End If
-                Me.ReturnFromEditing()
+                ReturnFromEditing()
                 SetLowerButtonsState()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
-                If Not Me.State.MyBO.IsNew Then
+                If Not State.MyBO.IsNew Then
                     'Reload from the DB
-                    Me.State.MyBO = New Schedule(Me.State.MyBO.Id)
-                ElseIf Not Me.State.CopyScheduleId = Guid.Empty Then
+                    State.MyBO = New Schedule(State.MyBO.Id)
+                ElseIf Not State.CopyScheduleId = Guid.Empty Then
                     'It was a new with copy
-                    Me.State.MyBO = New Schedule(Me.State.CopyScheduleId)
-                    Me.State.ScheduleId = Me.State.CopyScheduleId
-                    Me.State.CopyScheduleId = Guid.Empty 'To Clear the last Copy performed
-                    Me.State.Action = ""
+                    State.MyBO = New Schedule(State.CopyScheduleId)
+                    State.ScheduleId = State.CopyScheduleId
+                    State.CopyScheduleId = Guid.Empty 'To Clear the last Copy performed
+                    State.Action = ""
 
-                    If Not Me.State.MyScheduleDetailChildBO Is Nothing Then
-                        Me.State.MyScheduleDetailChildBO = Nothing
+                    If State.MyScheduleDetailChildBO IsNot Nothing Then
+                        State.MyScheduleDetailChildBO = Nothing
                     End If
-                    If Not Me.State.Id = Guid.Empty Then
-                        Me.State.Id = Guid.Empty
+                    If Not State.Id = Guid.Empty Then
+                        State.Id = Guid.Empty
                     End If
                 Else
                     CreateNew()
                 End If
-                Me.PopulateFormfromBO()
+                PopulateFormfromBO()
                 SetLowerButtonsState()
-                Me.State.searchDV = Nothing
-                Me.PopulateHeader()
-                Me.ReturnFromEditing()
+                State.searchDV = Nothing
+                PopulateHeader()
+                ReturnFromEditing()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 

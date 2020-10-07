@@ -55,45 +55,45 @@ Namespace Certificates
 #Region "Handlers-Init, page events"
 
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
             Try
-                Me.MasterPage.MessageController.Clear()
-                Me.Form.DefaultButton = btnSearch.UniqueID
-                If Not Me.IsPostBack Then
+                MasterPage.MessageController.Clear()
+                Form.DefaultButton = btnSearch.UniqueID
+                If Not IsPostBack Then
 
                     ' Populate the header and breadcrumb
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.UsePageTabTitleInBreadCrum = False
                     UpdateBreadCrum()
                     TranslateGridHeader(Grid)
                     PopulateControls()
                     'Set page size
 
 
-                    If Me.IsReturningFromChild Then
+                    If IsReturningFromChild Then
                         ' It is returning from detail
-                        Me.PopulateGrid()
-                        Me.GetStateProperties()
+                        PopulateGrid()
+                        GetStateProperties()
                     Else
-                        cboPageSize.SelectedValue = Me.State.PageSize.ToString()
+                        cboPageSize.SelectedValue = State.PageSize.ToString()
                         ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     End If
 
                     'SetFocus(Me.TextBoxCaseNumber)
                 End If
-                Me.DisplayNewProgressBarOnClick(Me.btnSearch, "LOADING_REWARDS")
-                Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+                DisplayNewProgressBarOnClick(btnSearch, "LOADING_REWARDS")
+                ShowMissingTranslations(MasterPage.MessageController)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
 
         End Sub
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
+                MenuEnabled = True
+                IsReturningFromChild = True
                 ' Dim retObj As RewardDetailsForm.ReturnType = CType(ReturnPar, CaseDetailsForm.ReturnType)
                 'If Not retObj Is Nothing AndAlso retObj.BoChanged Then
                 '    Me.State.searchDV = Nothing
@@ -108,20 +108,20 @@ Namespace Certificates
                 '        End If
                 'End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
 
 #Region "Handlers-DropDown"
-        Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-                Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-                Me.Grid.PageIndex = Me.State.PageIndex
-                Me.PopulateGrid()
+                State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+                Grid.PageIndex = State.PageIndex
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -131,28 +131,28 @@ Namespace Certificates
         Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
             Try
 
-                Me.SetStateProperties()
-                Me.State.PageIndex = 0
-                Me.State.selectedCertId = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.searchClick = True
-                Me.State.searchDV = Nothing
+                SetStateProperties()
+                State.PageIndex = 0
+                State.selectedCertId = Guid.Empty
+                State.IsGridVisible = True
+                State.searchClick = True
+                State.searchDV = Nothing
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+        Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
             Try
 
                 ' Clear all search options typed or selected by the user
-                Me.ClearAllSearchOptions()
+                ClearAllSearchOptions()
 
                 ' Update the Bo state properties with the new value
-                Me.SetStateProperties()
+                SetStateProperties()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -161,7 +161,7 @@ Namespace Certificates
             PopulateCompaniesDropdown()
             PopulateDealersDropdown()
             'Me.ddlRewardStatus.PopulateOld("REWARD_STATUS", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
-            Me.ddlRewardStatus.Populate(CommonConfigManager.Current.ListManager.GetList("REWARD_STATUS", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+            ddlRewardStatus.Populate(CommonConfigManager.Current.ListManager.GetList("REWARD_STATUS", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                {
                  .ValueFunc = AddressOf .GetExtendedCode,
                  .AddBlankItem = True,
@@ -187,7 +187,7 @@ Namespace Certificates
                     ddlCompanyName.SelectedIndex = DEFAULT_ITEM
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -204,7 +204,7 @@ Namespace Certificates
                                                    })
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -221,7 +221,7 @@ Namespace Certificates
                 oListContext.CompanyId = UserCompanies(Index)
                 Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
-                    If Not oDealerList Is Nothing Then
+                    If oDealerList IsNot Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
                     Else
                         oDealerList = oDealerListForCompany.Clone()
@@ -234,7 +234,7 @@ Namespace Certificates
 
         End Function
 
-        Private Sub PopulateSortByDropDown(ByVal sortByDropDownList As DropDownList)
+        Private Sub PopulateSortByDropDown(sortByDropDownList As DropDownList)
             Try
                 sortByDropDownList.Populate(CommonConfigManager.Current.ListManager.GetList("REWARDSORTDRP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                                     {
@@ -244,56 +244,56 @@ Namespace Certificates
                 'Set the default Sort by
                 Dim defaultSelectedCodeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_REWARD_SEARCH_FIELDS, "CERT_NUMBER")
 
-                If (Me.State.selectedSortById.Equals(Guid.Empty)) Then
+                If (State.selectedSortById.Equals(Guid.Empty)) Then
                     SetSelectedItem(sortByDropDownList, defaultSelectedCodeId)
-                    Me.State.selectedSortById = defaultSelectedCodeId
+                    State.selectedSortById = defaultSelectedCodeId
                 Else
-                    Me.SetSelectedItem(sortByDropDownList, Me.State.selectedSortById)
+                    Me.SetSelectedItem(sortByDropDownList, State.selectedSortById)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Private Sub PopulateGrid()
             Try
 
                 Dim sortBy As String = String.Empty
-                If (Me.State.searchDV Is Nothing) Then
-                    If (Not (Me.State.selectedSortById.Equals(Guid.Empty))) Then
-                        sortBy = LookupListNew.GetCodeFromId(LookupListNew.LK_REWARD_SEARCH_FIELDS, Me.State.selectedSortById)
+                If (State.searchDV Is Nothing) Then
+                    If (Not (State.selectedSortById.Equals(Guid.Empty))) Then
+                        sortBy = LookupListNew.GetCodeFromId(LookupListNew.LK_REWARD_SEARCH_FIELDS, State.selectedSortById)
                     End If
-                    Me.State.searchDV = Rewards.getRewardList(Me.State.CompanyId,
-                                                             Me.State.DealerId,
-                                                             Me.State.CertificateNumber,
-                                                             Me.State.RewardStatus)
+                    State.searchDV = Rewards.getRewardList(State.CompanyId,
+                                                             State.DealerId,
+                                                             State.CertificateNumber,
+                                                             State.RewardStatus)
 
 
-                    If Me.State.searchClick Then
-                        Me.ValidSearchResultCountNew(Me.State.searchDV.Count, True)
-                        Me.State.searchClick = False
+                    If State.searchClick Then
+                        ValidSearchResultCountNew(State.searchDV.Count, True)
+                        State.searchClick = False
                     End If
                 End If
 
                 Grid.PageSize = State.PageSize
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedCertId, Me.Grid, Me.State.PageIndex)
-                Me.Grid.DataSource = Me.State.searchDV
-                Me.State.PageIndex = Me.Grid.PageIndex
-                If (Not Me.State.SortExpression.Equals(String.Empty)) Then
-                    Me.State.searchDV.Sort = Me.State.SortExpression
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedCertId, Grid, State.PageIndex)
+                Grid.DataSource = State.searchDV
+                State.PageIndex = Grid.PageIndex
+                If (Not State.SortExpression.Equals(String.Empty)) Then
+                    State.searchDV.Sort = State.SortExpression
                 Else
-                    Me.State.SortExpression = sortBy
-                    Me.State.searchDV.Sort = Me.State.SortExpression
+                    State.SortExpression = sortBy
+                    State.searchDV.Sort = State.SortExpression
                 End If
 
-                HighLightSortColumn(Me.Grid, Me.State.SortExpression, Me.IsNewUI)
-                Me.Grid.DataBind()
+                HighLightSortColumn(Grid, State.SortExpression, IsNewUI)
+                Grid.DataBind()
 
                 ControlMgr.SetVisibleControl(Me, Grid, True)
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
-                Session("recCount") = Me.State.searchDV.Count
+                ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
+                Session("recCount") = State.searchDV.Count
 
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
 
                 If State.searchDV.Count = 0 Then
@@ -319,17 +319,17 @@ Namespace Certificates
                     cboPageSize.Visible = False
                     colonSepertor.Visible = False
                 End If
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 #End Region
 #Region "Other"
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                     TranslationBase.TranslateLabelOrMessage("REWARD_SEARCH")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("REWARD_SEARCH")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("REWARD_SEARCH")
             End If
         End Sub
         Protected Sub ClearAllSearchOptions()
@@ -337,66 +337,66 @@ Namespace Certificates
                 ddlCompanyName.SelectedIndex = DEFAULT_ITEM
                 ddlDealerName.SelectedIndex = DEFAULT_ITEM
                 ddlRewardStatus.SelectedIndex = DEFAULT_ITEM
-                Me.TextBoxCertificateNumber.Text = String.Empty
+                TextBoxCertificateNumber.Text = String.Empty
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Protected Sub ClearStateValues()
             Try
                 'clear State
-                Me.State.CompanyId = Nothing
-                Me.State.DealerId = Nothing
-                Me.State.RewardStatus = String.Empty
-                Me.State.CertificateNumber = String.Empty
+                State.CompanyId = Nothing
+                State.DealerId = Nothing
+                State.RewardStatus = String.Empty
+                State.CertificateNumber = String.Empty
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
         Private Sub GetStateProperties()
             Try
-                If Me.State.CompanyId <> Guid.Empty And ddlCompanyName.Items.Count > 0 Then Me.SetSelectedItem(ddlCompanyName, State.CompanyId)
-                If Me.State.DealerId <> Guid.Empty And ddlDealerName.Items.Count > 0 Then Me.SetSelectedItem(ddlDealerName, State.DealerId)
+                If State.CompanyId <> Guid.Empty And ddlCompanyName.Items.Count > 0 Then Me.SetSelectedItem(ddlCompanyName, State.CompanyId)
+                If State.DealerId <> Guid.Empty And ddlDealerName.Items.Count > 0 Then Me.SetSelectedItem(ddlDealerName, State.DealerId)
 
 
-                If Me.State.RewardStatus <> String.Empty And ddlRewardStatus.Items.Count > 0 Then Me.SetSelectedItem(ddlRewardStatus, State.RewardStatus)
-                Me.TextBoxCertificateNumber.Text = Me.State.CertificateNumber
+                If State.RewardStatus <> String.Empty And ddlRewardStatus.Items.Count > 0 Then Me.SetSelectedItem(ddlRewardStatus, State.RewardStatus)
+                TextBoxCertificateNumber.Text = State.CertificateNumber
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Private Sub SetStateProperties()
             Try
-                If Me.State Is Nothing Then
+                If State Is Nothing Then
                     Trace(Me, "Restoring State")
-                    Me.RestoreState(New MyState)
+                    RestoreState(New MyState)
                 End If
 
-                Me.ClearStateValues()
+                ClearStateValues()
 
-                Me.State.CompanyId = GetSelectedItem(Me.ddlCompanyName)
-                Me.State.DealerId = GetSelectedItem(Me.ddlDealerName)
-                Me.State.RewardStatus = GetSelectedValue(Me.ddlRewardStatus)
-                Me.State.CertificateNumber = Me.TextBoxCertificateNumber.Text.ToUpper.Trim
+                State.CompanyId = GetSelectedItem(ddlCompanyName)
+                State.DealerId = GetSelectedItem(ddlDealerName)
+                State.RewardStatus = GetSelectedValue(ddlRewardStatus)
+                State.CertificateNumber = TextBoxCertificateNumber.Text.ToUpper.Trim
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
 #Region "Grid Action"
-        Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
                 If (e.Row.RowType = DataControlRowType.DataRow) _
                 OrElse (e.Row.RowType = DataControlRowType.Separator) Then
-                    If (Not e.Row.Cells(GRID_COL_REWARD_ID_IDX).FindControl(GRID_COL_REWARD_NUMBER_CTRL) Is Nothing) Then
+                    If (e.Row.Cells(GRID_COL_REWARD_ID_IDX).FindControl(GRID_COL_REWARD_NUMBER_CTRL) IsNot Nothing) Then
                         btnEditItem = CType(e.Row.Cells(GRID_COL_REWARD_ID_IDX).FindControl(GRID_COL_REWARD_NUMBER_CTRL), LinkButton)
                         btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Rewards.RewardSearchDV.COL_REWARD_ID), Byte()))
                         btnEditItem.CommandName = SELECT_ACTION_COMMAND
@@ -406,64 +406,64 @@ Namespace Certificates
                     e.Row.Cells(GRID_COL_REWARD_TYPE_IDX).Text = LookupListNew.GetDescriptionFromCode("REWARD_TYPE", dvRow(Rewards.RewardSearchDV.COL_REWARD_TYPE).ToString, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+        Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
             Try
                 If e.CommandName = SELECT_ACTION_COMMAND Then
                     If Not e.CommandArgument.ToString().Equals(String.Empty) Then
-                        Me.State.selectedCertId = New Guid(e.CommandArgument.ToString())
-                        Me.callPage(RewardDetailsForm.URL, Me.State.selectedCertId)
+                        State.selectedCertId = New Guid(e.CommandArgument.ToString())
+                        callPage(RewardDetailsForm.URL, State.selectedCertId)
                     End If
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 If (TypeOf ex Is System.Reflection.TargetInvocationException) AndAlso
                (TypeOf ex.InnerException Is Threading.ThreadAbortException) Then Return
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
             Try
-                Me.State.PageIndex = Grid.PageIndex
-                Me.State.selectedCertId = Guid.Empty
+                State.PageIndex = Grid.PageIndex
+                State.selectedCertId = Guid.Empty
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
                 Grid.PageIndex = e.NewPageIndex
                 State.PageIndex = Grid.PageIndex
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
-        Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+        Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region

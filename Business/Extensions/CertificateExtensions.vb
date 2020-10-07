@@ -4,8 +4,8 @@ Imports Assurant.ElitaPlus.DataEntities
 
 Public Module CertificateExtensions
     <Extension()>
-    Public Function GetDealer(ByVal pCertificate As Certificate,
-                              ByVal pDealerManager As IDealerManager) As Dealer
+    Public Function GetDealer(pCertificate As Certificate,
+                              pDealerManager As IDealerManager) As Dealer
         Return pDealerManager.GetDealerById(pCertificate.DealerId)
         
     End Function

@@ -4,18 +4,18 @@ Public Class CertificateItemNotFoundException
     Inherits Exception
 
     Public ReadOnly ItemCode As String
-    Public ReadOnly CertificateItemId As Nullable(Of Guid)
+    Public ReadOnly CertificateItemId As Guid?
 
-    Public Sub New(ByVal pCertificateItemId As Nullable(Of Guid), ByVal pItemCode As String)
+    Public Sub New(pCertificateItemId As Guid?, pItemCode As String)
         ItemCode = pItemCode
         CertificateItemId = pCertificateItemId
     End Sub
-    Public Sub New(ByVal pCertificateItemId As Nullable(Of Guid), ByVal pItemCode As String, pMessage As String)
+    Public Sub New(pCertificateItemId As Guid?, pItemCode As String, pMessage As String)
         MyBase.New(pMessage)
         ItemCode = pItemCode
         CertificateItemId = pCertificateItemId
     End Sub
-    Public Sub New(ByVal pCertificateItemId As Nullable(Of Guid), ByVal pItemCode As String, pMessage As String, pInner As Exception)
+    Public Sub New(pCertificateItemId As Guid?, pItemCode As String, pMessage As String, pInner As Exception)
         MyBase.New(pMessage, pInner)
         ItemCode = pItemCode
         CertificateItemId = pCertificateItemId

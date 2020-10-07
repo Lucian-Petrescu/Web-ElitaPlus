@@ -7,7 +7,7 @@ Namespace Security
     Public Class DefaultPasswordValidator
         Inherits UserNamePasswordValidator
 
-        Public Overrides Sub Validate(ByVal userName As String, ByVal password As String)
+        Public Overrides Sub Validate(userName As String, password As String)
             ' Check if the username exists
             If (String.IsNullOrEmpty(userName)) Then
                 Throw New SecurityTokenException("NoUserNameProvided")

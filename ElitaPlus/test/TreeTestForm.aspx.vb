@@ -55,7 +55,7 @@ Partial Class TreeTestForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -63,15 +63,15 @@ Partial Class TreeTestForm
 
 #End Region
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         If Not Page.IsPostBack Then
             PopulateTree()
         End If
     End Sub
 
-    Private Sub OnSelectedIndex_Changed(ByVal oTreeController As TreeController, _
-                        ByVal e As TreeController.TreeControllerEventArgs) _
+    Private Sub OnSelectedIndex_Changed(oTreeController As TreeController, _
+                        e As TreeController.TreeControllerEventArgs) _
                         Handles moTree.SelectedIndexChanged
         Dim oNode As TreeNode = e.Node
         Dim nLevel As Integer = Tree.NodeLevel(oNode)
@@ -81,11 +81,11 @@ Partial Class TreeTestForm
 
     End Sub
 
-    Private Sub BtnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAdd.Click
+    Private Sub BtnAdd_Click(sender As System.Object, e As System.EventArgs) Handles BtnAdd.Click
         PopulateControl2(Tree.GetSelectedNode)
     End Sub
 
-    Private Sub BtnEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnEdit.Click
+    Private Sub BtnEdit_Click(sender As System.Object, e As System.EventArgs) Handles BtnEdit.Click
         Dim oId As Guid
         Dim oNode As TreeNode
 
@@ -93,7 +93,7 @@ Partial Class TreeTestForm
         oId = New Guid(oNode.NodeData)
     End Sub
 
-    Private Sub BtnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnDelete.Click
+    Private Sub BtnDelete_Click(sender As System.Object, e As System.EventArgs) Handles BtnDelete.Click
         Tree.DeleteSelectedNode()
     End Sub
 
@@ -101,7 +101,7 @@ Partial Class TreeTestForm
 
 #Region "Populate"
 
-    Private Function GetDataView(ByVal oId As Guid, ByVal sName As String, Optional ByVal sIcon As String = "") As DataView
+    Private Function GetDataView(oId As Guid, sName As String, Optional ByVal sIcon As String = "") As DataView
         Dim oDataView As DataView
         Dim oTable As New DataTable("Tabs")
         Dim oColumn As DataColumn
@@ -127,7 +127,7 @@ Partial Class TreeTestForm
         Return oDataView
     End Function
 
-    Private Sub AddTreeLevel(ByVal sName As String, ByVal nIdPos As Integer, ByVal nDescPos As Integer, ByVal nIconPos As Integer)
+    Private Sub AddTreeLevel(sName As String, nIdPos As Integer, nDescPos As Integer, nIconPos As Integer)
         Dim oTreeLevel As New TreeController.TreeLevel
 
         With oTreeLevel
@@ -197,7 +197,7 @@ Partial Class TreeTestForm
         End Try
     End Sub
 
-    Private Sub PopulateControl2(ByVal oTreeParent As TreeNode)
+    Private Sub PopulateControl2(oTreeParent As TreeNode)
         Dim oDataView As DataView
         '  Dim oTreeParent As TreeNode
 

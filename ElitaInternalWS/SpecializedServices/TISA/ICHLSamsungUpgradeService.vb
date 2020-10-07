@@ -12,7 +12,7 @@ Namespace SpecializedServices.Tisa
         ElitaPermission(PermissionCodes.WS_TISA_ClaimService),
         FaultContract(GetType(DealerNotFoundFault)),
         FaultContract(GetType(CertificateNotFoundFault))>
-        Function GetPremiumFromProduct(ByVal request As GetCertGrossAmtByProdCodeRequst) As GetCertGrossAmtByProdCodeResponse
+        Function GetPremiumFromProduct(request As GetCertGrossAmtByProdCodeRequst) As GetCertGrossAmtByProdCodeResponse
 
     End Interface
 End Namespace

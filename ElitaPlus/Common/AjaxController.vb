@@ -3,7 +3,7 @@ Public Class AjaxController
 
 #Region "Ajax Binding"
 
-    Public Shared Function BindCascadingDropToDataView(ByVal Data As DataView, ByVal SelectItem As Guid, _
+    Public Shared Function BindCascadingDropToDataView(Data As DataView, SelectItem As Guid, _
             Optional ByVal TextColumnName As String = "DESCRIPTION", _
             Optional ByVal GuidValueColumnName As String = "ID", _
             Optional ByVal AddNothingSelected As Boolean = True _
@@ -24,7 +24,7 @@ Public Class AjaxController
             ajaxItem = New AjaxControlToolkit.CascadingDropDownNameValue("", id, isDefault)
             values.Add(ajaxItem)
         End If
-        If Not Data Is Nothing Then
+        If Data IsNot Nothing Then
             For i = 0 To Data.Count - 1
                 isDefault = False
                 id = New Guid(CType(Data(i)(GuidValueColumnName), Byte())).ToString
@@ -48,7 +48,7 @@ Public Class AjaxController
     '    cascArray[0].
     'End Sub
 
-    Public Shared Function BindAutoComplete(ByVal prefixText As String, ByVal dv As DataView) As String()
+    Public Shared Function BindAutoComplete(prefixText As String, dv As DataView) As String()
         Dim arrDealers As New ArrayList
 
         If prefixText = "*" Then
@@ -70,7 +70,7 @@ Public Class AjaxController
     End Function
 
 
-    Public Shared Function BindAutoComplete_SI(ByVal prefixText As String, ByVal dv As DataView) As String()
+    Public Shared Function BindAutoComplete_SI(prefixText As String, dv As DataView) As String()
         Dim arrReports As New ArrayList
 
         If prefixText = "*" Then
@@ -93,12 +93,12 @@ Public Class AjaxController
     
 #Region "Populate"
 
-    Public Shared Function IsAutoCompleteEmpty(ByVal oTextBox As TextBox, ByVal oInp As HtmlInputHidden) As Boolean
+    Public Shared Function IsAutoCompleteEmpty(oTextBox As TextBox, oInp As HtmlInputHidden) As Boolean
         Return (oTextBox.Text Is String.Empty) OrElse (oTextBox.Text <> oInp.Value)
     End Function
 
-    Public Shared Sub PopulateBOAutoComplete(ByVal oTextBox As TextBox, ByVal oInpDesc As HtmlInputHidden, _
-                ByVal oInpId As HtmlInputHidden, ByVal bo As Object, ByVal propertyName As String)
+    Public Shared Sub PopulateBOAutoComplete(oTextBox As TextBox, oInpDesc As HtmlInputHidden, _
+                oInpId As HtmlInputHidden, bo As Object, propertyName As String)
         If IsAutoCompleteEmpty(oTextBox, oInpDesc) = True Then
             oInpId.Value = Guid.Empty.ToString
         End If

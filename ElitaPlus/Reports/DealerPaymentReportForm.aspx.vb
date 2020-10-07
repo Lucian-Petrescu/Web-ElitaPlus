@@ -46,7 +46,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -56,32 +56,32 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
                 ClearErrLabels()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-DropDown"
 
-        Private Sub moDealerDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moDealerDrop.SelectedIndexChanged
+        Private Sub moDealerDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moDealerDrop.SelectedIndexChanged
             Try
-                If Me.moDealerDrop.SelectedIndex > Me.BLANK_ITEM_SELECTED Then
+                If moDealerDrop.SelectedIndex > BLANK_ITEM_SELECTED Then
                     PopulateFile()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -89,12 +89,12 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -119,7 +119,7 @@ Namespace Reports
                 oListContext.CompanyId = company_id
                 Dim dealerListForCompany As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerMonthlyBillingByCompany", context:=oListContext)
                 If dealerListForCompany.Count > 0 Then
-                    If Not dealerist Is Nothing Then
+                    If dealerist IsNot Nothing Then
                         dealerist.AddRange(dealerListForCompany)
                     Else
                         dealerist = dealerListForCompany.Clone()
@@ -158,7 +158,7 @@ Namespace Reports
                 'Me.BindListControlToDataView(moPaymentFileDrop, oDataView)
 
                 Dim oListContext As New ListContext
-                oListContext.DealerId = Me.GetSelectedItem(moDealerDrop)
+                oListContext.DealerId = GetSelectedItem(moDealerDrop)
                 Dim paymentFileListForDealer As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerPaymentFile", context:=oListContext)
                 moPaymentFileDrop.Populate(paymentFileListForDealer, New PopulateOptions() With
                     {
@@ -166,7 +166,7 @@ Namespace Reports
                     })
 
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -175,16 +175,16 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moDealerLabel)
-            Me.ClearLabelErrSign(moPaymentFileLabel)
+            ClearLabelErrSign(moDealerLabel)
+            ClearLabelErrSign(moPaymentFileLabel)
         End Sub
 
 #End Region
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal userId As String, ByVal dealerCode As String, ByVal companyFile As String,
-                               ByVal onlyRejected As String, ByVal summary As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, dealerCode As String, companyFile As String,
+                               onlyRejected As String, summary As String) As ReportCeBaseForm.Params
             Dim moReportFormat As ReportCeBaseForm.RptFormat
             Dim params As New ReportCeBaseForm.Params
             Dim reportName As String = TheRptCeInputControl.getReportName(RPT_FILENAME, False)
@@ -197,7 +197,7 @@ Namespace Reports
                 onlyRejected = "N"
             End If
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             Dim repParams() As ReportCeBaseForm.RptParam = New ReportCeBaseForm.RptParam() _
                     {
@@ -223,12 +223,12 @@ Namespace Reports
 
             Dim UserId As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.Id)
 
-            Dim oDealerId As Guid = Me.GetSelectedItem(moDealerDrop)
+            Dim oDealerId As Guid = GetSelectedItem(moDealerDrop)
             Dim dealerCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, oDealerId)
             Dim paymentFile As String = String.Empty
 
-            If Me.moPaymentFileDrop.SelectedIndex <> -1 Then
-                paymentFile = Me.moPaymentFileDrop.Items(Me.moPaymentFileDrop.SelectedIndex).Text
+            If moPaymentFileDrop.SelectedIndex <> -1 Then
+                paymentFile = moPaymentFileDrop.Items(moPaymentFileDrop.SelectedIndex).Text
             End If
 
             If oDealerId.Equals(Guid.Empty) Then

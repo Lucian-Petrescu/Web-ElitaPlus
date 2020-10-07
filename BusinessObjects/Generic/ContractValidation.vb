@@ -71,8 +71,8 @@ Public Class ContractValidation
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -83,8 +83,8 @@ Public Class ContractValidation
     Private Sub Load(ByVal ds As ContractValidationDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
             'Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
@@ -103,7 +103,7 @@ Public Class ContractValidation
         Try
             If ds.ContractValidation.Count = 0 Then Exit Sub
             With ds.ContractValidation.Item(0)
-                Me.uploadSessionId = .UPLOAD_SESSION_ID
+                uploadSessionId = .UPLOAD_SESSION_ID
             End With
 
         Catch ex As Exception
@@ -134,7 +134,7 @@ Public Class ContractValidation
     Public Overrides Function ProcessWSRequest() As String
         Try
             'Load the pre-validated Contract records
-            Dim dsPreValidatedContractRecords As DataSet = ContractUpload.GetPreValidatedContractsForUpload(Me.UploadSessionId)
+            Dim dsPreValidatedContractRecords As DataSet = ContractUpload.GetPreValidatedContractsForUpload(UploadSessionId)
             If Not dsPreValidatedContractRecords Is Nothing AndAlso Not dsPreValidatedContractRecords.Tables(0) Is Nothing AndAlso dsPreValidatedContractRecords.Tables(0).Rows.Count > 0 Then
                 Dim preValidatedContractRow As DataRow
                 Dim objContract As Contract

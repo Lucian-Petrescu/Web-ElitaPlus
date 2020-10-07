@@ -1,15 +1,15 @@
 ﻿Public Class CertItemCoverageDeductibleList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As CertItemCoverage)
+    Public Sub New(parent As CertItemCoverage)
         MyBase.New(LoadTable(parent), GetType(CertItemCoverage), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, CertItemCoverageDeductible).CertItemCoverageId.Equals(CType(Parent, CertItemCoverage).Id)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As CertItemCoverage) As DataTable
+    Private Shared Function LoadTable(parent As CertItemCoverage) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(CertItemCoverageDeductibleList)) Then
                 Dim dal As New CertItemCoverageDeductibleDAL

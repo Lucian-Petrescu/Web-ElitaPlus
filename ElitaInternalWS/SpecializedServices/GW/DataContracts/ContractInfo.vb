@@ -38,20 +38,20 @@ Namespace SpecializedServices.GW
         Public Sub New()
         End Sub
 
-        Public Sub New(ByVal pContract As Contract, ByVal pCommonManager As ICommonManager, ByVal pLanguage As String, ByVal pCountryManager As ICountryManager, ByVal contractProducer As BO.Producer, ByVal producerAddress As Address)
-            Me.EffectiveDate = pContract.Effective
-            Me.ExpirationDate = pContract.Expiration
-            Me.PolicyNumber = pContract.POLICY
-            Me.PeriodicBilling = pContract.RECURRING_PREMIUM_ID.ToDescription(pCommonManager, ListCodes.PeriodicBilling, pLanguage)
+        Public Sub New(pContract As Contract, pCommonManager As ICommonManager, pLanguage As String, pCountryManager As ICountryManager, contractProducer As BO.Producer, producerAddress As Address)
+            EffectiveDate = pContract.Effective
+            ExpirationDate = pContract.Expiration
+            PolicyNumber = pContract.POLICY
+            PeriodicBilling = pContract.RECURRING_PREMIUM_ID.ToDescription(pCommonManager, ListCodes.PeriodicBilling, pLanguage)
             If Not pContract.LineOfBusinessId Is Nothing Then
                 Dim countryLOB As New BO.CountryLineOfBusiness(pContract.LineOfBusinessId)
-                Me.LineOfBusiness = countryLOB.Description
+                LineOfBusiness = countryLOB.Description
             End If
 
             If Not contractProducer Is Nothing Then
-                Me.ProducerName = contractProducer.Description
-                Me.ProducerTaxId = contractProducer.TaxIdNumber
-                Me.RegulatorRegistrationId = contractProducer.RegulatorRegistrationId
+                ProducerName = contractProducer.Description
+                ProducerTaxId = contractProducer.TaxIdNumber
+                RegulatorRegistrationId = contractProducer.RegulatorRegistrationId
 
                 If Not producerAddress Is Nothing Then
                     Me.ProducerAddress = New AddressInfo(producerAddress, pCountryManager)

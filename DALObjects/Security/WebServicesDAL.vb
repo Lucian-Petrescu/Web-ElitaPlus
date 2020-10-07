@@ -38,7 +38,7 @@ Public Class WebServicesDAL
 
 #Region "Signatures"
 
-    Public Delegate Sub AsyncCaller(ByVal oWebUserLogData As WebUserLogData, ByVal selectStmt As String)
+    Public Delegate Sub AsyncCaller(oWebUserLogData As WebUserLogData, selectStmt As String)
 
 #End Region
 
@@ -51,26 +51,26 @@ Public Class WebServicesDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("webservice_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal web_service_name As String, ByVal on_line_id As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(web_service_name As String, on_line_id As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
         Dim whereClauseConditions As String
 
-        If (Not web_service_name Is Nothing) AndAlso (Not web_service_name.Equals(String.Empty) AndAlso (Me.FormatSearchMask(web_service_name))) Then
+        If (Not web_service_name Is Nothing) AndAlso (Not web_service_name.Equals(String.Empty) AndAlso (FormatSearchMask(web_service_name))) Then
             whereClauseConditions &= Environment.NewLine & "WHERE UPPER(web_service_name) " & web_service_name.ToUpper
         End If
 
@@ -83,11 +83,11 @@ Public Class WebServicesDAL
             End If
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Try
 
-            Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            Return DBHelper.Fetch(selectStmt, TABLE_NAME)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -96,11 +96,11 @@ Public Class WebServicesDAL
     End Function
 
 
-    Public Sub WebUserLog(ByVal Web_UserLog_id As Guid, ByVal Url As String, ByVal functionToProcess As String, _
-                                      ByVal networkId As String, ByVal Environment As String, ByVal Hub As String, _
-                                      ByVal _xml As String, ByVal Created_date As Date)
+    Public Sub WebUserLog(Web_UserLog_id As Guid, Url As String, functionToProcess As String, _
+                                      networkId As String, Environment As String, Hub As String, _
+                                      _xml As String, Created_date As Date)
 
-        Dim selectStmt As String = Me.Config("/SQL/WebUserLog")
+        Dim selectStmt As String = Config("/SQL/WebUserLog")
 
         Dim oWebUserLogData As New WebUserLogData
 
@@ -124,18 +124,18 @@ Public Class WebServicesDAL
 
 #End Region
 
-    Private Sub AsyncExecuteSP(ByVal oWebUserLogData As WebUserLogData, ByVal selectStmt As String)
+    Private Sub AsyncExecuteSP(oWebUserLogData As WebUserLogData, selectStmt As String)
 
         Try
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
-                cmd.AddParameter(Me.PAR_NAME_Web_UserLog_id, OracleDbType.Raw, oWebUserLogData.Web_UserLog_id.ToByteArray)
-                cmd.AddParameter(Me.PAR_NAME_WebServiceName, OracleDbType.Varchar2, oWebUserLogData.Url)
-                cmd.AddParameter(Me.PAR_NAME_WebServiceFunctionName, OracleDbType.Varchar2, oWebUserLogData.WebServiceFunctionName)
-                cmd.AddParameter(Me.PAR_NAME_Network_id, OracleDbType.Varchar2, oWebUserLogData.Network_id)
-                cmd.AddParameter(Me.PAR_NAME_Environment, OracleDbType.Varchar2, oWebUserLogData.Environment)
-                cmd.AddParameter(Me.PAR_NAME_Hub_Region, OracleDbType.Varchar2, oWebUserLogData.Hub_Region)
-                cmd.AddParameter(Me.PAR_NAME_Input_xml, OracleDbType.Clob, oWebUserLogData.Input_xml)
-                cmd.AddParameter(Me.PAR_NAME_Created_date, OracleDbType.Date, oWebUserLogData.Created_date)
+                cmd.AddParameter(PAR_NAME_Web_UserLog_id, OracleDbType.Raw, oWebUserLogData.Web_UserLog_id.ToByteArray)
+                cmd.AddParameter(PAR_NAME_WebServiceName, OracleDbType.Varchar2, oWebUserLogData.Url)
+                cmd.AddParameter(PAR_NAME_WebServiceFunctionName, OracleDbType.Varchar2, oWebUserLogData.WebServiceFunctionName)
+                cmd.AddParameter(PAR_NAME_Network_id, OracleDbType.Varchar2, oWebUserLogData.Network_id)
+                cmd.AddParameter(PAR_NAME_Environment, OracleDbType.Varchar2, oWebUserLogData.Environment)
+                cmd.AddParameter(PAR_NAME_Hub_Region, OracleDbType.Varchar2, oWebUserLogData.Hub_Region)
+                cmd.AddParameter(PAR_NAME_Input_xml, OracleDbType.Clob, oWebUserLogData.Input_xml)
+                cmd.AddParameter(PAR_NAME_Created_date, OracleDbType.Date, oWebUserLogData.Created_date)
                 cmd.ExecuteNonQuery()
             End Using
         Catch ex As Exception
@@ -145,12 +145,12 @@ Public Class WebServicesDAL
     End Sub
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

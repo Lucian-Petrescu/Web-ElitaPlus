@@ -75,7 +75,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -85,42 +85,42 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(ZipDistrictsMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(ZipDistrictsMultipleDrop.CaptionLabel)
 
         End Sub
 #End Region
 
 #Region "Handlers-Drop"
 
-        Private Sub moCountryDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moCountryDrop.SelectedIndexChanged
+        Private Sub moCountryDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moCountryDrop.SelectedIndexChanged
             PopulateZipDistrictDrop()
         End Sub
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -141,12 +141,12 @@ Namespace Reports
                                               Select x).ToArray()
             moCountryDrop.Populate(filteredList, New PopulateOptions())
             moCountryDrop.SelectedIndex = 0
-            Me.PopulateControlFromBOProperty(moCountryLabel_NO_TRANSLATE, Me.GetSelectedDescription(moCountryDrop))
+            PopulateControlFromBOProperty(moCountryLabel_NO_TRANSLATE, GetSelectedDescription(moCountryDrop))
 
             If moCountryDrop.Items.Count > 1 Then
                 ' Multiple Countries
                 ControlMgr.SetVisibleControl(Me, moCountryLabel_NO_TRANSLATE, False)
-                Me.PopulateControlFromBOProperty(moLabelReq_NO_TRANSLATE, "*")
+                PopulateControlFromBOProperty(moLabelReq_NO_TRANSLATE, "*")
             Else
                 ControlMgr.SetVisibleControl(Me, moCountryDrop, False)
                 ControlMgr.SetVisibleControl(Me, moLabelReq_NO_TRANSLATE, False)
@@ -161,7 +161,7 @@ Namespace Reports
             '''Me.BindListControlToDataView(Me.cboZipDistrictsCode, ZipDistrictsLookupListSortedByCode, "CODE", , True)
             '''' Me.BindListControlToDataView(Me.cboZipDistrictsCode, LookupListNew.GetZipDistrictLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyId), "CODE", , True)
 
-            Dim dv As DataView = LookupListNew.GetZipDistrictLookupList(Me.GetSelectedItem(moCountryDrop))
+            Dim dv As DataView = LookupListNew.GetZipDistrictLookupList(GetSelectedItem(moCountryDrop))
             ZipDistrictsMultipleDrop.NothingSelected = True
             ZipDistrictsMultipleDrop.SetControl(False, ZipDistrictsMultipleDrop.MODES.NEW_MODE, True, dv, TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_ZIP_DISTRICT), True, False, " document.forms[0].rZipDistricts.checked = false;")
 
@@ -171,14 +171,14 @@ Namespace Reports
         Private Sub InitializeForm()
             PopulateCountry()
             PopulateZipDistrictDrop()
-            Me.rZipDistricts.Checked = True
+            rZipDistricts.Checked = True
         End Sub
 
 #End Region
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal countryCode As String, ByVal zipDistrict As String) As ReportCeBaseForm.Params
+        Function SetParameters(countryCode As String, zipDistrict As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim params As New ReportCeBaseForm.Params
@@ -194,7 +194,7 @@ Namespace Reports
 
             Dim exportData As String = NO
 
-            reportName = Me.RPT_FILENAME
+            reportName = RPT_FILENAME
             If (reportFormat = ReportCeBase.RptFormat.TEXT_TAB) OrElse (reportFormat = ReportCeBase.RptFormat.TEXT_CSV) Then
                 exportData = YES
                 reportName = RPT_FILENAME_EXPORT
@@ -223,7 +223,7 @@ Namespace Reports
 
             'Dim companyId As Guid = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
             'Dim compCode As String = LookupListNew.GetCodeFromId("COMPANIES", companyId)
-            Dim oCountryId As Guid = Me.GetSelectedItem(moCountryDrop)
+            Dim oCountryId As Guid = GetSelectedItem(moCountryDrop)
             Dim countryCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_COUNTRIES, oCountryId)
             Dim selectedZipDistrictId As Guid
             'Dim dvZipDistricts As DataView = LookupListNew.GetZipDistrictLookupList(oCountryId)
@@ -232,7 +232,7 @@ Namespace Reports
 
 
 
-            If Me.rZipDistricts.Checked Then
+            If rZipDistricts.Checked Then
                 zipDistrict = ALL
             Else
                 selectedZipDistrictId = ZipDistrictsMultipleDrop.SelectedGuid 'Me.GetSelectedItem(Me.cboZipDistrictsCode)

@@ -38,12 +38,12 @@ Namespace Tables
 
         Private Sub SetStateProperties()
             'Me.State.moProductCodeId = CType(Me.CallingParameters, Guid)
-            If Me.State.moSpecialServiceId.Equals(Guid.Empty) Then
-                Me.State.IsSpecialServiceNew = True
+            If State.moSpecialServiceId.Equals(Guid.Empty) Then
+                State.IsSpecialServiceNew = True
                 ClearAll()
                 SetButtonsState(True)
             Else
-                Me.State.IsSpecialServiceNew = False
+                State.IsSpecialServiceNew = False
                 SetButtonsState(False)
             End If
             PopulateAll()
@@ -107,15 +107,15 @@ Namespace Tables
         Private ReadOnly Property TheSpecialService() As SpecialService
             Get
                 If moSpecialService Is Nothing Then
-                    If Me.State.IsSpecialServiceNew = True Then
+                    If State.IsSpecialServiceNew = True Then
                         ' For creating, inserting
                         moSpecialService = New SpecialService
-                        Me.State.moSpecialServiceId = moSpecialService.Id
+                        State.moSpecialServiceId = moSpecialService.Id
                     Else
                         ' For updating, deleting
                         '  Dim oProductCodeId As Guid = Me.GetGuidFromString(Me.State.moProductCodeId)
-                        moSpecialService = New SpecialService(Me.State.moSpecialServiceId)
-                        Me.State.oDealer = New Dealer(moSpecialService.DealerId)
+                        moSpecialService = New SpecialService(State.moSpecialServiceId)
+                        State.oDealer = New Dealer(moSpecialService.DealerId)
                     End If
                 End If
 
@@ -165,7 +165,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -173,62 +173,62 @@ Namespace Tables
 
 #End Region
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles Me.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles Me.PageReturn
             Dim retObj As ProductPriceRangeByRepairMethod.ReturnType = CType(ReturnPar, ProductPriceRangeByRepairMethod.ReturnType)
-            Me.State.moSpecialServiceId = retObj.EditingId
-            Me.SetStateProperties()
+            State.moSpecialServiceId = retObj.EditingId
+            SetStateProperties()
             'Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, _
             'Me.MSG_TYPE_CONFIRM, True)
-            Me.State.LastOperation = DetailPageCommand.Redirect_
+            State.LastOperation = DetailPageCommand.Redirect_
         End Sub
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Me.State.moSpecialServiceId = CType(CType(Me.CallingParameters, MyState).moSpecialServiceId, Guid)
-                    Me.State.CoverageTypeId = CType(CType(Me.CallingParameters, MyState).CoverageTypeId, Guid)
+                    State.moSpecialServiceId = CType(CType(CallingParameters, MyState).moSpecialServiceId, Guid)
+                    State.CoverageTypeId = CType(CType(CallingParameters, MyState).CoverageTypeId, Guid)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
                 'moErrorController.Clear_Hide()
-                Me.MasterPage.MessageController.Clear()
+                MasterPage.MessageController.Clear()
                 ClearLabelsErrSign()
                 'Setting the bread crum navigation
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("TABLES")
-                Me.UpdateBreadCrum()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("TABLES")
+                UpdateBreadCrum()
 
 
                 If Not Page.IsPostBack Then
-                    Me.SetStateProperties()
-                    Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO,
-                                                                        Me.MSG_TYPE_CONFIRM, True)
+                    SetStateProperties()
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO,
+                                                                        MSG_TYPE_CONFIRM, True)
                 End If
 
                 BindBoPropertiesToLabels()
                 CheckIfComingFromConfirm()
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     'BindBoPropertiesToLabels()
-                    Me.AddLabelDecorations(TheSpecialService)
+                    AddLabelDecorations(TheSpecialService)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
             If Me.State.LastOperation = DetailPageCommand.Redirect_ Then
                 'moErrorController.Clear_Hide()
                 '              ClearLabelsErrSign()
-                Me.State.LastOperation = DetailPageCommand.Nothing_
+                State.LastOperation = DetailPageCommand.Nothing_
             Else
-                Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+                ShowMissingTranslations(MasterPage.MessageController)
             End If
         End Sub
 
@@ -236,105 +236,105 @@ Namespace Tables
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnApply_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+        Private Sub btnApply_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
             ApplyChanges()
         End Sub
 
         Private Sub GoBack()
             Dim retType As New SpecialServiceListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back,
-                                                              Me.State.moSpecialServiceId, Me.State.boChanged)
-            Me.ReturnToCallingPage(retType)
+                                                              State.moSpecialServiceId, State.boChanged)
+            ReturnToCallingPage(retType)
             'Me.callPage(ProductCodeForm.PRODUCTCODE_LIST, param)
 
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-                                                Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                                HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                HandleErrors(ex, MasterPage.MessageController)
+                DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
 
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
                 PopulateAll()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub CreateNew()
-            Me.State.moSpecialServiceId = Guid.Empty
-            Me.State.IsSpecialServiceNew = True
+            State.moSpecialServiceId = Guid.Empty
+            State.IsSpecialServiceNew = True
             ClearAll()
             'EnableDisableFields()
-            Me.SetButtonsState(True)
-            Me.PopulateAll()
+            SetButtonsState(True)
+            PopulateAll()
             TheDealerControl.ChangeEnabledControlProperty(True)
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub CreateNewCopy()
-            Me.State.moSpecialServiceId = Guid.Empty
-            Me.State.IsSpecialServiceNew = True
+            State.moSpecialServiceId = Guid.Empty
+            State.IsSpecialServiceNew = True
             ClearTexts()
             EnableDisableFields()
             PopulateUserControlAvailableSelectedProductCodes()
-            Me.SetButtonsState(True)
+            SetButtonsState(True)
             TheDealerControl.ChangeEnabledControlProperty(True)
         End Sub
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
                     CreateNewCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
                 If DeleteSpecialService() = True Then
-                    Me.State.boChanged = True
+                    State.boChanged = True
                     'Dim param As New ProductCodeSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Delete, _
                     '                Me.State.moProductCodeId)
                     'param.BoChanged = True
                     'Me.callPage(ProductCodeForm.PRODUCTCODE_LIST, param)
                     Dim retType As New SpecialServiceListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back,
-                                                              Me.State.moSpecialServiceId, Me.State.boChanged)
+                                                              State.moSpecialServiceId, State.boChanged)
                     retType.BoChanged = True
-                    Me.ReturnToCallingPage(retType)
+                    ReturnToCallingPage(retType)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -342,16 +342,16 @@ Namespace Tables
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl_New) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl_New) _
                         Handles multipleDropControl.SelectedDropChanged
             Try
                 PopulateUserControlAvailableSelectedProductCodes()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moCoverageTypeDrop_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboCoverageTypeDrop.SelectedIndexChanged
+        Private Sub moCoverageTypeDrop_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboCoverageTypeDrop.SelectedIndexChanged
             Dim oCovloss As CoverageLoss
             Dim ds As DataSet
             If cboCoverageTypeDrop.SelectedIndex > BLANK_ITEM_SELECTED Then
@@ -407,7 +407,7 @@ Namespace Tables
             Try
                 Dim dv As DataView = LookupListNew.GetDealerLookupList(oCompanyList, True)
                 TheDealerControl.SetControl(True, TheDealerControl.MODES.NEW_MODE, True, dv, "*" + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_SPECIALSERVICE), True, True)
-                If Me.State.IsSpecialServiceNew = True Then
+                If State.IsSpecialServiceNew = True Then
                     TheDealerControl.SelectedGuid = Guid.Empty
                     TheDealerControl.ChangeEnabledControlProperty(True)
                 Else
@@ -418,21 +418,21 @@ Namespace Tables
                 'moErrorController.AddError(SPECIALSERVICE_FORM001)
                 'moErrorController.AddError(ex.Message, False)
                 'moErrorController.Show()
-                Me.MasterPage.ErrController.AddErrorAndShow(ex.Message, False)
+                MasterPage.ErrController.AddErrorAndShow(ex.Message, False)
             End Try
         End Sub
 
         Private Sub PopulateServiceClassType()
             Try
                 Dim svcclassTypeDisabled As Boolean = False
-                If Not cboAuthAmtFromDrop.SelectedItem Is Nothing Then
+                If cboAuthAmtFromDrop.SelectedItem IsNot Nothing Then
                     If (cboAuthAmtFromDrop.SelectedItem.Text = "Manual") Then
                         svcclassTypeDisabled = True
                     End If
                 End If
 
-                TheServiceClassTypeControl.SetControl(True, TheServiceClassTypeControl.MODES.NEW_MODE, True, , Me.SERVICE_CLASS_TYPE_CAPTION, True, True, , , , , , , svcclassTypeDisabled)
-                If Me.State.IsSpecialServiceNew = True Then
+                TheServiceClassTypeControl.SetControl(True, TheServiceClassTypeControl.MODES.NEW_MODE, True, , SERVICE_CLASS_TYPE_CAPTION, True, True, , , , , , , svcclassTypeDisabled)
+                If State.IsSpecialServiceNew = True Then
                     TheServiceClassTypeControl.SpecialServiceGuid = Guid.Empty
                     'TheServiceClassTypeControl.ChangeEnabledControlProperty(True)
                 Else
@@ -505,7 +505,7 @@ Namespace Tables
                 'moErrorController.AddError(SPECIALSERVICE_FORM001)
                 'moErrorController.AddError(ex.Message, False)
                 'moErrorController.Show()
-                Me.MasterPage.ErrController.AddErrorAndShow(ex.Message, False)
+                MasterPage.ErrController.AddErrorAndShow(ex.Message, False)
             End Try
         End Sub
 
@@ -530,8 +530,8 @@ Namespace Tables
                 If Not .Id.Equals(Guid.Empty) Then
                     Dim availableDv As DataView = .GetAvailableProductCodes(TheDealerControl.SelectedGuid)
                     Dim selectedDv As DataView = .GetSelectedProductCodes(TheDealerControl.SelectedGuid)
-                    Me.UserControlAvailableSelectedProductCodes.SetAvailableData(availableDv, LookupListNew.COL_CODE_AND_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
-                    Me.UserControlAvailableSelectedProductCodes.SetSelectedData(selectedDv, LookupListNew.COL_CODE_AND_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
+                    UserControlAvailableSelectedProductCodes.SetAvailableData(availableDv, LookupListNew.COL_CODE_AND_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
+                    UserControlAvailableSelectedProductCodes.SetSelectedData(selectedDv, LookupListNew.COL_CODE_AND_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
                     ControlMgr.SetVisibleControl(Me, UserControlAvailableSelectedProductCodes, True)
                 End If
             End With
@@ -544,7 +544,7 @@ Namespace Tables
             Dim CauseOfLossId As Guid
             Try
                 With TheSpecialService
-                    If Me.State.IsSpecialServiceNew = True Then
+                    If State.IsSpecialServiceNew = True Then
 
                         BindSelectItem(Nothing, cboCoverageTypeDrop)
                         BindSelectItem(Nothing, cboCauseOfLossDrop)
@@ -553,9 +553,9 @@ Namespace Tables
                         BindSelectItem(Nothing, cboRepairCombinedDrop)
 
                         Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-                        Me.SetSelectedItem(Me.cboAddItemsAllowedDrop, noId)
-                        Me.SetSelectedItem(Me.cboAddItemsCertExpDrop, noId)
-                        Me.SetSelectedItem(Me.cboAvailSvcCenterDrop, noId)
+                        SetSelectedItem(cboAddItemsAllowedDrop, noId)
+                        SetSelectedItem(cboAddItemsCertExpDrop, noId)
+                        SetSelectedItem(cboAvailSvcCenterDrop, noId)
                         SplServiceCodeText.Text = String.Empty
                         SplServiceDescText.Text = String.Empty
 
@@ -564,8 +564,8 @@ Namespace Tables
                         'Me.SetSelectedItem(Me.moCoverageTypeDrop, Me.State.CoverageTypeId)
                         BindSelectItem(.AddItemAllowed.ToString, cboAddItemsAllowedDrop)
                         oCovloss = New CoverageLoss(.CoverageLossId)
-                        Me.SetSelectedItem(Me.cboCauseOfLossDrop, oCovloss.CauseOfLossId)
-                        Me.SetSelectedItem(Me.cboCoverageTypeDrop, oCovloss.CoverageTypeId)
+                        SetSelectedItem(cboCauseOfLossDrop, oCovloss.CauseOfLossId)
+                        SetSelectedItem(cboCoverageTypeDrop, oCovloss.CoverageTypeId)
                         'BindSelectItem(.CoverageLossId.ToString, moCauseOfLossDrop)
                         BindSelectItem(.AddItemAfterExpired.ToString, cboAddItemsCertExpDrop)
                         BindSelectItem(.AllowedOccurrencesId.ToString, cboOccurAllowedDrop)
@@ -579,12 +579,12 @@ Namespace Tables
 
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub PopulateAll()
-            If Me.State.IsSpecialServiceNew = True Then
+            If State.IsSpecialServiceNew = True Then
                 PopulateDropDowns()
                 PopulateDealer()
                 'PopulateServiceClassType()
@@ -609,29 +609,29 @@ Namespace Tables
             Dim ds As DataSet
             Dim CoverageLossId As Guid
             Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-            With Me.TheSpecialService
+            With TheSpecialService
                 .DealerId = TheDealerControl.SelectedGuid
                 'Me.PopulateBOProperty(TheProductCode, "DealerId", Me.moDealerDrop)
-                Me.PopulateBOProperty(TheSpecialService, "AddItemAllowed", Me.cboAddItemsAllowedDrop)
+                PopulateBOProperty(TheSpecialService, "AddItemAllowed", cboAddItemsAllowedDrop)
                 If cboCauseOfLossDrop.SelectedIndex > BLANK_ITEM_SELECTED Then
                     ds = CoverageLoss.LoadSelectedCovLossFromCovandCauseOfLoss(GetSelectedItem(cboCauseOfLossDrop), GetSelectedItem(cboCoverageTypeDrop))
                     If ds.Tables(0).Rows.Count > 0 Then
                         CoverageLossId = GuidControl.ByteArrayToGuid(ds.Tables(0).Rows(0)(CoverageLoss.SearchDV.COL_NAME_COVERAGE_LOSS_ID))
                     End If
                 End If
-                Me.PopulateBOProperty(TheSpecialService, "CoverageLossId", CoverageLossId)
-                Me.PopulateBOProperty(TheSpecialService, "AddItemAfterExpired", Me.cboAddItemsCertExpDrop)
-                Me.PopulateBOProperty(TheSpecialService, "AllowedOccurrencesId", Me.cboOccurAllowedDrop)
-                Me.PopulateBOProperty(TheSpecialService, "PriceGroupFieldId", Me.cboAuthAmtFromDrop, )
-                Me.PopulateBOProperty(TheSpecialService, "AvailableForServCenterId", Me.cboAvailSvcCenterDrop)
-                Me.PopulateBOProperty(TheSpecialService, "CombinedWithRepair", Me.cboRepairCombinedDrop)
-                Me.PopulateBOProperty(TheSpecialService, "Code", Me.SplServiceCodeText)
-                Me.PopulateBOProperty(TheSpecialService, "Description", Me.SplServiceDescText)
-                Me.PopulateBOProperty(TheSpecialService, "ServiceClassId", ServiceClassServiceTypeControl.ServiceClassGuid)
-                Me.PopulateBOProperty(TheSpecialService, "ServiceTypeId", ServiceClassServiceTypeControl.ServiceTypeGuid)
+                PopulateBOProperty(TheSpecialService, "CoverageLossId", CoverageLossId)
+                PopulateBOProperty(TheSpecialService, "AddItemAfterExpired", cboAddItemsCertExpDrop)
+                PopulateBOProperty(TheSpecialService, "AllowedOccurrencesId", cboOccurAllowedDrop)
+                PopulateBOProperty(TheSpecialService, "PriceGroupFieldId", cboAuthAmtFromDrop, )
+                PopulateBOProperty(TheSpecialService, "AvailableForServCenterId", cboAvailSvcCenterDrop)
+                PopulateBOProperty(TheSpecialService, "CombinedWithRepair", cboRepairCombinedDrop)
+                PopulateBOProperty(TheSpecialService, "Code", SplServiceCodeText)
+                PopulateBOProperty(TheSpecialService, "Description", SplServiceDescText)
+                PopulateBOProperty(TheSpecialService, "ServiceClassId", ServiceClassServiceTypeControl.ServiceClassGuid)
+                PopulateBOProperty(TheSpecialService, "ServiceTypeId", ServiceClassServiceTypeControl.ServiceTypeGuid)
 
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
 
@@ -640,7 +640,7 @@ Namespace Tables
 
 #Region "Gui-Validation"
 
-        Private Sub SetButtonsState(ByVal bIsNew As Boolean)
+        Private Sub SetButtonsState(bIsNew As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
@@ -664,7 +664,7 @@ Namespace Tables
                 'moErrorController.AddError(SPECIALSERVICE_FORM001)
                 'moErrorController.AddError(ex.Message, False)
                 'moErrorController.Show()
-                Me.MasterPage.ErrController.AddErrorAndShow(ex.Message, False)
+                MasterPage.ErrController.AddErrorAndShow(ex.Message, False)
             End Try
             Return bIsDirty
         End Function
@@ -678,26 +678,26 @@ Namespace Tables
                     Throw New GUIException(Message.MSG_ATLEAST_ONE_PRODUCT_CODE_SHLD_BE_SELECTED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ATLEAST_ONE_PRODUCT_CODE_SHLD_BE_SELECTED)
                 End If
 
-                Me.PopulateBOsFromForm()
+                PopulateBOsFromForm()
 
                 If TheSpecialService.IsDirty() Then
-                    Me.TheSpecialService.Save()
+                    TheSpecialService.Save()
 
-                    Me.State.boChanged = True
-                    If Me.State.IsSpecialServiceNew = True Then
-                        Me.State.IsSpecialServiceNew = False
+                    State.boChanged = True
+                    If State.IsSpecialServiceNew = True Then
+                        State.IsSpecialServiceNew = False
                     End If
                     PopulateAll()
                     'EnableDisableFields()
-                    Me.SetButtonsState(Me.State.IsSpecialServiceNew)
+                    SetButtonsState(State.IsSpecialServiceNew)
                     'Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
+                    MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
                 Else
                     'Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_SAVED)
+                    MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_SAVED)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Function
@@ -717,7 +717,7 @@ Namespace Tables
                 'moErrorController.AddError(SPECIALSERVICE_FORM002)
                 'moErrorController.AddError(ex.Message, False)
                 'moErrorController.Show()
-                Me.MasterPage.ErrController.AddErrorAndShow(ex.Message, False)
+                MasterPage.ErrController.AddErrorAndShow(ex.Message, False)
                 bIsOk = False
             End Try
             Return bIsOk
@@ -729,53 +729,53 @@ Namespace Tables
 
         Private Sub BindBoPropertiesToLabels()
 
-            Me.BindBOPropertyToLabel(TheSpecialService, DEALER_ID_PROPERTY, TheDealerControl.CaptionLabel)
+            BindBOPropertyToLabel(TheSpecialService, DEALER_ID_PROPERTY, TheDealerControl.CaptionLabel)
 
-            Me.BindBOPropertyToLabel(TheSpecialService, SPECIAL_SERVICE_CODE_PROPERTY, Me.SplServiceCodeLabel)
+            BindBOPropertyToLabel(TheSpecialService, SPECIAL_SERVICE_CODE_PROPERTY, SplServiceCodeLabel)
 
-            Me.BindBOPropertyToLabel(TheSpecialService, SPECIAL_SERVICE_DESC_PROPERTY, Me.SplServiceDescLabel)
+            BindBOPropertyToLabel(TheSpecialService, SPECIAL_SERVICE_DESC_PROPERTY, SplServiceDescLabel)
 
-            Me.BindBOPropertyToLabel(TheSpecialService, COVERAGE_TYPE_ID_PROPERTY, Me.CoverageTypeLabel)
+            BindBOPropertyToLabel(TheSpecialService, COVERAGE_TYPE_ID_PROPERTY, CoverageTypeLabel)
 
-            Me.BindBOPropertyToLabel(TheSpecialService, ADD_ITEMS_ALLOWED_ID_PROPERTY, Me.AddItemsAllowedLabel)
-            Me.BindBOPropertyToLabel(TheSpecialService, CAUSE_OF_LOSS_ID_PROPERTY, Me.CauseOfLossLabel)
-            Me.BindBOPropertyToLabel(TheSpecialService, ADD_ITEMS_AFTER_CERT_EXPIRED, Me.AddItemsCertExpLabel)
-            Me.BindBOPropertyToLabel(TheSpecialService, OCCURENCES_ALLOWED_PROPERTY, Me.OccurAllowedLabel)
-            Me.BindBOPropertyToLabel(TheSpecialService, AUTHORIZED_AMOUNT_FROM_PROPERTY, Me.AuthAmtFromLabel)
-            Me.BindBOPropertyToLabel(TheSpecialService, AVAIL_SVC_CENTER_PROPERTY, Me.AvailSvcCenterLabel)
-            Me.BindBOPropertyToLabel(TheSpecialService, COMBINED_REPAIR_PROPERTY, Me.RepairCombinedLabel)
+            BindBOPropertyToLabel(TheSpecialService, ADD_ITEMS_ALLOWED_ID_PROPERTY, AddItemsAllowedLabel)
+            BindBOPropertyToLabel(TheSpecialService, CAUSE_OF_LOSS_ID_PROPERTY, CauseOfLossLabel)
+            BindBOPropertyToLabel(TheSpecialService, ADD_ITEMS_AFTER_CERT_EXPIRED, AddItemsCertExpLabel)
+            BindBOPropertyToLabel(TheSpecialService, OCCURENCES_ALLOWED_PROPERTY, OccurAllowedLabel)
+            BindBOPropertyToLabel(TheSpecialService, AUTHORIZED_AMOUNT_FROM_PROPERTY, AuthAmtFromLabel)
+            BindBOPropertyToLabel(TheSpecialService, AVAIL_SVC_CENTER_PROPERTY, AvailSvcCenterLabel)
+            BindBOPropertyToLabel(TheSpecialService, COMBINED_REPAIR_PROPERTY, RepairCombinedLabel)
 
 
-            Dim specialServiceLabel As Label = CType(Me.multipleDropControl.FindControl("lb_DropDown"), Label)
-            Me.BindBOPropertyToLabel(TheSpecialService, SPECIAL_SERVICE_PROPERTY, specialServiceLabel)
+            Dim specialServiceLabel As Label = CType(multipleDropControl.FindControl("lb_DropDown"), Label)
+            BindBOPropertyToLabel(TheSpecialService, SPECIAL_SERVICE_PROPERTY, specialServiceLabel)
 
-            Dim serviceClassLabel As Label = CType(Me.ServiceClassServiceTypeControl.FindControl("ServiceClassLabel"), Label)
-            Dim serviceTypeLabel As Label = CType(Me.ServiceClassServiceTypeControl.FindControl("ServiceTypeLabel"), Label)
+            Dim serviceClassLabel As Label = CType(ServiceClassServiceTypeControl.FindControl("ServiceClassLabel"), Label)
+            Dim serviceTypeLabel As Label = CType(ServiceClassServiceTypeControl.FindControl("ServiceTypeLabel"), Label)
 
-            Me.BindBOPropertyToLabel(TheSpecialService, SERVICE_CLASS_ID_PROPERTY, serviceClassLabel)
-            Me.BindBOPropertyToLabel(TheSpecialService, SERVICE_TYPE_ID_PROPERTY, serviceTypeLabel)
+            BindBOPropertyToLabel(TheSpecialService, SERVICE_CLASS_ID_PROPERTY, serviceClassLabel)
+            BindBOPropertyToLabel(TheSpecialService, SERVICE_TYPE_ID_PROPERTY, serviceTypeLabel)
 
         End Sub
 
         Private Sub ClearLabelsErrSign()
 
-            Me.ClearLabelErrSign(TheDealerControl.CaptionLabel)
-            Me.ClearLabelErrSign(Me.SplServiceCodeLabel)
-            Me.ClearLabelErrSign(Me.SplServiceDescLabel)
-            Me.ClearLabelErrSign(Me.CoverageTypeLabel)
-            Me.ClearLabelErrSign(Me.AddItemsAllowedLabel)
-            Me.ClearLabelErrSign(Me.CauseOfLossLabel)
-            Me.ClearLabelErrSign(Me.AddItemsCertExpLabel)
-            Me.ClearLabelErrSign(Me.OccurAllowedLabel)
-            Me.ClearLabelErrSign(Me.AuthAmtFromLabel)
-            Me.ClearLabelErrSign(Me.AvailSvcCenterLabel)
-            Me.ClearLabelErrSign(Me.RepairCombinedLabel)
+            ClearLabelErrSign(TheDealerControl.CaptionLabel)
+            ClearLabelErrSign(SplServiceCodeLabel)
+            ClearLabelErrSign(SplServiceDescLabel)
+            ClearLabelErrSign(CoverageTypeLabel)
+            ClearLabelErrSign(AddItemsAllowedLabel)
+            ClearLabelErrSign(CauseOfLossLabel)
+            ClearLabelErrSign(AddItemsCertExpLabel)
+            ClearLabelErrSign(OccurAllowedLabel)
+            ClearLabelErrSign(AuthAmtFromLabel)
+            ClearLabelErrSign(AvailSvcCenterLabel)
+            ClearLabelErrSign(RepairCombinedLabel)
 
-            Dim serviceClassLabel As Label = CType(Me.ServiceClassServiceTypeControl.FindControl("ServiceClassLabel"), Label)
-            Dim serviceTypeLabel As Label = CType(Me.ServiceClassServiceTypeControl.FindControl("ServiceTypeLabel"), Label)
+            Dim serviceClassLabel As Label = CType(ServiceClassServiceTypeControl.FindControl("ServiceClassLabel"), Label)
+            Dim serviceTypeLabel As Label = CType(ServiceClassServiceTypeControl.FindControl("ServiceTypeLabel"), Label)
 
-            Me.ClearLabelErrSign(serviceClassLabel)
-            Me.ClearLabelErrSign(serviceTypeLabel)
+            ClearLabelErrSign(serviceClassLabel)
+            ClearLabelErrSign(serviceTypeLabel)
         End Sub
 #End Region
 
@@ -783,19 +783,19 @@ Namespace Tables
 #Region "State-Management"
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and go back to Search Page
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             GoBack()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         GoBack()
                 End Select
             End If
@@ -803,19 +803,19 @@ Namespace Tables
         End Sub
 
         Protected Sub ComingFromNewCopy()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the New Copy Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and create a new Copy BO
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             CreateNewCopy()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         ' create a new BO
                         CreateNewCopy()
                 End Select
@@ -826,7 +826,7 @@ Namespace Tables
 
         Protected Sub CheckIfComingFromConfirm()
             Try
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     ' Period
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ComingFromBack()
@@ -837,10 +837,10 @@ Namespace Tables
                 End Select
 
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = String.Empty
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -850,16 +850,16 @@ Namespace Tables
         Private Sub UpdateBreadCrum()
             'If (Not Me.State Is Nothing) Then
             'If (Not Me.State.searchDV Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                           TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_SPECIALSERVICE) & " " & "Item"
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_SPECIALSERVICE) & " " & "Item"
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_SPECIALSERVICE) & " " & "Item"
             'End If
             'End If
         End Sub
 
         Protected Sub EnableDisableFields()
 
-            If Not Me.State.IsSpecialServiceNew = True Then
+            If Not State.IsSpecialServiceNew = True Then
                 TheDealerControl.ChangeEnabledControlProperty(False)
                 ControlMgr.SetEnableControl(Me, cboCoverageTypeDrop, False)
                 ControlMgr.SetEnableControl(Me, cboCauseOfLossDrop, False)
@@ -881,36 +881,36 @@ Namespace Tables
 #Region "AUTHORIZED MANUFACTURER: Attach - Detach Event Handlers"
 
 
-        Private Sub UserControlAvailableSelectedProductCodes_Attach(ByVal aSrc As Generic.UserControlAvailableSelected_New, ByVal attachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedProductCodes.Attach
+        Private Sub UserControlAvailableSelectedProductCodes_Attach(aSrc As Generic.UserControlAvailableSelected_New, attachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedProductCodes.Attach
             Try
                 If attachedList.Count > 0 Then
                     TheSpecialService.AttachProductCodes(attachedList)
                     'Me.PopulateDetailMfgGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub UserControlAvailableSelectedProductCodes_Detach(ByVal aSrc As Generic.UserControlAvailableSelected_New, ByVal detachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedProductCodes.Detach
+        Private Sub UserControlAvailableSelectedProductCodes_Detach(aSrc As Generic.UserControlAvailableSelected_New, detachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedProductCodes.Detach
             Try
                 If detachedList.Count > 0 Then
                     TheSpecialService.DetachProductCodes(detachedList)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 #End Region
 
-        Private Sub cboAuthAmtFromDrop_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboAuthAmtFromDrop.SelectedIndexChanged
+        Private Sub cboAuthAmtFromDrop_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboAuthAmtFromDrop.SelectedIndexChanged
             Try
                 Dim priceGroupFieldId As Guid = ElitaPlusPage.GetSelectedItem(cboAuthAmtFromDrop)
                 If LookupListNew.GetCodeFromId(LookupListNew.GetPriceGroupDPLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), priceGroupFieldId) = Codes.PRICEGROUP_SPL_SVC_MANUAL Then
-                    TheServiceClassTypeControl.SetControl(True, TheServiceClassTypeControl.MODES.EDIT_MODE, True, , Me.SERVICE_CLASS_TYPE_CAPTION, True, True, , , , , , , True)
+                    TheServiceClassTypeControl.SetControl(True, TheServiceClassTypeControl.MODES.EDIT_MODE, True, , SERVICE_CLASS_TYPE_CAPTION, True, True, , , , , , , True)
                 Else
-                    TheServiceClassTypeControl.SetControl(True, TheServiceClassTypeControl.MODES.EDIT_MODE, True, , Me.SERVICE_CLASS_TYPE_CAPTION, True, True, , , , , , , False)
+                    TheServiceClassTypeControl.SetControl(True, TheServiceClassTypeControl.MODES.EDIT_MODE, True, , SERVICE_CLASS_TYPE_CAPTION, True, True, , , , , , , False)
                     TheServiceClassTypeControl.SpecialServiceGuid = TheSpecialService.Id
                     TheServiceClassTypeControl.ServiceClassGuid = TheSpecialService.ServiceClassId
                     TheServiceClassTypeControl.ServiceTypeGuid = TheSpecialService.ServiceTypeId

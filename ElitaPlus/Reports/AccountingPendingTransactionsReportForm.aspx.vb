@@ -67,7 +67,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -78,34 +78,34 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.ClearLabelsErrSign()
+            ErrControllerMaster.Clear_Hide()
+            ClearLabelsErrSign()
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     InitializeForm()
 
-                    Me.cboEventType.Attributes.Add("onchange", String.Format("ToggleSingleDropDownSelection('{0}','{1}',true);", cboEventType.ClientID, Me.rEventType.ClientID))
-                    Me.rEventType.Attributes.Add("onclick", String.Format("ToggleSingleDropDownSelection('{0}','{1}',false);", cboEventType.ClientID, Me.rEventType.ClientID))
+                    cboEventType.Attributes.Add("onchange", String.Format("ToggleSingleDropDownSelection('{0}','{1}',true);", cboEventType.ClientID, rEventType.ClientID))
+                    rEventType.Attributes.Add("onclick", String.Format("ToggleSingleDropDownSelection('{0}','{1}',false);", cboEventType.ClientID, rEventType.ClientID))
 
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
 
         End Sub
 
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
-                Me.ClearLabelErrSign(EventTypeLabel)
+                ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(EventTypeLabel)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
@@ -113,12 +113,12 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -126,12 +126,12 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
              Handles multipleDropControl.SelectedDropChanged
             Try
                 PopulateEventsDropDown()
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -160,7 +160,7 @@ Namespace Reports
                                                                              UserCompanyMultipleDrop.SelectedGuid)
                                                                 })
 
-            Me.cboEventType.Populate(AccountingEvents.ToArray(),
+            cboEventType.Populate(AccountingEvents.ToArray(),
                                      New PopulateOptions() With
                                      {
                                       .AddBlankItem = True
@@ -173,7 +173,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, "* " & TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 HideHtmlElement("ddSeparator1")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
             End If
         End Sub
@@ -181,7 +181,7 @@ Namespace Reports
         Private Sub InitializeForm()
             PopulateCompaniesDropdown()
             PopulateEventsDropDown()
-            Me.rEventType.Checked = True
+            rEventType.Checked = True
             TheReportCeInputControl.populateReportLanguages(RPT_FILENAME)
         End Sub
 
@@ -192,7 +192,7 @@ Namespace Reports
         Private Sub GenerateReport()
             Dim compDesc As String = UserCompanyMultipleDrop.SelectedDesc
             Dim compId As Guid = UserCompanyMultipleDrop.SelectedGuid
-            Dim selectedEventType As String = Me.cboEventType.SelectedItem.ToString
+            Dim selectedEventType As String = cboEventType.SelectedItem.ToString
 
             Dim langCode As String = LookupListNew.GetCodeFromId("LANGUAGES", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
@@ -205,11 +205,11 @@ Namespace Reports
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
             End If
 
-            If Me.rEventType.Checked Then
+            If rEventType.Checked Then
                 selectedEventType = ALL
             Else
                 If selectedEventType.Equals(String.Empty) Then
-                    ElitaPlusPage.SetLabelError(Me.EventTypeLabel)
+                    ElitaPlusPage.SetLabelError(EventTypeLabel)
                     Throw New GUIException(Message.MSG_INVALID_DEALER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_EVENT_TYPE_MUST_BE_SELECTED_ERR)
                 End If
             End If
@@ -220,7 +220,7 @@ Namespace Reports
             Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
         End Sub
 
-        Function SetParameters(ByVal companyId As String, ByVal companyDesc As String, ByVal EventType As String, ByVal langCode As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyId As String, companyDesc As String, EventType As String, langCode As String) As ReportCeBaseForm.Params
 
 
             Dim params As New ReportCeBaseForm.Params

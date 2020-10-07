@@ -11,40 +11,40 @@ Public Class ExtendedStatusByUserRole
     ' Inherits System.Web.UI.Page
     Inherits ElitaPlusSearchPage
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.MasterPage.MessageController.Clear()
-        Me.ClearLabelsErrSign()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        MasterPage.MessageController.Clear()
+        ClearLabelsErrSign()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
-                Me.MasterPage.MessageController.Clear()
+                MasterPage.MessageController.Clear()
 
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.UsePageTabTitleInBreadCrum = False
 
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("EXTENDED_STATUS_BY_USER_ROLE")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("EXTENDED_STATUS_BY_USER_ROLE")
 
                 UpdateBreadCrum()
                 'GetGrantData()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
     Public Sub ClearLabelsErrSign()
         Try
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub UpdateBreadCrum()
 
-        If (Not Me.Page Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+        If (Page IsNot Nothing) Then
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                 TranslationBase.TranslateLabelOrMessage("EXTENDED_STATUS_BY_USER_ROLE")
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("EXTENDED_STATUS_BY_USER_ROLE")
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("EXTENDED_STATUS_BY_USER_ROLE")
         End If
 
     End Sub
@@ -139,7 +139,7 @@ Public Class ExtendedStatusByUserRole
     'load the third dropdown (zaxis) dropdown with data
     <System.Web.Services.WebMethod()>
     <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
-    Public Shared Function GetZAxisList(ByVal zAxisName As String) As List(Of ListItemDTO)
+    Public Shared Function GetZAxisList(zAxisName As String) As List(Of ListItemDTO)
         Dim dv As DataView
         Dim dvdescription As DataView
 
@@ -164,7 +164,7 @@ Public Class ExtendedStatusByUserRole
     'xyAxisValue e.g BRZ-IHQ,ARG-IHQ
     <System.Web.Services.WebMethod()>
     <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
-    Public Shared Function SaveGrants(ByVal xAxisName As String, ByVal yAxisName As String, ByVal zAxisName As String, ByVal xyAxisValue As String, ByVal zAxisValue As String) As Object
+    Public Shared Function SaveGrants(xAxisName As String, yAxisName As String, zAxisName As String, xyAxisValue As String, zAxisValue As String) As Object
         Try
             Dim zAxisParseValueId, companyParseId, roleParseId, extendedStatusParseId As Guid
             Dim grantsNode As XmlNodeList
@@ -270,7 +270,7 @@ Public Class ExtendedStatusByUserRole
             Return False
         End If
     End Function
-    Public Shared Function PreventInjection(ByVal value As String) As String
+    Public Shared Function PreventInjection(value As String) As String
         If Not String.IsNullOrEmpty(value) Then
             Dim safeText As StringBuilder = New StringBuilder(value)
             safeText.Replace("&", "")
@@ -283,11 +283,11 @@ Public Class ExtendedStatusByUserRole
     End Function
 
     <System.Web.Services.WebMethod()>
-    Public Shared Function GetTranslatedText(ByVal messageCode As String) As String
+    Public Shared Function GetTranslatedText(messageCode As String) As String
         Return TranslationBase.TranslateLabelOrMessage(messageCode)
     End Function
 
-    Protected Shared Function GetNodePath(ByVal nodeName As String) As String
+    Protected Shared Function GetNodePath(nodeName As String) As String
         Select Case nodeName
             Case "Company"
                 Return "/RoleCompanyStatus/Companies/Company"
@@ -299,7 +299,7 @@ Public Class ExtendedStatusByUserRole
         Return ""
     End Function
 
-    Protected Shared Function GetList(ByVal dv As DataView) As List(Of ListItemDTO)
+    Protected Shared Function GetList(dv As DataView) As List(Of ListItemDTO)
         Dim listItems As New List(Of ListItemDTO)
         For index As Integer = 0 To dv.Count - 1
             Dim id As String = (New Guid(CType(dv.Item(index).Item("id"), Byte()))).ToString()
@@ -316,7 +316,7 @@ Public Class ExtendedStatusByUserRole
 
     End Sub
 
-    Protected Function GetNodeName(ByVal Name As String)
+    Protected Function GetNodeName(Name As String)
         Select Case Name
             Case "1"
                 GetNodeName = "Company"
@@ -328,7 +328,7 @@ Public Class ExtendedStatusByUserRole
         Return GetNodeName
     End Function
 
-    Protected Function GetZAxisName(ByVal xAxisName As String, ByVal yAxisName As String)
+    Protected Function GetZAxisName(xAxisName As String, yAxisName As String)
 
     End Function
 

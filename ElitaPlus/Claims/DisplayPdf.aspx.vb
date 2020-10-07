@@ -12,7 +12,7 @@ Public Class DisplayPdf
     Public Const CONTENT_TYPE As String = "application/pdf"
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         Dim oDoc As Doc.Document = New Doc.Document
         Dim iImage As iTextSharp.text.Image
         Dim iDocument As iTextSharp.text.Document
@@ -20,13 +20,13 @@ Public Class DisplayPdf
         Dim oPdfWriter As iTextSharp.text.pdf.PdfWriter
 
         Dim ImageId As Guid
-        If Not Request.QueryString(IMAGE_ID) Is Nothing Then
+        If Request.QueryString(IMAGE_ID) IsNot Nothing Then
             ImageId = New Guid(Request.QueryString(IMAGE_ID).ToString)
         Else
             Return
         End If
 
-        If Not Request.QueryString(CLAIM_ID) Is Nothing Then
+        If Request.QueryString(CLAIM_ID) IsNot Nothing Then
             Dim claimId As Guid
             claimId = New Guid(Request.QueryString(CLAIM_ID).ToString)
             Dim oClaim As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(claimId)
@@ -47,7 +47,7 @@ Public Class DisplayPdf
                     End Try
                 End If
             Next
-        ElseIf Not Request.QueryString(CERTIFICATE_ID) Is Nothing Then
+        ElseIf Request.QueryString(CERTIFICATE_ID) IsNot Nothing Then
             Dim certificateId As Guid
             certificateId = New Guid(Request.QueryString(CERTIFICATE_ID).ToString)
             Dim oCertificate As Certificate = New Certificate(certificateId)
@@ -77,7 +77,7 @@ Public Class DisplayPdf
                 Dim memStream As New MemoryStream(oDoc.Data, 0, oDoc.Data.Length, False)
 
                 Dim tif As System.Drawing.Image = System.Drawing.Image.FromStream(memStream)
-                If Not tif Is Nothing Then 'check if its a Valid Image
+                If tif IsNot Nothing Then 'check if its a Valid Image
                     Dim hresolution As Single = tif.Width
                     Dim vresolution As Single = tif.Height
                     tif.Dispose()
@@ -95,7 +95,7 @@ Public Class DisplayPdf
             Catch ex As Exception
                 Throw ex
             Finally
-                If (Not iDocument Is Nothing) Then
+                If (iDocument IsNot Nothing) Then
                     If iDocument.IsOpen Then
                         iDocument.Close()
                     End If

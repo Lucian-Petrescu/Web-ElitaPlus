@@ -44,25 +44,25 @@ Public Class InterfaceStatusWrkDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("interface_status_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public Function Load_IsStatus_Running(ByVal id As Guid) As DataSet
-        Dim selectstmt As String = Me.Config("/SQL/ISSTATUS_RUNNING")
+    Public Function Load_IsStatus_Running(id As Guid) As DataSet
+        Dim selectstmt As String = Config("/SQL/ISSTATUS_RUNNING")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("file_id", id.ToByteArray)}
         Try
             Dim Ds As DataSet = New DataSet()
-            DBHelper.Fetch(Ds, selectstmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(Ds, selectstmt, TABLE_NAME, parameters)
             Return Ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -70,14 +70,14 @@ Public Class InterfaceStatusWrkDAL
 
     End Function
  
-    Public Function LoadByActiveFileName(ByVal activefilename As String, Optional ByVal parentFile As Boolean = False) As DataSet
+    Public Function LoadByActiveFileName(activefilename As String, Optional ByVal parentFile As Boolean = False) As DataSet
         Dim selectStmt As String
         Dim parameters() As DBHelper.DBHelperParameter
         If parentFile = False Then
-            selectStmt = Me.Config("/SQL/GET_ACTIVE_PROCESS")
+            selectStmt = Config("/SQL/GET_ACTIVE_PROCESS")
             parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("activefilename", activefilename)}
         Else
-            selectStmt = Me.Config("/SQL/GET_ACTIVE_PROCESS_PARENTFILE")
+            selectStmt = Config("/SQL/GET_ACTIVE_PROCESS_PARENTFILE")
             parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("activefilename", activefilename), _
                                                            New DBHelper.DBHelperParameter("activefilename", activefilename)}
         End If
@@ -85,7 +85,7 @@ Public Class InterfaceStatusWrkDAL
         Try
             Dim ds As New DataSet
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -93,8 +93,8 @@ Public Class InterfaceStatusWrkDAL
     End Function
 
     'REQ-1056
-    Public Function LoadList(ByVal activefilename As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(activefilename As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("activefilename", activefilename)}
@@ -104,10 +104,10 @@ Public Class InterfaceStatusWrkDAL
         Else
             whereClauseConditions &= "where active_filename='" & activefilename & "'and status='Running'"
         End If
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Try
             Dim ds As New DataSet
-            Return (DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -118,12 +118,12 @@ Public Class InterfaceStatusWrkDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

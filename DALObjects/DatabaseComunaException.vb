@@ -10,7 +10,7 @@ Imports System.Runtime.Serialization
         MyBase.New("Integrity Constraint Violation", ErrorCodes.DB_ERROR_COMUNA_NOT_FOUND, innerException)
     End Sub
 
-    Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+    Protected Sub New(info As SerializationInfo, context As StreamingContext)
         MyBase.New(info, context)
     End Sub
 #End Region

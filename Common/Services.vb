@@ -63,7 +63,7 @@ Public Class Services
 
         End Function
 
-        Public Shared Function GetWebServiceFunctionsNames(ByVal strWebServiceName As String) As DataSet
+        Public Shared Function GetWebServiceFunctionsNames(strWebServiceName As String) As DataSet
             Dim servicePath As String
 
             Dim parentNode As XmlNode = ConfigReader.ConfigDocument(GetType(Services))

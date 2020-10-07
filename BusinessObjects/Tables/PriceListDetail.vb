@@ -14,46 +14,46 @@ Public Class PriceListDetail
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New PriceListDetailDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -64,20 +64,20 @@ Public Class PriceListDetail
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New PriceListDetailDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -149,7 +149,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As DateTimeType)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
@@ -165,7 +165,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As DateTimeType)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
@@ -198,7 +198,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_PRICE_LIST_ID, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_PRICE_LIST_ID, Value)
         End Set
     End Property
 
@@ -214,7 +214,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_SERVICE_CLASS_ID, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_SERVICE_CLASS_ID, Value)
         End Set
     End Property
 
@@ -229,7 +229,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_SERVICE_TYPE_ID, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_SERVICE_TYPE_ID, Value)
         End Set
     End Property
 
@@ -244,7 +244,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_SERVICE_LEVEL_ID, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_SERVICE_LEVEL_ID, Value)
         End Set
     End Property
 
@@ -260,7 +260,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_VENDOR_SKU, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_VENDOR_SKU, Value)
         End Set
     End Property
 
@@ -276,7 +276,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_VENDOR_SKU_DESCRIPTION, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_VENDOR_SKU_DESCRIPTION, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidNumericRange("LowPrice", Min:=MIN_DOUBLE, Max:=NEW_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM001), ValidPriceBandRange("")>
@@ -291,7 +291,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_FROM, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_FROM, Value)
         End Set
     End Property
 
@@ -307,7 +307,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_TO, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_TO, Value)
         End Set
     End Property
 
@@ -322,7 +322,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_EQUIPMENT_CLASS_ID, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_EQUIPMENT_CLASS_ID, Value)
         End Set
     End Property
 
@@ -337,7 +337,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_EQUIPMENT_ID, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_EQUIPMENT_ID, Value)
         End Set
     End Property
     <ValidateConditionType("")>
@@ -352,7 +352,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_CONDITION_ID, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_CONDITION_ID, Value)
         End Set
     End Property
     Public Property RiskTypeId() As Guid
@@ -366,7 +366,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_RISK_TYPE_ID, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_RISK_TYPE_ID, Value)
         End Set
     End Property
 
@@ -382,7 +382,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_PRICE, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_PRICE, Value)
         End Set
     End Property
     <ValueMandatory("Currency")>
@@ -397,7 +397,7 @@ Public Class PriceListDetail
         End Get
         Set(value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_CURRENCY, value)
+            SetValue(PriceListDetailDAL.COL_NAME_CURRENCY, value)
         End Set
     End Property
     <ValueMandatory("")>
@@ -412,7 +412,7 @@ Public Class PriceListDetail
         End Get
         Set(value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_PRICE_LIST_DETAIL_TYPE, value)
+            SetValue(PriceListDetailDAL.COL_NAME_PRICE_LIST_DETAIL_TYPE, value)
         End Set
     End Property
     Public Property PriceWithSymbol() As String
@@ -426,7 +426,7 @@ Public Class PriceListDetail
         End Get
         Set(value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_CURRENCY_SYMBOL, value)
+            SetValue(PriceListDetailDAL.COL_NAME_CURRENCY_SYMBOL, value)
         End Set
     End Property
     Public Property PriceLowWithSymbol() As String
@@ -440,7 +440,7 @@ Public Class PriceListDetail
         End Get
         Set(value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_PRICE_LOW_RANGE_WITH_SYMBOL, value)
+            SetValue(PriceListDetailDAL.COL_NAME_PRICE_LOW_RANGE_WITH_SYMBOL, value)
         End Set
     End Property
     Public Property PriceHighWithSymbol() As String
@@ -454,7 +454,7 @@ Public Class PriceListDetail
         End Get
         Set(value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_PRICE_HIGH_RANGE_WITH_SYMBOL, value)
+            SetValue(PriceListDetailDAL.COL_NAME_PRICE_HIGH_RANGE_WITH_SYMBOL, value)
         End Set
     End Property
     Public ReadOnly Property CalculationPercent() As DecimalType
@@ -479,7 +479,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_REPLACEMENT_TAX_TYPE, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_REPLACEMENT_TAX_TYPE, Value)
         End Set
     End Property
 
@@ -494,7 +494,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_MODEL, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
     Public Property MakeId() As Guid
@@ -508,7 +508,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_MAKE_ID, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_MAKE_ID, Value)
         End Set
     End Property
     Public Property Make() As String
@@ -522,7 +522,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_MAKE, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_MAKE, Value)
         End Set
     End Property
 
@@ -537,7 +537,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_SERVICE_CLASS_CODE, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_SERVICE_CLASS_CODE, Value)
         End Set
     End Property
 
@@ -552,7 +552,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_SERVICE_TYPE_CODE, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_SERVICE_TYPE_CODE, Value)
         End Set
     End Property
 
@@ -567,7 +567,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_SERVICE_LEVEL_CODE, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_SERVICE_LEVEL_CODE, Value)
         End Set
     End Property
 
@@ -582,7 +582,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_RISK_TYPE_CODE, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_RISK_TYPE_CODE, Value)
         End Set
     End Property
 
@@ -597,7 +597,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_EQUIPMENT_CODE, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_EQUIPMENT_CODE, Value)
         End Set
     End Property
 
@@ -612,7 +612,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_CONDITION_TYPE_CODE, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_CONDITION_TYPE_CODE, Value)
         End Set
     End Property
 
@@ -627,13 +627,13 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As Integer)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_VENDOR_QUANTITY, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_VENDOR_QUANTITY, Value)
         End Set
     End Property
     Public ReadOnly Property PriceList As PriceList
         Get
             If (_priceList Is Nothing) Then
-                _priceList = New PriceList(Me.PriceListId, Me.Dataset)
+                _priceList = New PriceList(PriceListId, Dataset)
             End If
             Return _priceList
         End Get
@@ -651,7 +651,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_PART_ID, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_PART_ID, Value)
         End Set
     End Property
 
@@ -666,7 +666,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_PART_CODE, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_PART_CODE, Value)
         End Set
     End Property
 
@@ -681,7 +681,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_PART_DESC, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_PART_DESC, Value)
         End Set
     End Property
 
@@ -696,7 +696,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_MANUFACTURER_ORIGIN, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_MANUFACTURER_ORIGIN, Value)
         End Set
     End Property
 
@@ -711,7 +711,7 @@ Public Class PriceListDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDetailDAL.COL_NAME_MANUFACTURER_ORIGIN_DESC, Value)
+            SetValue(PriceListDetailDAL.COL_NAME_MANUFACTURER_ORIGIN_DESC, Value)
         End Set
     End Property
 
@@ -728,7 +728,7 @@ Public Class PriceListDetail
         Set(ByVal Value As Guid)
             If Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_CONDITION_ID) Then
                 CheckDeleted()
-                Me.SetValue(PriceListDetailDAL.COL_NAME_PARENT_CONDITION_ID, Value)
+                SetValue(PriceListDetailDAL.COL_NAME_PARENT_CONDITION_ID, Value)
             End If
         End Set
     End Property
@@ -747,7 +747,7 @@ Public Class PriceListDetail
 
             If Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_CONDITION_TYPE_CODE) Then
                 CheckDeleted()
-                Me.SetValue(PriceListDetailDAL.COL_NAME_PARENT_CONDITION_TYPE_CODE, Value)
+                SetValue(PriceListDetailDAL.COL_NAME_PARENT_CONDITION_TYPE_CODE, Value)
             End If
 
         End Set
@@ -765,7 +765,7 @@ Public Class PriceListDetail
         Set(ByVal Value As String)
             If Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_MODEL) Then
                 CheckDeleted()
-                Me.SetValue(PriceListDetailDAL.COL_NAME_PARENT_MODEL, Value)
+                SetValue(PriceListDetailDAL.COL_NAME_PARENT_MODEL, Value)
             End If
         End Set
     End Property
@@ -781,7 +781,7 @@ Public Class PriceListDetail
         Set(ByVal Value As Guid)
             If Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_MAKE_ID) Then
                 CheckDeleted()
-                Me.SetValue(PriceListDetailDAL.COL_NAME_PARENT_MAKE_ID, Value)
+                SetValue(PriceListDetailDAL.COL_NAME_PARENT_MAKE_ID, Value)
             End If
         End Set
     End Property
@@ -799,7 +799,7 @@ Public Class PriceListDetail
         Set(ByVal Value As String)
             If Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_MAKE) Then
                 CheckDeleted()
-                Me.SetValue(PriceListDetailDAL.COL_NAME_PARENT_MAKE, Value)
+                SetValue(PriceListDetailDAL.COL_NAME_PARENT_MAKE, Value)
             End If
 
         End Set
@@ -818,7 +818,7 @@ Public Class PriceListDetail
 
             If Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_EQUIPMENT_ID) Then
                 CheckDeleted()
-                Me.SetValue(PriceListDetailDAL.COL_NAME_PARENT_EQUIPMENT_ID, Value)
+                SetValue(PriceListDetailDAL.COL_NAME_PARENT_EQUIPMENT_ID, Value)
             End If
 
         End Set
@@ -830,16 +830,16 @@ Public Class PriceListDetail
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New PriceListDetailDAL
-                dal.UpdateFamily(Me.Dataset)
+                dal.UpdateFamily(Dataset)
 
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -856,15 +856,15 @@ Public Class PriceListDetail
     Public Sub SaveRow()
         Try
             MyBase.Save()
-            If Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New PriceListDetailDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -875,12 +875,12 @@ Public Class PriceListDetail
     'Added manually to the code
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty OrElse Me.AnyColumnHasChanged
+            Return MyBase.IsDirty OrElse IsChildrenDirty OrElse AnyColumnHasChanged
         End Get
     End Property
 
     Public Sub Copy(ByVal original As PriceListDetail)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Price List Code.")
         End If
         MyBase.CopyFrom(original)
@@ -984,9 +984,9 @@ Public Class PriceListDetail
                     'New Expiration date should not be less than the Min(Effective)
                     'check the date overlap if the Vendor SKU is same.
                     For Each dr As DataRow In dv.Table.Rows
-                        If dr("Vendor_sku").ToString() = Me.VendorSku.ToString() Then
+                        If dr("Vendor_sku").ToString() = VendorSku.ToString() Then
                             If GuidControl.ByteArrayToGuid(dr("price_list_Detail_id")) <> Id Then
-                                If ((DateTime.Compare(Me.Effective, DateTime.Parse(dr("Expiration").ToString())) <= 0) And (DateTime.Compare(DateTime.Parse(dr("Effective").ToString()), Me.Expiration) <= 0)) Then
+                                If ((DateTime.Compare(Effective, DateTime.Parse(dr("Expiration").ToString())) <= 0) And (DateTime.Compare(DateTime.Parse(dr("Effective").ToString()), Expiration) <= 0)) Then
                                     Return True
                                 End If
                             End If
@@ -1001,9 +1001,9 @@ Public Class PriceListDetail
                     'End If
                 Else
                     For Each dr As DataRow In dv.Table.Rows
-                        If dr("vendor_sku").ToString().ToUpper() = Me.VendorSku.ToString().ToUpper() Then
+                        If dr("vendor_sku").ToString().ToUpper() = VendorSku.ToString().ToUpper() Then
                             If GuidControl.ByteArrayToGuid(dr("price_list_Detail_id")) <> Id Then
-                                If ((DateTime.Compare(Me.Effective, DateTime.Parse(dr("Expiration").ToString())) <= 0) And (DateTime.Compare(DateTime.Parse(dr("Effective").ToString()), Me.Expiration) <= 0)) Then
+                                If ((DateTime.Compare(Effective, DateTime.Parse(dr("Expiration").ToString())) <= 0) And (DateTime.Compare(DateTime.Parse(dr("Effective").ToString()), Expiration) <= 0)) Then
                                     Return True
 
                                 End If
@@ -1026,15 +1026,15 @@ Public Class PriceListDetail
         Try
             Dim ds As New DataSet
             If CheckSelf Then
-                ds = (New PriceListDetailDAL).GetOverlap(Me.EquipmentClassId, Me.EquipmentId, Me.ConditionId, Me.RiskTypeId, Me.ServiceClassId, Me.ServiceTypeId, Me.VendorSku,
-                                                         Me.PriceListId, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.Id,
-                                                         Me.PartId, Me.MakeId, Me.ManufacturerOriginCode,
-                                                         Me.Expiration.Value.ToString("MM/dd/yyyy"), Me.Effective.Value.ToString("MM/dd/yyyy"))
+                ds = (New PriceListDetailDAL).GetOverlap(EquipmentClassId, EquipmentId, ConditionId, RiskTypeId, ServiceClassId, ServiceTypeId, VendorSku,
+                                                         PriceListId, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Id,
+                                                         PartId, MakeId, ManufacturerOriginCode,
+                                                         Expiration.Value.ToString("MM/dd/yyyy"), Effective.Value.ToString("MM/dd/yyyy"))
             Else
-                ds = (New PriceListDetailDAL).GetOverlap(Me.EquipmentClassId, Me.EquipmentId, Me.ConditionId, Me.RiskTypeId, Me.ServiceClassId, Me.ServiceTypeId, Me.VendorSku,
-                                                         Me.PriceListId, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Nothing,
-                                                         Me.PartId, Me.MakeId, Me.ManufacturerOriginCode,
-                                                         Me.Expiration.Value.ToString("MM/dd/yyyy"), Me.Effective.Value.ToString("MM/dd/yyyy"))
+                ds = (New PriceListDetailDAL).GetOverlap(EquipmentClassId, EquipmentId, ConditionId, RiskTypeId, ServiceClassId, ServiceTypeId, VendorSku,
+                                                         PriceListId, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Nothing,
+                                                         PartId, MakeId, ManufacturerOriginCode,
+                                                         Expiration.Value.ToString("MM/dd/yyyy"), Effective.Value.ToString("MM/dd/yyyy"))
             End If
 
             If ds.Tables(0).Rows.Count > 0 Then Return True Else Return False
@@ -1048,14 +1048,14 @@ Public Class PriceListDetail
         Try
             Dim overlap As New PriceListDetailDAL
             Dim ds As New DataSet
-            ds = overlap.GetOverlap(Me.EquipmentClassId, Me.EquipmentId, Me.ConditionId, Me.RiskTypeId, Me.ServiceClassId, Me.ServiceTypeId, Me.VendorSku,
-                                    Me.PriceListId, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.Id,
-                                    Me.PartId, Me.MakeId, Me.ManufacturerOriginCode,
-                                    Me.Expiration.Value.ToString("MM/dd/yyyy"), Me.Effective.Value.ToString("MM/dd/yyyy"))
+            ds = overlap.GetOverlap(EquipmentClassId, EquipmentId, ConditionId, RiskTypeId, ServiceClassId, ServiceTypeId, VendorSku,
+                                    PriceListId, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Id,
+                                    PartId, MakeId, ManufacturerOriginCode,
+                                    Expiration.Value.ToString("MM/dd/yyyy"), Effective.Value.ToString("MM/dd/yyyy"))
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dtrow As DataRow In ds.Tables(0).Rows
                     Dim pId As Guid = New Guid(CType(dtrow(PriceListDetailDAL.COL_NAME_PRICE_LIST_DETAIL_ID), Byte()))
-                    Dim ExpPlist As New PriceListDetail(pId, Me.Dataset)
+                    Dim ExpPlist As New PriceListDetail(pId, Dataset)
                     ExpPlist.BeginEdit()
 
                     If ExpPlist.Effective > PriceListDetail.GetCurrentDateTime() Then
@@ -1394,7 +1394,7 @@ Public Class PriceListDetail
         Try
             Dim dal As New PriceListDetailDAL
             Dim ds As DataSet
-            ds = dal.GetVendorQuantiy(Me.Id)
+            ds = dal.GetVendorQuantiy(Id)
             If ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
                 Return New Guid(CType(ds.Tables(0).Rows(0).Item(0), Byte()))
             Else

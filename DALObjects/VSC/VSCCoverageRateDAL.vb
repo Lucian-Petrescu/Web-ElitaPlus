@@ -45,61 +45,61 @@ Public Class VSCCoverageRateDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("vsc_coverage_rate_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal RateVersionID As Guid, ByVal PlanID As Guid, ByVal EngineWarranty As Guid,
+    Public Function LoadList(RateVersionID As Guid, PlanID As Guid, EngineWarranty As Guid,
                             Optional ByVal ClassCode As String = "", Optional ByVal TermMon As Integer = -1,
                             Optional ByVal Deductible As Decimal = -1, Optional ByVal Odometer As Integer = -1,
         Optional ByVal VehicleValue As String = "") As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
 
 
-        If Me.FormatSearchMask(ClassCode) Then
+        If FormatSearchMask(ClassCode) Then
             whereClauseConditions &= Environment.NewLine & " AND " & "UPPER(cc.CLASS_CODE) " & ClassCode
         End If
 
         If TermMon >= 0 Then
-            whereClauseConditions &= Environment.NewLine & " AND cr." & Me.COL_NAME_TERM_MONTHS & " = " & TermMon
+            whereClauseConditions &= Environment.NewLine & " AND cr." & COL_NAME_TERM_MONTHS & " = " & TermMon
         End If
 
         If Deductible >= 0 Then
-            whereClauseConditions &= Environment.NewLine & " AND cr." & Me.COL_NAME_DEDUCTIBLE & " = " & Deductible
+            whereClauseConditions &= Environment.NewLine & " AND cr." & COL_NAME_DEDUCTIBLE & " = " & Deductible
         End If
 
         If Odometer >= 0 Then
-            whereClauseConditions &= Environment.NewLine & " AND " & Odometer & " between cr." & Me.COL_NAME_ODOMETER_LOW_RANGE & " and cr." & Me.COL_NAME_ODOMETER_HIGH_RANGE
+            whereClauseConditions &= Environment.NewLine & " AND " & Odometer & " between cr." & COL_NAME_ODOMETER_LOW_RANGE & " and cr." & COL_NAME_ODOMETER_HIGH_RANGE
         End If
 
         If EngineWarranty <> Guid.Empty Then
-            whereClauseConditions &= Environment.NewLine & " and (cr." & Me.COL_NAME_ENGINE_MANUF_WARR_MONTHS & ",cr." & Me.COL_NAME_ENGINE_MANUF_WARR_KM_MI & ") in (select COVERAGE_MONTHS, COVERAGE_KM_MI FROM ELP_VSC_COVERAGE_LIMIT WHERE getcodefromlistitem(coverage_type_id) = '1' and VSC_COVERAGE_LIMIT_ID = '" & GuidToSQLString(EngineWarranty) & "')"
+            whereClauseConditions &= Environment.NewLine & " and (cr." & COL_NAME_ENGINE_MANUF_WARR_MONTHS & ",cr." & COL_NAME_ENGINE_MANUF_WARR_KM_MI & ") in (select COVERAGE_MONTHS, COVERAGE_KM_MI FROM ELP_VSC_COVERAGE_LIMIT WHERE getcodefromlistitem(coverage_type_id) = '1' and VSC_COVERAGE_LIMIT_ID = '" & GuidToSQLString(EngineWarranty) & "')"
         End If
 
         If VehicleValue >= 0 Then
-            whereClauseConditions &= Environment.NewLine & " And " & VehicleValue & " between cr." & Me.COL_NAME_VEHICLE_PURCHASE_PRICE_FROM & " And cr." & Me.COL_NAME_VEHICLE_PURCHASE_PRICE_TO
+            whereClauseConditions &= Environment.NewLine & " And " & VehicleValue & " between cr." & COL_NAME_VEHICLE_PURCHASE_PRICE_FROM & " And cr." & COL_NAME_VEHICLE_PURCHASE_PRICE_TO
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                     New DBHelper.DBHelperParameter("VSC_RATE_VERSION_ID", RateVersionID.ToByteArray),
                     New DBHelper.DBHelperParameter("VSC_PLAN_ID", PlanID.ToByteArray)}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -110,12 +110,12 @@ Public Class VSCCoverageRateDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

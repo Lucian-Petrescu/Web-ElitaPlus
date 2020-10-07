@@ -91,7 +91,7 @@ Namespace Reports
             Get
                 Return isProgressVisible.Value
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 isProgressVisible.Value = Value
             End Set
         End Property
@@ -100,7 +100,7 @@ Namespace Reports
             Get
                 Return hdExcludeSSRSConfigurationCheck.Visible
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 hdExcludeSSRSConfigurationCheck.Visible = Value
             End Set
         End Property
@@ -109,7 +109,7 @@ Namespace Reports
             Get
                 Return isReportCeVisible.Value
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 isReportCeVisible.Value = Value
             End Set
         End Property
@@ -118,7 +118,7 @@ Namespace Reports
             Get
                 Return moFormatPanel.Visible
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 moFormatPanel.Visible = Value
             End Set
         End Property
@@ -127,7 +127,7 @@ Namespace Reports
             Get
                 Return RadiobuttonView.Enabled
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 RadiobuttonView.Enabled = Value
             End Set
         End Property
@@ -136,7 +136,7 @@ Namespace Reports
             Get
                 Return RadiobuttonView.Enabled
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 RadiobuttonPDF.Enabled = Value
             End Set
         End Property
@@ -145,7 +145,7 @@ Namespace Reports
             Get
                 Return RadiobuttonTXT.Enabled
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 RadiobuttonTXT.Enabled = Value
             End Set
         End Property
@@ -154,7 +154,7 @@ Namespace Reports
             Get
                 Return RadiobuttonView.Visible
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 RadiobuttonView.Visible = Value
                 imgView.Visible = Value
             End Set
@@ -164,7 +164,7 @@ Namespace Reports
             Get
                 Return RSched.Visible
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 RSched.Visible = Value
             End Set
         End Property
@@ -173,7 +173,7 @@ Namespace Reports
             Get
                 Return RadiobuttonPDF.Visible
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 RadiobuttonPDF.Visible = Value
                 imgPdf.Visible = Value
             End Set
@@ -183,7 +183,7 @@ Namespace Reports
             Get
                 Return RadiobuttonTXT.Visible
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 RadiobuttonTXT.Visible = Value
                 imgTxt.Visible = Value
             End Set
@@ -192,7 +192,7 @@ Namespace Reports
             Get
                 Return moDestDrop.Visible
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 moDestDrop.Visible = Value
                 moDestLabel.Visible = Value
             End Set
@@ -201,7 +201,7 @@ Namespace Reports
             Get
                 Return RadiobuttonView.Checked
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 RadiobuttonView.Checked = Value
             End Set
         End Property
@@ -210,7 +210,7 @@ Namespace Reports
             Get
                 Return RadiobuttonPDF.Checked
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 RadiobuttonPDF.Checked = Value
             End Set
         End Property
@@ -219,7 +219,7 @@ Namespace Reports
             Get
                 Return RadiobuttonTXT.Checked
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 RadiobuttonTXT.Checked = Value
             End Set
         End Property
@@ -232,10 +232,10 @@ Namespace Reports
                     Return String.Empty
                 End If
             End Get
-            Set(ByVal Value As String)
-                Me.moDestDrop.ClearSelection()
+            Set(Value As String)
+                moDestDrop.ClearSelection()
                 Dim dv As DataView = LookupListNew.GetReportCeDestLookupList(Authentication.LangId, False)
-                Me.moDestDrop.Items.FindByValue(LookupListNew.GetIdFromCode(dv, Value.ToString).ToString).Selected = True
+                moDestDrop.Items.FindByValue(LookupListNew.GetIdFromCode(dv, Value.ToString).ToString).Selected = True
             End Set
         End Property
 
@@ -291,7 +291,7 @@ Namespace Reports
             Get
                 Return chkUpdateFileName.Checked
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 chkUpdateFileName.Checked = Value
             End Set
         End Property
@@ -305,7 +305,7 @@ Namespace Reports
             Get
                 Return moModifiedFileName.Value
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moModifiedFileName.Value = Value
             End Set
         End Property
@@ -342,7 +342,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -352,11 +352,11 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             RestoreAttributes()
             If Not IsPostBack Then
-                Dim oPage As ElitaPlusPage = CType(Me.BindingContainer.Page(), ElitaPlusPage)
-                oPage.AddCalendar(Me.BtnSchedDate, Me.moSchedDateText, "", "N", "Y")
+                Dim oPage As ElitaPlusPage = CType(BindingContainer.Page(), ElitaPlusPage)
+                oPage.AddCalendar(BtnSchedDate, moSchedDateText, "", "N", "Y")
                 JSchedDate()
                 PopulateForm()
             Else
@@ -369,7 +369,7 @@ Namespace Reports
 
 #Region "Handlers-Button"
 
-        Private Sub btnViewHidden_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnViewHidden.Click
+        Private Sub btnViewHidden_Click(sender As System.Object, e As System.EventArgs) Handles btnViewHidden.Click
             Dim oCEHelper As SSHelper
             Dim rptCeBase As New ReportCeBase
 
@@ -381,7 +381,7 @@ Namespace Reports
             Try
                 strReportServer = Request.QueryString("REPORT_SERVER")
 
-                If Not strReportServer Is Nothing Then
+                If strReportServer IsNot Nothing Then
                     oSSHelper = ReportCeBase.GetSSHelper()
                 End If
 
@@ -392,7 +392,7 @@ Namespace Reports
                 Exit Sub
             End Try
             Try
-                If Not strReportServer Is Nothing AndAlso strReportServer.Equals("SSRS") Then
+                If strReportServer IsNot Nothing AndAlso strReportServer.Equals("SSRS") Then
                     Dim oParams As ReportCeBase.Params
                     oParams = CType(Session(ReportCeBase.SESSION_PARAMETERS_KEY), ReportCeBase.Params)
                     strReportName = oParams.msRptName
@@ -407,7 +407,7 @@ Namespace Reports
                         'CType(Me.BindingContainer.Page(), ElitaPlusPage).SetProgressTimeOutScript()
                         Session("REPORT_SERVER") = strReportServer
                         Session("REPORT_NAME") = strReportName
-                        Me.WindowOpen(ReportCeOpenWindowForm.URL & "?REPORT_SERVER=" & strReportServer, TranslationBase.TranslateLabelOrMessage(ReportCeBaseForm.REPORTS_UICODE) &
+                        WindowOpen(ReportCeOpenWindowForm.URL & "?REPORT_SERVER=" & strReportServer, TranslationBase.TranslateLabelOrMessage(ReportCeBaseForm.REPORTS_UICODE) &
                                                 ": " & oParams.msRptWindowName)
                     End If
                 End If
@@ -418,17 +418,17 @@ Namespace Reports
 
         End Sub
 
-        Private Sub btnErrorHidden_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnErrorHidden.Click
-            Dim oPage As ElitaPlusPage = CType(Me.BindingContainer.Page(), ElitaPlusPage)
+        Private Sub btnErrorHidden_Click(sender As System.Object, e As System.EventArgs) Handles btnErrorHidden.Click
+            Dim oPage As ElitaPlusPage = CType(BindingContainer.Page(), ElitaPlusPage)
             Dim oErrorController As ErrorController
             Dim oMsgController As MessageController
-            oErrorController = CType(Me.BindingContainer.FindControl("ErrorCtrl"), ErrorController)
-            If Not oErrorController Is Nothing Then
+            oErrorController = CType(BindingContainer.FindControl("ErrorCtrl"), ErrorController)
+            If oErrorController IsNot Nothing Then
                 oErrorController.AddError(moReportCeStatus.Value, False)
                 oErrorController.AddError(moReportCeErrorMsg.Value, False)
                 oErrorController.Show()
             Else
-                If Not oPage.ErrControllerMaster Is Nothing Then
+                If oPage.ErrControllerMaster IsNot Nothing Then
                     oErrorController = oPage.ErrControllerMaster
                     oErrorController.AddError(moReportCeStatus.Value, False)
                     oErrorController.AddError(moReportCeErrorMsg.Value, False)
@@ -447,7 +447,7 @@ Namespace Reports
             '   IsBarProgressVisible = "False"
         End Sub
 
-        Protected Sub WindowOpen(ByVal url As String, ByVal name As String)
+        Protected Sub WindowOpen(url As String, name As String)
             Dim sJavaScript As String
 
             '   AddHiddenForWindowOpen()
@@ -456,22 +456,22 @@ Namespace Reports
             sJavaScript &= "newWindow = windowOpen('" & url & "','" & name & "');" & Environment.NewLine
             sJavaScript &= "newWindow.document.title = '" & name & "';" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
-            Dim oPage As ElitaPlusPage = CType(Me.BindingContainer.Page(), ElitaPlusPage)
+            Dim oPage As ElitaPlusPage = CType(BindingContainer.Page(), ElitaPlusPage)
             oPage.RegisterStartupScript("MaximizedWindowOpen", sJavaScript)
         End Sub
 
-        Private Sub DisplayErrorMsg(ByVal errormsg As String)
-            Dim oPage As ElitaPlusPage = CType(Me.BindingContainer.Page(), ElitaPlusPage)
+        Private Sub DisplayErrorMsg(errormsg As String)
+            Dim oPage As ElitaPlusPage = CType(BindingContainer.Page(), ElitaPlusPage)
             Dim oErrorController As ErrorController
             Dim oMsgController As MessageController
-            oErrorController = CType(Me.BindingContainer.FindControl("ErrorCtrl"), ErrorController)
-            If Not oErrorController Is Nothing Then
+            oErrorController = CType(BindingContainer.FindControl("ErrorCtrl"), ErrorController)
+            If oErrorController IsNot Nothing Then
                 oErrorController.AddError(moReportCeStatus.Value, False)
                 oErrorController.AddError(moReportCeErrorMsg.Value, False)
                 oErrorController.AddError(errormsg, False)
                 oErrorController.Show()
             Else
-                If Not oPage.ErrControllerMaster Is Nothing Then
+                If oPage.ErrControllerMaster IsNot Nothing Then
                     oErrorController = oPage.ErrControllerMaster
                     oErrorController.AddError(moReportCeStatus.Value, False)
                     oErrorController.AddError(moReportCeErrorMsg.Value, False)
@@ -523,12 +523,12 @@ Namespace Reports
             PdfEnable = True
             ExportDataEnable = False
         End Sub
-        Public Sub LangDPVisible(ByVal isvisible As Boolean)
+        Public Sub LangDPVisible(isvisible As Boolean)
             RLang.Visible = isvisible
             lblLang.Visible = isvisible
             DPLang.Visible = isvisible
         End Sub
-        Public Sub UpdateFileNameControlVisible(ByVal isvisible As Boolean)
+        Public Sub UpdateFileNameControlVisible(isvisible As Boolean)
             lblUpdateFileName.Visible = isvisible
             chkUpdateFileName.Visible = isvisible
         End Sub
@@ -551,8 +551,8 @@ Namespace Reports
         ' Dim orptname As String    
         Private moState As MyState
         'Public Event SelectedViewPDFOption(ByVal aSrc As ReportCeInputControl)
-        Public Event SelectedViewPDFOption(ByVal sender As Object, ByVal e As System.EventArgs)
-        Public Event SelectedDestOptionChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+        Public Event SelectedViewPDFOption(sender As Object, e As System.EventArgs)
+        Public Event SelectedDestOptionChanged(sender As Object, e As System.EventArgs)
         'Public ButtonClick As EventHandler(ByVal sender As Object, ByVal e As System.EventArgs)
 
 
@@ -572,7 +572,7 @@ Namespace Reports
 #End Region
 #Region "Language"
 
-        Public Sub populateReportLanguages(ByVal oReportName As String)
+        Public Sub populateReportLanguages(oReportName As String)
             Dim oCEHelper As SSHelper
             Dim drResult As String = oReportName + strExportRptExt
             Dim rowView As DataRowView
@@ -588,7 +588,7 @@ Namespace Reports
             Else
                 'rptname = oReportName
                 Try
-                    If Not strReportServer Is Nothing Then
+                    If strReportServer IsNot Nothing Then
                         oSSHelper = ReportCeBase.GetSSHelper()
                     End If
                 Catch ex As Exception
@@ -597,7 +597,7 @@ Namespace Reports
                 End Try
                 Dim oDataView As DataView
                 Try
-                    If Not strReportServer Is Nothing AndAlso strReportServer.Equals("SSRS") Then
+                    If strReportServer IsNot Nothing AndAlso strReportServer.Equals("SSRS") Then
                         'Future SSRS code
                         Dim dt As DataTable = New DataTable()
                         dt.Columns.Add("Language_id", GetType(Byte()))
@@ -618,14 +618,14 @@ Namespace Reports
                 If strReportServer Is Nothing Then
                     'Me.BindListTextToDataView(DPLang, oDataView, CEHelper.ReportDataview.COL_REP_NAME, CEHelper.ReportDataview.COL_REP_ID)
                 Else
-                    Me.BindListTextToDataView(DPLang, oDataView, "Language_code", "Language_id")
+                    BindListTextToDataView(DPLang, oDataView, "Language_code", "Language_id")
                 End If
 
 
             End If
         End Sub
 
-        Protected Sub BindListTextToDataView(ByVal lstControl As ListControl, ByVal Data As DataView,
+        Protected Sub BindListTextToDataView(lstControl As ListControl, Data As DataView,
     Optional ByVal TextColumnName As String = "DESCRIPTION", Optional ByVal ValueColumnName As String = "ID", Optional ByVal AddNothingSelected As Boolean = True)
             Dim i As Integer
             Dim descColumnValue As String
@@ -636,7 +636,7 @@ Namespace Reports
             For i = 0 To Data.Count - 1
                 descColumnValue = Data(i)(TextColumnName).ToString.Remove(0, Data(i)(TextColumnName).ToString.IndexOf(ReportName_LangSep) + 1)
 
-                If Not LookupListNew.GetDescriptionFromCode(LookupListNew.LK_LANGUAGES, descColumnValue) Is Nothing Then
+                If LookupListNew.GetDescriptionFromCode(LookupListNew.LK_LANGUAGES, descColumnValue) IsNot Nothing Then
 
                     ' If (descColumnValue <> strExp) Then
                     descColumnValue = LookupListNew.GetDescriptionFromCode(LookupListNew.LK_LANGUAGES, descColumnValue)
@@ -661,7 +661,7 @@ Namespace Reports
             End If
         End Sub
 
-        Public Function getReportName(ByVal orptname As String, ByVal isExport As Boolean) As String
+        Public Function getReportName(orptname As String, isExport As Boolean) As String
             If isExport = False Then
                 Return (orptname + ReportName_LangSep + LanguageCodeSelected)
             Else
@@ -669,12 +669,12 @@ Namespace Reports
             End If
 
         End Function
-        Public Function getReportWindowTitle(ByVal orptwindowtitle As String) As String
+        Public Function getReportWindowTitle(orptwindowtitle As String) As String
             ' Return (TranslationBase.TranslateLabelOrMessage(orptwindowtitle) + ExpRptName_Sep + LanguageDescSelected)
             Return (orptwindowtitle + ExpRptName_Sep + LanguageDescSelected)
         End Function
 
-        Public Function getCultureValue(ByVal isExport As Boolean, Optional ByVal company_id As String = "") As String
+        Public Function getCultureValue(isExport As Boolean, Optional ByVal company_id As String = "") As String
             Dim culturecode As String
             Dim dvCurrency As DataView
 
@@ -700,8 +700,8 @@ Namespace Reports
 
             Dim CurrencyNotation As String
 
-            If Not dvCurrency Is Nothing AndAlso dvCurrency.Count > 0 Then
-                If Not dvCurrency.Item(0)(LookupListNew.COL_CURRENCY_NOTATION) Is System.DBNull.Value Then
+            If dvCurrency IsNot Nothing AndAlso dvCurrency.Count > 0 Then
+                If dvCurrency.Item(0)(LookupListNew.COL_CURRENCY_NOTATION) IsNot System.DBNull.Value Then
                     CurrencyNotation = dvCurrency.Item(0)(LookupListNew.COL_CURRENCY_NOTATION).ToString
                 Else
                     CurrencyNotation = String.Empty
@@ -762,9 +762,9 @@ Namespace Reports
 
             ' Schedule Date
             Dim t As Date = Date.Now
-            Me.moSchedDateText.Text = ElitaPlusPage.GetDateFormattedString(t)
+            moSchedDateText.Text = ElitaPlusPage.GetDateFormattedString(t)
 
-            If Not Request.QueryString("REPORT_SERVER") Is Nothing AndAlso Request.QueryString("REPORT_SERVER").Equals("SSRS") Then
+            If Request.QueryString("REPORT_SERVER") IsNot Nothing AndAlso Request.QueryString("REPORT_SERVER").Equals("SSRS") Then
                 PdfVisible = False
             Else
                 If Not ExcludeSSRSConfigurationCheck Then
@@ -774,7 +774,7 @@ Namespace Reports
             End If
         End Sub
 
-        Private Sub ObtainDestParam(ByVal oParams As ReportCeBase.Params)
+        Private Sub ObtainDestParam(oParams As ReportCeBase.Params)
             Dim langId As Guid = Authentication.LangId
             Dim repDestLkl As DataView = LookupListNew.GetReportCeDestLookupList(langId, False)
             Dim repDestId As Guid = ElitaPlusPage.GetSelectedItem(moDestDrop)
@@ -782,7 +782,7 @@ Namespace Reports
             oParams.moDest = CType([Enum].Parse(GetType(ceDestination), repDestCode), ceDestination)
         End Sub
 
-        Private Sub ObtainSchedDate(ByVal oParams As ReportCeBase.Params)
+        Private Sub ObtainSchedDate(oParams As ReportCeBase.Params)
             Dim oStartDateTime As DateTime = Nothing
             Dim sStartDate As String
 
@@ -826,7 +826,7 @@ Namespace Reports
 
 
 
-        Private Sub ObtainFtpParams(ByVal oParams As ReportCeBase.Params)
+        Private Sub ObtainFtpParams(oParams As ReportCeBase.Params)
 
             Dim oFtpSiteId As Guid
             If Not ElitaPlusIdentity.Current.ActiveUser.Company.FtpSiteId = Guid.Empty OrElse Nothing Then
@@ -869,7 +869,7 @@ Namespace Reports
 
         End Sub
 
-        Private Sub ObtainUDiskParams(ByVal oParams As ReportCeBase.Params)
+        Private Sub ObtainUDiskParams(oParams As ReportCeBase.Params)
 
             Dim fileName As String
             If chkUpdateFileName.Checked = True Then
@@ -898,7 +898,7 @@ Namespace Reports
         End Sub
 
 
-        Private Sub ObtainEmailParams(ByVal oParams As ReportCeBase.Params)
+        Private Sub ObtainEmailParams(oParams As ReportCeBase.Params)
 
             Dim oEmail As String
             If Not ElitaPlusIdentity.Current.ActiveUser.Company.Email = String.Empty OrElse Nothing Then
@@ -941,7 +941,7 @@ Namespace Reports
 
         Private Sub ObtainSchedParams()
             Dim oParams As ReportCeBase.Params
-            Dim oPage As ElitaPlusPage = CType(Me.BindingContainer.Page(), ElitaPlusPage)
+            Dim oPage As ElitaPlusPage = CType(BindingContainer.Page(), ElitaPlusPage)
             Try
                 oParams = CType(Session(ReportCeBase.SESSION_PARAMETERS_KEY), ReportCeBase.Params)
                 ObtainDestParam(oParams)
@@ -1027,9 +1027,9 @@ Namespace Reports
         'End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim oPage As ElitaPlusPage = CType(Me.BindingContainer.Page(), ElitaPlusPage)
-            Dim confResponse As String = Me.HiddenRptPromptResponse.Value
-            Me.HiddenRptPromptResponse.Value = Nothing
+            Dim oPage As ElitaPlusPage = CType(BindingContainer.Page(), ElitaPlusPage)
+            Dim confResponse As String = HiddenRptPromptResponse.Value
+            HiddenRptPromptResponse.Value = Nothing
             Dim oSSHelper As SSHelper
 
             Dim strReportServer As String = ""
@@ -1037,7 +1037,7 @@ Namespace Reports
             Try
                 strReportServer = Request.QueryString("REPORT_SERVER")
 
-                If Not strReportServer Is Nothing AndAlso strReportServer.Equals("SSRS") Then
+                If strReportServer IsNot Nothing AndAlso strReportServer.Equals("SSRS") Then
                     oSSHelper = ReportCeBase.GetSSHelper()
                 Else
                     If Not ExcludeSSRSConfigurationCheck Then
@@ -1054,9 +1054,9 @@ Namespace Reports
             End Try
         End Sub
 
-        Function SetParameters(ByVal nInstanceId As Long, ByVal ceFormat As String) As ReportCeBaseForm.Params
+        Function SetParameters(nInstanceId As Long, ceFormat As String) As ReportCeBaseForm.Params
             Dim params As New ReportCeBaseForm.Params
-            Dim reportName As String = Me.moState.ReportName
+            Dim reportName As String = moState.ReportName
 
             Dim moReportFormat As ReportCeBaseForm.RptFormat
             moReportFormat = ReportCeBase.GetReportFormat(ceFormat)
@@ -1071,22 +1071,22 @@ Namespace Reports
             Return params
         End Function
 
-        Private Sub ViewReport(ByVal nInstanceId As Long, ByVal ceFormat As String)
+        Private Sub ViewReport(nInstanceId As Long, ceFormat As String)
 
             Dim params As ReportCeBaseForm.Params = SetParameters(nInstanceId, ceFormat)
             Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
 
         End Sub
 
-        Private Sub RunOracleExportReport(ByVal oParams As ReportCeBase.Params, ByVal strReportType As String, ByVal strReportProc As String)
+        Private Sub RunOracleExportReport(oParams As ReportCeBase.Params, strReportType As String, strReportProc As String)
             Dim oReportRequests As ReportRequests = New ReportRequests
             oReportRequests.ReportType = strReportType
             oReportRequests.ReportProc = strReportProc
-            oReportRequests.ReportParameters = Me.GetOracleParamsList(oParams)
+            oReportRequests.ReportParameters = GetOracleParamsList(oParams)
 
             Dim reportParams As New System.Text.StringBuilder
 
-            Dim oPage As ElitaPlusPage = CType(Me.BindingContainer.Page(), ElitaPlusPage)
+            Dim oPage As ElitaPlusPage = CType(BindingContainer.Page(), ElitaPlusPage)
             If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
                 oPage.DisplayMessage(Message.MSG_Email_not_configured, "", oPage.MSG_BTN_OK, oPage.MSG_TYPE_ALERT, , True)
             Else
@@ -1104,12 +1104,12 @@ Namespace Reports
             End If
         End Sub
 
-        Private Function GetOracleParamsList(ByVal oParams As ReportCeBase.Params) As String
+        Private Function GetOracleParamsList(oParams As ReportCeBase.Params) As String
             Dim reportParams As New System.Text.StringBuilder
             Dim oRptParam As ReportCeBase.RptParam
-            If Not oParams.moRptParams Is Nothing Then
+            If oParams.moRptParams IsNot Nothing Then
                 For Each oRptParam In oParams.moRptParams
-                    If Not oRptParam Is Nothing Then
+                    If oRptParam IsNot Nothing Then
                         reportParams.AppendFormat(oRptParam.moCeHelperParameter.Name & " => '{0}',", oRptParam.moCeHelperParameter.Value)
                     Else
                     End If
@@ -1125,7 +1125,7 @@ Namespace Reports
 
         Protected Sub resizeform()
             Dim sJavaScript As String
-            Dim oPage As ElitaPlusPage = CType(Me.BindingContainer.Page(), ElitaPlusPage)
+            Dim oPage As ElitaPlusPage = CType(BindingContainer.Page(), ElitaPlusPage)
 
             sJavaScript = "<SCRIPT>" & Environment.NewLine
             'sJavaScript &= "resizeForm();" & Environment.NewLine
@@ -1140,11 +1140,11 @@ Namespace Reports
 
 #End Region
 
-        Private Sub RadiobuttonView_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles RadiobuttonView.CheckedChanged
+        Private Sub RadiobuttonView_CheckedChanged(sender As Object, e As System.EventArgs) Handles RadiobuttonView.CheckedChanged
 
-            If Me.RadiobuttonView.Checked = True Then
-                Me.RadiobuttonPDF.Checked = False
-                Me.RadiobuttonTXT.Checked = False
+            If RadiobuttonView.Checked = True Then
+                RadiobuttonPDF.Checked = False
+                RadiobuttonTXT.Checked = False
                 ' Dim args As New EventArgs()
                 'ButtonClick(sender, e)
                 'SelectedViewPDFOption(sender, args)
@@ -1153,21 +1153,21 @@ Namespace Reports
 
         End Sub
 
-        Private Sub RadiobuttonPDF_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles RadiobuttonPDF.CheckedChanged
-            If Me.RadiobuttonPDF.Checked = True Then
-                Me.RadiobuttonView.Checked = False
-                Me.RadiobuttonTXT.Checked = False
+        Private Sub RadiobuttonPDF_CheckedChanged(sender As Object, e As System.EventArgs) Handles RadiobuttonPDF.CheckedChanged
+            If RadiobuttonPDF.Checked = True Then
+                RadiobuttonView.Checked = False
+                RadiobuttonTXT.Checked = False
                 'RaiseEvent SelectedViewPDFOption(Me)
                 'ButtonClick(sender, e)
                 RaiseEvent SelectedViewPDFOption(sender, e)
             End If
         End Sub
 
-        Private Sub RadiobuttonTXT_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles RadiobuttonTXT.CheckedChanged
+        Private Sub RadiobuttonTXT_CheckedChanged(sender As Object, e As System.EventArgs) Handles RadiobuttonTXT.CheckedChanged
 
-            If Me.RadiobuttonTXT.Checked = True Then
-                Me.RadiobuttonPDF.Checked = False
-                Me.RadiobuttonView.Checked = False
+            If RadiobuttonTXT.Checked = True Then
+                RadiobuttonPDF.Checked = False
+                RadiobuttonView.Checked = False
                 ' Dim args As New EventArgs()
                 'ButtonClick(sender, e)
                 'SelectedViewPDFOption(sender, args)
@@ -1176,7 +1176,7 @@ Namespace Reports
 
         End Sub
 
-        Private Sub moDestDrop_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles moDestDrop.SelectedIndexChanged
+        Private Sub moDestDrop_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles moDestDrop.SelectedIndexChanged
             RaiseEvent SelectedDestOptionChanged(sender, e)
         End Sub
     End Class

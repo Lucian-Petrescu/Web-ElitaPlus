@@ -18,72 +18,72 @@ Public Class ContactInfo
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal userObj As IContactInfoUser)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
-        Me._userObj = userObj
+        Dataset = familyDS
+        Load(id)
+        _userObj = userObj
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal userObj As IContactInfoUser, ByVal Flg As Boolean)
         MyBase.New(Flg)
-        Me.Dataset = familyDS
-        Me.Load(id)
-        Me._userObj = userObj
+        Dataset = familyDS
+        Load(id)
+        _userObj = userObj
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet, ByVal userObj As IContactInfoUser)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
-        Me._userObj = userObj
+        Dataset = familyDS
+        Load()
+        _userObj = userObj
     End Sub
 
 
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ContactInfoDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -94,20 +94,20 @@ Public Class ContactInfo
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New ContactInfoDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -162,7 +162,7 @@ Public Class ContactInfo
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_ADDRESS_TYPE_ID, Value)
+            SetValue(ContactInfoDAL.COL_NAME_ADDRESS_TYPE_ID, Value)
         End Set
     End Property
 
@@ -179,7 +179,7 @@ Public Class ContactInfo
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_ADDRESS_ID, Value)
+            SetValue(ContactInfoDAL.COL_NAME_ADDRESS_ID, Value)
         End Set
     End Property
 
@@ -196,7 +196,7 @@ Public Class ContactInfo
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_SALUTATION_ID, Value)
+            SetValue(ContactInfoDAL.COL_NAME_SALUTATION_ID, Value)
         End Set
     End Property
 
@@ -213,7 +213,7 @@ Public Class ContactInfo
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_NAME, Value)
+            SetValue(ContactInfoDAL.COL_NAME_NAME, Value)
         End Set
     End Property
 
@@ -230,7 +230,7 @@ Public Class ContactInfo
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_HOME_PHONE, Value)
+            SetValue(ContactInfoDAL.COL_NAME_HOME_PHONE, Value)
         End Set
     End Property
 
@@ -247,7 +247,7 @@ Public Class ContactInfo
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_WORK_PHONE, Value)
+            SetValue(ContactInfoDAL.COL_NAME_WORK_PHONE, Value)
         End Set
     End Property
 
@@ -264,7 +264,7 @@ Public Class ContactInfo
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_EMAIL, Value)
+            SetValue(ContactInfoDAL.COL_NAME_EMAIL, Value)
         End Set
     End Property
 
@@ -281,36 +281,36 @@ Public Class ContactInfo
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_CELL_PHONE, Value)
+            SetValue(ContactInfoDAL.COL_NAME_CELL_PHONE, Value)
         End Set
     End Property
 
     Private _address As Address = Nothing
     Public ReadOnly Property Address(ByVal parentDataSet As DataSet) As Address
         Get
-            If Me._address Is Nothing Then
-                If Me.AddressId.Equals(Guid.Empty) Then
-                    Me._address = New Address(parentDataSet, Nothing)
-                    Me.AddressId = Me._address.Id
+            If _address Is Nothing Then
+                If AddressId.Equals(Guid.Empty) Then
+                    _address = New Address(parentDataSet, Nothing)
+                    AddressId = _address.Id
                 Else
-                    Me._address = New Address(Me.AddressId, parentDataSet, Nothing)
+                    _address = New Address(AddressId, parentDataSet, Nothing)
                 End If
             End If
-            Return Me._address
+            Return _address
         End Get
     End Property
 
     Public ReadOnly Property Address() As Address
         Get
-            Return Me.Address(Me.Dataset)
+            Return Address(Dataset)
         End Get
     End Property
 
     Public ReadOnly Property ContactInfoReqFields() As String
         Get
-            If Me._countryObject Is Nothing Then
-                If Not Me._address Is Nothing AndAlso Not Me._address.CountryId.Equals(Guid.Empty) Then
-                    _countryObject = New Country(Me._address.CountryId)
+            If _countryObject Is Nothing Then
+                If Not _address Is Nothing AndAlso Not _address.CountryId.Equals(Guid.Empty) Then
+                    _countryObject = New Country(_address.CountryId)
                 Else
                     _countryObject = ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID)
                 End If
@@ -331,7 +331,7 @@ Public Class ContactInfo
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_COMPANY, Value)
+            SetValue(ContactInfoDAL.COL_NAME_COMPANY, Value)
         End Set
     End Property
 
@@ -348,7 +348,7 @@ Public Class ContactInfo
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_JOB_TITLE, Value)
+            SetValue(ContactInfoDAL.COL_NAME_JOB_TITLE, Value)
         End Set
     End Property
 
@@ -365,7 +365,7 @@ Public Class ContactInfo
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_FIRST_NAME, Value)
+            SetValue(ContactInfoDAL.COL_NAME_FIRST_NAME, Value)
         End Set
     End Property
 
@@ -381,7 +381,7 @@ Public Class ContactInfo
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_LAST_NAME, Value)
+            SetValue(ContactInfoDAL.COL_NAME_LAST_NAME, Value)
         End Set
     End Property
 
@@ -391,15 +391,15 @@ Public Class ContactInfo
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ContactInfoDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

@@ -18,7 +18,7 @@ Partial Class PoliceReportForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -37,7 +37,7 @@ Partial Class PoliceReportForm
     Public Class Parameters
         Public ClaimId As Guid
         Public mbIsClaimFormCalling As Boolean
-        Public Sub New(ByVal ClaimId As Guid, Optional ByVal bIsClaimFormCalling As Boolean = False)
+        Public Sub New(ClaimId As Guid, Optional ByVal bIsClaimFormCalling As Boolean = False)
             Me.ClaimId = ClaimId
             mbIsClaimFormCalling = bIsClaimFormCalling
         End Sub
@@ -49,9 +49,9 @@ Partial Class PoliceReportForm
     Public Class ReturnType
         Public LastOperation As DetailPageCommand
         Public EditingBo As PoliceReport
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As PoliceReport)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As PoliceReport)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
         End Sub
     End Class
 
@@ -83,20 +83,20 @@ Partial Class PoliceReportForm
     Protected Shadows ReadOnly Property State() As MyState
         Get
             'Return CType(MyBase.State, MyState)
-            If Me.NavController.State Is Nothing Then
-                Me.NavController.State = New MyState
+            If NavController.State Is Nothing Then
+                NavController.State = New MyState
                 InitializeFromFlowSession()
             End If
-            Return CType(Me.NavController.State, MyState)
+            Return CType(NavController.State, MyState)
         End Get
     End Property
     Protected Sub InitializeFromFlowSession()
         Try
-            Me.State.InputParameters = CType(Me.NavController.ParametersPassed, Parameters)
+            State.InputParameters = CType(NavController.ParametersPassed, Parameters)
             'If (Me.State.InputParameters Is Nothing) OrElse (Me.State.InputParameters.ClaimId.Equals(Guid.Empty)) Then
             '    Throw New DataNotFoundException
             'End If
-            Me.State.MyBO = New PoliceReport(Me.State.InputParameters.ClaimId, True)
+            State.MyBO = New PoliceReport(State.InputParameters.ClaimId, True)
             'Me.State.IsComingFromClaimDetail = True
 
             'Me.State.ScreenSnapShotBO = New PoliceReport
@@ -104,28 +104,28 @@ Partial Class PoliceReportForm
         Catch dnfex As BN.DataNotFoundException
             ' its a valid scenario, there may or may NOT be a police report data for that claim id,
             ' so do NOT throw exception, just get a new object !
-            Me.State.MyBO = New PoliceReport
+            State.MyBO = New PoliceReport
             'Me.State.ScreenSnapShotBO = New PoliceReport
             'Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Dim pageParameters As Parameters = CType(Me.CallingParameters, Parameters)
+                Dim pageParameters As Parameters = CType(CallingParameters, Parameters)
                 Try
-                    Me.State.MyBO = New PoliceReport(pageParameters.ClaimId, True)
+                    State.MyBO = New PoliceReport(pageParameters.ClaimId, True)
 
                     'Me.State.ScreenSnapShotBO = New PoliceReport
                     'Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
                 Catch dnfex As BN.DataNotFoundException
                     ' its a valid scenario, there may or may NOT be a police report data for that claim id,
                     ' so do NOT throw exception, just get a new object !
-                    Me.State.MyBO = New PoliceReport
+                    State.MyBO = New PoliceReport
 
                     'Me.State.ScreenSnapShotBO = New PoliceReport
                     'Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
@@ -133,7 +133,7 @@ Partial Class PoliceReportForm
                 End Try
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
@@ -171,20 +171,20 @@ Partial Class PoliceReportForm
 
 #Region "Page Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.ErrorCtrl.Clear_Hide()
+        ErrorCtrl.Clear_Hide()
         'If moPoliceMultipleDrop Is Nothing Then
         '    moPoliceMultipleDrop = CType(UserCtrPoliceReport.FindControl("mPoliceMultipleColumnDropControl"), MultipleColumnDDLabelControl)
         'End If
         Try
-            If Not Me.IsPostBack Then
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New PoliceReport
+            If Not IsPostBack Then
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New PoliceReport
                 End If
-                Trace(Me, "PolRep Id = " & GuidControl.GuidToHexString(Me.State.MyBO.Id))
-                Me.PopulateFormFromBO()
-                Me.EnableDisableFields()
+                Trace(Me, "PolRep Id = " & GuidControl.GuidToHexString(State.MyBO.Id))
+                PopulateFormFromBO()
+                EnableDisableFields()
             End If
             CheckIfComingFromSaveConfirm()
             'If Not Me.IsPostBack Then
@@ -193,9 +193,9 @@ Partial Class PoliceReportForm
             'End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 
 #End Region
@@ -205,10 +205,10 @@ Partial Class PoliceReportForm
     Protected Sub EnableDisableFields()
 
         'Me.SetEnabledForControlFamily(Me.LabelClaimNumber, False, True)   'Make it non-editable ALWAYS
-        Me.SetEnabledForControlFamily(Me.TextboxClaimNumber, False, True)    'Make it non-editable ALWAYS
-        Me.SetEnabledForControlFamily(Me.TextboxCertNumber, False, True)    'Make it non-editable ALWAYS
-        Me.SetEnabledForControlFamily(Me.TextboxDealer, False, True)     'Make it non-editable ALWAYS
-        If (Me.State.IsEditMode) Then
+        SetEnabledForControlFamily(TextboxClaimNumber, False, True)    'Make it non-editable ALWAYS
+        SetEnabledForControlFamily(TextboxCertNumber, False, True)    'Make it non-editable ALWAYS
+        SetEnabledForControlFamily(TextboxDealer, False, True)     'Make it non-editable ALWAYS
+        If (State.IsEditMode) Then
 
             'Enable any Editable fields
             'When in Edit Mode:
@@ -216,14 +216,14 @@ Partial Class PoliceReportForm
             'When NOT in Edit Mode:
             'Hide the "Save" button; Make the "Edit" button Visible; Disable all the fields
 
-            ControlMgr.SetVisibleForControlFamily(Me, Me.btnEdit_WRITE, False, True)
-            ControlMgr.SetVisibleForControlFamily(Me, Me.btnSave_WRITE, True, True)
+            ControlMgr.SetVisibleForControlFamily(Me, btnEdit_WRITE, False, True)
+            ControlMgr.SetVisibleForControlFamily(Me, btnSave_WRITE, True, True)
 
-            Me.SetEnabledForControlFamily(Me.UserCtrPoliceReport, True, True)  'Make it editable            
+            SetEnabledForControlFamily(UserCtrPoliceReport, True, True)  'Make it editable            
         Else
-            ControlMgr.SetVisibleForControlFamily(Me, Me.btnEdit_WRITE, True, True)
-            ControlMgr.SetVisibleForControlFamily(Me, Me.btnSave_WRITE, False, True)
-            Me.SetEnabledForControlFamily(Me.UserCtrPoliceReport, False, True)  'Make it non-editable
+            ControlMgr.SetVisibleForControlFamily(Me, btnEdit_WRITE, True, True)
+            ControlMgr.SetVisibleForControlFamily(Me, btnSave_WRITE, False, True)
+            SetEnabledForControlFamily(UserCtrPoliceReport, False, True)  'Make it non-editable
         End If
 
     End Sub
@@ -231,27 +231,27 @@ Partial Class PoliceReportForm
     Protected Sub PopulateFormFromBO(Optional ByVal bypassdualdropinitialization As Boolean = False)
 
         Try
-            Me.PopulateControlFromBOProperty(Me.TextboxClaimNumber, Me.State.MyBO.ClaimNumber(Me.State.InputParameters.ClaimId))
-            Me.PopulateControlFromBOProperty(Me.TextboxCertNumber, Me.State.MyBO.CertificateNumber(Me.State.InputParameters.ClaimId))
-            Me.PopulateControlFromBOProperty(Me.TextboxDealer, Me.State.MyBO.DealerName(Me.State.InputParameters.ClaimId))
+            PopulateControlFromBOProperty(TextboxClaimNumber, State.MyBO.ClaimNumber(State.InputParameters.ClaimId))
+            PopulateControlFromBOProperty(TextboxCertNumber, State.MyBO.CertificateNumber(State.InputParameters.ClaimId))
+            PopulateControlFromBOProperty(TextboxDealer, State.MyBO.DealerName(State.InputParameters.ClaimId))
             'PopulateClaimPart()
-            With Me.State
+            With State
                 'if star is needed to show besides the dual dropdown label - so send "true" for the parameter
-                Me.UserCtrPoliceReport.Bind(.MyBO, Me.ErrorCtrl, True, bypassdualdropinitialization)
+                UserCtrPoliceReport.Bind(.MyBO, ErrorCtrl, True, bypassdualdropinitialization)
             End With
-            Me.UserCtrPoliceReport.SetTheRequiredFields()
+            UserCtrPoliceReport.SetTheRequiredFields()
             'Me.UserCtrPoliceReport.ChangeEnabledControlProperty(False)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
     Protected Sub PopulatePoliceReportBOFromUserCtr()
-        With Me.State.MyBO
+        With State.MyBO
             'Dim myParameters As Parameters = CType(Me.CallingParameters, Parameters)
-            .ClaimId = Me.State.InputParameters.ClaimId
+            .ClaimId = State.InputParameters.ClaimId
             ' here validate all the properties of police report BO
-            Me.UserCtrPoliceReport.PopulateBOFromControl()
+            UserCtrPoliceReport.PopulateBOFromControl()
         End With
         'If Me.ErrCollection.Count > 0 Then
         '    Throw New PopulateBOErrorException
@@ -259,41 +259,41 @@ Partial Class PoliceReportForm
     End Sub
 
     Protected Sub PopulateBOFromForm()
-        Me.PopulatePoliceReportBOFromUserCtr()
+        PopulatePoliceReportBOFromUserCtr()
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
         If State.LastState = InternalStates.ConfirmBackDuplicateRptNumber Then
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then 'save the changes
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then 'save the changes
                 Try
-                    Me.State.MyBO.Save()
-                    Me.State.LastState = InternalStates.Regular
-                    Me.HiddenSaveChangesPromptResponse.Value = ""
-                    Me.NavController.Navigate(Me, FlowEvents.EVENT_POLICEREPORT_UPDATED, Message.MSG_POLICE_REPORT_UPDATED)
+                    State.MyBO.Save()
+                    State.LastState = InternalStates.Regular
+                    HiddenSaveChangesPromptResponse.Value = ""
+                    NavController.Navigate(Me, FlowEvents.EVENT_POLICEREPORT_UPDATED, Message.MSG_POLICE_REPORT_UPDATED)
                 Catch ex As Exception
-                    Me.HandleErrors(ex, Me.ErrorCtrl)
+                    HandleErrors(ex, ErrorCtrl)
                 End Try
             End If
             Exit Sub
         End If
 
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
 
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then 'AndAlso Me.State.IsComingFromClaimDetail 
-                Me.State.MyBO.Save()
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then 'AndAlso Me.State.IsComingFromClaimDetail 
+                State.MyBO.Save()
             End If
-            Me.NavController.Navigate(Me, "back")
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then 'AndAlso Me.State.IsComingFromClaimDetail Then
-                Me.NavController.Navigate(Me, "back")
+            NavController.Navigate(Me, "back")
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then 'AndAlso Me.State.IsComingFromClaimDetail Then
+                NavController.Navigate(Me, "back")
             End If
         End If
 
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
 
     End Sub
 
@@ -302,26 +302,26 @@ Partial Class PoliceReportForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
 
         Try
-            Me.PopulateBOFromForm()
-            If (Me.State.MyBO.IsDirty) Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            PopulateBOFromForm()
+            If (State.MyBO.IsDirty) Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.NavController.Navigate(Me, "back")
+                NavController.Navigate(Me, "back")
             End If
             'Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Nothing))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.LastState = InternalStates.ConfirmBackOnError
-            Me.State.LastErrMsg = Me.ErrorCtrl.Text
+            HandleErrors(ex, ErrorCtrl)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.LastState = InternalStates.ConfirmBackOnError
+            State.LastErrMsg = ErrorCtrl.Text
         End Try
     End Sub
-    Private Sub btnEdit_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEdit_WRITE.Click
+    Private Sub btnEdit_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnEdit_WRITE.Click
 
         'Introduce the logic to Enable/Disable the Editable fields here
         'Also make the relevant buttons Disabled/Invisible when in Edit mode - set a flag carried in the State
@@ -329,22 +329,22 @@ Partial Class PoliceReportForm
         'Set the Me.State.IsEditMode flag to "True" 
         Try
             'Me.MenuEnabled = False
-            Me.State.IsEditMode = True
+            State.IsEditMode = True
             'Me.PopulateFormFromBO()
-            Me.EnableDisableFields()
+            EnableDisableFields()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
 
         Try
             Dim strOrigRptNumber As String = State.MyBO.ReportNumber, guidOrigStationID As Guid = State.MyBO.PoliceStationId
-            Me.PopulateBOFromForm()
-            If (Me.State.MyBO.IsDirty) Then
-                If Me.State.MyBO.ReportNumber <> strOrigRptNumber OrElse guidOrigStationID <> State.MyBO.PoliceStationId Then
+            PopulateBOFromForm()
+            If (State.MyBO.IsDirty) Then
+                If State.MyBO.ReportNumber <> strOrigRptNumber OrElse guidOrigStationID <> State.MyBO.PoliceStationId Then
                     Dim lstClaim As Collections.Generic.List(Of String)
                     If State.MyBO.IsReportNumberInUser(lstClaim) Then
                         Dim sbMsg As New System.Text.StringBuilder
@@ -361,39 +361,39 @@ Partial Class PoliceReportForm
                         sbMsg.Append(TranslationBase.TranslateLabelOrMessage(Message.MSG_CONTINUE))
                         'save the state so that we know where we are when coming back from messagebox
                         State.LastState = InternalStates.ConfirmBackDuplicateRptNumber
-                        Me.DisplayMessage(sbMsg.ToString, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse, False)
+                        DisplayMessage(sbMsg.ToString, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse, False)
                     Else 'Save the record
-                        Me.State.MyBO.Save()
-                        Me.NavController.Navigate(Me, FlowEvents.EVENT_POLICEREPORT_UPDATED, Message.MSG_POLICE_REPORT_UPDATED)
+                        State.MyBO.Save()
+                        NavController.Navigate(Me, FlowEvents.EVENT_POLICEREPORT_UPDATED, Message.MSG_POLICE_REPORT_UPDATED)
                     End If
                 Else
-                    Me.State.MyBO.Save()
-                    Me.NavController.Navigate(Me, FlowEvents.EVENT_POLICEREPORT_UPDATED, Message.MSG_POLICE_REPORT_UPDATED)
+                    State.MyBO.Save()
+                    NavController.Navigate(Me, FlowEvents.EVENT_POLICEREPORT_UPDATED, Message.MSG_POLICE_REPORT_UPDATED)
                 End If
             Else
-                Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
         Try
-            If Not Me.State.MyBO.IsNew Then 'AndAlso Not Me.State.ScreenSnapShotBO Is Nothing Then
+            If Not State.MyBO.IsNew Then 'AndAlso Not Me.State.ScreenSnapShotBO Is Nothing Then
                 'Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
-                Me.State.MyBO = New PoliceReport(Me.State.InputParameters.ClaimId, True)
+                State.MyBO = New PoliceReport(State.InputParameters.ClaimId, True)
             End If
-            Me.PopulateFormFromBO()
+            PopulateFormFromBO()
         Catch dnfex As BN.DataNotFoundException
             ' its a valid scenario, there may or may NOT be a police report data for that claim id,
             ' so do NOT throw exception, just get a new object !
-            Me.State.MyBO = New PoliceReport
-            Me.PopulateFormFromBO()
+            State.MyBO = New PoliceReport
+            PopulateFormFromBO()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 

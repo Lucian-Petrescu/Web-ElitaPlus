@@ -10,46 +10,46 @@ Public Class ClaimBonusSettings
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ClaimBonusSettingsDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -60,20 +60,20 @@ Public Class ClaimBonusSettings
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New ClaimBonusSettingsDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -86,8 +86,8 @@ Public Class ClaimBonusSettings
 
     'Initialization code for new objects
     Private Sub Initialize()
-        Me.Effective = Date.Now
-        Me.Expiration = New Date(2499, 12, 31, 23, 59, 59)
+        Effective = Date.Now
+        Expiration = New Date(2499, 12, 31, 23, 59, 59)
     End Sub
 
 
@@ -120,7 +120,7 @@ Public Class ClaimBonusSettings
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimBonusSettingsDAL.COL_NAME_SERVICE_CENTER_ID, Value)
+            SetValue(ClaimBonusSettingsDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
     End Property
 
@@ -146,7 +146,7 @@ Public Class ClaimBonusSettings
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimBonusSettingsDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(ClaimBonusSettingsDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
@@ -171,7 +171,7 @@ Public Class ClaimBonusSettings
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimBonusSettingsDAL.COL_NAME_PRODUCT_CODE_ID, Value)
+            SetValue(ClaimBonusSettingsDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
     End Property
     Public ReadOnly Property ProductCode() As String
@@ -197,7 +197,7 @@ Public Class ClaimBonusSettings
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimBonusSettingsDAL.COL_NAME_BONUS_COMPUTE_METHOD_ID, Value)
+            SetValue(ClaimBonusSettingsDAL.COL_NAME_BONUS_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
@@ -223,7 +223,7 @@ Public Class ClaimBonusSettings
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ClaimBonusSettingsDAL.COL_NAME_BONUS_AMOUNT_PERIOD_MONTH, Value)
+            SetValue(ClaimBonusSettingsDAL.COL_NAME_BONUS_AMOUNT_PERIOD_MONTH, Value)
         End Set
     End Property
 
@@ -240,7 +240,7 @@ Public Class ClaimBonusSettings
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimBonusSettingsDAL.COL_NAME_SC_REPLACEMENT_PCT, Value)
+            SetValue(ClaimBonusSettingsDAL.COL_NAME_SC_REPLACEMENT_PCT, Value)
         End Set
     End Property
 
@@ -256,7 +256,7 @@ Public Class ClaimBonusSettings
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ClaimBonusSettingsDAL.COL_NAME_SC_AVG_TAT, Value)
+            SetValue(ClaimBonusSettingsDAL.COL_NAME_SC_AVG_TAT, Value)
         End Set
     End Property
 
@@ -272,7 +272,7 @@ Public Class ClaimBonusSettings
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimBonusSettingsDAL.COL_NAME_PECORAMOUNT, Value)
+            SetValue(ClaimBonusSettingsDAL.COL_NAME_PECORAMOUNT, Value)
         End Set
     End Property
 
@@ -289,7 +289,7 @@ Public Class ClaimBonusSettings
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ClaimBonusSettingsDAL.COL_NAME_PRIORITY, Value)
+            SetValue(ClaimBonusSettingsDAL.COL_NAME_PRIORITY, Value)
         End Set
     End Property
 
@@ -306,7 +306,7 @@ Public Class ClaimBonusSettings
         End Get
         Set(ByVal Value As DateTimeType)
             CheckDeleted()
-            Me.SetValue(ClaimBonusSettingsDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(ClaimBonusSettingsDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
@@ -323,7 +323,7 @@ Public Class ClaimBonusSettings
         End Get
         Set(ByVal Value As DateTimeType)
             CheckDeleted()
-            Me.SetValue(ClaimBonusSettingsDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(ClaimBonusSettingsDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
@@ -337,15 +337,15 @@ Public Class ClaimBonusSettings
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ClaimBonusSettingsDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -357,18 +357,18 @@ Public Class ClaimBonusSettings
         Get
             Dim bDirty As Boolean
 
-            bDirty = MyBase.IsDirty OrElse Me.IsChildrenDirty
+            bDirty = MyBase.IsDirty OrElse IsChildrenDirty
 
             Return bDirty
         End Get
     End Property
 
     Public Sub Copy(ByVal original As ClaimBonusSettings)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Bonus Structure")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
     Public Shared Sub DeleteBonusSettings(ByVal bonussettingid As Guid)
@@ -378,16 +378,16 @@ Public Class ClaimBonusSettings
 
 
     Public Sub DeleteAndSave()
-        Me.CheckDeleted()
+        CheckDeleted()
         'Dim addr As Address = Me.Address
-        Me.BeginEdit()
+        BeginEdit()
         'addr.BeginEdit()
         Try
-            Me.Delete()
+            Delete()
             'addr.Delete()
-            Me.Save()
+            Save()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Me.cancelEdit()
+            cancelEdit()
             'addr.cancelEdit()
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
@@ -400,11 +400,11 @@ Public Class ClaimBonusSettings
     Private Function CheckDuplicateBonusStructure() As Boolean
         Dim dal As New ClaimBonusSettingsDAL
         Dim companyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-        Dim dv As ClaimBonusSettings.BonusSettingsDV = GetList(Me.DealerId, Me.ServiceCenterId, Me.ProductCodeId)
+        Dim dv As ClaimBonusSettings.BonusSettingsDV = GetList(DealerId, ServiceCenterId, ProductCodeId)
 
         For Each dr As DataRow In dv.Table.Rows
-            If (dr(ClaimBonusSettingsDAL.COL_NAME_SERVICE_CENTER_ID) = Me.ServiceCenterId) AndAlso (dr(ClaimBonusSettingsDAL.COL_NAME_DEALER_ID) = Me.DealerId) AndAlso (dr(ClaimBonusSettingsDAL.COL_NAME_PRODUCT_CODE_ID) = Me.ProductCodeId) Then
-                If (Not New Guid(CType(dr(ClaimBonusSettingsDAL.COL_NAME_CLAIM_BONUS_SETTINGS_ID), Byte())).Equals(Me.Id)) Then
+            If (dr(ClaimBonusSettingsDAL.COL_NAME_SERVICE_CENTER_ID) = ServiceCenterId) AndAlso (dr(ClaimBonusSettingsDAL.COL_NAME_DEALER_ID) = DealerId) AndAlso (dr(ClaimBonusSettingsDAL.COL_NAME_PRODUCT_CODE_ID) = ProductCodeId) Then
+                If (Not New Guid(CType(dr(ClaimBonusSettingsDAL.COL_NAME_CLAIM_BONUS_SETTINGS_ID), Byte())).Equals(Id)) Then
                     Return True
                 End If
             End If

@@ -11,9 +11,9 @@ Public Class ElitaReportExtractBase
     Private Const SCRIPT_BLOCK As String = "SCRIPT_BLOCK"
     Public Const Sperator As String = "|"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         'Include the stylesheet and scripts in the master page
-        Dim cs As ClientScriptManager = Me.Page.ClientScript
+        Dim cs As ClientScriptManager = Page.ClientScript
         cs.RegisterClientScriptInclude(SCRIPT_BLOCK, Request.ApplicationPath + REPORT_SCRIPTS)
 
         RegisterClientServerIds()
@@ -36,7 +36,7 @@ Public Class ElitaReportExtractBase
         Get
             Return m_PageTitle
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             m_PageTitle = value.Trim
             PageHeader.InnerHtml = m_PageTitle
             If (UsePageTabTitleInBreadCrum) Then UpdateBreadCrum()
@@ -47,25 +47,25 @@ Public Class ElitaReportExtractBase
         Get
             Return m_PageTab
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             m_PageTab = value.Trim
             If (UsePageTabTitleInBreadCrum) Then UpdateBreadCrum()
         End Set
     End Property
 
-    Public Overrides ReadOnly Property PageForm(ByVal FormName As String) As System.Web.UI.HtmlControls.HtmlForm
+    Public Overrides ReadOnly Property PageForm(FormName As String) As System.Web.UI.HtmlControls.HtmlForm
         Get
-            If Not Me.FindControl(FormName) Is Nothing Then
-                Return CType(Me.FindControl(FormName), HtmlForm)
+            If FindControl(FormName) IsNot Nothing Then
+                Return CType(FindControl(FormName), HtmlForm)
             Else
                 Return Nothing
             End If
         End Get
     End Property
 
-    Public Event SelectedViewOption(ByVal sender As Object, ByVal e As System.EventArgs)
+    Public Event SelectedViewOption(sender As Object, e As System.EventArgs)
 
-    Protected Sub OnFromDrop_Changed(ByVal sender As Object, ByVal e As System.EventArgs) Handles moReportCeInputControl.SelectedViewPDFOption
+    Protected Sub OnFromDrop_Changed(sender As Object, e As System.EventArgs) Handles moReportCeInputControl.SelectedViewPDFOption
         RaiseEvent SelectedViewOption(sender, e)
     End Sub
 
@@ -73,7 +73,7 @@ Public Class ElitaReportExtractBase
         Get
             Return m_UsePageTabTitleInBreadCrum
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             m_UsePageTabTitleInBreadCrum = value
             UpdateBreadCrum()
         End Set
@@ -91,7 +91,7 @@ Public Class ElitaReportExtractBase
         Get
             Return m_DisplayRequiredFieldNote
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             m_DisplayRequiredFieldNote = value
             UpdateBreadCrum()
         End Set
@@ -101,7 +101,7 @@ Public Class ElitaReportExtractBase
         Get
             Return m_BreadCrum
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             m_BreadCrum = value.Trim
             UpdateBreadCrum()
         End Set
@@ -118,21 +118,21 @@ Public Class ElitaReportExtractBase
         Dim isFirst As Boolean = True
         Dim breadCrumString As String
         BreadCrumDiv.Visible = False
-        If (Me.UsePageTabTitleInBreadCrum) Then
-            If (Not String.IsNullOrEmpty(Me.PageTitle)) Then
-                breadCrumString = Me.PageTitle
+        If (UsePageTabTitleInBreadCrum) Then
+            If (Not String.IsNullOrEmpty(PageTitle)) Then
+                breadCrumString = PageTitle
             End If
-            If (Not String.IsNullOrEmpty(Me.PageTab)) Then
-                breadCrumString = Me.PageTab & Sperator & breadCrumString
+            If (Not String.IsNullOrEmpty(PageTab)) Then
+                breadCrumString = PageTab & Sperator & breadCrumString
             End If
         End If
-        breadCrumString = breadCrumString & Sperator & Me.BreadCrum
+        breadCrumString = breadCrumString & Sperator & BreadCrum
 
         If (breadCrumString.Length > 0) Then
             breadCrumBuilder = New StringBuilder(TranslationBase.TranslateLabelOrMessage("YOU_ARE_HERE")).Append(" : ")
 
             For Each breadCrumItem As String In breadCrumString.Split(Sperator.ToCharArray())
-                If ((Not breadCrumItem Is Nothing) AndAlso (breadCrumItem.Trim.Length > 0)) Then
+                If ((breadCrumItem IsNot Nothing) AndAlso (breadCrumItem.Trim.Length > 0)) Then
                     If (Not isFirst) Then
                         breadCrumBuilder.Append("&nbsp;<img style='vertical-align:middle' width='9' height='10' src='" & BreadArrowImageUrl & "' />&nbsp;")
                     End If
@@ -161,7 +161,7 @@ Public Class ElitaReportExtractBase
 
     Public Overrides ReadOnly Property ReportExtractInputControl() As Reports.ReportExtractInputControl
         Get
-            Return Me.moReportCeInputControl
+            Return moReportCeInputControl
         End Get
     End Property
     Public Sub RegisterClientServerIds()
@@ -187,7 +187,7 @@ Public Class ElitaReportExtractBase
         onloadScript.Append("</script>")
         ' Register script with page 
 
-        Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "onLoadCall", onloadScript.ToString())
+        Page.ClientScript.RegisterClientScriptBlock([GetType](), "onLoadCall", onloadScript.ToString())
 
         Session("ReportErrorButton") = ReportExtractInputControl.ReportControlErrorHidden.ClientID
         Session("StatusControl") = ReportExtractInputControl.ReportControlStatus.ClientID

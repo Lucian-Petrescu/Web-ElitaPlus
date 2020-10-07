@@ -13,7 +13,7 @@ Public Class ProtectionAndEventDetails
 
 #Region "Page Events"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
     End Sub
 
@@ -25,7 +25,7 @@ Public Class ProtectionAndEventDetails
         Get
             Return CustomerNameText.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 CustomerNameText.Text = value
             Else
@@ -38,7 +38,7 @@ Public Class ProtectionAndEventDetails
         Get
             Return EnrolledMakeText.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 EnrolledMakeText.Text = value
             Else
@@ -52,7 +52,7 @@ Public Class ProtectionAndEventDetails
         Get
             Return ClaimNumberText.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 ClaimNumberText.Text = value
             Else
@@ -66,7 +66,7 @@ Public Class ProtectionAndEventDetails
         Get
             Return DealerNameText.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 DealerNameText.Text = value
             Else
@@ -80,7 +80,7 @@ Public Class ProtectionAndEventDetails
         Get
             Return EnrolledModeText.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 EnrolledModeText.Text = value
             Else
@@ -94,7 +94,7 @@ Public Class ProtectionAndEventDetails
         Get
             Return ClaimStatusText.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 ClaimStatusText.Text = value
             Else
@@ -108,7 +108,7 @@ Public Class ProtectionAndEventDetails
         Get
             Return CallerNameText.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 CallerNameText.Text = value
             Else
@@ -122,7 +122,7 @@ Public Class ProtectionAndEventDetails
         Get
             Return ClaimedMakeText.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 ClaimedMakeText.Text = value
             Else
@@ -136,7 +136,7 @@ Public Class ProtectionAndEventDetails
         Get
             Return DateOfLossText.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 DateOfLossText.Text = value
             Else
@@ -150,7 +150,7 @@ Public Class ProtectionAndEventDetails
         Get
             Return ProtectionStatusText.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 ProtectionStatusText.Text = value
             Else
@@ -164,7 +164,7 @@ Public Class ProtectionAndEventDetails
         Get
             Return ClaimedModelText.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 ClaimedModelText.Text = value
             Else
@@ -178,7 +178,7 @@ Public Class ProtectionAndEventDetails
         Get
             Return TypeOfLossText.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 TypeOfLossText.Text = value
             Else
@@ -191,7 +191,7 @@ Public Class ProtectionAndEventDetails
         Get
             Return custAddress.Visible
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             custAddress.Visible = value
         End Set
     End Property
@@ -203,7 +203,7 @@ Public Class ProtectionAndEventDetails
                 Return String.Empty
             End If
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If ShowCustomerAddress Then
                 If value <> String.Empty Then
                     CustomerAddressText.Text = value
@@ -215,14 +215,14 @@ Public Class ProtectionAndEventDetails
     End Property
 
     Public WriteOnly Property ProtectionStatusCss() As String
-        Set(ByVal value As String)
+        Set(value As String)
             Dim initialClass As String = "bor padRight"
             ProtectionStatusTD.Attributes.Item("Class") = initialClass & " " & value
         End Set
     End Property
 
     Public WriteOnly Property ClaimStatusCss() As String
-        Set(ByVal value As String)
+        Set(value As String)
             Dim initialClass As String = "padRight"
             ClaimStatusTD.Attributes.Item("Class") = initialClass & " " & value
         End Set

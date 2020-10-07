@@ -19,21 +19,21 @@ Public Class CertCustInfo
     <DataMember(EmitDefaultValue:=True, IsRequired:=False, Name:="WarrantySalesDate", Order:=5)>
     Public Property WarrantySalesDate As Date
 
-    Public Sub New(ByVal pCertificate As Certificate)
+    Public Sub New(pCertificate As Certificate)
         If Not pCertificate.CustomerName Is Nothing Then
-            Me.CustomerName = pCertificate.CustomerName
+            CustomerName = pCertificate.CustomerName
         End If
         If Not pCertificate.IdentificationNumber Is Nothing Then
-            Me.CustomerTaxId = pCertificate.IdentificationNumber
+            CustomerTaxId = pCertificate.IdentificationNumber
         End If
         If Not pCertificate.DealerProductCode Is Nothing Then
-            Me.DealerProductCode = pCertificate.DealerProductCode
+            DealerProductCode = pCertificate.DealerProductCode
         End If
         If Not pCertificate.ProductCode Is Nothing Then
-            Me.ElitaProductCode = pCertificate.ProductCode
+            ElitaProductCode = pCertificate.ProductCode
         End If
         If Not pCertificate.WarrantySalesDate Is Nothing Then
-            Me.WarrantySalesDate = pCertificate.WarrantySalesDate
+            WarrantySalesDate = pCertificate.WarrantySalesDate
         End If
     End Sub
 

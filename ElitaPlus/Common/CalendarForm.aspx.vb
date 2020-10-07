@@ -59,7 +59,7 @@ Partial Class CalendarForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -72,7 +72,7 @@ Partial Class CalendarForm
     ' *************************************************************************** '
     '   Sub Page_Load: User code to initialize the page
     ' *************************************************************************** '
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Dim dateParam As String
         Dim sOpenerButton As String
@@ -98,9 +98,9 @@ Partial Class CalendarForm
                 dateParam = Nothing
             End If
 
-            If Not dateParam Is Nothing AndAlso dateParam <> "" Then
-                Me.MyCalendar.SelectedDate = DateHelper.GetDateValue(dateParam)
-                Me.MyCalendar.VisibleDate = Me.MyCalendar.SelectedDate
+            If dateParam IsNot Nothing AndAlso dateParam <> "" Then
+                MyCalendar.SelectedDate = DateHelper.GetDateValue(dateParam)
+                MyCalendar.VisibleDate = MyCalendar.SelectedDate
             End If
 
             LoadMonthYear(dateParam)
@@ -110,11 +110,11 @@ Partial Class CalendarForm
 
     Public Sub TranslatePageLabels()
         Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-        Me.TranslateControl(Me.LabelMonth, langId)
-        Me.TranslateControl(Me.LabelYear, langId)
+        TranslateControl(LabelMonth, langId)
+        TranslateControl(LabelYear, langId)
     End Sub
 
-    Public Function TranslateLabelOrMessage(ByVal UIProgCode As String, ByVal LangId As Guid) As String
+    Public Function TranslateLabelOrMessage(UIProgCode As String, LangId As Guid) As String
         Dim TransProcObj As New TranslationProcess
         Dim oTranslationItem As New TranslationItem
         Dim Coll As New TranslationItemArray
@@ -126,12 +126,12 @@ Partial Class CalendarForm
         Return oTranslationItem.Translation
     End Function
 
-    Public Sub TranslateControl(ByVal Control As WebControl, ByVal LangId As Guid)
+    Public Sub TranslateControl(Control As WebControl, LangId As Guid)
         Dim ControlType As Type = Control.GetType
         Dim propInfo As System.Reflection.PropertyInfo = ControlType.GetProperty("Text", Reflection.BindingFlags.Instance Or Reflection.BindingFlags.Public)
-        If Not propInfo Is Nothing Then
+        If propInfo IsNot Nothing Then
             Dim originalValue As String = CType(propInfo.GetValue(Control, Nothing), String)
-            If Not originalValue Is Nothing Then
+            If originalValue IsNot Nothing Then
                 Dim newValue As String = TranslateLabelOrMessage(originalValue, LangId)
                 propInfo.SetValue(Control, newValue, Nothing)
             End If
@@ -142,7 +142,7 @@ Partial Class CalendarForm
     ' *************************************************************************** '
     '   Sub MyCalendar_SelectionChanged: Handles the selection change event of the calendar
     ' *************************************************************************** '
-    Private Sub MyCalendar_SelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyCalendar.SelectionChanged
+    Private Sub MyCalendar_SelectionChanged(sender As System.Object, e As System.EventArgs) Handles MyCalendar.SelectionChanged
 
         Dim sJscript As String
         Dim fieldNameParam As String
@@ -157,20 +157,20 @@ Partial Class CalendarForm
         If Request.QueryString("caller") = "ts" Then
             ' need to get the previous sat date from selected date
 
-            Dim day As DayOfWeek = Me.MyCalendar.SelectedDate().DayOfWeek
+            Dim day As DayOfWeek = MyCalendar.SelectedDate().DayOfWeek
             Dim dSelStartDate As Date
             Dim i As Int32 = 1
 
             While day <> DayOfWeek.Saturday
-                dSelStartDate = Me.MyCalendar.SelectedDate().AddDays(-i)
+                dSelStartDate = MyCalendar.SelectedDate().AddDays(-i)
                 day = dSelStartDate.DayOfWeek
                 i += 1
             End While
 
             If Not dSelStartDate = #12:00:00 AM# Then
-                Me.MyCalendar.SelectedDate() = dSelStartDate
+                MyCalendar.SelectedDate() = dSelStartDate
             Else
-                Me.MyCalendar.SelectedDate() = Me.MyCalendar.SelectedDate()
+                MyCalendar.SelectedDate() = MyCalendar.SelectedDate()
             End If
 
         End If
@@ -180,12 +180,12 @@ Partial Class CalendarForm
             'sJscript &= "    window.opener.document." & HttpContext.Current.Request.QueryString("formname") & ".value = '" & _
             '  ElitaPlusPage.GetDateFormattedString(Me.MyCalendar.SelectedDate) & "';" & Environment.NewLine
             'sJscript &= "window.opener.document." & HttpContext.Current.Request.QueryString("formname") & ".fireEvent('onchange')" & Environment.NewLine
-            If Not setDateTime Is Nothing AndAlso setDateTime = "Y" Then
+            If setDateTime IsNot Nothing AndAlso setDateTime = "Y" Then
                 sJscript &= " window.opener.document.getElementById('" & HttpContext.Current.Request.QueryString("formname") & "').value = '" &
-                        ElitaPlusPage.GetDateFormattedString(Me.MyCalendar.SelectedDate) & " " & DateTime.Now.ToString("HH:mm:ss") & "';" & Environment.NewLine
+                        ElitaPlusPage.GetDateFormattedString(MyCalendar.SelectedDate) & " " & DateTime.Now.ToString("HH:mm:ss") & "';" & Environment.NewLine
             Else
                 sJscript &= " window.opener.document.getElementById('" & HttpContext.Current.Request.QueryString("formname") & "').value = '" &
-                        ElitaPlusPage.GetDateFormattedString(Me.MyCalendar.SelectedDate) & "';" & Environment.NewLine
+                        ElitaPlusPage.GetDateFormattedString(MyCalendar.SelectedDate) & "';" & Environment.NewLine
             End If
 
             'sJscript &= "window.opener.document.getElementById('" & HttpContext.Current.Request.QueryString("formname") & "').fireEvent('onchange')" & Environment.NewLine
@@ -194,12 +194,12 @@ Partial Class CalendarForm
         Else
             fieldNameParam = fieldNameParam.Replace(":", "_")
 
-            If Not setDateTime Is Nothing AndAlso setDateTime = "Y" Then
+            If setDateTime IsNot Nothing AndAlso setDateTime = "Y" Then
                 sJscript &= "    window.opener.document.getElementById('" & fieldNameParam & "').value = '" & _
-                  ElitaPlusPage.GetDateFormattedString(Me.MyCalendar.SelectedDate) & " " & DateTime.Now.ToString("HH:mm:ss") & "';" & Environment.NewLine
+                  ElitaPlusPage.GetDateFormattedString(MyCalendar.SelectedDate) & " " & DateTime.Now.ToString("HH:mm:ss") & "';" & Environment.NewLine
             Else
                 sJscript &= "    window.opener.document.getElementById('" & fieldNameParam & "').value = '" & _
-                  ElitaPlusPage.GetDateFormattedString(Me.MyCalendar.SelectedDate) & "';" & Environment.NewLine
+                  ElitaPlusPage.GetDateFormattedString(MyCalendar.SelectedDate) & "';" & Environment.NewLine
             End If
         End If
 
@@ -212,7 +212,7 @@ Partial Class CalendarForm
         sJscript &= "</script>"
 
         'Set the literal control's text to the JScript code
-        Me.Literal1.Text = sJscript
+        Literal1.Text = sJscript
 
     End Sub
 
@@ -221,22 +221,22 @@ Partial Class CalendarForm
     '                         Indicates the error and reset to Today Year
     '                       Otherwise, it sets the selected year
     ' ************************************************************************************ '
-    Private Sub ValidateYear(ByVal oYear As String)
-        Dim yearItem As ListItem = Me.cboYearList.Items.FindByText(oYear)
-        If Not yearItem Is Nothing Then
+    Private Sub ValidateYear(oYear As String)
+        Dim yearItem As ListItem = cboYearList.Items.FindByText(oYear)
+        If yearItem IsNot Nothing Then
             ' The year is OK
             yearItem.Selected = True
         Else
             ' The Year is incorrect
             ' It Will Send the error Message
             Dim sJavaScript As String
-            Dim sMsg As String = Me.TranslateLabelOrMessage(Message.MSG_INVALID_DATE, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            Dim sMsg As String = TranslateLabelOrMessage(Message.MSG_INVALID_DATE, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             sJavaScript = "<SCRIPT>" & Environment.NewLine
             sJavaScript &= "showMessageWithSubmit('" & sMsg & "', '" & sMsg & "', '" & ElitaPlusPage.MSG_BTN_OK & "', '" & ElitaPlusPage.MSG_TYPE_ALERT & "');" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
-            Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+            RegisterStartupScript("ShowConfirmation", sJavaScript)
             ' It will set today's year
-            Me.cboYearList.Items.FindByText(Date.Today.Year.ToString( _
+            cboYearList.Items.FindByText(Date.Today.Year.ToString( _
                                             LocalizationMgr.CurrentFormatProvider)).Selected = True
         End If
     End Sub
@@ -244,7 +244,7 @@ Partial Class CalendarForm
     '   Sub MyCalendar_VisibleMonthChanged: Handles the visible month change event
     '                                       of the calendar and sets the dropdown lists
     ' *************************************************************************** '
-    Private Sub MyCalendar_VisibleMonthChanged(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.MonthChangedEventArgs) Handles MyCalendar.VisibleMonthChanged
+    Private Sub MyCalendar_VisibleMonthChanged(sender As System.Object, e As System.Web.UI.WebControls.MonthChangedEventArgs) Handles MyCalendar.VisibleMonthChanged
         SetMonthYear(MyCalendar.VisibleDate.ToString("MMM", LocalizationMgr.CurrentFormatProvider), MyCalendar.VisibleDate.Year.ToString(LocalizationMgr.CurrentFormatProvider))
 
     End Sub
@@ -252,22 +252,22 @@ Partial Class CalendarForm
     ' *************************************************************************** '
     '   Sub LoadMonthYear: Loads the dropdown lists and sets the default values
     ' *************************************************************************** '
-    Private Sub LoadMonthYear(ByVal selectedDate As String)
+    Private Sub LoadMonthYear(selectedDate As String)
 
         Dim i As Int32 = 0
         Dim strMonth As String = ""
         Dim dCurrDate As DateTime = #1/1/1995#
         Dim myCal As Calendar = LocalizationMgr.CurrentCulture.Calendar()
 
-        For i = Date.Today.Year - Me.PREVIOUS_YEARS_COUNT To Date.Today.Year + (4 * Me.PREVIOUS_YEARS_COUNT)
-            Me.cboYearList.Items.Add(New ListItem(i.ToString(LocalizationMgr.CurrentFormatProvider), i.ToString(LocalizationMgr.CurrentFormatProvider)))
+        For i = Date.Today.Year - PREVIOUS_YEARS_COUNT To Date.Today.Year + (4 * PREVIOUS_YEARS_COUNT)
+            cboYearList.Items.Add(New ListItem(i.ToString(LocalizationMgr.CurrentFormatProvider), i.ToString(LocalizationMgr.CurrentFormatProvider)))
         Next
 
-        If Not selectedDate Is Nothing AndAlso selectedDate <> "" Then
+        If selectedDate IsNot Nothing AndAlso selectedDate <> "" Then
             'vcp commented out the original code because it will cause exception if the year is beyond the range.
             ValidateYear(DateHelper.GetDateValue(selectedDate).Year.ToString())
         Else
-            Me.cboYearList.Items.FindByText(Date.Today.Year.ToString(LocalizationMgr.CurrentFormatProvider)).Selected = True
+            cboYearList.Items.FindByText(Date.Today.Year.ToString(LocalizationMgr.CurrentFormatProvider)).Selected = True
         End If
 
         For i = 1 To 12
@@ -276,10 +276,10 @@ Partial Class CalendarForm
             cboMonthList.Items.Add(New ListItem(strMonth, i.ToString(LocalizationMgr.CurrentFormatProvider)))
         Next i
 
-        If Not selectedDate Is Nothing AndAlso selectedDate <> "" Then
-            Me.cboMonthList.Items.FindByText(DateHelper.GetDateValue(selectedDate).ToString("MMM", LocalizationMgr.CurrentFormatProvider)).Selected = True
+        If selectedDate IsNot Nothing AndAlso selectedDate <> "" Then
+            cboMonthList.Items.FindByText(DateHelper.GetDateValue(selectedDate).ToString("MMM", LocalizationMgr.CurrentFormatProvider)).Selected = True
         Else
-            Me.cboMonthList.Items.FindByText(Date.Today.ToString("MMM", LocalizationMgr.CurrentFormatProvider)).Selected = True
+            cboMonthList.Items.FindByText(Date.Today.ToString("MMM", LocalizationMgr.CurrentFormatProvider)).Selected = True
         End If
         SetNewVisibleDate(cboMonthList.SelectedItem.Text, cboYearList.SelectedItem.Text)
 
@@ -289,14 +289,14 @@ Partial Class CalendarForm
     ' *************************************************************************** '
     '   Sub SetMonthYear: Sets the month and year dropdown values to the calendar values
     ' *************************************************************************** '
-    Private Sub SetMonthYear(ByVal month As String, ByVal year As String)
-        Me.cboYearList.SelectedIndex = -1
-        Me.cboMonthList.SelectedIndex = -1
+    Private Sub SetMonthYear(month As String, year As String)
+        cboYearList.SelectedIndex = -1
+        cboMonthList.SelectedIndex = -1
 
         ValidateYear(year)
 
         '  Me.cboYearList.Items.FindByText(year).Selected = True
-        Me.cboMonthList.Items.FindByText(month).Selected = True
+        cboMonthList.Items.FindByText(month).Selected = True
         SetNewVisibleDate(cboMonthList.SelectedItem.Text, cboYearList.SelectedItem.Text)
     End Sub
 
@@ -304,7 +304,7 @@ Partial Class CalendarForm
     '   Sub MonthSelected: Handles the select change event of the month dropdown and
     '                      sets the visible month of the calendar
     ' *************************************************************************** '
-    Private Sub MonthSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboMonthList.SelectedIndexChanged
+    Private Sub MonthSelected(sender As System.Object, e As System.EventArgs) Handles cboMonthList.SelectedIndexChanged
         Dim strSelMonth As String = cboMonthList.SelectedItem.Text
         SetNewVisibleDate(strSelMonth, cboYearList.SelectedItem.Text)
     End Sub
@@ -313,7 +313,7 @@ Partial Class CalendarForm
     '   Sub YearSelected: Handles the select change event of the year dropdown and
     '                     sets the visible year of the calendar
     ' *************************************************************************** '
-    Private Sub YearSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboYearList.SelectedIndexChanged
+    Private Sub YearSelected(sender As System.Object, e As System.EventArgs) Handles cboYearList.SelectedIndexChanged
         Dim strSelYear As String = cboYearList.SelectedItem.Text
         SetNewVisibleDate(cboMonthList.SelectedItem.Text, strSelYear)
     End Sub
@@ -321,7 +321,7 @@ Partial Class CalendarForm
     ' *************************************************************************** '
     '   Sub SetNewVisibleDate: Sets the visible date of the calendar
     ' *************************************************************************** '
-    Private Sub SetNewVisibleDate(ByVal month As String, ByVal year As String)
+    Private Sub SetNewVisibleDate(month As String, year As String)
         Dim sNewDate As Date
         Dim strDateVal As String
         Try

@@ -12,7 +12,7 @@ Namespace SpecializedServices.SFR
         <OperationContract(Name:="SearchCertificate"),
         ElitaPermission(PermissionCodes.WS_SFRPOLICY_GetCertificate),
         FaultContract(GetType(ElitaInternalWS.SpecializedServices.CertificateNotFoundFault))>
-        Function SearchCertificate(ByVal request As SearchCertificateRequest) As SearchCertificateResponse
+        Function SearchCertificate(request As SearchCertificateRequest) As SearchCertificateResponse
       
     End Interface
 End Namespace

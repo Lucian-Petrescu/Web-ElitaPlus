@@ -6,27 +6,27 @@
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal isNew As Boolean, ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(isNew, id)
+        Dataset = familyDS
+        Load(isNew, id)
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
@@ -49,8 +49,8 @@
     Protected Sub Load()
         Try
             Dim dal As New CommPCodeEntityListDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
             'Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
             'Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
@@ -65,12 +65,12 @@
     Protected Sub Load(ByVal isNew As Boolean, ByVal id As Guid)
         Try
             Dim dal As New CommPCodeEntityListDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             If isNew = True Then
                 SetValue(dal.TABLE_KEY_NAME, id)
             Else
@@ -118,7 +118,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CommPCodeEntityListDAL.COL_NAME_COMM_P_CODE_ID, Value)
+            SetValue(CommPCodeEntityListDAL.COL_NAME_COMM_P_CODE_ID, Value)
         End Set
     End Property
 
@@ -135,7 +135,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CommPCodeEntityListDAL.COL_NAME_PAYEE_TYPE_ID, Value)
+            SetValue(CommPCodeEntityListDAL.COL_NAME_PAYEE_TYPE_ID, Value)
         End Set
     End Property
 
@@ -151,7 +151,7 @@ Public Property CommScheduleId() As Guid
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CommPCodeEntityDAL.COL_NAME_COMM_SCHEDULE_ID, Value)
+            SetValue(CommPCodeEntityDAL.COL_NAME_COMM_SCHEDULE_ID, Value)
         End Set
     End Property
 
@@ -166,7 +166,7 @@ Public Property CommScheduleId() As Guid
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CommPCodeEntityListDAL.COL_NAME_COMM_SCHEDULE, Value)
+            SetValue(CommPCodeEntityListDAL.COL_NAME_COMM_SCHEDULE, Value)
         End Set
     End Property
 
@@ -181,7 +181,7 @@ Public Property CommScheduleId() As Guid
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CommPCodeEntityListDAL.COL_NAME_PAYEE_TYPE, Value)
+            SetValue(CommPCodeEntityListDAL.COL_NAME_PAYEE_TYPE, Value)
         End Set
     End Property
 
@@ -196,7 +196,7 @@ Public Property CommScheduleId() As Guid
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CommPCodeEntityListDAL.COL_NAME_ENTITY_ID, Value)
+            SetValue(CommPCodeEntityListDAL.COL_NAME_ENTITY_ID, Value)
         End Set
     End Property
 
@@ -211,7 +211,7 @@ Public Property CommScheduleId() As Guid
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CommPCodeEntityListDAL.COL_NAME_ENTITY, Value)
+            SetValue(CommPCodeEntityListDAL.COL_NAME_ENTITY, Value)
         End Set
     End Property
 
@@ -227,7 +227,7 @@ Public Property CommScheduleId() As Guid
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CommPCodeEntityListDAL.COL_NAME_IS_COMM_FIXED_ID, Value)
+            SetValue(CommPCodeEntityListDAL.COL_NAME_IS_COMM_FIXED_ID, Value)
         End Set
     End Property
 
@@ -242,7 +242,7 @@ Public Property CommScheduleId() As Guid
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CommPCodeEntityListDAL.COL_NAME_IS_COMM_FIXED_CODE, Value)
+            SetValue(CommPCodeEntityListDAL.COL_NAME_IS_COMM_FIXED_CODE, Value)
         End Set
     End Property
 
@@ -257,7 +257,7 @@ Public Property CommScheduleId() As Guid
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CommPCodeEntityListDAL.COL_NAME_IS_COMM_FIXED, Value)
+            SetValue(CommPCodeEntityListDAL.COL_NAME_IS_COMM_FIXED, Value)
         End Set
     End Property
 
@@ -273,7 +273,7 @@ Public Property CommScheduleId() As Guid
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CommPCodeEntityListDAL.COL_NAME_COMMISSION_AMOUNT, Value)
+            SetValue(CommPCodeEntityListDAL.COL_NAME_COMMISSION_AMOUNT, Value)
         End Set
     End Property
 
@@ -338,7 +338,7 @@ Public Property CommScheduleId() As Guid
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CommPCodeEntityListDAL.COL_NAME_MARKUP_AMOUNT, Value)
+            SetValue(CommPCodeEntityListDAL.COL_NAME_MARKUP_AMOUNT, Value)
         End Set
     End Property
 
@@ -355,7 +355,7 @@ Public Property CommScheduleId() As Guid
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CommPCodeEntityListDAL.COL_NAME_DAYS_TO_Clawback, Value)
+            SetValue(CommPCodeEntityListDAL.COL_NAME_DAYS_TO_Clawback, Value)
         End Set
     End Property
     Public Property BranchId() As Guid
@@ -369,7 +369,7 @@ Public Property CommScheduleId() As Guid
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CommPCodeEntityListDAL.COL_NAME_BRANCH_ID, Value)
+            SetValue(CommPCodeEntityListDAL.COL_NAME_BRANCH_ID, Value)
         End Set
     End Property
     Public Property BranchName() As String
@@ -383,7 +383,7 @@ Public Property CommScheduleId() As Guid
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_BRANCH_NAME, Value)
+            SetValue(BranchDAL.COL_NAME_BRANCH_NAME, Value)
         End Set
     End Property
 

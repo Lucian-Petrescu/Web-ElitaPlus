@@ -19,14 +19,14 @@ Namespace SpecializedServices.Tisa
         FaultContract(GetType(DefaultExtendedStatusNotFoundFault)),
         FaultContract(GetType(MakeAndModelNotFoundFault)),
         FaultContract(GetType(InvalidClaimTypeFault))>
-        Function CreateClaim(ByVal request As CreateClaimRequest) As CreateClaimResponse
+        Function CreateClaim(request As CreateClaimRequest) As CreateClaimResponse
 
         <OperationContract(),
         ElitaPermission(PermissionCodes.WS_TISA_ClaimService),
         FaultContract(GetType(CompanyNotFoundFault)),
         FaultContract(GetType(CertificateNotFoundFault)),
         FaultContract(GetType(ClaimNotFoundFault))>
-        Function CreateRepairReplacementClaim(ByVal request As CreateRepairReplacementClaimRequest) As CreateClaimResponse
+        Function CreateRepairReplacementClaim(request As CreateRepairReplacementClaimRequest) As CreateClaimResponse
 
         <OperationContract(),
         ElitaPermission(PermissionCodes.WS_TISA_ClaimService),
@@ -34,7 +34,7 @@ Namespace SpecializedServices.Tisa
         FaultContract(GetType(CertificateNotFoundFault)),
         FaultContract(GetType(ClaimNotFoundFault)),
         FaultContract(GetType(RepairClaimNotFulfilledFault))>
-        Function CreateServiceWarrantyClaim(ByVal request As CreateServiceWarrantyClaimRequest) As CreateClaimResponse
+        Function CreateServiceWarrantyClaim(request As CreateServiceWarrantyClaimRequest) As CreateClaimResponse
 
 
         <OperationContract(),
@@ -44,7 +44,7 @@ Namespace SpecializedServices.Tisa
         FaultContract(GetType(ReplacementClaimFoundFault)),
         FaultContract(GetType(InvalidUpdateActionFault)),
         FaultContract(GetType(InvalidExtendedStatusFault))>
-        Sub DenyClaim(ByVal request As DenyClaimRequest)
+        Sub DenyClaim(request As DenyClaimRequest)
 
         <OperationContract(),
         ElitaPermission(PermissionCodes.WS_TISA_ClaimService),
@@ -56,7 +56,7 @@ Namespace SpecializedServices.Tisa
         FaultContract(GetType(PriceListNotConfiguredFault)),
         FaultContract(GetType(InvalidRepairDateFault)),
         FaultContract(GetType(InvalidExtendedStatusFault))>
-        Sub UpdateRepairableClaim(ByVal request As UpdateRepairableClaimRequest)
+        Sub UpdateRepairableClaim(request As UpdateRepairableClaimRequest)
 
         '<OperationContract(),
         'ElitaPermission(PermissionCodes.WS_TISA_ClaimService),
@@ -73,7 +73,7 @@ Namespace SpecializedServices.Tisa
        FaultContract(GetType(PriceListNotConfiguredFault)),
        FaultContract(GetType(InvalidRepairDateFault)),
        FaultContract(GetType(RefurbishedCostRequiredFault))>
-        Sub UpdateIrrepairableWithReplacement(ByVal request As UpdateClaimReplacedWithRefubishedRequest)
+        Sub UpdateIrrepairableWithReplacement(request As UpdateClaimReplacedWithRefubishedRequest)
 
         <OperationContract(),
        ElitaPermission(PermissionCodes.WS_TISA_ClaimService),
@@ -82,7 +82,7 @@ Namespace SpecializedServices.Tisa
        FaultContract(GetType(PriceListNotConfiguredFault)),
        FaultContract(GetType(InvalidRepairDateFault)),
        FaultContract(GetType(InvalidExtendedStatusFault))>
-        Sub UpdateTheftClaim(ByVal request As UpdateTheftClaimRequest)
+        Sub UpdateTheftClaim(request As UpdateTheftClaimRequest)
 
 
     End Interface

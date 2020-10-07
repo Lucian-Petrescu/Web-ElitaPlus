@@ -1,7 +1,6 @@
-﻿Imports Assurant.ElitaPlus.Business
+﻿
 Imports Assurant.ElitaPlus.DataAccessInterface
 Imports Assurant.ElitaPlus.DataEntities
-Imports Microsoft.Practices.Unity
 
 Public Class SpecializedCertificateManager
     Implements ICertificateManager
@@ -17,7 +16,7 @@ Public Class SpecializedCertificateManager
         Get
             Return m_CertificateItemCoverageRepository
         End Get
-        Set(ByVal value As ICertificateRepository(Of CertificateItemCoverage))
+        Set(value As ICertificateRepository(Of CertificateItemCoverage))
             m_CertificateItemCoverageRepository = value
         End Set
     End Property
@@ -26,21 +25,21 @@ Public Class SpecializedCertificateManager
         Get
             Return m_CertificateRepository
         End Get
-        Set(ByVal value As ICertificateRepository(Of Certificate))
+        Set(value As ICertificateRepository(Of Certificate))
             m_CertificateRepository = value
         End Set
     End Property
 
 
-    Public Sub New(ByVal pDealerManager As IDealerManager)
-        Me.m_DealerManager = pDealerManager
+    Public Sub New(pDealerManager As IDealerManager)
+        m_DealerManager = pDealerManager
     End Sub
 
 
     Public Sub GetCertificateCoverageRate(pCertId As Guid, pCoverageDate As Date, ByRef poGWP As Decimal, ByRef poSalexTax As Decimal) Implements ICertificateManager.GetCertificateCoverageRate
         Throw New NotImplementedException()
     End Sub
-    Public Sub GetFirstCertEndorseDates(ByVal pCertId As Guid, ByRef poEndorseEffectiveDate As String, ByRef poEndorseExpirationDate As String) Implements ICertificateManager.GetFirstCertEndorseDates
+    Public Sub GetFirstCertEndorseDates(pCertId As Guid, ByRef poEndorseEffectiveDate As String, ByRef poEndorseExpirationDate As String) Implements ICertificateManager.GetFirstCertEndorseDates
         Throw New NotImplementedException()
     End Sub
     Public Sub GetCertificateGrossAmtByProductCode(pCertId As Guid, ByRef pCurrencyCode As String, ByRef pGrossAmt As Decimal) Implements ICertificateManager.GetCertificateGrossAmtByProductCode
@@ -73,7 +72,7 @@ Public Class SpecializedCertificateManager
         Throw New NotImplementedException()
     End Function
 
-    Public Function GWGetCertificateByCertNumber(pDealerCode As String, pCertNumber As String) As Collections.Generic.List(Of Guid) Implements ICertificateManager.GWGetCertificateByCertNumber
+    Public Function GWGetCertificateByCertNumber(pDealerCode As String, pCertNumber As String) As List(Of Guid) Implements ICertificateManager.GWGetCertificateByCertNumber
         Throw New NotImplementedException()
     End Function
 

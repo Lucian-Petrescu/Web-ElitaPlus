@@ -19,7 +19,7 @@ Partial Class LoginForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -28,7 +28,7 @@ Partial Class LoginForm
 #End Region
 
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         If EnvironmentContext.Current.Environment <> Environments.Development Then 'for Non Local
             If Not Page.IsPostBack Then
                 Dim loginError As String = HttpContext.Current.Session(ELPWebConstants.SESSION_LOGIN_ERROR_MESSAGE)
@@ -47,10 +47,10 @@ Partial Class LoginForm
             'Put user code to initialize the page here
             'This page should be hit only if we are in the dev environment
             If EnvironmentContext.Current.Environment <> Environments.Development Then
-                Me.Response.Redirect("default.aspx")
+                Response.Redirect("default.aspx")
             End If
-            If Not Me.IsPostBack Then
-                Me.TextBoxUserId.Text = AppConfig.DevEnvUserId
+            If Not IsPostBack Then
+                TextBoxUserId.Text = AppConfig.DevEnvUserId
 
                 ButtonOk.Attributes.Add("onmouseout", "SwapMyImage('ButtonOk','Navigation/images/loginBtnUp.gif')")
                 ButtonOk.Attributes.Add("onmouseover", "SwapMyImage('ButtonOk','Navigation/images/loginBtnDown.gif')")
@@ -60,13 +60,13 @@ Partial Class LoginForm
         End If
     End Sub
 
-    Private Sub ButtonOk_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ButtonOk.Click
+    Private Sub ButtonOk_Click(sender As System.Object, e As System.Web.UI.ImageClickEventArgs) Handles ButtonOk.Click
         If EnvironmentContext.Current.Environment <> Environments.Development Then
             OktaLogin()
         Else
-            PopulateUserSession(Me.TextBoxUserId.Text, Request.UserHostAddress)
+            PopulateUserSession(TextBoxUserId.Text, Request.UserHostAddress)
             Dim MainPageUrl As String = ELPWebConstants.APPLICATION_PATH & "/Navigation/MainPage.aspx"
-            Me.Response.Redirect(MainPageUrl)
+            Response.Redirect(MainPageUrl)
         End If
 
     End Sub

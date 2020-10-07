@@ -8,34 +8,34 @@ Public Class Comment
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
@@ -58,15 +58,15 @@ Public Class Comment
     Protected Sub Load()
         Try
             Dim dal As New CommentDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            If Me.Dataset.Tables(dal.TABLE_NAME).Rows.Count = 1 Then
-                Me.Dataset.Tables(dal.TABLE_NAME).Rows(0).Delete()
+            If Dataset.Tables(dal.TABLE_NAME).Rows.Count = 1 Then
+                Dataset.Tables(dal.TABLE_NAME).Rows(0).Delete()
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -77,20 +77,20 @@ Public Class Comment
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New CommentDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -136,20 +136,20 @@ Public Class Comment
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CommentDAL.COL_NAME_CERT_ID, Value)
+            SetValue(CommentDAL.COL_NAME_CERT_ID, Value)
             'refresh the certifcate object
-            Me._cert = Nothing
+            _cert = Nothing
         End Set
     End Property
 
     Public ReadOnly Property Certificate() As Certificate
         Get
-            If Me._cert Is Nothing Then
-                If Not Me.CertId.Equals(Guid.Empty) Then
-                    Me._cert = New Certificate(Me.CertId)
+            If _cert Is Nothing Then
+                If Not CertId.Equals(Guid.Empty) Then
+                    _cert = New Certificate(CertId)
                 End If
             End If
-            Return Me._cert
+            Return _cert
         End Get
     End Property
 
@@ -165,20 +165,20 @@ Public Class Comment
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CommentDAL.COL_NAME_CLAIM_ID, Value)
+            SetValue(CommentDAL.COL_NAME_CLAIM_ID, Value)
             'refresh the claim
-            Me._claim = Nothing
+            _claim = Nothing
         End Set
     End Property
 
     Public ReadOnly Property Claim() As ClaimBase
         Get
-            If Me._claim Is Nothing Then
-                If Not Me.ClaimId.Equals(Guid.Empty) Then
-                    Me._claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.ClaimId)
+            If _claim Is Nothing Then
+                If Not ClaimId.Equals(Guid.Empty) Then
+                    _claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ClaimId)
                 End If
             End If
-            Return Me._claim
+            Return _claim
         End Get
     End Property
 
@@ -195,7 +195,7 @@ Public Class Comment
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CommentDAL.COL_NAME_CALLER_NAME, Value)
+            SetValue(CommentDAL.COL_NAME_CALLER_NAME, Value)
         End Set
     End Property
 
@@ -212,7 +212,7 @@ Public Class Comment
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CommentDAL.COL_NAME_COMMENT_TYPE_ID, Value)
+            SetValue(CommentDAL.COL_NAME_COMMENT_TYPE_ID, Value)
         End Set
     End Property
 
@@ -229,7 +229,7 @@ Public Class Comment
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CommentDAL.COL_NAME_COMMENTS, Value)
+            SetValue(CommentDAL.COL_NAME_COMMENTS, Value)
         End Set
     End Property
 
@@ -245,13 +245,13 @@ Public Class Comment
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CommentDAL.COL_NAME_FORGOT_REQUEST_ID, Value)
+            SetValue(CommentDAL.COL_NAME_FORGOT_REQUEST_ID, Value)
         End Set
     End Property
 
     Public ReadOnly Property AddedBy() As String
         Get
-            Dim userCode As String = Me.CreatedById
+            Dim userCode As String = CreatedById
             If userCode Is Nothing Then
                 userCode = ElitaPlusIdentity.Current.ActiveUser.NetworkId
             End If
@@ -262,8 +262,8 @@ Public Class Comment
 
     Public ReadOnly Property CertificateNumber() As String
         Get
-            If Not Me.Certificate Is Nothing Then
-                Return Me.Certificate.CertNumber
+            If Not Certificate Is Nothing Then
+                Return Certificate.CertNumber
             Else
                 Return Nothing
             End If
@@ -272,8 +272,8 @@ Public Class Comment
 
     Public ReadOnly Property ClaimNumber() As String
         Get
-            If Not Me.Claim Is Nothing Then
-                Return Me.Claim.ClaimNumber
+            If Not Claim Is Nothing Then
+                Return Claim.ClaimNumber
             Else
                 Return Nothing
             End If
@@ -282,8 +282,8 @@ Public Class Comment
 
     Public ReadOnly Property ClaimStatus() As String
         Get
-            If Not Me.Claim Is Nothing Then
-                Return Me.Claim.StatusCode
+            If Not Claim Is Nothing Then
+                Return Claim.StatusCode
             Else
                 Return Nothing
             End If
@@ -292,8 +292,8 @@ Public Class Comment
 
     Public ReadOnly Property Dealer() As String
         Get
-            If Not Me.Certificate Is Nothing Then
-                Return LookupListNew.GetDescriptionFromId(LookupListNew.LK_DEALERS, Me.Certificate.DealerId)
+            If Not Certificate Is Nothing Then
+                Return LookupListNew.GetDescriptionFromId(LookupListNew.LK_DEALERS, Certificate.DealerId)
             Else
                 Return Nothing
             End If
@@ -333,19 +333,19 @@ Public Class Comment
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CommentDAL
-                Me.UpdateFamily(Me.Dataset)
-                dal.UpdateFamily(Me.Dataset)
-                If (Not Me.Claim Is Nothing) AndAlso (Me.Claim.ClaimAuthorizationType = ClaimAuthorizationType.Single) Then
-                    CType(Me.Claim, Claim).HandleGVSTransactionCreation(Me.Id, Nothing)
+                UpdateFamily(Dataset)
+                dal.UpdateFamily(Dataset)
+                If (Not Claim Is Nothing) AndAlso (Me.Claim.ClaimAuthorizationType = ClaimAuthorizationType.Single) Then
+                    CType(Claim, Claim).HandleGVSTransactionCreation(Id, Nothing)
                 End If
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -355,8 +355,8 @@ Public Class Comment
    Public Sub PopulateWithDefaultValues(ByVal certId As Guid, Optional ByVal claimId As Object = Nothing)
         Dim cert As New Certificate(certId)
         Me.CertId = certId
-        Me.CallerName = cert.CustomerName
-        Me.SetValue(DALBase.COL_NAME_CREATED_BY, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+        CallerName = cert.CustomerName
+        SetValue(DALBase.COL_NAME_CREATED_BY, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
         If Not claimId Is Nothing Then
             Me.ClaimId = CType(claimId, Guid)
         End If
@@ -411,7 +411,7 @@ Public Class Comment
         End If
     End Sub
     Public Sub AddClaimAuthComment()
-        Me._isDSCreator= true
+        _isDSCreator= true
         Save()
     End Sub
 

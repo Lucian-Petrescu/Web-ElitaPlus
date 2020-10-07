@@ -1,8 +1,10 @@
-﻿Public Module ExpressionExtensions
+﻿Imports System.Runtime.CompilerServices
+
+Public Module ExpressionExtensions
 
     Public Delegate Function GetVariable(variableName As String) As String
 
-    <System.Runtime.CompilerServices.Extension>
+    <Extension>
     Public Function Evaluate(expression As BaseExpression, getVariableCallback As GetVariable) As Decimal
         If expression.[GetType]() = GetType(ConstantToken) Then
             Return DirectCast(expression, ConstantToken).Value

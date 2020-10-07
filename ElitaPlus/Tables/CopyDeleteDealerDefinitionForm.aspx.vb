@@ -22,7 +22,7 @@ Namespace Tables
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -81,38 +81,38 @@ Namespace Tables
 
 #Region "Private Subs"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
             Try
-                Me.ErrorController.Clear_Hide()
+                ErrorController.Clear_Hide()
                 If Not Page.IsPostBack Then
-                    Me.MenuEnabled = False
+                    MenuEnabled = False
                     PopulateDealerDropDown()
-                    Me.AddCalendar(Me.ImageButtonEffDate, Me.TextboxEffDate)
-                    Me.AddCalendar(Me.ImageButtonExpDate, Me.TextboxExpDate)
+                    AddCalendar(ImageButtonEffDate, TextboxEffDate)
+                    AddCalendar(ImageButtonExpDate, TextboxExpDate)
                 End If
                 'Me.chkExcludeCoveragesAndRates.Attributes.Add("OnCheckedChanged", "enable_disable_div(rCopyDelete.SelectedIndex, chkExcludeCoveragesAndRates.Checked)")
-                Me.DisplayProgressBarOnClick(Me.btnSave_WRITE, Message.MSG_PERFORMING_REQUEST)
+                DisplayProgressBarOnClick(btnSave_WRITE, Message.MSG_PERFORMING_REQUEST)
 
                 'reqd ?
                 'If Not Me.IsPostBack Then
                 '    Me.AddLabelDecorations(Me.ToDealerBO)
                 'End If
-                If Me.LabelEffDate.Text.IndexOf(":") > 0 Then
-                    Me.LabelEffDate.Text = Me.LabelEffDate.Text
+                If LabelEffDate.Text.IndexOf(":") > 0 Then
+                    LabelEffDate.Text = LabelEffDate.Text
                 Else
-                    Me.LabelEffDate.Text = Me.LabelEffDate.Text & ":"
+                    LabelEffDate.Text = LabelEffDate.Text & ":"
                 End If
-                If Me.LabelExpDate.Text.IndexOf(":") > 0 Then
-                    Me.LabelExpDate.Text = Me.LabelExpDate.Text
+                If LabelExpDate.Text.IndexOf(":") > 0 Then
+                    LabelExpDate.Text = LabelExpDate.Text
                 Else
-                    Me.LabelExpDate.Text = Me.LabelExpDate.Text & ":"
+                    LabelExpDate.Text = LabelExpDate.Text & ":"
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorController)
+                HandleErrors(ex, ErrorController)
             End Try
-            Me.ShowMissingTranslations(ErrorController)
+            ShowMissingTranslations(ErrorController)
 
         End Sub
 
@@ -156,133 +156,133 @@ Namespace Tables
 
         End Sub
 
-        Public Sub Index_Changed(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rCopyDelete.SelectedIndexChanged
+        Public Sub Index_Changed(sender As System.Object, e As System.EventArgs) Handles rCopyDelete.SelectedIndexChanged
             Try
                 Dim mIndex As Integer = rCopyDelete.SelectedIndex
 
-                Me.ToMultipleDrop.SelectedIndex = 0
-                Me.FromMultipleDrop.SelectedIndex = 0
-                Me.chkExcludeCoveragesAndRates.Checked = False
+                ToMultipleDrop.SelectedIndex = 0
+                FromMultipleDrop.SelectedIndex = 0
+                chkExcludeCoveragesAndRates.Checked = False
 
                 If mIndex = DELETE_INDEX Then
                     'DELETE
-                    ControlMgr.SetVisibleControl(Me, Me.ToMultipleDrop, False)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelEnterCovDateHeader, False)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelStar1, False)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelStar2, False)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelEffDate, False)
-                    ControlMgr.SetVisibleControl(Me, Me.TextboxEffDate, False)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelExpDate, False)
-                    ControlMgr.SetVisibleControl(Me, Me.TextboxExpDate, False)
-                    ControlMgr.SetVisibleControl(Me, Me.ImageButtonEffDate, False)
-                    ControlMgr.SetVisibleControl(Me, Me.ImageButtonExpDate, False)
-                    Me.chkExcludeCoveragesAndRates.Text = TranslationBase.TranslateLabelOrMessage(INCLUDE_COVERAGES_AND_RATES)
+                    ControlMgr.SetVisibleControl(Me, ToMultipleDrop, False)
+                    ControlMgr.SetVisibleControl(Me, LabelEnterCovDateHeader, False)
+                    ControlMgr.SetVisibleControl(Me, LabelStar1, False)
+                    ControlMgr.SetVisibleControl(Me, LabelStar2, False)
+                    ControlMgr.SetVisibleControl(Me, LabelEffDate, False)
+                    ControlMgr.SetVisibleControl(Me, TextboxEffDate, False)
+                    ControlMgr.SetVisibleControl(Me, LabelExpDate, False)
+                    ControlMgr.SetVisibleControl(Me, TextboxExpDate, False)
+                    ControlMgr.SetVisibleControl(Me, ImageButtonEffDate, False)
+                    ControlMgr.SetVisibleControl(Me, ImageButtonExpDate, False)
+                    chkExcludeCoveragesAndRates.Text = TranslationBase.TranslateLabelOrMessage(INCLUDE_COVERAGES_AND_RATES)
                     chkExcludeCoveragesAndRates.Checked = True
                 ElseIf mIndex = RENEW_INDEX Then
                     'RENEW
-                    ControlMgr.SetVisibleControl(Me, Me.ToMultipleDrop, False)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelEnterCovDateHeader, True)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelStar1, True)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelStar2, False)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelEffDate, True)
-                    ControlMgr.SetVisibleControl(Me, Me.TextboxEffDate, True)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelExpDate, False)
-                    ControlMgr.SetVisibleControl(Me, Me.TextboxExpDate, False)
-                    ControlMgr.SetVisibleControl(Me, Me.ImageButtonEffDate, True)
-                    ControlMgr.SetVisibleControl(Me, Me.ImagebuttonExpDate, False)
-                    Me.chkExcludeCoveragesAndRates.Visible = False
+                    ControlMgr.SetVisibleControl(Me, ToMultipleDrop, False)
+                    ControlMgr.SetVisibleControl(Me, LabelEnterCovDateHeader, True)
+                    ControlMgr.SetVisibleControl(Me, LabelStar1, True)
+                    ControlMgr.SetVisibleControl(Me, LabelStar2, False)
+                    ControlMgr.SetVisibleControl(Me, LabelEffDate, True)
+                    ControlMgr.SetVisibleControl(Me, TextboxEffDate, True)
+                    ControlMgr.SetVisibleControl(Me, LabelExpDate, False)
+                    ControlMgr.SetVisibleControl(Me, TextboxExpDate, False)
+                    ControlMgr.SetVisibleControl(Me, ImageButtonEffDate, True)
+                    ControlMgr.SetVisibleControl(Me, ImagebuttonExpDate, False)
+                    chkExcludeCoveragesAndRates.Visible = False
                 Else
                     'COPY
-                    ControlMgr.SetVisibleControl(Me, Me.ToMultipleDrop, True)
-                    Me.chkExcludeCoveragesAndRates.Text = TranslationBase.TranslateLabelOrMessage(EXCLUDE_COVERAGES_AND_RATES)
+                    ControlMgr.SetVisibleControl(Me, ToMultipleDrop, True)
+                    chkExcludeCoveragesAndRates.Text = TranslationBase.TranslateLabelOrMessage(EXCLUDE_COVERAGES_AND_RATES)
                     chkExcludeCoveragesAndRates.Checked = False
-                    ControlMgr.SetVisibleControl(Me, Me.LabelEnterCovDateHeader, True)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelStar1, True)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelStar2, True)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelEffDate, True)
-                    ControlMgr.SetVisibleControl(Me, Me.TextboxEffDate, True)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelExpDate, True)
-                    ControlMgr.SetVisibleControl(Me, Me.TextboxExpDate, True)
-                    ControlMgr.SetVisibleControl(Me, Me.ImageButtonEffDate, True)
-                    ControlMgr.SetVisibleControl(Me, Me.ImagebuttonExpDate, True)
+                    ControlMgr.SetVisibleControl(Me, LabelEnterCovDateHeader, True)
+                    ControlMgr.SetVisibleControl(Me, LabelStar1, True)
+                    ControlMgr.SetVisibleControl(Me, LabelStar2, True)
+                    ControlMgr.SetVisibleControl(Me, LabelEffDate, True)
+                    ControlMgr.SetVisibleControl(Me, TextboxEffDate, True)
+                    ControlMgr.SetVisibleControl(Me, LabelExpDate, True)
+                    ControlMgr.SetVisibleControl(Me, TextboxExpDate, True)
+                    ControlMgr.SetVisibleControl(Me, ImageButtonEffDate, True)
+                    ControlMgr.SetVisibleControl(Me, ImagebuttonExpDate, True)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorController)
+                HandleErrors(ex, ErrorController)
             End Try
         End Sub
 
-        Public Sub chkExcludeCoveragesAndRates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkExcludeCoveragesAndRates.CheckedChanged
+        Public Sub chkExcludeCoveragesAndRates_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkExcludeCoveragesAndRates.CheckedChanged
             'Me.chkExcludeCoveragesAndRates.Attributes.Add("OnCheckedChanged", "enable_disable_div(rCopyDelete.SelectedIndex, chkExcludeCoveragesAndRates.Checked)")
 
             Try
                 Dim mchkIndex As Boolean = chkExcludeCoveragesAndRates.Checked
                 If rCopyDelete.SelectedIndex = COPY_INDEX And Not mchkIndex Then
-                    ControlMgr.SetVisibleControl(Me, Me.LabelEnterCovDateHeader, True)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelStar1, True)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelStar2, True)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelEffDate, True)
-                    ControlMgr.SetVisibleControl(Me, Me.TextboxEffDate, True)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelExpDate, True)
-                    ControlMgr.SetVisibleControl(Me, Me.TextboxExpDate, True)
-                    ControlMgr.SetVisibleControl(Me, Me.ImageButtonEffDate, True)
-                    ControlMgr.SetVisibleControl(Me, Me.ImagebuttonExpDate, True)
+                    ControlMgr.SetVisibleControl(Me, LabelEnterCovDateHeader, True)
+                    ControlMgr.SetVisibleControl(Me, LabelStar1, True)
+                    ControlMgr.SetVisibleControl(Me, LabelStar2, True)
+                    ControlMgr.SetVisibleControl(Me, LabelEffDate, True)
+                    ControlMgr.SetVisibleControl(Me, TextboxEffDate, True)
+                    ControlMgr.SetVisibleControl(Me, LabelExpDate, True)
+                    ControlMgr.SetVisibleControl(Me, TextboxExpDate, True)
+                    ControlMgr.SetVisibleControl(Me, ImageButtonEffDate, True)
+                    ControlMgr.SetVisibleControl(Me, ImagebuttonExpDate, True)
                 Else
-                    ControlMgr.SetVisibleControl(Me, Me.LabelEnterCovDateHeader, False)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelStar1, False)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelStar2, False)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelEffDate, False)
-                    ControlMgr.SetVisibleControl(Me, Me.TextboxEffDate, False)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelExpDate, False)
-                    ControlMgr.SetVisibleControl(Me, Me.TextboxExpDate, False)
-                    ControlMgr.SetVisibleControl(Me, Me.ImageButtonEffDate, False)
-                    ControlMgr.SetVisibleControl(Me, Me.ImagebuttonExpDate, False)
+                    ControlMgr.SetVisibleControl(Me, LabelEnterCovDateHeader, False)
+                    ControlMgr.SetVisibleControl(Me, LabelStar1, False)
+                    ControlMgr.SetVisibleControl(Me, LabelStar2, False)
+                    ControlMgr.SetVisibleControl(Me, LabelEffDate, False)
+                    ControlMgr.SetVisibleControl(Me, TextboxEffDate, False)
+                    ControlMgr.SetVisibleControl(Me, LabelExpDate, False)
+                    ControlMgr.SetVisibleControl(Me, TextboxExpDate, False)
+                    ControlMgr.SetVisibleControl(Me, ImageButtonEffDate, False)
+                    ControlMgr.SetVisibleControl(Me, ImagebuttonExpDate, False)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorController)
+                HandleErrors(ex, ErrorController)
             End Try
         End Sub
 #End Region
 
 #Region " Command button "
 
-        Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
-                If Not Me.ValidSelection() Then
+                If Not ValidSelection() Then
                     Throw New GUIException(Message.MSG_GUI_INVALID_SELECTION, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION)
                 End If
 
                 If rCopyDelete.SelectedIndex = COPY_INDEX Then
                     If Not chkExcludeCoveragesAndRates.Checked Then
                         ' The dates must be entered 
-                        If Me.TextboxEffDate.Text = "" Or Me.TextboxExpDate.Text = "" Then
+                        If TextboxEffDate.Text = "" Or TextboxExpDate.Text = "" Then
                             Throw New GUIException(Message.MSG_GUI_INVALID_EMPTY_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EMPTY_DATE)
                         End If
                         'check is the effective date is less than the expiration date
-                        If (Date.Compare(CType(Me.TextboxExpDate.Text, Date), CType(Me.TextboxEffDate.Text, Date)) < 0) Then
+                        If (Date.Compare(CType(TextboxExpDate.Text, Date), CType(TextboxEffDate.Text, Date)) < 0) Then
                             Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE)
                         End If
                     End If
                     moFromDealerID = FromMultipleDrop.SelectedGuid
                     moToDealerID = ToMultipleDrop.SelectedGuid
-                    If Me.EditingValidForCopy() Then
-                        Me.ProcessCopy()
+                    If EditingValidForCopy() Then
+                        ProcessCopy()
                     End If
                 ElseIf rCopyDelete.SelectedIndex = RENEW_INDEX Then
                     moFromDealerID = FromMultipleDrop.SelectedGuid
-                    Me.ProcessRenew()
+                    ProcessRenew()
                 Else
                     moFromDealerID = FromMultipleDrop.SelectedGuid
-                    If Me.EditingValidForDelete() Then
-                        Me.ProcessDelete()
+                    If EditingValidForDelete() Then
+                        ProcessDelete()
                     End If
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorController)
+                HandleErrors(ex, ErrorController)
             End Try
         End Sub
 
-        Private Sub btnCancel_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel_WRITE.Click
+        Private Sub btnCancel_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCancel_WRITE.Click
             Try
                 If rCopyDelete.SelectedIndex = DELETE_INDEX Then
                     chkExcludeCoveragesAndRates.Checked = True
@@ -293,12 +293,12 @@ Namespace Tables
                     ToMultipleDrop.SelectedIndex = -1
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorController)
+                HandleErrors(ex, ErrorController)
             End Try
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
-            Me.ReturnToTabHomePage()
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+            ReturnToTabHomePage()
         End Sub
 
 #End Region
@@ -306,7 +306,7 @@ Namespace Tables
 #Region " Private Methods"
         Private Function ValidSelection() As Boolean
             If rCopyDelete.SelectedIndex = COPY_INDEX Then
-                If FromMultipleDrop.SelectedGuid.Equals(Guid.Empty) Or Me.ToMultipleDrop.SelectedGuid.Equals(Guid.Empty) Then
+                If FromMultipleDrop.SelectedGuid.Equals(Guid.Empty) Or ToMultipleDrop.SelectedGuid.Equals(Guid.Empty) Then
                     Return False
                 ElseIf FromMultipleDrop.SelectedIndex = ToMultipleDrop.SelectedIndex Then
                     Return False
@@ -332,14 +332,14 @@ Namespace Tables
             Try
                 ' Verify that the from dealer has definitions to copy
                 If FromDealerBO.GetDealerProductCodesCount <= 0 Then
-                    Me.DisplayMessage(Message.MSG_FROM_DEALER_CONTAINS_NO_DEFINITIONS, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT)
+                    DisplayMessage(Message.MSG_FROM_DEALER_CONTAINS_NO_DEFINITIONS, "", MSG_BTN_OK, MSG_TYPE_ALERT)
                     blnEditingValidForCopy = False
                     Exit Try
                 End If
 
                 ' Verify that the to dealer has a valid contract
                 If Not ToDealerBO.DealerHasValidContract Then
-                    Me.DisplayMessage(Message.MSG_TO_DEALER_MUST_HAVE_A_VALID_CONTRACT, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT)
+                    DisplayMessage(Message.MSG_TO_DEALER_MUST_HAVE_A_VALID_CONTRACT, "", MSG_BTN_OK, MSG_TYPE_ALERT)
                     blnEditingValidForCopy = False
                     Exit Try
                 End If
@@ -347,16 +347,16 @@ Namespace Tables
                 'Req-1016 Begin
                 ' Verify that the to dealer has the same RecurringPremiumId seeting on the contract
                 If Not FromDealerBO.DealerHasSameRecurringPremiumSetting(ToDealerBO) Then
-                    Me.DisplayMessage(Message.MSG_TO_DEALER_MUST_HAVE_SAME_RECURRING_PREMIUM_SETTING, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT)
+                    DisplayMessage(Message.MSG_TO_DEALER_MUST_HAVE_SAME_RECURRING_PREMIUM_SETTING, "", MSG_BTN_OK, MSG_TYPE_ALERT)
                     blnEditingValidForCopy = False
                     Exit Try
                 End If
                 'Req-1016 End
 
-                If Not Me.chkExcludeCoveragesAndRates.Checked Then
+                If Not chkExcludeCoveragesAndRates.Checked Then
                     ' Verify that the entered date for new coverage are within the date of contract of to dealer
-                    If Not ToDealerBO.EnteredDateWithinContract(Me.TextboxEffDate.Text, Me.TextboxExpDate.Text) Then
-                        Me.DisplayMessage(Message.MSG_ENTERED_DATE_NOT_WITHIN_CONTRACT, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT)
+                    If Not ToDealerBO.EnteredDateWithinContract(TextboxEffDate.Text, TextboxExpDate.Text) Then
+                        DisplayMessage(Message.MSG_ENTERED_DATE_NOT_WITHIN_CONTRACT, "", MSG_BTN_OK, MSG_TYPE_ALERT)
                         blnEditingValidForCopy = False
                         Exit Try
                     End If
@@ -364,13 +364,13 @@ Namespace Tables
 
                 ' Verify that the to dealer does not have definitions
                 If ToDealerBO.GetDealerProductCodesCount > 0 Then
-                    Me.DisplayMessage(Message.MSG_TO_DEALER_ALREADY_CONTAINS_DEFINITIONS, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT)
+                    DisplayMessage(Message.MSG_TO_DEALER_ALREADY_CONTAINS_DEFINITIONS, "", MSG_BTN_OK, MSG_TYPE_ALERT)
                     blnEditingValidForCopy = False
                     Exit Try
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorController)
+                HandleErrors(ex, ErrorController)
             End Try
 
             Return blnEditingValidForCopy
@@ -383,17 +383,17 @@ Namespace Tables
 
             Dim blnEditingValidForDelete As Boolean = True
             Try
-                If Me.chkExcludeCoveragesAndRates.Checked Then
+                If chkExcludeCoveragesAndRates.Checked Then
                     ' Verify that the dealer selected has no certificates
                     If FromDealerBO.GetDealerCertificatesCount > 0 Then
-                        Me.DisplayMessage(Message.MSG_DEALER_ALREADY_HAS_CERTIFICATES_DEFINITIONS_CANNOT_BE_DELETED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT)
+                        DisplayMessage(Message.MSG_DEALER_ALREADY_HAS_CERTIFICATES_DEFINITIONS_CANNOT_BE_DELETED, "", MSG_BTN_OK, MSG_TYPE_ALERT)
                         blnEditingValidForDelete = False
                         Exit Try
                     End If
                 Else
                     ' Verify that the dealer has no coverage definitions
                     If FromDealerBO.GetDealerCoveragesCount > 0 Then
-                        Me.DisplayMessage(Message.MSG_DEALER_ALREADY_HAS_DEFINED_COVERAGES_DEFINITIONS_CANNOT_BE_DELETED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT)
+                        DisplayMessage(Message.MSG_DEALER_ALREADY_HAS_DEFINED_COVERAGES_DEFINITIONS_CANNOT_BE_DELETED, "", MSG_BTN_OK, MSG_TYPE_ALERT)
                         blnEditingValidForDelete = False
                         Exit Try
                     End If
@@ -401,13 +401,13 @@ Namespace Tables
 
                 ' Verify that the dealer has definitions to delete
                 If FromDealerBO.GetDealerProductCodesCount <= 0 Then
-                    Me.DisplayMessage(Message.MSG_FROM_DEALER_CONTAINS_NO_DEFINITIONS, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT)
+                    DisplayMessage(Message.MSG_FROM_DEALER_CONTAINS_NO_DEFINITIONS, "", MSG_BTN_OK, MSG_TYPE_ALERT)
                     blnEditingValidForDelete = False
                     Exit Try
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorController)
+                HandleErrors(ex, ErrorController)
             End Try
 
             Return blnEditingValidForDelete
@@ -418,22 +418,22 @@ Namespace Tables
             Dim effDate As Date
             Dim oContract As Contract
 
-            effDate = CType(Me.TextboxEffDate.Text, Date)
+            effDate = CType(TextboxEffDate.Text, Date)
             'verify that contract in effect on effDate is the highest contract
-            oContract = Contract.GetMaxExpirationContract(Me.moFromDealerID)
+            oContract = Contract.GetMaxExpirationContract(moFromDealerID)
             If effDate < oContract.Effective.Value OrElse effDate > oContract.Expiration.Value Then
                 oContract = Nothing
             End If
 
             If oContract Is Nothing Then
-                Me.DisplayMessage(Message.MSG_NO_COVERAGE_AVAILABLE, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.MSG_NO_COVERAGE_AVAILABLE, "", MSG_BTN_OK, MSG_TYPE_INFO)
             Else
-                If Dealer.RenewCoverage(Me.moFromDealerID, oContract.Id, effDate) = 0 Then
-                    Me.DisplayMessage(Message.MSG_RENEW_WAS_COMPLETED_SUCCESSFULLY, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                ElseIf Dealer.RenewCoverage(Me.moFromDealerID, oContract.Id, effDate) = -1 Then
-                    Me.DisplayMessage(Message.MSG_NO_COVERAGE_AVAILABLE, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                If Dealer.RenewCoverage(moFromDealerID, oContract.Id, effDate) = 0 Then
+                    DisplayMessage(Message.MSG_RENEW_WAS_COMPLETED_SUCCESSFULLY, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                ElseIf Dealer.RenewCoverage(moFromDealerID, oContract.Id, effDate) = -1 Then
+                    DisplayMessage(Message.MSG_NO_COVERAGE_AVAILABLE, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Else
-                    Me.DisplayMessage(Message.MSG_RENEW_COVERAGE_FAILED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT)
+                    DisplayMessage(Message.MSG_RENEW_COVERAGE_FAILED, "", MSG_BTN_OK, MSG_TYPE_ALERT)
                 End If
             End If
 
@@ -442,35 +442,35 @@ Namespace Tables
         Private Sub ProcessCopy()
             Dim intCopyLevel As Integer
             Dim effDate, expDate As Date
-            If Me.chkExcludeCoveragesAndRates.Checked Then
+            If chkExcludeCoveragesAndRates.Checked Then
                 intCopyLevel = PRODUCTCODE_ITEM_TABLES
                 effDate = Nothing
                 expDate = Nothing
             Else
                 intCopyLevel = PRODUCTCODE_ITEM_COVERAGE_RATE_DED_TABLES
-                effDate = CType(Me.TextboxEffDate.Text, Date)
-                expDate = CType(Me.TextboxExpDate.Text, Date)
+                effDate = CType(TextboxEffDate.Text, Date)
+                expDate = CType(TextboxExpDate.Text, Date)
             End If
 
-            If Dealer.CopyDealerDefinitions(Me.moFromDealerID, Me.moToDealerID, intCopyLevel, effDate, expDate) = 0 Then
-                Me.DisplayMessage(Message.MSG_COPY_WAS_COMPLETED_SUCCESSFULLY, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+            If Dealer.CopyDealerDefinitions(moFromDealerID, moToDealerID, intCopyLevel, effDate, expDate) = 0 Then
+                DisplayMessage(Message.MSG_COPY_WAS_COMPLETED_SUCCESSFULLY, "", MSG_BTN_OK, MSG_TYPE_INFO)
             Else
-                Me.DisplayMessage(Message.MSG_COPY_FAILED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT)
+                DisplayMessage(Message.MSG_COPY_FAILED, "", MSG_BTN_OK, MSG_TYPE_ALERT)
             End If
         End Sub
 
         Private Sub ProcessDelete()
             Dim intDeleteLevel As Integer
-            If Me.chkExcludeCoveragesAndRates.Checked Then
+            If chkExcludeCoveragesAndRates.Checked Then
                 intDeleteLevel = PRODUCTCODE_ITEM_COVERAGE_RATE_TABLES
             Else
                 intDeleteLevel = PRODUCTCODE_ITEM_TABLES
             End If
 
-            If Dealer.DeleteDealerDefinitions(Me.moFromDealerID, intDeleteLevel) = 0 Then
-                Me.DisplayMessage(Message.MSG_DELETE_WAS_COMPLETED_SUCCESSFULLY, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+            If Dealer.DeleteDealerDefinitions(moFromDealerID, intDeleteLevel) = 0 Then
+                DisplayMessage(Message.MSG_DELETE_WAS_COMPLETED_SUCCESSFULLY, "", MSG_BTN_OK, MSG_TYPE_INFO)
             Else
-                Me.DisplayMessage(Message.MSG_DELETE_FAILED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT)
+                DisplayMessage(Message.MSG_DELETE_FAILED, "", MSG_BTN_OK, MSG_TYPE_ALERT)
             End If
 
         End Sub
