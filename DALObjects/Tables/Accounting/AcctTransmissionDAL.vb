@@ -1,7 +1,6 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (4/19/2007)********************
 Imports Assurant.Common.Zip
 Imports System.IO
-Imports System.Text
 
 Public Class AcctTransmissionDAL
     Inherits DALBase
@@ -75,13 +74,13 @@ Public Class AcctTransmissionDAL
             If Not OmitText Then
                 'Decompressing the FileTextCompressed column data and copying it to FileText column for further use
                 If familyDS.Tables.Count > 0 AndAlso familyDS.Tables(0).Rows.Count > 0 Then
-                    Dim bytearray() As Byte = CType(familyDS.Tables(0).Rows(0)(COL_NAME_FILE_TEXT_COMPRESSED), Byte())
+                    Dim bytearray() As Byte = CType(familyDS.Tables(0).Rows(0)(AcctTransmissionDAL.COL_NAME_FILE_TEXT_COMPRESSED), Byte())
                     Dim inputmemorystream As New MemoryStream(bytearray)
                     Dim compressionmethod As ICompressionProvider
                     compressionmethod = CompressionProviderFactory.Current.CreateInstance(CompressionProviderType.IonicZip)
                     Dim outputmemorystream As MemoryStream = New MemoryStream()
                     compressionmethod.Uncompress(inputmemorystream, outputmemorystream)
-                    familyDS.Tables(0).Rows(0)(COL_NAME_FILE_TEXT) = outputmemorystream.MemoryStreamToString()
+                    familyDS.Tables(0).Rows(0)(AcctTransmissionDAL.COL_NAME_FILE_TEXT) = outputmemorystream.MemoryStreamToString()
                 End If
             End If
         Catch ex As Exception
@@ -290,7 +289,7 @@ Public Class AcctTransmissionDAL
                             New DBHelper.DBHelperParameter(COL_NAME_CREDIT_AMOUNT_RECEIVED, If(IsDBNull(CurrentRow(COL_NAME_CREDIT_AMOUNT_RECEIVED)), 0, CurrentRow(COL_NAME_CREDIT_AMOUNT_RECEIVED))), _
                             New DBHelper.DBHelperParameter(COL_NAME_NUM_TRANSACTIONS_RECEIVED, If(IsDBNull(CurrentRow(COL_NAME_NUM_TRANSACTIONS_RECEIVED)), 0, Integer.Parse(CurrentRow(COL_NAME_NUM_TRANSACTIONS_RECEIVED)))), _
                             New DBHelper.DBHelperParameter(COL_NAME_DATE_RECEIVED, If(IsDate(CurrentRow(COL_NAME_DATE_RECEIVED)), CurrentRow(COL_NAME_DATE_RECEIVED), Date.MinValue)), _
-                            New DBHelper.DBHelperParameter(COL_NAME_REJECT_REASON_DETAIL, CurrentRow(COL_NAME_REJECT_REASON_DETAIL).ToString, GetType(StringBuilder)), _
+                            New DBHelper.DBHelperParameter(COL_NAME_REJECT_REASON_DETAIL, CurrentRow(COL_NAME_REJECT_REASON_DETAIL).ToString, GetType(System.Text.StringBuilder)), _
                             New DBHelper.DBHelperParameter(COL_NAME_BATCH_NUMBER, If(IsDBNull(CurrentRow(COL_NAME_BATCH_NUMBER)), "", CurrentRow(COL_NAME_BATCH_NUMBER).ToString)), _
                             New DBHelper.DBHelperParameter(COL_NAME_ACCT_TRANSMISSION_ID, CType(CurrentRow(COL_NAME_ACCT_TRANSMISSION_ID), Byte())), _
                             New DBHelper.DBHelperParameter(COL_NAME_STATUS_ID, CType(CurrentRow(COL_NAME_STATUS_ID), Byte())), _

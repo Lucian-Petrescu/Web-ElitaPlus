@@ -52,7 +52,7 @@ Public Class ClaimloadFileProcessedDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("claimload_file_processed_id", id.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claimload_file_processed_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -62,7 +62,7 @@ Public Class ClaimloadFileProcessedDAL
 
     Public Function LoadList(userId As Guid, countryCode As String, fileType As String, fileName As String) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, CreateConnection())
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
 
         OracleDbHelper.AddParameter(cmd, "pi_user_id", OracleDbType.Raw, userId.ToByteArray)
         OracleDbHelper.AddParameter(cmd, "pi_country_code", OracleDbType.Varchar2, countryCode)
@@ -71,7 +71,7 @@ Public Class ClaimloadFileProcessedDAL
         OracleDbHelper.AddParameter(cmd, "po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            Return Fetch(cmd, TABLE_NAME)
+            Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -96,7 +96,7 @@ Public Class ClaimloadFileProcessedDAL
         Dim oClaimloadReconWrkDAL As New ClaimloadReconWrkDAL
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
-            tr = GetNewTransaction
+            tr = DBHelper.GetNewTransaction
         End If
         Try
             'updates additions and changes
@@ -135,7 +135,7 @@ Public Class ClaimloadFileProcessedDAL
             outputParameter(0) = New DBHelperParameter("p_return", GetType(Integer))
         End With
         ' Call DBHelper Store Procedure
-        ExecuteSpParamBindByName(selectStmt, inputParameters, outputParameter)
+        DBHelper.ExecuteSpParamBindByName(selectStmt, inputParameters, outputParameter)
         If outputParameter(0).Value <> 0 Then
             Dim e As New ApplicationException("Return Value = " & outputParameter(0).Value)
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, e)

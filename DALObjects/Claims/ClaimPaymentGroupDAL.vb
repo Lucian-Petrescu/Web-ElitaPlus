@@ -1,5 +1,5 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (2/21/2013)********************
-Imports System.Reflection
+
 
 Public Class ClaimPaymentGroupDAL
     Inherits DALBase
@@ -179,14 +179,14 @@ Public Class ClaimPaymentGroupDAL
 
     Public Property PaymentGroupNumber(Row As DataRow) As String
         Get
-            If Row(COL_NAME_PAYMENT_GROUP_NUMBER) Is DBNull.Value Then
+            If Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(COL_NAME_PAYMENT_GROUP_NUMBER), String)
+                Return CType(Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBER), String)
             End If
         End Get
         Set(Value As String)
-            SetValue(Row, COL_NAME_PAYMENT_GROUP_NUMBER, Value)
+            SetValue(Row, ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBER, Value)
         End Set
     End Property
 
@@ -254,7 +254,7 @@ Public Class ClaimPaymentGroupDAL
             Else
                 '- DateType, DecimalType, etc... all our other custome types
                 '- see if 'newValue Type' has a Value property (only our custom types do)
-                Dim propInfo As PropertyInfo = newValue.GetType.GetProperty("Value")
+                Dim propInfo As System.Reflection.PropertyInfo = newValue.GetType.GetProperty("Value")
                 If Not (propInfo Is Nothing) Then
                     '- call the Value property to extract the native .NET type (double, decimal, etc...)
                     newValue = propInfo.GetValue(newValue, Nothing)
@@ -276,7 +276,7 @@ Public Class ClaimPaymentGroupDAL
                 '- create an array of types containing one type, the String type
                 Dim types() As Type = {GetType(String)}
                 '- see if the 'newValue Type' has a 'Parse(String)' method taking a String parameter
-                Dim miMethodInfo As MethodInfo = newValue.GetType.GetMethod("Parse", types)
+                Dim miMethodInfo As System.Reflection.MethodInfo = newValue.GetType.GetMethod("Parse", types)
                 If Not miMethodInfo Is Nothing Then
                     '- it does have a Parse method, newValue must be a number type.
                     '- extract the current value as a string
@@ -299,7 +299,7 @@ Public Class ClaimPaymentGroupDAL
                 Else
                     '- DateType, DecimalType, etc... all our other custome types
                     '- see if 'newValue Type' has a Value property (only our custom types do)
-                    Dim propInfo As PropertyInfo = newValue.GetType.GetProperty("Value")
+                    Dim propInfo As System.Reflection.PropertyInfo = newValue.GetType.GetProperty("Value")
                     If Not (propInfo Is Nothing) Then
                         '- call the Value property to extract the native .NET type (double, decimal, etc...)
                         newValue = propInfo.GetValue(newValue, Nothing)

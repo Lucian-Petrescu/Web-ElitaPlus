@@ -1,5 +1,4 @@
 ﻿Imports System.Runtime.CompilerServices
-Imports System.Text
 
 Public Module DALExtension
 
@@ -60,7 +59,7 @@ Public Module DALExtension
             End If
         End If
 
-        Dim sqlString As New StringBuilder
+        Dim sqlString As New System.Text.StringBuilder
         Dim iCnt As Integer = 0
         For Each dr As DataRow In dataTable.Rows
             If (New Guid(DirectCast(dr(dsColumnName), Byte())).Equals(dsCompareValue)) Then

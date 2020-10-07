@@ -1,7 +1,4 @@
 Imports System.Collections.Generic
-Imports System.Globalization
-Imports System.Reflection
-Imports System.Threading
 Imports Assurant.ElitaPlus.DALObjects.DBHelper
 
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (11/2/2004)********************
@@ -520,10 +517,10 @@ Public Class ClaimDAL
     'Key Property
     Public ReadOnly Property Id(Row As DataRow) As Guid
         Get
-            If Row(TABLE_KEY_NAME) Is DBNull.Value Then
+            If Row(ClaimDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(Row(COL_NAME_CLAIM_ID), Byte()))
+                Return New Guid(CType(Row(ClaimDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
     End Property
@@ -538,62 +535,62 @@ Public Class ClaimDAL
 
     Public Property ClaimGroupId(Row As DataRow) As Guid
         Get
-            If Row(COL_NAME_CLAIM_GROUP_ID) Is DBNull.Value Then
+            If Row(ClaimDAL.COL_NAME_CLAIM_GROUP_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(Row(COL_NAME_CLAIM_GROUP_ID), Byte()))
+                Return New Guid(CType(Row(ClaimDAL.COL_NAME_CLAIM_GROUP_ID), Byte()))
             End If
         End Get
         Set(Value As Guid)
-            SetValue(Row, COL_NAME_CLAIM_GROUP_ID, Value)
+            SetValue(Row, ClaimDAL.COL_NAME_CLAIM_GROUP_ID, Value)
         End Set
     End Property
 
     Public Property CompanyId(Row As DataRow) As Guid
         Get
-            If Row(COL_NAME_COMPANY_ID) Is DBNull.Value Then
+            If Row(ClaimDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(Row(COL_NAME_COMPANY_ID), Byte()))
+                Return New Guid(CType(Row(ClaimDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
         Set(Value As Guid)
-            SetValue(Row, COL_NAME_COMPANY_ID, Value)
+            SetValue(Row, ClaimDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
     Public Property ClaimNumber(Row As DataRow) As String
         Get
-            If Row(COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
+            If Row(ClaimDAL.COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(COL_NAME_CLAIM_NUMBER), String)
+                Return CType(Row(ClaimDAL.COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
         Set(Value As String)
-            SetValue(Row, COL_NAME_CLAIM_NUMBER, Value)
+            SetValue(Row, ClaimDAL.COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
     Public Property MasterClaimNumber(Row As DataRow) As String
         Get
-            If Row(COL_NAME_MASTER_CLAIM_NUMBER) Is DBNull.Value Then
+            If Row(ClaimDAL.COL_NAME_MASTER_CLAIM_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(COL_NAME_MASTER_CLAIM_NUMBER), String)
+                Return CType(Row(ClaimDAL.COL_NAME_MASTER_CLAIM_NUMBER), String)
             End If
         End Get
         Set(Value As String)
-            SetValue(Row, COL_NAME_MASTER_CLAIM_NUMBER, Value)
+            SetValue(Row, ClaimDAL.COL_NAME_MASTER_CLAIM_NUMBER, Value)
         End Set
     End Property
 
     Public ReadOnly Property MethodOfRepairCode(Row As DataRow) As String
         Get
-            If Row(COL_NAME_METHOD_OF_REPAIR_ID) Is DBNull.Value Then
+            If Row(ClaimDAL.COL_NAME_METHOD_OF_REPAIR_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return GetCodeFromId(LK_METHODS_OF_REPAIR, New Guid(CType(Row(COL_NAME_METHOD_OF_REPAIR_ID), Byte())))
+                Return GetCodeFromId(LK_METHODS_OF_REPAIR, New Guid(CType(Row(ClaimDAL.COL_NAME_METHOD_OF_REPAIR_ID), Byte())))
             End If
         End Get
 
@@ -601,10 +598,10 @@ Public Class ClaimDAL
 
     Public ReadOnly Property CLaimAuthTypeCode(Row As DataRow) As String
         Get
-            If Row(COL_NAME_CLAIM_AUTH_TYPE_ID) Is DBNull.Value Then
+            If Row(ClaimDAL.COL_NAME_CLAIM_AUTH_TYPE_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return GetCodeFromId(LK_CLAIM_AUTHORIZATION_TYPE, New Guid(CType(Row(COL_NAME_CLAIM_AUTH_TYPE_ID), Byte())))
+                Return GetCodeFromId(LK_CLAIM_AUTHORIZATION_TYPE, New Guid(CType(Row(ClaimDAL.COL_NAME_CLAIM_AUTH_TYPE_ID), Byte())))
             End If
         End Get
 
@@ -612,14 +609,14 @@ Public Class ClaimDAL
 
     Public Property FulfillmentProviderType(Row As DataRow) As String
         Get
-            If Row(COL_NAME_FULFILLMENT_PROVIDER_TYP) Is DBNull.Value Then
+            If Row(ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(COL_NAME_FULFILLMENT_PROVIDER_TYP), String)
+                Return CType(Row(ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP), String)
             End If
         End Get
         Set(Value As String)
-            SetValue(Row, COL_NAME_FULFILLMENT_PROVIDER_TYP, Value)
+            SetValue(Row, ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP, Value)
         End Set
     End Property
 
@@ -656,7 +653,7 @@ Public Class ClaimDAL
             Else
                 '- DateType, DecimalType, etc... all our other custome types
                 '- see if 'newValue Type' has a Value property (only our custom types do)
-                Dim propInfo As PropertyInfo = newValue.GetType.GetProperty("Value")
+                Dim propInfo As System.Reflection.PropertyInfo = newValue.GetType.GetProperty("Value")
                 If Not (propInfo Is Nothing) Then
                     '- call the Value property to extract the native .NET type (double, decimal, etc...)
                     newValue = propInfo.GetValue(newValue, Nothing)
@@ -678,7 +675,7 @@ Public Class ClaimDAL
                 '- create an array of types containing one type, the String type
                 Dim types() As Type = {GetType(String)}
                 '- see if the 'newValue Type' has a 'Parse(String)' method taking a String parameter
-                Dim miMethodInfo As MethodInfo = newValue.GetType.GetMethod("Parse", types)
+                Dim miMethodInfo As System.Reflection.MethodInfo = newValue.GetType.GetMethod("Parse", types)
                 If Not miMethodInfo Is Nothing Then
                     '- it does have a Parse method, newValue must be a number type.
                     '- extract the current value as a string
@@ -701,7 +698,7 @@ Public Class ClaimDAL
                 Else
                     '- DateType, DecimalType, etc... all our other custome types
                     '- see if 'newValue Type' has a Value property (only our custom types do)
-                    Dim propInfo As PropertyInfo = newValue.GetType.GetProperty("Value")
+                    Dim propInfo As System.Reflection.PropertyInfo = newValue.GetType.GetProperty("Value")
                     If Not (propInfo Is Nothing) Then
                         '- call the Value property to extract the native .NET type (double, decimal, etc...)
                         newValue = propInfo.GetValue(newValue, Nothing)
@@ -723,7 +720,7 @@ Public Class ClaimDAL
     End Sub
 
 
-    Private Shared addMutex As New Mutex
+    Private Shared addMutex As New System.Threading.Mutex
 
     Private Shared Function RetrieveList(listName As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
         Dim dv As DataView = Nothing
@@ -732,12 +729,12 @@ Public Class ClaimDAL
         addMutex.WaitOne()
 
         Try
-            dv = RetrieveFromCache(listName, displayNothingSelected)
+            dv = LookupListCache.RetrieveFromCache(listName, displayNothingSelected)
             If (dv Is Nothing) Then
                 ' JLR - Uncomment to reproduce concurrency problems. 
                 ' System.Threading.Thread.CurrentThread.Sleep(3000)
                 dv = LookupListDALNew.Load(listName)
-                AddToCache(listName, dv, displayNothingSelected)
+                LookupListCache.AddToCache(listName, dv, displayNothingSelected)
             End If
         Finally
             addMutex.ReleaseMutex()
@@ -806,7 +803,7 @@ Public Class ClaimDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("claim_id", id.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -816,8 +813,8 @@ Public Class ClaimDAL
 
     Public Sub Load(familyDS As DataSet, claimNumber As String, compId As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD_CLAIM_NUMBER")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("claim_number", claimNumber),
-                                            New DBHelperParameter(COL_NAME_COMPANY_ID, compId)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_number", claimNumber),
+                                            New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, compId)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -829,15 +826,15 @@ Public Class ClaimDAL
 
         Dim selectStmt As String = Config("/SQL/WAIVE_EXISTING_ISSUES")
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("p_claim_id", claimId.ToByteArray),
-                                                         New DBHelperParameter("p_identification_number", IdentificationNumber),
-                                                         New DBHelperParameter("p_rule_code", RuleCode),
-                                                         New DBHelperParameter("p_issue_code", IssueCode),
-                                                         New DBHelperParameter("p_replacement_only", isreplacement)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("p_claim_id", claimId.ToByteArray),
+                                                         New DBHelper.DBHelperParameter("p_identification_number", IdentificationNumber),
+                                                         New DBHelper.DBHelperParameter("p_rule_code", RuleCode),
+                                                         New DBHelper.DBHelperParameter("p_issue_code", IssueCode),
+                                                         New DBHelper.DBHelperParameter("p_replacement_only", isreplacement)}
 
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() {
-                             New DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
-                             New DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                             New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
+                             New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
 
 
 
@@ -985,10 +982,10 @@ Public Class ClaimDAL
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {rowNum})
+                            New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1005,7 +1002,7 @@ Public Class ClaimDAL
         Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_ISSUE")
         Dim resultCount As Integer = MAX_NUMBER_OF_ROWS
 
-        Dim inParameters As List(Of DBHelperParameter) = New List(Of DBHelperParameter)()
+        Dim inParameters As List(Of DBHelper.DBHelperParameter) = New List(Of DBHelperParameter)()
 
         inParameters.Add(New DBHelperParameter("pi_user_id", userId.ToByteArray()))
         inParameters.Add(New DBHelperParameter("pi_languageId", languageId.ToByteArray()))
@@ -1018,31 +1015,31 @@ Public Class ClaimDAL
         End If
 
         If (issueAddedFromDate.HasValue) Then
-            inParameters.Add(New DBHelperParameter("pi_issue_date_from", issueAddedFromDate.Value))
+            inParameters.Add(New DBHelper.DBHelperParameter("pi_issue_date_from", issueAddedFromDate.Value))
         End If
 
         If (issueAddedToDate.HasValue) Then
-            inParameters.Add(New DBHelperParameter("pi_issue_date_to", issueAddedToDate.Value))
+            inParameters.Add(New DBHelper.DBHelperParameter("pi_issue_date_to", issueAddedToDate.Value))
         End If
 
         If (String.IsNullOrEmpty(issueStatusXcd) = False) Then
-            inParameters.Add(New DBHelperParameter("pi_issue_status_xcd", issueStatusXcd))
+            inParameters.Add(New DBHelper.DBHelperParameter("pi_issue_status_xcd", issueStatusXcd))
         End If
 
         If (String.IsNullOrEmpty(claimStatusCode) = False) Then
-            inParameters.Add(New DBHelperParameter("pi_claim_status", claimStatusCode))
+            inParameters.Add(New DBHelper.DBHelperParameter("pi_claim_status", claimStatusCode))
         End If
 
         If (dealerId.HasValue) Then
             inParameters.Add(New DBHelperParameter("pi_dealer_id", dealerId.Value.ToByteArray()))
         End If
 
-        Dim outParameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("po_resultcursor", GetType(DataSet))}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
 
         Dim ds As New DataSet
 
         Try
-            FetchSp(selectStmt, inParameters.ToArray(), outParameters, ds, TABLE_NAME, True)
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray(), outParameters, ds, TABLE_NAME, True)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1126,10 +1123,10 @@ Public Class ClaimDAL
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {rowNum})
+                            New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1178,7 +1175,7 @@ Public Class ClaimDAL
             da = New OracleDataAdapter(cmd)
 
             da.Fill(ds, TABLE_NAME_CLMADJ)
-            ds.Locale = CultureInfo.InvariantCulture
+            ds.Locale = Globalization.CultureInfo.InvariantCulture
             Return ds
 
         Catch ex As Exception
@@ -1239,11 +1236,11 @@ Public Class ClaimDAL
 
         Try
             Dim ds As New DataSet
-            Dim LangIdPar As New DBHelperParameter(PAR_NAME_LANGUAGE_ID, languageId.ToByteArray)
-            Dim rowNum As New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+            Dim LangIdPar As New DBHelper.DBHelperParameter(PAR_NAME_LANGUAGE_ID, languageId.ToByteArray)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {LangIdPar, rowNum})
+                            New DBHelper.DBHelperParameter() {LangIdPar, rowNum})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1272,10 +1269,10 @@ Public Class ClaimDAL
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {rowNum})
+                            New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1307,7 +1304,7 @@ Public Class ClaimDAL
 
         Dim da As OracleDataAdapter = New OracleDataAdapter(cmd)
         da.Fill(ds, "DeviceInfo")
-        ds.Locale = CultureInfo.InvariantCulture
+        ds.Locale = Globalization.CultureInfo.InvariantCulture
         Return ds
 
     End Function
@@ -1328,10 +1325,10 @@ Public Class ClaimDAL
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {rowNum})
+                            New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1387,10 +1384,10 @@ Public Class ClaimDAL
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {rowNum})
+                            New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1423,10 +1420,10 @@ Public Class ClaimDAL
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {rowNum})
+                            New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1459,10 +1456,10 @@ Public Class ClaimDAL
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {rowNum})
+                            New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1531,10 +1528,10 @@ Public Class ClaimDAL
         Try
             Dim ds As New DataSet
             'Dim compIdPar As New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY_ID, compId)
-            Dim rowNum As New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {rowNum})
+                            New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1587,7 +1584,7 @@ Public Class ClaimDAL
         End If
 
         If Not dealerId.Equals(Guid.Empty) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "D." & COL_NAME_DEALER_ID & "=" & ValueToSQLString(dealerId)
+            whereClauseConditions &= " AND " & Environment.NewLine & "D." & COL_NAME_DEALER_ID & "=" & DBHelper.ValueToSQLString(dealerId)
         End If
 
         If nonOperatedClaims = "Y" Then
@@ -1618,11 +1615,11 @@ Public Class ClaimDAL
         End If
 
         If Not claimExtendedStatusId.Equals(Guid.Empty) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & " elita.GetLatestExtendedClaimStatusId(cv.claim_id) = (select list_item_id from elp_claim_status_by_group where claim_status_by_group_id = " & ValueToSQLString(claimExtendedStatusId) & ")"
+            whereClauseConditions &= " AND " & Environment.NewLine & " elita.GetLatestExtendedClaimStatusId(cv.claim_id) = (select list_item_id from elp_claim_status_by_group where claim_status_by_group_id = " & DBHelper.ValueToSQLString(claimExtendedStatusId) & ")"
         End If
 
         If Not ownerId.Equals(Guid.Empty) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & " elita.GetLatestExtendedClaimOwnerID(cv.claim_id) =" & ValueToSQLString(ownerId)
+            whereClauseConditions &= " AND " & Environment.NewLine & " elita.GetLatestExtendedClaimOwnerID(cv.claim_id) =" & DBHelper.ValueToSQLString(ownerId)
         End If
 
         ' not HextoRaw
@@ -1661,11 +1658,11 @@ Public Class ClaimDAL
         End If
 
         Try
-            Dim LangIdPar As New DBHelperParameter(PAR_NAME_LANGUAGE_ID, languageId.ToByteArray)
-            Dim rowNum As New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+            Dim LangIdPar As New DBHelper.DBHelperParameter(PAR_NAME_LANGUAGE_ID, languageId.ToByteArray)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {LangIdPar, LangIdPar, LangIdPar, LangIdPar, rowNum})
+                            New DBHelper.DBHelperParameter() {LangIdPar, LangIdPar, LangIdPar, LangIdPar, rowNum})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1713,12 +1710,12 @@ Public Class ClaimDAL
         Try
             Dim ds As New DataSet
             'Dim compIdPar As New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY_ID, compIds)
-            Dim rowNum As New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             'DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, _
             '                New DBHelper.DBHelperParameter() {compIdPar, rowNum})
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {rowNum})
+                            New DBHelper.DBHelperParameter() {rowNum})
 
             Return ds
         Catch ex As Exception
@@ -1754,12 +1751,12 @@ Public Class ClaimDAL
         Try
             Dim ds As New DataSet
             'Dim compIdPar As New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY_ID, compIds)
-            Dim rowNum As New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             'DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, _
             '                New DBHelper.DBHelperParameter() {compIdPar, rowNum})
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {rowNum})
+                            New DBHelper.DBHelperParameter() {rowNum})
 
             Return ds
         Catch ex As Exception
@@ -1783,70 +1780,70 @@ Public Class ClaimDAL
         certificateNumber = GetFormattedSearchStringForSQL(certificateNumber)
         claimedModel = GetFormattedSearchStringForSQL(claimedModel)
 
-        Dim parameters() As DBHelperParameter =
-            New DBHelperParameter() _
+        Dim parameters() As DBHelper.DBHelperParameter =
+            New DBHelper.DBHelperParameter() _
             {
-                New DBHelperParameter(PAR_NAME_SINGLE_AUTH_ID, singleAuthId.ToByteArray()),
-                New DBHelperParameter(UserDAL.COL_NAME_USER_ID & "1", userId.ToByteArray()),
-                New DBHelperParameter(PAR_NAME_SERVICE_LEVEL_CODE & "1", serviceLevelCode),
-                New DBHelperParameter(PAR_NAME_SERVICE_LEVEL_CODE & "2", serviceLevelCode),
-                New DBHelperParameter(COL_NAME_STATUS_CODE & "1", claimStatusCode),
-                New DBHelperParameter(COL_NAME_STATUS_CODE & "2", claimStatusCode),
-                New DBHelperParameter(COL_NAME_CLAIM_NUMBER & "1", claimNumber),
-                New DBHelperParameter(COL_NAME_CLAIM_NUMBER & "2", claimNumber),
-                New DBHelperParameter(COL_NAME_SERVICE_CENTER_ID & "1", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
-                New DBHelperParameter(COL_NAME_SERVICE_CENTER_ID & "2", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
-                New DBHelperParameter(COL_NAME_RISK_TYPE_ID & "1", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
-                New DBHelperParameter(COL_NAME_RISK_TYPE_ID & "2", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
-                New DBHelperParameter(PAR_NAME_REPLACEMENT_PART_SKU & "1", replacementPartSku),
-                New DBHelperParameter(PAR_NAME_REPLACEMENT_PART_SKU & "2", replacementPartSku),
-                New DBHelperParameter(PAR_NAME_REPLACED_SKU & "1", replacedSku),
-                New DBHelperParameter(PAR_NAME_REPLACED_SKU & "2", replacedSku),
-                New DBHelperParameter(ReplacementDAL.COL_NAME_DEVICE_TYPE & "1", IIf(replacementTypeId.Equals(Guid.Empty), DBNull.Value, replacementTypeId.ToByteArray())),
-                New DBHelperParameter(ReplacementDAL.COL_NAME_DEVICE_TYPE & "2", IIf(replacementTypeId.Equals(Guid.Empty), DBNull.Value, replacementTypeId.ToByteArray())),
-                New DBHelperParameter(PAR_NAME_MULTIPLE_AUTH_ID, multipleAuthId.ToByteArray()),
-                New DBHelperParameter(PAR_NAME_AUTH_VOID_ID, claimAuthStatusVoidId.ToByteArray()),
-                New DBHelperParameter(UserDAL.COL_NAME_USER_ID & "2", userId.ToByteArray()),
-                New DBHelperParameter(PAR_NAME_SERVICE_LEVEL_ID & "1", IIf(serviceLevelId.Equals(Guid.Empty), DBNull.Value, serviceLevelId.ToByteArray())),
-                New DBHelperParameter(PAR_NAME_SERVICE_LEVEL_ID & "2", IIf(serviceLevelId.Equals(Guid.Empty), DBNull.Value, serviceLevelId.ToByteArray())),
-                New DBHelperParameter(COL_NAME_STATUS_CODE & "3", claimStatusCode),
-                New DBHelperParameter(COL_NAME_STATUS_CODE & "4", claimStatusCode),
-                New DBHelperParameter(COL_NAME_CLAIM_NUMBER & "3", claimNumber),
-                New DBHelperParameter(COL_NAME_CLAIM_NUMBER & "4", claimNumber),
-                New DBHelperParameter(COL_NAME_SERVICE_CENTER_ID & "3", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
-                New DBHelperParameter(COL_NAME_SERVICE_CENTER_ID & "4", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
-                New DBHelperParameter(COL_NAME_RISK_TYPE_ID & "3", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
-                New DBHelperParameter(COL_NAME_RISK_TYPE_ID & "4", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
-                New DBHelperParameter(PAR_NAME_REPLACEMENT_PART_SKU & "3", replacementPartSku),
-                New DBHelperParameter(PAR_NAME_REPLACEMENT_PART_SKU & "4", replacementPartSku),
-                New DBHelperParameter(PAR_NAME_REPLACED_SKU & "3", replacedSku),
-                New DBHelperParameter(PAR_NAME_REPLACED_SKU & "4", replacedSku),
-                New DBHelperParameter(ReplacementDAL.COL_NAME_DEVICE_TYPE & "3", IIf(replacementTypeId.Equals(Guid.Empty), DBNull.Value, replacementTypeId.ToByteArray())),
-                New DBHelperParameter(ReplacementDAL.COL_NAME_DEVICE_TYPE & "4", IIf(replacementTypeId.Equals(Guid.Empty), DBNull.Value, replacementTypeId.ToByteArray())),
-                New DBHelperParameter(PAR_NAME_LANGUAGE_ID & "1", languageId.ToByteArray),
-                New DBHelperParameter(PAR_NAME_EQUIPMENT_TYPE_CLAIMED_ID, equipmentTypeClaimedId.ToByteArray),
-                New DBHelperParameter(PAR_NAME_CLAIMED_MANUFACTURER_ID & "1", IIf(claimedManufacturerId.Equals(Guid.Empty), DBNull.Value, claimedManufacturerId.ToByteArray())),
-                New DBHelperParameter(PAR_NAME_CLAIMED_MANUFACTURER_ID & "2", IIf(claimedManufacturerId.Equals(Guid.Empty), DBNull.Value, claimedManufacturerId.ToByteArray())),
-                New DBHelperParameter(PAR_NAME_LANGUAGE_ID & "2", languageId.ToByteArray),
-                New DBHelperParameter(CompanyDAL.COL_NAME_COUNTRY_ID & "1", IIf(countryId.Equals(Guid.Empty), DBNull.Value, countryId.ToByteArray())),
-                New DBHelperParameter(CompanyDAL.COL_NAME_COUNTRY_ID & "2", IIf(countryId.Equals(Guid.Empty), DBNull.Value, countryId.ToByteArray())),
-                New DBHelperParameter(COL_NAME_COVERAGE_TYPE_ID & "1", IIf(coverageTypeId.Equals(Guid.Empty), DBNull.Value, coverageTypeId.ToByteArray())),
-                New DBHelperParameter(COL_NAME_COVERAGE_TYPE_ID & "2", IIf(coverageTypeId.Equals(Guid.Empty), DBNull.Value, coverageTypeId.ToByteArray())),
-                New DBHelperParameter(CertificateDAL.COL_NAME_CERT_NUMBER & "1", certificateNumber),
-                New DBHelperParameter(CertificateDAL.COL_NAME_CERT_NUMBER & "2", certificateNumber),
-                New DBHelperParameter(ClaimEquipmentDAL.COL_NAME_SERIAL_NUMBER & "1", claimedSerialNumber),
-                New DBHelperParameter(ClaimEquipmentDAL.COL_NAME_SERIAL_NUMBER & "2", claimedSerialNumber),
-                New DBHelperParameter(PAR_NAME_CLAIMED_SKU & "1", claimedSku),
-                New DBHelperParameter(PAR_NAME_CLAIMED_SKU & "2", claimedSku),
-                New DBHelperParameter(PAR_NAME_CLAIMED_MODEL & "1", claimedModel),
-                New DBHelperParameter(PAR_NAME_CLAIMED_MODEL & "2", claimedModel)
+                New DBHelper.DBHelperParameter(PAR_NAME_SINGLE_AUTH_ID, singleAuthId.ToByteArray()),
+                New DBHelper.DBHelperParameter(UserDAL.COL_NAME_USER_ID & "1", userId.ToByteArray()),
+                New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_LEVEL_CODE & "1", serviceLevelCode),
+                New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_LEVEL_CODE & "2", serviceLevelCode),
+                New DBHelper.DBHelperParameter(COL_NAME_STATUS_CODE & "1", claimStatusCode),
+                New DBHelper.DBHelperParameter(COL_NAME_STATUS_CODE & "2", claimStatusCode),
+                New DBHelper.DBHelperParameter(COL_NAME_CLAIM_NUMBER & "1", claimNumber),
+                New DBHelper.DBHelperParameter(COL_NAME_CLAIM_NUMBER & "2", claimNumber),
+                New DBHelper.DBHelperParameter(COL_NAME_SERVICE_CENTER_ID & "1", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_SERVICE_CENTER_ID & "2", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_RISK_TYPE_ID & "1", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_RISK_TYPE_ID & "2", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACEMENT_PART_SKU & "1", replacementPartSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACEMENT_PART_SKU & "2", replacementPartSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACED_SKU & "1", replacedSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACED_SKU & "2", replacedSku),
+                New DBHelper.DBHelperParameter(ReplacementDAL.COL_NAME_DEVICE_TYPE & "1", IIf(replacementTypeId.Equals(Guid.Empty), DBNull.Value, replacementTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(ReplacementDAL.COL_NAME_DEVICE_TYPE & "2", IIf(replacementTypeId.Equals(Guid.Empty), DBNull.Value, replacementTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(PAR_NAME_MULTIPLE_AUTH_ID, multipleAuthId.ToByteArray()),
+                New DBHelper.DBHelperParameter(PAR_NAME_AUTH_VOID_ID, claimAuthStatusVoidId.ToByteArray()),
+                New DBHelper.DBHelperParameter(UserDAL.COL_NAME_USER_ID & "2", userId.ToByteArray()),
+                New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_LEVEL_ID & "1", IIf(serviceLevelId.Equals(Guid.Empty), DBNull.Value, serviceLevelId.ToByteArray())),
+                New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_LEVEL_ID & "2", IIf(serviceLevelId.Equals(Guid.Empty), DBNull.Value, serviceLevelId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_STATUS_CODE & "3", claimStatusCode),
+                New DBHelper.DBHelperParameter(COL_NAME_STATUS_CODE & "4", claimStatusCode),
+                New DBHelper.DBHelperParameter(COL_NAME_CLAIM_NUMBER & "3", claimNumber),
+                New DBHelper.DBHelperParameter(COL_NAME_CLAIM_NUMBER & "4", claimNumber),
+                New DBHelper.DBHelperParameter(COL_NAME_SERVICE_CENTER_ID & "3", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_SERVICE_CENTER_ID & "4", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_RISK_TYPE_ID & "3", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_RISK_TYPE_ID & "4", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACEMENT_PART_SKU & "3", replacementPartSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACEMENT_PART_SKU & "4", replacementPartSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACED_SKU & "3", replacedSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACED_SKU & "4", replacedSku),
+                New DBHelper.DBHelperParameter(ReplacementDAL.COL_NAME_DEVICE_TYPE & "3", IIf(replacementTypeId.Equals(Guid.Empty), DBNull.Value, replacementTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(ReplacementDAL.COL_NAME_DEVICE_TYPE & "4", IIf(replacementTypeId.Equals(Guid.Empty), DBNull.Value, replacementTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(PAR_NAME_LANGUAGE_ID & "1", languageId.ToByteArray),
+                New DBHelper.DBHelperParameter(PAR_NAME_EQUIPMENT_TYPE_CLAIMED_ID, equipmentTypeClaimedId.ToByteArray),
+                New DBHelper.DBHelperParameter(PAR_NAME_CLAIMED_MANUFACTURER_ID & "1", IIf(claimedManufacturerId.Equals(Guid.Empty), DBNull.Value, claimedManufacturerId.ToByteArray())),
+                New DBHelper.DBHelperParameter(PAR_NAME_CLAIMED_MANUFACTURER_ID & "2", IIf(claimedManufacturerId.Equals(Guid.Empty), DBNull.Value, claimedManufacturerId.ToByteArray())),
+                New DBHelper.DBHelperParameter(PAR_NAME_LANGUAGE_ID & "2", languageId.ToByteArray),
+                New DBHelper.DBHelperParameter(CompanyDAL.COL_NAME_COUNTRY_ID & "1", IIf(countryId.Equals(Guid.Empty), DBNull.Value, countryId.ToByteArray())),
+                New DBHelper.DBHelperParameter(CompanyDAL.COL_NAME_COUNTRY_ID & "2", IIf(countryId.Equals(Guid.Empty), DBNull.Value, countryId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_COVERAGE_TYPE_ID & "1", IIf(coverageTypeId.Equals(Guid.Empty), DBNull.Value, coverageTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_COVERAGE_TYPE_ID & "2", IIf(coverageTypeId.Equals(Guid.Empty), DBNull.Value, coverageTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(CertificateDAL.COL_NAME_CERT_NUMBER & "1", certificateNumber),
+                New DBHelper.DBHelperParameter(CertificateDAL.COL_NAME_CERT_NUMBER & "2", certificateNumber),
+                New DBHelper.DBHelperParameter(ClaimEquipmentDAL.COL_NAME_SERIAL_NUMBER & "1", claimedSerialNumber),
+                New DBHelper.DBHelperParameter(ClaimEquipmentDAL.COL_NAME_SERIAL_NUMBER & "2", claimedSerialNumber),
+                New DBHelper.DBHelperParameter(PAR_NAME_CLAIMED_SKU & "1", claimedSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_CLAIMED_SKU & "2", claimedSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_CLAIMED_MODEL & "1", claimedModel),
+                New DBHelper.DBHelperParameter(PAR_NAME_CLAIMED_MODEL & "2", claimedModel)
             }
         whereClauseConditions &= claimCreatedDate.ToSqlString("cl", COL_NAME_CREATED_DATE, parameters)
 
         ReDim Preserve parameters(parameters.Length + 2)
-        parameters(parameters.Length - 3) = New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
-        parameters(parameters.Length - 2) = New DBHelperParameter(PAR_NAME_EXTENDED_STATUS_ID & "1", IIf(extendedClaimStatusId.Equals(Guid.Empty), DBNull.Value, extendedClaimStatusId.ToByteArray()))
-        parameters(parameters.Length - 1) = New DBHelperParameter(PAR_NAME_EXTENDED_STATUS_ID & "2", IIf(extendedClaimStatusId.Equals(Guid.Empty), DBNull.Value, extendedClaimStatusId.ToByteArray()))
+        parameters(parameters.Length - 3) = New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+        parameters(parameters.Length - 2) = New DBHelper.DBHelperParameter(PAR_NAME_EXTENDED_STATUS_ID & "1", IIf(extendedClaimStatusId.Equals(Guid.Empty), DBNull.Value, extendedClaimStatusId.ToByteArray()))
+        parameters(parameters.Length - 1) = New DBHelper.DBHelperParameter(PAR_NAME_EXTENDED_STATUS_ID & "2", IIf(extendedClaimStatusId.Equals(Guid.Empty), DBNull.Value, extendedClaimStatusId.ToByteArray()))
 
         selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
@@ -1909,10 +1906,10 @@ Public Class ClaimDAL
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {rowNum})
+                            New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -2089,9 +2086,9 @@ Public Class ClaimDAL
         Dim ds As New DataSet
         Dim selectStmt As String = Config("/SQL/GET_DEDUCTIBLE")
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-        {New DBHelperParameter("Cert_Item_Cov_Id", pCert_Item_Cov_Id.ToByteArray) _
-        , New DBHelperParameter("Service_Center_Id", pService_Center_Id.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+        {New DBHelper.DBHelperParameter("Cert_Item_Cov_Id", pCert_Item_Cov_Id.ToByteArray) _
+        , New DBHelper.DBHelperParameter("Service_Center_Id", pService_Center_Id.ToByteArray)}
 
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
@@ -2117,18 +2114,18 @@ Public Class ClaimDAL
 
         Dim ds As New DataSet
         Dim selectStmt As String = Config("/SQL/GetPreviousYearReplacements")
-        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter("pi_cert_id", CertID.ToByteArray),
-                            New DBHelperParameter("pi_loss_date", CurrentLossDate),
-                            New DBHelperParameter("pi_claim_number", strClaimNum)}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter("pi_cert_id", CertID.ToByteArray),
+                            New DBHelper.DBHelperParameter("pi_loss_date", CurrentLossDate),
+                            New DBHelper.DBHelperParameter("pi_claim_number", strClaimNum)}
 
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter("po_total_claims_allowed", GetType(Integer)),
-                            New DBHelperParameter("po_repairs_allowed", GetType(Integer)),
-                            New DBHelperParameter("po_repl_allowed", GetType(Integer)),
-                            New DBHelperParameter("po_total_claims", GetType(Integer)),
-                            New DBHelperParameter("po_replacements", GetType(Integer)),
-                            New DBHelperParameter("po_repairs", GetType(Integer))}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter("po_total_claims_allowed", GetType(Integer)),
+                            New DBHelper.DBHelperParameter("po_repairs_allowed", GetType(Integer)),
+                            New DBHelper.DBHelperParameter("po_repl_allowed", GetType(Integer)),
+                            New DBHelper.DBHelperParameter("po_total_claims", GetType(Integer)),
+                            New DBHelper.DBHelperParameter("po_replacements", GetType(Integer)),
+                            New DBHelper.DBHelperParameter("po_repairs", GetType(Integer))}
 
 
         Try
@@ -2184,7 +2181,7 @@ Public Class ClaimDAL
     End Function
 
     Private Function DB_OracleCommand(p_SqlStatement As String, p_CommandType As CommandType) As OracleCommand
-        Dim conn As IDbConnection = New OracleConnection(ConnectString)
+        Dim conn As IDbConnection = New OracleConnection(DBHelper.ConnectString)
         Dim cmd As OracleCommand = conn.CreateCommand()
 
         cmd.CommandText = p_SqlStatement
@@ -2216,7 +2213,7 @@ Public Class ClaimDAL
             da = New OracleDataAdapter(cmd)
 
             da.Fill(ds, TABLE_NAME)
-            ds.Locale = CultureInfo.InvariantCulture
+            ds.Locale = Globalization.CultureInfo.InvariantCulture
 
             ds.Tables(1).TableName = TABLE_NAME_CLAIMSTAT
 
@@ -2251,10 +2248,10 @@ Public Class ClaimDAL
     Public Sub GetFirstLossDate(CertID As Guid, ByRef FirstLossDate As String)
         Dim ds As New DataSet
         Dim selectStmt As String = Config("/SQL/GetFirstLossDate")
-        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter("pi_cert_id", CertID.ToByteArray)}
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter("po_loss_date", GetType(String))}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter("pi_cert_id", CertID.ToByteArray)}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter("po_loss_date", GetType(String))}
 
         Try
             DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
@@ -2270,15 +2267,15 @@ Public Class ClaimDAL
 
     End Sub
 
-    Public Function ApproveOrRejectClaims(cmd, claimIds, company_group_id) As DBHelperParameter()
+    Public Function ApproveOrRejectClaims(cmd, claimIds, company_group_id) As DBHelper.DBHelperParameter()
         Dim selectStmt As String = Config("/SQL/APPROVE_OR_REJECT_CLAIMS")
-        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter(PAR_NAME_CMD, cmd),
-                            New DBHelperParameter(PAR_NAME_CLAIM_IDs, claimIds),
-                            New DBHelperParameter(PAR_NAME_COMPANY_GROUP_ID, company_group_id.ToByteArray)}
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
-                            New DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter(PAR_NAME_CMD, cmd),
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_IDs, claimIds),
+                            New DBHelper.DBHelperParameter(PAR_NAME_COMPANY_GROUP_ID, company_group_id.ToByteArray)}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
 
         Try
 
@@ -2291,18 +2288,18 @@ Public Class ClaimDAL
         End Try
     End Function
 
-    Public Function ApproveOrRejectClaims(cmd, claimIds, comments, risktypes, company_group_id, language_id) As DBHelperParameter()
+    Public Function ApproveOrRejectClaims(cmd, claimIds, comments, risktypes, company_group_id, language_id) As DBHelper.DBHelperParameter()
         Dim selectStmt As String = Config("/SQL/APPROVE_OR_REJECT_CLAIMS")
-        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter(PAR_NAME_CMD, cmd),
-                            New DBHelperParameter(PAR_NAME_CLAIM_IDs, claimIds),
-                            New DBHelperParameter(PAR_NAME_RISK_TYPE_IDs, risktypes),
-                            New DBHelperParameter(PAR_NAME_COMMENTs, comments),
-                            New DBHelperParameter(PAR_NAME_LANGUAGE_ID, language_id.ToByteArray),
-                            New DBHelperParameter(PAR_NAME_COMPANY_GROUP_ID, company_group_id.ToByteArray)}
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
-                            New DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter(PAR_NAME_CMD, cmd),
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_IDs, claimIds),
+                            New DBHelper.DBHelperParameter(PAR_NAME_RISK_TYPE_IDs, risktypes),
+                            New DBHelper.DBHelperParameter(PAR_NAME_COMMENTs, comments),
+                            New DBHelper.DBHelperParameter(PAR_NAME_LANGUAGE_ID, language_id.ToByteArray),
+                            New DBHelper.DBHelperParameter(PAR_NAME_COMPANY_GROUP_ID, company_group_id.ToByteArray)}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
 
         Try
 
@@ -2390,14 +2387,14 @@ Public Class ClaimDAL
             myLossDate = lossDate.Value
         End If
 
-        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter("p_cert_id", certId.ToByteArray),
-                            New DBHelperParameter("p_contract_id", contractId.ToByteArray),
-                            New DBHelperParameter("p_cert_item_coverage_id", certItemCoverageId.ToByteArray),
-                            New DBHelperParameter("p_loss_date", myLossDate)}
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter("p_liability_limit", GetType(Decimal)),
-                            New DBHelperParameter(PAR_NAME_RETURN, GetType(Integer))}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter("p_cert_id", certId.ToByteArray),
+                            New DBHelper.DBHelperParameter("p_contract_id", contractId.ToByteArray),
+                            New DBHelper.DBHelperParameter("p_cert_item_coverage_id", certItemCoverageId.ToByteArray),
+                            New DBHelper.DBHelperParameter("p_loss_date", myLossDate)}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter("p_liability_limit", GetType(Decimal)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer))}
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
@@ -2412,10 +2409,10 @@ Public Class ClaimDAL
 
     Public Function GetDepreciationSchedule(contractId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_DEPRECIATION_SCHEDULE")
-        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter("p_contract_id", contractId.ToByteArray),
-                            New DBHelperParameter("p_table_reference", ContractDAL.TABLE_NAME),
-                            New DBHelperParameter("p_depreciation_sch_usage_xcd", DepreciationSchedule_Usage_Default)}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter("p_contract_id", contractId.ToByteArray),
+                            New DBHelper.DBHelperParameter("p_table_reference", ContractDAL.TABLE_NAME),
+                            New DBHelper.DBHelperParameter("p_depreciation_sch_usage_xcd", DepreciationSchedule_Usage_Default)}
 
         Dim ds As New DataSet
         Try
@@ -2430,14 +2427,14 @@ Public Class ClaimDAL
     ' Execute Store Procedure
     Public Function Handle_Replaced_Items(replaceAll As Integer, claimId As Guid, certId As Guid, certItemCoverageId As Guid, replaceDate As Date) As Integer
         Dim selectStmt As String = Config("/SQL/HANDLE_REPLACED_ITEMS")
-        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter("p_replace_all", replaceAll),
-                            New DBHelperParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray),
-                            New DBHelperParameter(COL_NAME_CERTIFICATE_ID, certId.ToByteArray),
-                            New DBHelperParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray),
-                            New DBHelperParameter("p_replace_date", replaceDate)}
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter(PAR_NAME_RETURN, GetType(Integer))}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter("p_replace_all", replaceAll),
+                            New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray),
+                            New DBHelper.DBHelperParameter(COL_NAME_CERTIFICATE_ID, certId.ToByteArray),
+                            New DBHelper.DBHelperParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray),
+                            New DBHelper.DBHelperParameter("p_replace_date", replaceDate)}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer))}
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
@@ -2453,17 +2450,17 @@ Public Class ClaimDAL
 
     Public Function GetClaimNumber(companyId As Guid, Optional ByVal claimNumber As String = "", Optional ByVal CoverageCode As String = "", Optional ByVal UnitNumber As Integer = Nothing) As ClaimNumberInfo
         Dim selectStmt As String = Config("/SQL/GET_NEXT_CLAIM_NUMBER_SP")
-        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter(PAR_NAME_COMPANY, companyId.ToByteArray),
-                            New DBHelperParameter(PAR_NAME_CLAIM_NUMBER_INPUT, claimNumber),
-                            New DBHelperParameter(PAR_NAME_COVERAGE_CODE_INPUT, CoverageCode),
-                            New DBHelperParameter(PAR_NAME_UNIT_NUMBER_INPUT, UnitNumber)}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter(PAR_NAME_COMPANY, companyId.ToByteArray),
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_NUMBER_INPUT, claimNumber),
+                            New DBHelper.DBHelperParameter(PAR_NAME_COVERAGE_CODE_INPUT, CoverageCode),
+                            New DBHelper.DBHelperParameter(PAR_NAME_UNIT_NUMBER_INPUT, UnitNumber)}
 
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter(PAR_NAME_CLAIM_NUMBER, GetType(String), 50),
-                            New DBHelperParameter(PAR_NAME_CLAIM_GROUP_ID, GetType(Guid)),
-                            New DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
-                            New DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_NUMBER, GetType(String), 50),
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_GROUP_ID, GetType(Guid)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
@@ -2482,16 +2479,16 @@ Public Class ClaimDAL
 
     Public Function GetExistClaimNumber(companyId As Guid, claimNumber As String, CoverageCode As String, UnitNumber As Integer, Optional ByVal IsPayClaim As Boolean = False) As String
         Dim selectStmt As String = Config("/SQL/GET_CLAIM_NUMBER_INFO_SP")
-        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter(PAR_NAME_COMPANY, companyId.ToByteArray),
-                            New DBHelperParameter(PAR_NAME_CLAIM_NUMBER_INPUT, claimNumber),
-                            New DBHelperParameter(PAR_NAME_COVERAGE_CODE_INPUT, CoverageCode),
-                            New DBHelperParameter(PAR_NAME_UNIT_NUMBER_INPUT, UnitNumber)}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter(PAR_NAME_COMPANY, companyId.ToByteArray),
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_NUMBER_INPUT, claimNumber),
+                            New DBHelper.DBHelperParameter(PAR_NAME_COVERAGE_CODE_INPUT, CoverageCode),
+                            New DBHelper.DBHelperParameter(PAR_NAME_UNIT_NUMBER_INPUT, UnitNumber)}
 
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter(PAR_NAME_CLAIM_NUMBER, GetType(String), 50),
-                            New DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
-                            New DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_NUMBER, GetType(String), 50),
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
 
         Dim retClaimNumber As String
 
@@ -2532,21 +2529,21 @@ Public Class ClaimDAL
     Public Function GetClaimsForBatch(serviceCenterId As Guid, batchNumber As String, InvoiceTransId As Guid, userId As Guid, languageId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_CLAIMS_FOR_BATCH")
 
-        Dim inParameters() As DBHelperParameter = New DBHelperParameter() {
-                                New DBHelperParameter(PAR_SERVICE_CENTER, serviceCenterId.ToByteArray),
-                                New DBHelperParameter(PAR_INVOICE_TRANS, InvoiceTransId.ToByteArray),
-                                New DBHelperParameter(PAR_USER_ID, userId.ToByteArray),
-                                New DBHelperParameter(PAR_LANGUAGE_ID, languageId),
-                                New DBHelperParameter(PAR_BATCH_NUMBER, batchNumber)}
+        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                                New DBHelper.DBHelperParameter(PAR_SERVICE_CENTER, serviceCenterId.ToByteArray),
+                                New DBHelper.DBHelperParameter(PAR_INVOICE_TRANS, InvoiceTransId.ToByteArray),
+                                New DBHelper.DBHelperParameter(PAR_USER_ID, userId.ToByteArray),
+                                New DBHelper.DBHelperParameter(PAR_LANGUAGE_ID, languageId),
+                                New DBHelper.DBHelperParameter(PAR_BATCH_NUMBER, batchNumber)}
 
-        Dim outParameters() As DBHelperParameter = New DBHelperParameter() {
-                                New DBHelperParameter(PAR_CLAIMS, GetType(DataSet))}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                                New DBHelper.DBHelperParameter(PAR_CLAIMS, GetType(DataSet))}
 
         Dim ds As New DataSet
         Dim tbl As String = TABLE_NAME
 
         ' Call DBHelper Store Procedure
-        FetchSp(selectStmt, inParameters, outParameters, ds, tbl)
+        DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, tbl)
         Return ds
 
     End Function
@@ -2554,8 +2551,8 @@ Public Class ClaimDAL
     Public Function GetOriginalLiabilityAmount(Claim_id As Guid) As DataSet
 
         Dim selectStmt As String = Config("/SQL/GET_ORIGINAL_LIABILITY_AMOUNT")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {
-                         New DBHelperParameter(TABLE_KEY_NAME, Claim_id.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                         New DBHelper.DBHelperParameter(TABLE_KEY_NAME, Claim_id.ToByteArray)}
         Dim ds As New DataSet
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
@@ -2650,7 +2647,7 @@ Public Class ClaimDAL
         'Dim commentDAL As New CommentDAL 'TODO
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
-            tr = GetNewTransaction
+            tr = DBHelper.GetNewTransaction
         End If
         'Def - 1113. DAL would check to see if a record is already created by a back-end process
         'in elp_claim_active_sessions table. It would wait for the process to release that record 
@@ -2659,8 +2656,8 @@ Public Class ClaimDAL
         'start
         Dim selectStmt As String = Config("/SQL/CLAIM_CHECK_SESSION")
 
-        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter("p_calling_process", network_Id, Type.GetType("System.String"))}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter("p_calling_process", network_Id, Type.GetType("System.String"))}
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, Nothing)
@@ -2813,8 +2810,8 @@ Public Class ClaimDAL
 
         FormatSearchMask(cert_number)
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-        {New DBHelperParameter(PAR_NAME_SERIAL_NUMBER, serial_number.ToUpper)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+        {New DBHelper.DBHelperParameter(PAR_NAME_SERIAL_NUMBER, serial_number.ToUpper)}
         'Open Mobile requires generic certificate search Ticket #:1484585
 
         Dim whereClauseConditions As String = " AND " & MiscUtil.BuildListForSql("cl." & COL_NAME_COMPANY_ID, compIds, False)
@@ -2876,12 +2873,12 @@ Public Class ClaimDAL
             selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
         End If
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray) _
-                         , New DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray) _
-                        , New DBHelperParameter(WS_PAR_SERVICE_CENTER_ID, serviceCenterID.ToByteArray) _
-                        , New DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray) _
-                        , New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_ROWS_RETURN)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray) _
+                         , New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray) _
+                        , New DBHelper.DBHelperParameter(WS_PAR_SERVICE_CENTER_ID, serviceCenterID.ToByteArray) _
+                        , New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray) _
+                        , New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_ROWS_RETURN)}
 
         Dim ds As New DataSet()
         Try
@@ -2895,7 +2892,7 @@ Public Class ClaimDAL
     End Function
 
 
-    Public Function GetActiveClaimsForSvcGeneric(oServiceCenterClaimsSearchData As ServiceCenterClaimsSearchData, companies As ArrayList, companyGroupID As Guid, languageId As Guid, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
+    Public Function GetActiveClaimsForSvcGeneric(oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, companies As ArrayList, companyGroupID As Guid, languageId As Guid, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
         Dim selectStmt As String = Config("/SQL/NEW_GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC")
         Dim whereClauseConditions As String = ""
         'Dim whereClauseConditions_count As String = ""
@@ -3110,14 +3107,14 @@ Public Class ClaimDAL
 
         selectStmt = selectStmt.Replace(DYNAMIC_ROW_NUMBER_PLACE_HOLDER, Number_Of_Row)
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter(WS_PAR_SERVICE_CENTER_ID, oServiceCenterClaimsSearchData.ServiceCenterId.ToByteArray),
-                         New DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelperParameter(COL_NAME_LOW_LIMIT, LimitResultSet_Low),
-                         New DBHelperParameter(COL_NAME_HIGH_LIMIT, LimitResultSet_High)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter(WS_PAR_SERVICE_CENTER_ID, oServiceCenterClaimsSearchData.ServiceCenterId.ToByteArray),
+                         New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(COL_NAME_LOW_LIMIT, LimitResultSet_Low),
+                         New DBHelper.DBHelperParameter(COL_NAME_HIGH_LIMIT, LimitResultSet_High)}
 
         Dim ds As New DataSet()
         Try
@@ -3136,7 +3133,7 @@ Public Class ClaimDAL
         End Try
     End Function
 
-    Public Function GetClaimsForServiceCenter(oServiceCenterClaimsSearchData As ServiceCenterClaimsSearchData, username As String, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
+    Public Function GetClaimsForServiceCenter(oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, username As String, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
         Dim ds As New DataSet
         Dim da As OracleDataAdapter
         Dim ClaimStatusString As String = Nothing
@@ -3228,7 +3225,7 @@ Public Class ClaimDAL
             da = New OracleDataAdapter(cmd)
 
             da.Fill(ds, TABLE_NAME_SVC)
-            ds.Locale = CultureInfo.InvariantCulture
+            ds.Locale = Globalization.CultureInfo.InvariantCulture
             Return ds
 
         Catch ex As Exception
@@ -3236,7 +3233,7 @@ Public Class ClaimDAL
         End Try
     End Function
 
-    Public Function GetClaimsForServiceCenterAC(oServiceCenterClaimsSearchData As ServiceCenterClaimsSearchData, username As String, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
+    Public Function GetClaimsForServiceCenterAC(oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, username As String, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
         Dim ds As New DataSet
         Dim da As OracleDataAdapter
         Dim ClaimStatusString As String = Nothing
@@ -3328,7 +3325,7 @@ Public Class ClaimDAL
             da = New OracleDataAdapter(cmd)
 
             da.Fill(ds, TABLE_NAME_SVC)
-            ds.Locale = CultureInfo.InvariantCulture
+            ds.Locale = Globalization.CultureInfo.InvariantCulture
             Return ds
 
         Catch ex As Exception
@@ -3336,7 +3333,7 @@ Public Class ClaimDAL
         End Try
     End Function
 
-    Public Function GetActiveClaimsByClaimNumberorCertificate(oServiceCenterClaimsSearchData As ServiceCenterClaimsSearchData, companies As ArrayList, companyGroupID As Guid, languageId As Guid, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
+    Public Function GetActiveClaimsByClaimNumberorCertificate(oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, companies As ArrayList, companyGroupID As Guid, languageId As Guid, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
         Dim selectStmt As String = Config("/SQL/GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_BASED_ON_CERT_OR_CLAIM_NUMBER")
         Dim whereClauseConditions As String = ""
         Dim whereCMVClauseConditions As String = ""
@@ -3500,13 +3497,13 @@ Public Class ClaimDAL
         selectStmt = selectStmt.Replace(DYNAMIC_ROW_NUMBER_PLACE_HOLDER, Number_Of_Row)
         selectStmt = selectStmt.Replace(DYNAMIC_COUNT_PLACE_HOLDER, Count_Of_Row)
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelperParameter(COL_NAME_LOW_LIMIT, LimitResultSet_Low),
-                         New DBHelperParameter(COL_NAME_HIGH_LIMIT, LimitResultSet_High)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(COL_NAME_LOW_LIMIT, LimitResultSet_Low),
+                         New DBHelper.DBHelperParameter(COL_NAME_HIGH_LIMIT, LimitResultSet_High)}
 
         Dim ds As New DataSet()
         Try
@@ -3573,7 +3570,7 @@ Public Class ClaimDAL
         Dim dal As New ClaimDAL
         Dim oRow As DataRow
         Dim suffix As String
-        Dim claimNumberInfo As ClaimNumberInfo
+        Dim claimNumberInfo As ClaimDAL.ClaimNumberInfo
         Dim oGalaxyClaimNumber As GalaxyClaimNumber
 
         For Each oRow In familyDataset.Tables(TABLE_NAME).Rows
@@ -3621,8 +3618,8 @@ Public Class ClaimDAL
             selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                                                {New DBHelperParameter(COL_NAME_CERTIFICATE_ID, certId.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                                                {New DBHelper.DBHelperParameter(COL_NAME_CERTIFICATE_ID, certId.ToByteArray)}
         ', New DBHelper.DBHelperParameter(COL_NAME_LOSS_DATE, CurrentLossDate.ToString("MM/dd/yyyy"))}
 
         Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
@@ -3695,20 +3692,20 @@ Public Class ClaimDAL
 
             dt.PrimaryKey = pk
 
-            Execute(dt, Config("/SQL/INSERT_ACTIVE_SESSION"), "", "", Nothing, Nothing, DataRowState.Added)
+            DBHelper.Execute(dt, Config("/SQL/INSERT_ACTIVE_SESSION"), "", "", Nothing, Nothing, DataRowState.Added)
         Catch ex As Exception
             Throw ex
         End Try
     End Sub
 
     Public Sub RemoveActiveSessionRec(processId As Guid)
-        Dim tr As IDbTransaction = GetNewTransaction
+        Dim tr As IDbTransaction = DBHelper.GetNewTransaction
         Dim deleteStmt As String = Config("/SQL/DELETE_ACTIVE_SESSION")
-        Dim inputParameters(0) As DBHelperParameter
+        Dim inputParameters(0) As DBHelper.DBHelperParameter
 
         Try
-            inputParameters(0) = New DBHelperParameter("PROCESS_ID", processId.ToByteArray)
-            Execute(deleteStmt, inputParameters, tr)
+            inputParameters(0) = New DBHelper.DBHelperParameter("PROCESS_ID", processId.ToByteArray)
+            DBHelper.Execute(deleteStmt, inputParameters, tr)
 
             DBHelper.Commit(tr)
         Catch ex As Exception
@@ -3722,8 +3719,8 @@ Public Class ClaimDAL
     Public Function GetClaimReserveAmount(claimId As Guid) As DecimalType
         Dim selectStmt As String = Config("/SQL/GET_RESERVE_AMOUNT")
         Dim returnValue As Object
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-            {New DBHelperParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+            {New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray)}
         Try
 
             returnValue = DBHelper.ExecuteScalar(selectStmt, parameters)
@@ -3748,10 +3745,10 @@ Public Class ClaimDAL
         Else
             myLossDate = lossDate.Value
         End If
-        Dim inParameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter(COL_NAME_CERTIFICATE_ID, CertId.ToByteArray) _
-                        , New DBHelperParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, CertItemCoverageId.ToByteArray) _
-                        , New DBHelperParameter(COL_NAME_LOSS_DATE, myLossDate)}
+        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter(COL_NAME_CERTIFICATE_ID, CertId.ToByteArray) _
+                        , New DBHelper.DBHelperParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, CertItemCoverageId.ToByteArray) _
+                        , New DBHelper.DBHelperParameter(COL_NAME_LOSS_DATE, myLossDate)}
         Try
 
             returnValue = DBHelper.ExecuteScalar(selectStmt, inParameters)
@@ -3771,9 +3768,9 @@ Public Class ClaimDAL
         Else
             myLossDate = lossDate.Value
         End If
-        Dim inParameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter(COL_NAME_CERTIFICATE_ID, CertId.ToByteArray) _
-                        , New DBHelperParameter(COL_NAME_LOSS_DATE, myLossDate)}
+        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter(COL_NAME_CERTIFICATE_ID, CertId.ToByteArray) _
+                        , New DBHelper.DBHelperParameter(COL_NAME_LOSS_DATE, myLossDate)}
 
 
         Try
@@ -3799,9 +3796,9 @@ Public Class ClaimDAL
         Else
             myLossDate = lossDate.Value
         End If
-        Dim inParameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, CertItemCoverageId.ToByteArray) _
-                        , New DBHelperParameter(COL_NAME_LOSS_DATE, myLossDate)}
+        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, CertItemCoverageId.ToByteArray) _
+                        , New DBHelper.DBHelperParameter(COL_NAME_LOSS_DATE, myLossDate)}
         Try
 
             returnValue = DBHelper.ExecuteScalar(selectStmt, inParameters)
@@ -3849,19 +3846,19 @@ Public Class ClaimDAL
         Dim sqlStmt As String
         sqlStmt = Config("/SQL/CLAIM_LOCK")
 
-        Dim Inputparameters() As DBHelperParameter = New DBHelperParameter() _
-        {New DBHelperParameter(COL_NAME_CLAIM_ID, ClaimId.ToByteArray, GetType(Guid)) _
-        , New DBHelperParameter(COL_NAME_LOCKED_BY, LockBy, GetType(String))}
+        Dim Inputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+        {New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, ClaimId.ToByteArray, GetType(Guid)) _
+        , New DBHelper.DBHelperParameter(COL_NAME_LOCKED_BY, LockBy, GetType(String))}
 
-        Dim Outputparameters() As DBHelperParameter = New DBHelperParameter() _
-         {New DBHelperParameter("p_error_code", GetType(String), 100),
-         New DBHelperParameter("p_error_description", GetType(String), 1000)}
+        Dim Outputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+         {New DBHelper.DBHelperParameter("p_error_code", GetType(String), 100),
+         New DBHelper.DBHelperParameter("p_error_description", GetType(String), 1000)}
 
         Dim ds As New DataSet(CLAIM_LOCK_STATUS)
         ' Call DBHelper Store Procedure
 
         Try
-            FetchSp(sqlStmt, Inputparameters, Outputparameters, ds, CLAIM_LOCK_STATUS)
+            DBHelper.FetchSp(sqlStmt, Inputparameters, Outputparameters, ds, CLAIM_LOCK_STATUS)
 
             If Outputparameters(P_RETURN).Value <> 0 Then
                 ds.Tables(0).TableName = CLAIM_LOCK_STATUS
@@ -3876,19 +3873,19 @@ Public Class ClaimDAL
         Dim sqlStmt As String
         sqlStmt = Config("/SQL/CLAIM_UNLOCK")
 
-        Dim Inputparameters() As DBHelperParameter = New DBHelperParameter() _
-        {New DBHelperParameter(COL_NAME_CLAIM_ID, ClaimId.ToByteArray, GetType(Guid)) _
-        , New DBHelperParameter(COL_NAME_LOCKED_BY, LockBy, GetType(String))}
+        Dim Inputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+        {New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, ClaimId.ToByteArray, GetType(Guid)) _
+        , New DBHelper.DBHelperParameter(COL_NAME_LOCKED_BY, LockBy, GetType(String))}
 
-        Dim Outputparameters() As DBHelperParameter = New DBHelperParameter() _
-         {New DBHelperParameter("p_error_code", GetType(String), 100),
-         New DBHelperParameter("p_error_description", GetType(String), 1000)}
+        Dim Outputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+         {New DBHelper.DBHelperParameter("p_error_code", GetType(String), 100),
+         New DBHelper.DBHelperParameter("p_error_description", GetType(String), 1000)}
 
         Dim ds As New DataSet(CLAIM_LOCK_STATUS)
         ' Call DBHelper Store Procedure
 
         Try
-            FetchSp(sqlStmt, Inputparameters, Outputparameters, ds, CLAIM_LOCK_STATUS)
+            DBHelper.FetchSp(sqlStmt, Inputparameters, Outputparameters, ds, CLAIM_LOCK_STATUS)
 
             If Outputparameters(P_RETURN).Value <> 0 Then
                 ds.Tables(0).TableName = CLAIM_LOCK_STATUS
@@ -3906,11 +3903,11 @@ Public Class ClaimDAL
 
     Public Function WS_GetClaimStatusInfo(CustomerIdentifier As String, IdentifierType As String, DealerId As Guid, userId As Guid, BillingZipCode As String, LanguageISOCode As String, CertificateNumber As String, ByRef ValidateErrorCode As Integer) As DataSet
         Dim selectStmt As String = Config("/SQL/WS_GetClaimStatusInfo")
-        Dim inputParameters(TOTAL_INPUT_PARAM_WS_1) As DBHelperParameter
-        Dim outputParameter(TOTAL_OUTPUT_PARAM_WS) As DBHelperParameter
+        Dim inputParameters(TOTAL_INPUT_PARAM_WS_1) As DBHelper.DBHelperParameter
+        Dim outputParameter(TOTAL_OUTPUT_PARAM_WS) As DBHelper.DBHelperParameter
 
 
-        inputParameters = New DBHelperParameter() _
+        inputParameters = New DBHelper.DBHelperParameter() _
                 {SetParameter(SP_PARAM_NAME__CUSTOMER_IDENTIFIER, CustomerIdentifier),
                  SetParameter(SP_PARAM_NAME__IDENTIFIER_TYPE, IdentifierType),
                  SetParameter(SP_PARAM_NAME__SYSTEM_USER_ID, userId.ToByteArray),
@@ -3920,11 +3917,11 @@ Public Class ClaimDAL
                               SetParameter(SP_PARAM_NAME__CERTIFICATE_NUMBER, CertificateNumber)
                 }
 
-        outputParameter(P_RETURN) = New DBHelperParameter(SP_PARAM_NAME__RETURN, GetType(Integer))
-        outputParameter(P_EXCEPTION_MSG) = New DBHelperParameter(SP_PARAM_NAME__EXCEPTION_MSG, GetType(String), 50)
-        outputParameter(P_CURSOR_CLAIM_STATUS_INFO) = New DBHelperParameter(SP_PARAM_NAME__CLAIM_STATUS_INFO, GetType(DataSet))
-        outputParameter(P_CURSOR_EXTENDED_STATUS_INFO) = New DBHelperParameter(SP_PARAM_NAME__EXTENDED_CLAIM_STATUS_INFO, GetType(DataSet))
-        outputParameter(P_CURSOR_RESPONSE_STATUS) = New DBHelperParameter(SP_PARAM_NAME__RESPONSE_STATUS, GetType(DataSet))
+        outputParameter(P_RETURN) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__RETURN, GetType(Integer))
+        outputParameter(P_EXCEPTION_MSG) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__EXCEPTION_MSG, GetType(String), 50)
+        outputParameter(P_CURSOR_CLAIM_STATUS_INFO) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__CLAIM_STATUS_INFO, GetType(DataSet))
+        outputParameter(P_CURSOR_EXTENDED_STATUS_INFO) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__EXTENDED_CLAIM_STATUS_INFO, GetType(DataSet))
+        outputParameter(P_CURSOR_RESPONSE_STATUS) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__RESPONSE_STATUS, GetType(DataSet))
 
         Dim ds As New DataSet(DATASET_NAME__CLAIM_CHECK_RESPONSE)
         ' Call DBHelper Store Procedure
@@ -3933,7 +3930,7 @@ Public Class ClaimDAL
         End If
 
         Try
-            FetchSp(selectStmt, inputParameters, outputParameter, ds, TABLE_NAME__GET_CLAIM_STATUS_INFO_RESPONSE)
+            DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, ds, TABLE_NAME__GET_CLAIM_STATUS_INFO_RESPONSE)
 
             If outputParameter(P_RETURN).Value <> 0 Then
                 ds.Tables(0).TableName = TABLE_NAME__RESPONSE_STATUS
@@ -3962,11 +3959,11 @@ Public Class ClaimDAL
     Public Function WebSubmitClaimPreValidate(oWebSubmitClaimPreValidateInputData As WebSubmitClaimPreValidateInputData,
                                               ByRef oWebSubmitClaimPreValidateOutputData As WebSubmitClaimPreValidateOutputData) As DataSet
         Dim selectStmt As String = Config("/SQL/WS_SubmitClaimPreValidate")
-        Dim inputParameters() As DBHelperParameter
-        Dim outputParameter(TOTAL_OUTPUT_PARAM_WS_1) As DBHelperParameter
+        Dim inputParameters() As DBHelper.DBHelperParameter
+        Dim outputParameter(TOTAL_OUTPUT_PARAM_WS_1) As DBHelper.DBHelperParameter
 
 
-        inputParameters = New DBHelperParameter() _
+        inputParameters = New DBHelper.DBHelperParameter() _
                 {SetParameter(SP_PARAM_NAME__CUSTOMER_IDENTIFIER, oWebSubmitClaimPreValidateInputData.CustomerIdentifier),
                  SetParameter(SP_PARAM_NAME__IDENTIFIER_TYPE, oWebSubmitClaimPreValidateInputData.IdentifierType),
                  SetParameter(SP_PARAM_NAME__SYSTEM_USER_ID, oWebSubmitClaimPreValidateInputData.SystemUserId.ToByteArray),
@@ -3984,29 +3981,29 @@ Public Class ClaimDAL
                  SetParameter(SP_PARAM_NAME__DATE_OF_LOSS, oWebSubmitClaimPreValidateInputData.DateOfLoss)
                  }
 
-        outputParameter(P_RETURN) = New DBHelperParameter(SP_PARAM_NAME__RETURN, GetType(Integer))
-        outputParameter(P_EXCEPTION_MSG) = New DBHelperParameter(SP_PARAM_NAME__EXCEPTION_MSG, GetType(String), 100)
-        outputParameter(P_COVERAGE_TYPE_ID) = New DBHelperParameter(SP_PARAM_NAME__COVERAGE_TYPE_ID, oWebSubmitClaimPreValidateOutputData.CoverageTypeId.ToByteArray.GetType)
-        outputParameter(P_CERT_ITEM_COVERAGE_ID) = New DBHelperParameter(SP_PARAM_NAME__CERT_ITEM_COVERAGE_ID, oWebSubmitClaimPreValidateOutputData.CertItemCoverageId.ToByteArray.GetType)
-        outputParameter(P_SERVICE_CENTER_ID) = New DBHelperParameter(SP_PARAM_NAME__SERVICE_CENTER_ID, oWebSubmitClaimPreValidateOutputData.ServiceCenterId.ToByteArray.GetType)
-        outputParameter(P_CAUSE_OF_LOSS_ID) = New DBHelperParameter(SP_PARAM_NAME__CAUSE_OF_LOSS_ID, oWebSubmitClaimPreValidateOutputData.CauseOfLossId.ToByteArray.GetType)
-        outputParameter(P_COUNTRY_ID) = New DBHelperParameter(SP_PARAM_NAME__COUNTRY_ID, oWebSubmitClaimPreValidateOutputData.CountryId.ToByteArray.GetType)
-        outputParameter(P_REGION_ID) = New DBHelperParameter(SP_PARAM_NAME__REGION_ID, oWebSubmitClaimPreValidateOutputData.RegionId.ToByteArray.GetType)
-        outputParameter(P_HOME_PHONE) = New DBHelperParameter(SP_PARAM_NAME__HONE_PHONE, GetType(String), 20)
-        outputParameter(P_WORK_PHONE) = New DBHelperParameter(SP_PARAM_NAME__WORK_PHONE, GetType(String), 20)
-        outputParameter(P_ADDRESS_TYPE_ID) = New DBHelperParameter(SP_PARAM_NAME__ADDRESS_TYPE_ID, oWebSubmitClaimPreValidateOutputData.AddressTypeId.ToByteArray.GetType)
-        outputParameter(P_DEDUCTIBLE) = New DBHelperParameter(SP_PARAM_NAME__DEDUCTIBLE, GetType(Decimal))
-        outputParameter(P_PAYMENT_METHOD_ID) = New DBHelperParameter(SP_PARAM_NAME__PAYMENT_METHOD_ID, oWebSubmitClaimPreValidateOutputData.PaymentMethodId.ToByteArray.GetType)
-        outputParameter(P_CLAIM_STATUS_FOR_EXT_SYS_CODE) = New DBHelperParameter(SP_PARAM_NAME__DEFAULT_CLAIM_STATUS_FOR_EXT_SYS_CODE, GetType(String), 50)
-        outputParameter(P_INVALID_SERIAL_NUMBER) = New DBHelperParameter(SP_PARAM_NAME__INVALID_SERIAL_NUMBER, GetType(Integer))
-        outputParameter(P_INVALID_MAKE_MODEL) = New DBHelperParameter(SP_PARAM_NAME__INVALID_MAKE_MODEL, GetType(Integer))
-        outputParameter(P_CURSOR_RESPONSE_STATUS_1) = New DBHelperParameter(SP_PARAM_NAME__RESPONSE_STATUS, GetType(DataSet))
+        outputParameter(P_RETURN) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__RETURN, GetType(Integer))
+        outputParameter(P_EXCEPTION_MSG) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__EXCEPTION_MSG, GetType(String), 100)
+        outputParameter(P_COVERAGE_TYPE_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__COVERAGE_TYPE_ID, oWebSubmitClaimPreValidateOutputData.CoverageTypeId.ToByteArray.GetType)
+        outputParameter(P_CERT_ITEM_COVERAGE_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__CERT_ITEM_COVERAGE_ID, oWebSubmitClaimPreValidateOutputData.CertItemCoverageId.ToByteArray.GetType)
+        outputParameter(P_SERVICE_CENTER_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__SERVICE_CENTER_ID, oWebSubmitClaimPreValidateOutputData.ServiceCenterId.ToByteArray.GetType)
+        outputParameter(P_CAUSE_OF_LOSS_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__CAUSE_OF_LOSS_ID, oWebSubmitClaimPreValidateOutputData.CauseOfLossId.ToByteArray.GetType)
+        outputParameter(P_COUNTRY_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__COUNTRY_ID, oWebSubmitClaimPreValidateOutputData.CountryId.ToByteArray.GetType)
+        outputParameter(P_REGION_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__REGION_ID, oWebSubmitClaimPreValidateOutputData.RegionId.ToByteArray.GetType)
+        outputParameter(P_HOME_PHONE) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__HONE_PHONE, GetType(String), 20)
+        outputParameter(P_WORK_PHONE) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__WORK_PHONE, GetType(String), 20)
+        outputParameter(P_ADDRESS_TYPE_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__ADDRESS_TYPE_ID, oWebSubmitClaimPreValidateOutputData.AddressTypeId.ToByteArray.GetType)
+        outputParameter(P_DEDUCTIBLE) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__DEDUCTIBLE, GetType(Decimal))
+        outputParameter(P_PAYMENT_METHOD_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__PAYMENT_METHOD_ID, oWebSubmitClaimPreValidateOutputData.PaymentMethodId.ToByteArray.GetType)
+        outputParameter(P_CLAIM_STATUS_FOR_EXT_SYS_CODE) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__DEFAULT_CLAIM_STATUS_FOR_EXT_SYS_CODE, GetType(String), 50)
+        outputParameter(P_INVALID_SERIAL_NUMBER) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__INVALID_SERIAL_NUMBER, GetType(Integer))
+        outputParameter(P_INVALID_MAKE_MODEL) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__INVALID_MAKE_MODEL, GetType(Integer))
+        outputParameter(P_CURSOR_RESPONSE_STATUS_1) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__RESPONSE_STATUS, GetType(DataSet))
 
         Dim ds As New DataSet(DATASET_NAME__SUBMIT_CLAIM_RESPONSE)
         ' Call DBHelper Store Procedure
 
         Try
-            FetchSp(selectStmt, inputParameters, outputParameter, ds, TABLE_NAME__RESPONSE_STATUS)
+            DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, ds, TABLE_NAME__RESPONSE_STATUS)
 
             If outputParameter(P_RETURN).Value <> 0 Then
                 oWebSubmitClaimPreValidateOutputData.CoverageTypeId = Guid.Empty
@@ -4060,9 +4057,9 @@ Public Class ClaimDAL
     Public Function CheckClaimPaymentInProgress(claimId As Guid, companyGroupId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/CHECK_CLAIM_PAYMENT_IN_PROGRESS")
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {
-                   New DBHelperParameter("claim_id", claimId.ToByteArray),
-                   New DBHelperParameter("company_group_id", companyGroupId.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                   New DBHelper.DBHelperParameter("claim_id", claimId.ToByteArray),
+                   New DBHelper.DBHelperParameter("company_group_id", companyGroupId.ToByteArray)}
         Try
             Dim ds As New DataSet
             DBHelper.Fetch(ds, selectStmt, "CHECK_CLAIM_PAYMENT", parameters)
@@ -4075,13 +4072,13 @@ Public Class ClaimDAL
 
 #Region "Private Methods"
 
-    Function SetParameter(name As String, value As Object) As DBHelperParameter
+    Function SetParameter(name As String, value As Object) As DBHelper.DBHelperParameter
 
         name = name.Trim
         If value Is Nothing Then value = DBNull.Value
         If value.GetType Is GetType(String) Then value = DirectCast(value, String).Trim
 
-        Return New DBHelperParameter(name, value)
+        Return New DBHelper.DBHelperParameter(name, value)
 
     End Function
 
@@ -4182,12 +4179,12 @@ Public Class ClaimDAL
     Public Function GetFraudulentClaimExtensions(claimId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_FRAUD_CLAIM_EXT")
         Dim ds As DataSet = New DataSet
-        Dim outputParameter(0) As DBHelperParameter
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("claimId", claimId.ToByteArray)}
-        outputParameter(0) = New DBHelperParameter("fraudulentClaimExtensions", GetType(DataSet))
+        Dim outputParameter(0) As DBHelper.DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claimId", claimId.ToByteArray)}
+        outputParameter(0) = New DBHelper.DBHelperParameter("fraudulentClaimExtensions", GetType(DataSet))
 
         Try
-            FetchSp(selectStmt, parameters, outputParameter, ds, "GetFraudClaimExtns")
+            DBHelper.FetchSp(selectStmt, parameters, outputParameter, ds, "GetFraudClaimExtns")
             ds.Tables(0).TableName = "GetFraudClaimExtns"
 
             Return ds
@@ -4231,19 +4228,19 @@ Public Class ClaimDAL
 
         Dim selectStmt As String = Config("/SQL/WS_CLAIMS_GET_CLAIMS")
 
-        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() {
-            New DBHelperParameter("pi_country_code", countryCode),
-            New DBHelperParameter("pi_company_code", companyCode),
-            New DBHelperParameter("pi_dealer_code", dealerCode),
-            New DBHelperParameter("pi_serial_number", serialNumber),
-            New DBHelperParameter("pi_user_id", userId.ToByteArray())}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+            New DBHelper.DBHelperParameter("pi_country_code", countryCode),
+            New DBHelper.DBHelperParameter("pi_company_code", companyCode),
+            New DBHelper.DBHelperParameter("pi_dealer_code", dealerCode),
+            New DBHelper.DBHelperParameter("pi_serial_number", serialNumber),
+            New DBHelper.DBHelperParameter("pi_user_id", userId.ToByteArray())}
 
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() {
-            New DBHelperParameter("po_claims_data", GetType(DataSet))}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelperParameter() {
+            New DBHelper.DBHelperParameter("po_claims_data", GetType(DataSet))}
 
         Try
             Dim ds As New DataSet
-            FetchSp(selectStmt, inputParameters, outputParameters, ds, TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, inputParameters, outputParameters, ds, TABLE_NAME)
 
             Return ds
 
@@ -4269,19 +4266,19 @@ Public Class ClaimDAL
 
         Dim selectStmt As String = Config("/SQL/WS_CLAIMS_GET_CLAIMS_BY_IMEI_NUMBER")
 
-        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() {
-            New DBHelperParameter("pi_country_code", countryCode),
-            New DBHelperParameter("pi_company_code", companyCode),
-            New DBHelperParameter("pi_dealer_code", dealerCode),
-            New DBHelperParameter("pi_imei_number", imeiNumber),
-            New DBHelperParameter("pi_user_id", userId.ToByteArray())}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+            New DBHelper.DBHelperParameter("pi_country_code", countryCode),
+            New DBHelper.DBHelperParameter("pi_company_code", companyCode),
+            New DBHelper.DBHelperParameter("pi_dealer_code", dealerCode),
+            New DBHelper.DBHelperParameter("pi_imei_number", imeiNumber),
+            New DBHelper.DBHelperParameter("pi_user_id", userId.ToByteArray())}
 
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() {
-            New DBHelperParameter("po_claims_data", GetType(DataSet))}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelperParameter() {
+            New DBHelper.DBHelperParameter("po_claims_data", GetType(DataSet))}
 
         Try
             Dim ds As New DataSet
-            FetchSp(selectStmt, inputParameters, outputParameters, ds, TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, inputParameters, outputParameters, ds, TABLE_NAME)
 
             Return ds
 
@@ -4313,25 +4310,25 @@ Public Class ClaimDAL
                                                           ByRef ErrorMessage As String) As DataSet
         Dim selectStmt As String = Config("/SQL/CHLMobileSCPortal_GetCertClaimInfo")
 
-        Dim inParameters() As DBHelperParameter = New DBHelperParameter() {
-                                New DBHelperParameter("pi_company_code", CompanyCode),
-                                New DBHelperParameter("pi_user_id", UserId.ToByteArray),
-                                New DBHelperParameter("pi_language_id", LanguageId.ToByteArray),
-                                New DBHelperParameter("pi_serial_number", SerialNumber),
-                                New DBHelperParameter("pi_phone_number", PhoneNumber),
-                                New DBHelperParameter("pi_tax_id", taxId),
-                                New DBHelperParameter("pi_claim_status", claimStatusCode)}
+        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                                New DBHelper.DBHelperParameter("pi_company_code", CompanyCode),
+                                New DBHelper.DBHelperParameter("pi_user_id", UserId.ToByteArray),
+                                New DBHelper.DBHelperParameter("pi_language_id", LanguageId.ToByteArray),
+                                New DBHelper.DBHelperParameter("pi_serial_number", SerialNumber),
+                                New DBHelper.DBHelperParameter("pi_phone_number", PhoneNumber),
+                                New DBHelper.DBHelperParameter("pi_tax_id", taxId),
+                                New DBHelper.DBHelperParameter("pi_claim_status", claimStatusCode)}
 
-        Dim outParameters() As DBHelperParameter = New DBHelperParameter() {
-                                New DBHelperParameter("po_certificate_info", GetType(DataSet)),
-                                New DBHelperParameter("po_claim_info", GetType(DataSet)),
-                                New DBHelperParameter("po_error_code", GetType(String), 255),
-                                New DBHelperParameter("po_error_message", GetType(String), 255)}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                                New DBHelper.DBHelperParameter("po_certificate_info", GetType(DataSet)),
+                                New DBHelper.DBHelperParameter("po_claim_info", GetType(DataSet)),
+                                New DBHelper.DBHelperParameter("po_error_code", GetType(String), 255),
+                                New DBHelper.DBHelperParameter("po_error_message", GetType(String), 255)}
 
         Dim ds As New DataSet
 
         Try
-            FetchSp(selectStmt, inParameters, outParameters, ds, "CertClaimInfoResponse")
+            DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, "CertClaimInfoResponse")
 
             If String.IsNullOrEmpty(outParameters(2).Value) Then
                 ds.Tables(0).TableName = "CertificateInfo"
@@ -4365,30 +4362,30 @@ Public Class ClaimDAL
 
         Dim selectStmt As String = Config("/SQL/WS_SNMPORTAL_SA_CLAIMREPORT")
 
-        Dim inParameters() As DBHelperParameter = New DBHelperParameter() {
-                                New DBHelperParameter("pi_service_center_code", serviceCenterCode),
-                                New DBHelperParameter("pi_country_iso_code", countryIsoCode),
-                                New DBHelperParameter("pi_from_date", fromDate),
-                                New DBHelperParameter("pi_to_date", endDate),
-                                New DBHelperParameter("pi_extended_status_code", extendedStatusCode),
-                                New DBHelperParameter("pi_company_code", companyCode),
-                                New DBHelperParameter("pi_dealer_code", dealerCode),
-                                New DBHelperParameter("pi_user_id", userId.ToByteArray()),
-                                New DBHelperParameter("pi_language_id", languageId.ToByteArray),
-                                New DBHelperParameter("pi_page_size", pageSize)}
+        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                                New DBHelper.DBHelperParameter("pi_service_center_code", serviceCenterCode),
+                                New DBHelper.DBHelperParameter("pi_country_iso_code", countryIsoCode),
+                                New DBHelper.DBHelperParameter("pi_from_date", fromDate),
+                                New DBHelper.DBHelperParameter("pi_to_date", endDate),
+                                New DBHelper.DBHelperParameter("pi_extended_status_code", extendedStatusCode),
+                                New DBHelper.DBHelperParameter("pi_company_code", companyCode),
+                                New DBHelper.DBHelperParameter("pi_dealer_code", dealerCode),
+                                New DBHelper.DBHelperParameter("pi_user_id", userId.ToByteArray()),
+                                New DBHelper.DBHelperParameter("pi_language_id", languageId.ToByteArray),
+                                New DBHelper.DBHelperParameter("pi_page_size", pageSize)}
 
-        Dim outParameters() As DBHelperParameter = New DBHelperParameter() {
-                                New DBHelperParameter("po_batch_id", GetType(Guid)),
-                                New DBHelperParameter("po_total_record_cnt", GetType(Integer)),
-                                New DBHelperParameter("po_queued_record_cnt", GetType(Integer)),
-                                New DBHelperParameter("po_claim_list", GetType(DataSet)),
-                                New DBHelperParameter("po_error_code", GetType(String), 255),
-                                New DBHelperParameter("po_error_message", GetType(String), 255)}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                                New DBHelper.DBHelperParameter("po_batch_id", GetType(Guid)),
+                                New DBHelper.DBHelperParameter("po_total_record_cnt", GetType(Integer)),
+                                New DBHelper.DBHelperParameter("po_queued_record_cnt", GetType(Integer)),
+                                New DBHelper.DBHelperParameter("po_claim_list", GetType(DataSet)),
+                                New DBHelper.DBHelperParameter("po_error_code", GetType(String), 255),
+                                New DBHelper.DBHelperParameter("po_error_message", GetType(String), 255)}
 
         Dim ds As New DataSet
 
         Try
-            FetchSp(selectStmt, inParameters, outParameters, ds, "ClaimList", True)
+            DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, "ClaimList", True)
 
             If String.IsNullOrEmpty(outParameters(4).Value) Then
                 If ds.Tables.Count > 0 Then
@@ -4422,22 +4419,22 @@ Public Class ClaimDAL
 
         Dim selectStmt As String = Config("/SQL/WS_SNMPORTAL_SA_CLAIMREPORT_GET_NEXT_PAGE")
 
-        Dim inParameters() As DBHelperParameter = New DBHelperParameter() {
-                                New DBHelperParameter("pi_batch_id", batchId.ToByteArray()),
-                                New DBHelperParameter("pi_page_size", pageSize),
-                                New DBHelperParameter("pi_language_id", languageId.ToByteArray)}
+        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                                New DBHelper.DBHelperParameter("pi_batch_id", batchId.ToByteArray()),
+                                New DBHelper.DBHelperParameter("pi_page_size", pageSize),
+                                New DBHelper.DBHelperParameter("pi_language_id", languageId.ToByteArray)}
 
-        Dim outParameters() As DBHelperParameter = New DBHelperParameter() {
-                                New DBHelperParameter("po_total_record_cnt", GetType(Integer)),
-                                New DBHelperParameter("po_queued_record_cnt", GetType(Integer)),
-                                New DBHelperParameter("po_claim_list", GetType(DataSet)),
-                                New DBHelperParameter("po_error_code", GetType(String), 255),
-                                New DBHelperParameter("po_error_message", GetType(String), 255)}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                                New DBHelper.DBHelperParameter("po_total_record_cnt", GetType(Integer)),
+                                New DBHelper.DBHelperParameter("po_queued_record_cnt", GetType(Integer)),
+                                New DBHelper.DBHelperParameter("po_claim_list", GetType(DataSet)),
+                                New DBHelper.DBHelperParameter("po_error_code", GetType(String), 255),
+                                New DBHelper.DBHelperParameter("po_error_message", GetType(String), 255)}
 
         Dim ds As New DataSet
 
         Try
-            FetchSp(selectStmt, inParameters, outParameters, ds, "ClaimList", True)
+            DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, "ClaimList", True)
 
             If String.IsNullOrEmpty(outParameters(3).Value) Then
                 If ds.Tables.Count > 0 Then
@@ -4468,12 +4465,12 @@ Public Class ClaimDAL
         'Dim selectStmt As String = 
 
         Try
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/GVS_TRANSACTION_CREATION"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/GVS_TRANSACTION_CREATION"))
                 cmd.AddParameter("pi_key_id", OracleDbType.Raw, pClaimID.ToByteArray())
                 cmd.AddParameter("pi_function_type_code", OracleDbType.Char, pFunctionTypeCode)
                 cmd.AddParameter("pi_followup_xml", OracleDbType.Varchar2, pCommentID)
 
-                ExecuteNonQuery(cmd)
+                OracleDbHelper.ExecuteNonQuery(cmd)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -4485,9 +4482,9 @@ Public Class ClaimDAL
         Dim selectStmt As String = Config("/SQL/GET_SVC_WARRANTY_COUNT_BY_CERTIFICATE")
         Dim returnValue As Object
 
-        Dim inParameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter("pi_cert_id", CertId.ToByteArray) _
-                        , New DBHelperParameter("pi_dealer_id", DealerId.ToByteArray)}
+        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter("pi_cert_id", CertId.ToByteArray) _
+                        , New DBHelper.DBHelperParameter("pi_dealer_id", DealerId.ToByteArray)}
 
 
         Try
@@ -4510,8 +4507,8 @@ Public Class ClaimDAL
         Dim selectStmt As String = Config("/SQL/GET_REGISTERED_ITEM_INDIXID")
         Dim returnValue As Object
 
-        Dim inParameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter("claimId", ClaimId.ToByteArray)}
+        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter("claimId", ClaimId.ToByteArray)}
 
 
         Try
@@ -4533,13 +4530,13 @@ Public Class ClaimDAL
         Dim selectStmt As String = Config("/SQL/GET_COUNTRY_CODE_OVERWRITE")
         Dim returnValue As Object
 
-        Dim inParameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter(PAR_NAME_IP_COMPANY_ID, CompanyId.ToByteArray)}
+        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter(PAR_NAME_IP_COMPANY_ID, CompanyId.ToByteArray)}
 
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() {
-                             New DBHelperParameter(PAR_NAME_OP_COUNTRY_CODE, GetType(String), 2),
-                             New DBHelperParameter(PAR_NAME_OP_RETURN, GetType(Integer), 32),
-                             New DBHelperParameter(PAR_NAME_OP_EXCEPTION_MESSAGE, GetType(String), 500)}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                             New DBHelper.DBHelperParameter(PAR_NAME_OP_COUNTRY_CODE, GetType(String), 2),
+                             New DBHelper.DBHelperParameter(PAR_NAME_OP_RETURN, GetType(Integer), 32),
+                             New DBHelper.DBHelperParameter(PAR_NAME_OP_EXCEPTION_MESSAGE, GetType(String), 500)}
 
         Try
 

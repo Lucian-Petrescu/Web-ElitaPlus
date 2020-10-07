@@ -1,6 +1,4 @@
-﻿Imports System.Xml
-
-Public Class ClaimReconWrkPartsDAL
+﻿Public Class ClaimReconWrkPartsDAL
     Inherits DALBase
 
 
@@ -71,7 +69,7 @@ Public Class ClaimReconWrkPartsDAL
 #Region "Bundles Save Method"
     Public Function SaveParts(ds As DataSet) As Integer
         Dim selectStmt As String = Config("/SQL/UPDATE_PARTS")
-        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("PARTS", ds.GetXml, GetType(XmlDocument))}
+        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("PARTS", ds.GetXml, GetType(Xml.XmlDocument))}
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_RETURN, GetType(Integer))}
 
         Try

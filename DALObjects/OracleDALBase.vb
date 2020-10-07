@@ -191,15 +191,15 @@ Public MustInherit Class OracleDALBase : Inherits DALBase
         da = New OracleDataAdapter()
 
         If ((changesFilter And DataRowState.Added) = DataRowState.Added) Then
-            da.InsertCommand = CreateCommand(Config("/SQL/INSERT"), CommandType.StoredProcedure, connection, transaction)
+            da.InsertCommand = OracleDbHelper.CreateCommand(Config("/SQL/INSERT"), CommandType.StoredProcedure, connection, transaction)
             ConfigureInsertCommand(da.InsertCommand, tableName)
         End If
         If ((changesFilter And DataRowState.Modified) = DataRowState.Modified) Then
-            da.UpdateCommand = CreateCommand(Config("/SQL/UPDATE"), CommandType.StoredProcedure, connection, transaction)
+            da.UpdateCommand = OracleDbHelper.CreateCommand(Config("/SQL/UPDATE"), CommandType.StoredProcedure, connection, transaction)
             ConfigureUpdateCommand(da.UpdateCommand, tableName)
         End If
         If ((changesFilter And DataRowState.Deleted) = DataRowState.Deleted) Then
-            da.DeleteCommand = CreateCommand(Config("/SQL/DELETE"), CommandType.StoredProcedure, connection, transaction)
+            da.DeleteCommand = OracleDbHelper.CreateCommand(Config("/SQL/DELETE"), CommandType.StoredProcedure, connection, transaction)
             ConfigureDeleteCommand(da.DeleteCommand, tableName)
         End If
 

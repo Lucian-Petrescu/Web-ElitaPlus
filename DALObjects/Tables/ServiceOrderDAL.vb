@@ -1,5 +1,5 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (11/29/2004)********************
-Imports System.Text
+
 
 Public Class ServiceOrderDAL
     Inherits DALBase
@@ -172,7 +172,7 @@ Public Class ServiceOrderDAL
                     New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_ID, CType(dr(COL_NAME_CLAIM_ID), Byte())),
                     New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_AUTHORIZATION_ID, IIf(IsDBNull(dr(COL_NAME_CLAIM_AUTHORIZATION_ID)), "", dr(COL_NAME_CLAIM_AUTHORIZATION_ID))),
                     New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_ORDER_ID, CType(dr(COL_NAME_SERVICE_ORDER_ID), Byte())),
-                    New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_ORDER_IMAGE_DATA, dr(COL_NAME_SERVICE_ORDER_IMAGE_DATA), GetType(StringBuilder))}
+                    New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_ORDER_IMAGE_DATA, dr(COL_NAME_SERVICE_ORDER_IMAGE_DATA), GetType(System.Text.StringBuilder))}
             Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                                 New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)), _
                                 New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String))}

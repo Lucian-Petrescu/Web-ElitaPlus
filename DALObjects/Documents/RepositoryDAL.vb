@@ -38,10 +38,10 @@ Public Class RepositoryDAL
     Public Function LoadList() As DataSet
         Try
             Dim ds As New DataSet
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD_LIST"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD_LIST"))
                 cmd.AddParameter(PAR_O_NAME_REPOSITORY_LIST, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
                 cmd.AddParameter(PAR_O_NAME_FILE_TYPE_LIST, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return Fetch(cmd, New String() {TABLE_NAME, FileTypeDAL.TABLE_NAME}, ds)
+                Return OracleDbHelper.Fetch(cmd, New String() {RepositoryDAL.TABLE_NAME, FileTypeDAL.TABLE_NAME}, ds)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

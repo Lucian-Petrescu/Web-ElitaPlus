@@ -13,8 +13,6 @@
 Imports System.IO
 Imports System.Xml
 Imports System.Data
-Imports System.Text
-Imports System.Xml.Xsl
 
 Public Class DSHelper
 
@@ -401,7 +399,7 @@ Public Class DSHelper
     Private Function ParseTable(Dt As DataTable, Nested As Boolean, OmitTags() As String, _
                                 CharacterData() As String, IncludeEmptyTags As Boolean, Optional ByVal loopRows As Boolean = False) As String
 
-        Dim strBuilder As New StringBuilder
+        Dim strBuilder As New System.Text.StringBuilder
         Dim strTag As String
         Dim includeFullPath As Boolean = True
 
@@ -623,7 +621,7 @@ Public Class DSHelper
     ''' <remarks></remarks>
     Public Function ParseXSLT(StyleSheet As String, Ds As DataSet) As String
 
-        Dim encode As New UTF8Encoding
+        Dim encode As New System.Text.UTF8Encoding
         Dim bytes As Byte() = encode.GetBytes(StyleSheet)
         Dim str As MemoryStream = New MemoryStream(bytes)
 
@@ -641,7 +639,7 @@ Public Class DSHelper
     Public Function ParseXSLT(StyleSheet As Stream, Ds As DataSet) As String
 
         Dim xmlr As XmlReader
-        Dim xlTransform As New XslCompiledTransform
+        Dim xlTransform As New Xml.Xsl.XslCompiledTransform
         Dim buffer As MemoryStream
         Dim sw As StreamWriter
         Dim chrs() As Byte
@@ -667,7 +665,7 @@ Public Class DSHelper
         'Create the character array to write the buffer to (process of creating the string)
         chrs = buffer.ToArray
 
-        Return Encoding.UTF8.GetString(chrs)
+        Return System.Text.Encoding.UTF8.GetString(chrs)
 
     End Function
 
@@ -687,7 +685,7 @@ Public Class DSHelper
                                 Optional ByVal OutputMeth As XMLOutputMethod = XMLOutputMethod.xml, _
                                 Optional ByVal charDataFields As String = "") As String
 
-        Dim strBuilder As New StringBuilder
+        Dim strBuilder As New System.Text.StringBuilder
         Dim dt As DataTable
         Dim strDocumentText As String
 

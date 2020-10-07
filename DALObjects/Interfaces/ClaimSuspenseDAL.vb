@@ -1,5 +1,4 @@
 
-Imports System.Xml
 
 Public Class ClaimSuspenseDAL
     Inherits DALBase
@@ -125,7 +124,7 @@ Public Class ClaimSuspenseDAL
             ds.Tables(0).Columns.Remove(COL_NAME_PROBLEM_DESCRIPTION)
         End If
 
-        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_XMLSET, ds.GetXml, GetType(XmlDocument)), New DBHelper.DBHelperParameter(P_USER_NAME, UserName)}
+        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_XMLSET, ds.GetXml, GetType(Xml.XmlDocument)), New DBHelper.DBHelperParameter(P_USER_NAME, UserName)}
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_RETURN, GetType(Integer))}
 
         Try

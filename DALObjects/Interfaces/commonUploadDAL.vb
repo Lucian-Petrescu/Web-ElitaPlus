@@ -20,7 +20,7 @@ Public Class commonUploadDAL
 #End Region
 #Region "Upload File Processing"
 
-    Public Sub InsertUploadFileLines(strUploadType As String, FileLines As List(Of String))
+    Public Sub InsertUploadFileLines(strUploadType As String, FileLines As Generic.List(Of String))
         Dim selectStmt As String = Config("/SQL/LOAD_FILE_LINE")
         Dim intLineNum As Integer
         Dim inClauseCondition As String
@@ -48,7 +48,7 @@ Public Class commonUploadDAL
         End Try
     End Sub
 
-    Public Sub InsertUploadFileLinesBulk(strUploadType As String, FileLines As List(Of String), fileName As String, userId As String)
+    Public Sub InsertUploadFileLinesBulk(strUploadType As String, FileLines As Generic.List(Of String), fileName As String, userId As String)
         Dim cBatchSize As Integer = 200
         Dim strStmt As String = "INSERT INTO ELP_Upload_File_Lines (file_line, line_number, upload_type) values (:file_line, :line_number, :upload_type)"
         Dim conn As OracleConnection
@@ -163,7 +163,7 @@ Public Class commonUploadDAL
                             New DBHelper.DBHelperParameter("p_InitResult", GetType(String), 500),
                             New DBHelper.DBHelperParameter("p_ErrCode", GetType(Integer))}
 
-            Dim inParameters As New List(Of DBHelper.DBHelperParameter)
+            Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
             Dim param As DBHelper.DBHelperParameter
 
             param = New DBHelper.DBHelperParameter("pi_formname", FormName)
@@ -186,7 +186,7 @@ Public Class commonUploadDAL
     Public Sub ExtractReportFile(strUploadType As String, strUserEmailAddress As String, strCompanyGroupCode As String, extractFile As String)
         Dim sqlStmt As String
         Try
-            Dim inParameters As New List(Of DBHelper.DBHelperParameter)
+            Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
             Dim param As DBHelper.DBHelperParameter
             sqlStmt = Config("/SQL/PROCESS_EXTRACT_REPORT")
 
@@ -209,7 +209,7 @@ Public Class commonUploadDAL
 
     End Sub
 
-    Public Sub InsertUploadFileLinesNew(strUploadType As String, FileLines As List(Of String), fileName As String)
+    Public Sub InsertUploadFileLinesNew(strUploadType As String, FileLines As Generic.List(Of String), fileName As String)
         Dim selectStmt As String = Config("/SQL/LOAD_FILE_LINE")
         Dim intLineNum As Integer
 
@@ -262,7 +262,7 @@ Public Class commonUploadDAL
                             New DBHelper.DBHelperParameter("p_InitResult", strResult.GetType, 500),
                             New DBHelper.DBHelperParameter("p_ErrMsg", strErrMsg.GetType, 500)}
 
-            Dim inParameters As New List(Of DBHelper.DBHelperParameter)
+            Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
             Dim param As DBHelper.DBHelperParameter
 
             param = New DBHelper.DBHelperParameter("p_FileName", strFileName)
@@ -290,7 +290,7 @@ Public Class commonUploadDAL
     Public Sub ProcessFile(strUploadType As String, guidStatusID As Guid, strCompanyGroupCode As String, strUserEmailAddress As String, strUser As String)
         Dim sqlStmt As String
         Try
-            Dim inParameters As New List(Of DBHelper.DBHelperParameter)
+            Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
             Dim param As DBHelper.DBHelperParameter
             If String.Equals(strUploadType, "REACTIVATE") Then
                 sqlStmt = Config("/SQL/PROCESS_REACTIVATE_FILE")

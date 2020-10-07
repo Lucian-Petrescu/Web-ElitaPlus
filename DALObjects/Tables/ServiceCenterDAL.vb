@@ -367,7 +367,7 @@ Public Class ServiceCenterDAL
             End If
         Else
             city = ""
-            city &= WILDCARD_CHAR
+            city &= DALBase.WILDCARD_CHAR
         End If
         'city &= DALBase.WILDCARD_CHAR
 
@@ -689,7 +689,7 @@ Public Class ServiceCenterDAL
     Public Function GetAvailableServiceCenters(countryId As ArrayList) As DataView
         Dim selectStmt As String = Config("/SQL/LOAD_SERVICE_CENTER_LIST")
         Try
-            selectStmt &= MiscUtil.BuildListForSql(" WHERE (price_list_code is null) or (price_list_code = '') and " & COL_NAME_COUNTRY_ID, countryId, True)
+            selectStmt &= MiscUtil.BuildListForSql(" WHERE (price_list_code is null) or (price_list_code = '') and " & ServiceCenterDAL.COL_NAME_COUNTRY_ID, countryId, True)
             Return DBHelper.Fetch(selectStmt, TABLE_NAME).Tables(0).DefaultView
 
         Catch ex As Exception
@@ -739,15 +739,15 @@ Public Class ServiceCenterDAL
         ' Call DBHelper Store Procedure
         Try
             Using connection As New OracleConnection(DBHelper.ConnectString)
-                Using cmd As OracleCommand = CreateCommand(storedProc, CommandType.StoredProcedure, connection)
+                Using cmd As OracleCommand = OracleDbHelper.CreateCommand(storedProc, CommandType.StoredProcedure, connection)
                     cmd.BindByName = True
                     cmd.Parameters.AddRange(parameters)
-                    Fetch(cmd, tbl, ds)
+                    OracleDbHelper.Fetch(cmd, tbl, ds)
                 End Using
             End Using
             Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
             If (Not par Is Nothing AndAlso par.Value = 200) Then
-                Throw New ElitaPlusException("ServiceCenter - " + methodName, ErrorCodes.DB_READ_ERROR)
+                Throw New ElitaPlusException("ServiceCenter - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
             End If
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

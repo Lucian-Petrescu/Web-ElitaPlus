@@ -101,8 +101,8 @@ Public Class CoverageDAL
 
     Public Function LoadList(compIds As ArrayList, dealerId As Guid, productCodeId As Guid,
                              itemId As Guid, coverageTypeId As Guid,
-                             certificateDuration As LongType,
-                             coverageDuration As LongType, LanguageId As Guid) As DataSet
+                             certificateDuration As Assurant.Common.Types.LongType,
+                             coverageDuration As Assurant.Common.Types.LongType, LanguageId As Guid) As DataSet
 
         Try
             Dim selectStmt As String = Config("/SQL/LOAD_LIST")
@@ -170,8 +170,8 @@ Public Class CoverageDAL
         End Try
     End Function
     Public Function MaxExpiration(itemId As Guid, coverageTypeId As Guid, _
-                                    certificateDuration As LongType, _
-                                    coverageDuration As LongType)
+                                    certificateDuration As Assurant.Common.Types.LongType, _
+                                    coverageDuration As Assurant.Common.Types.LongType)
         Try
             Dim selectStmt As String = Config("/SQL/MAX_EXPIRATION")
             Dim parameters() As DBHelper.DBHelperParameter
@@ -191,10 +191,10 @@ Public Class CoverageDAL
 
     Public Function GetCoverageList(dealerId As Guid, productCodeId As Guid, riskTypeId As Guid, _
                                     itemId As Guid, coverageTypeId As Guid, _
-                                    certificateDuration As LongType, _
-                                    coverageDuration As LongType, _
-                                    effectiveDate As DateType, _
-                                    expirationDate As DateType, _
+                                    certificateDuration As Assurant.Common.Types.LongType, _
+                                    coverageDuration As Assurant.Common.Types.LongType, _
+                                    effectiveDate As Assurant.Common.Types.DateType, _
+                                    expirationDate As Assurant.Common.Types.DateType, _
                                     excludeCoverageID As Guid)
         Try
             Dim selectStmt As String = Config("/SQL/COVERAGE_LIST")

@@ -241,7 +241,7 @@ Public Class CertItemDAL
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter("pi_cert_number", CertNumber),
                      New DBHelper.DBHelperParameter("pi_serial_number", SerialNumber),
-                     New DBHelper.DBHelperParameter("pi_company_group_id", GuidToSQLString(CompanyGroupId))}
+                     New DBHelper.DBHelperParameter("pi_company_group_id", DALBase.GuidToSQLString(CompanyGroupId))}
 
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                             New DBHelper.DBHelperParameter("po_VINEntries", GetType(DataSet))}
@@ -284,8 +284,8 @@ Public Class CertItemDAL
         Dim ds As New DataSet
         Dim selectStmt As String = Config("/SQL/LoadSKUs")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                    {New DBHelper.DBHelperParameter(PARAM_NAME_DEALER_ID, GuidToSQLString(dealerId)), _
-                     New DBHelper.DBHelperParameter(PARAM_EQUIPMENTID, GuidToSQLString(equipmentId))}
+                    {New DBHelper.DBHelperParameter(PARAM_NAME_DEALER_ID, DALBase.GuidToSQLString(dealerId)), _
+                     New DBHelper.DBHelperParameter(PARAM_EQUIPMENTID, DALBase.GuidToSQLString(equipmentId))}
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             If Not ds Is Nothing AndAlso Not ds.Tables(TABLE_NAME) Is Nothing AndAlso ds.Tables(TABLE_NAME).Rows.Count > 0 Then
@@ -306,7 +306,7 @@ Public Class CertItemDAL
         Dim selectStmt As String = Config("/SQL/PROCESS_APPLECARE_ITEM_ENROLL")
 
         Using connection As New OracleConnection(DBHelper.ConnectString)
-            Using command As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, connection)
+            Using command As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, connection)
                 command.BindByName = True
                 command.AddParameter("pi_cert_item_id", OracleDbType.Raw, 16, certItemID.ToByteArray, ParameterDirection.Input)
                 command.AddParameter("pi_attribute_value", OracleDbType.Varchar2, 255, attValue, ParameterDirection.Input)

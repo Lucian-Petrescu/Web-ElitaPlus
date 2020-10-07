@@ -128,10 +128,10 @@ Public Class ProductCodeDAL
 
     Public Sub LoadByDealerProduct(familyDS As DataSet, dealerId As Guid, productCode As String)
         Dim selectStmt As String = Config("/SQL/LOAD_BY_DEALER_PRODUCT")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                                                          {
-                                                             New DBHelperParameter("dealer_id", dealerId.ToByteArray),
-                                                             New DBHelperParameter("productCode", productCode)
+                                                             New DBHelper.DBHelperParameter("dealer_id", dealerId.ToByteArray),
+                                                             New DBHelper.DBHelperParameter("productCode", productCode)
                                                          }
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
@@ -142,7 +142,7 @@ Public Class ProductCodeDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("product_code_id", id.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("product_code_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -159,7 +159,7 @@ Public Class ProductCodeDAL
     Public Function LoadList(compIds As ArrayList, dealerId As Guid,
                              RiskGroupId As Guid, productCodeMask As String, LanguageId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
-        Dim parameters() As DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter
         Dim inClausecondition As String = ""
         Dim whereClauseConditions As String = ""
         Dim bIsLikeClause As Boolean = False
@@ -179,8 +179,8 @@ Public Class ProductCodeDAL
             whereClauseConditions &= Environment.NewLine & "AND " & "RISK_GROUP_ID = " & MiscUtil.GetDbStringFromGuid(RiskGroupId)
         End If
 
-        parameters = New DBHelperParameter() _
-                                    {New DBHelperParameter(COL_NAME_LANGUAGE_ID, LanguageId.ToByteArray)}
+        parameters = New DBHelper.DBHelperParameter() _
+                                    {New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, LanguageId.ToByteArray)}
 
 
         If Not inClausecondition = "" Then
@@ -207,10 +207,10 @@ Public Class ProductCodeDAL
 
     Public Function LoadProductCodeIDs(dealerId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_PRODUCT_CODE_IDS")
-        Dim parameters() As DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter
 
-        parameters = New DBHelperParameter() _
-                                    {New DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
+        parameters = New DBHelper.DBHelperParameter() _
+                                    {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
 
         Dim ds As New DataSet
         Try
@@ -224,7 +224,7 @@ Public Class ProductCodeDAL
 
     Public Function LoadListByDealer(dealerId As Guid, languageId As Guid, RiskGroupId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_DEALER")
-        Dim parameters() As DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
 
         If Not RiskGroupId.Equals(Guid.Empty) Then
@@ -232,9 +232,9 @@ Public Class ProductCodeDAL
         End If
         selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
-        parameters = New DBHelperParameter() _
-                                    {New DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray),
-                                    New DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
+        parameters = New DBHelper.DBHelperParameter() _
+                                    {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray),
+                                    New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
 
         Dim ds As New DataSet
         Try
@@ -247,13 +247,13 @@ Public Class ProductCodeDAL
 
     Public Function LoadListByDealer(dealerId As Guid, languageId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_DEALER_FILTERING")
-        Dim parameters() As DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
 
 
-        parameters = New DBHelperParameter() _
-                                    {New DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray),
-                                    New DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
+        parameters = New DBHelper.DBHelperParameter() _
+                                    {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray),
+                                    New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
 
         Dim ds As New DataSet
         Try
@@ -267,7 +267,7 @@ Public Class ProductCodeDAL
     Public Function LoadListByDealerForWS(dealerId As Guid, WarrSalesDate As Date,
             sort_by As Integer, asc_desc_order As String, productClassCode As String) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_DEALER_FOR_WS")
-        Dim parameters() As DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
         Dim OrderByClause As String = ""
 
@@ -301,9 +301,9 @@ Public Class ProductCodeDAL
 
         selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, OrderByClause)
 
-        parameters = New DBHelperParameter() _
-                    {New DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray),
-                    New DBHelperParameter(COL_NAME_WARRANTY_SALES_DATE, WarrSalesDate, GetType(Date))
+        parameters = New DBHelper.DBHelperParameter() _
+                    {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray),
+                    New DBHelper.DBHelperParameter(COL_NAME_WARRANTY_SALES_DATE, WarrSalesDate, GetType(Date))
                    }
 
         Dim ds As New DataSet
@@ -318,7 +318,7 @@ Public Class ProductCodeDAL
     Public Function LoadListByDealerForWSWithConversion(dealerId As Guid, WarrSalesDate As Date,
                     sort_by As Integer, asc_desc_order As String, productClassCode As String) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_DEALER_FOR_WS_WITH_CONVERSION")
-        Dim parameters() As DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
         Dim OrderByClause As String = ""
 
@@ -354,9 +354,9 @@ Public Class ProductCodeDAL
 
         selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, OrderByClause)
 
-        parameters = New DBHelperParameter() _
-                {New DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray),
-                New DBHelperParameter(COL_NAME_WARRANTY_SALES_DATE, WarrSalesDate, GetType(Date))
+        parameters = New DBHelper.DBHelperParameter() _
+                {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray),
+                New DBHelper.DBHelperParameter(COL_NAME_WARRANTY_SALES_DATE, WarrSalesDate, GetType(Date))
                }
 
         Dim ds As New DataSet
@@ -370,12 +370,12 @@ Public Class ProductCodeDAL
 
     Public Function LoadDealerProductsInfo(ByRef ds As DataSet, dealerId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_DEALER_PRODUCTS_INFO_FOR_WS")
-        Dim parameters() As DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
         Dim OrderByClause As String = ""
 
-        parameters = New DBHelperParameter() _
-                {New DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
+        parameters = New DBHelper.DBHelperParameter() _
+                {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
 
         If ds Is Nothing Then ds = New DataSet
         Try
@@ -389,13 +389,13 @@ Public Class ProductCodeDAL
 
     Public Function LoadDealerProductsInfoWithConversion(ByRef ds As DataSet, dealerId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_DEALER_PRODUCTS_INFO_FOR_WS_WITH_CONVERSION")
-        Dim parameters() As DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
         Dim OrderByClause As String = ""
 
 
-        parameters = New DBHelperParameter() _
-                {New DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
+        parameters = New DBHelper.DBHelperParameter() _
+                {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
 
         If ds Is Nothing Then ds = New DataSet
         Try
@@ -411,11 +411,11 @@ Public Class ProductCodeDAL
 
     Public Function GetProductCodeId(dealerId As Guid, product_code As String) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_PRODUCT_CODE_ID")
-        Dim parameters() As DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter
 
-        parameters = New DBHelperParameter() _
-                                    {New DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray),
-                                     New DBHelperParameter(COL_NAME_PRODUCT_CODE, product_code)}
+        parameters = New DBHelper.DBHelperParameter() _
+                                    {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray),
+                                     New DBHelper.DBHelperParameter(COL_NAME_PRODUCT_CODE, product_code)}
         Dim ds As New DataSet
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
@@ -428,10 +428,10 @@ Public Class ProductCodeDAL
 
     Public Function MethodOfRepairByPriceRecords(ProductCodeId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/METHOD_OF_REPAIR_BY_PRICE_RECORDS")
-        Dim parameters() As DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter
 
-        parameters = New DBHelperParameter() _
-                                    {New DBHelperParameter(COL_NAME_PRODUCT_CODE_ID, ProductCodeId.ToByteArray)}
+        parameters = New DBHelper.DBHelperParameter() _
+                                    {New DBHelper.DBHelperParameter(COL_NAME_PRODUCT_CODE_ID, ProductCodeId.ToByteArray)}
 
 
         Dim ds As New DataSet
@@ -452,7 +452,7 @@ Public Class ProductCodeDAL
         outputParameter(0) = New DBHelperParameter("po_return", GetType(Integer))
         Try
             ' Call DBHelper Store Procedure
-            ExecuteSp(updateStmt, inputParameters, outputParameter)
+            DBHelper.ExecuteSp(updateStmt, inputParameters, outputParameter)
             If outputParameter(0).Value <> 0 Then
                 Dim e As New ApplicationException("Return Value = " & outputParameter(0).Value)
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, e)
@@ -471,7 +471,7 @@ Public Class ProductCodeDAL
         outputParameter(0) = New DBHelperParameter("po_return", GetType(Integer))
         Try
             ' Call DBHelper Store Procedure
-            ExecuteSp(updateStmt, inputParameters, outputParameter)
+            DBHelper.ExecuteSp(updateStmt, inputParameters, outputParameter)
             If outputParameter(0).Value <> 0 Then
                 Dim e As New ApplicationException("Return Value = " & outputParameter(0).Value)
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, e)
@@ -507,7 +507,7 @@ Public Class ProductCodeDAL
 
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
-            tr = GetNewTransaction
+            tr = DBHelper.GetNewTransaction
         End If
         Try
             'First Pass updates Deletions           

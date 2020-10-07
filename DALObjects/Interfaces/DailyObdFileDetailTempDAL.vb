@@ -35,7 +35,7 @@ Public Class DailyObdFileDetailTempDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("file_detail_temp_id", id.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("file_detail_temp_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -111,21 +111,21 @@ Public Class DailyObdFileDetailTempDAL
         Dim ds As DataSet
         Try
 
-            Dim inParameters() As DBHelperParameter = New DBHelperParameter() { _
-    New DBHelperParameter("CompanyCode", CompanyCode), _
-    New DBHelperParameter("DealerCode", Dealercode), _
-    New DBHelperParameter("SelectionOnCancel", selectoncancel), _
-    New DBHelperParameter("SelectionOnBilling", selectonbilling), _
-    New DBHelperParameter("SelectionOnNewBusiness", selectonNewEnrollment), _
-    New DBHelperParameter("CertificateNumber", CertNumber), _
-    New DBHelperParameter("DateRangeFrom", fromdate), _
-    New DBHelperParameter("DateRangeTo", todate)}
+            Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
+    New DBHelper.DBHelperParameter("CompanyCode", CompanyCode), _
+    New DBHelper.DBHelperParameter("DealerCode", Dealercode), _
+    New DBHelper.DBHelperParameter("SelectionOnCancel", selectoncancel), _
+    New DBHelper.DBHelperParameter("SelectionOnBilling", selectonbilling), _
+    New DBHelper.DBHelperParameter("SelectionOnNewBusiness", selectonNewEnrollment), _
+    New DBHelper.DBHelperParameter("CertificateNumber", CertNumber), _
+    New DBHelper.DBHelperParameter("DateRangeFrom", fromdate), _
+    New DBHelper.DBHelperParameter("DateRangeTo", todate)}
 
 
             'New DBHelper.DBHelperParameter("SelectionOnNewBusiness", selectonbilling), _
             'New DBHelper.DBHelperParameter("CertificateNumber", Convert.ToDateTime(processeddate)), _
-            Dim outParameters() As DBHelperParameter
-            ExecuteSp(sqlStmt, inParameters, outParameters)
+            Dim outParameters() As DBHelper.DBHelperParameter
+            DBHelper.ExecuteSp(sqlStmt, inParameters, outParameters)
             'ExecuteSPCreateInvoice(DealerID, userNetworkId, sqlStmt)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -138,10 +138,10 @@ Public Class DailyObdFileDetailTempDAL
         Try
             'If file_detail_Id.Count > 0 Then
             '    For i As Integer = 0 To file_detail_Id.Count
-            Dim inParameters() As DBHelperParameter = New DBHelperParameter() { _
-                        New DBHelperParameter("file_detail_temp_id", GuidToSQLString(file_detail_temp_id))}
+            Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
+                        New DBHelper.DBHelperParameter("file_detail_temp_id", GuidToSQLString(file_detail_temp_id))}
 
-            Execute(sqlStmt, inParameters)
+            DBHelper.Execute(sqlStmt, inParameters)
             '    Next
             'End If
 

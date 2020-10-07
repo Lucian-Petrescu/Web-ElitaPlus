@@ -213,7 +213,7 @@ Public Class ClaimStatusByGroupDAL
         Dim parameters() As OracleParameter = New OracleParameter() _
                                             {New OracleParameter(COL_NAME_COMPANY_GROUP_ID, companyGroupId.ToByteArray), _
                                              New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray), _
-                                             New OracleParameter(ClaimStatusDAL.COL_NAME_STATUS_CODE, statusCode)}
+                                             New OracleParameter(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_CODE, statusCode)}
 
         Try
             Return DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters)

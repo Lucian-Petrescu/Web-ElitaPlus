@@ -1,5 +1,5 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (3/9/2009)********************
-Imports System.Collections.Generic
+
 
 Public Class FormCategoryDAL
     Inherits DALBase
@@ -205,7 +205,7 @@ Public Class FormCategoryDAL
         Dim sqlStmt As String
         Dim trans As IDbTransaction
         sqlStmt = Config("/SQL/LOAD_DICT_ITEM_TRANSLATION_PROC")
-        Dim inParameters As New List(Of DBHelper.DBHelperParameter)
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
         param = New DBHelper.DBHelperParameter("P_DICT_ITEM_id", DictItemId.ToByteArray)

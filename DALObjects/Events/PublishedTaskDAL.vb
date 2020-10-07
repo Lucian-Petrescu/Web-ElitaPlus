@@ -1,5 +1,4 @@
-﻿Imports System.Collections.Generic
-Imports Assurant.ElitaPlus.DALObjects.DBHelper
+﻿Imports Assurant.ElitaPlus.DALObjects.DBHelper
 
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (1/4/2013)********************
 
@@ -77,7 +76,7 @@ Public Class PublishedTaskDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("published_task_id", id.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("published_task_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -106,10 +105,10 @@ Public Class PublishedTaskDAL
         Dim ds As New DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
-        Dim languageId1Param As DBHelperParameter
-        Dim languageId2Param As DBHelperParameter
-        Dim languageId3Param As DBHelperParameter
-        Dim rowNumParam As DBHelperParameter
+        Dim languageId1Param As DBHelper.DBHelperParameter
+        Dim languageId2Param As DBHelper.DBHelperParameter
+        Dim languageId3Param As DBHelper.DBHelperParameter
+        Dim rowNumParam As DBHelper.DBHelperParameter
         Dim DateParam As Date
 
 
@@ -168,14 +167,14 @@ Public Class PublishedTaskDAL
         End If
 
         Try
-            languageId1Param = New DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
-            languageId2Param = New DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
-            languageId3Param = New DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
+            languageId1Param = New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
+            languageId2Param = New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
+            languageId3Param = New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
 
-            rowNumParam = New DBHelperParameter(PAR_NAME_ROW_NUMBER, LimitResultset)
+            rowNumParam = New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, LimitResultset)
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {languageId1Param, languageId2Param, languageId3Param, rowNumParam})
+                            New DBHelper.DBHelperParameter() {languageId1Param, languageId2Param, languageId3Param, rowNumParam})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -266,7 +265,7 @@ Public Class PublishedTaskDAL
         End If
         Try
             ' Call DBHelper Store Procedure
-            ExecuteSp(selectStmt, inputParameters, Nothing)
+            DBHelper.ExecuteSp(selectStmt, inputParameters, Nothing)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -286,7 +285,7 @@ Public Class PublishedTaskDAL
 
         Try
             ' Call DBHelper Store Procedure
-            ExecuteSp(selectStmt, inputParameters, outputParameter)
+            DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
             Dim pub_Task_Id_string As String
             pub_Task_Id_string = DirectCast(outputParameter(0).Value, String)
             If (Not String.IsNullOrEmpty(pub_Task_Id_string)) Then
@@ -308,7 +307,7 @@ Public Class PublishedTaskDAL
 
         Try
             ' Call DBHelper Store Procedure
-            ExecuteSp(selectStmt, inputParameters, Nothing)
+            DBHelper.ExecuteSp(selectStmt, inputParameters, Nothing)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -325,7 +324,7 @@ Public Class PublishedTaskDAL
 
         Try
             ' Call DBHelper Store Procedure
-            ExecuteSp(selectStmt, inputParameters, Nothing)
+            DBHelper.ExecuteSp(selectStmt, inputParameters, Nothing)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -339,7 +338,7 @@ Public Class PublishedTaskDAL
 
         Try
             ' Call DBHelper Store Procedure
-            ExecuteSp(selectStmt, inputParameters, Nothing)
+            DBHelper.ExecuteSp(selectStmt, inputParameters, Nothing)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -353,7 +352,7 @@ Public Class PublishedTaskDAL
 
         Try
             ' Call DBHelper Store Procedure
-            ExecuteSp(selectStmt, inputParameters, Nothing)
+            DBHelper.ExecuteSp(selectStmt, inputParameters, Nothing)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -362,16 +361,16 @@ Public Class PublishedTaskDAL
     Public SUB GetOutBoundMessageDetails(publishedTaskId As Guid, ByRef oErrCode As Integer, ByRef oErrMsg As String,
                                          ByRef oMessageId As Guid, ByRef oTemplateCode As String, ByRef oWhiteList as string, 
                                          ByRef oTemplateUserName As string, ByRef oTemplatePassword As String,                      
-                                         byref oRecipients As List(Of String),
-                                         ByRef oTemplateParams as Dictionary(Of String, string))
+                                         byref oRecipients As System.Collections.Generic.list(Of String),
+                                         ByRef oTemplateParams as System.Collections.Generic.Dictionary(Of String, string))
         Dim selectStmt As String = Config("/SQL/GET_OUTBOUND_EMAIL_DETAILS")
         Dim strTemp as String, strKey as String, strValue as string
         oErrCode = 0
         oErrMsg = string.Empty
 
         
-        Using connection As New OracleConnection(ConnectString)
-            Using command as OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, connection) 
+        Using connection As New OracleConnection(DBHelper.ConnectString)
+            Using command as OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, connection) 
                 command.BindByName = True
                 command.AddParameter("pi_published_task_id", OracleDbType.Raw, 16, publishedTaskId.ToByteArray, ParameterDirection.Input)
                 command.AddParameter("po_return_code", OracleDbType.Int64, 10, nothing, ParameterDirection.Output)
@@ -430,8 +429,8 @@ Public Class PublishedTaskDAL
         strErrMsg = String.Empty
         Dim strTemp As String
 
-        Using connection As New OracleConnection(ConnectString)
-            Using command As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, connection)
+        Using connection As New OracleConnection(DBHelper.ConnectString)
+            Using command As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, connection)
                 command.BindByName = True
                 command.AddParameter("pi_claim_id", OracleDbType.Raw, 16, ClaimId.ToByteArray, ParameterDirection.Input)
                 command.AddParameter("po_return_code", OracleDbType.Int64, 10, Nothing, ParameterDirection.Output)
@@ -456,8 +455,8 @@ Public Class PublishedTaskDAL
         oErrCode = 0
         
         
-        Using connection As New OracleConnection(ConnectString)
-            Using command as OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, connection) 
+        Using connection As New OracleConnection(DBHelper.ConnectString)
+            Using command as OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, connection) 
                 command.BindByName = True
                 command.AddParameter("pi_message_id", OracleDbType.Raw, 16, guidMsgId.ToByteArray, ParameterDirection.Input)
                 command.AddParameter("pi_recipient", OracleDbType.Varchar2, 500, strRecipient, ParameterDirection.Input)
@@ -487,8 +486,8 @@ Public Class PublishedTaskDAL
         oErrCode = 0
         
         
-        Using connection As New OracleConnection(ConnectString)
-            Using command as OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, connection) 
+        Using connection As New OracleConnection(DBHelper.ConnectString)
+            Using command as OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, connection) 
                 command.BindByName = True
                 command.AddParameter("pi_msg_recipient_id", OracleDbType.Raw, 16, guidMsgRecipientId.ToByteArray, ParameterDirection.Input)
                 command.AddParameter("pi_process_status", OracleDbType.Varchar2, 100, strProcessStatus, ParameterDirection.Input)
@@ -520,8 +519,8 @@ Public Class PublishedTaskDAL
         Dim strTemp As String
 
 
-        Using connection As New OracleConnection(ConnectString)
-            Using command As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, connection)
+        Using connection As New OracleConnection(DBHelper.ConnectString)
+            Using command As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, connection)
                 command.BindByName = True
                 command.AddParameter("pi_gift_card_number", OracleDbType.Varchar2, 100, giftCardNumber, ParameterDirection.Input)
                 command.AddParameter("pi_serial_number", OracleDbType.Varchar2, 100, serialNumber, ParameterDirection.Input)
@@ -548,8 +547,8 @@ Public Class PublishedTaskDAL
         Dim strTemp as String
      
         
-        Using connection As New OracleConnection(ConnectString)
-            Using command as OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, connection) 
+        Using connection As New OracleConnection(DBHelper.ConnectString)
+            Using command as OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, connection) 
                 command.BindByName = True
                 command.AddParameter("pi_gift_card_request_id", OracleDbType.Raw,16, giftCardRequestId.ToByteArray, ParameterDirection.Input)
                 command.AddParameter("pi_gift_card_status", OracleDbType.Varchar2, 100, status, ParameterDirection.Input)

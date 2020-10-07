@@ -1,5 +1,4 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject v2.cst (10/11/2017)********************
-Imports System.Collections.Generic
 
 Public Class RewardsDAL
     Inherits OracleDALBase
@@ -66,10 +65,10 @@ Public Class RewardsDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Try
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD"))
                 cmd.AddParameter(TABLE_KEY_NAME, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Fetch(cmd, TABLE_NAME, familyDS)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -80,7 +79,7 @@ Public Class RewardsDAL
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(PO_CURSOR_REWARD) As DBHelper.DBHelperParameter
-        Dim inParameters As New List(Of DBHelper.DBHelperParameter)
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
         param = New DBHelper.DBHelperParameter("pi_company_id", CompanyId.ToByteArray)

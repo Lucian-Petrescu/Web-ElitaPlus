@@ -65,7 +65,7 @@ Public Class FormAuthorizationDAL
         Dim ds As New DataSet
 
         whereClauseConditions &= MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds)
-        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DALBase.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         With oFormAuthorizationData
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                         {New DBHelper.DBHelperParameter(COL_NAME_CODE, .code.ToUpper), _
@@ -113,7 +113,7 @@ Public Class FormAuthorizationDAL
         Dim ds As New DataSet
 
         whereClauseConditions &= MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds, True)
-        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DALBase.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         With oFormAuthorizationData
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                         {New DBHelper.DBHelperParameter(COL_NAME_NETWORK_ID, .network_id), _
@@ -176,7 +176,7 @@ Public Class FormAuthorizationDAL
         Dim ds As New DataSet
 
         whereClauseConditions &= MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds)
-        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DALBase.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         With oFormAuthorizationData
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                         {New DBHelper.DBHelperParameter(COL_NAME_NETWORK_ID, .network_id), _

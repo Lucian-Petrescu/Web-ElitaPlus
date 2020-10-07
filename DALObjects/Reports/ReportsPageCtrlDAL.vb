@@ -77,8 +77,8 @@ Public Class ReportsPageCtrlDAL
         Dim ds As New DataSet
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(COL_NAME_REPORT_NAME, RptName) _
-                        , New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, CompanyId)}
+                        {New DBHelper.DBHelperParameter(ReportsPagectrlDAL.COL_NAME_REPORT_NAME, RptName) _
+                        , New DBHelper.DBHelperParameter(ReportsPagectrlDAL.COL_NAME_COMPANY_ID, CompanyId)}
 
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, params)
@@ -97,9 +97,9 @@ Public Class ReportsPageCtrlDAL
         Dim ds As New DataSet
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(COL_NAME_REPORT_NAME, RptName) _
-                        , New DBHelper.DBHelperParameter(COL_NAME_PERIOD_GENERATED, ReportPeriod) _
-                        , New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, CompanyId)}
+                        {New DBHelper.DBHelperParameter(ReportsPagectrlDAL.COL_NAME_REPORT_NAME, RptName) _
+                        , New DBHelper.DBHelperParameter(ReportsPagectrlDAL.COL_NAME_PERIOD_GENERATED, ReportPeriod) _
+                        , New DBHelper.DBHelperParameter(ReportsPagectrlDAL.COL_NAME_COMPANY_ID, CompanyId)}
 
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, params)
@@ -117,8 +117,8 @@ Public Class ReportsPageCtrlDAL
         Dim ds As New DataSet
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, CompanyId), _
-                         New DBHelper.DBHelperParameter(COL_NAME_CLOSING_DATE, ClosingDate)}
+                        {New DBHelper.DBHelperParameter(ReportsPageCtrlDAL.COL_NAME_COMPANY_ID, CompanyId), _
+                         New DBHelper.DBHelperParameter(ReportsPageCtrlDAL.COL_NAME_CLOSING_DATE, ClosingDate)}
 
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, params)
@@ -136,8 +136,8 @@ Public Class ReportsPageCtrlDAL
         Dim ds As New DataSet
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, CompanyId), _
-                         New DBHelper.DBHelperParameter(COL_NAME_BEGIN_DATE, BeginDate)}
+                        {New DBHelper.DBHelperParameter(ReportsPageCtrlDAL.COL_NAME_COMPANY_ID, CompanyId), _
+                         New DBHelper.DBHelperParameter(ReportsPageCtrlDAL.COL_NAME_BEGIN_DATE, BeginDate)}
 
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, params)

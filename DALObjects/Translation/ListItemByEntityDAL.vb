@@ -1,5 +1,4 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (9/18/2018)******************
-Imports System.Collections.Generic
 
 Public Class ListItemByEntityDAL
     Inherits DALBase
@@ -67,7 +66,7 @@ Public Class ListItemByEntityDAL
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_cursor_Result", GetType(DataSet))}
         Dim ds As New DataSet
         ' Dim tbl As String = "LoadEntityList"
-        Dim inParameters As New List(Of DBHelper.DBHelperParameter)
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
         param = New DBHelper.DBHelperParameter("pi_language_code", oLanguageCode)
@@ -94,7 +93,7 @@ Public Class ListItemByEntityDAL
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_cursor_Result", GetType(DataSet))}
         Dim ds As New DataSet
         ' Dim tbl As String = "LoadEntityList"
-        Dim inParameters As New List(Of DBHelper.DBHelperParameter)
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
         param = New DBHelper.DBHelperParameter("pi_language_code", oLanguageCode)
@@ -144,7 +143,7 @@ Public Class ListItemByEntityDAL
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_cursor_Result", GetType(DataSet))}
         Dim ds As New DataSet
         ' Dim tbl As String = "LoadEntityList"
-        Dim inParameters As New List(Of DBHelper.DBHelperParameter)
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
         param = New DBHelper.DBHelperParameter("pi_language_code", oLanguageCode)

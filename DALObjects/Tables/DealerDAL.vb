@@ -555,14 +555,14 @@ Public Class DealerDAL
         selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, WhereClause)
         Dim dsDealer As DataSet
         Try
-            dsDealer = DBHelper.Fetch(selectStmt, "Dealer")
+            dsDealer = ElitaPlus.DALObjects.DBHelper.Fetch(selectStmt, "Dealer")
             If companyIds.Count > 1 Then 'Use the description with company code if more than one companies
                 dsDealer.Tables(0).Columns("description").ColumnName = "DescSingle"
                 dsDealer.Tables(0).Columns("descriptionDual").ColumnName = "description"
             End If
             Return dsDealer
         Catch ex As Exception
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+            Throw New DataBaseAccessException(ElitaPlus.DALObjects.DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
@@ -659,14 +659,14 @@ Public Class DealerDAL
         Dim selectStmt As String = Config("/SQL/GET_DEALER_PROVIDER_CLASS_CODE")
         Dim providerClassCode As String = String.Empty
 
-        Using command As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure)
+        Using command As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure)
             command.BindByName = True
             command.AddParameter(ParINameDealerCode, OracleDbType.Varchar2, 5, dealerCode, ParameterDirection.Input)
             command.AddParameter(ParINameProviderType, OracleDbType.Varchar2, 100, providerType, ParameterDirection.Input)
             command.AddParameter("pReturnValue", OracleDbType.Varchar2, 100, Nothing, ParameterDirection.ReturnValue)
 
             Try
-                ExecuteNonQuery(command)
+                OracleDbHelper.ExecuteNonQuery(command)
                 providerClassCode = command.Parameters.Item("pReturnValue").Value.ToString
                 Return providerClassCode
             Catch ex As Exception
@@ -706,7 +706,7 @@ Public Class DealerDAL
         Dim selectStmt As String = Config("/SQL/GET_DEALER_CERTIFICATES_COUNT")
         Dim parameters(TOTAL_PARAM_DEALER_CERTIFICATES_COUNT) As DBHelper.DBHelperParameter
 
-        parameters(DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, GuidToSQLString(dealerID))
+        parameters(DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, DALBase.GuidToSQLString(dealerID))
 
         Try
             Dim ds As New DataSet
@@ -864,12 +864,12 @@ Public Class DealerDAL
         If intDeleteLevel = DELETE_ALL_DEALER_DEFINITIONS Then
             selectStmt = Config("/SQL/DELETE_ALL_DEALER_DEFINITIONS")
             inputParameters(FROM_DEALER) = New DBHelper.DBHelperParameter(COL_NAME_FROM_DEALER, fromDealerID)
-            inputParameters(FROM_COVERAGE) = New DBHelper.DBHelperParameter(COL_NAME_FROM_COVERAGE_ID, DBNull.Value)
+            inputParameters(FROM_COVERAGE) = New DBHelper.DBHelperParameter(COL_NAME_FROM_COVERAGE_ID, System.DBNull.Value)
             inputParameters(DELETE_LEVEL) = New DBHelper.DBHelperParameter(COL_NAME_COPY_LEVEL, DELETE_ALL_DEALER_DEFINITIONS, GetType(Integer))
         ElseIf intDeleteLevel = DELETE_DEALER_PRODUCTCODES_AND_ITEMS Then
             selectStmt = Config("/SQL/DELETE_DEALER_PRODUCTCODES_AND_ITEMS")
             inputParameters(FROM_DEALER) = New DBHelper.DBHelperParameter(COL_NAME_FROM_DEALER, fromDealerID)
-            inputParameters(FROM_PRODUCT_CODE) = New DBHelper.DBHelperParameter(COL_NAME_FROM_PRODUCT_CODE_ID, DBNull.Value)
+            inputParameters(FROM_PRODUCT_CODE) = New DBHelper.DBHelperParameter(COL_NAME_FROM_PRODUCT_CODE_ID, System.DBNull.Value)
             inputParameters(DELETE_LEVEL) = New DBHelper.DBHelperParameter(COL_NAME_COPY_LEVEL, DELETE_ALL_DEALER_DEFINITIONS, GetType(Integer))
         End If
 

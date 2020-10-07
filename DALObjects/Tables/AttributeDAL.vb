@@ -40,10 +40,10 @@ Public Class AttributeDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Try
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD"))
                 cmd.AddParameter(PAR_I_NAME_ATTRIBUTE_ID, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Fetch(cmd, TABLE_NAME, familyDS)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -52,9 +52,9 @@ Public Class AttributeDAL
 
     Public Function LoadList() As DataSet
         Try
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD_LIST"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD_LIST"))
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return Fetch(cmd, TABLE_NAME)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -114,13 +114,13 @@ Public Class AttributeDAL
     Public Function LoadAttributeList(pTableName As String) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_ATTRIBUTE_LIST")
 
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure)
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure)
         cmd.AddParameter(PAR_I_NAME_TABLE_NAME, OracleDbType.Varchar2, 30, pTableName)
-        cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+        cmd.AddParameter(OracleDALBase.PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
             Dim ds As New DataSet
-            Fetch(cmd, TABLE_NAME, ds)
+            OracleDbHelper.Fetch(cmd, TABLE_NAME, ds)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -148,14 +148,14 @@ Public Class AttributeDAL
             pTableName = "%" + pTableName + "%"
         End If
 
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure)
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure)
         cmd.AddParameter(PAR_I_NAME_TABLE_NAME, OracleDbType.Varchar2, 30, pTableName)
         cmd.AddParameter(PAR_I_SORT, OracleDbType.Int32, 2, sort)
-        cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+        cmd.AddParameter(OracleDALBase.PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
             Dim ds As New DataSet
-            Fetch(cmd, TABLE_NAME, ds)
+            OracleDbHelper.Fetch(cmd, TABLE_NAME, ds)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

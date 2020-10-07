@@ -1,5 +1,5 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (2/21/2013)********************
-Imports System.Reflection
+
 
 Public Class ClaimAuthorizationDAL
     Inherits DALBase
@@ -254,14 +254,14 @@ Public Class ClaimAuthorizationDAL
 
     Public Property ClaimAuthNumber(Row As DataRow) As String
         Get
-            If Row(COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
+            If Row(ClaimAuthorizationDAL.COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(COL_NAME_AUTHORIZATION_NUMBER), String)
+                Return CType(Row(ClaimAuthorizationDAL.COL_NAME_AUTHORIZATION_NUMBER), String)
             End If
         End Get
         Set(Value As String)
-            SetValue(Row, COL_NAME_AUTHORIZATION_NUMBER, Value)
+            SetValue(Row, ClaimAuthorizationDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
     End Property
 
@@ -341,7 +341,7 @@ Public Class ClaimAuthorizationDAL
             Else
                 '- DateType, DecimalType, etc... all our other custome types
                 '- see if 'newValue Type' has a Value property (only our custom types do)
-                Dim propInfo As PropertyInfo = newValue.GetType.GetProperty("Value")
+                Dim propInfo As System.Reflection.PropertyInfo = newValue.GetType.GetProperty("Value")
                 If Not (propInfo Is Nothing) Then
                     '- call the Value property to extract the native .NET type (double, decimal, etc...)
                     newValue = propInfo.GetValue(newValue, Nothing)
@@ -363,7 +363,7 @@ Public Class ClaimAuthorizationDAL
                 '- create an array of types containing one type, the String type
                 Dim types() As Type = {GetType(String)}
                 '- see if the 'newValue Type' has a 'Parse(String)' method taking a String parameter
-                Dim miMethodInfo As MethodInfo = newValue.GetType.GetMethod("Parse", types)
+                Dim miMethodInfo As System.Reflection.MethodInfo = newValue.GetType.GetMethod("Parse", types)
                 If Not miMethodInfo Is Nothing Then
                     '- it does have a Parse method, newValue must be a number type.
                     '- extract the current value as a string
@@ -386,7 +386,7 @@ Public Class ClaimAuthorizationDAL
                 Else
                     '- DateType, DecimalType, etc... all our other custome types
                     '- see if 'newValue Type' has a Value property (only our custom types do)
-                    Dim propInfo As PropertyInfo = newValue.GetType.GetProperty("Value")
+                    Dim propInfo As System.Reflection.PropertyInfo = newValue.GetType.GetProperty("Value")
                     If Not (propInfo Is Nothing) Then
                         '- call the Value property to extract the native .NET type (double, decimal, etc...)
                         newValue = propInfo.GetValue(newValue, Nothing)
@@ -441,15 +441,15 @@ Public Class ClaimAuthorizationDAL
         ' Call DBHelper Store Procedure
         Try
             Using connection As New OracleConnection(DBHelper.ConnectString)
-                Using cmd As OracleCommand = CreateCommand(storedProc, CommandType.StoredProcedure, connection)
+                Using cmd As OracleCommand = OracleDbHelper.CreateCommand(storedProc, CommandType.StoredProcedure, connection)
                     cmd.BindByName = True
                     cmd.Parameters.AddRange(parameters)
-                    Fetch(cmd, tbl, ds)
+                    OracleDbHelper.Fetch(cmd, tbl, ds)
                 End Using
             End Using
             Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
             If (Not par Is Nothing AndAlso par.Value = 200) Then
-                Throw New ElitaPlusException("ClaimAuthorization - " + methodName, ErrorCodes.DB_READ_ERROR)
+                Throw New ElitaPlusException("ClaimAuthorization - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
             End If
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -612,7 +612,7 @@ Public Class ClaimAuthorizationDAL
         Dim strTemp As String
 
         Using connection As New OracleConnection(DBHelper.ConnectString)
-            Using command As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, connection)
+            Using command As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, connection)
                 command.BindByName = True
                 command.AddParameter("pi_claim_id", OracleDbType.Raw, 16, claimId.ToByteArray, ParameterDirection.Input)
                 command.AddParameter("pi_equipment_id", OracleDbType.Raw, 16, eqipId.ToByteArray, ParameterDirection.Input)

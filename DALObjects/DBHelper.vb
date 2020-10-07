@@ -25,10 +25,7 @@
 '===========================================================================================
 Imports System.Globalization
 Imports System.IO
-Imports System.Text
 Imports System.Text.RegularExpressions
-Imports System.Threading
-Imports System.Xml
 Imports Assurant.Common.Zip
 
 Public NotInheritable Class DBHelper
@@ -55,7 +52,7 @@ Public NotInheritable Class DBHelper
     Private Shared Sub InternalFetch(ds As DataSet, sql As String, tableName As String)
         Dim da As OracleDataAdapter
 
-        Using conn As New OracleConnection(ConnectString)
+        Using conn As New OracleConnection(DBHelper.ConnectString)
             Try
                 da = New OracleDataAdapter(sql, conn)
                 da.Fill(ds, tableName)
@@ -74,7 +71,7 @@ Public NotInheritable Class DBHelper
     Private Shared Sub InternalFetch(ds As DataSet, sql As String, tableName As String, parms() As OracleParameter)
         Dim da As OracleDataAdapter
 
-        Using conn As New OracleConnection(ConnectString)
+        Using conn As New OracleConnection(DBHelper.ConnectString)
             Using cmd As New OracleCommand(sql, conn)
                 Try
                     With cmd
@@ -136,7 +133,7 @@ Public NotInheritable Class DBHelper
 #Region " Public Methods "
 
     Public Shared Function ConnectString() As String
-        Dim objParameters As ElitaPlusParameters = CType(Thread.CurrentPrincipal.Identity, ElitaPlusParameters)
+        Dim objParameters As ElitaPlusParameters = CType(System.Threading.Thread.CurrentPrincipal.Identity, ElitaPlusParameters)
         Dim sStrConnect As String
         sStrConnect = "Validate Connection=true;" & "User ID=" & objParameters.AppUserId & ";Password=" & objParameters.AppPassword & ";Data Source=" & AppConfig.DataBase.Server
         Return sStrConnect
@@ -202,7 +199,7 @@ Public NotInheritable Class DBHelper
 
     'NOTE: the passed in SQL should only SELECT one column
     Public Shared Function ExecuteScalar(sql As String, parms() As DBHelperParameter) As Object
-        Dim con As New OracleConnection(ConnectString)
+        Dim con As New OracleConnection(DBHelper.ConnectString)
         Dim cmd As New OracleCommand(sql, con)
         Dim oraParms As OracleParameter()
 
@@ -271,7 +268,7 @@ Public NotInheritable Class DBHelper
 
     'NOTE: the passed in SQL should only SELECT one column
     Public Shared Function ExecuteScalar(sql As String) As Object
-        Dim con As New OracleConnection(ConnectString)
+        Dim con As New OracleConnection(DBHelper.ConnectString)
         Dim cmd As New OracleCommand(sql, con)
 
         Try
@@ -285,7 +282,7 @@ Public NotInheritable Class DBHelper
 
     Public Shared Function ReadOracleXmlTypeData(sql As String, additionalParamters As DBHelperParameter()) As String
         'Create a connection.
-        Dim con As New OracleConnection(ConnectString)
+        Dim con As New OracleConnection(DBHelper.ConnectString)
         Dim rtnString As String
 
         Try
@@ -332,11 +329,11 @@ Public NotInheritable Class DBHelper
         Return rtnString
     End Function
 
-    Public Shared Function ReadClobWithReader(sql As String, additionalParamters As DBHelperParameter()) As StringBuilder
+    Public Shared Function ReadClobWithReader(sql As String, additionalParamters As DBHelperParameter()) As Text.StringBuilder
 
         'Create a connection.
-        Dim con As New OracleConnection(ConnectString)
-        Dim rtnString As New StringBuilder(String.Empty)
+        Dim con As New OracleConnection(DBHelper.ConnectString)
+        Dim rtnString As New Text.StringBuilder(String.Empty)
 
         Try
 
@@ -357,7 +354,7 @@ Public NotInheritable Class DBHelper
                     reader.Read()
 
                     Dim clob As OracleClob = reader.GetOracleClob(0)
-                    Dim streamreader As StreamReader = New StreamReader(clob, Encoding.Unicode)
+                    Dim streamreader As IO.StreamReader = New IO.StreamReader(clob, Text.Encoding.Unicode)
 
                     rtnString.Append(streamreader.ReadToEnd())
 
@@ -388,8 +385,8 @@ Public NotInheritable Class DBHelper
     Public Shared Sub MigrateXML(readSQL As String, readParamters As DBHelperParameter(), updateSQL As String, Modified_By As String)
 
         'Create a connection.
-        Dim con As New OracleConnection(ConnectString)
-        Dim actualXML As StringBuilder = New StringBuilder(String.Empty)
+        Dim con As New OracleConnection(DBHelper.ConnectString)
+        Dim actualXML As System.Text.StringBuilder = New System.Text.StringBuilder(String.Empty)
 
         Try
 
@@ -412,9 +409,9 @@ Public NotInheritable Class DBHelper
                         Dim myBytes As Byte() = New Byte(15) {}
                         Dim bytesRead As Long = reader.GetBytes(reader.GetOrdinal("acct_transmission_id"), 0, myBytes, 0, 16) ' acct_transmission_id
 
-                        actualXML = New StringBuilder(String.Empty)
+                        actualXML = New System.Text.StringBuilder(String.Empty)
                         Dim oraclob As OracleClob = reader.GetOracleClob(1) ' File_Text
-                        Dim streamreader As StreamReader = New StreamReader(oraclob, Encoding.Unicode)
+                        Dim streamreader As StreamReader = New StreamReader(oraclob, System.Text.Encoding.Unicode)
                         actualXML.Append(streamreader.ReadToEnd())
                         oraclob.Close()
 
@@ -459,22 +456,22 @@ Public NotInheritable Class DBHelper
                         cmd1.Connection = con
 
                         ' Creating update parameters
-                        Dim para1 As OracleParameter = New OracleParameter("ptext1", OracleDbType.Blob, ParameterDirection.Input)
+                        Dim para1 As OracleParameter = New OracleParameter("ptext1", OracleDbType.Blob, System.Data.ParameterDirection.Input)
                         para1.Value = outstream.MemoryStreamToByteArray()
                         para1.Size = Convert.ToInt32(outstream.Length)
                         cmd1.Parameters.Add(para1)
 
-                        Dim para2 As OracleParameter = New OracleParameter("ptext2", OracleDbType.Varchar2, ParameterDirection.Input)
+                        Dim para2 As OracleParameter = New OracleParameter("ptext2", OracleDbType.Varchar2, System.Data.ParameterDirection.Input)
                         para2.Size = Journaltype.Length
                         para2.Value = Journaltype
                         cmd1.Parameters.Add(para2)
 
-                        Dim para3 As OracleParameter = New OracleParameter("ptext3", OracleDbType.Varchar2, ParameterDirection.Input)
+                        Dim para3 As OracleParameter = New OracleParameter("ptext3", OracleDbType.Varchar2, System.Data.ParameterDirection.Input)
                         para3.Size = Modified_By.Length
                         para3.Value = Modified_By
                         cmd1.Parameters.Add(para3)
 
-                        Dim para4 As OracleParameter = New OracleParameter("pid", OracleDbType.Raw, ParameterDirection.Input)
+                        Dim para4 As OracleParameter = New OracleParameter("pid", OracleDbType.Raw, System.Data.ParameterDirection.Input)
                         para4.Value = myBytes
                         cmd1.Parameters.Add(para4)
 
@@ -753,15 +750,15 @@ Public NotInheritable Class DBHelper
                     If oParameter.Length > 0 Then
                         ' Length
                         command.Parameters.Add(oParameter.Name, oParameter.DBType, oParameter.Length).Direction = _
-                                                                   ParameterDirection.Output
+                                                                   System.Data.ParameterDirection.Output
                     Else
                         command.Parameters.Add(oParameter.Name, oParameter.DBType).Direction = _
-                                                                        ParameterDirection.Output
+                                                                        System.Data.ParameterDirection.Output
                     End If
 
                 Else
                     command.Parameters.Add(oParameter.Name, DBNull.Value).Direction = _
-                            ParameterDirection.Output
+                            System.Data.ParameterDirection.Output
                 End If
             Next
         End If
@@ -887,7 +884,7 @@ Public NotInheritable Class DBHelper
     End Sub
 
     Public Shared Function GetConnection() As OracleConnection
-        Dim conn As New OracleConnection(ConnectString)
+        Dim conn As New OracleConnection(DBHelper.ConnectString)
         conn.Open()
         Return conn
     End Function
@@ -897,7 +894,7 @@ Public NotInheritable Class DBHelper
     End Function
 
     Public Shared Function GetNewTransaction() As IDbTransaction
-        Dim conn As New OracleConnection(ConnectString)
+        Dim conn As New OracleConnection(DBHelper.ConnectString)
         conn.Open()
         Return conn.BeginTransaction
     End Function
@@ -1030,13 +1027,13 @@ Public NotInheritable Class DBHelper
                 'It must be a number
                 Dim currentCulture As CultureInfo
                 Try
-                    currentCulture = Thread.CurrentThread.CurrentCulture
-                    Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture
+                    currentCulture = System.Threading.Thread.CurrentThread.CurrentCulture
+                    System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture
                     Return value.ToString
                 Catch ex As Exception
                 Finally
                     'Restore the original culture
-                    Thread.CurrentThread.CurrentCulture = currentCulture
+                    System.Threading.Thread.CurrentThread.CurrentCulture = currentCulture
                 End Try
             End If
         End If
@@ -1294,7 +1291,7 @@ Public NotInheritable Class DBHelper
             End If
         End If
 
-        If col.DataType Is GetType(Byte()) Then
+        If col.DataType Is GetType(System.Byte()) Then
             Dim curB As Byte() = CType(row(col, DataRowVersion.Current), Byte())
             Dim oldB As Byte() = CType(row(col, DataRowVersion.Original), Byte())
             If curB.Length <> 16 Then Throw New ApplicationException("BusinessObjectBase.CheckColumnChanged only supports Byte Arrays that represent GUIDs")
@@ -1318,7 +1315,7 @@ Public NotInheritable Class DBHelper
             End If
         End If
 
-        If col.DataType Is GetType(Int16) Then
+        If col.DataType Is GetType(System.Int16) Then
             Dim cur As Int16 = CType(row(col, DataRowVersion.Current), Int16)
             Dim old As Int16 = CType(row(col, DataRowVersion.Original), Int16)
             If cur = old Then
@@ -1470,9 +1467,9 @@ Public NotInheritable Class DBHelper
         ElseIf oType Is GetType(DataSet) Then
             oracleType = OracleDbType.RefCursor
             '10/3/2006 - ALR - Added XML Type to parameter definition to enable sending XML
-        ElseIf oType Is GetType(XmlDocument) Then
+        ElseIf oType Is GetType(Xml.XmlDocument) Then
             oracleType = OracleDbType.XmlType
-        ElseIf oType Is GetType(StringBuilder) Then
+        ElseIf oType Is GetType(System.Text.StringBuilder) Then
             oracleType = OracleDbType.Clob
             oParam.Length = len
         Else
@@ -1525,7 +1522,7 @@ Public NotInheritable Class DBHelper
         ElseIf oParameter.Value.GetType() Is GetType(OracleDecimal) AndAlso Not CType(oParameter.Value, INullable).IsNull Then
             oValue = CType(oParameter.Value, OracleDecimal).Value
             'TODO date type
-        ElseIf oParameter.Value.GetType() Is GetType(DBNull) Then
+        ElseIf oParameter.Value.GetType() Is GetType(System.DBNull) Then
             ' In order to obtain information from the RefCursor. We need to call fetchSp
             oValue = Nothing
         ElseIf Not CType(oParameter.Value, INullable) Is Nothing AndAlso CType(oParameter.Value, INullable).IsNull Then

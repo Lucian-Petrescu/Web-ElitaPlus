@@ -282,8 +282,8 @@
     Public Function LoadLaterBillPayRow(CertId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_LATER_BILLING_ROW")
         Try
-            selectStmt = ReplaceParameter(selectStmt, COL_NAME_CERT_ID.ToUpper, CertId)
-            Return Fetch(selectStmt, BILLPAY_TABLE_NAME)
+            selectStmt = OracleDbHelper.ReplaceParameter(selectStmt, COL_NAME_CERT_ID.ToUpper, CertId)
+            Return OracleDbHelper.Fetch(selectStmt, BILLPAY_TABLE_NAME)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

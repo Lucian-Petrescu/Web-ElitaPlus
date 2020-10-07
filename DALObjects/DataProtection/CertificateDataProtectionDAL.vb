@@ -4,8 +4,6 @@
 
 
 #End Region
-Imports System.Collections.Generic
-
 Public Class CertificateDataProtectionDAL
     Inherits DALBase
 #Region "Constants"
@@ -46,7 +44,7 @@ Public Class CertificateDataProtectionDAL
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                             New DBHelper.DBHelperParameter("P_RETURN_CODE", intErrCode.GetType),
                             New DBHelper.DBHelperParameter("P_ErrorMsg", strErrMsg.GetType, 500)}
-            Dim inParameters As New List(Of DBHelper.DBHelperParameter)
+            Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
             Dim param As DBHelper.DBHelperParameter
             param = New DBHelper.DBHelperParameter("pi_entity_id", certId.ToByteArray)
             inParameters.Add(param)

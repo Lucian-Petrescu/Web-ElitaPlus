@@ -107,7 +107,7 @@ Public Class AnswerDAL
     Public Function GetAnswerCodeByValue(AnswerValue As String) As String
         Dim selectStmt As String = Config("/SQL/GET_ANSWER_CODE_BY_VALUE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(COL_NAME_ANSWER_VALUE.ToUpper, AnswerValue)}
+                        {New DBHelper.DBHelperParameter(AnswerDAL.COL_NAME_ANSWER_VALUE.ToUpper, AnswerValue)}
         Dim ds As New DataSet
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
@@ -121,7 +121,7 @@ Public Class AnswerDAL
     Public Function GetAnswerDataByCode(AnswerCode As String) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_ANSWER_DATA_BY_CODE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(COL_NAME_ANSWER_CODE.ToUpper, AnswerCode)}
+                        {New DBHelper.DBHelperParameter(AnswerDAL.COL_NAME_ANSWER_CODE.ToUpper, AnswerCode)}
         Dim ds As New DataSet
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)

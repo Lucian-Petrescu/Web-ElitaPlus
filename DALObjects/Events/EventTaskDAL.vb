@@ -47,14 +47,14 @@ Public Class EventTaskDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, CreateConnection())
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
 
         cmd.BindByName = True
         cmd.AddParameter("pi_event_task_id", OracleDbType.Raw, id.ToByteArray())
         cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            Fetch(cmd, TABLE_NAME, familyDS)
+            OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -67,7 +67,7 @@ Public Class EventTaskDAL
 
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As New DataSet
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, CreateConnection())
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
 
         cmd.BindByName = True
         cmd.AddParameter("pi_language_id", OracleDbType.Raw, LanguageID.ToByteArray())
@@ -110,7 +110,7 @@ Public Class EventTaskDAL
         cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            Return Fetch(cmd, TABLE_NAME, ds)
+            Return OracleDbHelper.Fetch(cmd, TABLE_NAME, ds)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try

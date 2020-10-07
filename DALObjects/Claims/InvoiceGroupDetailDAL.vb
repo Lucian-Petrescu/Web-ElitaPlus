@@ -56,7 +56,7 @@ Public Class InvoiceGroupDetailDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("invoice_group_detail_id", id.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("invoice_group_detail_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -137,19 +137,19 @@ Public Class InvoiceGroupDetailDAL
         End Try
     End Function
 
-    Public Function getinvoicegrpnumber(company_group_id As Guid) As DBHelperParameter()
+    Public Function getinvoicegrpnumber(company_group_id As Guid) As DBHelper.DBHelperParameter()
         Dim selectStmt As String = Config("/SQL/GET_INVOICE_GROUP_NUMBER")
-        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() { _
-                                     New DBHelperParameter(PAR_NAME_COMPANY_GROUP_ID, company_group_id.ToByteArray)}
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() { _
-                            New DBHelperParameter(PAR_INV_GRP_NUMBER, GetType(String)), _
-                            New DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)), _
-                            New DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
+                                     New DBHelper.DBHelperParameter(PAR_NAME_COMPANY_GROUP_ID, company_group_id.ToByteArray)}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
+                            New DBHelper.DBHelperParameter(PAR_INV_GRP_NUMBER, GetType(String)), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
 
         Try
 
             ' Call DBHelper Store Procedure
-            ExecuteSp(selectStmt, inputParameters, outputParameters)
+            DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
 
             Return outputParameters
         Catch ex As Exception

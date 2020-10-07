@@ -44,7 +44,7 @@ Public Class ReplacementPartDAL
         Dim parameters() As DBHelper.DBHelperParameter = _
            New DBHelper.DBHelperParameter() _
            { _
-               New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray()) _
+               New DBHelper.DBHelperParameter(ReplacementPartDAL.COL_NAME_CLAIM_ID, claimId.ToByteArray()) _
            }
         Try
             familyDS = DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)

@@ -40,11 +40,11 @@ Public Class ClaimStageDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.Text, CreateConnection())
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "stage_id", OracleDbType.Raw, id.ToByteArray, ParameterDirection.Input)
 
         Try
-            Fetch(cmd, TABLE_NAME, familyDS)
+            OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -101,7 +101,7 @@ Public Class ClaimStageDAL
         End If
 
         selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.Text, CreateConnection())
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, LanguageID.ToByteArray, ParameterDirection.Input)
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, LanguageID.ToByteArray, ParameterDirection.Input)
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, LanguageID.ToByteArray, ParameterDirection.Input)
@@ -109,7 +109,7 @@ Public Class ClaimStageDAL
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, LanguageID.ToByteArray, ParameterDirection.Input)
 
         Try
-            Return Fetch(cmd, TABLE_NAME, ds)
+            Return OracleDbHelper.Fetch(cmd, TABLE_NAME, ds)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -118,12 +118,12 @@ Public Class ClaimStageDAL
     'LoadEndStatusList(Me.Dataset, StageEndStatusDAL.TABLE_NAME, Me.Id, languageid)
     Public Sub LoadEndStatusList(familyDS As DataSet, tablename As String, stageid As Guid, languageid As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD_STAGE_END_STATUS_LIST")
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.Text, CreateConnection())
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, languageid.ToByteArray, ParameterDirection.Input)
         OracleDbHelper.AddParameter(cmd, "stage_id", OracleDbType.Raw, stageid.ToByteArray, ParameterDirection.Input)
 
         Try
-            Fetch(cmd, tablename, familyDS)
+            OracleDbHelper.Fetch(cmd, tablename, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -169,10 +169,10 @@ Public Class ClaimStageDAL
         End If
 
         selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.Text, CreateConnection())
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
 
         Try
-            Return Fetch(cmd, TABLE_NAME, ds)
+            Return OracleDbHelper.Fetch(cmd, TABLE_NAME, ds)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -210,10 +210,10 @@ Public Class ClaimStageDAL
         End If
 
         selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.Text, CreateConnection())
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
 
         Try
-            Return Fetch(cmd, TABLE_NAME, ds)
+            Return OracleDbHelper.Fetch(cmd, TABLE_NAME, ds)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -225,12 +225,12 @@ Public Class ClaimStageDAL
 
     Public Function GetAvailableStageStartStatusList(company_group_id As Guid, language_id As Guid) As DataView
         Dim selectStmt As String = Config("/SQL/LOAD_AVAILABLE_STAGE_START_STATUS")
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.Text, CreateConnection())
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, language_id.ToByteArray, ParameterDirection.Input)
         OracleDbHelper.AddParameter(cmd, "company_group_id", OracleDbType.Raw, company_group_id.ToByteArray, ParameterDirection.Input)
 
         Try
-            Dim ds As DataSet = Fetch(cmd, "AVASTGSTARTSTATUSLST")
+            Dim ds As DataSet = OracleDbHelper.Fetch(cmd, "AVASTGSTARTSTATUSLST")
 
             If ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
@@ -246,12 +246,12 @@ Public Class ClaimStageDAL
     Public Function GetAvailableStageEndStatusList(company_group_id As Guid, language_id As Guid) As DataView
         Dim selectStmt As String = Config("/SQL/LOAD_AVAILABLE_STAGE_END_STATUS")
 
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.Text, CreateConnection())
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, language_id.ToByteArray, ParameterDirection.Input)
         OracleDbHelper.AddParameter(cmd, "company_group_id", OracleDbType.Raw, company_group_id.ToByteArray, ParameterDirection.Input)
 
         Try
-            Dim ds As DataSet = Fetch(cmd, "AVASTGENDSTATUSLST")
+            Dim ds As DataSet = OracleDbHelper.Fetch(cmd, "AVASTGENDSTATUSLST")
 
             If ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
@@ -266,12 +266,12 @@ Public Class ClaimStageDAL
 
     Public Function GetSelectedStageEndStatusList(stage_id As Guid, language_id As Guid) As DataView
         Dim selectStmt As String = Config("/SQL/LOAD_SELECTED_STAGE_END_STATUS")
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.Text, CreateConnection())
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, language_id.ToByteArray, ParameterDirection.Input)
         OracleDbHelper.AddParameter(cmd, "stage_id", OracleDbType.Raw, stage_id.ToByteArray, ParameterDirection.Input)
 
         Try
-            Dim ds As DataSet = Fetch(cmd, "SELSTGENDSTATUSLST")
+            Dim ds As DataSet = OracleDbHelper.Fetch(cmd, "SELSTGENDSTATUSLST")
 
             If ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
@@ -348,7 +348,7 @@ Public Class ClaimStageDAL
         Dim tr As IDbTransaction = Transaction
 
         If tr Is Nothing Then
-            tr = BeginTransaction
+            tr = OracleDbHelper.BeginTransaction
         End If
 
         Try
@@ -363,12 +363,12 @@ Public Class ClaimStageDAL
 
             If Transaction Is Nothing Then
                 'We are the creator of the transaction we shoul commit it  and close the connection
-                Commit(tr)
+                OracleDbHelper.Commit(tr)
             End If
         Catch ex As Exception
             If Transaction Is Nothing Then
                 'We are the creator of the transaction we shoul commit it  and close the connection
-                Rollback(tr)
+                OracleDbHelper.Rollback(tr)
             End If
             Throw ex
         End Try

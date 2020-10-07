@@ -75,10 +75,10 @@ Public Class ApInvoiceLinesDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Try
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD"))
                 cmd.AddParameter(TABLE_KEY_NAME, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Fetch(cmd, TABLE_NAME, familyDS)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
             End Using        
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -86,9 +86,9 @@ Public Class ApInvoiceLinesDAL
     End Sub
     Public Function LoadList() As DataSet
         Try
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD_LIST"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD_LIST"))
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return Fetch(cmd, TABLE_NAME)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -115,10 +115,10 @@ Public Class ApInvoiceLinesDAL
 
     Public Function GetApInvoiceLines(familyDS As DataSet, apInvoiceHeaderId As Guid) As DataSet
         Try
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOADLINES"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOADLINES"))
                 cmd.AddParameter(PAR_I_NAME_INVOICE_NUMBER, OracleDbType.Raw, apInvoiceHeaderId.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Fetch(cmd, TABLE_NAME, familyDS)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
                 Return familyDS
             End Using
         Catch ex As Exception
@@ -128,12 +128,12 @@ Public Class ApInvoiceLinesDAL
     public Function GetAuthorization(serviceCenterId As Guid , claimNumber As String, authorizationNumber As string) As Dataset
         Try
             Dim authorizationDataSet As New DataSet
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOADAUTHS"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOADAUTHS"))
                 cmd.AddParameter(PAR_I_NAME_SERVICE_CENTER_ID, OracleDbType.Raw, serviceCenterId.ToByteArray())
                 cmd.AddParameter(PAR_I_NAME_CLAIM_NUMBER, OracleDbType.Varchar2, claimNumber)
                 cmd.AddParameter(PAR_I_NAME_AUTHORIZATION_NUMBER, OracleDbType.Varchar2, authorizationNumber)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Fetch(cmd, TABLE_NAME, authorizationDataSet)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, authorizationDataSet)
                 Return authorizationDataSet
             End Using
         Catch ex As Exception
@@ -144,7 +144,7 @@ Public Class ApInvoiceLinesDAL
         Try
             Dim authorizationDataSet As New DataSet
 
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOADPOLINES"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOADPOLINES"))
                
                 Dim authorizationArrayIds(claimAuthorizationIds.Count - 1) As String
                 Dim authArrayIdsSize(claimAuthorizationIds.Count - 1) As Integer
@@ -163,7 +163,7 @@ Public Class ApInvoiceLinesDAL
                 authParamIds.Size = authorizationArrayIds.Count
                 authParamIds.ArrayBindSize = authArrayIdsSize
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Fetch(cmd, TABLE_NAME, authorizationDataSet)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, authorizationDataSet)
                 Return authorizationDataSet
             End Using
         Catch ex As Exception

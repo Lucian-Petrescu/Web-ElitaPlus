@@ -30,11 +30,11 @@ Public Class ReportConfigDAL
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(familyDs As DataSet, id As Guid)
+    Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("report_config_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDs, selectStmt, TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -43,10 +43,10 @@ Public Class ReportConfigDAL
     Public Function LoadList(compIds As ArrayList, report As String, reportCe As String, _
                              languageId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
-        Dim inClauseCondition As String = ""
+        Dim inClausecondition As String = ""
         Dim whereClauseConditions As String = ""
 
-        inClauseCondition &= " AND rep." & MiscUtil.BuildListForSql(CompanyDAL.COL_NAME_COMPANY_ID, compIds, False)
+        inClausecondition &= " AND rep." & MiscUtil.BuildListForSql(DALObjects.CompanyDAL.COL_NAME_COMPANY_ID, compIds, False)
 
         reportCe = reportCe.Trim()
         If (Not reportCe.Equals(String.Empty) Or Not reportCe = "") AndAlso (FormatSearchMask(reportCe)) Then
@@ -62,8 +62,8 @@ Public Class ReportConfigDAL
             whereClauseConditions &= Environment.NewLine & " AND trans.language_id = " & MiscUtil.GetDbStringFromGuid(languageId)
         End If
 
-        If Not inClauseCondition = "" Then
-            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
+        If Not inClausecondition = "" Then
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
         Else
             selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
         End If

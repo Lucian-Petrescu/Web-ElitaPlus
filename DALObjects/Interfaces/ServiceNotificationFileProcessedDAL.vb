@@ -85,7 +85,7 @@ Public Class ServiceNotificationFileProcessedDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("svc_notification_processed_id", id.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("svc_notification_processed_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -187,7 +187,7 @@ Public Class ServiceNotificationFileProcessedDAL
         Dim selectStmt As String
 
         Select Case oServiceNotificationFileProcessedData.fileTypeCode
-            Case ServiceNotificationFileProcessedData.InterfaceTypeCode.NEW_NOTIFICATION
+            Case oServiceNotificationFileProcessedData.InterfaceTypeCode.NEW_NOTIFICATION
                 selectStmt = Config("/SQL/VALIDATE_NEW_CLAIM_FILE")
                 ' Case oServiceNotificationFileProcessedData.InterfaceTypeCode.NEW_CLAIM_HP
                 '     selectStmt = Me.Config("/SQL/VALIDATE_NEW_CLAIM_HP")
@@ -231,7 +231,7 @@ Public Class ServiceNotificationFileProcessedDAL
         Dim selectStmt As String
 
         Select Case oServiceNotificationFileProcessedData.fileTypeCode
-            Case ServiceNotificationFileProcessedData.InterfaceTypeCode.NEW_NOTIFICATION
+            Case oServiceNotificationFileProcessedData.InterfaceTypeCode.NEW_NOTIFICATION
                 selectStmt = Config("/SQL/DELETE_NEW_CLAIM_FILE")
                 'Case oServiceNotificationFileProcessedData.InterfaceTypeCode.NEW_CLAIM_HP
                 '    selectStmt = Me.Config("/SQL/DELETE_NEW_CLAIM_HP")

@@ -1,5 +1,5 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (8/17/2007)********************
-Imports System.Globalization
+
 
 Public Class RegionTaxDAL
     Inherits DALBase
@@ -25,7 +25,7 @@ Public Class RegionTaxDAL
     Public Const COL_NAME_DEALER_ID As String = "dealer_id"
 
     Private Const INFINITE_DATE_CONS As String = "12/31/2999"
-    Public Shared ReadOnly INFINITE_DATE As Date = Date.Parse(INFINITE_DATE_CONS, CultureInfo.InvariantCulture)
+    Public Shared ReadOnly INFINITE_DATE As Date = Date.Parse(INFINITE_DATE_CONS, System.Globalization.CultureInfo.InvariantCulture)
 #End Region
 
 #Region "Constructors"
@@ -130,10 +130,10 @@ Public Class RegionTaxDAL
             row = ds.Tables(0).Rows(0)
             RcdCount = row.Item(COL_NAME_RECORDCOUNT)
             If RcdCount > 0 Then
-                If Not row.Item(COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
+                If Not row.Item(COL_NAME_EFFECTIVE_DATE) Is System.DBNull.Value Then
                     MinEffDate = CType(row.Item(COL_NAME_EFFECTIVE_DATE), Date)
                 End If
-                If Not row.Item(COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
+                If Not row.Item(COL_NAME_EXPIRATION_DATE) Is System.DBNull.Value Then
                     MaxExpDate = CType(row.Item(COL_NAME_EXPIRATION_DATE), Date)
                 End If
             Else 'no existing record

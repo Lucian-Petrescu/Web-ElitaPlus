@@ -1,6 +1,5 @@
-Imports System.Collections.Generic
 Imports Assurant.ElitaPlus.DALObjects.DBHelper
-Imports Object
+Imports System.Object
 Imports System.Guid
 
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (10/12/2004)********************
@@ -456,17 +455,17 @@ Public Class CertificateDAL
 #Region "Load Methods"
 
     Public Sub LoadSchema(ds As DataSet)
-        Load(ds, Empty)
+        Load(ds, Guid.Empty)
     End Sub
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("pi_cert_id", id.ToByteArray)}
-        Dim outputParameter(PO_CURSOR_CERT_INFO) As DBHelperParameter
-        outputParameter(PO_CURSOR_CERT_INFO) = New DBHelperParameter(SP_PARAM_NAME_CERT_INFO, GetType(DataSet))
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_cert_id", id.ToByteArray)}
+        Dim outputParameter(PO_CURSOR_CERT_INFO) As DBHelper.DBHelperParameter
+        outputParameter(PO_CURSOR_CERT_INFO) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_CERT_INFO, GetType(DataSet))
         Try
 
-            FetchSp(selectStmt, parameters, outputParameter, familyDS, TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, parameters, outputParameter, familyDS, TABLE_NAME)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -525,8 +524,8 @@ Public Class CertificateDAL
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
         Dim ds As New DataSet
-        Dim companyParam As DBHelperParameter
-        Dim rowNumParam As DBHelperParameter
+        Dim companyParam As DBHelper.DBHelperParameter
+        Dim rowNumParam As DBHelper.DBHelperParameter
         Dim bIsLikeClause As Boolean = False
 
         bIsLikeClause = IsThereALikeClause(certNumberMask, customerNameMask,
@@ -598,10 +597,10 @@ Public Class CertificateDAL
         End If
 
         Try
-            rowNumParam = New DBHelperParameter(PAR_NAME_ROW_NUMBER, LimitResultset)
+            rowNumParam = New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, LimitResultset)
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {rowNumParam})
+                            New DBHelper.DBHelperParameter() {rowNumParam})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -642,8 +641,8 @@ Public Class CertificateDAL
         Dim fromClauseConditions As String = ""
         Dim joinCondition As String = ""
         Dim ds As New DataSet
-        Dim companyParam As DBHelperParameter
-        Dim rowNumParam As DBHelperParameter
+        Dim companyParam As DBHelper.DBHelperParameter
+        Dim rowNumParam As DBHelper.DBHelperParameter
 
         Dim bIsLikeClause As Boolean = IsLikeClause(PhoneNumMask) OrElse
                                         IsLikeClause(PhoneTypeMask) OrElse
@@ -792,9 +791,9 @@ Public Class CertificateDAL
         End If
 
         Try
-            rowNumParam = New DBHelperParameter(PAR_NAME_ROW_NUMBER, LimitResultset)
+            rowNumParam = New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, LimitResultset)
 
-            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelperParameter() {rowNumParam})
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {rowNumParam})
 
             Return ds
         Catch ex As Exception
@@ -816,20 +815,20 @@ Public Class CertificateDAL
 
         Dim selectStmt As String = Config("/SQL/LOAD_SERIAL_NUMBER")
         Dim ds As New DataSet
-        Dim outputParameter(PO_CURSOR_SERIAL_NUMBER) As DBHelperParameter
-        Dim inParameters As New List(Of DBHelperParameter)
-        Dim param As DBHelperParameter
+        Dim outputParameter(PO_CURSOR_SERIAL_NUMBER) As DBHelper.DBHelperParameter
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim param As DBHelper.DBHelperParameter
 
-        param = New DBHelperParameter("pi_company_group_id", GuidToSQLString(compGroupId))
+        param = New DBHelper.DBHelperParameter("pi_company_group_id", DALBase.GuidToSQLString(compGroupId))
         inParameters.Add(param)
-        param = New DBHelperParameter("pi_serial_number", serialNumberMask.ToUpper)
+        param = New DBHelper.DBHelperParameter("pi_serial_number", serialNumberMask.ToUpper)
         inParameters.Add(param)
-        param = New DBHelperParameter("pi_network_id", networkId)
+        param = New DBHelper.DBHelperParameter("pi_network_id", networkId)
         inParameters.Add(param)
 
-        outputParameter(PO_CURSOR_SERIAL_NUMBER) = New DBHelperParameter("po_cursor_serial_number", GetType(DataSet))
+        outputParameter(PO_CURSOR_SERIAL_NUMBER) = New DBHelper.DBHelperParameter("po_cursor_serial_number", GetType(DataSet))
         Try
-            FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetSerialNumList")
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetSerialNumList")
             ds.Tables(0).TableName = "GetSerialNumList"
 
             Return ds
@@ -844,8 +843,8 @@ Public Class CertificateDAL
         Dim selectStmt As String = Config("/SQL/LOAD_VEHICLE_LICENSE_FLAG_LIST")
         Dim whereClauseConditions As String = ""
         Dim ds As New DataSet
-        Dim companyParam As DBHelperParameter
-        Dim rowNumParam As DBHelperParameter
+        Dim companyParam As DBHelper.DBHelperParameter
+        Dim rowNumParam As DBHelper.DBHelperParameter
         Dim bIsLikeClause As Boolean = False
         Dim sortBy As String = "upper(vehicle_license_tag)"
 
@@ -876,9 +875,9 @@ Public Class CertificateDAL
         End If
 
         Try
-            rowNumParam = New DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+            rowNumParam = New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {rowNumParam})
+                            New DBHelper.DBHelperParameter() {rowNumParam})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -927,30 +926,30 @@ Public Class CertificateDAL
 
     Public Function WS_GetCustomerFunctions(CustomerIdentifier As String, IdentifierType As String, DealerId As Guid, userId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/WS_GetCustomerFunctions")
-        Dim inputParameters() As DBHelperParameter
-        Dim outputParameter(TOTAL_OUTPUT_PARAM_WS_1) As DBHelperParameter
+        Dim inputParameters() As DBHelper.DBHelperParameter
+        Dim outputParameter(TOTAL_OUTPUT_PARAM_WS_1) As DBHelper.DBHelperParameter
 
 
-        inputParameters = New DBHelperParameter() _
+        inputParameters = New DBHelper.DBHelperParameter() _
                 {SetParameter(SP_PARAM_NAME__CUSTOMER_IDENTIFIER, CustomerIdentifier),
                  SetParameter(SP_PARAM_NAME__IDENTIFIER_TYPE, IdentifierType),
                  SetParameter(SP_PARAM_NAME__SYSTEM_USER_ID, userId.ToByteArray),
                  SetParameter(SP_PARAM_NAME__DEALER_ID, DealerId.ToByteArray)}
 
-        outputParameter(P_RETURN) = New DBHelperParameter(SP_PARAM_NAME__RETURN, GetType(Integer))
-        outputParameter(P_EXCEPTION_MSG) = New DBHelperParameter(SP_PARAM_NAME__EXCEPTION_MSG, GetType(String), 50)
-        outputParameter(P_CURSOR_CUSTOMER_FUNCTIONS) = New DBHelperParameter(SP_PARAM_NAME__CUSTOMER_FUNCTIONS, GetType(DataSet))
-        outputParameter(P_CURSOR_RESPONSE_STATUS) = New DBHelperParameter(SP_PARAM_NAME__RESPONSE_STATUS, GetType(DataSet))
-        outputParameter(P_CERT_ID) = New DBHelperParameter(SP_PARAM_NAME__CERT_ID, userId.ToByteArray.GetType)
-        outputParameter(P_CAN_SUBMIT_CLAIM) = New DBHelperParameter(SP_PARAM_NAME__CAN_SUBMIT_CLAIM, GetType(String), 50)
+        outputParameter(P_RETURN) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__RETURN, GetType(Integer))
+        outputParameter(P_EXCEPTION_MSG) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__EXCEPTION_MSG, GetType(String), 50)
+        outputParameter(P_CURSOR_CUSTOMER_FUNCTIONS) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__CUSTOMER_FUNCTIONS, GetType(DataSet))
+        outputParameter(P_CURSOR_RESPONSE_STATUS) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__RESPONSE_STATUS, GetType(DataSet))
+        outputParameter(P_CERT_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__CERT_ID, userId.ToByteArray.GetType)
+        outputParameter(P_CAN_SUBMIT_CLAIM) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__CAN_SUBMIT_CLAIM, GetType(String), 50)
 
         Dim ds As New DataSet(DATASET_NAME__CLAIM_CHECK_RESPONSE)
         ' Call DBHelper Store Procedure
-        If DealerId.Equals(Empty) Then
+        If DealerId.Equals(Guid.Empty) Then
             inputParameters(3).Value = DBNull.Value
         End If
         Try
-            FetchSp(selectStmt, inputParameters, outputParameter, ds, TABLE_NAME__GET_CUSTOMER_FUNCTIONS_RESPONSE)
+            DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, ds, TABLE_NAME__GET_CUSTOMER_FUNCTIONS_RESPONSE)
 
             If outputParameter(P_RETURN).Value <> 0 Then
                 ds.Tables(0).TableName = TABLE_NAME__RESPONSE_STATUS
@@ -968,28 +967,28 @@ Public Class CertificateDAL
     End Function
     Public Function WS_GetCoverageInfo(CustomerIdentifier As String, IdentifierType As String, DealerId As Guid, userId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/WS_GetCoverageInfo")
-        Dim inputParameters() As DBHelperParameter
-        Dim outputParameter(TOTAL_OUTPUT_PARAM_WS) As DBHelperParameter
+        Dim inputParameters() As DBHelper.DBHelperParameter
+        Dim outputParameter(TOTAL_OUTPUT_PARAM_WS) As DBHelper.DBHelperParameter
 
 
-        inputParameters = New DBHelperParameter() _
+        inputParameters = New DBHelper.DBHelperParameter() _
                 {SetParameter(SP_PARAM_NAME__CUSTOMER_IDENTIFIER, CustomerIdentifier),
                  SetParameter(SP_PARAM_NAME__IDENTIFIER_TYPE, IdentifierType),
                  SetParameter(SP_PARAM_NAME__SYSTEM_USER_ID, userId.ToByteArray),
                  SetParameter(SP_PARAM_NAME__DEALER_ID, DealerId.ToByteArray)}
 
-        outputParameter(P_RETURN) = New DBHelperParameter(SP_PARAM_NAME__RETURN, GetType(Integer))
-        outputParameter(P_EXCEPTION_MSG) = New DBHelperParameter(SP_PARAM_NAME__EXCEPTION_MSG, GetType(String), 50)
-        outputParameter(P_CURSOR_CUSTOMER_FUNCTIONS) = New DBHelperParameter(SP_PARAM_NAME__COVERAGE_INFO, GetType(DataSet))
-        outputParameter(P_CURSOR_RESPONSE_STATUS) = New DBHelperParameter(SP_PARAM_NAME__RESPONSE_STATUS, GetType(DataSet))
+        outputParameter(P_RETURN) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__RETURN, GetType(Integer))
+        outputParameter(P_EXCEPTION_MSG) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__EXCEPTION_MSG, GetType(String), 50)
+        outputParameter(P_CURSOR_CUSTOMER_FUNCTIONS) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__COVERAGE_INFO, GetType(DataSet))
+        outputParameter(P_CURSOR_RESPONSE_STATUS) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__RESPONSE_STATUS, GetType(DataSet))
 
         Dim ds As New DataSet(DATASET_NAME__CLAIM_CHECK_RESPONSE)
         ' Call DBHelper Store Procedure
-        If DealerId.Equals(Empty) Then
+        If DealerId.Equals(Guid.Empty) Then
             inputParameters(3).Value = DBNull.Value
         End If
         Try
-            FetchSp(selectStmt, inputParameters, outputParameter, ds, TABLE_NAME__GET_COVERAGE_INFO_RESPONSE)
+            DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, ds, TABLE_NAME__GET_COVERAGE_INFO_RESPONSE)
 
             If outputParameter(P_RETURN).Value <> 0 Then
                 ds.Tables(0).TableName = TABLE_NAME__RESPONSE_STATUS
@@ -1040,39 +1039,39 @@ Public Class CertificateDAL
         Dim selectStmt As String = Config("/SQL/LOAD_CERT_PHONE_SEARCH_LIST")
         Dim ds As New DataSet
         'PO_CURSOR_CERT_PHONE_SEARCH
-        Dim outputParameter(PO_CURSOR_CERT_PHONE_SEARCH) As DBHelperParameter
-        Dim inParameters As New List(Of DBHelperParameter)
-        Dim param As DBHelperParameter
+        Dim outputParameter(PO_CURSOR_CERT_PHONE_SEARCH) As DBHelper.DBHelperParameter
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim param As DBHelper.DBHelperParameter
 
         If dealerNameMask Is Nothing Then
             dealerNameMask = ""
         End If
 
-        param = New DBHelperParameter("pi_company_group_id", GuidToSQLString(compGroupId))
+        param = New DBHelper.DBHelperParameter("pi_company_group_id", GuidToSQLString(compGroupId))
         inParameters.Add(param)
-        param = New DBHelperParameter("pi_dealer", dealerNameMask)
+        param = New DBHelper.DBHelperParameter("pi_dealer", dealerNameMask)
         inParameters.Add(param)
-        param = New DBHelperParameter("pi_cert_number", certNumberMask)
+        param = New DBHelper.DBHelperParameter("pi_cert_number", certNumberMask)
         inParameters.Add(param)
-        param = New DBHelperParameter("pi_customer_name", customerNameMask)
+        param = New DBHelper.DBHelperParameter("pi_customer_name", customerNameMask)
         inParameters.Add(param)
-        param = New DBHelperParameter("pi_address", addressMask)
+        param = New DBHelper.DBHelperParameter("pi_address", addressMask)
         inParameters.Add(param)
-        param = New DBHelperParameter("pi_phone_number", PhoneNumMask)
+        param = New DBHelper.DBHelperParameter("pi_phone_number", PhoneNumMask)
         inParameters.Add(param)
-        param = New DBHelperParameter("pi_postal_code", postalCodeMask)
+        param = New DBHelper.DBHelperParameter("pi_postal_code", postalCodeMask)
         inParameters.Add(param)
-        param = New DBHelperParameter("pi_network_id", networkId)
+        param = New DBHelper.DBHelperParameter("pi_network_id", networkId)
         inParameters.Add(param)
-        param = New DBHelperParameter("pi_order_by", sortBy)
+        param = New DBHelper.DBHelperParameter("pi_order_by", sortBy)
         inParameters.Add(param)
-        param = New DBHelperParameter("pi_phone_type", PhoneTypeMask)
+        param = New DBHelper.DBHelperParameter("pi_phone_type", PhoneTypeMask)
         inParameters.Add(param)
 
 
-        outputParameter(PO_CURSOR_CERT_PHONE_SEARCH) = New DBHelperParameter("po_cursor", GetType(DataSet))
+        outputParameter(PO_CURSOR_CERT_PHONE_SEARCH) = New DBHelper.DBHelperParameter("po_cursor", GetType(DataSet))
         Try
-            FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetPhoneNumList")
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetPhoneNumList")
             ds.Tables(0).TableName = "GetPhoneNumList"
 
             Return ds
@@ -1094,12 +1093,12 @@ Public Class CertificateDAL
 
     Public Function getPremiumTotals(certId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_TOTALS")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                 {New DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray)}
-        Dim outParameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("po_resultcursor", GetType(DataSet))}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                 {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray)}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
         Try
             Dim ds = New DataSet
-            FetchSp(selectStmt, parameters, outParameters, ds, TABLE_PREMIUM_TOTALS)
+            DBHelper.FetchSp(selectStmt, parameters, outParameters, ds, TABLE_PREMIUM_TOTALS)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1109,13 +1108,13 @@ Public Class CertificateDAL
 
     Public Function getSalesTaxDetails(certId As Guid, languageId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_SALES_TAX_DETAIL")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                 {New DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray),
-                 New DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
-        Dim outParameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("po_resultcursor", GetType(DataSet))}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                 {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray),
+                 New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
         Try
             Dim ds = New DataSet
-            FetchSp(selectStmt, parameters, outParameters, ds, TABLE_SALES_TAX_DETAILS)
+            DBHelper.FetchSp(selectStmt, parameters, outParameters, ds, TABLE_SALES_TAX_DETAILS)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1294,8 +1293,8 @@ Public Class CertificateDAL
         Dim selectStmt As String = Config("/SQL/LOAD_GALAXY_LIST")
         Dim whereClauseConditions As String = ""
         Dim ds As New DataSet
-        Dim companyParam As DBHelperParameter
-        Dim rowNumParam As DBHelperParameter
+        Dim companyParam As DBHelper.DBHelperParameter
+        Dim rowNumParam As DBHelper.DBHelperParameter
         Dim bIsLikeClause As Boolean = False
 
         bIsLikeClause = IsThereALikeClause(certNumberMask, customerNameMask,
@@ -1358,10 +1357,10 @@ Public Class CertificateDAL
         End If
 
         Try
-            rowNumParam = New DBHelperParameter(PAR_NAME_ROW_NUMBER, LimitResultset)
+            rowNumParam = New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, LimitResultset)
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {rowNumParam})
+                            New DBHelper.DBHelperParameter() {rowNumParam})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1500,7 +1499,7 @@ Public Class CertificateDAL
 
         Dim bIsLikeClause As Boolean = False
 
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("C." & COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("C." & DALObjects.CertificateDAL.COL_NAME_COMPANY_ID, compIds, False)
 
 
         bIsLikeClause = IsThereALikeClause(CertificateNumberMask, CertificateNumberMask, CertificateNumberMask)
@@ -1517,7 +1516,7 @@ Public Class CertificateDAL
             whereClauseConditions &= Environment.NewLine & "AND C.created_date <= to_date('" & EndDateMask.ToString("MM/dd/yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss')"
         End If
 
-        If (Not DealerId.Equals(Empty)) Then
+        If (Not DealerId.Equals(Guid.Empty)) Then
             whereClauseConditions &= Environment.NewLine & "AND C.DEALER_ID = " & MiscUtil.GetDbStringFromGuid(DealerId, True)
         End If
 
@@ -1623,9 +1622,9 @@ Public Class CertificateDAL
         Dim selectStmt As String = Config("/SQL/CLAIMS_CANCEL_NOT_CLOSED_CERT")
         Dim ds As New DataSet
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter("dealer_id", dealerId.ToByteArray),
-                         New DBHelperParameter("cert_number", certNumber)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter("dealer_id", dealerId.ToByteArray),
+                         New DBHelper.DBHelperParameter("cert_number", certNumber)}
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_CLAIMS_CANCEL_CERT, parameters)
             Return ds
@@ -1641,9 +1640,9 @@ Public Class CertificateDAL
         Dim selectStmt As String = Config("/SQL/CLAIMS_CANCEL_PAID_CERT")
         Dim ds As New DataSet
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter("dealer_id", dealerId.ToByteArray),
-                         New DBHelperParameter("cert_number", certNumber)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter("dealer_id", dealerId.ToByteArray),
+                         New DBHelper.DBHelperParameter("cert_number", certNumber)}
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_CLAIMS_CANCEL_CERT, parameters)
             Return ds
@@ -1659,9 +1658,9 @@ Public Class CertificateDAL
         Dim selectStmt As String = Config("/SQL/TOTAL_CLAIMS_NOT_CLOSED_FOR_CERT")
         Dim ds As New DataSet
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter("dealer_id", dealerId.ToByteArray),
-                         New DBHelperParameter("cert_number", certNumber)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter("dealer_id", dealerId.ToByteArray),
+                         New DBHelper.DBHelperParameter("cert_number", certNumber)}
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_CLAIMS_CANCEL_CERT, parameters)
             Return ds
@@ -1677,10 +1676,10 @@ Public Class CertificateDAL
         Dim selectStmt As String = Config("/SQL/TOTAL_ACTIVE_CLAIMS_FOR_CERT")
         Dim ds As New DataSet
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter("dealer_id", dealerId.ToByteArray),
-                         New DBHelperParameter("cert_number", certNumber),
-                         New DBHelperParameter("cancellation_date", cancelDate)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter("dealer_id", dealerId.ToByteArray),
+                         New DBHelper.DBHelperParameter("cert_number", certNumber),
+                         New DBHelper.DBHelperParameter("cancellation_date", cancelDate)}
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_CLAIMS_CANCEL_CERT, parameters)
             Return ds
@@ -1695,7 +1694,7 @@ Public Class CertificateDAL
         Dim parameters() As OracleParameter
         Dim whereClauseConditions As String = ""
 
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & ClaimDAL.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & DALObjects.ClaimDAL.COL_NAME_COMPANY_ID, compIds, False)
         selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_NUMBER, certNumber),
@@ -1716,7 +1715,7 @@ Public Class CertificateDAL
         Dim parameters() As OracleParameter
         Dim whereClauseConditions As String = ""
 
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & ClaimDAL.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & DALObjects.ClaimDAL.COL_NAME_COMPANY_ID, compIds, False)
         selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_INVOICE_NUMBER, InvoiceNumber)}
@@ -1738,8 +1737,8 @@ Public Class CertificateDAL
         Dim whereClauseConditions As String = ""
         Dim whereClauseConditions2 As String = ""
 
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & ClaimDAL.COL_NAME_COMPANY_ID, compIds, False)
-        whereClauseConditions2 &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cert." & ClaimDAL.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & DALObjects.ClaimDAL.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions2 &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cert." & DALObjects.ClaimDAL.COL_NAME_COMPANY_ID, compIds, False)
         selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER_2, whereClauseConditions2)
 
@@ -1761,8 +1760,8 @@ Public Class CertificateDAL
         Dim selectStmt As String = Config("/SQL/LOAD_OLITA_LIST")
         Dim whereClauseConditions As String = ""
         Dim ds As New DataSet
-        Dim companyParam As DBHelperParameter
-        Dim rowNumParam As DBHelperParameter
+        Dim companyParam As DBHelper.DBHelperParameter
+        Dim rowNumParam As DBHelper.DBHelperParameter
         Dim bIsLikeClause As Boolean = False
 
         bIsLikeClause = IsThereALikeClause(certNumberMask, customerNameMask, CustomerPhoneMask)
@@ -1802,10 +1801,10 @@ Public Class CertificateDAL
         End If
 
         Try
-            rowNumParam = New DBHelperParameter(PAR_NAME_ROW_NUMBER, LimitResultset)
+            rowNumParam = New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, LimitResultset)
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
-                            New DBHelperParameter() {rowNumParam})
+                            New DBHelper.DBHelperParameter() {rowNumParam})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1826,7 +1825,7 @@ Public Class CertificateDAL
 
     Public Function GetMonthlygrossAmount(cert_id As Guid) As Decimal
         Dim selectStmt As String = Config("/SQL/CERTIFICATE_COVERAGEAMOUNT")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("cert_id", cert_id.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_id", cert_id.ToByteArray)}
 
         Return Convert.ToDecimal(DBHelper.ExecuteScalar(selectStmt, parameters))
     End Function
@@ -1873,9 +1872,9 @@ Public Class CertificateDAL
     Public Function LoadDealerDetailsForCertADD(DealerID As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/CERT_ADD_ENABLED_DEALER_DETAILS")
         Dim ds As DataSet = New DataSet
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("dealer_id", DealerID.ToByteArray),
-                                                                                           New DBHelperParameter("dealer_id", DealerID.ToByteArray),
-                                                                                           New DBHelperParameter("dealer_id", DealerID.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_id", DealerID.ToByteArray),
+                                                                                           New DBHelper.DBHelperParameter("dealer_id", DealerID.ToByteArray),
+                                                                                           New DBHelper.DBHelperParameter("dealer_id", DealerID.ToByteArray)}
         Try
             DBHelper.Fetch(ds, selectStmt, "DealerDetail", parameters)
             Return ds
@@ -1898,10 +1897,10 @@ Public Class CertificateDAL
                         ByRef ErrMsg As String, ByRef CertID As Guid, ByRef ErrMsgUIProgCode As String,
                         ByRef ErrMsgParamList As String, ByRef ErrMsgParamCnt As Integer,
                         User As String, Optional ByVal BundleItemCount As Integer = 0,
-                        Optional ByVal BundleItemMake As List(Of String) = Nothing, Optional ByVal BundleItemModel As List(Of String) = Nothing,
-                        Optional ByVal BundleItemSerialNum As List(Of String) = Nothing, Optional ByVal BundleItemDesc As List(Of String) = Nothing,
-                        Optional ByVal BundleItemPrice As List(Of Double) = Nothing, Optional ByVal BundleItemMfgWarranty As List(Of Integer) = Nothing,
-                        Optional ByVal BundleItemProductCode As List(Of String) = Nothing,
+                        Optional ByVal BundleItemMake As Generic.List(Of String) = Nothing, Optional ByVal BundleItemModel As Generic.List(Of String) = Nothing,
+                        Optional ByVal BundleItemSerialNum As Generic.List(Of String) = Nothing, Optional ByVal BundleItemDesc As Generic.List(Of String) = Nothing,
+                        Optional ByVal BundleItemPrice As Generic.List(Of Double) = Nothing, Optional ByVal BundleItemMfgWarranty As Generic.List(Of Integer) = Nothing,
+                        Optional ByVal BundleItemProductCode As Generic.List(Of String) = Nothing,
                         Optional ByVal RecordType As String = "FC", Optional ByVal SkuNumber As String = Nothing, Optional ByVal SubscriberStatus As String = Nothing,
                         Optional ByVal PostPrePaid As String = Nothing, Optional ByVal MembershipType As String = Nothing,
                         Optional ByVal BillingPlan As String = Nothing, Optional ByVal BillingCycle As String = Nothing,
@@ -1914,256 +1913,256 @@ Public Class CertificateDAL
         Dim sqlStmt As String
         sqlStmt = Config("/SQL/CERT_ADD_INSERT")
         Try
-            Dim outParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter("p_Err_Msg", ErrMsg.GetType, 500),
-                            New DBHelperParameter("P_ErrMsg_UIProgCode", ErrMsgUIProgCode.GetType, 500),
-                            New DBHelperParameter("p_ErrMsg_ParamList", ErrMsgParamList.GetType, 500),
-                            New DBHelperParameter("p_ErrMsg_ParamCnt", ErrMsgParamCnt.GetType),
-                            New DBHelperParameter("p_Cert_ID", CertID.ToByteArray.GetType, 16),
-                            New DBHelperParameter("p_certificate", GetType(String), 20)}
-            Dim inParameters As New List(Of DBHelperParameter)
-            Dim param As DBHelperParameter
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter("p_Err_Msg", ErrMsg.GetType, 500),
+                            New DBHelper.DBHelperParameter("P_ErrMsg_UIProgCode", ErrMsgUIProgCode.GetType, 500),
+                            New DBHelper.DBHelperParameter("p_ErrMsg_ParamList", ErrMsgParamList.GetType, 500),
+                            New DBHelper.DBHelperParameter("p_ErrMsg_ParamCnt", ErrMsgParamCnt.GetType),
+                            New DBHelper.DBHelperParameter("p_Cert_ID", CertID.ToByteArray.GetType, 16),
+                            New DBHelper.DBHelperParameter("p_certificate", GetType(String), 20)}
+            Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+            Dim param As DBHelper.DBHelperParameter
 
-            param = New DBHelperParameter("p_Keep_File_When_Err", KeepFileWhenErr)
+            param = New DBHelper.DBHelperParameter("p_Keep_File_When_Err", KeepFileWhenErr)
             inParameters.Add(param)
 
-            param = New DBHelperParameter("p_User", User)
+            param = New DBHelper.DBHelperParameter("p_User", User)
             inParameters.Add(param)
 
-            param = New DBHelperParameter("p_DEALER_ID", DealerID.ToByteArray)
+            param = New DBHelper.DBHelperParameter("p_DEALER_ID", DealerID.ToByteArray)
             inParameters.Add(param)
 
-            param = New DBHelperParameter("p_Cert_Num", CertNum)
+            param = New DBHelper.DBHelperParameter("p_Cert_Num", CertNum)
             inParameters.Add(param)
 
-            param = New DBHelperParameter("p_Prod_Code", ProdCode)
+            param = New DBHelper.DBHelperParameter("p_Prod_Code", ProdCode)
             inParameters.Add(param)
 
             Dim strWarrSalesDate As String = WarrSalesDate.ToString("MM/dd/yyyy")
-            param = New DBHelperParameter("p_Warranty_SaleDate", strWarrSalesDate)
+            param = New DBHelper.DBHelperParameter("p_Warranty_SaleDate", strWarrSalesDate)
             inParameters.Add(param)
 
-            If TransID <> Empty Then
-                param = New DBHelperParameter("p_Trans_ID", TransID.ToByteArray)
+            If TransID <> Guid.Empty Then
+                param = New DBHelper.DBHelperParameter("p_Trans_ID", TransID.ToByteArray)
                 inParameters.Add(param)
             End If
 
             Dim strProdPurchaseDate As String = ProdPurchaseDate.ToString("MM/dd/yyyy")
             If ProdPurchaseDate > Date.MinValue Then
-                param = New DBHelperParameter("p_Purchase_Date", strProdPurchaseDate)
+                param = New DBHelper.DBHelperParameter("p_Purchase_Date", strProdPurchaseDate)
                 inParameters.Add(param)
             End If
 
-            param = New DBHelperParameter("p_Price_Pol", WarrPrice)
+            param = New DBHelper.DBHelperParameter("p_Price_Pol", WarrPrice)
             inParameters.Add(param)
 
             If ItemCode <> String.Empty Then
-                param = New DBHelperParameter("p_Item_Code", ItemCode)
+                param = New DBHelper.DBHelperParameter("p_Item_Code", ItemCode)
                 inParameters.Add(param)
             End If
 
             If ItemDesc <> String.Empty Then
-                param = New DBHelperParameter("p_Item", ItemDesc)
+                param = New DBHelper.DBHelperParameter("p_Item", ItemDesc)
                 inParameters.Add(param)
             End If
 
             If ProdPrice >= 0 Then
-                param = New DBHelperParameter("p_Product_Price", ProdPrice)
+                param = New DBHelper.DBHelperParameter("p_Product_Price", ProdPrice)
                 inParameters.Add(param)
 
-                param = New DBHelperParameter("p_Original_Retail_Price", ProdPrice)
+                param = New DBHelper.DBHelperParameter("p_Original_Retail_Price", ProdPrice)
                 inParameters.Add(param)
             End If
 
             If ManWarranty >= 0 Then
-                param = New DBHelperParameter("p_Man_Warranty", ManWarranty)
+                param = New DBHelper.DBHelperParameter("p_Man_Warranty", ManWarranty)
                 inParameters.Add(param)
             End If
 
             If ExtWarranty >= 0 Then
-                param = New DBHelperParameter("p_Ext_Warranty", ExtWarranty)
+                param = New DBHelper.DBHelperParameter("p_Ext_Warranty", ExtWarranty)
                 inParameters.Add(param)
             End If
 
             If SalesRepNum <> String.Empty Then
-                param = New DBHelperParameter("p_SR", SalesRepNum)
+                param = New DBHelper.DBHelperParameter("p_SR", SalesRepNum)
                 inParameters.Add(param)
             End If
 
             If BranchCode <> String.Empty Then
-                param = New DBHelperParameter("p_Branch_Code", BranchCode)
+                param = New DBHelper.DBHelperParameter("p_Branch_Code", BranchCode)
                 inParameters.Add(param)
             End If
 
             If InvoiceNum <> String.Empty Then
-                param = New DBHelperParameter("p_Number_Comp", InvoiceNum)
+                param = New DBHelper.DBHelperParameter("p_Number_Comp", InvoiceNum)
                 inParameters.Add(param)
             End If
 
             If CustTaxId <> String.Empty Then
-                param = New DBHelperParameter("p_ID_Num", CustTaxId)
+                param = New DBHelper.DBHelperParameter("p_ID_Num", CustTaxId)
                 inParameters.Add(param)
             End If
 
 
             If Salutation <> String.Empty Then
-                param = New DBHelperParameter("p_Salutation", Salutation)
+                param = New DBHelper.DBHelperParameter("p_Salutation", Salutation)
                 inParameters.Add(param)
             End If
 
             If CustName <> String.Empty Then
-                param = New DBHelperParameter("p_Cust_Name", CustName)
+                param = New DBHelper.DBHelperParameter("p_Cust_Name", CustName)
                 inParameters.Add(param)
             End If
 
             If CustAddress1 <> String.Empty Then
-                param = New DBHelperParameter("p_Cust_Address1", CustAddress1)
+                param = New DBHelper.DBHelperParameter("p_Cust_Address1", CustAddress1)
                 inParameters.Add(param)
             End If
 
             If CustAddress2 <> String.Empty Then
-                param = New DBHelperParameter("p_Cust_Address2", CustAddress2)
+                param = New DBHelper.DBHelperParameter("p_Cust_Address2", CustAddress2)
                 inParameters.Add(param)
             End If
 
             If CustCity <> String.Empty Then
-                param = New DBHelperParameter("p_Cust_City", CustCity)
+                param = New DBHelper.DBHelperParameter("p_Cust_City", CustCity)
                 inParameters.Add(param)
             End If
 
             If CustZip <> String.Empty Then
-                param = New DBHelperParameter("p_Cust_Zip", CustZip)
+                param = New DBHelper.DBHelperParameter("p_Cust_Zip", CustZip)
                 inParameters.Add(param)
             End If
 
             If CustState <> String.Empty Then
-                param = New DBHelperParameter("p_Cust_State", CustState)
+                param = New DBHelper.DBHelperParameter("p_Cust_State", CustState)
                 inParameters.Add(param)
             End If
 
             If CustHomePhone <> String.Empty Then
-                param = New DBHelperParameter("p_Cust_HomePhone", CustHomePhone)
+                param = New DBHelper.DBHelperParameter("p_Cust_HomePhone", CustHomePhone)
                 inParameters.Add(param)
             End If
 
             'REQ 983 06/23/2012
 
             If CustWorkPhone <> String.Empty Then
-                param = New DBHelperParameter("p_Cust_WorkPhone", CustWorkPhone)
+                param = New DBHelper.DBHelperParameter("p_Cust_WorkPhone", CustWorkPhone)
                 inParameters.Add(param)
             Else
-                param = New DBHelperParameter("p_Cust_WorkPhone", "0")
+                param = New DBHelper.DBHelperParameter("p_Cust_WorkPhone", "0")
                 inParameters.Add(param)
             End If
             'REQ 983 end
 
             If CustEmail <> String.Empty Then
-                param = New DBHelperParameter("p_Cust_Email", CustEmail)
+                param = New DBHelper.DBHelperParameter("p_Cust_Email", CustEmail)
                 inParameters.Add(param)
             End If
 
             If Make <> String.Empty Then
-                param = New DBHelperParameter("p_Manufacturer", Make)
+                param = New DBHelper.DBHelperParameter("p_Manufacturer", Make)
                 inParameters.Add(param)
             End If
 
             If Model <> String.Empty Then
-                param = New DBHelperParameter("p_Model", Model)
+                param = New DBHelper.DBHelperParameter("p_Model", Model)
                 inParameters.Add(param)
             End If
 
             If SerialNum <> String.Empty Then
-                param = New DBHelperParameter("p_Serial_Num", SerialNum)
+                param = New DBHelper.DBHelperParameter("p_Serial_Num", SerialNum)
                 inParameters.Add(param)
             End If
 
             If CustCountryCode <> String.Empty Then
-                param = New DBHelperParameter("p_Cust_Country", CustCountryCode)
+                param = New DBHelper.DBHelperParameter("p_Cust_Country", CustCountryCode)
                 inParameters.Add(param)
             End If
 
             If PurchaseCountryCode <> String.Empty Then
-                param = New DBHelperParameter("p_Purchase_Country", PurchaseCountryCode)
+                param = New DBHelper.DBHelperParameter("p_Purchase_Country", PurchaseCountryCode)
                 inParameters.Add(param)
             End If
 
             If CurrencyCode <> String.Empty Then
-                param = New DBHelperParameter("p_Currency_Code", CurrencyCode)
+                param = New DBHelper.DBHelperParameter("p_Currency_Code", CurrencyCode)
                 inParameters.Add(param)
             End If
 
             If PaymentType <> String.Empty Then
-                param = New DBHelperParameter("p_PYMT_Type", PaymentType)
+                param = New DBHelper.DBHelperParameter("p_PYMT_Type", PaymentType)
                 inParameters.Add(param)
             End If
 
             If BillingFrequency >= 0 Then
-                param = New DBHelperParameter("p_BillingFrequency", BillingFrequency)
+                param = New DBHelper.DBHelperParameter("p_BillingFrequency", BillingFrequency)
                 inParameters.Add(param)
             End If
 
             If NumOfInstallments >= 0 Then
-                param = New DBHelperParameter("p_NumOfInstallments", NumOfInstallments)
+                param = New DBHelper.DBHelperParameter("p_NumOfInstallments", NumOfInstallments)
                 inParameters.Add(param)
             End If
 
             If InstallmentAmt >= 0 Then
-                param = New DBHelperParameter("p_InstallmentAmount", InstallmentAmt)
+                param = New DBHelper.DBHelperParameter("p_InstallmentAmount", InstallmentAmt)
                 inParameters.Add(param)
             End If
 
             If BankAcctOwnerName <> String.Empty Then
-                param = New DBHelperParameter("p_BankAcctOwnerName", BankAcctOwnerName)
+                param = New DBHelper.DBHelperParameter("p_BankAcctOwnerName", BankAcctOwnerName)
                 inParameters.Add(param)
             End If
 
             If BankAcctNumber <> String.Empty Then
-                param = New DBHelperParameter("p_BankAcctNumber", BankAcctNumber)
+                param = New DBHelper.DBHelperParameter("p_BankAcctNumber", BankAcctNumber)
                 inParameters.Add(param)
             End If
 
             If BankRoutingNum <> String.Empty Then
-                param = New DBHelperParameter("p_BankRoutingNumber", BankRoutingNum)
+                param = New DBHelper.DBHelperParameter("p_BankRoutingNumber", BankRoutingNum)
                 inParameters.Add(param)
             End If
 
             If MembershipNumer <> String.Empty Then
-                param = New DBHelperParameter("p_MembershipNumber", MembershipNumer)
+                param = New DBHelper.DBHelperParameter("p_MembershipNumber", MembershipNumer)
                 inParameters.Add(param)
             End If
 
             If RecordType <> String.Empty Then
-                param = New DBHelperParameter("p_RecordType", RecordType)
+                param = New DBHelper.DBHelperParameter("p_RecordType", RecordType)
                 inParameters.Add(param)
             End If
 
             If SkuNumber <> String.Empty Then
-                param = New DBHelperParameter("p_SkuNumber", SkuNumber)
+                param = New DBHelper.DBHelperParameter("p_SkuNumber", SkuNumber)
                 inParameters.Add(param)
             End If
 
             If SubscriberStatus <> String.Empty Then
-                param = New DBHelperParameter("p_SubscriberStatus", SubscriberStatus)
+                param = New DBHelper.DBHelperParameter("p_SubscriberStatus", SubscriberStatus)
                 inParameters.Add(param)
             End If
 
             If PostPrePaid <> String.Empty Then
-                param = New DBHelperParameter("p_PostPrePaid", PostPrePaid)
+                param = New DBHelper.DBHelperParameter("p_PostPrePaid", PostPrePaid)
                 inParameters.Add(param)
             End If
 
             If MembershipType <> String.Empty Then
-                param = New DBHelperParameter("p_MembershipType", MembershipType)
+                param = New DBHelper.DBHelperParameter("p_MembershipType", MembershipType)
                 inParameters.Add(param)
             End If
 
             If BillingPlan <> String.Empty Then
-                param = New DBHelperParameter("p_BillingPlan", BillingPlan)
+                param = New DBHelper.DBHelperParameter("p_BillingPlan", BillingPlan)
                 inParameters.Add(param)
             End If
 
             If BillingCycle <> String.Empty Then
-                param = New DBHelperParameter("p_BillingCycle", BillingCycle)
+                param = New DBHelper.DBHelperParameter("p_BillingCycle", BillingCycle)
                 inParameters.Add(param)
             End If
 
@@ -2172,87 +2171,87 @@ Public Class CertificateDAL
                 Dim paramName As String
                 For i = 1 To BundleItemCount
                     paramName = String.Format("p_ITEM{0}_Make", i + 1)
-                    param = New DBHelperParameter(paramName, BundleItemMake.Item(i - 1))
+                    param = New DBHelper.DBHelperParameter(paramName, BundleItemMake.Item(i - 1))
                     inParameters.Add(param)
 
                     paramName = String.Format("p_ITEM{0}_Model", i + 1)
-                    param = New DBHelperParameter(paramName, BundleItemModel.Item(i - 1))
+                    param = New DBHelper.DBHelperParameter(paramName, BundleItemModel.Item(i - 1))
                     inParameters.Add(param)
 
                     paramName = String.Format("p_ITEM{0}_Serial_Num", i + 1)
-                    param = New DBHelperParameter(paramName, BundleItemSerialNum.Item(i - 1))
+                    param = New DBHelper.DBHelperParameter(paramName, BundleItemSerialNum.Item(i - 1))
                     inParameters.Add(param)
 
                     paramName = String.Format("p_ITEM{0}_Desc", i + 1)
-                    param = New DBHelperParameter(paramName, BundleItemDesc.Item(i - 1))
+                    param = New DBHelper.DBHelperParameter(paramName, BundleItemDesc.Item(i - 1))
                     inParameters.Add(param)
 
                     paramName = String.Format("p_ITEM{0}_Price", i + 1)
-                    param = New DBHelperParameter(paramName, BundleItemPrice.Item(i - 1))
+                    param = New DBHelper.DBHelperParameter(paramName, BundleItemPrice.Item(i - 1))
                     inParameters.Add(param)
 
                     paramName = String.Format("p_ITEM{0}_Man_Warranty", i + 1)
-                    param = New DBHelperParameter(paramName, BundleItemMfgWarranty.Item(i - 1))
+                    param = New DBHelper.DBHelperParameter(paramName, BundleItemMfgWarranty.Item(i - 1))
                     inParameters.Add(param)
 
                     paramName = String.Format("p_ITEM{0}_Bundle_value", i + 1)
-                    param = New DBHelperParameter(paramName, BundleItemProductCode.Item(i - 1))
+                    param = New DBHelper.DBHelperParameter(paramName, BundleItemProductCode.Item(i - 1))
                     inParameters.Add(param)
                 Next
             End If
 
             If MaritalStatus <> String.Empty Then
-                param = New DBHelperParameter("p_marital_status", MaritalStatus)
+                param = New DBHelper.DBHelperParameter("p_marital_status", MaritalStatus)
                 inParameters.Add(param)
             End If
 
             If PersonType <> String.Empty Then
-                param = New DBHelperParameter("p_person_type", PersonType)
+                param = New DBHelper.DBHelperParameter("p_person_type", PersonType)
                 inParameters.Add(param)
             End If
 
             If Gender <> String.Empty Then
-                param = New DBHelperParameter("p_gender", Gender)
+                param = New DBHelper.DBHelperParameter("p_gender", Gender)
                 inParameters.Add(param)
             End If
 
             If Gender <> String.Empty Then
-                param = New DBHelperParameter("p_nationality", Nationality)
+                param = New DBHelper.DBHelperParameter("p_nationality", Nationality)
                 inParameters.Add(param)
             End If
 
             If PlaceOfBirth <> String.Empty Then
-                param = New DBHelperParameter("p_place_of_birth", PlaceOfBirth)
+                param = New DBHelper.DBHelperParameter("p_place_of_birth", PlaceOfBirth)
                 inParameters.Add(param)
             End If
 
             If CUIT_CUIL <> String.Empty Then
-                param = New DBHelperParameter("p_CUIT_CUIL", CUIT_CUIL)
+                param = New DBHelper.DBHelperParameter("p_CUIT_CUIL", CUIT_CUIL)
                 inParameters.Add(param)
             End If
 
             If Not DateOfBirth = Nothing Then
                 Dim strDateOfBirth As String = DateOfBirth.ToString("MM/dd/yyyy")
-                param = New DBHelperParameter("p_date_of_birth", strDateOfBirth)
+                param = New DBHelper.DBHelperParameter("p_date_of_birth", strDateOfBirth)
                 inParameters.Add(param)
             End If
 
             If Not MarketingPromoSer = Nothing Then
-                param = New DBHelperParameter("p_MarketingPromoSer", MarketingPromoSer)
+                param = New DBHelper.DBHelperParameter("p_MarketingPromoSer", MarketingPromoSer)
                 inParameters.Add(param)
             End If
             If Not MarketingPromoNum = Nothing Then
-                param = New DBHelperParameter("p_MarketingPromoNum", MarketingPromoNum)
+                param = New DBHelper.DBHelperParameter("p_MarketingPromoNum", MarketingPromoNum)
                 inParameters.Add(param)
             End If
 
             If Not SalesChannel = Nothing Then
-                param = New DBHelperParameter("p_SalesChannel", SalesChannel)
+                param = New DBHelper.DBHelperParameter("p_SalesChannel", SalesChannel)
                 inParameters.Add(param)
             End If
 
 
-            ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, outParameters)
+            DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, outParameters)
 
             If Not outParameters(0).Value Is Nothing Then
                 ErrMsg = outParameters(0).Value.ToString().Trim
@@ -2289,33 +2288,33 @@ Public Class CertificateDAL
         Dim sqlStmt As String
         sqlStmt = Config("/SQL/CANCEL_CERT_BY_EXTERNAL_NUMBER")
         Try
-            Dim outParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter("po_DealerCode", oDealerCode.GetType, 500),
-                            New DBHelperParameter("po_CertNumber", oCertificateNum.GetType, 500),
-                            New DBHelperParameter("po_ErrorCode", oErrCode.GetType, 500),
-                            New DBHelperParameter("po_ErrMessage", oErrMsg.GetType, 3000)}
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter("po_DealerCode", oDealerCode.GetType, 500),
+                            New DBHelper.DBHelperParameter("po_CertNumber", oCertificateNum.GetType, 500),
+                            New DBHelper.DBHelperParameter("po_ErrorCode", oErrCode.GetType, 500),
+                            New DBHelper.DBHelperParameter("po_ErrMessage", oErrMsg.GetType, 3000)}
 
-            Dim inParameters As New List(Of DBHelperParameter)
-            Dim param As DBHelperParameter
+            Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+            Dim param As DBHelper.DBHelperParameter
 
-            param = New DBHelperParameter("pi_CompanyCode", CompanyCode.Trim)
+            param = New DBHelper.DBHelperParameter("pi_CompanyCode", CompanyCode.Trim)
             inParameters.Add(param)
-            param = New DBHelperParameter("pi_DealerCode", DealerCode.Trim)
+            param = New DBHelper.DBHelperParameter("pi_DealerCode", DealerCode.Trim)
             inParameters.Add(param)
-            param = New DBHelperParameter("pi_ExternalCertNumType", ExternalCertNumType)
+            param = New DBHelper.DBHelperParameter("pi_ExternalCertNumType", ExternalCertNumType)
             inParameters.Add(param)
-            param = New DBHelperParameter("pi_ExternalCertNum", ExternalCertNum.Trim)
+            param = New DBHelper.DBHelperParameter("pi_ExternalCertNum", ExternalCertNum.Trim)
             inParameters.Add(param)
-            param = New DBHelperParameter("pi_CancellationDate", CancelllationDate.ToString("MM/dd/yyyy"))
+            param = New DBHelper.DBHelperParameter("pi_CancellationDate", CancelllationDate.ToString("MM/dd/yyyy"))
             inParameters.Add(param)
-            param = New DBHelperParameter("pi_CancellationReason", CancellationReasonCode.Trim)
+            param = New DBHelper.DBHelperParameter("pi_CancellationReason", CancellationReasonCode.Trim)
             inParameters.Add(param)
-            param = New DBHelperParameter("pi_CallerName", CallerName.Trim)
+            param = New DBHelper.DBHelperParameter("pi_CallerName", CallerName.Trim)
             inParameters.Add(param)
-            param = New DBHelperParameter("pi_User", User)
+            param = New DBHelper.DBHelperParameter("pi_User", User)
             inParameters.Add(param)
 
-            ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, outParameters)
+            DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, outParameters)
 
             If Not outParameters(0).Value Is Nothing Then
                 oDealerCode = outParameters(0).Value.ToString().Trim
@@ -2347,8 +2346,8 @@ Public Class CertificateDAL
         oErrCode = 0
         oErrMsg = String.Empty
 
-        Using connection As New OracleConnection(ConnectString)
-            Using command As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, connection)
+        Using connection As New OracleConnection(DBHelper.ConnectString)
+            Using command As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, connection)
                 command.BindByName = True
                 command.AddParameter("pi_company_code", OracleDbType.Varchar2, 25, companyCode, ParameterDirection.Input)
                 command.AddParameter("pi_IMEI_number", OracleDbType.Varchar2, 100, imeiNumber, ParameterDirection.Input)
@@ -2365,7 +2364,7 @@ Public Class CertificateDAL
                 End If
 
                 Try
-                    dsResult = Fetch(command, TABLE_NAME)
+                    dsResult = OracleDbHelper.Fetch(command, TABLE_NAME)
                     If Integer.TryParse(command.Parameters("po_return_code").Value.ToString(), oErrCode) = False Then
                         oErrCode = 999
                     End If
@@ -2385,7 +2384,7 @@ Public Class CertificateDAL
         oErrCode = 0
         oErrMsg = String.Empty
 
-        Using command As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure)
+        Using command As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure)
             command.BindByName = True
             command.AddParameter("pi_Cert_Item_Id", OracleDbType.Raw, 100, certItemId.ToByteArray, ParameterDirection.Input)
             command.AddParameter("pi_IMEInumber_Current", OracleDbType.Varchar2, 100, imeiNumberCurrent, ParameterDirection.Input)
@@ -2395,7 +2394,7 @@ Public Class CertificateDAL
             command.AddParameter("po_exception_msg", OracleDbType.Varchar2, 1000, Nothing, ParameterDirection.Output)
 
             Try
-                ExecuteNonQuery(command)
+                OracleDbHelper.ExecuteNonQuery(command)
                 If Integer.TryParse(command.Parameters("po_return_code").Value.ToString(), oErrCode) = False Then
                     oErrCode = 999
                 End If
@@ -2414,7 +2413,7 @@ Public Class CertificateDAL
         Dim addressDAL As New AddressDAL
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
-            tr = GetNewTransaction
+            tr = DBHelper.GetNewTransaction
         End If
         Try
             'First Pass updates Deletions
@@ -2558,23 +2557,23 @@ Public Class CertificateDAL
 
     ' Execute Store Procedure
     Public Function ExecuteSP(docType As String, IdentificationNumber As String) As String
-        Dim inputParameters(TOTAL_PARAM_IN) As DBHelperParameter
-        Dim outputParameter(TOTAL_PARAM_OUT) As DBHelperParameter
+        Dim inputParameters(TOTAL_PARAM_IN) As DBHelper.DBHelperParameter
+        Dim outputParameter(TOTAL_PARAM_OUT) As DBHelper.DBHelperParameter
         Dim selectStmt As String = Config("/SQL/VALIDATE_BR_DOCUMENT")
 
         If Not docType Is Nothing Then
-            inputParameters(IN_DOC_TYPE) = New DBHelperParameter(PARAM_NAME_DOCUMENT_TYPE, docType)
+            inputParameters(IN_DOC_TYPE) = New DBHelper.DBHelperParameter(PARAM_NAME_DOCUMENT_TYPE, docType)
         End If
 
         If Not IdentificationNumber Is Nothing Then
-            inputParameters(IN_ID_NUMBER) = New DBHelperParameter(COL_NAME_IDENTIFICATION_NUMBER, IdentificationNumber)
+            inputParameters(IN_ID_NUMBER) = New DBHelper.DBHelperParameter(COL_NAME_IDENTIFICATION_NUMBER, IdentificationNumber)
         Else
-            inputParameters(IN_ID_NUMBER) = New DBHelperParameter(COL_NAME_IDENTIFICATION_NUMBER, DBNull.Value)
+            inputParameters(IN_ID_NUMBER) = New DBHelper.DBHelperParameter(COL_NAME_IDENTIFICATION_NUMBER, DBNull.Value)
         End If
 
-        outputParameter(OUT_REJ_REASON) = New DBHelperParameter(COL_NAME_RETURN_REASON, GetType(String), 30)
-        outputParameter(OUT_REJ_CODE) = New DBHelperParameter(COL_NAME_RETURN_CODE, GetType(Integer))
-        outputParameter(OUT_REJ_MSG) = New DBHelperParameter(COL_NAME_RETURN_REJECT_MSG, GetType(String), 50)
+        outputParameter(OUT_REJ_REASON) = New DBHelper.DBHelperParameter(COL_NAME_RETURN_REASON, GetType(String), 30)
+        outputParameter(OUT_REJ_CODE) = New DBHelper.DBHelperParameter(COL_NAME_RETURN_CODE, GetType(Integer))
+        outputParameter(OUT_REJ_MSG) = New DBHelper.DBHelperParameter(COL_NAME_RETURN_REJECT_MSG, GetType(String), 50)
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
@@ -2617,13 +2616,13 @@ Public Class CertificateDAL
 
         Dim selectstmt As String = Config("/SQL/LOAD_CUST_PERSONAL_HISTORY")
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter(COL_NAME_LANGUAGE_ID, language_id.ToByteArray),
-                         New DBHelperParameter(COL_NAME_LANGUAGE_ID, language_id.ToByteArray),
-                         New DBHelperParameter(COL_NAME_LANGUAGE_ID, language_id.ToByteArray),
-                         New DBHelperParameter(COL_NAME_LANGUAGE_ID, language_id.ToByteArray),
-                         New DBHelperParameter(COL_NAME_LANGUAGE_ID, language_id.ToByteArray),
-                         New DBHelperParameter(COL_NAME_CERT_ID, CertId.ToByteArray)
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, language_id.ToByteArray),
+                         New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, language_id.ToByteArray),
+                         New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, language_id.ToByteArray),
+                         New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, language_id.ToByteArray),
+                         New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, language_id.ToByteArray),
+                         New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, CertId.ToByteArray)
                         }
         Try
             DBHelper.Fetch(ds, selectstmt, TABLE_NAME, parameters)
@@ -2640,8 +2639,8 @@ Public Class CertificateDAL
 
         Dim selectstmt As String = Config("/SQL/LOAD_CUST_ADDRESS_HISTORY")
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter(COL_NAME_CERT_ID, CertId.ToByteArray)
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, CertId.ToByteArray)
                         }
         Try
             DBHelper.Fetch(ds, selectstmt, TABLE_NAME, parameters)
@@ -2658,8 +2657,8 @@ Public Class CertificateDAL
 
         Dim selectstmt As String = Config("/SQL/LOAD_CUST_CONTACT_HISTORY")
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter(COL_NAME_CERT_ID, CertId.ToByteArray)
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, CertId.ToByteArray)
                         }
         Try
             DBHelper.Fetch(ds, selectstmt, TABLE_NAME, parameters)
@@ -2677,8 +2676,8 @@ Public Class CertificateDAL
 
         Dim selectstmt As String = Config("/SQL/LOAD_CUST_BANK_DETAIL_HISTORY")
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                        {New DBHelperParameter(COL_NAME_CERT_ID, CertId.ToByteArray)
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, CertId.ToByteArray)
                         }
         Try
             DBHelper.Fetch(ds, selectstmt, TABLE_NAME, parameters)
@@ -2698,10 +2697,10 @@ Public Class CertificateDAL
     Public Function ValidateLicenseFlag(VehicleLicenceFlag As String, CertNumber As String, CompanyGroupId As Guid) As DataSet
         Dim ds As New DataSet
         Dim selectStmt As String = Config("/SQL/VALIDATE_VSC_LICENSE_TAG")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                    {New DBHelperParameter(PARAM_NAME_VEHICLE_LICENSE_FLAG, VehicleLicenceFlag.ToUpper.ToString),
-                     New DBHelperParameter(PARAM_NAME_CERT_NUMBER, CertNumber.ToUpper.ToString),
-                     New DBHelperParameter(PARAM_NAME_COMPANY_GROUP_ID, CompanyGroupId.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                    {New DBHelper.DBHelperParameter(PARAM_NAME_VEHICLE_LICENSE_FLAG, VehicleLicenceFlag.ToUpper.ToString),
+                     New DBHelper.DBHelperParameter(PARAM_NAME_CERT_NUMBER, CertNumber.ToUpper.ToString),
+                     New DBHelper.DBHelperParameter(PARAM_NAME_COMPANY_GROUP_ID, CompanyGroupId.ToByteArray)}
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
@@ -2714,17 +2713,17 @@ Public Class CertificateDAL
     Public Function GetCommissionForEntities(certId As Guid, langId As Guid, commAsOfDate As String) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_COMMISSION_FOR_ENTITIES")
 
-        Dim parameters(2) As DBHelperParameter
-        Dim outParameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("v_EntityCommDet", GetType(DataSet))}
+        Dim parameters(2) As DBHelper.DBHelperParameter
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("v_EntityCommDet", GetType(DataSet))}
         Dim ds As New DataSet
 
-        parameters(0) = New DBHelperParameter("v_cert_id", certId.ToByteArray)
-        parameters(1) = New DBHelperParameter("v_language_id", langId.ToByteArray)
-        parameters(2) = New DBHelperParameter("v_comm_as_of_date", commAsOfDate)
+        parameters(0) = New DBHelper.DBHelperParameter("v_cert_id", certId.ToByteArray)
+        parameters(1) = New DBHelper.DBHelperParameter("v_language_id", langId.ToByteArray)
+        parameters(2) = New DBHelper.DBHelperParameter("v_comm_as_of_date", commAsOfDate)
 
         Try
 
-            FetchSp(selectStmt, parameters, outParameters, ds, "COMMFORENT")
+            DBHelper.FetchSp(selectStmt, parameters, outParameters, ds, "COMMFORENT")
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -2735,9 +2734,9 @@ Public Class CertificateDAL
         Dim selectStmt As String = Config("/SQL/IS_REVERSE_CANCELLATION_ENABLED")
         Dim isReplacementPolicy As Boolean
 
-        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("pi_cert_id", certId.ToByteArray)}
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("pio_isReplacmentPolicy", GetType(Integer)),
-                                                                                                 New DBHelperParameter("pio_isEnabled", GetType(Integer))}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_cert_id", certId.ToByteArray)}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pio_isReplacmentPolicy", GetType(Integer)),
+                                                                                                 New DBHelper.DBHelperParameter("pio_isEnabled", GetType(Integer))}
         Try
             DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
             If outputParameters(0).Value <> 0 Then
@@ -2760,15 +2759,15 @@ Public Class CertificateDAL
     Public Function GetCertHistory(cert_Number As String, dealerId As Guid, PremChanges As String) As DataSet
         Dim selectStmt As String = Config("/SQL/CERTIFICATE_HISTORY")
         Dim ds As DataSet = New DataSet
-        Dim outputParameter(TOTAL_INPUT_PARAM_CERT_HISTORY) As DBHelperParameter
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("pi_Dealer_id", dealerId.ToByteArray),
-                                                                                            New DBHelperParameter("pi_certificate", cert_Number),
-                                                                                            New DBHelperParameter("pi_prem_chngs", PremChanges)}
-        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelperParameter(SP_PARAM_NAME__CERT_HISTORY, GetType(DataSet))
+        Dim outputParameter(TOTAL_INPUT_PARAM_CERT_HISTORY) As DBHelper.DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_Dealer_id", dealerId.ToByteArray),
+                                                                                            New DBHelper.DBHelperParameter("pi_certificate", cert_Number),
+                                                                                            New DBHelper.DBHelperParameter("pi_prem_chngs", PremChanges)}
+        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__CERT_HISTORY, GetType(DataSet))
 
         Try
 
-            FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertHistory")
+            DBHelper.FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertHistory")
             ds.Tables(0).TableName = "GetCertHistory"
 
             Return ds
@@ -2780,20 +2779,20 @@ Public Class CertificateDAL
     Public Function GetOtherCustomerInfo(Cert_id As Guid, IdentificationNumberType As String) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_OTHER_CUSTOMER_INFO")
         Dim ds As DataSet = New DataSet
-        Dim outputParameter(PO_CURSOR_CUSTOMER_INFO) As DBHelperParameter
-        Dim inParameters As New List(Of DBHelperParameter)
-        Dim param As DBHelperParameter
+        Dim outputParameter(PO_CURSOR_CUSTOMER_INFO) As DBHelper.DBHelperParameter
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim param As DBHelper.DBHelperParameter
 
-        param = New DBHelperParameter("pi_cert_id", Cert_id.ToByteArray)
+        param = New DBHelper.DBHelperParameter("pi_cert_id", Cert_id.ToByteArray)
         inParameters.Add(param)
 
-        param = New DBHelperParameter("pi_identification_number_type", IdentificationNumberType)
+        param = New DBHelper.DBHelperParameter("pi_identification_number_type", IdentificationNumberType)
         inParameters.Add(param)
 
-        outputParameter(PO_CURSOR_CUSTOMER_INFO) = New DBHelperParameter(SP_PARAM_NAME_CUST_INFO, GetType(DataSet))
+        outputParameter(PO_CURSOR_CUSTOMER_INFO) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_CUST_INFO, GetType(DataSet))
 
         Try
-            FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetOtherCustomerInfo")
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetOtherCustomerInfo")
             ds.Tables(0).TableName = "GetOtherCustomerInfo"
             Return ds
         Catch ex As Exception
@@ -2803,24 +2802,24 @@ Public Class CertificateDAL
     Public Function GetOtherCustomerDetails(CustomerId As Guid, Lang_Id As Guid, IdentificationNumberType As String) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_OTHER_CUSTOMER_DETAILS")
         Dim ds As DataSet = New DataSet
-        Dim outputParameter(PO_CURSOR_CUSTOMER_DETAILS) As DBHelperParameter
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("pi_customer_id", CustomerId.ToByteArray)}
-        Dim inParameters As New List(Of DBHelperParameter)
-        Dim param As DBHelperParameter
+        Dim outputParameter(PO_CURSOR_CUSTOMER_DETAILS) As DBHelper.DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_customer_id", CustomerId.ToByteArray)}
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim param As DBHelper.DBHelperParameter
 
-        param = New DBHelperParameter("pi_customer_id", CustomerId.ToByteArray)
+        param = New DBHelper.DBHelperParameter("pi_customer_id", CustomerId.ToByteArray)
         inParameters.Add(param)
 
-        param = New DBHelperParameter("pi_lang_id", Lang_Id.ToByteArray)
+        param = New DBHelper.DBHelperParameter("pi_lang_id", Lang_Id.ToByteArray)
         inParameters.Add(param)
 
-        param = New DBHelperParameter("pi_identification_number_type", IdentificationNumberType)
+        param = New DBHelper.DBHelperParameter("pi_identification_number_type", IdentificationNumberType)
         inParameters.Add(param)
 
-        outputParameter(PO_CURSOR_CUSTOMER_DETAILS) = New DBHelperParameter(SP_PARAM_NAME_CUST_DETAILS, GetType(DataSet))
+        outputParameter(PO_CURSOR_CUSTOMER_DETAILS) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_CUST_DETAILS, GetType(DataSet))
 
         Try
-            FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetOtherCustomerDetails")
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetOtherCustomerDetails")
             ds.Tables(0).TableName = "GetOtherCustomerDetails"
             Return ds
         Catch ex As Exception
@@ -2832,120 +2831,120 @@ Public Class CertificateDAL
                                           MartialStatus As Guid, Nationality As Guid, PlaceOfBirth As Guid, Gender As Guid, CorporateName As String, AltFirstName As String, AltLastName As String, CityofBirth As String,
                                           Optional ByVal DateOfBirth As DateType = Nothing)
         Dim selectStmt As String = Config("/SQL/UPDATE_CUSTOMER_DETAILS")
-        Dim outputParameter(PO_CURSOR_UPDATE_CUSTOMER) As DBHelperParameter
-        outputParameter(OUT_REJ_REASON) = New DBHelperParameter("po_reject_reason", GetType(String), 30)
-        outputParameter(OUT_REJ_CODE) = New DBHelperParameter("po_reject_code", GetType(Integer))
+        Dim outputParameter(PO_CURSOR_UPDATE_CUSTOMER) As DBHelper.DBHelperParameter
+        outputParameter(OUT_REJ_REASON) = New DBHelper.DBHelperParameter("po_reject_reason", GetType(String), 30)
+        outputParameter(OUT_REJ_CODE) = New DBHelper.DBHelperParameter("po_reject_code", GetType(Integer))
 
-        Dim inParameters As New List(Of DBHelperParameter)
-        Dim param As DBHelperParameter
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim param As DBHelper.DBHelperParameter
 
-        param = New DBHelperParameter("pi_cert_id", CertId.ToByteArray)
+        param = New DBHelper.DBHelperParameter("pi_cert_id", CertId.ToByteArray)
         inParameters.Add(param)
 
-        param = New DBHelperParameter("pi_customer_id", CustomerId.ToByteArray)
+        param = New DBHelper.DBHelperParameter("pi_customer_id", CustomerId.ToByteArray)
         inParameters.Add(param)
 
         If CustomerFirstName <> String.Empty Then
-            param = New DBHelperParameter("pi_customer_first_name", CustomerFirstName)
+            param = New DBHelper.DBHelperParameter("pi_customer_first_name", CustomerFirstName)
             inParameters.Add(param)
         End If
 
         If CustomerMiddleName <> String.Empty Then
-            param = New DBHelperParameter("pi_customer_middle_name", CustomerMiddleName)
+            param = New DBHelper.DBHelperParameter("pi_customer_middle_name", CustomerMiddleName)
             inParameters.Add(param)
         End If
 
         If CustomerLastName <> String.Empty Then
-            param = New DBHelperParameter("pi_customer_last_name", CustomerLastName)
+            param = New DBHelper.DBHelperParameter("pi_customer_last_name", CustomerLastName)
             inParameters.Add(param)
         End If
 
         If Email <> String.Empty Then
-            param = New DBHelperParameter("pi_email", Email)
+            param = New DBHelper.DBHelperParameter("pi_email", Email)
             inParameters.Add(param)
         End If
 
         If HomePhone <> String.Empty Then
-            param = New DBHelperParameter("pi_homephone", HomePhone)
+            param = New DBHelper.DBHelperParameter("pi_homephone", HomePhone)
             inParameters.Add(param)
         End If
 
 
         If IdentificationNumberType <> String.Empty Then
-            param = New DBHelperParameter("pi_identification_number_type", IdentificationNumberType)
+            param = New DBHelper.DBHelperParameter("pi_identification_number_type", IdentificationNumberType)
             inParameters.Add(param)
         End If
 
         If IdentificationNumber <> String.Empty Then
-            param = New DBHelperParameter("pi_identification_number", IdentificationNumber)
+            param = New DBHelper.DBHelperParameter("pi_identification_number", IdentificationNumber)
             inParameters.Add(param)
         End If
 
 
         If WorkPhone <> String.Empty Then
-            param = New DBHelperParameter("pi_workphone", WorkPhone)
+            param = New DBHelper.DBHelperParameter("pi_workphone", WorkPhone)
             inParameters.Add(param)
         End If
 
 
         If Not DateOfBirth = Nothing Then
             Dim strDateOfBirth As String = DateOfBirth.Value.ToString("MM/dd/yyyy")
-            param = New DBHelperParameter("pi_dateofbirth", strDateOfBirth)
+            param = New DBHelper.DBHelperParameter("pi_dateofbirth", strDateOfBirth)
             inParameters.Add(param)
         End If
 
-        If MartialStatus <> Empty Then
-            param = New DBHelperParameter("pi_martialstatus_id", MartialStatus.ToByteArray)
+        If MartialStatus <> Guid.Empty Then
+            param = New DBHelper.DBHelperParameter("pi_martialstatus_id", MartialStatus.ToByteArray)
             inParameters.Add(param)
         End If
 
-        If Nationality <> Empty Then
-            param = New DBHelperParameter("pi_nationality_id", Nationality.ToByteArray)
+        If Nationality <> Guid.Empty Then
+            param = New DBHelper.DBHelperParameter("pi_nationality_id", Nationality.ToByteArray)
             inParameters.Add(param)
         End If
 
-        If PlaceOfBirth <> Empty Then
-            param = New DBHelperParameter("pi_placeofbirth_id", PlaceOfBirth.ToByteArray)
+        If PlaceOfBirth <> Guid.Empty Then
+            param = New DBHelper.DBHelperParameter("pi_placeofbirth_id", PlaceOfBirth.ToByteArray)
             inParameters.Add(param)
         End If
 
-        If Gender <> Empty Then
-            param = New DBHelperParameter("pi_gender_id", Gender.ToByteArray)
+        If Gender <> Guid.Empty Then
+            param = New DBHelper.DBHelperParameter("pi_gender_id", Gender.ToByteArray)
             inParameters.Add(param)
         End If
 
-        If SalutationId <> Empty Then
-            param = New DBHelperParameter("pi_salutation_id", SalutationId.ToByteArray)
+        If SalutationId <> Guid.Empty Then
+            param = New DBHelper.DBHelperParameter("pi_salutation_id", SalutationId.ToByteArray)
             inParameters.Add(param)
         End If
 
 
-        param = New DBHelperParameter("pi_modified_by", Modified_By)
+        param = New DBHelper.DBHelperParameter("pi_modified_by", Modified_By)
         inParameters.Add(param)
 
 
         If CorporateName <> String.Empty Then
-            param = New DBHelperParameter("pi_corporate_name", CorporateName)
+            param = New DBHelper.DBHelperParameter("pi_corporate_name", CorporateName)
             inParameters.Add(param)
         End If
 
         If AltFirstName <> String.Empty Then
-            param = New DBHelperParameter("pi_customer_alt_first_name", AltFirstName)
+            param = New DBHelper.DBHelperParameter("pi_customer_alt_first_name", AltFirstName)
             inParameters.Add(param)
         End If
 
         If AltLastName <> String.Empty Then
-            param = New DBHelperParameter("pi_customer_alt_last_name", AltLastName)
+            param = New DBHelper.DBHelperParameter("pi_customer_alt_last_name", AltLastName)
             inParameters.Add(param)
         End If
 
         If CityofBirth <> String.Empty Then
-            param = New DBHelperParameter("pi_city_of_birth", CityofBirth)
+            param = New DBHelper.DBHelperParameter("pi_city_of_birth", CityofBirth)
             inParameters.Add(param)
         End If
 
         Try
-            ExecuteSpParamBindByName(selectStmt, inParameters.ToArray, outputParameter)
+            DBHelper.ExecuteSpParamBindByName(selectStmt, inParameters.ToArray, outputParameter)
             If outputParameter(OUT_REJ_CODE).Value <> 0 Then
                 Throw New StoredProcedureGeneratedException("Update Customer ERROR : ", outputParameter(OUT_REJ_REASON).Value)
             End If
@@ -2957,13 +2956,13 @@ Public Class CertificateDAL
     Public Function GetCertInstallmentHistory(Cert_id As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/CERT_INSTALLMENT_HISTORY")
         Dim ds As DataSet = New DataSet
-        Dim outputParameter(0) As DBHelperParameter
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("pi_cert_id", Cert_id.ToByteArray)}
-        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelperParameter(SP_PARAM_NAME__CERT_HISTORY, GetType(DataSet))
+        Dim outputParameter(0) As DBHelper.DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_cert_id", Cert_id.ToByteArray)}
+        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__CERT_HISTORY, GetType(DataSet))
 
         Try
 
-            FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertInstallmentHistory")
+            DBHelper.FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertInstallmentHistory")
             ds.Tables(0).TableName = "GetCertInstallmentHistory"
 
             Return ds
@@ -2975,8 +2974,8 @@ Public Class CertificateDAL
 
     Public Function GetParentCertId(Cert_id As Guid) As Guid
         Dim selectStmt As String = Config("/SQL/GET_PARENT_CERT_ID")
-        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("pi_cert_id", Cert_id.ToByteArray)}
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("po_parent_cert_id", GetType(Guid))}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_cert_id", Cert_id.ToByteArray)}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_parent_cert_id", GetType(Guid))}
 
         Try
 
@@ -2984,7 +2983,7 @@ Public Class CertificateDAL
             If outputParameters(0).Value Is Nothing Then
                 Return Nothing
             Else
-                Return Parse(outputParameters(0).Value.ToString)
+                Return Guid.Parse(outputParameters(0).Value.ToString)
             End If
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -2996,13 +2995,13 @@ Public Class CertificateDAL
 
 #Region "Private Methods"
 
-    Function SetParameter(name As String, value As Object) As DBHelperParameter
+    Function SetParameter(name As String, value As Object) As DBHelper.DBHelperParameter
 
         name = name.Trim
         If value Is Nothing Then value = DBNull.Value
         If value.GetType Is GetType(String) Then value = DirectCast(value, String).Trim
 
-        Return New DBHelperParameter(name, value, value.GetType)
+        Return New DBHelper.DBHelperParameter(name, value, value.GetType)
 
     End Function
 
@@ -3176,114 +3175,114 @@ Public Class CertificateDAL
                                         pZipCode As String, pSerialNumber As String, pIMEINumber As String, pCertStatus As String,
                                         pNumberOfRecords As Integer) As DataSet
         Dim selectStmt As String = Config("/SQL/GW_CERTIFICATE_SEARCH")
-        Dim outParameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("po_cursor_Result", GetType(DataSet))}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_cursor_Result", GetType(DataSet))}
         Dim ds As New DataSet
         Dim tbl As String = "SEARCH_RESULT"
 
-        Dim inParameters As New List(Of DBHelperParameter)
-        Dim param As DBHelperParameter
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim param As DBHelper.DBHelperParameter
 
-        param = New DBHelperParameter("pi_CompanyCodeList", pCompanyCodes)
+        param = New DBHelper.DBHelperParameter("pi_CompanyCodeList", pCompanyCodes)
         inParameters.Add(param)
-        param = New DBHelperParameter("pi_NumOfRecord", pNumberOfRecords)
+        param = New DBHelper.DBHelperParameter("pi_NumOfRecord", pNumberOfRecords)
         inParameters.Add(param)
 
         If pCertificateNumber <> String.Empty Then
-            param = New DBHelperParameter("pi_CertNum", pCertificateNumber)
+            param = New DBHelper.DBHelperParameter("pi_CertNum", pCertificateNumber)
             inParameters.Add(param)
         End If
 
         If pCustomerName <> String.Empty Then
-            param = New DBHelperParameter("pi_CustomerName", pCustomerName)
+            param = New DBHelper.DBHelperParameter("pi_CustomerName", pCustomerName)
             inParameters.Add(param)
         End If
 
         If pWorkPhone <> String.Empty Then
-            param = New DBHelperParameter("pi_WorkPhone", pWorkPhone)
+            param = New DBHelper.DBHelperParameter("pi_WorkPhone", pWorkPhone)
             inParameters.Add(param)
         End If
 
         If pHomePhone <> String.Empty Then
-            param = New DBHelperParameter("pi_HomePhone", pHomePhone)
+            param = New DBHelper.DBHelperParameter("pi_HomePhone", pHomePhone)
             inParameters.Add(param)
         End If
 
         If pAccountNumber <> String.Empty Then
-            param = New DBHelperParameter("pi_AccountNumber", pAccountNumber)
+            param = New DBHelper.DBHelperParameter("pi_AccountNumber", pAccountNumber)
             inParameters.Add(param)
         End If
 
         If pServiceLineNumber <> String.Empty Then
-            param = New DBHelperParameter("pi_ServiceLineNumber", pServiceLineNumber)
+            param = New DBHelper.DBHelperParameter("pi_ServiceLineNumber", pServiceLineNumber)
             inParameters.Add(param)
         End If
 
         If pTaxId <> String.Empty Then
-            param = New DBHelperParameter("pi_TaxId", pTaxId)
+            param = New DBHelper.DBHelperParameter("pi_TaxId", pTaxId)
             inParameters.Add(param)
         End If
 
         If pEmail <> String.Empty Then
-            param = New DBHelperParameter("pi_Email", pEmail)
+            param = New DBHelper.DBHelperParameter("pi_Email", pEmail)
             inParameters.Add(param)
         End If
 
         If pPurchaseInvoiceNumber <> String.Empty Then
-            param = New DBHelperParameter("pi_InvoiceNumber", pPurchaseInvoiceNumber)
+            param = New DBHelper.DBHelperParameter("pi_InvoiceNumber", pPurchaseInvoiceNumber)
             inParameters.Add(param)
         End If
 
         If pAddress <> String.Empty Then
-            param = New DBHelperParameter("pi_Address1", pAddress)
+            param = New DBHelper.DBHelperParameter("pi_Address1", pAddress)
             inParameters.Add(param)
         End If
 
         If pAddress2 <> String.Empty Then
-            param = New DBHelperParameter("pi_Address2", pAddress2)
+            param = New DBHelper.DBHelperParameter("pi_Address2", pAddress2)
             inParameters.Add(param)
         End If
 
         If pAddress3 <> String.Empty Then
-            param = New DBHelperParameter("pi_Address3", pAddress3)
+            param = New DBHelper.DBHelperParameter("pi_Address3", pAddress3)
             inParameters.Add(param)
         End If
 
         If pCountry <> String.Empty Then
-            param = New DBHelperParameter("pi_Country", pCountry)
+            param = New DBHelper.DBHelperParameter("pi_Country", pCountry)
             inParameters.Add(param)
         End If
 
         If pState <> String.Empty Then
-            param = New DBHelperParameter("pi_State", pState)
+            param = New DBHelper.DBHelperParameter("pi_State", pState)
             inParameters.Add(param)
         End If
 
         If pCity <> String.Empty Then
-            param = New DBHelperParameter("pi_City", pCity)
+            param = New DBHelper.DBHelperParameter("pi_City", pCity)
             inParameters.Add(param)
         End If
 
         If pZipCode <> String.Empty Then
-            param = New DBHelperParameter("pi_ZipCode", pZipCode)
+            param = New DBHelper.DBHelperParameter("pi_ZipCode", pZipCode)
             inParameters.Add(param)
         End If
 
         If pSerialNumber <> String.Empty Then
-            param = New DBHelperParameter("pi_SerialNumber", pSerialNumber)
+            param = New DBHelper.DBHelperParameter("pi_SerialNumber", pSerialNumber)
             inParameters.Add(param)
         End If
 
         If pIMEINumber <> String.Empty Then
-            param = New DBHelperParameter("pi_IMEINumber", pIMEINumber)
+            param = New DBHelper.DBHelperParameter("pi_IMEINumber", pIMEINumber)
             inParameters.Add(param)
         End If
 
         If pCertStatus <> String.Empty Then
-            param = New DBHelperParameter("pi_CertStatus", pCertStatus)
+            param = New DBHelper.DBHelperParameter("pi_CertStatus", pCertStatus)
             inParameters.Add(param)
         End If
         Try
-            FetchSp(selectStmt, inParameters.ToArray, outParameters, ds, tbl, True)
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray, outParameters, ds, tbl, True)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -3292,13 +3291,13 @@ Public Class CertificateDAL
     Public Function GetCertExtensionsInfo(Cert_id As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_CERT_EXT_INFO")
         Dim ds As DataSet = New DataSet
-        Dim outputParameter(0) As DBHelperParameter
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("pi_cert_id", Cert_id.ToByteArray)}
-        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelperParameter("po_cert_ext_info", GetType(DataSet))
+        Dim outputParameter(0) As DBHelper.DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_cert_id", Cert_id.ToByteArray)}
+        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelper.DBHelperParameter("po_cert_ext_info", GetType(DataSet))
 
         Try
 
-            FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertExtnData")
+            DBHelper.FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertExtnData")
             ds.Tables(0).TableName = "GetCertExtnData"
 
             Return ds
@@ -3311,13 +3310,13 @@ Public Class CertificateDAL
     Public Function GetCertUpgradeExtensionsInfo(Cert_id As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_CERT_UPG_EXT_INFO")
         Dim ds As DataSet = New DataSet
-        Dim outputParameter(0) As DBHelperParameter
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("pi_cert_id", Cert_id.ToByteArray)}
-        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelperParameter("po_cert_upg_ext_info", GetType(DataSet))
+        Dim outputParameter(0) As DBHelper.DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_cert_id", Cert_id.ToByteArray)}
+        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelper.DBHelperParameter("po_cert_upg_ext_info", GetType(DataSet))
 
         Try
 
-            FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertUpgExtnData")
+            DBHelper.FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertUpgExtnData")
             ds.Tables(0).TableName = "GetCertUpgExtnData"
 
             Return ds
@@ -3330,12 +3329,12 @@ Public Class CertificateDAL
     Public Function GetFraudulentCertExtensions(certId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_FRAUD_CERT_EXT")
         Dim ds As DataSet = New DataSet
-        Dim outputParameter(0) As DBHelperParameter
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("certId", certId.ToByteArray)}
-        outputParameter(0) = New DBHelperParameter("fraudulentCertExtensions", GetType(DataSet))
+        Dim outputParameter(0) As DBHelper.DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("certId", certId.ToByteArray)}
+        outputParameter(0) = New DBHelper.DBHelperParameter("fraudulentCertExtensions", GetType(DataSet))
 
         Try
-            FetchSp(selectStmt, parameters, outputParameter, ds, "GetFraudCertExtns")
+            DBHelper.FetchSp(selectStmt, parameters, outputParameter, ds, "GetFraudCertExtns")
             ds.Tables(0).TableName = "GetFraudCertExtns"
 
             Return ds
@@ -3381,13 +3380,13 @@ Public Class CertificateDAL
         Dim selectStmt As String = Config("/SQL/GET_CERT_PYMT_PASSED_DUE_EXT_INFO")
         Dim ds As DataSet = New DataSet
         Dim paymentPasseddue As Integer = 0
-        Dim outputParameter(0) As DBHelperParameter
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("pi_cert_id", Cert_id.ToByteArray)}
-        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelperParameter("po_cert_ppd_ext_info", GetType(DataSet))
+        Dim outputParameter(0) As DBHelper.DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_cert_id", Cert_id.ToByteArray)}
+        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelper.DBHelperParameter("po_cert_ppd_ext_info", GetType(DataSet))
 
         Try
 
-            FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertPymtPassedDueExtnData")
+            DBHelper.FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertPymtPassedDueExtnData")
             ds.Tables(0).TableName = "GetCertPymtPassedDueExtnData"
 
             If ds.Tables(0).Rows.count > 0 Then
@@ -3409,16 +3408,16 @@ Public Class CertificateDAL
 
         Dim selectStmt As String = Config("/SQL/GET_CERT_EXT_FIELDS_LIST")
         Dim ds As DataSet = New DataSet
-        Dim outputParameter(0) As DBHelperParameter
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-                {New DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray),
-                 New DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)
+        Dim outputParameter(0) As DBHelper.DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray),
+                 New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)
                 }
 
-        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelperParameter("po_resultcursor", GetType(DataSet))
+        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))
 
         Try
-            FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertExtFieldsList")
+            DBHelper.FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertExtFieldsList")
             ds.Tables(0).TableName = "GetCertExtFieldsList"
 
             Return ds
@@ -3434,59 +3433,59 @@ Public Class CertificateDAL
     Public Function SFRSearchCertificate(pCompanyCode As String, pDealerCode As String, pDealerGrp As String, pCustomerFirstName As String, pCustomerLastName As String,
                                                 pPhoneNumber As String, pEmail As String, pPostalCode As String, pAccountNumber As String) As DataSet
         Dim selectStmt As String = Config("/SQL/SFR_CERTIFICATE_SEARCH")
-        Dim outParameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("po_cursor_Result", GetType(DataSet))}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_cursor_Result", GetType(DataSet))}
         Dim ds As New DataSet
         Dim tbl As String = "SEARCH_RESULT"
 
-        Dim inParameters As New List(Of DBHelperParameter)
-        Dim param As DBHelperParameter
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim param As DBHelper.DBHelperParameter
 
-        param = New DBHelperParameter("pi_company_code", pCompanyCode)
+        param = New DBHelper.DBHelperParameter("pi_company_code", pCompanyCode)
         inParameters.Add(param)
         'param = New DBHelper.DBHelperParameter("pi_NumOfRecord", pNumberOfRecords)
         'inParameters.Add(param)
         If pDealerCode <> String.Empty Then
-            param = New DBHelperParameter("pi_dealer_code", pDealerCode)
+            param = New DBHelper.DBHelperParameter("pi_dealer_code", pDealerCode)
             inParameters.Add(param)
         End If
 
         If pDealerGrp <> String.Empty Then
-            param = New DBHelperParameter("pi_dealer_group", pDealerGrp)
+            param = New DBHelper.DBHelperParameter("pi_dealer_group", pDealerGrp)
             inParameters.Add(param)
         End If
 
         If pCustomerFirstName <> String.Empty Then
-            param = New DBHelperParameter("pi_first_name", pCustomerFirstName)
+            param = New DBHelper.DBHelperParameter("pi_first_name", pCustomerFirstName)
             inParameters.Add(param)
         End If
 
         If pCustomerLastName <> String.Empty Then
-            param = New DBHelperParameter("pi_last_name", pCustomerLastName)
+            param = New DBHelper.DBHelperParameter("pi_last_name", pCustomerLastName)
             inParameters.Add(param)
         End If
 
         If pPhoneNumber <> String.Empty Then
-            param = New DBHelperParameter("pi_phone_number", pPhoneNumber)
+            param = New DBHelper.DBHelperParameter("pi_phone_number", pPhoneNumber)
             inParameters.Add(param)
         End If
 
         If pEmail <> String.Empty Then
-            param = New DBHelperParameter("pi_email", pEmail)
+            param = New DBHelper.DBHelperParameter("pi_email", pEmail)
             inParameters.Add(param)
         End If
 
         If pPostalCode <> String.Empty Then
-            param = New DBHelperParameter("pi_postal_code", pPostalCode)
+            param = New DBHelper.DBHelperParameter("pi_postal_code", pPostalCode)
             inParameters.Add(param)
         End If
 
         If pAccountNumber <> String.Empty Then
-            param = New DBHelperParameter("pi_account_number", pAccountNumber)
+            param = New DBHelper.DBHelperParameter("pi_account_number", pAccountNumber)
             inParameters.Add(param)
         End If
 
         Try
-            FetchSp(selectStmt, inParameters.ToArray, outParameters, ds, tbl, True)
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray, outParameters, ds, tbl, True)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

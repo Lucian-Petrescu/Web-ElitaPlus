@@ -54,7 +54,7 @@ Public Class ClaimStatusLetterDAL
         Dim inClausecondition As String = ""
         Dim whereClauseConditions As String = ""
 
-        inClausecondition &= "And edealer." & MiscUtil.BuildListForSql(CompanyDAL.COL_NAME_COMPANY_ID, compIds, False)
+        inClausecondition &= "And edealer." & MiscUtil.BuildListForSql(DALObjects.CompanyDAL.COL_NAME_COMPANY_ID, compIds, False)
 
         If Not dealerId.Equals(Guid.Empty) Then
             whereClauseConditions &= Environment.NewLine & " AND edealer.dealer_id = " & MiscUtil.GetDbStringFromGuid(dealerId)

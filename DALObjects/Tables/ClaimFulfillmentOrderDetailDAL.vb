@@ -54,10 +54,10 @@ Public Class ClaimFulfillmentOrderDetailDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Try
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD"))
                 cmd.AddParameter(TABLE_KEY_NAME, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Fetch(cmd, TABLE_NAME, familyDS)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -66,13 +66,13 @@ Public Class ClaimFulfillmentOrderDetailDAL
 
     Public Function LoadList(Code As String, Description As String, PriceListSource As String, language_id As Guid) As DataSet
         Try
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD_LIST"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD_LIST"))
                 cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, Code, direction:=ParameterDirection.Input)
                 cmd.AddParameter(PAR_I_NAME_DESCRIPTION, OracleDbType.Varchar2, Description, direction:=ParameterDirection.Input)
                 cmd.AddParameter(PAR_I_NAME_PRICE_LIST_SOURCE_XCD, OracleDbType.Varchar2, PriceListSource, direction:=ParameterDirection.Input)
                 cmd.AddParameter(PAR_I_NAME_LANGUAGE_ID, OracleDbType.Raw, language_id.ToByteArray, direction:=ParameterDirection.Input)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return Fetch(cmd, TABLE_NAME)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

@@ -1,5 +1,5 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (11/13/2006)********************
-Imports System.Text
+
 
 Public Class RoleAuthFormInclusionDAL
     Inherits DALBase
@@ -85,7 +85,7 @@ Public Class RoleAuthFormInclusionDAL
     End Function
 
     Public Function LoadPermissionByFormID(FormID As Guid) As DataSet
-        Dim selectStmt As StringBuilder = New StringBuilder(Config("/SQL/GET_PERMISSIONS_BY_FORM_ID"))
+        Dim selectStmt As Text.StringBuilder = New Text.StringBuilder(Config("/SQL/GET_PERMISSIONS_BY_FORM_ID"))
         Dim strFormID As String = MiscUtil.GetDbStringFromGuid(FormID)
         selectStmt.Replace("#FORMID", strFormID)
         Dim ds As New DataSet

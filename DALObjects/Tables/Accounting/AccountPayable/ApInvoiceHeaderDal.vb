@@ -2,7 +2,6 @@
 
 
 Imports System.Collections.Generic
-Imports System.Globalization
 
 Public Class ApInvoiceHeaderDAL
     Inherits OracleDALBase
@@ -70,10 +69,10 @@ Public Class ApInvoiceHeaderDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Try
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD"))
                 cmd.AddParameter(TABLE_KEY_NAME, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Fetch(cmd, TABLE_NAME, familyDS)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -81,10 +80,10 @@ Public Class ApInvoiceHeaderDAL
     End Sub
     Public Sub Load(familyDS As DataSet, invoice_Number As String)
         Try
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOADLINES"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOADLINES"))
                 cmd.AddParameter(PAR_I_NAME_INVOICE_NUMBER, OracleDbType.Varchar2, invoice_Number)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Fetch(cmd, TABLE_NAME, familyDS)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -93,9 +92,9 @@ Public Class ApInvoiceHeaderDAL
 
     Public Function LoadList() As DataSet
         Try
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD_LIST"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD_LIST"))
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return Fetch(cmd, TABLE_NAME)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -274,7 +273,7 @@ Public Class ApInvoiceHeaderDAL
 
             da = New OracleDataAdapter(cmd)
             da.Fill(searchResult, "SEARCH_RESULT")
-            searchResult.Locale = CultureInfo.InvariantCulture
+            searchResult.Locale = Globalization.CultureInfo.InvariantCulture
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -298,7 +297,7 @@ Public Class ApInvoiceHeaderDAL
 
             da = New OracleDataAdapter(cmd)
             da.Fill(searchResult, "AP_INVOICE_HEADER_EXT")
-            searchResult.Locale = CultureInfo.InvariantCulture
+            searchResult.Locale = Globalization.CultureInfo.InvariantCulture
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -319,7 +318,7 @@ Public Class ApInvoiceHeaderDAL
             cmd.Parameters.Add(PAR_I_NAME_VENDOR_ID, OracleDbType.Raw).Value = apInvoiceVendorId.ToByteArray
             da = New OracleDataAdapter(cmd)
             da.Fill(searchResult, TABLE_NAME)
-            searchResult.Locale = CultureInfo.InvariantCulture
+            searchResult.Locale = Globalization.CultureInfo.InvariantCulture
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -358,7 +357,7 @@ Public Class ApInvoiceHeaderDAL
 
             da = New OracleDataAdapter(cmd)
             da.Fill(searchResult, "AP_INVOICE_LINES")
-            searchResult.Locale = CultureInfo.InvariantCulture
+            searchResult.Locale = Globalization.CultureInfo.InvariantCulture
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -369,7 +368,7 @@ Public Class ApInvoiceHeaderDAL
 #End Region
 
 #Region "Invoice processing methods"
-    Public Sub DeleteInvoices(invoiceIds As List(Of Guid))
+    Public Sub DeleteInvoices(invoiceIds As Generic.List(Of Guid))
         'Dim strStmt As String = Config("/SQL/DELETE_AP_INVOICE")
         Dim strStmt As String = "begin elita.elp_ap_invoice_processing.delete_invoice(:pi_invoice_header_id); end;"
 

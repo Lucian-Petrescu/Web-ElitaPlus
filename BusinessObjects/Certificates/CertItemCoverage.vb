@@ -1384,7 +1384,7 @@ Public Class CertItemCoverage
                 'If oDealer.IsGracePeriodSpecified Then
                 If coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER AndAlso coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER_MAIN_PARTS AndAlso Not (IsCoverageEffectiveForGracePeriod(ReportedDate)) Then
                     If Date.Today > BeginDate.Value Then
-                        If (Not claimsManager) AndAlso (Not officeManager) AndAlso (Not IHQSup) AndAlso (Not otherAllowedRoles) Then
+                        If ((Not claimsManager) And (Not officeManager) And (Not IHQSup) And (Not otherAllowedRoles)) Then
                             flag = False
                         End If
                     End If
@@ -1395,7 +1395,7 @@ Public Class CertItemCoverage
                 End If
             ElseIf coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER AndAlso coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER_MAIN_PARTS AndAlso Not (IsCoverageEffective) Then
                 If Date.Today > BeginDate.Value Then
-                    If (Not claimsManager) AndAlso (Not officeManager) AndAlso (Not IHQSup) AndAlso (Not otherAllowedRoles) Then
+                    If ((Not claimsManager) And (Not officeManager) And (Not IHQSup) And (Not otherAllowedRoles)) Then
                         flag = False
                     End If
                 End If

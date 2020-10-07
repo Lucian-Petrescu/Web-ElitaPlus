@@ -66,7 +66,7 @@ Public Class ClaimIssueDAL
 
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
-            tr = GetNewTransaction
+            tr = DBHelper.GetNewTransaction
         End If
         Try
             'First Pass updates Deletions
@@ -85,9 +85,9 @@ Public Class ClaimIssueDAL
 
                     Dim claimIssueId As Guid = New Guid(DirectCast(dr(ClaimIssueStatusDAL.COL_NAME_CLAIM_ISSUE_ID), Byte()))
                     Dim issueId As Guid = Guid.Empty
-                    For Each drClaimIssue As DataRow In familyDataset.Tables(TABLE_NAME).Rows
-                        If (claimIssueId = New Guid(DirectCast(drClaimIssue(COL_NAME_ENTITY_ISSUE_ID), Byte()))) Then
-                            issueId = New Guid(DirectCast(drClaimIssue(COL_NAME_ISSUE_ID), Byte()))
+                    For Each drClaimIssue As DataRow In familyDataset.Tables(ClaimIssueDAL.TABLE_NAME).Rows
+                        If (claimIssueId = New Guid(DirectCast(drClaimIssue(ClaimIssueDAL.COL_NAME_ENTITY_ISSUE_ID), Byte()))) Then
+                            issueId = New Guid(DirectCast(drClaimIssue(ClaimIssueDAL.COL_NAME_ISSUE_ID), Byte()))
                             Exit For
                         End If
                     Next
@@ -102,7 +102,7 @@ Public Class ClaimIssueDAL
                              publishEventData.ProductCode,
                              publishEventData.CoverageTypeId,
                              "ClaimIssue_StatusChange",
-                             "ClaimId:" & GuidToSQLString(publishEventData.Data.ClaimId),
+                             "ClaimId:" & DALBase.GuidToSQLString(publishEventData.Data.ClaimId),
                              DateTime.UtcNow,
                              publishEventData.Data.EventTypeLookup(New Guid(CType(dr(ClaimIssueStatusDAL.COL_NAME_CLAIM_ISSUE_STATUS_C_ID), Byte()))),
                              issueId)

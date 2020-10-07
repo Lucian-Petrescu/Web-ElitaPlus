@@ -181,15 +181,15 @@ Public Class SVCPLReconDAL
         ' Call DBHelper Store Procedure
         Try
             Using connection As New OracleConnection(DBHelper.ConnectString)
-                Using cmd As OracleCommand = CreateCommand(storedProc, CommandType.StoredProcedure, connection)
+                Using cmd As OracleCommand = OracleDbHelper.CreateCommand(storedProc, CommandType.StoredProcedure, connection)
                     cmd.BindByName = True
                     cmd.Parameters.AddRange(parameters)
-                    Fetch(cmd, tbl, ds)
+                    OracleDbHelper.Fetch(cmd, tbl, ds)
                 End Using
             End Using
             Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
             If (Not par Is Nothing AndAlso par.Value = 200) Then
-                Throw New ElitaPlusException("SVC_PL_RECON - " + methodName, ErrorCodes.DB_READ_ERROR)
+                Throw New ElitaPlusException("SVC_PL_RECON - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
             End If
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

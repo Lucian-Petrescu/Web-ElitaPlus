@@ -97,10 +97,10 @@
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Try
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD"))
                 cmd.AddParameter(TABLE_KEY_NAME, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Fetch(cmd, TABLE_NAME, familyDS)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -120,7 +120,7 @@
         Try
             rejectReason = FormatWildCard(rejectReason)
 
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD_LIST"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD_LIST"))
                 cmd.AddParameter(PAR_I_NAME_DEALERFILE_PROCESSED_ID, OracleDbType.Raw, dealerfileProcessedID.ToByteArray())
                 cmd.AddParameter(PAR_I_NAME_LANGUAGE_ID, OracleDbType.Raw, languageID.ToByteArray())
                 cmd.AddParameter(PAR_I_NAME_RECORD_MODE, OracleDbType.Varchar2, recordMode)
@@ -132,7 +132,7 @@
                 cmd.AddParameter(PAR_I_PAGE_SIZE, OracleDbType.Int64, value:=pagesize)
                 cmd.AddParameter(PAR_I_NAME_SORT_EXPRESSION, OracleDbType.Varchar2, value:=sortExpression)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return Fetch(cmd, TABLE_NAME)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -141,10 +141,10 @@
 
     Public Function LoadRejectList(dealerfileProcessedID As Guid) As DataSet
         Try
-            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD_REJECT_LIST"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD_REJECT_LIST"))
                 cmd.AddParameter(PAR_I_NAME_DEALERFILE_PROCESSED_ID, OracleDbType.Raw, dealerfileProcessedID.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return Fetch(cmd, TABLE_NAME)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -157,7 +157,7 @@
 
     Public Sub UpdateHeaderCount(dealerFileProcessedId As Guid)
         Dim cmd As OracleCommand
-        cmd = CreateCommand(Config("/SQL/UPDATE_HEADER_COUNT"), CommandType.StoredProcedure, CreateConnection())
+        cmd = OracleDbHelper.CreateCommand(Config("/SQL/UPDATE_HEADER_COUNT"), CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
         cmd.AddParameter("pi_dealerfile_processed_id", OracleDbType.Raw, dealerFileProcessedId.ToByteArray())
         cmd.ExecuteNonQuery()
     End Sub

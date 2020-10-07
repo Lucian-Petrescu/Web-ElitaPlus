@@ -24,11 +24,11 @@
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.Text, CreateConnection())
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "stage_end_id", OracleDbType.Raw, id.ToByteArray, ParameterDirection.Input)
 
         Try
-            Fetch(cmd, TABLE_NAME, familyDS)
+            OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -36,12 +36,12 @@
 
     Public Sub LoadList(familyDS As DataSet, stage_id As Guid, language_id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.Text, CreateConnection())
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "stage_id", OracleDbType.Raw, stage_id.ToByteArray, ParameterDirection.Input)
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, language_id.ToByteArray, ParameterDirection.Input)
 
         Try
-            Fetch(cmd, TABLE_NAME, familyDS)
+            OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -49,12 +49,12 @@
 
     Public Function GetSelectedStageEndStatus(familyDS As DataSet, stage_id As Guid, language_id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD_SELECTED_STAGE_END_STATUS")
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.Text, CreateConnection())
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.Text, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "stage_id", OracleDbType.Raw, stage_id.ToByteArray, ParameterDirection.Input)
         OracleDbHelper.AddParameter(cmd, "language_id", OracleDbType.Raw, language_id.ToByteArray, ParameterDirection.Input)
 
         Try
-            Dim ds As DataSet = Fetch(cmd, "SELSTGENDSTATUSLST")
+            Dim ds As DataSet = OracleDbHelper.Fetch(cmd, "SELSTGENDSTATUSLST")
 
             If ds.Tables.Count > 0 Then
                 familyDS.Tables.Add(ds.Tables(0))

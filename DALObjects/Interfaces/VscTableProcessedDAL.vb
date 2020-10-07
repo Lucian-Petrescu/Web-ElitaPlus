@@ -112,8 +112,8 @@ Public Class VscTableProcessedDAL
             '  inputParameters(FILENAME) = New DBHelperParameter(COL_NAME_FILENAME, .filename)
             inputParameters(INTERFACE_STATUS_ID) = _
                 New DBHelperParameter(InterfaceStatusWrkDAL.COL_NAME_INTERFACE_STATUS_ID, .interfaceStatus_id.ToByteArray)
-            outputParameter(P_RETURN) = New DBHelperParameter(SP_PARAM_NAME_P_RETURN, GetType(Integer))
-            outputParameter(P_EXCEPTION_MSG) = New DBHelperParameter(SP_PARAM_NAME_P_EXCEPTION_MSG, GetType(String), 50)
+            outputParameter(P_RETURN) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_P_RETURN, GetType(Integer))
+            outputParameter(P_EXCEPTION_MSG) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_P_EXCEPTION_MSG, GetType(String), 50)
             ' outputParameter(Me.P_CURSOR) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME_P_CURSOR, GetType(DataSet))
             '  outputParameter(0) = New DBHelperParameter(COL_NAME_RETURN, GetType(Integer))
         End With

@@ -65,7 +65,7 @@ Public Class ClaimIssueStatusDAL
         If Not ds.Tables(TABLE_NAME) Is Nothing Then
             For Each DataRow As DataRow In ds.Tables(TABLE_NAME).Rows
                 If CType(DataRow(COL_NAME_PROCESSED_BY), String) = "SYSTEM" Then
-                    DataRow(COL_NAME_CREATED_BY) = "SYSTEM"
+                    DataRow(DALBase.COL_NAME_CREATED_BY) = "SYSTEM"
                 End If
             Next
         End If

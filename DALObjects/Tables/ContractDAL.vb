@@ -307,7 +307,7 @@ Public Class ContractDAL
 
         Dim selectStmt As String = Config("/SQL/GET_AUTO_GEN_SEQ_NUM")
 
-        Using command As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure)
+        Using command As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure)
 
             command.BindByName = True
             command.AddParameter(PARAM_SEQ_SOURCE_ID, OracleDbType.Raw, 100, seqSourceId, ParameterDirection.Input)
@@ -318,7 +318,7 @@ Public Class ContractDAL
             command.AddParameter("pReturnValue", OracleDbType.Int64, 10, Nothing, ParameterDirection.ReturnValue)
 
             Try
-                ExecuteNonQuery(command)
+                OracleDbHelper.ExecuteNonQuery(command)
                 Int64.TryParse(command.Parameters.Item("pReturnValue").Value.ToString(), autoGenSeqNum)
 
                 If (autoGenSeqNum <= 0) Then
@@ -338,7 +338,7 @@ Public Class ContractDAL
 
         Dim selectStmt As String = Config("/SQL/RETURN_UN_USED_AUTO_GEN_SEQ_NUM")
 
-        Using command As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure)
+        Using command As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure)
             command.BindByName = True
 
             command.AddParameter(PARAM_SEQUENCE_KEY, OracleDbType.Varchar2, 50, sequenceKey, ParameterDirection.Input)
@@ -350,7 +350,7 @@ Public Class ContractDAL
 
             Try
 
-                ExecuteNonQuery(command)
+                OracleDbHelper.ExecuteNonQuery(command)
 
             Catch ex As Exception
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

@@ -87,9 +87,9 @@ Public Class WarrantyMasterDAL
         Try
             Dim parameter As DBHelper.DBHelperParameter
             parameters = New OracleParameter() _
-                                    {New OracleParameter(COL_NAME_SKU_NUMBER, skuNumber), _
-                                     New OracleParameter(COL_NAME_MANUFACTURER_NAME, manufacturerName), _
-                                     New OracleParameter(COL_NAME_MODEL_NUMBER, modelNumber)}
+                                    {New OracleParameter(WarrantyMasterDAL.COL_NAME_SKU_NUMBER, skuNumber), _
+                                     New OracleParameter(WarrantyMasterDAL.COL_NAME_MANUFACTURER_NAME, manufacturerName), _
+                                     New OracleParameter(WarrantyMasterDAL.COL_NAME_MODEL_NUMBER, modelNumber)}
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception

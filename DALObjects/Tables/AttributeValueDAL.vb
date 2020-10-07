@@ -57,14 +57,14 @@ Public Class AttributeValueDAL
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As New DataSet
 
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure)
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure)
         cmd.AddParameter(PAR_O_NAME_ATTRIBUTE_VALUES_CURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
         cmd.AddParameter(PAR_O_NAME_ATTRIBUTES_CURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
         cmd.AddParameter(AttributeDAL.PAR_I_NAME_TABLE_NAME, OracleDbType.Varchar2, 20, pParentTableName.ToUpper())
         cmd.AddParameter(PAR_I_NAME_REFERENCE_ID, OracleDbType.Raw, pReferenceId.ToByteArray())
 
         Try
-            Fetch(cmd, New String() {TABLE_NAME, AttributeDAL.TABLE_NAME}, ds)
+            OracleDbHelper.Fetch(cmd, New String() {AttributeValueDAL.TABLE_NAME, AttributeDAL.TABLE_NAME}, ds)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

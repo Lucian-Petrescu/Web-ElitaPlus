@@ -1,5 +1,5 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (7/29/2008)********************
-Imports System.Globalization
+
 
 Public Class PickupListHeaderDAL
     Inherits DALBase
@@ -107,10 +107,10 @@ Public Class PickupListHeaderDAL
         Dim selectStmt As String = Config("/SQL/GET_CLAIM_ID_BY_CODE")
         Dim whereClauseConditions As String = ""
 
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("claim." & ClaimDAL.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("claim." & DALObjects.ClaimDAL.COL_NAME_COMPANY_ID, compIds, False)
         selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
-        parameters = New OracleParameter() {New OracleParameter(ClaimDAL.COL_NAME_CLAIM_NUMBER, claimNumber), _
+        parameters = New OracleParameter() {New OracleParameter(DALObjects.ClaimDAL.COL_NAME_CLAIM_NUMBER, claimNumber), _
                                             New OracleParameter("code", certItemCoverageCode)}
 
         Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
@@ -125,7 +125,7 @@ Public Class PickupListHeaderDAL
             ds = GetNewOpenClaimPickList(ds, routeId, companies)
             If ds.Tables.Count > 0 AndAlso Not ds.Tables(TABLE_NAME_PICKLIST) Is Nothing AndAlso ds.Tables(TABLE_NAME_PICKLIST).Rows.Count > 1 Then
                 doNotCatch = True
-                Throw New ElitaPlusException("GetNewOpenClaims ", ErrorCodes.MORE_THAN_ONE_PICKLIST_FOUND)
+                Throw New ElitaPlusException("GetNewOpenClaims ", Common.ErrorCodes.MORE_THAN_ONE_PICKLIST_FOUND)
             End If
 
             ds = GetNewOpenClaimStoresByRoute(ds, routeId, companies)
@@ -144,11 +144,11 @@ Public Class PickupListHeaderDAL
             storeToSCRel.Nested = True
             ds.Relations.Add(storeToSCRel)
 
-            Dim parentCols() As DataColumn = New DataColumn() _
+            Dim parentCols() As System.Data.DataColumn = New System.Data.DataColumn() _
                             {ds.Tables(TABLE_NAME_SERVICE_CENTER).Columns(COL_NAME_STORE_SERVICE_CENTER_ID), _
                              ds.Tables(TABLE_NAME_SERVICE_CENTER).Columns(COL_NAME_SERVICE_CENTER_ID)}
 
-            Dim childCols() As DataColumn = New DataColumn() _
+            Dim childCols() As System.Data.DataColumn = New System.Data.DataColumn() _
                 {ds.Tables(TABLE_NAME_CLAIM_DETAIL).Columns(COL_NAME_STORE_SERVICE_CENTER_ID), _
                  ds.Tables(TABLE_NAME_CLAIM_DETAIL).Columns(COL_NAME_SERVICE_CENTER_ID)}
 
@@ -366,11 +366,11 @@ Public Class PickupListHeaderDAL
             storeToSCRel.Nested = True
             ds.Relations.Add(storeToSCRel)
 
-            Dim parentCols() As DataColumn = New DataColumn() _
+            Dim parentCols() As System.Data.DataColumn = New System.Data.DataColumn() _
                             {ds.Tables(TABLE_NAME_SERVICE_CENTER).Columns(COL_NAME_STORE_SERVICE_CENTER_ID), _
                              ds.Tables(TABLE_NAME_SERVICE_CENTER).Columns(COL_NAME_SERVICE_CENTER_ID)}
 
-            Dim childCols() As DataColumn = New DataColumn() _
+            Dim childCols() As System.Data.DataColumn = New System.Data.DataColumn() _
                 {ds.Tables(TABLE_NAME_CLAIM_DETAIL).Columns(COL_NAME_STORE_SERVICE_CENTER_ID), _
                  ds.Tables(TABLE_NAME_CLAIM_DETAIL).Columns(COL_NAME_SERVICE_CENTER_ID)}
 
@@ -584,7 +584,7 @@ Public Class PickupListHeaderDAL
             da = New OracleDataAdapter(P_cmd)
 
             da.Fill(p_ds, p_Table_Name)
-            p_ds.Locale = CultureInfo.InvariantCulture
+            p_ds.Locale = Globalization.CultureInfo.InvariantCulture
 
             If p_ds.Tables.Count > 1 AndAlso p_Table_Name2 <> "" Then
                 p_ds.Tables(1).TableName = p_Table_Name2
@@ -635,7 +635,7 @@ Public Class PickupListHeaderDAL
             ds = GetClaimsPickListHeader(ds, HeaderID, StoreServiceCenterID, ServiceCenterID, companies)
             If ds.Tables.Count > 0 AndAlso Not ds.Tables(TABLE_NAME_PICKLIST) Is Nothing AndAlso ds.Tables(TABLE_NAME_PICKLIST).Rows.Count > 1 Then
                 doNotCatch = True
-                Throw New ElitaPlusException("GetClaimsByPickList ", ErrorCodes.MORE_THAN_ONE_PICKLIST_FOUND)
+                Throw New ElitaPlusException("GetClaimsByPickList ", Common.ErrorCodes.MORE_THAN_ONE_PICKLIST_FOUND)
             End If
 
             ds = GetClaimsPickListStores(ds, HeaderID, StoreServiceCenterID, ServiceCenterID, companies)
@@ -654,11 +654,11 @@ Public Class PickupListHeaderDAL
             storeToSCRel.Nested = True
             ds.Relations.Add(storeToSCRel)
 
-            Dim parentCols() As DataColumn = New DataColumn() _
+            Dim parentCols() As System.Data.DataColumn = New System.Data.DataColumn() _
                             {ds.Tables(TABLE_NAME_SERVICE_CENTER).Columns(COL_NAME_STORE_SERVICE_CENTER_ID), _
                              ds.Tables(TABLE_NAME_SERVICE_CENTER).Columns(COL_NAME_SERVICE_CENTER_ID)}
 
-            Dim childCols() As DataColumn = New DataColumn() _
+            Dim childCols() As System.Data.DataColumn = New System.Data.DataColumn() _
                 {ds.Tables(TABLE_NAME_CLAIM_DETAIL).Columns(COL_NAME_STORE_SERVICE_CENTER_ID), _
                  ds.Tables(TABLE_NAME_CLAIM_DETAIL).Columns(COL_NAME_SERVICE_CENTER_ID)}
 

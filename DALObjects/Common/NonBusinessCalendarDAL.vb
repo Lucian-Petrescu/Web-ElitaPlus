@@ -41,7 +41,7 @@ Public Class NonBusinessCalendarDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("nonbusiness_calendar_id", id.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("nonbusiness_calendar_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -94,9 +94,9 @@ Public Class NonBusinessCalendarDAL
         Dim nextBusinessDate As DateType
         Dim selectStmt As String = Config("/SQL/GET_NEXT_BUSINESS_DATE")
 
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() _
-        {New DBHelperParameter(P_COMPANY_GROUP_ID, companyGroupID.ToByteArray) _
-        , New DBHelperParameter(P_COL_NAME_DEFAULT_FOLLOWUP, defaultFollowUp)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+        {New DBHelper.DBHelperParameter(P_COMPANY_GROUP_ID, companyGroupID.ToByteArray) _
+        , New DBHelper.DBHelperParameter(P_COL_NAME_DEFAULT_FOLLOWUP, defaultFollowUp)}
 
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)

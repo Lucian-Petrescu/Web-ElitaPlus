@@ -11,59 +11,51 @@
 Option Strict Off
 Option Explicit On
 
-Imports System.CodeDom.Compiler
-Imports System.ComponentModel
-Imports System.ComponentModel.Design
-Imports System.IO
-Imports System.Runtime.Serialization
-Imports System.Xml
-Imports System.Xml.Schema
-Imports System.Xml.Serialization
 
 
 '''<summary>
 '''Represents a strongly typed in-memory cache of data.
 '''</summary>
-<Serializable(),  _
- DesignerCategory("code"),  _
- ToolboxItem(true),  _
- XmlSchemaProvider("GetTypedDataSetSchema"),  _
- XmlRoot("BatchClaimInvoice"),  _
- HelpKeyword("vs.data.DataSet")>  _
+<Global.System.Serializable(),  _
+ Global.System.ComponentModel.DesignerCategoryAttribute("code"),  _
+ Global.System.ComponentModel.ToolboxItem(true),  _
+ Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema"),  _
+ Global.System.Xml.Serialization.XmlRootAttribute("BatchClaimInvoice"),  _
+ Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")>  _
 Partial Public Class BatchClaimInvoice
-    Inherits DataSet
+    Inherits Global.System.Data.DataSet
     
     Private tableINVOICE_TRANS_DETAIL As INVOICE_TRANS_DETAILDataTable
     
-    Private _schemaSerializationMode As SchemaSerializationMode = SchemaSerializationMode.IncludeSchema
+    Private _schemaSerializationMode As Global.System.Data.SchemaSerializationMode = Global.System.Data.SchemaSerializationMode.IncludeSchema
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Public Sub New()
         MyBase.New
         Me.BeginInit
         Me.InitClass
-        Dim schemaChangedHandler As CollectionChangeEventHandler = AddressOf Me.SchemaChanged
+        Dim schemaChangedHandler As Global.System.ComponentModel.CollectionChangeEventHandler = AddressOf Me.SchemaChanged
         AddHandler MyBase.Tables.CollectionChanged, schemaChangedHandler
         AddHandler MyBase.Relations.CollectionChanged, schemaChangedHandler
         Me.EndInit
     End Sub
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    Protected Sub New(ByVal info As Global.System.Runtime.Serialization.SerializationInfo, ByVal context As Global.System.Runtime.Serialization.StreamingContext)
         MyBase.New(info, context, false)
         If (Me.IsBinarySerialized(info, context) = true) Then
             Me.InitVars(false)
-            Dim schemaChangedHandler1 As CollectionChangeEventHandler = AddressOf Me.SchemaChanged
+            Dim schemaChangedHandler1 As Global.System.ComponentModel.CollectionChangeEventHandler = AddressOf Me.SchemaChanged
             AddHandler Me.Tables.CollectionChanged, schemaChangedHandler1
             AddHandler Me.Relations.CollectionChanged, schemaChangedHandler1
             Return
         End If
         Dim strSchema As String = CType(info.GetValue("XmlSchema", GetType(String)),String)
-        If (Me.DetermineSchemaSerializationMode(info, context) = SchemaSerializationMode.IncludeSchema) Then
-            Dim ds As DataSet = New DataSet()
-            ds.ReadXmlSchema(New XmlTextReader(New StringReader(strSchema)))
+        If (Me.DetermineSchemaSerializationMode(info, context) = Global.System.Data.SchemaSerializationMode.IncludeSchema) Then
+            Dim ds As Global.System.Data.DataSet = New Global.System.Data.DataSet()
+            ds.ReadXmlSchema(New Global.System.Xml.XmlTextReader(New Global.System.IO.StringReader(strSchema)))
             If (Not (ds.Tables("INVOICE_TRANS_DETAIL")) Is Nothing) Then
                 MyBase.Tables.Add(New INVOICE_TRANS_DETAILDataTable(ds.Tables("INVOICE_TRANS_DETAIL")))
             End If
@@ -73,32 +65,32 @@ Partial Public Class BatchClaimInvoice
             Me.Locale = ds.Locale
             Me.CaseSensitive = ds.CaseSensitive
             Me.EnforceConstraints = ds.EnforceConstraints
-            Me.Merge(ds, false, MissingSchemaAction.Add)
+            Me.Merge(ds, false, Global.System.Data.MissingSchemaAction.Add)
             Me.InitVars
         Else
-            Me.ReadXmlSchema(New XmlTextReader(New StringReader(strSchema)))
+            Me.ReadXmlSchema(New Global.System.Xml.XmlTextReader(New Global.System.IO.StringReader(strSchema)))
         End If
         Me.GetSerializationData(info, context)
-        Dim schemaChangedHandler As CollectionChangeEventHandler = AddressOf Me.SchemaChanged
+        Dim schemaChangedHandler As Global.System.ComponentModel.CollectionChangeEventHandler = AddressOf Me.SchemaChanged
         AddHandler MyBase.Tables.CollectionChanged, schemaChangedHandler
         AddHandler Me.Relations.CollectionChanged, schemaChangedHandler
     End Sub
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-     Browsable(false),  _
-     DesignerSerializationVisibility(DesignerSerializationVisibility.Content)>  _
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+     Global.System.ComponentModel.Browsable(false),  _
+     Global.System.ComponentModel.DesignerSerializationVisibility(Global.System.ComponentModel.DesignerSerializationVisibility.Content)>  _
     Public ReadOnly Property INVOICE_TRANS_DETAIL() As INVOICE_TRANS_DETAILDataTable
         Get
             Return Me.tableINVOICE_TRANS_DETAIL
         End Get
     End Property
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-     Browsable(true),  _
-     DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)>  _
-    Public Overrides Property SchemaSerializationMode() As SchemaSerializationMode
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+     Global.System.ComponentModel.BrowsableAttribute(true),  _
+     Global.System.ComponentModel.DesignerSerializationVisibilityAttribute(Global.System.ComponentModel.DesignerSerializationVisibility.Visible)>  _
+    Public Overrides Property SchemaSerializationMode() As Global.System.Data.SchemaSerializationMode
         Get
             Return Me._schemaSerializationMode
         End Get
@@ -107,59 +99,59 @@ Partial Public Class BatchClaimInvoice
         End Set
     End Property
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-     DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>  _
-    Public Shadows ReadOnly Property Tables() As DataTableCollection
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+     Global.System.ComponentModel.DesignerSerializationVisibilityAttribute(Global.System.ComponentModel.DesignerSerializationVisibility.Hidden)>  _
+    Public Shadows ReadOnly Property Tables() As Global.System.Data.DataTableCollection
         Get
             Return MyBase.Tables
         End Get
     End Property
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-     DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>  _
-    Public Shadows ReadOnly Property Relations() As DataRelationCollection
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+     Global.System.ComponentModel.DesignerSerializationVisibilityAttribute(Global.System.ComponentModel.DesignerSerializationVisibility.Hidden)>  _
+    Public Shadows ReadOnly Property Relations() As Global.System.Data.DataRelationCollection
         Get
             Return MyBase.Relations
         End Get
     End Property
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Protected Overrides Sub InitializeDerivedDataSet()
         Me.BeginInit
         Me.InitClass
         Me.EndInit
     End Sub
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Public Overrides Function Clone() As DataSet
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    Public Overrides Function Clone() As Global.System.Data.DataSet
         Dim cln As BatchClaimInvoice = CType(MyBase.Clone,BatchClaimInvoice)
         cln.InitVars
         cln.SchemaSerializationMode = Me.SchemaSerializationMode
         Return cln
     End Function
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Protected Overrides Function ShouldSerializeTables() As Boolean
         Return false
     End Function
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Protected Overrides Function ShouldSerializeRelations() As Boolean
         Return false
     End Function
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Protected Overrides Sub ReadXmlSerializable(ByVal reader As XmlReader)
-        If (Me.DetermineSchemaSerializationMode(reader) = SchemaSerializationMode.IncludeSchema) Then
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    Protected Overrides Sub ReadXmlSerializable(ByVal reader As Global.System.Xml.XmlReader)
+        If (Me.DetermineSchemaSerializationMode(reader) = Global.System.Data.SchemaSerializationMode.IncludeSchema) Then
             Me.Reset
-            Dim ds As DataSet = New DataSet()
+            Dim ds As Global.System.Data.DataSet = New Global.System.Data.DataSet()
             ds.ReadXml(reader)
             If (Not (ds.Tables("INVOICE_TRANS_DETAIL")) Is Nothing) Then
                 MyBase.Tables.Add(New INVOICE_TRANS_DETAILDataTable(ds.Tables("INVOICE_TRANS_DETAIL")))
@@ -170,7 +162,7 @@ Partial Public Class BatchClaimInvoice
             Me.Locale = ds.Locale
             Me.CaseSensitive = ds.CaseSensitive
             Me.EnforceConstraints = ds.EnforceConstraints
-            Me.Merge(ds, false, MissingSchemaAction.Add)
+            Me.Merge(ds, false, Global.System.Data.MissingSchemaAction.Add)
             Me.InitVars
         Else
             Me.ReadXml(reader)
@@ -178,23 +170,23 @@ Partial Public Class BatchClaimInvoice
         End If
     End Sub
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Protected Overrides Function GetSchemaSerializable() As XmlSchema
-        Dim stream As MemoryStream = New MemoryStream()
-        Me.WriteXmlSchema(New XmlTextWriter(stream, Nothing))
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    Protected Overrides Function GetSchemaSerializable() As Global.System.Xml.Schema.XmlSchema
+        Dim stream As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
+        Me.WriteXmlSchema(New Global.System.Xml.XmlTextWriter(stream, Nothing))
         stream.Position = 0
-        Return XmlSchema.Read(New XmlTextReader(stream), Nothing)
+        Return Global.System.Xml.Schema.XmlSchema.Read(New Global.System.Xml.XmlTextReader(stream), Nothing)
     End Function
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Friend Overloads Sub InitVars()
         Me.InitVars(true)
     End Sub
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Friend Overloads Sub InitVars(ByVal initTable As Boolean)
         Me.tableINVOICE_TRANS_DETAIL = CType(MyBase.Tables("INVOICE_TRANS_DETAIL"),INVOICE_TRANS_DETAILDataTable)
         If (initTable = true) Then
@@ -204,52 +196,52 @@ Partial Public Class BatchClaimInvoice
         End If
     End Sub
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Private Sub InitClass()
         Me.DataSetName = "BatchClaimInvoice"
         Me.Prefix = ""
         Me.Namespace = "http://tempuri.org/XMLSchema.xsd"
         Me.EnforceConstraints = true
-        Me.SchemaSerializationMode = SchemaSerializationMode.IncludeSchema
+        Me.SchemaSerializationMode = Global.System.Data.SchemaSerializationMode.IncludeSchema
         Me.tableINVOICE_TRANS_DETAIL = New INVOICE_TRANS_DETAILDataTable()
         MyBase.Tables.Add(Me.tableINVOICE_TRANS_DETAIL)
     End Sub
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Private Function ShouldSerializeINVOICE_TRANS_DETAIL() As Boolean
         Return false
     End Function
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Private Sub SchemaChanged(ByVal sender As Object, ByVal e As CollectionChangeEventArgs)
-        If (e.Action = CollectionChangeAction.Remove) Then
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    Private Sub SchemaChanged(ByVal sender As Object, ByVal e As Global.System.ComponentModel.CollectionChangeEventArgs)
+        If (e.Action = Global.System.ComponentModel.CollectionChangeAction.Remove) Then
             Me.InitVars
         End If
     End Sub
     
-    <DebuggerNonUserCode(),  _
-     GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Public Shared Function GetTypedDataSetSchema(ByVal xs As XmlSchemaSet) As XmlSchemaComplexType
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    Public Shared Function GetTypedDataSetSchema(ByVal xs As Global.System.Xml.Schema.XmlSchemaSet) As Global.System.Xml.Schema.XmlSchemaComplexType
         Dim ds As BatchClaimInvoice = New BatchClaimInvoice()
-        Dim type As XmlSchemaComplexType = New XmlSchemaComplexType()
-        Dim sequence As XmlSchemaSequence = New XmlSchemaSequence()
-        Dim any As XmlSchemaAny = New XmlSchemaAny()
+        Dim type As Global.System.Xml.Schema.XmlSchemaComplexType = New Global.System.Xml.Schema.XmlSchemaComplexType()
+        Dim sequence As Global.System.Xml.Schema.XmlSchemaSequence = New Global.System.Xml.Schema.XmlSchemaSequence()
+        Dim any As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
         any.Namespace = ds.Namespace
         sequence.Items.Add(any)
         type.Particle = sequence
-        Dim dsSchema As XmlSchema = ds.GetSchemaSerializable
+        Dim dsSchema As Global.System.Xml.Schema.XmlSchema = ds.GetSchemaSerializable
         If xs.Contains(dsSchema.TargetNamespace) Then
-            Dim s1 As MemoryStream = New MemoryStream()
-            Dim s2 As MemoryStream = New MemoryStream()
+            Dim s1 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
+            Dim s2 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
             Try 
-                Dim schema As XmlSchema = Nothing
+                Dim schema As Global.System.Xml.Schema.XmlSchema = Nothing
                 dsSchema.Write(s1)
-                Dim schemas As IEnumerator = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator
+                Dim schemas As Global.System.Collections.IEnumerator = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator
                 Do While schemas.MoveNext
-                    schema = CType(schemas.Current,XmlSchema)
+                    schema = CType(schemas.Current,Global.System.Xml.Schema.XmlSchema)
                     s2.SetLength(0)
                     schema.Write(s2)
                     If (s1.Length = s2.Length) Then
@@ -280,51 +272,51 @@ Partial Public Class BatchClaimInvoice
         Return type
     End Function
     
-    <GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Public Delegate Sub INVOICE_TRANS_DETAILRowChangeEventHandler(ByVal sender As Object, ByVal e As INVOICE_TRANS_DETAILRowChangeEvent)
     
     '''<summary>
     '''Represents the strongly named DataTable class.
     '''</summary>
-    <Serializable(),  _
-     XmlSchemaProvider("GetTypedTableSchema")>  _
+    <Global.System.Serializable(),  _
+     Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")>  _
     Partial Public Class INVOICE_TRANS_DETAILDataTable
-        Inherits TypedTableBase(Of INVOICE_TRANS_DETAILRow)
+        Inherits Global.System.Data.TypedTableBase(Of INVOICE_TRANS_DETAILRow)
         
-        Private columnINVOICE_TRANS_ID As DataColumn
+        Private columnINVOICE_TRANS_ID As Global.System.Data.DataColumn
         
-        Private columnINVOICE_TRANS_DETAIL_ID As DataColumn
+        Private columnINVOICE_TRANS_DETAIL_ID As Global.System.Data.DataColumn
         
-        Private columnCLAIM_ID As DataColumn
+        Private columnCLAIM_ID As Global.System.Data.DataColumn
         
-        Private columnCLAIM_MODIFIED_DATE As DataColumn
+        Private columnCLAIM_MODIFIED_DATE As Global.System.Data.DataColumn
         
-        Private columnRESERVE_AMOUNT As DataColumn
+        Private columnRESERVE_AMOUNT As Global.System.Data.DataColumn
         
-        Private columnPAYMENT_AMOUNT As DataColumn
+        Private columnPAYMENT_AMOUNT As Global.System.Data.DataColumn
         
-        Private columnREPAIR_DATE As DataColumn
+        Private columnREPAIR_DATE As Global.System.Data.DataColumn
         
-        Private columnPICKUP_DATE As DataColumn
+        Private columnPICKUP_DATE As Global.System.Data.DataColumn
         
-        Private columnSPARE_PARTS As DataColumn
+        Private columnSPARE_PARTS As Global.System.Data.DataColumn
         
-        Private columnCLOSE_CLAIM As DataColumn
+        Private columnCLOSE_CLAIM As Global.System.Data.DataColumn
         
-        Private columnUSER_ID As DataColumn
+        Private columnUSER_ID As Global.System.Data.DataColumn
         
-        Private columnACTION As DataColumn
+        Private columnACTION As Global.System.Data.DataColumn
         
-        Private columnSALVAGE_AMOUNT As DataColumn
+        Private columnSALVAGE_AMOUNT As Global.System.Data.DataColumn
         
-        Private columnEXCLUDE_DEDUCTIBLE As DataColumn
+        Private columnEXCLUDE_DEDUCTIBLE As Global.System.Data.DataColumn
         
-        Private columnTOTAL_BONUS As DataColumn
+        Private columnTOTAL_BONUS As Global.System.Data.DataColumn
         
-        Private columnPAYMENT_AMOUNT_TOTAL As DataColumn
+        Private columnPAYMENT_AMOUNT_TOTAL As Global.System.Data.DataColumn
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub New()
             MyBase.New
             Me.TableName = "INVOICE_TRANS_DETAIL"
@@ -333,9 +325,9 @@ Partial Public Class BatchClaimInvoice
             Me.EndInit
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Friend Sub New(ByVal table As DataTable)
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Sub New(ByVal table As Global.System.Data.DataTable)
             MyBase.New
             Me.TableName = table.TableName
             If (table.CaseSensitive <> table.DataSet.CaseSensitive) Then
@@ -351,178 +343,178 @@ Partial Public Class BatchClaimInvoice
             Me.MinimumCapacity = table.MinimumCapacity
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Sub New(ByVal info As Global.System.Runtime.Serialization.SerializationInfo, ByVal context As Global.System.Runtime.Serialization.StreamingContext)
             MyBase.New(info, context)
             Me.InitVars
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property INVOICE_TRANS_IDColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property INVOICE_TRANS_IDColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnINVOICE_TRANS_ID
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property INVOICE_TRANS_DETAIL_IDColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property INVOICE_TRANS_DETAIL_IDColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnINVOICE_TRANS_DETAIL_ID
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CLAIM_IDColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CLAIM_IDColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnCLAIM_ID
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CLAIM_MODIFIED_DATEColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CLAIM_MODIFIED_DATEColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnCLAIM_MODIFIED_DATE
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property RESERVE_AMOUNTColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property RESERVE_AMOUNTColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnRESERVE_AMOUNT
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property PAYMENT_AMOUNTColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property PAYMENT_AMOUNTColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnPAYMENT_AMOUNT
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property REPAIR_DATEColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property REPAIR_DATEColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnREPAIR_DATE
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property PICKUP_DATEColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property PICKUP_DATEColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnPICKUP_DATE
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property SPARE_PARTSColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property SPARE_PARTSColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnSPARE_PARTS
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CLOSE_CLAIMColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CLOSE_CLAIMColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnCLOSE_CLAIM
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property USER_IDColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property USER_IDColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnUSER_ID
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property ACTIONColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ACTIONColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnACTION
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property SALVAGE_AMOUNTColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property SALVAGE_AMOUNTColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnSALVAGE_AMOUNT
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property EXCLUDE_DEDUCTIBLEColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property EXCLUDE_DEDUCTIBLEColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnEXCLUDE_DEDUCTIBLE
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property TOTAL_BONUSColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property TOTAL_BONUSColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnTOTAL_BONUS
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property PAYMENT_AMOUNT_TOTALColumn() As DataColumn
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property PAYMENT_AMOUNT_TOTALColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnPAYMENT_AMOUNT_TOTAL
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Browsable(false)>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
             Get
                 Return Me.Rows.Count
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Default ReadOnly Property Item(ByVal index As Integer) As INVOICE_TRANS_DETAILRow
             Get
                 Return CType(Me.Rows(index),INVOICE_TRANS_DETAILRow)
             End Get
         End Property
         
-        <GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Event INVOICE_TRANS_DETAILRowChanging As INVOICE_TRANS_DETAILRowChangeEventHandler
         
-        <GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Event INVOICE_TRANS_DETAILRowChanged As INVOICE_TRANS_DETAILRowChangeEventHandler
         
-        <GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Event INVOICE_TRANS_DETAILRowDeleting As INVOICE_TRANS_DETAILRowChangeEventHandler
         
-        <GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Event INVOICE_TRANS_DETAILRowDeleted As INVOICE_TRANS_DETAILRowChangeEventHandler
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Overloads Sub AddINVOICE_TRANS_DETAILRow(ByVal row As INVOICE_TRANS_DETAILRow)
             Me.Rows.Add(row)
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Overloads Function AddINVOICE_TRANS_DETAILRow( _
                     ByVal INVOICE_TRANS_ID As String,  _
                     ByVal INVOICE_TRANS_DETAIL_ID As String,  _
@@ -547,22 +539,22 @@ Partial Public Class BatchClaimInvoice
             Return rowINVOICE_TRANS_DETAILRow
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Overrides Function Clone() As DataTable
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Overrides Function Clone() As Global.System.Data.DataTable
             Dim cln As INVOICE_TRANS_DETAILDataTable = CType(MyBase.Clone,INVOICE_TRANS_DETAILDataTable)
             cln.InitVars
             Return cln
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Function CreateInstance() As DataTable
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Function CreateInstance() As Global.System.Data.DataTable
             Return New INVOICE_TRANS_DETAILDataTable()
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Friend Sub InitVars()
             Me.columnINVOICE_TRANS_ID = MyBase.Columns("INVOICE_TRANS_ID")
             Me.columnINVOICE_TRANS_DETAIL_ID = MyBase.Columns("INVOICE_TRANS_DETAIL_ID")
@@ -582,139 +574,139 @@ Partial Public Class BatchClaimInvoice
             Me.columnPAYMENT_AMOUNT_TOTAL = MyBase.Columns("PAYMENT_AMOUNT_TOTAL")
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Private Sub InitClass()
-            Me.columnINVOICE_TRANS_ID = New DataColumn("INVOICE_TRANS_ID", GetType(String), Nothing, MappingType.Element)
+            Me.columnINVOICE_TRANS_ID = New Global.System.Data.DataColumn("INVOICE_TRANS_ID", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnINVOICE_TRANS_ID)
-            Me.columnINVOICE_TRANS_DETAIL_ID = New DataColumn("INVOICE_TRANS_DETAIL_ID", GetType(String), Nothing, MappingType.Element)
+            Me.columnINVOICE_TRANS_DETAIL_ID = New Global.System.Data.DataColumn("INVOICE_TRANS_DETAIL_ID", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnINVOICE_TRANS_DETAIL_ID)
-            Me.columnCLAIM_ID = New DataColumn("CLAIM_ID", GetType(String), Nothing, MappingType.Element)
+            Me.columnCLAIM_ID = New Global.System.Data.DataColumn("CLAIM_ID", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnCLAIM_ID)
-            Me.columnCLAIM_MODIFIED_DATE = New DataColumn("CLAIM_MODIFIED_DATE", GetType(Date), Nothing, MappingType.Element)
+            Me.columnCLAIM_MODIFIED_DATE = New Global.System.Data.DataColumn("CLAIM_MODIFIED_DATE", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnCLAIM_MODIFIED_DATE)
-            Me.columnRESERVE_AMOUNT = New DataColumn("RESERVE_AMOUNT", GetType(Double), Nothing, MappingType.Element)
+            Me.columnRESERVE_AMOUNT = New Global.System.Data.DataColumn("RESERVE_AMOUNT", GetType(Double), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnRESERVE_AMOUNT)
-            Me.columnPAYMENT_AMOUNT = New DataColumn("PAYMENT_AMOUNT", GetType(Double), Nothing, MappingType.Element)
+            Me.columnPAYMENT_AMOUNT = New Global.System.Data.DataColumn("PAYMENT_AMOUNT", GetType(Double), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnPAYMENT_AMOUNT)
-            Me.columnREPAIR_DATE = New DataColumn("REPAIR_DATE", GetType(Date), Nothing, MappingType.Element)
+            Me.columnREPAIR_DATE = New Global.System.Data.DataColumn("REPAIR_DATE", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnREPAIR_DATE)
-            Me.columnPICKUP_DATE = New DataColumn("PICKUP_DATE", GetType(Date), Nothing, MappingType.Element)
+            Me.columnPICKUP_DATE = New Global.System.Data.DataColumn("PICKUP_DATE", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnPICKUP_DATE)
-            Me.columnSPARE_PARTS = New DataColumn("SPARE_PARTS", GetType(String), Nothing, MappingType.Element)
+            Me.columnSPARE_PARTS = New Global.System.Data.DataColumn("SPARE_PARTS", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnSPARE_PARTS)
-            Me.columnCLOSE_CLAIM = New DataColumn("CLOSE_CLAIM", GetType(String), Nothing, MappingType.Element)
+            Me.columnCLOSE_CLAIM = New Global.System.Data.DataColumn("CLOSE_CLAIM", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnCLOSE_CLAIM)
-            Me.columnUSER_ID = New DataColumn("USER_ID", GetType(String), Nothing, MappingType.Element)
+            Me.columnUSER_ID = New Global.System.Data.DataColumn("USER_ID", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnUSER_ID)
-            Me.columnACTION = New DataColumn("ACTION", GetType(String), Nothing, MappingType.Element)
+            Me.columnACTION = New Global.System.Data.DataColumn("ACTION", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnACTION)
-            Me.columnSALVAGE_AMOUNT = New DataColumn("SALVAGE_AMOUNT", GetType(Double), Nothing, MappingType.Element)
+            Me.columnSALVAGE_AMOUNT = New Global.System.Data.DataColumn("SALVAGE_AMOUNT", GetType(Double), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnSALVAGE_AMOUNT)
-            Me.columnEXCLUDE_DEDUCTIBLE = New DataColumn("EXCLUDE_DEDUCTIBLE", GetType(String), Nothing, MappingType.Element)
+            Me.columnEXCLUDE_DEDUCTIBLE = New Global.System.Data.DataColumn("EXCLUDE_DEDUCTIBLE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnEXCLUDE_DEDUCTIBLE)
-            Me.columnTOTAL_BONUS = New DataColumn("TOTAL_BONUS", GetType(Double), Nothing, MappingType.Element)
+            Me.columnTOTAL_BONUS = New Global.System.Data.DataColumn("TOTAL_BONUS", GetType(Double), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnTOTAL_BONUS)
-            Me.columnPAYMENT_AMOUNT_TOTAL = New DataColumn("PAYMENT_AMOUNT_TOTAL", GetType(Double), Nothing, MappingType.Element)
+            Me.columnPAYMENT_AMOUNT_TOTAL = New Global.System.Data.DataColumn("PAYMENT_AMOUNT_TOTAL", GetType(Double), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnPAYMENT_AMOUNT_TOTAL)
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function NewINVOICE_TRANS_DETAILRow() As INVOICE_TRANS_DETAILRow
             Return CType(Me.NewRow,INVOICE_TRANS_DETAILRow)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Function NewRowFromBuilder(ByVal builder As DataRowBuilder) As DataRow
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Function NewRowFromBuilder(ByVal builder As Global.System.Data.DataRowBuilder) As Global.System.Data.DataRow
             Return New INVOICE_TRANS_DETAILRow(builder)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Function GetRowType() As Type
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Function GetRowType() As Global.System.Type
             Return GetType(INVOICE_TRANS_DETAILRow)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowChanged(ByVal e As DataRowChangeEventArgs)
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowChanged(ByVal e As Global.System.Data.DataRowChangeEventArgs)
             MyBase.OnRowChanged(e)
             If (Not (Me.INVOICE_TRANS_DETAILRowChangedEvent) Is Nothing) Then
                 RaiseEvent INVOICE_TRANS_DETAILRowChanged(Me, New INVOICE_TRANS_DETAILRowChangeEvent(CType(e.Row,INVOICE_TRANS_DETAILRow), e.Action))
             End If
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowChanging(ByVal e As DataRowChangeEventArgs)
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowChanging(ByVal e As Global.System.Data.DataRowChangeEventArgs)
             MyBase.OnRowChanging(e)
             If (Not (Me.INVOICE_TRANS_DETAILRowChangingEvent) Is Nothing) Then
                 RaiseEvent INVOICE_TRANS_DETAILRowChanging(Me, New INVOICE_TRANS_DETAILRowChangeEvent(CType(e.Row,INVOICE_TRANS_DETAILRow), e.Action))
             End If
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowDeleted(ByVal e As DataRowChangeEventArgs)
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowDeleted(ByVal e As Global.System.Data.DataRowChangeEventArgs)
             MyBase.OnRowDeleted(e)
             If (Not (Me.INVOICE_TRANS_DETAILRowDeletedEvent) Is Nothing) Then
                 RaiseEvent INVOICE_TRANS_DETAILRowDeleted(Me, New INVOICE_TRANS_DETAILRowChangeEvent(CType(e.Row,INVOICE_TRANS_DETAILRow), e.Action))
             End If
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowDeleting(ByVal e As DataRowChangeEventArgs)
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowDeleting(ByVal e As Global.System.Data.DataRowChangeEventArgs)
             MyBase.OnRowDeleting(e)
             If (Not (Me.INVOICE_TRANS_DETAILRowDeletingEvent) Is Nothing) Then
                 RaiseEvent INVOICE_TRANS_DETAILRowDeleting(Me, New INVOICE_TRANS_DETAILRowChangeEvent(CType(e.Row,INVOICE_TRANS_DETAILRow), e.Action))
             End If
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub RemoveINVOICE_TRANS_DETAILRow(ByVal row As INVOICE_TRANS_DETAILRow)
             Me.Rows.Remove(row)
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Shared Function GetTypedTableSchema(ByVal xs As XmlSchemaSet) As XmlSchemaComplexType
-            Dim type As XmlSchemaComplexType = New XmlSchemaComplexType()
-            Dim sequence As XmlSchemaSequence = New XmlSchemaSequence()
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Shared Function GetTypedTableSchema(ByVal xs As Global.System.Xml.Schema.XmlSchemaSet) As Global.System.Xml.Schema.XmlSchemaComplexType
+            Dim type As Global.System.Xml.Schema.XmlSchemaComplexType = New Global.System.Xml.Schema.XmlSchemaComplexType()
+            Dim sequence As Global.System.Xml.Schema.XmlSchemaSequence = New Global.System.Xml.Schema.XmlSchemaSequence()
             Dim ds As BatchClaimInvoice = New BatchClaimInvoice()
-            Dim any1 As XmlSchemaAny = New XmlSchemaAny()
+            Dim any1 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
             any1.Namespace = "http://www.w3.org/2001/XMLSchema"
             any1.MinOccurs = New Decimal(0)
             any1.MaxOccurs = Decimal.MaxValue
-            any1.ProcessContents = XmlSchemaContentProcessing.Lax
+            any1.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
             sequence.Items.Add(any1)
-            Dim any2 As XmlSchemaAny = New XmlSchemaAny()
+            Dim any2 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
             any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1"
             any2.MinOccurs = New Decimal(1)
-            any2.ProcessContents = XmlSchemaContentProcessing.Lax
+            any2.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
             sequence.Items.Add(any2)
-            Dim attribute1 As XmlSchemaAttribute = New XmlSchemaAttribute()
+            Dim attribute1 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
             attribute1.Name = "namespace"
             attribute1.FixedValue = ds.Namespace
             type.Attributes.Add(attribute1)
-            Dim attribute2 As XmlSchemaAttribute = New XmlSchemaAttribute()
+            Dim attribute2 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
             attribute2.Name = "tableTypeName"
             attribute2.FixedValue = "INVOICE_TRANS_DETAILDataTable"
             type.Attributes.Add(attribute2)
             type.Particle = sequence
-            Dim dsSchema As XmlSchema = ds.GetSchemaSerializable
+            Dim dsSchema As Global.System.Xml.Schema.XmlSchema = ds.GetSchemaSerializable
             If xs.Contains(dsSchema.TargetNamespace) Then
-                Dim s1 As MemoryStream = New MemoryStream()
-                Dim s2 As MemoryStream = New MemoryStream()
+                Dim s1 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
+                Dim s2 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
                 Try 
-                    Dim schema As XmlSchema = Nothing
+                    Dim schema As Global.System.Xml.Schema.XmlSchema = Nothing
                     dsSchema.Write(s1)
-                    Dim schemas As IEnumerator = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator
+                    Dim schemas As Global.System.Collections.IEnumerator = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator
                     Do While schemas.MoveNext
-                        schema = CType(schemas.Current,XmlSchema)
+                        schema = CType(schemas.Current,Global.System.Xml.Schema.XmlSchema)
                         s2.SetLength(0)
                         schema.Write(s2)
                         If (s1.Length = s2.Length) Then
@@ -750,25 +742,25 @@ Partial Public Class BatchClaimInvoice
     '''Represents strongly named DataRow class.
     '''</summary>
     Partial Public Class INVOICE_TRANS_DETAILRow
-        Inherits DataRow
+        Inherits Global.System.Data.DataRow
         
         Private tableINVOICE_TRANS_DETAIL As INVOICE_TRANS_DETAILDataTable
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Friend Sub New(ByVal rb As DataRowBuilder)
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Sub New(ByVal rb As Global.System.Data.DataRowBuilder)
             MyBase.New(rb)
             Me.tableINVOICE_TRANS_DETAIL = CType(Me.Table,INVOICE_TRANS_DETAILDataTable)
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property INVOICE_TRANS_ID() As String
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.INVOICE_TRANS_IDColumn),String)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'INVOICE_TRANS_ID' in table 'INVOICE_TRANS_DETAIL' is DBNull"& _ 
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'INVOICE_TRANS_ID' in table 'INVOICE_TRANS_DETAIL' is DBNull"& _ 
                             ".", e)
                 End Try
             End Get
@@ -777,14 +769,14 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property INVOICE_TRANS_DETAIL_ID() As String
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.INVOICE_TRANS_DETAIL_IDColumn),String)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'INVOICE_TRANS_DETAIL_ID' in table 'INVOICE_TRANS_DETAIL' is"& _ 
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'INVOICE_TRANS_DETAIL_ID' in table 'INVOICE_TRANS_DETAIL' is"& _ 
                             " DBNull.", e)
                 End Try
             End Get
@@ -793,14 +785,14 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property CLAIM_ID() As String
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.CLAIM_IDColumn),String)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'CLAIM_ID' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CLAIM_ID' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -808,14 +800,14 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property CLAIM_MODIFIED_DATE() As Date
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.CLAIM_MODIFIED_DATEColumn),Date)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'CLAIM_MODIFIED_DATE' in table 'INVOICE_TRANS_DETAIL' is DBN"& _ 
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CLAIM_MODIFIED_DATE' in table 'INVOICE_TRANS_DETAIL' is DBN"& _ 
                             "ull.", e)
                 End Try
             End Get
@@ -824,14 +816,14 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property RESERVE_AMOUNT() As Double
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.RESERVE_AMOUNTColumn),Double)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'RESERVE_AMOUNT' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'RESERVE_AMOUNT' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -839,14 +831,14 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property PAYMENT_AMOUNT() As Double
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.PAYMENT_AMOUNTColumn),Double)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'PAYMENT_AMOUNT' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PAYMENT_AMOUNT' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -854,14 +846,14 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property REPAIR_DATE() As Date
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.REPAIR_DATEColumn),Date)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'REPAIR_DATE' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'REPAIR_DATE' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -869,14 +861,14 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property PICKUP_DATE() As Date
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.PICKUP_DATEColumn),Date)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'PICKUP_DATE' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PICKUP_DATE' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -884,14 +876,14 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property SPARE_PARTS() As String
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.SPARE_PARTSColumn),String)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'SPARE_PARTS' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'SPARE_PARTS' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -899,14 +891,14 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property CLOSE_CLAIM() As String
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.CLOSE_CLAIMColumn),String)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'CLOSE_CLAIM' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CLOSE_CLAIM' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -914,14 +906,14 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property USER_ID() As String
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.USER_IDColumn),String)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'USER_ID' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'USER_ID' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -929,14 +921,14 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property ACTION() As String
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.ACTIONColumn),String)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'ACTION' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ACTION' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -944,14 +936,14 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property SALVAGE_AMOUNT() As Double
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.SALVAGE_AMOUNTColumn),Double)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'SALVAGE_AMOUNT' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'SALVAGE_AMOUNT' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -959,14 +951,14 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property EXCLUDE_DEDUCTIBLE() As String
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.EXCLUDE_DEDUCTIBLEColumn),String)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'EXCLUDE_DEDUCTIBLE' in table 'INVOICE_TRANS_DETAIL' is DBNu"& _ 
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'EXCLUDE_DEDUCTIBLE' in table 'INVOICE_TRANS_DETAIL' is DBNu"& _ 
                             "ll.", e)
                 End Try
             End Get
@@ -975,14 +967,14 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property TOTAL_BONUS() As Double
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.TOTAL_BONUSColumn),Double)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'TOTAL_BONUS' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'TOTAL_BONUS' in table 'INVOICE_TRANS_DETAIL' is DBNull.", e)
                 End Try
             End Get
             Set
@@ -990,14 +982,14 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property PAYMENT_AMOUNT_TOTAL() As Double
             Get
                 Try 
                     Return CType(Me(Me.tableINVOICE_TRANS_DETAIL.PAYMENT_AMOUNT_TOTALColumn),Double)
-                Catch e As InvalidCastException
-                    Throw New StrongTypingException("The value for column 'PAYMENT_AMOUNT_TOTAL' in table 'INVOICE_TRANS_DETAIL' is DB"& _ 
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PAYMENT_AMOUNT_TOTAL' in table 'INVOICE_TRANS_DETAIL' is DB"& _ 
                             "Null.", e)
                 End Try
             End Get
@@ -1006,229 +998,229 @@ Partial Public Class BatchClaimInvoice
             End Set
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsINVOICE_TRANS_IDNull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.INVOICE_TRANS_IDColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetINVOICE_TRANS_IDNull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.INVOICE_TRANS_IDColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.INVOICE_TRANS_IDColumn) = Global.System.Convert.DBNull
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsINVOICE_TRANS_DETAIL_IDNull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.INVOICE_TRANS_DETAIL_IDColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetINVOICE_TRANS_DETAIL_IDNull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.INVOICE_TRANS_DETAIL_IDColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.INVOICE_TRANS_DETAIL_IDColumn) = Global.System.Convert.DBNull
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsCLAIM_IDNull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.CLAIM_IDColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetCLAIM_IDNull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.CLAIM_IDColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.CLAIM_IDColumn) = Global.System.Convert.DBNull
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsCLAIM_MODIFIED_DATENull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.CLAIM_MODIFIED_DATEColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetCLAIM_MODIFIED_DATENull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.CLAIM_MODIFIED_DATEColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.CLAIM_MODIFIED_DATEColumn) = Global.System.Convert.DBNull
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsRESERVE_AMOUNTNull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.RESERVE_AMOUNTColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetRESERVE_AMOUNTNull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.RESERVE_AMOUNTColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.RESERVE_AMOUNTColumn) = Global.System.Convert.DBNull
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsPAYMENT_AMOUNTNull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.PAYMENT_AMOUNTColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetPAYMENT_AMOUNTNull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.PAYMENT_AMOUNTColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.PAYMENT_AMOUNTColumn) = Global.System.Convert.DBNull
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsREPAIR_DATENull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.REPAIR_DATEColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetREPAIR_DATENull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.REPAIR_DATEColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.REPAIR_DATEColumn) = Global.System.Convert.DBNull
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsPICKUP_DATENull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.PICKUP_DATEColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetPICKUP_DATENull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.PICKUP_DATEColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.PICKUP_DATEColumn) = Global.System.Convert.DBNull
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsSPARE_PARTSNull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.SPARE_PARTSColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetSPARE_PARTSNull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.SPARE_PARTSColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.SPARE_PARTSColumn) = Global.System.Convert.DBNull
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsCLOSE_CLAIMNull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.CLOSE_CLAIMColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetCLOSE_CLAIMNull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.CLOSE_CLAIMColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.CLOSE_CLAIMColumn) = Global.System.Convert.DBNull
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsUSER_IDNull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.USER_IDColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetUSER_IDNull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.USER_IDColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.USER_IDColumn) = Global.System.Convert.DBNull
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsACTIONNull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.ACTIONColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetACTIONNull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.ACTIONColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.ACTIONColumn) = Global.System.Convert.DBNull
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsSALVAGE_AMOUNTNull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.SALVAGE_AMOUNTColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetSALVAGE_AMOUNTNull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.SALVAGE_AMOUNTColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.SALVAGE_AMOUNTColumn) = Global.System.Convert.DBNull
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsEXCLUDE_DEDUCTIBLENull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.EXCLUDE_DEDUCTIBLEColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetEXCLUDE_DEDUCTIBLENull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.EXCLUDE_DEDUCTIBLEColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.EXCLUDE_DEDUCTIBLEColumn) = Global.System.Convert.DBNull
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsTOTAL_BONUSNull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.TOTAL_BONUSColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetTOTAL_BONUSNull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.TOTAL_BONUSColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.TOTAL_BONUSColumn) = Global.System.Convert.DBNull
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsPAYMENT_AMOUNT_TOTALNull() As Boolean
             Return Me.IsNull(Me.tableINVOICE_TRANS_DETAIL.PAYMENT_AMOUNT_TOTALColumn)
         End Function
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Sub SetPAYMENT_AMOUNT_TOTALNull()
-            Me(Me.tableINVOICE_TRANS_DETAIL.PAYMENT_AMOUNT_TOTALColumn) = Convert.DBNull
+            Me(Me.tableINVOICE_TRANS_DETAIL.PAYMENT_AMOUNT_TOTALColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     
     '''<summary>
     '''Row event argument class
     '''</summary>
-    <GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Public Class INVOICE_TRANS_DETAILRowChangeEvent
-        Inherits EventArgs
+        Inherits Global.System.EventArgs
         
         Private eventRow As INVOICE_TRANS_DETAILRow
         
-        Private eventAction As DataRowAction
+        Private eventAction As Global.System.Data.DataRowAction
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub New(ByVal row As INVOICE_TRANS_DETAILRow, ByVal action As DataRowAction)
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub New(ByVal row As INVOICE_TRANS_DETAILRow, ByVal action As Global.System.Data.DataRowAction)
             MyBase.New
             Me.eventRow = row
             Me.eventAction = action
         End Sub
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public ReadOnly Property Row() As INVOICE_TRANS_DETAILRow
             Get
                 Return Me.eventRow
             End Get
         End Property
         
-        <DebuggerNonUserCode(),  _
-         GeneratedCode("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property Action() As DataRowAction
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property Action() As Global.System.Data.DataRowAction
             Get
                 Return Me.eventAction
             End Get

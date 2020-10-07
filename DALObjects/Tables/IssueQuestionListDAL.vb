@@ -110,7 +110,7 @@ Public Class IssueQuestionListDAL
         QuestionListParams = New DBHelper.DBHelperParameter(COL_NAME_QUESTION_LIST_ID, QuestionListID.ToByteArray)
 
         Try
-            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {QuestionListParams})
+            Return DBHelper.Fetch(ds, selectStmt, IssueQuestionListDAL.TABLE_NAME, New DBHelper.DBHelperParameter() {QuestionListParams})
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try

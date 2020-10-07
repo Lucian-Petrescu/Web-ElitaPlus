@@ -592,7 +592,7 @@ Public Class IssueDAL
         Dim params() As DBHelper.DBHelperParameter = {New DBHelper.DBHelperParameter(COL_NAME_ISSUE_ID, IssueID.ToByteArray)}
 
         Try
-            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, params)
+            Return DBHelper.Fetch(ds, selectStmt, IssueDAL.TABLE_NAME, params)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -606,7 +606,7 @@ Public Class IssueDAL
         Dim params() As DBHelper.DBHelperParameter = {New DBHelper.DBHelperParameter(COL_NAME_ISSUE_ID, IssueID.ToByteArray)}
 
         Try
-            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, params)
+            Return DBHelper.Fetch(ds, selectStmt, IssueDAL.TABLE_NAME, params)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -620,7 +620,7 @@ Public Class IssueDAL
         Dim params() As DBHelper.DBHelperParameter = {New DBHelper.DBHelperParameter(COL_NAME_ISSUE_ID, IssueID.ToByteArray)}
 
         Try
-            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, params)
+            Return DBHelper.Fetch(ds, selectStmt, IssueDAL.TABLE_NAME, params)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -634,7 +634,7 @@ Public Class IssueDAL
         Dim params() As DBHelper.DBHelperParameter = {New DBHelper.DBHelperParameter(COL_NAME_ISSUE_ID, IssueID.ToByteArray)}
 
         Try
-            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, params)
+            Return DBHelper.Fetch(ds, selectStmt, IssueDAL.TABLE_NAME, params)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try

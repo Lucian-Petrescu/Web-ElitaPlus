@@ -232,14 +232,14 @@ Public Class ReportRequestsDAL
         Dim selectStmt As String = Config("/SQL/LOAD_REPORT_PARMS")
         Dim dsparamsList As New DataSet
 
-        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, CreateConnection())
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
         OracleDbHelper.AddParameter(cmd, "pi_report_type", OracleDbType.Varchar2, reportype)
         OracleDbHelper.AddParameter(cmd, "po_cur", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
         OracleDbHelper.AddParameter(cmd, "po_error_code", OracleDbType.Int64, direction:=ParameterDirection.Output)
         OracleDbHelper.AddParameter(cmd, "po_error_message", OracleDbType.Varchar2, direction:=ParameterDirection.Output)
 
         Try
-            Fetch(cmd, "REPORT_PARAMS", dsparamsList)
+            OracleDbHelper.Fetch(cmd, "REPORT_PARAMS", dsparamsList)
             Return dsparamsList
 
         Catch ex As Exception

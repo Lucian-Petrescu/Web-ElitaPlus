@@ -160,13 +160,13 @@ Public Class RuleDAL
             ReDim Preserve parameters(parameters.Length)
             parameters(parameters.Length - 1) = New OracleParameter("RuleType", OracleDbType.Raw, 16)
             parameters(parameters.Length - 1).Value = ruleType.ToByteArray
-            selectStmt &= " AND " & COL_NAME_RULE_TYPE_ID & " = :RuleType"
+            selectStmt &= " AND " & RuleDAL.COL_NAME_RULE_TYPE_ID & " = :RuleType"
         End If
         If Not ruleCategory = Guid.Empty Then
             ReDim Preserve parameters(parameters.Length)
             parameters(parameters.Length - 1) = New OracleParameter("RuleCategory", OracleDbType.Raw, 16)
             parameters(parameters.Length - 1).Value = ruleCategory.ToByteArray
-            selectStmt &= " AND " & COL_NAME_RULE_CATEGORY_ID & " = :RuleCategory"
+            selectStmt &= " AND " & RuleDAL.COL_NAME_RULE_CATEGORY_ID & " = :RuleCategory"
         End If
 
         If Not ActiveOn = Nothing Then

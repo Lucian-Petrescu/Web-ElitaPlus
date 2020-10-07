@@ -45,7 +45,7 @@
         Dim selectStmt As String = Config("/SQL/LOAD_PAYMENT_HISTORY")
 
         Try
-            selectStmt = ReplaceParameter(selectStmt, COL_NAME_CERT_ID.ToUpper, certId)
+            selectStmt = OracleDbHelper.ReplaceParameter(selectStmt, COL_NAME_CERT_ID.ToUpper, certId)
 
             If Sortby Is Nothing OrElse Sortby = "" Then
                 Sortby = "to_char(DATE_PAID_FOR,'YYYYMMDD')"
@@ -57,7 +57,7 @@
 
             selectStmt &= " order by " & Sortby
 
-            Return Fetch(selectStmt, PAYMENT_TABLE_NAME)
+            Return OracleDbHelper.Fetch(selectStmt, PAYMENT_TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -67,7 +67,7 @@
         Dim selectStmt As String = Config("/SQL/LOAD_COLLECTED_HISTORY")
 
         Try
-            selectStmt = ReplaceParameter(selectStmt, COL_NAME_CERT_ID.ToUpper, certId)
+            selectStmt = OracleDbHelper.ReplaceParameter(selectStmt, COL_NAME_CERT_ID.ToUpper, certId)
 
             If Sortby Is Nothing OrElse Sortby = "" Then
                 Sortby = "to_char(ccp.collected_date,'YYYYMMDD') desc"
@@ -79,7 +79,7 @@
 
             selectStmt &= " order by " & Sortby
 
-            Return Fetch(selectStmt, COLLECTED_TABLE_NAME)
+            Return OracleDbHelper.Fetch(selectStmt, COLLECTED_TABLE_NAME)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -95,9 +95,9 @@
 
         'Dim ds As New DataSet
         Try
-            selectStmt = ReplaceParameter(selectStmt, COL_NAME_CERT_ID.ToUpper, certId)
+            selectStmt = OracleDbHelper.ReplaceParameter(selectStmt, COL_NAME_CERT_ID.ToUpper, certId)
 
-            Return Fetch(selectStmt, PAYMENT_TABLE_NAME)
+            Return OracleDbHelper.Fetch(selectStmt, PAYMENT_TABLE_NAME)
 
             'DBHelper.Fetch(ds, selectStmt, Me.PAYMENT_TABLE_NAME, parameters)
             'Return ds
@@ -116,9 +116,9 @@
 
         'Dim ds As New DataSet
         Try
-            selectStmt = ReplaceParameter(selectStmt, COL_NAME_CERT_ID.ToUpper, certId)
+            selectStmt = OracleDbHelper.ReplaceParameter(selectStmt, COL_NAME_CERT_ID.ToUpper, certId)
 
-            Return Fetch(selectStmt, COLLECTED_TABLE_NAME)
+            Return OracleDbHelper.Fetch(selectStmt, COLLECTED_TABLE_NAME)
 
             'DBHelper.Fetch(ds, selectStmt, Me.COLLECTED_TABLE_NAME, parameters)
             'Return ds

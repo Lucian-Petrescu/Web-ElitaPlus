@@ -95,7 +95,7 @@ Public Class CertCancelRequestDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("cert_cancel_request_id", id.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_cancel_request_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -164,7 +164,7 @@ Public Class CertCancelRequestDAL
         End With
 
         ' Call DBHelper Store Procedure
-        ExecuteSp(selectStmt, inputParameters, outputParameter)
+        DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
 
         If outputParameter(P_RETURN).Value <> 0 Then
             If outputParameter(P_RETURN).Value = 500 Then

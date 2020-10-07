@@ -60,7 +60,7 @@ Public Class CommPCodeEntityDAL
         Try
             oDataSet = New DataSet
             DBHelper.Fetch(oDataSet, selectStmt, TABLE_NAME, parameters)
-            oRow = oDataSet.Tables(TABLE_NAME).Rows(0)
+            oRow = oDataSet.Tables(CommPCodeEntityDAL.TABLE_NAME).Rows(0)
             oCounter = CType(oRow("entityRecords"), Integer)
             If oCounter > 0 Then
                 found = True

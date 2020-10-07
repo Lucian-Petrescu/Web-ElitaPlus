@@ -516,7 +516,7 @@ Public Class CaseDAL
             command.Parameters.Add(caseFieldValuesParameter)
 
             Try
-                ExecuteNonQuery(command)
+                OracleDbHelper.ExecuteNonQuery(command)
             Catch ex As Exception
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
             End Try

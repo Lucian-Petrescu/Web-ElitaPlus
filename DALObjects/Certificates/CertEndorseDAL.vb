@@ -90,7 +90,7 @@ Public Class CertEndorseDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("cert_endorse_id", id.ToByteArray)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_endorse_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -122,7 +122,7 @@ Public Class CertEndorseDAL
 
     Public Function LoadListForEndorse(endorseId As Guid, Optional ByVal familyDataset As DataSet = Nothing) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_CERT_ENDORSMENT")
-        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("endorse_id", endorseId)}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("endorse_id", endorseId)}
         Try
             Dim ds = familyDataset
             If ds Is Nothing Then
@@ -141,15 +141,15 @@ Public Class CertEndorseDAL
 
         Dim selectStmt As String = Config("/SQL/VALIDATE_CERT_SALES_PRICE")
         Try
-            inputParameters(0) = New DBHelperParameter("p_cert_id", CertId.ToByteArray)
-            inputParameters(1) = New DBHelperParameter("p_new_sales_price", NewSalesPrice)
-            inputParameters(2) = New DBHelperParameter("p_coverage_type_id", CovTypeId.ToByteArray)
-            inputParameters(3) = New DBHelperParameter("p_cert_duration", CertDur)
-            inputParameters(4) = New DBHelperParameter("p_cov_duration", CovDur)
+            inputParameters(0) = New DBHelper.DBHelperParameter("p_cert_id", CertId.ToByteArray)
+            inputParameters(1) = New DBHelper.DBHelperParameter("p_new_sales_price", NewSalesPrice)
+            inputParameters(2) = New DBHelper.DBHelperParameter("p_coverage_type_id", CovTypeId.ToByteArray)
+            inputParameters(3) = New DBHelper.DBHelperParameter("p_cert_duration", CertDur)
+            inputParameters(4) = New DBHelper.DBHelperParameter("p_cov_duration", CovDur)
 
-            outputParameters(0) = New DBHelperParameter("p_return", GetType(Integer))
+            outputParameters(0) = New DBHelper.DBHelperParameter("p_return", GetType(Integer))
 
-            ExecuteSp(selectStmt, inputParameters, outputParameters)
+            DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
 
             Select Case CType(outputParameters(0).Value, Integer)
                 Case 0, 100, 200
@@ -174,14 +174,14 @@ Public Class CertEndorseDAL
         Dim selectStmt As String = Config("/SQL/CAL_LIABILITY_LIMIT_USING_COVERAGE_TEMPLATE")
         Try
             Dim al As New ArrayList
-            inputParameters(0) = New DBHelperParameter("p_cert_id", CertId.ToByteArray)
-            inputParameters(1) = New DBHelperParameter("p_coverage_type_id", CoverageTypeId.ToByteArray)
-            inputParameters(2) = New DBHelperParameter("p_new_sales_price", NewSalesPrice)
+            inputParameters(0) = New DBHelper.DBHelperParameter("p_cert_id", CertId.ToByteArray)
+            inputParameters(1) = New DBHelper.DBHelperParameter("p_coverage_type_id", CoverageTypeId.ToByteArray)
+            inputParameters(2) = New DBHelper.DBHelperParameter("p_new_sales_price", NewSalesPrice)
 
-            outputParameters(0) = New DBHelperParameter("p_new_liability_limit", GetType(Decimal))
-            outputParameters(1) = New DBHelperParameter("p_return", GetType(Integer))
+            outputParameters(0) = New DBHelper.DBHelperParameter("p_new_liability_limit", GetType(Decimal))
+            outputParameters(1) = New DBHelper.DBHelperParameter("p_return", GetType(Integer))
 
-            ExecuteSp(selectStmt, inputParameters, outputParameters)
+            DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
 
             Select Case CType(outputParameters(1).Value, Integer)
                 Case 0, 100, 200
@@ -223,12 +223,12 @@ Public Class CertEndorseDAL
         Dim selectStmt As String = Config("/SQL/GET_CLAIMS_PARENT_CHILD_CERTS")
         Dim inputParameters = New DBHelperParameter() {New DBHelperParameter(COL_NAME_CERT_ID, cert_Id.ToByteArray)}
 
-        Dim outputParameters() As DBHelperParameter = New DBHelperParameter() {
-                            New DBHelperParameter(PAR_NAME_CLAIM_COUNT, GetType(Integer)),
-                            New DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
-                            New DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 100)}
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_COUNT, GetType(Integer)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 100)}
 
-        ExecuteSp(selectStmt, inputParameters, outputParameters)
+        DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
         If CType(outputParameters(1).Value, Integer) <> 0 Then
             Dim e As New ApplicationException("Return Value = " & outputParameters(2).Value)
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, e)
@@ -253,7 +253,7 @@ Public Class CertEndorseDAL
         Dim endorsecovDAL As New CertEndorseCovDAL
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
-            tr = GetNewTransaction
+            tr = DBHelper.GetNewTransaction
         End If
         Try
             'updates additions and changes
@@ -287,23 +287,23 @@ Public Class CertEndorseDAL
 
     Public Sub SaveCustomerData(custid As Guid, custfirstname As String, custmidname As String, custlastname As String, po_code As String, po_reason As String)
         Dim selectStmt As String = Config("/SQL/UPDATE_CUST_DETAILS")
-        Dim inParameters(3) As DBHelperParameter
+        Dim inParameters(3) As DBHelper.DBHelperParameter
 
-        inParameters(0) = New DBHelperParameter(CUSTOMER_ID, custid)
-        inParameters(1) = New DBHelperParameter(CUSTOMER_FIRST_NAME, custfirstname)
-        inParameters(2) = New DBHelperParameter(CUSTOMER_MIDDLE_NAME, custmidname)
-        inParameters(3) = New DBHelperParameter(CUSTOMER_LAST_NAME, custlastname)
+        inParameters(0) = New DBHelper.DBHelperParameter(CUSTOMER_ID, custid)
+        inParameters(1) = New DBHelper.DBHelperParameter(CUSTOMER_FIRST_NAME, custfirstname)
+        inParameters(2) = New DBHelper.DBHelperParameter(CUSTOMER_MIDDLE_NAME, custmidname)
+        inParameters(3) = New DBHelper.DBHelperParameter(CUSTOMER_LAST_NAME, custlastname)
 
 
-        Dim outParameters(1) As DBHelperParameter
-        outParameters(0) = New DBHelperParameter(po_reject_code, GetType(String))
-        outParameters(1) = New DBHelperParameter(po_reject_reason, GetType(String))
+        Dim outParameters(1) As DBHelper.DBHelperParameter
+        outParameters(0) = New DBHelper.DBHelperParameter(po_reject_code, GetType(String))
+        outParameters(1) = New DBHelper.DBHelperParameter(po_reject_reason, GetType(String))
 
         Dim ds As New DataSet
         Dim tbl As String = TABLE_CUSTOMER
 
         ' Call DBHelper Store Procedure
-        FetchSp(selectStmt, inParameters, outParameters, ds, tbl)
+        DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, tbl)
 
         If outParameters(1).Value > 0 Then
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr)
@@ -317,7 +317,7 @@ Public Class CertEndorseDAL
 
         Dim selectStmt As String = Config("/SQL/GET_Dealer_Attribute_Value")
 
-        Using command As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure)
+        Using command As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure)
 
             command.BindByName = True
             command.AddParameter(PI_TABLE_NAME, OracleDbType.Varchar2, 25, "ELP_DEALER", ParameterDirection.Input)
@@ -328,7 +328,7 @@ Public Class CertEndorseDAL
             command.AddParameter("pReturnValue", OracleDbType.Char, 1, Nothing, ParameterDirection.ReturnValue)
 
             Try
-                ExecuteNonQuery(command)
+                OracleDbHelper.ExecuteNonQuery(command)
                 endorsementFlag = command.Parameters.Item("pReturnValue").Value.ToString()
 
                 Return endorsementFlag

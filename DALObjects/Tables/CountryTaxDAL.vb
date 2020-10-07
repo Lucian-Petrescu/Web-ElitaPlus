@@ -1,5 +1,5 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (8/17/2007)********************
-Imports System.Globalization
+
 
 Public Class CountryTaxDAL
     Inherits DALBase
@@ -163,13 +163,13 @@ Public Class CountryTaxDAL
 
         If ds.Tables(0).Rows.Count > 0 Then
             row = ds.Tables(0).Rows(0)
-            If Not row.Item(COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
+            If Not row.Item(COL_NAME_EXPIRATION_DATE) Is System.DBNull.Value Then
                 Return CType(row.Item(COL_NAME_EXPIRATION_DATE), Date)
             Else
                 If UseCurrentDate Then
                     Return Date.Now
                 Else
-                    Return Date.Parse(INFINITE_DATE_STR, CultureInfo.InvariantCulture)
+                    Return Date.Parse(INFINITE_DATE_STR, System.Globalization.CultureInfo.InvariantCulture)
                 End If
             End If
         End If
@@ -223,10 +223,10 @@ Public Class CountryTaxDAL
             row = ds.Tables(0).Rows(0)
             RcdCount = row.Item(COL_NAME_RECORDCOUNT)
             If RcdCount > 0 Then
-                If Not row.Item(COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
+                If Not row.Item(COL_NAME_EFFECTIVE_DATE) Is System.DBNull.Value Then
                     MinEffDate = CType(row.Item(COL_NAME_EFFECTIVE_DATE), Date)
                 End If
-                If Not row.Item(COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
+                If Not row.Item(COL_NAME_EXPIRATION_DATE) Is System.DBNull.Value Then
                     MaxExpDate = CType(row.Item(COL_NAME_EXPIRATION_DATE), Date)
                 End If
             End If
