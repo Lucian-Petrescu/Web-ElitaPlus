@@ -185,7 +185,7 @@ Public Property CustomerPhone As String
 
     Private ReadOnly Property ClaimID As Guid
         Get
-            If _claimId.Equals(Guid.Empty) And Not ClaimNumber Is Nothing Then
+            If _claimId.Equals(Guid.Empty) AndAlso Not ClaimNumber Is Nothing Then
                 _claimId = Claim.GetClaimID(ElitaPlusIdentity.Current.ActiveUser.Companies, ClaimNumber)
 
                 If _claimId.Equals(Guid.Empty) Then
@@ -208,7 +208,7 @@ Public Property CustomerPhone As String
 
             Dim dsClaim As DataSet = PickupListHeader.GetClaimInfo(ClaimID, IncludeStatusHistory, CustomerName, CustomerPhone, AuthorizationNumber)
 
-            If dsClaim Is Nothing Or dsClaim.Tables.Count <= 0 Or dsClaim.Tables(0).Rows.Count <> 1 Then
+            If dsClaim Is Nothing OrElse dsClaim.Tables.Count <= 0 OrElse dsClaim.Tables(0).Rows.Count <> 1 Then
                 Throw New BOValidationException("GetClaimInfo Error: ", Common.ErrorCodes.INVALID_CLAIM_NOT_FOUND)
             Else
                 'Dim oClaim As New Claim(New Guid(CType(dsClaim.Tables(0).Rows(0)(DALObjects.ClaimDAL.COL_NAME_CLAIM_ID), Byte())))

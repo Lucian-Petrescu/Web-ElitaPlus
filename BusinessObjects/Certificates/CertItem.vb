@@ -934,7 +934,7 @@ Public Class CertItem
             Dim dal As New CertItemDAL
             Dim ds As DataSet = dal.GetMaxItemNumber(certId)
 
-            If (ds.Tables.Count > 0 And ds.Tables(0).Rows.Count > 0) Then
+            If (ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0) Then
                 Dim dr As DataRow = ds.Tables(0).Rows(0)
                 GetNextItemNumber = CType(dr(dal.COL_NAME_ITEM_NUMBER), Long) + 1
             End If

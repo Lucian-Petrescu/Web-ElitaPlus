@@ -1263,7 +1263,7 @@ Public Class CertItemCoverage
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CertItemCoverage = CType(objectToValidate, CertItemCoverage)
-            If Not (obj.BeginDate Is Nothing Or obj.EndDate Is Nothing) Then
+            If Not (obj.BeginDate Is Nothing OrElse obj.EndDate Is Nothing) Then
                 If obj.BeginDate.Value > obj.EndDate.Value Then
                     Return False
                 End If
@@ -1350,7 +1350,7 @@ Public Class CertItemCoverage
         Dim isclaimselected As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
         Dim isRequiredItemDescription As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
         Dim coverageType, networkId As String
-        Dim flag As Boolean = True
+        Dim flag = True
         Dim claimsManager, officeManager, IHQSup As Boolean
         Dim callCenterAgent, callCenterSupervisor, claimsRole, claimsAnalyst, claimSupport, commentsRole, csrRole, csr2Role, countySuperUser As Boolean
         Dim otherAllowedRoles As Boolean = False
@@ -1384,7 +1384,7 @@ Public Class CertItemCoverage
                 'If oDealer.IsGracePeriodSpecified Then
                 If coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER AndAlso coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER_MAIN_PARTS AndAlso Not (IsCoverageEffectiveForGracePeriod(ReportedDate)) Then
                     If Date.Today > BeginDate.Value Then
-                        If ((Not claimsManager) And (Not officeManager) And (Not IHQSup) And (Not otherAllowedRoles)) Then
+                        If ((Not claimsManager) AndAlso (Not officeManager) AndAlso (Not IHQSup) AndAlso (Not otherAllowedRoles)) Then
                             flag = False
                         End If
                     End If
@@ -1395,7 +1395,7 @@ Public Class CertItemCoverage
                 End If
             ElseIf coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER AndAlso coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER_MAIN_PARTS AndAlso Not (IsCoverageEffective) Then
                 If Date.Today > BeginDate.Value Then
-                    If ((Not claimsManager) And (Not officeManager) And (Not IHQSup) And (Not otherAllowedRoles)) Then
+                    If ((Not claimsManager) AndAlso (Not officeManager) AndAlso (Not IHQSup) AndAlso (Not otherAllowedRoles)) Then
                         flag = False
                     End If
                 End If
@@ -1404,30 +1404,30 @@ Public Class CertItemCoverage
                     warningMsg.Add("COVERAGE IS NOT IN EFFECT")
                 End If
 
-            ElseIf Not ((LookupListNew.GetDescriptionFromId(LookupListNew.LK_YESNO, IsClaimAllowed()) = "Y") Or (IsClaimAllowed = Nothing)) Then
-                flag = flag And False
+            ElseIf Not ((LookupListNew.GetDescriptionFromId(LookupListNew.LK_YESNO, IsClaimAllowed()) = "Y") OrElse (IsClaimAllowed = Nothing)) Then
+                flag = False
                 errMsg.Add("Claim Not Allowed")
             End If
 
             'Manufacturer missing
             If Certificate.Product.AllowRegisteredItems = Codes.EXT_YESNO_N AndAlso IsManufacturerMissing() Then
-                flag = flag And False
+                flag = False
                 errMsg.Add("MANUFACTURER NAME IS MISSING")
             End If
 
             'Zip missing
             If IsZipMissing() Then
-                flag = flag And False
+                flag = False
                 errMsg.Add("zip_is_missing")
             End If
 
             If Date.Today < BeginDate.Value Then
-                flag = flag And False
+                flag = False
             End If
 
             If Certificate.IsCompanyTypeInsurance Then
                 If IsCustomerNameMissing() OrElse IsIdentificationNumberMissing() Then
-                    flag = flag And False
+                    flag = False
                     errMsg.Add("CUSTOMER_NAME_OR_TAX_ID_MISSING")
                 End If
             End If
@@ -1436,7 +1436,7 @@ Public Class CertItemCoverage
             If (DeductibleBasedOnId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, "LIST"))) Then
                 If Not CertificateItem.IsEquipmentRequired Then
                     If (Len(Trim(CertificateItem.SkuNumber)) = 0) Then
-                        flag = flag And False
+                        flag = False
                         errMsg.Add("SKU_IS_REQUIRED")
                     End If
                 End If
@@ -1450,15 +1450,15 @@ Public Class CertItemCoverage
                 Dim intClaimWaitingPeriod As Integer = GetClaimWaitingPeriod(Id, ignoreWaitingPeriodID)
                 tempDate = Certificate.WarrantySalesDate.Value
                 dDate = tempDate.AddDays(intClaimWaitingPeriod)
-                If (Certificate.WarrantySalesDate.Equals(Certificate.ProductSalesDate)) And ignoreWaitingPeriodID.Equals(yesId) Then
+                If (Certificate.WarrantySalesDate.Equals(Certificate.ProductSalesDate)) AndAlso ignoreWaitingPeriodID.Equals(yesId) Then
                 Else
-                    If dDate > System.DateTime.Now And Not claimsManager Then
-                        flag = flag And False
+                    If dDate > System.DateTime.Now AndAlso Not claimsManager Then
+                        flag = False
                         errMsg.Add("IN CLAIM WAITING PERIOD")
                     End If
                 End If
 
-                If ((Not oContract.RecurringPremiumId.Equals(emptyGuid)) And (Not oContract.RecurringPremiumId.Equals(singlePremiumId))) Then
+                If ((Not oContract.RecurringPremiumId.Equals(emptyGuid)) AndAlso (Not oContract.RecurringPremiumId.Equals(singlePremiumId))) Then
                     If Not Certificate.DatePaidFor Is Nothing Then
                         susp = Date.Today.Subtract(Certificate.DatePaidFor.Value).Days
                     Else
@@ -1469,7 +1469,7 @@ Public Class CertItemCoverage
                     If susp > oContract.SuspenseDays.Value Then
                         errMsg.Add("SUSPENDED CERTIFICATE")
                         If (Not (claimsManager) AndAlso Not (officeManager)) Then
-                            flag = flag And False
+                            flag = False
                         End If
                     End If
                 End If
@@ -1477,25 +1477,25 @@ Public Class CertItemCoverage
 
             'Invoice Number missing
             If IsInvoiceNumberMissing() Then
-                flag = flag And False
+                flag = False
                 errMsg.Add("INVOICE NUMBER MISSING")
             End If
 
             'Product Sales Date missing
             If IsProductSalesDateMissing() Then
-                flag = flag And False
+                flag = False
                 errMsg.Add("PRODUCT_SALES_DATE_MISSING")
             End If
         Else
-            flag = flag And False
+            flag = False
         End If
 
         If coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER Then
             If Certificate.StatusCode <> Codes.CERTIFICATE_STATUS__ACTIVE Then
-                If (IsManufacturerMissing()) Or (IsZipMissing()) Then
-                    flag = flag And False
+                If (IsManufacturerMissing()) OrElse (IsZipMissing()) Then
+                    flag = False
                 ElseIf Not claimsManager AndAlso Not officeManager AndAlso Not IHQSup AndAlso Not otherAllowedRoles Then
-                    flag = flag And False
+                    flag = False
                 End If
             End If
         End If
@@ -1503,31 +1503,31 @@ Public Class CertItemCoverage
         If Not (IsManufacturerMissing()) AndAlso Not (IsZipMissing()) Then
             If Date.Today > BeginDate.Value AndAlso Date.Today > EndDate.Value Then
                 If oContract Is Nothing Then
-                    flag = flag And False
+                    flag = False
                     errMsg.Add(ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND)
                 ElseIf (oContract.BackEndClaimsAllowedId.Equals(yesId)) Then
-                    flag = flag And True
+                    flag = flag
                 Else
                     If ((Not claimsManager) AndAlso (Not officeManager) AndAlso (Not IHQSup) AndAlso Not otherAllowedRoles) Then
-                        flag = flag And False
+                        flag = False
                     End If
                 End If
             End If
         End If
 
         If oContract Is Nothing Then
-            flag = flag And False
+            flag = False
             errMsg.Add(ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND)
         ElseIf IsDepreciationScheduleNotDefined(oContract.Id) Then
-            flag = flag And False
+            flag = False
             errMsg.Add("DEPRECIATION_SCHEDULE_NOT_DEFINED")
         End If
         If CertificateItem.ItemDescription Is Nothing AndAlso isRequiredItemDescription.Equals((New Company(CompanyId)).RequireItemDescriptionId) Then
-            flag = flag And False
+            flag = False
             errMsg.Add("ITEM_DESCRIPTION_IS_MISSING")
         End If
         If CertificateItem.IsCustomerAddressRequired Then
-            flag = flag And False
+            flag = False
             errMsg.Add("CUSTOMER_ADDRESS_REQUIRED")
         End If
         errMsgList = errMsg
@@ -1705,11 +1705,11 @@ Public Class CertItemCoverage
 
         If CoverageType <> Codes.COVERAGE_TYPE__MANUFACTURER Then
             If Not Certificate.MethodOfRepairId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)) _
-               And ClaimControl Then
+               AndAlso ClaimControl Then
                 msg = Messages.MSG_DEALER_USER_CLAIM_INTERFACES
                 Return True
             End If
-            If Not isDaysLimitExceeded And _
+            If Not isDaysLimitExceeded AndAlso _
                Not ClaimControl Then
                 msg = Messages.MSG_POTENTIAL_SERVICE_WARRANTY
                 Return True

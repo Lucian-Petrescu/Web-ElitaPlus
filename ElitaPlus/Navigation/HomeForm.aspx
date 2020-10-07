@@ -109,8 +109,8 @@
 							<tr>
 								<td align="center"><div style="MARGIN-TOP: 5px; MARGIN-BOTTOM: 15px; MARGIN-LEFT: 10px"><br>
 										<asp:Label id="lblCopyright" runat="server" Visible="True" ></asp:Label>
-                                    <a target="_blank" href="http://www.assurant.com/inc/assurant/notice.html">
-											<font color="#0066cc">Notice</font></a> | <a target="_blank" href="http://www.assurant.com/inc/assurant/privacy.html">
+                                    <a rel="noopener noreferrer" target="_blank" href="http://www.assurant.com/inc/assurant/notice.html">
+											<font color="#0066cc">Notice</font></a> | <a rel="noopener noreferrer" target="_blank" href="http://www.assurant.com/inc/assurant/privacy.html">
 											<font color="#0066cc">Privacy Policy</font></a></div>
 									<DIV></DIV>
 								</td>

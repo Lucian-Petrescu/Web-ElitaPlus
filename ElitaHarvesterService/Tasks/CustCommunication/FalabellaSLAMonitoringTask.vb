@@ -32,7 +32,7 @@ Public Class FalabellaSLAMonitoringTask
                 If (Not ClaimId.Equals(Guid.Empty)) Then
                     PublishedTask.CheckSLAClaimStatus(ClaimId, intErrCode, strErrMsg)
                     If intErrCode <> 0 Then
-                        Throw New Exception("Falabella SLA Monitoring Err:" + intErrCode.ToString() + " - " + strErrMsg)
+                        Throw New Exception("Falabella SLA Monitoring Err:" & intErrCode.ToString() & " - " & strErrMsg)
                     End If
                 End If
             End If

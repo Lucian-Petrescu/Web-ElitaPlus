@@ -45,7 +45,7 @@ Public Class BusinessObjectIteratorBase
         Dim list As New ArrayList
         Dim row As DataRow
         For Each row In Table.Rows
-            If Not (row.RowState = DataRowState.Deleted Or row.RowState = DataRowState.Detached) Then
+            If Not (row.RowState = DataRowState.Deleted OrElse row.RowState = DataRowState.Detached) Then
                 Dim bo As BusinessObjectBase = GetChild(row)
                 list.Add(bo)
             End If

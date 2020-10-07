@@ -72,12 +72,12 @@ Public Class AppleCareEnrollItemUpdateTask
                             Dim applePartNumber As String = response.PartNumber
 
                             If response.ErrorResponse IsNot Nothing AndAlso applePartNumber Is Nothing Then
-                                failedLogs.AppendLine("Item ID: " + certItem.Id.ToString() + " - IMEI: " + CertIMEI + ". " + response.ErrorResponse.ErrorMessage)
+                                failedLogs.AppendLine("Item ID: " & certItem.Id.ToString() & " - IMEI: " & CertIMEI & ". " & response.ErrorResponse.ErrorMessage)
                             ElseIf applePartNumber IsNot Nothing Then
                                 Dim errMsg As String
                                 errMsg = certItem.ProcessAppleCareEnrollment(applePartNumber)
                                 If errMsg.ToUpper() <> "null".ToUpper() Then
-                                    failedLogs.AppendLine("Item ID: " + certItem.Id.ToString() + " - IMEI: " + applePartNumber + ". " + errMsg)
+                                    failedLogs.AppendLine("Item ID: " & certItem.Id.ToString() & " - IMEI: " & applePartNumber & ". " & errMsg)
                                 Else
                                     countSuccessFull += 1
                                 End If
@@ -85,13 +85,13 @@ Public Class AppleCareEnrollItemUpdateTask
                             End If
 
                         Else
-                            failedLogs.AppendLine("Item ID: " + certItem.Id.ToString() + ". No IMEI present in the item.")
+                            failedLogs.AppendLine("Item ID: " & certItem.Id.ToString() & ". No IMEI present in the item.")
                         End If
 
                     Next
 
                     If failedLogs.Length > 0 Then
-                        failedLogs.AppendLine("Successfully processed " + countSuccessFull.ToString() + " out of " + oCertificateItems.Count.ToString())
+                        failedLogs.AppendLine("Successfully processed " & countSuccessFull.ToString() & " out of " & oCertificateItems.Count.ToString())
                         FailReason = failedLogs.ToString()
                         Throw New Exception(FailReason)
                     End If

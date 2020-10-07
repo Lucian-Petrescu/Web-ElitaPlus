@@ -57,7 +57,7 @@ Friend NotInheritable Class PRCalculateFinancialBalance
 
 
         'originalRetailPrice = dv.GetOriginalRetailPrice(Me.SerialNumber)
-        If originalRetailPrice.HasValue And Not pCertificate.FinanceDate Is Nothing Then
+        If originalRetailPrice.HasValue AndAlso Not pCertificate.FinanceDate Is Nothing Then
 
             Dim noOfMonthsPassed As Double
 

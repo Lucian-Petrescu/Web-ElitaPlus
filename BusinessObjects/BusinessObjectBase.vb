@@ -150,7 +150,7 @@ Public MustInherit Class BusinessObjectBase
 
     'this generic method should be called by all BO's to set their properties
     Protected Sub SetValue(ByVal columnName As String, ByVal newValue As Object)
-        If Not newValue Is Nothing And Row(columnName) Is DBNull.Value Then
+        If Not newValue Is Nothing AndAlso Row(columnName) Is DBNull.Value Then
             'new value is something and old value is DBNULL
             If newValue.GetType Is GetType(BooleanType) Then
                 '- BooleanType, special case - convert to string Y or N
@@ -236,7 +236,7 @@ Public MustInherit Class BusinessObjectBase
                 End If
                 Row(columnName) = newValue
             End If
-        ElseIf newValue Is Nothing And Not Row(columnName) Is DBNull.Value Then
+        ElseIf newValue Is Nothing AndAlso Not Row(columnName) Is DBNull.Value Then
             Row(columnName) = DBNull.Value
         End If
     End Sub
@@ -305,13 +305,13 @@ Public MustInherit Class BusinessObjectBase
         End If
 
         'null checks
-        If Row.IsNull(col, DataRowVersion.Current) And Row.IsNull(col, targetVersion) Then
+        If Row.IsNull(col, DataRowVersion.Current) AndAlso Row.IsNull(col, targetVersion) Then
             Return False
         End If
-        If Row.IsNull(col, DataRowVersion.Current) And Not (Row.IsNull(col, targetVersion)) Then
+        If Row.IsNull(col, DataRowVersion.Current) AndAlso Not (Row.IsNull(col, targetVersion)) Then
             Return True
         End If
-        If Not (Row.IsNull(col, DataRowVersion.Current)) And Row.IsNull(col, targetVersion) Then
+        If Not (Row.IsNull(col, DataRowVersion.Current)) AndAlso Row.IsNull(col, targetVersion) Then
             Return True
         End If
 
@@ -462,7 +462,7 @@ Public MustInherit Class BusinessObjectBase
         'Do a full scan. This will work fine only for a few records. TODO Revise this logic
         Dim row As DataRow
         For Each row In table.Rows
-            If Not (row.RowState = DataRowState.Deleted Or row.RowState = DataRowState.Detached) Then
+            If Not (row.RowState = DataRowState.Deleted OrElse row.RowState = DataRowState.Detached) Then
                 Dim rowValue1 As Object = row(keyColName1)
                 Dim rowValue2 As Object = row(keyColName2)
                 If ((Not rowValue1 Is DBNull.Value) AndAlso (Not rowValue2 Is DBNull.Value)) Then
@@ -495,7 +495,7 @@ Public MustInherit Class BusinessObjectBase
         Dim row As DataRow
         Dim isRowMatch As Boolean
         For Each row In table.Rows
-            If Not (row.RowState = DataRowState.Deleted Or row.RowState = DataRowState.Detached) Then
+            If Not (row.RowState = DataRowState.Deleted OrElse row.RowState = DataRowState.Detached) Then
                 isRowMatch = True
                 For Each keyValuePair In NameValuePairList
                     Dim rowValue As Object = row(keyValuePair.Key)
@@ -527,7 +527,7 @@ Public MustInherit Class BusinessObjectBase
         'Do a full scan. This will work fine only for a few records. TODO Revise this logic
         Dim row As DataRow
         For Each row In table.Rows
-            If Not (row.RowState = DataRowState.Deleted Or row.RowState = DataRowState.Detached) Then
+            If Not (row.RowState = DataRowState.Deleted OrElse row.RowState = DataRowState.Detached) Then
                 Dim rowValue1 As Object = row(keyColName1)
                 Dim rowValue2 As Object = row(keyColName2)
                 Dim rowValue3 As Object = row(keyColName3)
@@ -1047,7 +1047,7 @@ Public MustInherit Class BusinessObjectBase
                 j = 1
 
                 'If the current iteration is less than the MAXROWS, and we still have items in the orig. ds, loop
-                While j <= MaxRows And iCurrRow < DatasetInput.Tables(0).Rows.Count
+                While j <= MaxRows AndAlso iCurrRow < DatasetInput.Tables(0).Rows.Count
                     ds.Tables(0).ImportRow(DatasetInput.Tables(0).Rows(iCurrRow))
                     iCurrRow += 1
                     j += 1

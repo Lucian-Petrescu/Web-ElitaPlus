@@ -49,7 +49,7 @@ Public Class TaskManager
         Catch ex As Exception
             Dim message As String = ex.Message
             If (ex.InnerException IsNot Nothing) Then
-                message += "|Inner Exception Message: " + ex.InnerException.Message
+                message += "|Inner Exception Message: " & ex.InnerException.Message
             End If
             Logger.AddError(String.Format("Exception while fetching next task| Exception:{0}", message), ex)
             Throw
@@ -105,7 +105,7 @@ Public Class TaskManager
         Catch ex As Exception
             errMsg = ex.Message
             If (ex.InnerException IsNot Nothing) Then
-                errMsg += " Inner Exception Message" + ex.InnerException.Message
+                errMsg += " Inner Exception Message" & ex.InnerException.Message
                 Logger.AddError(String.Format("Error in logging in : {0}", logging), ex)
             End If
             Logger.AddDebugLogExit()

@@ -59,7 +59,7 @@ Public MustInherit Class TaskBase
             CompleteTask()
             Logger.AddInfo("Task executed successfully")
         Catch ex As Exception
-            FailReason = FailReason + String.Format("|Exception Message: {0} ", ex.Message)
+            FailReason = FailReason & String.Format("|Exception Message: {0} ", ex.Message)
             FailedTask()
             Logger.AddError("Task failed.", ex)
         End Try

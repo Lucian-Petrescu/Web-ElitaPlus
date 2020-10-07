@@ -81,7 +81,7 @@ Public Class NotifyDigitalServiceTask
                     Dim oauth_timestamp As String = Convert.ToUInt64(timeSpan.TotalSeconds).ToString()
                     Dim authHeader As String = String.Empty
                     Dim requestContentBase64String As String = String.Empty
-                    Dim resource_urlvalidate As String = resource_url + "api/PolicyEnroll"
+                    Dim resource_urlvalidate As String = resource_url & "api/PolicyEnroll"
 
                     Dim requestUri As String = HttpUtility.UrlEncode(resource_urlvalidate.ToLower())
                     Dim nonce As String = Guid.NewGuid().ToString("N")

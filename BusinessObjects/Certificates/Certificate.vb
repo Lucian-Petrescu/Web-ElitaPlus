@@ -2727,8 +2727,8 @@ Public Class Certificate
     Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse
-            (Not AddressChild.IsNew And AddressChild.IsDirty) OrElse
-            (AddressChild.IsNew And Not AddressChild.IsEmpty)
+            (Not AddressChild.IsNew AndAlso AddressChild.IsDirty) OrElse
+            (AddressChild.IsNew AndAlso Not AddressChild.IsEmpty)
         End Get
     End Property
 
@@ -2740,7 +2740,7 @@ Public Class Certificate
             CancelRulesForSFR = attvalue.Value
         End If
         oCertCancelRequestData.errorExist = False
-        If (IsNothing(certCancelReuestBO.CancellationReasonId) Or certCancelReuestBO.CancellationReasonId.Equals(Guid.Empty)) Then
+        If (IsNothing(certCancelReuestBO.CancellationReasonId) OrElse certCancelReuestBO.CancellationReasonId.Equals(Guid.Empty)) Then
             oCertCancelRequestData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE
             oCertCancelRequestData.errorExist = True
             Exit Sub
@@ -2785,7 +2785,7 @@ Public Class Certificate
             End If
         End If
 
-        If (Not oCertCancelRequestData.errorExist) And useExistingBankInfo = Codes.YESNO_N Then
+        If (Not oCertCancelRequestData.errorExist) AndAlso useExistingBankInfo = Codes.YESNO_N Then
             Try
                 If cancReqBankInfo.IbanNumber <> String.Empty Then
                     cancReqBankInfo.Validate()
@@ -2867,14 +2867,14 @@ Public Class Certificate
                 oCancelCertificateData.paymentTypeCode = paymentTypeCode
                 oCancelCertificateData.cancellationDate = certCancellationBO.CancellationDate
 
-                If (paymentTypeCode.ToString = PAYMENT_BY_DIRECT_DEBIT Or paymentTypeCode.ToString = PAYMENT_PRE_AUTHORIZED) Then
+                If (paymentTypeCode.ToString = PAYMENT_BY_DIRECT_DEBIT OrElse paymentTypeCode.ToString = PAYMENT_PRE_AUTHORIZED) Then
                     Try
                         oCertInstallment = New CertInstallment(Id, True)
                     Catch ex As Exception
                         oCertInstallment = New CertInstallment()
                     End Try
 
-                    If (oCertInstallment Is Nothing Or oCertInstallment.BillingStatusId.Equals(LookupListNew.GetIdFromCode(BillingStatusDv, Codes.IN_COLLECTION))) And
+                    If (oCertInstallment Is Nothing OrElse oCertInstallment.BillingStatusId.Equals(LookupListNew.GetIdFromCode(BillingStatusDv, Codes.IN_COLLECTION))) AndAlso
                             oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__22)) Then
                         'Throw New BOValidationException("CancelCertificate Error: ", Common.ErrorCodes.ERR_MSG_CERT_INSTALLMENT_INCOLLECTION_STATUS)
                         oCancelCertificateData.errorCode = Common.ErrorCodes.ERR_MSG_CERT_INSTALLMENT_INCOLLECTION_STATUS
@@ -2882,20 +2882,20 @@ Public Class Certificate
                     End If
                 End If
 
-                If (Not oCancelCertificateData.errorExist And paymentTypeCode.ToString = PAYMENT_PRE_AUTHORIZED And Not oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__22))) Then
+                If (Not oCancelCertificateData.errorExist AndAlso paymentTypeCode.ToString = PAYMENT_PRE_AUTHORIZED AndAlso Not oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__22))) Then
                     'Throw New BOValidationException("CancelCertificate Error: ", Common.ErrorCodes.ERR_MSG_INVALID_CANCEL_REASON_CODE_FOR_PRE_AUTH_CERTS)
                     oCancelCertificateData.errorCode = Common.ErrorCodes.ERR_MSG_INVALID_CANCEL_REASON_CODE_FOR_PRE_AUTH_CERTS
                     oCancelCertificateData.errorExist = True
                 End If
 
-                If (Not oCancelCertificateData.errorExist) And (Not paymentTypeCode Is Nothing) AndAlso (paymentTypeCode.ToString = PAYMENT_BY_DIRECT_DEBIT) Then
+                If (Not oCancelCertificateData.errorExist) AndAlso (Not paymentTypeCode Is Nothing) AndAlso (paymentTypeCode.ToString = PAYMENT_BY_DIRECT_DEBIT) Then
                     If Not (oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__16))) Then
                         If Not (oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__17))) Then
                             If Not (oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__20))) Then
                                 If Not (oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__21))) Then
                                     If Not (oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__2))) Then
                                         If Not (oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__22))) Then
-                                            'If oCancelCertificateData.cancellationCode <> CANCELLATION_REASON_CODE_16 And oCancelCertificateData.cancellationCode <> CANCELLATION_REASON_CODE_17 Then
+                                            'If oCancelCertificateData.cancellationCode <> CANCELLATION_REASON_CODE_16 AndAlso oCancelCertificateData.cancellationCode <> CANCELLATION_REASON_CODE_17 Then
                                             oCancelCertificateData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE
                                             oCancelCertificateData.errorExist = True
                                         End If
@@ -3003,8 +3003,8 @@ Public Class Certificate
             End If
 
             'Invalid entered amount
-            If inputAmountRequired And (oCancelCertificateData.customerPaid > Convert.ToDecimal(0)) _
-    And (oCancelCertificateData.customerPaid > oCancelCertificateData.grossAmtReceived) Then
+            If inputAmountRequired AndAlso (oCancelCertificateData.customerPaid > Convert.ToDecimal(0)) _
+    AndAlso (oCancelCertificateData.customerPaid > oCancelCertificateData.grossAmtReceived) Then
                 oCancelCertificateData.inputAmountRequiredMissing = True
                 oCancelCertificateData.errorCode = Common.ErrorCodes.MSG_INVALID_AMOUNT_ENTERED
                 oCancelCertificateData.errorExist2 = True
@@ -3302,17 +3302,17 @@ Public Class Certificate
             'Show error message if entering wild card "*" in any field in the certificate search screen and keeping other fields blank.
 
             If (dealerName Is Nothing AndAlso
-                   (certNumberMask.Equals(String.Empty) Or (System.Text.RegularExpressions.Regex.IsMatch(certNumberMask, SEARCH_REGEX) AndAlso certNumberMask.Length = 1)) AndAlso
-                   (customerNameMask.Equals(String.Empty) Or (System.Text.RegularExpressions.Regex.IsMatch(customerNameMask, SEARCH_REGEX) AndAlso customerNameMask.Length = 1)) AndAlso
-                   (taxId.Equals(String.Empty) Or (System.Text.RegularExpressions.Regex.IsMatch(taxId, SEARCH_REGEX) AndAlso taxId.Length = 1)) AndAlso
-                   (invoiceNumber.Equals(String.Empty) Or (System.Text.RegularExpressions.Regex.IsMatch(invoiceNumber, SEARCH_REGEX) AndAlso invoiceNumber.Length = 1)) AndAlso
-                   (accountNumber.Equals(String.Empty) Or (System.Text.RegularExpressions.Regex.IsMatch(accountNumber, SEARCH_REGEX) AndAlso accountNumber.Length = 1)) AndAlso
-                   (addressMask.Equals(String.Empty) Or (System.Text.RegularExpressions.Regex.IsMatch(addressMask, SEARCH_REGEX) AndAlso addressMask.Length = 1)) AndAlso
-                   (serialNumber.Equals(String.Empty) Or (System.Text.RegularExpressions.Regex.IsMatch(serialNumber, SEARCH_REGEX) AndAlso serialNumber.Length = 1)) AndAlso
-                   (Service_line_number.Equals(String.Empty) Or (System.Text.RegularExpressions.Regex.IsMatch(Service_line_number, SEARCH_REGEX) AndAlso Service_line_number.Length = 1)) AndAlso
-                   (PhoneMask.Equals(String.Empty) Or (System.Text.RegularExpressions.Regex.IsMatch(PhoneMask, SEARCH_REGEX) AndAlso PhoneMask.Length = 1)) AndAlso
-                   (postalCodeMask.Equals(String.Empty) Or (System.Text.RegularExpressions.Regex.IsMatch(postalCodeMask, SEARCH_REGEX) AndAlso postalCodeMask.Length = 1)) AndAlso
-                   (vehicleLicenseNumber.Equals(String.Empty) Or (System.Text.RegularExpressions.Regex.IsMatch(vehicleLicenseNumber, SEARCH_REGEX) AndAlso vehicleLicenseNumber.Length = 1))) Then
+                   (certNumberMask.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(certNumberMask, SEARCH_REGEX) AndAlso certNumberMask.Length = 1)) AndAlso
+                   (customerNameMask.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(customerNameMask, SEARCH_REGEX) AndAlso customerNameMask.Length = 1)) AndAlso
+                   (taxId.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(taxId, SEARCH_REGEX) AndAlso taxId.Length = 1)) AndAlso
+                   (invoiceNumber.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(invoiceNumber, SEARCH_REGEX) AndAlso invoiceNumber.Length = 1)) AndAlso
+                   (accountNumber.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(accountNumber, SEARCH_REGEX) AndAlso accountNumber.Length = 1)) AndAlso
+                   (addressMask.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(addressMask, SEARCH_REGEX) AndAlso addressMask.Length = 1)) AndAlso
+                   (serialNumber.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(serialNumber, SEARCH_REGEX) AndAlso serialNumber.Length = 1)) AndAlso
+                   (Service_line_number.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(Service_line_number, SEARCH_REGEX) AndAlso Service_line_number.Length = 1)) AndAlso
+                   (PhoneMask.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(PhoneMask, SEARCH_REGEX) AndAlso PhoneMask.Length = 1)) AndAlso
+                   (postalCodeMask.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(postalCodeMask, SEARCH_REGEX) AndAlso postalCodeMask.Length = 1)) AndAlso
+                   (vehicleLicenseNumber.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(vehicleLicenseNumber, SEARCH_REGEX) AndAlso vehicleLicenseNumber.Length = 1))) Then
                 isInValidData = True
                 Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION_INFORCE_DATE, GetType(Certificate), Nothing, "Search", Nothing)}
                 Throw New BOValidationException(errors, GetType(Certificate).FullName)
@@ -4463,7 +4463,7 @@ Public Class Certificate
             Dim ds As DataSet
             Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
 
-            If (certNumber Is Nothing Or certNumber.Equals(String.Empty) Or dealerCode Is Nothing Or dealerCode.Equals(String.Empty)) Then
+            If (certNumber Is Nothing OrElse certNumber.Equals(String.Empty) OrElse dealerCode Is Nothing OrElse dealerCode.Equals(String.Empty)) Then
                 Throw New BOValidationException(errors, GetType(Certificate).FullName)
             End If
 
@@ -4482,7 +4482,7 @@ Public Class Certificate
             Dim ds As DataSet
             Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
 
-            If InvoiceNumber Is Nothing Or InvoiceNumber.Equals(String.Empty) Then
+            If InvoiceNumber Is Nothing OrElse InvoiceNumber.Equals(String.Empty) Then
                 Throw New BOValidationException(errors, GetType(Certificate).FullName)
             End If
 
@@ -4501,7 +4501,7 @@ Public Class Certificate
             Dim ds As DataSet
             Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
 
-            If CertificateNumber Is Nothing Or CertificateNumber.Equals(String.Empty) Then
+            If CertificateNumber Is Nothing OrElse CertificateNumber.Equals(String.Empty) Then
                 Throw New BOValidationException(errors, GetType(Certificate).FullName)
             End If
 
@@ -4772,7 +4772,7 @@ Public Class Certificate
 
             If oCert.ProductSalesDate Is Nothing OrElse oCert.WarrantySalesDate Is Nothing Then Return True
 
-            If (oCert.PreviousCertificateId.Equals(Guid.Empty)) And (oCert.WarrantySalesDate.Value > Date.Today) Then
+            If (oCert.PreviousCertificateId.Equals(Guid.Empty)) AndAlso (oCert.WarrantySalesDate.Value > Date.Today) Then
                 bIsOk = False
             End If
 
@@ -4807,7 +4807,7 @@ Public Class Certificate
                 'START DEF-1986
                 'DOC_TYPE_CNPJ
                 If UCase(DocType) = DOC_TYPE_CNPJ Then
-                    If obj.RgNumber Is Nothing And obj.DocumentAgency Is Nothing And obj.DocumentIssueDate Is Nothing And obj.IdType Is Nothing Then
+                    If obj.RgNumber Is Nothing AndAlso obj.DocumentAgency Is Nothing AndAlso obj.DocumentIssueDate Is Nothing AndAlso obj.IdType Is Nothing Then
                         Return True
                     Else
                         MyBase.Message = Common.ErrorCodes.GUI_FIELD_MUST_BE_BLANK
@@ -4817,14 +4817,14 @@ Public Class Certificate
 
                 'DOC_TYPE_CPF
                 'VSC
-                If (LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, DealerTypeCode) = "2" And UCase(DocType) = DOC_TYPE_CPF) Then
-                    If obj.RgNumber Is Nothing And obj.DocumentAgency Is Nothing And obj.DocumentIssueDate Is Nothing And obj.IdType Is Nothing Then
+                If (LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, DealerTypeCode) = "2" AndAlso UCase(DocType) = DOC_TYPE_CPF) Then
+                    If obj.RgNumber Is Nothing AndAlso obj.DocumentAgency Is Nothing AndAlso obj.DocumentIssueDate Is Nothing AndAlso obj.IdType Is Nothing Then
                         Return False
                     End If
                 End If
 
                 'ESC
-                If (LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, DealerTypeCode) = "1" And UCase(DocType) = DOC_TYPE_CPF) Then
+                If (LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, DealerTypeCode) = "1" AndAlso UCase(DocType) = DOC_TYPE_CPF) Then
                     Return True
                 End If
                 'Commented for DEF-1986
@@ -4867,7 +4867,7 @@ Public Class Certificate
             'DEF 2576
             If obj.ValFlag = VALIDATION_FLAG_CPF_CNPJ Then
                 If UCase(docType) = DOC_TYPE_CPF _
-                    Or UCase(docType) = DOC_TYPE_CNPJ Then
+                    OrElse UCase(docType) = DOC_TYPE_CNPJ Then
                     Return True
                 Else
                     MyBase.Message = UCase(Common.ErrorCodes.GUI_DOCUMENT_TYPE_4)
@@ -4879,8 +4879,8 @@ Public Class Certificate
             End If
 
             If UCase(docType) = DOC_TYPE_CPF _
-               Or UCase(docType) = DOC_TYPE_CON _
-               Or UCase(docType) = DOC_TYPE_CNPJ Then
+               OrElse UCase(docType) = DOC_TYPE_CON _
+               OrElse UCase(docType) = DOC_TYPE_CNPJ Then
                 Return True
             Else
                 MyBase.Message = UCase(Common.ErrorCodes.GUI_DOCUMENT_TYPE)
@@ -4975,7 +4975,7 @@ Public Class Certificate
                         Return True
                     'DEF 2576
                     Case VALIDATION_FLAG_FULL
-                        If obj.IdentificationNumber Is Nothing Or
+                        If obj.IdentificationNumber Is Nothing OrElse
                             obj.IdentificationNumber = String.Empty Then
                             If obj.getDocTypeCode = DOC_TYPE_CON Then
                                 Return True
@@ -5008,10 +5008,10 @@ Public Class Certificate
 
                         If DisplayName = nameof(IdentificationNumber) _
                             AndAlso (Not obj.DocumentIssueDate Is Nothing _
-                                Or Not obj.IdType Is Nothing _
-                                Or Not obj.DocumentAgency Is Nothing _
-                                Or Not obj.RgNumber Is Nothing _
-                                Or Not obj.DocumentTypeID.Equals(Guid.Empty)) Then
+                                OrElse Not obj.IdType Is Nothing _
+                                OrElse Not obj.DocumentAgency Is Nothing _
+                                OrElse Not obj.RgNumber Is Nothing _
+                                OrElse Not obj.DocumentTypeID.Equals(Guid.Empty)) Then
                             Return True
                         End If
 

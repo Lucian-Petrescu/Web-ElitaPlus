@@ -1289,12 +1289,12 @@ Public Class CertEndorse
             'Next
 
             'ValidateSalesPrice()
-            If (_isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached) Or (CovisDirty) Then
+            If (_isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached) OrElse (CovisDirty) Then
                 'Me.LoadCoveragesProperties(Me.ManufaturerWarranty)
                 Dim dal As New CertEndorseDAL
                 dal.UpdateFamily(Dataset) 'New Code Added Manually
                 'Reload the Data from the DB
-                If Row.RowState <> DataRowState.Detached And _dealerEndorsementFlag <> "Y" Then
+                If Row.RowState <> DataRowState.Detached AndAlso _dealerEndorsementFlag <> "Y" Then
                     Dim objId As Guid = CertEndorseId
                     Dataset = New DataSet
                     Row = Nothing
@@ -2042,7 +2042,7 @@ Public Class CertEndorse
             If strValFlag = VALIDATION_FLAG_FULL Then
                 'DOC_TYPE_CNPJ
                 If UCase(DocType) = DOC_TYPE_CNPJ Then
-                    If obj.RgNumberPost Is Nothing And obj.DocumentAgencyPost Is Nothing And obj.DocumentIssueDatePost Is Nothing And obj.IdTypePost Is Nothing Then
+                    If obj.RgNumberPost Is Nothing AndAlso obj.DocumentAgencyPost Is Nothing AndAlso obj.DocumentIssueDatePost Is Nothing AndAlso obj.IdTypePost Is Nothing Then
                         Return True
                     Else
                         MyBase.Message = Common.ErrorCodes.GUI_FIELD_MUST_BE_BLANK
@@ -2052,14 +2052,14 @@ Public Class CertEndorse
 
                 'DOC_TYPE_CPF
                 'VSC
-                If (LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, DealerTypeCode) = "2" And UCase(DocType) = DOC_TYPE_CPF) Then
-                    If obj.RgNumberPost Is Nothing And obj.DocumentAgencyPost Is Nothing And obj.DocumentIssueDatePost Is Nothing And obj.IdTypePost Is Nothing Then
+                If (LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, DealerTypeCode) = "2" AndAlso UCase(DocType) = DOC_TYPE_CPF) Then
+                    If obj.RgNumberPost Is Nothing AndAlso obj.DocumentAgencyPost Is Nothing AndAlso obj.DocumentIssueDatePost Is Nothing AndAlso obj.IdTypePost Is Nothing Then
                         Return False
                     End If
                 End If
 
                 'ESC
-                If (LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, DealerTypeCode) = "1" And UCase(DocType) = DOC_TYPE_CPF) Then
+                If (LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, DealerTypeCode) = "1" AndAlso UCase(DocType) = DOC_TYPE_CPF) Then
                     Return True
                 End If
             End If
@@ -2127,7 +2127,7 @@ Public Class CertEndorse
                     Case VALIDATION_FLAG_NONE
                         Return True
                     Case VALIDATION_FLAG_FULL
-                        If obj.TaxIDNumbPost Is Nothing Or _
+                        If obj.TaxIDNumbPost Is Nothing OrElse _
                             obj.TaxIDNumbPost = String.Empty Then
                             If obj.getDocTypeCode = DOC_TYPE_CON Then
                                 Return True
@@ -2242,7 +2242,7 @@ Public Class CertEndorse
             Dim docType As String = obj.getDocTypeCode
             If strValFlag = VALIDATION_FLAG_CPF_CNPJ Then
                 If UCase(docType) = DOC_TYPE_CPF _
-                    Or UCase(docType) = DOC_TYPE_CNPJ Then
+                    OrElse UCase(docType) = DOC_TYPE_CNPJ Then
                     Return True
                 Else
                     MyBase.Message = UCase(Common.ErrorCodes.GUI_DOCUMENT_TYPE_4)
@@ -2251,8 +2251,8 @@ Public Class CertEndorse
             End If
 
             If UCase(docType) = DOC_TYPE_CPF _
-               Or UCase(docType) = DOC_TYPE_CON _
-               Or UCase(docType) = DOC_TYPE_CNPJ Then
+               OrElse UCase(docType) = DOC_TYPE_CON _
+               OrElse UCase(docType) = DOC_TYPE_CNPJ Then
                 Return True
             Else
                 MyBase.Message = UCase(Common.ErrorCodes.GUI_DOCUMENT_TYPE)
