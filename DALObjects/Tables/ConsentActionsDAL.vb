@@ -1,4 +1,5 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject v2.cst (10/11/2017)********************
+Imports System.Collections.Generic
 
 Public Class ConsentActionsDAL
     Inherits OracleDALBase
@@ -35,14 +36,14 @@ Public Class ConsentActionsDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
+        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, CreateConnection())
 
         cmd.BindByName = True
         cmd.AddParameter("pi_consent_value_id", OracleDbType.Raw, id.ToByteArray())
         cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
+            Fetch(cmd, TABLE_NAME, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -52,7 +53,7 @@ Public Class ConsentActionsDAL
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(PO_CURSOR_CONSENT_ACTIONS) As DBHelper.DBHelperParameter
-        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim inParameters As New List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
         param = New DBHelper.DBHelperParameter(PAR_I_NAME_REFERENCE_TYPE, ReferenceType)

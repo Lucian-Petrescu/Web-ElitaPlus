@@ -12,6 +12,7 @@
 '
 '
 '**************************************************************************************
+Imports System.Xml
 
 Public Class InvoiceTransDAL
     Inherits DALBase
@@ -101,14 +102,14 @@ Public Class InvoiceTransDAL
 
         parameters(0) = New DBHelper.DBHelperParameter(P_USER_ID, _UserId)
         parameters(1) = New DBHelper.DBHelperParameter(P_INVOICE_TRANS_ID, id.ToByteArray)
-        parameters(2) = New DBHelper.DBHelperParameter(P_SERVICE_CENTER_ID, DBNull.Value, GetType(System.Guid))
-        parameters(3) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_NUMBER, DBNull.Value, GetType(System.String))
-        parameters(4) = New DBHelper.DBHelperParameter(P_BATCH_NUMBER, DBNull.Value, GetType(System.String))
-        parameters(5) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_AMOUNT, DBNull.Value, GetType(System.Decimal))
-        parameters(6) = New DBHelper.DBHelperParameter(P_INVOICE_DATE, DBNull.Value, GetType(System.DateTime))
-        parameters(7) = New DBHelper.DBHelperParameter(P_INVOICE_TYPE_ID, DBNull.Value, GetType(System.Guid))
-        parameters(8) = New DBHelper.DBHelperParameter(P_INVOICE_STATUS_ID, DBNull.Value, GetType(System.Guid))
-        parameters(9) = New DBHelper.DBHelperParameter(P_INVOICE_RECEIVED_DATE, DBNull.Value, GetType(System.DateTime))
+        parameters(2) = New DBHelper.DBHelperParameter(P_SERVICE_CENTER_ID, DBNull.Value, GetType(Guid))
+        parameters(3) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_NUMBER, DBNull.Value, GetType(String))
+        parameters(4) = New DBHelper.DBHelperParameter(P_BATCH_NUMBER, DBNull.Value, GetType(String))
+        parameters(5) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_AMOUNT, DBNull.Value, GetType(Decimal))
+        parameters(6) = New DBHelper.DBHelperParameter(P_INVOICE_DATE, DBNull.Value, GetType(DateTime))
+        parameters(7) = New DBHelper.DBHelperParameter(P_INVOICE_TYPE_ID, DBNull.Value, GetType(Guid))
+        parameters(8) = New DBHelper.DBHelperParameter(P_INVOICE_STATUS_ID, DBNull.Value, GetType(Guid))
+        parameters(9) = New DBHelper.DBHelperParameter(P_INVOICE_RECEIVED_DATE, DBNull.Value, GetType(DateTime))
         
         Try
             DBHelper.FetchSp(selectStmt, parameters, outParameters, familyDS, TABLE_NAME)
@@ -125,14 +126,14 @@ Public Class InvoiceTransDAL
 
         parameters(0) = New DBHelper.DBHelperParameter(P_USER_ID, _UserId)
         parameters(1) = New DBHelper.DBHelperParameter(P_INVOICE_TRANS_ID, id.ToByteArray)
-        parameters(2) = New DBHelper.DBHelperParameter(P_SERVICE_CENTER_ID, DBNull.Value, GetType(System.Guid))
-        parameters(3) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_NUMBER, DBNull.Value, GetType(System.String))
-        parameters(4) = New DBHelper.DBHelperParameter(P_BATCH_NUMBER, DBNull.Value, GetType(System.String))
-        parameters(5) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_AMOUNT, DBNull.Value, GetType(System.Decimal))
-        parameters(6) = New DBHelper.DBHelperParameter(P_INVOICE_DATE, DBNull.Value, GetType(System.DateTime))
-        parameters(7) = New DBHelper.DBHelperParameter(P_INVOICE_TYPE_ID, DBNull.Value, GetType(System.Guid))
-        parameters(8) = New DBHelper.DBHelperParameter(P_INVOICE_STATUS_ID, DBNull.Value, GetType(System.Guid))
-        parameters(9) = New DBHelper.DBHelperParameter(P_INVOICE_RECEIVED_DATE, DBNull.Value, GetType(System.DateTime))
+        parameters(2) = New DBHelper.DBHelperParameter(P_SERVICE_CENTER_ID, DBNull.Value, GetType(Guid))
+        parameters(3) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_NUMBER, DBNull.Value, GetType(String))
+        parameters(4) = New DBHelper.DBHelperParameter(P_BATCH_NUMBER, DBNull.Value, GetType(String))
+        parameters(5) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_AMOUNT, DBNull.Value, GetType(Decimal))
+        parameters(6) = New DBHelper.DBHelperParameter(P_INVOICE_DATE, DBNull.Value, GetType(DateTime))
+        parameters(7) = New DBHelper.DBHelperParameter(P_INVOICE_TYPE_ID, DBNull.Value, GetType(Guid))
+        parameters(8) = New DBHelper.DBHelperParameter(P_INVOICE_STATUS_ID, DBNull.Value, GetType(Guid))
+        parameters(9) = New DBHelper.DBHelperParameter(P_INVOICE_RECEIVED_DATE, DBNull.Value, GetType(DateTime))
 
 
         Try
@@ -157,53 +158,53 @@ Public Class InvoiceTransDAL
         If Not id.Equals(Guid.Empty) Then
             inParameters(1) = New DBHelper.DBHelperParameter(P_INVOICE_TRANS_ID, id.ToByteArray)
         Else
-            inParameters(1) = New DBHelper.DBHelperParameter(P_INVOICE_TRANS_ID, DBNull.Value, GetType(System.Guid))
+            inParameters(1) = New DBHelper.DBHelperParameter(P_INVOICE_TRANS_ID, DBNull.Value, GetType(Guid))
         End If
 
         If Not ServiceCenterId.Equals(Guid.Empty) Then
             inParameters(2) = New DBHelper.DBHelperParameter(P_SERVICE_CENTER_ID, ServiceCenterId.ToByteArray)
         Else
-            inParameters(2) = New DBHelper.DBHelperParameter(P_SERVICE_CENTER_ID, DBNull.Value, GetType(System.Guid))
+            inParameters(2) = New DBHelper.DBHelperParameter(P_SERVICE_CENTER_ID, DBNull.Value, GetType(Guid))
         End If
 
         If Not InvoiceNumber.Trim.Equals("") Then
             inParameters(3) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_NUMBER, InvoiceNumber)
         Else
-            inParameters(3) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_NUMBER, DBNull.Value, GetType(System.String))
+            inParameters(3) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_NUMBER, DBNull.Value, GetType(String))
         End If
         If Not BatchNumber.Trim.Equals("") Then
             inParameters(4) = New DBHelper.DBHelperParameter(P_BATCH_NUMBER, BatchNumber)
         Else
-            inParameters(4) = New DBHelper.DBHelperParameter(P_BATCH_NUMBER, DBNull.Value, GetType(System.String))
+            inParameters(4) = New DBHelper.DBHelperParameter(P_BATCH_NUMBER, DBNull.Value, GetType(String))
         End If
         If Not svcControlAmount.Trim.Equals("") Then
             inParameters(5) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_AMOUNT, svcControlAmount)
         Else
-            inParameters(5) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_AMOUNT, DBNull.Value, GetType(System.Decimal))
+            inParameters(5) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_AMOUNT, DBNull.Value, GetType(Decimal))
         End If
 
         If Not InvoiceDate.Trim.Equals("") Then
             inParameters(6) = New DBHelper.DBHelperParameter(P_INVOICE_DATE, InvoiceDate)
         Else
-            inParameters(6) = New DBHelper.DBHelperParameter(P_INVOICE_DATE, DBNull.Value, GetType(System.DateTime))
+            inParameters(6) = New DBHelper.DBHelperParameter(P_INVOICE_DATE, DBNull.Value, GetType(DateTime))
         End If
 
         If Not invoiceTypeId.Equals(Guid.Empty) Then
             inParameters(7) = New DBHelper.DBHelperParameter(P_INVOICE_TYPE_ID, invoiceTypeId.ToByteArray)
         Else
-            inParameters(7) = New DBHelper.DBHelperParameter(P_INVOICE_TYPE_ID, DBNull.Value, GetType(System.Guid))
+            inParameters(7) = New DBHelper.DBHelperParameter(P_INVOICE_TYPE_ID, DBNull.Value, GetType(Guid))
         End If
 
         If Not invoiceStatusId.Equals(Guid.Empty) Then
             inParameters(8) = New DBHelper.DBHelperParameter(P_INVOICE_STATUS_ID, invoiceStatusId.ToByteArray)
         Else
-            inParameters(8) = New DBHelper.DBHelperParameter(P_INVOICE_STATUS_ID, DBNull.Value, GetType(System.Guid))
+            inParameters(8) = New DBHelper.DBHelperParameter(P_INVOICE_STATUS_ID, DBNull.Value, GetType(Guid))
         End If
 
         If Not invoiceReceivedDate.Trim.Equals("") Then
             inParameters(9) = New DBHelper.DBHelperParameter(P_INVOICE_RECEIVED_DATE, invoiceReceivedDate)
         Else
-            inParameters(9) = New DBHelper.DBHelperParameter(P_INVOICE_RECEIVED_DATE, DBNull.Value, GetType(System.DateTime))
+            inParameters(9) = New DBHelper.DBHelperParameter(P_INVOICE_RECEIVED_DATE, DBNull.Value, GetType(DateTime))
         End If
 
         Try
@@ -246,31 +247,31 @@ Public Class InvoiceTransDAL
         If Not BatchNumber.Trim.Equals("") Then
             inParameters(3) = New DBHelper.DBHelperParameter(P_BATCH_NUMBER, BatchNumber)
         Else
-            inParameters(3) = New DBHelper.DBHelperParameter(P_BATCH_NUMBER, DBNull.Value, GetType(System.String))
+            inParameters(3) = New DBHelper.DBHelperParameter(P_BATCH_NUMBER, DBNull.Value, GetType(String))
         End If
         inParameters(4) = New DBHelper.DBHelperParameter(P_USER_ID, UserId.ToByteArray)
         If Not InvoiceDate Is Nothing Then
             inParameters(5) = New DBHelper.DBHelperParameter(P_INVOICE_DATE, InvoiceDate.Value)
         Else
-            inParameters(5) = New DBHelper.DBHelperParameter(P_INVOICE_DATE, DBNull.Value, GetType(System.String))
+            inParameters(5) = New DBHelper.DBHelperParameter(P_INVOICE_DATE, DBNull.Value, GetType(String))
         End If
 
         If Not InvoiceStatusId.Equals(Guid.Empty) Then
             inParameters(6) = New DBHelper.DBHelperParameter(P_INVOICE_STATUS_ID, InvoiceStatusId.ToByteArray)
         Else
-            inParameters(6) = New DBHelper.DBHelperParameter(P_INVOICE_STATUS_ID, DBNull.Value, GetType(System.Guid))
+            inParameters(6) = New DBHelper.DBHelperParameter(P_INVOICE_STATUS_ID, DBNull.Value, GetType(Guid))
         End If
 
         If Not InvoiceDate Is Nothing Then
             inParameters(7) = New DBHelper.DBHelperParameter(P_INVOICE_RECEIVED_DATE, InvoiceReceivedDate.Value)
         Else
-            inParameters(7) = New DBHelper.DBHelperParameter(P_INVOICE_RECEIVED_DATE, DBNull.Value, GetType(System.String))
+            inParameters(7) = New DBHelper.DBHelperParameter(P_INVOICE_RECEIVED_DATE, DBNull.Value, GetType(String))
         End If
 
         If Not InvoiceTypeId.Equals(Guid.Empty) Then
             inParameters(8) = New DBHelper.DBHelperParameter(P_INVOICE_TYPE_ID, InvoiceTypeId.ToByteArray)
         Else
-            inParameters(8) = New DBHelper.DBHelperParameter(P_INVOICE_TYPE_ID, DBNull.Value, GetType(System.Guid))
+            inParameters(8) = New DBHelper.DBHelperParameter(P_INVOICE_TYPE_ID, DBNull.Value, GetType(Guid))
         End If
 
         Try
@@ -297,20 +298,20 @@ Public Class InvoiceTransDAL
         If Not BatchNumber.Trim.Equals("") Then
             inParameters(3) = New DBHelper.DBHelperParameter(P_BATCH_NUMBER, BatchNumber)
         Else
-            inParameters(3) = New DBHelper.DBHelperParameter(P_BATCH_NUMBER, DBNull.Value, GetType(System.String))
+            inParameters(3) = New DBHelper.DBHelperParameter(P_BATCH_NUMBER, DBNull.Value, GetType(String))
         End If
         inParameters(4) = New DBHelper.DBHelperParameter(P_USER_ID, UserId.ToByteArray)
         inParameters(5) = New DBHelper.DBHelperParameter(P_INVOICE_TRANS_ID, Id.ToByteArray)
         If Not InvoiceDate Is Nothing Then
             inParameters(6) = New DBHelper.DBHelperParameter(P_INVOICE_DATE, InvoiceDate.Value)
         Else
-            inParameters(6) = New DBHelper.DBHelperParameter(P_INVOICE_DATE, DBNull.Value, GetType(System.String))
+            inParameters(6) = New DBHelper.DBHelperParameter(P_INVOICE_DATE, DBNull.Value, GetType(String))
         End If
         'inParameters(7) = New DBHelper.DBHelperParameter(P_INVOICE_STATUS_ID, InvoiceStatusId.ToByteArray)
         If Not InvoiceReceivedDate Is Nothing Then
             inParameters(7) = New DBHelper.DBHelperParameter(P_INVOICE_RECEIVED_DATE, InvoiceReceivedDate.Value)
         Else
-            inParameters(7) = New DBHelper.DBHelperParameter(P_INVOICE_RECEIVED_DATE, DBNull.Value, GetType(System.String))
+            inParameters(7) = New DBHelper.DBHelperParameter(P_INVOICE_RECEIVED_DATE, DBNull.Value, GetType(String))
         End If
         inParameters(8) = New DBHelper.DBHelperParameter(P_INVOICE_TYPE_ID, InvoiceTypeId.ToByteArray)
         'Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
@@ -375,7 +376,7 @@ Public Class InvoiceTransDAL
                 Case 1
                     Return True
                 Case Else
-                    Throw New DatabaseException(Common.ErrorCodes.DB_ERROR)
+                    Throw New DatabaseException(ErrorCodes.DB_ERROR)
             End Select
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -394,7 +395,7 @@ Public Class InvoiceTransDAL
         Dim outParameters() As DBHelper.DBHelperParameter ' = New DBHelper.DBHelperParameter   {New DBHelper.DBHelperParameter(P_BATCH_INVOICE, GetType(DataSet))}
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                 {New DBHelper.DBHelperParameter(P_INVOICE_TRANS_ID, id), _
-                 New DBHelper.DBHelperParameter(P_CLAIM_XMLDOC, ClaimSet.GetXml, GetType(Xml.XmlDocument))}
+                 New DBHelper.DBHelperParameter(P_CLAIM_XMLDOC, ClaimSet.GetXml, GetType(XmlDocument))}
         Dim ds As New DataSet
         Dim tbl As String = "Claims"
         Try

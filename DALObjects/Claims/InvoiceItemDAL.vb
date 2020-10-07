@@ -51,7 +51,7 @@ Public Class InvoiceItemDAL
         Dim parameters() As DBHelper.DBHelperParameter = _
            New DBHelper.DBHelperParameter() _
            { _
-               New DBHelper.DBHelperParameter(InvoiceItemDAL.COL_NAME_INVOICE_ID, invoiceId.ToByteArray()) _
+               New DBHelper.DBHelperParameter(COL_NAME_INVOICE_ID, invoiceId.ToByteArray()) _
            }
         Try
             familyDS = DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)

@@ -664,7 +664,7 @@ Public Class PriceListDetailDAL
             'End If
 
             If (Not tbl.Columns.Contains(COL_NAME_MANUFACTURER_ORIGIN)) Then
-                tbl.Columns.Add(COL_NAME_MANUFACTURER_ORIGIN, GetType(System.String))
+                tbl.Columns.Add(COL_NAME_MANUFACTURER_ORIGIN, GetType(String))
             End If
 
             If (Not tbl.Columns.Contains(COL_NAME_STOCK_ITEM_TYPE)) Then
@@ -679,9 +679,9 @@ Public Class PriceListDetailDAL
                 MyBase.UpdateFromSP(ds.Tables(TABLE_NAME), Transaction, changesFilter)
             Catch dbEx As DataBaseAccessException
                 If (dbEx.Code.Equals("200")) Then
-                    Throw New ElitaPlusException("PriceListDetail - " + dbEx.Message, Common.ErrorCodes.DB_READ_ERROR)
+                    Throw New ElitaPlusException("PriceListDetail - " + dbEx.Message, ErrorCodes.DB_READ_ERROR)
                 ElseIf (dbEx.Code.Equals("100")) Then
-                    Throw New ElitaPlusException("PriceListDetail - " + dbEx.Message, Common.ErrorCodes.NO_DATA)
+                    Throw New ElitaPlusException("PriceListDetail - " + dbEx.Message, ErrorCodes.NO_DATA)
                 End If
 
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, dbEx)
@@ -755,7 +755,7 @@ Public Class PriceListDetailDAL
                                         selectStmt,
                                         parameters)
         If Not parameters(0).Value Is Nothing Then
-            Return DateTime.Parse(CType(CType(parameters(0), OracleParameter).Value, Oracle.ManagedDataAccess.Types.OracleDate))
+            Return DateTime.Parse(CType(CType(parameters(0), OracleParameter).Value, OracleDate))
         End If
 
         Return Nothing
@@ -1036,15 +1036,15 @@ Public Class PriceListDetailDAL
         ' Call DBHelper Store Procedure
         Try
             Using connection As New OracleConnection(DBHelper.ConnectString)
-                Using cmd As OracleCommand = OracleDbHelper.CreateCommand(storedProc, CommandType.StoredProcedure, connection)
+                Using cmd As OracleCommand = CreateCommand(storedProc, CommandType.StoredProcedure, connection)
                     cmd.BindByName = True
                     cmd.Parameters.AddRange(parameters)
-                    OracleDbHelper.Fetch(cmd, tbl, ds)
+                    Fetch(cmd, tbl, ds)
                 End Using
             End Using
             Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
             If (Not par Is Nothing And par.Value = 200) Then
-                Throw New ElitaPlusException("PriceListDetail - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
+                Throw New ElitaPlusException("PriceListDetail - " + methodName, ErrorCodes.DB_READ_ERROR)
             End If
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

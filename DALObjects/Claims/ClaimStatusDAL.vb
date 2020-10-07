@@ -258,7 +258,7 @@ Public Class ClaimStatusDAL
 
 
     End Sub
-    Public Sub UpdateExtendedMV(claimId As System.Guid, claimStatusId As System.Guid, statusCode As String)
+    Public Sub UpdateExtendedMV(claimId As Guid, claimStatusId As Guid, statusCode As String)
         Dim updateStmt As String = Config("/SQL/UPDATE_EXTENDED_CLAIM_MV")
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_PARAM_CLAIM_ID, claimId.ToByteArray), _
                                                                                        New DBHelper.DBHelperParameter(COL_NAME_CLAIM_STATUS_ID, claimStatusId.ToByteArray), _

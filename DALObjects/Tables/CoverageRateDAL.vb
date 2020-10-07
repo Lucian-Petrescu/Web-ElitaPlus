@@ -112,10 +112,10 @@ Public Class CoverageRateDAL
                                    {New DBHelper.DBHelperParameter(PARAM_NAME_DEALER_ID, DealerId.ToByteArray), _
                                     New DBHelper.DBHelperParameter(PARAM_NAME_PRODUCT_CODE, ProductCode), _
                                     New DBHelper.DBHelperParameter(PARAM_NAME_CERTIFICATE_DURATION, certificate_duration), _
-                                    New DBHelper.DBHelperParameter(PARAM_NAME_MANUFACTURE_DURATION, IIf(CoverageDuration = -1, System.DBNull.Value, CoverageDuration)), _
+                                    New DBHelper.DBHelperParameter(PARAM_NAME_MANUFACTURE_DURATION, IIf(CoverageDuration = -1, DBNull.Value, CoverageDuration)), _
                                     New DBHelper.DBHelperParameter(PARAM_NAME_PURCHASE_PRICE, PurchasePrice, GetType(Double)), _
                                     New DBHelper.DBHelperParameter(PARAM_NAME_WARRANTY_SALES_DATE, WarrSalesDate, GetType(Date)), _
-                                    New DBHelper.DBHelperParameter(PARAM_NAME_PRODUCT_SALES_DATE, IIf(ProductPurchaseDate = Date.MinValue, System.DBNull.Value, ProductPurchaseDate), GetType(Date))}
+                                    New DBHelper.DBHelperParameter(PARAM_NAME_PRODUCT_SALES_DATE, IIf(ProductPurchaseDate = Date.MinValue, DBNull.Value, ProductPurchaseDate), GetType(Date))}
 
 
         ' Output parameters

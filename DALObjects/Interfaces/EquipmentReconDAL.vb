@@ -67,7 +67,7 @@ Public Class EquipmentReconDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("equipment_recon_wrk_id", id.ToByteArray)}
+        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("equipment_recon_wrk_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception

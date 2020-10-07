@@ -1,5 +1,5 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (7/29/2008)********************
-
+Imports System.Xml
 
 Public Class PickupListDetailDAL
     Inherits DALBase
@@ -74,7 +74,7 @@ Public Class PickupListDetailDAL
 
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                 {New DBHelper.DBHelperParameter(PARAM_USER_ID, userId.ToByteArray), _
-                 New DBHelper.DBHelperParameter(PARAM_PICKUP_EXCEPTIONS_XMLDOC, PickupExceptions.GetXml, GetType(Xml.XmlDocument))}
+                 New DBHelper.DBHelperParameter(PARAM_PICKUP_EXCEPTIONS_XMLDOC, PickupExceptions.GetXml, GetType(XmlDocument))}
         Dim ds As New DataSet
 
         Try

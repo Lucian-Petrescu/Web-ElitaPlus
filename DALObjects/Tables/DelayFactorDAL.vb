@@ -98,7 +98,7 @@ Public Class DelayFactorDAL
             End If
 
             selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
-                                    Environment.NewLine & "ORDER BY " & Environment.NewLine & DelayFactorDAL.COL_NAME_EFFECTIVE_DATE & " DESC")
+                                    Environment.NewLine & "ORDER BY " & Environment.NewLine & COL_NAME_EFFECTIVE_DATE & " DESC")
 
             ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
 

@@ -59,7 +59,7 @@ Public Class CustItemDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("registration_item_id", id.ToByteArray)}
+        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("registration_item_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -93,9 +93,9 @@ Public Class CustItemDAL
 
         Try
             Dim ds As New DataSet
-            Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_EMAIL, emailId), _
-                                                                                               New DBHelper.DBHelperParameter(COL_NAME_ADDRESS_TYPE_ID, addressTypeId.ToByteArray), _
-                                                                                               New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
+            Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter(COL_NAME_EMAIL, emailId), _
+                                                                                               New DBHelperParameter(COL_NAME_ADDRESS_TYPE_ID, addressTypeId.ToByteArray), _
+                                                                                               New DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
@@ -111,9 +111,9 @@ Public Class CustItemDAL
 
         Try
             Dim ds As New DataSet
-            Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_IMEI_NUMBER, imeiNumber), _
-                                                                                                   New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray), _
-                                                                                                   New DBHelper.DBHelperParameter(COL_NAME_REGISTRATION_ID, registrationId.ToByteArray)}
+            Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter(COL_NAME_IMEI_NUMBER, imeiNumber), _
+                                                                                                   New DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray), _
+                                                                                                   New DBHelperParameter(COL_NAME_REGISTRATION_ID, registrationId.ToByteArray)}
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
@@ -125,8 +125,8 @@ Public Class CustItemDAL
 
     Public Function GetItemByRegistrationAndIMEI(registrationId As Guid, imeiNumber As String) As Guid
         Dim selectStmt As String = Config("/SQL/GET_ITEM_BY_REG_AND_IMEI")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_REGISTRATION_ID, registrationId.ToByteArray), _
-                                                                                               New DBHelper.DBHelperParameter(COL_NAME_IMEI_NUMBER, imeiNumber)}
+        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter(COL_NAME_REGISTRATION_ID, registrationId.ToByteArray), _
+                                                                                               New DBHelperParameter(COL_NAME_IMEI_NUMBER, imeiNumber)}
         Try
             Dim obj As Object
             obj = DBHelper.ExecuteScalar(selectStmt, parameters)
@@ -147,8 +147,8 @@ Public Class CustItemDAL
 
         Try
             Dim ds As New DataSet
-            Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_IMEI_NUMBER, imeiNumber), _
-                                                                                                    New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
+            Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter(COL_NAME_IMEI_NUMBER, imeiNumber), _
+                                                                                                    New DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
 
             Dim obj As Object
             obj = DBHelper.ExecuteScalar(selectStmt, parameters)
@@ -179,9 +179,9 @@ Public Class CustItemDAL
         End If
 
         Try
-            Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_TAX_ID, taxID), _
-                                                                                               New DBHelper.DBHelperParameter(COL_NAME_IMEI_NUMBER, imeiNumber), _
-                                                                                                New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
+            Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter(COL_NAME_TAX_ID, taxID), _
+                                                                                               New DBHelperParameter(COL_NAME_IMEI_NUMBER, imeiNumber), _
+                                                                                                New DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
 
             Dim obj As Object
             obj = DBHelper.ExecuteScalar(selectStmt, parameters)
@@ -220,7 +220,7 @@ Public Class CustItemDAL
 
         Try
             ' Call DBHelper Store Procedure
-            DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
+            ExecuteSp(selectStmt, inputParameters, outputParameter)
             If (Not outputParameter(0) Is Nothing) Then
                 returnValue.RegistrationId = outputParameter(0).Value
             End If
@@ -246,7 +246,7 @@ Public Class CustItemDAL
 
         Try
             ' Call DBHelper Store Procedure
-            DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
+            ExecuteSp(selectStmt, inputParameters, outputParameter)
             If (Not outputParameter(0) Is Nothing) Then
                 iRet = outputParameter(0).Value
             End If

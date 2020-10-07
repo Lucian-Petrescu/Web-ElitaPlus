@@ -50,10 +50,10 @@ Public Class ServiceGroupDAL
 
     Public Function countofrecords(servicegroupid As Guid) As DataSet
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/COUNTOFRECORDS"))
+            Using cmd As OracleCommand = CreateCommand(Config("/SQL/COUNTOFRECORDS"))
                 cmd.AddParameter(PAR_IN_SERVICE_GROUP_ID, OracleDbType.Raw, servicegroupid.ToByteArray())
                 cmd.AddParameter(PAR_OU_RESULT_SET, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return OracleDbHelper.Fetch(cmd, "countofrecords")
+                Return Fetch(cmd, "countofrecords")
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -70,11 +70,11 @@ Public Class ServiceGroupDAL
 
     Private Sub Asyncsgrtmanusave(ServiceGroupId As Guid, RiskTypeId As Guid, SgrtManu As String)
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/SGRTMANU_SAVE"))
+            Using cmd As OracleCommand = CreateCommand(Config("/SQL/SGRTMANU_SAVE"))
                 cmd.AddParameter(PAR_IN_SERVICE_GROUP_ID, OracleDbType.Raw, ServiceGroupId.ToByteArray())
                 cmd.AddParameter(PAR_IN_RISK_TYPE_ID, OracleDbType.Raw, value:=RiskTypeId)
                 cmd.AddParameter(PAR_IN_SGRT_MANU, OracleDbType.Clob, value:=SgrtManu)
-                OracleDbHelper.ExecuteNonQuery(cmd)
+                ExecuteNonQuery(cmd)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -87,12 +87,12 @@ Public Class ServiceGroupDAL
         Try
 
 
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD_GRID"))
+            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD_GRID"))
                 cmd.AddParameter(PAR_IN_SERVICE_GROUP_ID, OracleDbType.Raw, servicegroupID.ToByteArray())
                 cmd.AddParameter(PAR_IN_PAGE_INDEX, OracleDbType.Int64, value:=pageindex)
                 cmd.AddParameter(PAR_IN_NAME_SORT_EXPRESSION, OracleDbType.Varchar2, value:=sortExpression)
                 cmd.AddParameter(PAR_OU_RESULT_SET, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return OracleDbHelper.Fetch(cmd, "sgrtmanu")
+                Return Fetch(cmd, "sgrtmanu")
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

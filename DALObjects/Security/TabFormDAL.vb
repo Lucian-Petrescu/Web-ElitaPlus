@@ -1,3 +1,4 @@
+Imports System.Collections.Generic
 Imports Assurant.ElitaPlus.DALObjects.DBHelper
 
 #Region "TabFormData"
@@ -36,8 +37,8 @@ Public Class TabFormDAL
     Private Function ExecuteSP(selectStmt As String, userId As String) As TabFormData
         Dim oTabFormData As New TabFormData
 
-        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                           New DBHelper.DBHelperParameter(COL_NAME_USER, userId)}
+        Dim inputParameters() As DBHelperParameter = New DBHelperParameter() { _
+                           New DBHelperParameter(COL_NAME_USER, userId)}
 
         Dim outputParameters(TOTAL_PARAM) As DBHelperParameter
 
@@ -73,12 +74,12 @@ Public Class TabFormDAL
 
     Public Sub ClearTabs()
         Dim deleteStmt As String = Config("/SQL/CLEAR_NEW_TABS")
-       DBHelper.Execute(deleteStmt, Nothing)
+       Execute(deleteStmt, Nothing)
     End Sub
 
     Public Sub ClearForms()
        Dim deleteStmt As String = Config("/SQL/CLEAR_NEW_FORMS")
-        DBHelper.Execute(deleteStmt, Nothing)
+        Execute(deleteStmt, Nothing)
     End Sub
 
    
@@ -100,7 +101,7 @@ Public Class TabFormDAL
 
     Public Function LoadNewFormList(languageID As Guid) As DataSet
         Try
-            Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("language_id", languageID.ToByteArray)}
+            Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("language_id", languageID.ToByteArray)}
             Dim selectStmt As String = Config("/SQL/GET_NEW_FORMS")
             Dim ds As New DataSet
 
@@ -127,49 +128,49 @@ Public Class TabFormDAL
         intErrCode = 0
         sqlStmt = Config("/SQL/SAVE_NEW_FORM_PROCEDURE")
         Try
-            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                            New DBHelper.DBHelperParameter("P_RETURN_CODE", intErrCode.GetType), _
-                            New DBHelper.DBHelperParameter("P_ErrorMsg", strErrMsg.GetType, 500)}
-            Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
-            Dim param As DBHelper.DBHelperParameter
+            Dim outParameters() As DBHelperParameter = New DBHelperParameter() { _
+                            New DBHelperParameter("P_RETURN_CODE", intErrCode.GetType), _
+                            New DBHelperParameter("P_ErrorMsg", strErrMsg.GetType, 500)}
+            Dim inParameters As New List(Of DBHelperParameter)
+            Dim param As DBHelperParameter
 
-            param = New DBHelper.DBHelperParameter("P_USER", strUser)
+            param = New DBHelperParameter("P_USER", strUser)
             inParameters.Add(param)
 
-            param = New DBHelper.DBHelperParameter("P_NEW_APPLICATION_FORM_ID", New_Form_Id.ToByteArray)
+            param = New DBHelperParameter("P_NEW_APPLICATION_FORM_ID", New_Form_Id.ToByteArray)
             inParameters.Add(param)
 
-            param = New DBHelper.DBHelperParameter("P_TAB", strTab)
+            param = New DBHelperParameter("P_TAB", strTab)
             inParameters.Add(param)
 
-            param = New DBHelper.DBHelperParameter("P_CODE", strCode)
+            param = New DBHelperParameter("P_CODE", strCode)
             inParameters.Add(param)
 
-            param = New DBHelper.DBHelperParameter("P_ENGLISH", strEnglish)
+            param = New DBHelperParameter("P_ENGLISH", strEnglish)
             inParameters.Add(param)
 
-            param = New DBHelper.DBHelperParameter("P_RELATIVE_URL", strRelativeURL)
+            param = New DBHelperParameter("P_RELATIVE_URL", strRelativeURL)
             inParameters.Add(param)
 
-            param = New DBHelper.DBHelperParameter("P_NAV_ALWAYS_ALLOWED", strNavAllowed)
+            param = New DBHelperParameter("P_NAV_ALWAYS_ALLOWED", strNavAllowed)
             inParameters.Add(param)
 
             If strApproved.Trim <> String.Empty Then
-                param = New DBHelper.DBHelperParameter("P_APPROVED", strApproved)
+                param = New DBHelperParameter("P_APPROVED", strApproved)
                 inParameters.Add(param)
             End If
 
             If strFormCategory.Trim <> String.Empty Then
-                param = New DBHelper.DBHelperParameter("P_FORM_CATEGORY_CODE", strFormCategory)
+                param = New DBHelperParameter("P_FORM_CATEGORY_CODE", strFormCategory)
                 inParameters.Add(param)
             End If
 
             If strQueryString.Trim <> String.Empty Then
-                param = New DBHelper.DBHelperParameter("P_QUERY_STRING", strQueryString)
+                param = New DBHelperParameter("P_QUERY_STRING", strQueryString)
                 inParameters.Add(param)
             End If
 
-            DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, outParameters)
+            ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, outParameters)
 
             If Not outParameters(0).Value Is Nothing Then
                 Try
@@ -193,14 +194,14 @@ Public Class TabFormDAL
         strErrMsg = ""
         intErrCode = 0
         Try
-            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                            New DBHelper.DBHelperParameter("P_RETURN_CODE", intErrCode.GetType), _
-                            New DBHelper.DBHelperParameter("P_ErrorMsg", strErrMsg.GetType, 500)}
-            Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                            New DBHelper.DBHelperParameter("P_NEW_APPLICATION_FORM_ID", New_Form_Id.ToByteArray)}
-            Dim param As DBHelper.DBHelperParameter
+            Dim outParameters() As DBHelperParameter = New DBHelperParameter() { _
+                            New DBHelperParameter("P_RETURN_CODE", intErrCode.GetType), _
+                            New DBHelperParameter("P_ErrorMsg", strErrMsg.GetType, 500)}
+            Dim inParameters() As DBHelperParameter = New DBHelperParameter() { _
+                            New DBHelperParameter("P_NEW_APPLICATION_FORM_ID", New_Form_Id.ToByteArray)}
+            Dim param As DBHelperParameter
 
-            DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters, outParameters)
+            ExecuteSpParamBindByName(sqlStmt, inParameters, outParameters)
 
             If Not outParameters(0).Value Is Nothing Then
                 Try

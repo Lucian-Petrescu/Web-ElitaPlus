@@ -153,7 +153,7 @@ Public Class VSCQuoteDAL
                      SetParameter(SP_PARAM_NAME_P_OPTIONS, .Options), _
                      SetParameter(SP_PARAM_NAME_P_WARRANTY_DATE, .WarrantyDate), _
                      SetParameter(SP_PARAM_NAME_P_EXTERNAL_CAR_CODE, .ExternalCarCode), _
-                     SetParameter(SP_PARAM_NAME_P_VEHICLE_VALUE, IIf(.VehicleValue > 0, .VehicleValue, System.DBNull.Value))}
+                     SetParameter(SP_PARAM_NAME_P_VEHICLE_VALUE, IIf(.VehicleValue > 0, .VehicleValue, DBNull.Value))}
 
         End With
         outputQuoteInfoParameter(P_RETURN) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_P_RETURN, GetType(Integer))
@@ -169,7 +169,7 @@ Public Class VSCQuoteDAL
             ' Get the Quote Item(s)
             Dim inputQuoteItemsParameters(TOTAL_INPUT_PARAM_Q_IITEMS) As DBHelper.DBHelperParameter
             Dim outputQuoteItemsParameter(TOTAL_OUTPUT_PARAM_ITEMS) As DBHelper.DBHelperParameter
-            Dim quote_id As Guid = New Guid(CType(ds.Tables(TABLE_NAME_QUOTE_HEADER).Rows(0).Item(VSCQuoteDAL.COL_NAME_QUOTE_ID), Byte()))
+            Dim quote_id As Guid = New Guid(CType(ds.Tables(TABLE_NAME_QUOTE_HEADER).Rows(0).Item(COL_NAME_QUOTE_ID), Byte()))
             inputQuoteItemsParameters(P_QOUTE_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_P_QUOTE_ID, quote_id.ToByteArray)
 
             selectStmt = Config("/SQL/GET_VSC_QUOTE_ITEM")

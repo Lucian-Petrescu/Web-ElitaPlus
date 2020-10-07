@@ -1,5 +1,5 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject v2.cst (7/1/2017)********************
-
+Imports System.Collections.Generic
 
 Public Class CaseInteractionDAL
     Inherits OracleDALBase
@@ -51,10 +51,10 @@ Public Class CaseInteractionDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD"))
+            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD"))
                 cmd.AddParameter(TABLE_KEY_NAME, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
+                Fetch(cmd, TABLE_NAME, familyDS)
             End Using        
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -65,7 +65,7 @@ Public Class CaseInteractionDAL
         Dim selectStmt As String = Config("/SQL/LOAD_CASE_INTERACTION_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(PO_CURSOR_CASE) As DBHelper.DBHelperParameter
-        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim inParameters As New List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
         param = New DBHelper.DBHelperParameter("pi_case_id", CaseId.ToByteArray)

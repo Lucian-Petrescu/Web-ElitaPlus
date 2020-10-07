@@ -128,7 +128,7 @@ Public Class IssueQuestionDAL
         selectStmt &= dynamic_Where_Clause
 
         Try
-            Return DBHelper.Fetch(ds, selectStmt, IssueQuestionDAL.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -189,7 +189,7 @@ Public Class IssueQuestionDAL
         selectStmt &= dynamic_Where_Clause
 
         Try
-            Return DBHelper.Fetch(ds, selectStmt, IssueQuestionDAL.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -206,7 +206,7 @@ Public Class IssueQuestionDAL
         Try
             dynamic_Where_Clause &= " WHERE " & COL_NAME_QUESTION_LIST_CODE.ToUpper & " = '" & Code & "'"
             selectStmt &= dynamic_Where_Clause
-            Return DBHelper.Fetch(ds, selectStmt, IssueQuestionDAL.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -224,7 +224,7 @@ Public Class IssueQuestionDAL
         Try
             dynamic_Where_Clause &= " WHERE " & COL_NAME_QUESTION_LIST_CODE.ToUpper & " = '" & Code & "'"
             selectStmt &= dynamic_Where_Clause
-            Return DBHelper.Fetch(ds, selectStmt, IssueQuestionDAL.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try

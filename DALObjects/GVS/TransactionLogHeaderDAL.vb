@@ -1,5 +1,5 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (11/12/2008)********************
-
+Imports System.Text
 
 Public Class TransactionLogHeaderDAL
     Inherits DALBase
@@ -193,9 +193,9 @@ Public Class TransactionLogHeaderDAL
             Update(familyDataset, tr, DataRowState.Deleted)
             Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
-            If Not familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME).Rows.Count > 0 Then
+            If Not familyDataset.Tables(TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(TABLE_NAME).Rows.Count > 0 Then
                 Dim oTransactionLogHeaderDAL As New TransactionLogHeaderDAL
-                oTransactionLogHeaderDAL.Update(familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+                oTransactionLogHeaderDAL.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             End If
 
             If Transaction Is Nothing Then
@@ -222,7 +222,7 @@ Public Class TransactionLogHeaderDAL
                 Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                                     {New DBHelper.DBHelperParameter(COL_NAME_COMPANY_GROUP_ID, CType(dr(COL_NAME_COMPANY_GROUP_ID), Byte())), _
                                     New DBHelper.DBHelperParameter(COL_NAME_FUNCTION_TYPE_ID, CType(dr(COL_NAME_FUNCTION_TYPE_ID), Byte())), _
-                                    New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_XML, dr(COL_NAME_TRANSACTION_XML).ToString, GetType(System.Text.StringBuilder)), _
+                                    New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_XML, dr(COL_NAME_TRANSACTION_XML).ToString, GetType(StringBuilder)), _
                                     New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_PROCESSED_DATE, IIf(IsDate(dr(COL_NAME_TRANSACTION_PROCESSED_DATE)), dr(COL_NAME_TRANSACTION_PROCESSED_DATE), Date.MinValue)), _
                                     New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_STATUS_ID, CType(dr(COL_NAME_TRANSACTION_STATUS_ID), Byte())), _
                                     New DBHelper.DBHelperParameter(COL_NAME_CREATED_BY, CType(dr(COL_NAME_CREATED_BY), String)), _
@@ -258,7 +258,7 @@ Public Class TransactionLogHeaderDAL
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                                 {New DBHelper.DBHelperParameter(COL_NAME_COMPANY_GROUP_ID, CType(dr(COL_NAME_COMPANY_GROUP_ID), Byte())), _
                                 New DBHelper.DBHelperParameter(COL_NAME_FUNCTION_TYPE_ID, CType(dr(COL_NAME_FUNCTION_TYPE_ID), Byte())), _
-                                New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_XML, dr(COL_NAME_TRANSACTION_XML).ToString, GetType(System.Text.StringBuilder)), _
+                                New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_XML, dr(COL_NAME_TRANSACTION_XML).ToString, GetType(StringBuilder)), _
                                 New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_PROCESSED_DATE, IIf(IsDate(dr(COL_NAME_TRANSACTION_PROCESSED_DATE)), dr(COL_NAME_TRANSACTION_PROCESSED_DATE), Date.MinValue)), _
                                 New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_STATUS_ID, CType(dr(COL_NAME_TRANSACTION_STATUS_ID), Byte())), _
                                 New DBHelper.DBHelperParameter(COL_NAME_MODIFIED_BY, CType(dr(COL_NAME_MODIFIED_BY), String)), _
@@ -334,7 +334,7 @@ Public Class TransactionLogHeaderDAL
     Public Function GetStatusList(transactionLogHeaderId As String, languageId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/TRANSACTION_STATUS")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-            New DBHelper.DBHelperParameter(DALBase.PAR_NAME_ROW_NUMBER, DALBase.MAX_NUMBER_OF_ROWS, GetType(Integer))}
+            New DBHelper.DBHelperParameter(DALBase.PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS, GetType(Integer))}
         Dim whereClauseConditions As String = ""
         Dim ds As DataSet = New DataSet
 
@@ -351,7 +351,7 @@ Public Class TransactionLogHeaderDAL
 
     Public Function GetPartList(transactionLogHeaderId As String) As DataSet
         Dim selectStmt As String = Config("/SQL/TRANSACTION_PART")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(DALBase.PAR_NAME_ROW_NUMBER, DALBase.MAX_NUMBER_OF_ROWS, GetType(Integer))}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(DALBase.PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS, GetType(Integer))}
         Dim whereClauseConditions As String = ""
         Dim ds As DataSet = New DataSet
 
@@ -367,7 +367,7 @@ Public Class TransactionLogHeaderDAL
 
     Public Function GetFollowUpList(transactionLogHeaderId As String, languageId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/TRANSACTION_FOLLOWUP")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(DALBase.PAR_NAME_ROW_NUMBER, DALBase.MAX_NUMBER_OF_ROWS, GetType(Integer))}
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(DALBase.PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS, GetType(Integer))}
         Dim whereClauseConditions As String = ""
         Dim ds As DataSet = New DataSet
 

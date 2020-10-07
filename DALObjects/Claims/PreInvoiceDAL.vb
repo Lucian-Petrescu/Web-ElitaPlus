@@ -40,7 +40,7 @@ Public Class PreInvoiceDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pre_invoice_id", id.ToByteArray)}
+        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("pre_invoice_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -71,18 +71,18 @@ Public Class PreInvoiceDAL
 
     Public Function GeneratePreInvoice(companyCode As String) As String
         Dim selectStmt As String = Config("/SQL/GENERATE_PRE_INVOICE")
-        Dim inParameters(0) As DBHelper.DBHelperParameter
+        Dim inParameters(0) As DBHelperParameter
 
-        inParameters(0) = New DBHelper.DBHelperParameter(PAR_COMPANY_CODE, companyCode.Trim)
+        inParameters(0) = New DBHelperParameter(PAR_COMPANY_CODE, companyCode.Trim)
 
-        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                               New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 32000)}
+        Dim outParameters() As DBHelperParameter = New DBHelperParameter() {
+                               New DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 32000)}
 
         Dim ds As New DataSet
         Dim tbl As String = TABLE_NAME
 
         ' Call DBHelper Store Procedure
-        DBHelper.ExecuteSp(selectStmt, inParameters, outParameters)
+        ExecuteSp(selectStmt, inParameters, outParameters)
 
         Return outParameters(0).Value
 
@@ -169,7 +169,7 @@ Public Class PreInvoiceDAL
     Public Function GetBonusAmount(BatchNumber As String) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_TOTAL_BONUS_AMOUNT")
 
-        Dim parameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_BATCH_NUMBER, BatchNumber)}
+        Dim parameter() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter(COL_NAME_BATCH_NUMBER, BatchNumber)}
 
         Try
             Return DBHelper.ExecuteScalar(selectStmt, parameter)
@@ -182,7 +182,7 @@ Public Class PreInvoiceDAL
     Public Function GetTotalAmount(BatchNumber As String) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_TOTAL_AMOUNT")
 
-        Dim parameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_BATCH_NUMBER, BatchNumber)}
+        Dim parameter() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter(COL_NAME_BATCH_NUMBER, BatchNumber)}
 
         Try
             Return DBHelper.ExecuteScalar(selectStmt, parameter)
@@ -194,7 +194,7 @@ Public Class PreInvoiceDAL
     Public Function GetTotalBonusAndAmount(BatchNumber As String) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_TOTAL_BONUS_AND_AMOUNT")
 
-        Dim parameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_BATCH_NUMBER, BatchNumber)}
+        Dim parameter() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter(COL_NAME_BATCH_NUMBER, BatchNumber)}
 
         Try
             Dim ds As New DataSet

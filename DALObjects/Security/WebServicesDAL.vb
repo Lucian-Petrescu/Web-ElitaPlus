@@ -57,7 +57,7 @@ Public Class WebServicesDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("webservice_id", id.ToByteArray)}
+        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("webservice_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -127,7 +127,7 @@ Public Class WebServicesDAL
     Private Sub AsyncExecuteSP(oWebUserLogData As WebUserLogData, selectStmt As String)
 
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
+            Using cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, CreateConnection())
                 cmd.AddParameter(PAR_NAME_Web_UserLog_id, OracleDbType.Raw, oWebUserLogData.Web_UserLog_id.ToByteArray)
                 cmd.AddParameter(PAR_NAME_WebServiceName, OracleDbType.Varchar2, oWebUserLogData.Url)
                 cmd.AddParameter(PAR_NAME_WebServiceFunctionName, OracleDbType.Varchar2, oWebUserLogData.WebServiceFunctionName)

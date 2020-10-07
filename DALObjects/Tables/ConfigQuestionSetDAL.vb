@@ -44,7 +44,7 @@ Public Class ConfigQuestionSetDAL
 
         Dim errorMsg As String = String.Empty
         Dim selectStmt As String = Config("/SQL/VALIDATE")
-        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
+        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, CreateConnection())
 
         cmd.BindByName = True
 
@@ -93,7 +93,7 @@ Public Class ConfigQuestionSetDAL
         cmd.AddParameter("po_result", OracleDbType.Varchar2, direction:=ParameterDirection.Output, size:=400)
 
         Try
-            OracleDbHelper.ExecuteNonQuery(cmd)
+            ExecuteNonQuery(cmd)
             errorMsg = cmd.Parameters.Item("po_result").Value.ToString()
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -112,14 +112,14 @@ Public Class ConfigQuestionSetDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
+        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, CreateConnection())
 
         cmd.BindByName = True
         cmd.AddParameter("pi_config_question_set_id", OracleDbType.Raw, id.ToByteArray())
         cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
+            Fetch(cmd, TABLE_NAME, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -132,7 +132,7 @@ Public Class ConfigQuestionSetDAL
 
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As New DataSet
-        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
+        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, CreateConnection())
 
         cmd.BindByName = True
         cmd.AddParameter("pi_language_id", OracleDbType.Raw, LanguageID.ToByteArray())
@@ -177,7 +177,7 @@ Public Class ConfigQuestionSetDAL
         cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            Return OracleDbHelper.Fetch(cmd, TABLE_NAME, ds)
+            Return Fetch(cmd, TABLE_NAME, ds)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -203,7 +203,7 @@ Public Class ConfigQuestionSetDAL
 
         Try
             ' Call DBHelper Store Procedure
-            DBHelper.ExecuteSp(selectStmt, inputParameters, Nothing)
+            ExecuteSp(selectStmt, inputParameters, Nothing)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try

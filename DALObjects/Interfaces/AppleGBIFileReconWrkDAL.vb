@@ -80,7 +80,7 @@ Public Class AppleGBIFileReconWrkDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(TABLE_KEY_NAME, id.ToByteArray)}
+        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter(TABLE_KEY_NAME, id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -99,13 +99,13 @@ Public Class AppleGBIFileReconWrkDAL
         Try
 
             Dim strCommand As String = Config("/SQL/SUMMARY")
-            Using connection As New OracleConnection(DBHelper.ConnectString)
-                Using cmd As OracleCommand = OracleDbHelper.CreateCommand(strCommand, CommandType.StoredProcedure, connection)
+            Using connection As New OracleConnection(ConnectString)
+                Using cmd As OracleCommand = CreateCommand(strCommand, CommandType.StoredProcedure, connection)
                     cmd.BindByName = True
                     cmd.AddParameter(PAR_I_FROM_DATE, OracleDbType.Varchar2, 20, FromDate.ToString("MM/dd/yyyy"))
                     cmd.AddParameter(PAR_I_THRUE_DATE, OracleDbType.Varchar2, 20, ThruDate.ToString("MM/dd/yyyy"))
                     cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                    Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
+                    Return Fetch(cmd, TABLE_NAME)
                 End Using
             End Using
         Catch ex As Exception
@@ -121,8 +121,8 @@ Public Class AppleGBIFileReconWrkDAL
         Try
 
             Dim strCommand As String = Config("/SQL/DETAIL")
-            Using connection As New OracleConnection(DBHelper.ConnectString)
-                Using cmd As OracleCommand = OracleDbHelper.CreateCommand(strCommand, CommandType.StoredProcedure, connection)
+            Using connection As New OracleConnection(ConnectString)
+                Using cmd As OracleCommand = CreateCommand(strCommand, CommandType.StoredProcedure, connection)
                     cmd.BindByName = True
 
                     cmd.AddParameter(PAR_I_FILE_PROCESSED_ID, OracleDbType.Raw, 20, FileProcessedId.ToByteArray)
@@ -130,7 +130,7 @@ Public Class AppleGBIFileReconWrkDAL
                     cmd.AddParameter(PAR_I_LANGUAGE_ID, OracleDbType.Raw, 20, LanguageId.ToByteArray)
 
                     cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                    Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
+                    Return Fetch(cmd, TABLE_NAME)
                 End Using
             End Using
         Catch ex As Exception
@@ -150,7 +150,7 @@ Public Class AppleGBIFileReconWrkDAL
             outputParameter(0) = New DBHelperParameter(COL_NAME_RETURN, GetType(Integer))
 
             ' Call DBHelper Store Procedure
-            DBHelper.ExecuteSp(sqlStmt, inputParameters, outputParameter)
+            ExecuteSp(sqlStmt, inputParameters, outputParameter)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try

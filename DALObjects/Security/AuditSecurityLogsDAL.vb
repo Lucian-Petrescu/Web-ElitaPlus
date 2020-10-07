@@ -1,5 +1,5 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (3/14/2017)********************
-
+Imports System.Collections.Generic
 
 Public Class AuditSecurityLogsDAL
     Inherits DALBase
@@ -71,7 +71,7 @@ Public Class AuditSecurityLogsDAL
         '                            {New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray),
         '                             New OracleParameter(COL_NAME_LANGUAGE_ID1, languageId.ToByteArray)}
 
-        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim inParameters As New List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
         param = New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)

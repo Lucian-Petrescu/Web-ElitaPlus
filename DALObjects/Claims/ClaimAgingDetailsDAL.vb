@@ -39,12 +39,12 @@ Public Class ClaimAgingDetailsDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
+        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, CreateConnection())
         OracleDbHelper.AddParameter(cmd, "pi_claim_stage_id", OracleDbType.Raw, id.ToByteArray)
         OracleDbHelper.AddParameter(cmd, "po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
+            Fetch(cmd, TABLE_NAME, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -52,12 +52,12 @@ Public Class ClaimAgingDetailsDAL
 
     Public Function LoadList(claim_id As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
-        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
+        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, CreateConnection())
         OracleDbHelper.AddParameter(cmd, "pi_claim_id", OracleDbType.Raw, claim_id.ToByteArray)
         OracleDbHelper.AddParameter(cmd, "po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
+            Return Fetch(cmd, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -65,13 +65,13 @@ Public Class ClaimAgingDetailsDAL
 
     Public Function LoadList(claim_id As Guid, language_id As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
-        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
+        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, CreateConnection())
         OracleDbHelper.AddParameter(cmd, "pi_claim_id", OracleDbType.Raw, claim_id.ToByteArray)
         OracleDbHelper.AddParameter(cmd, "pi_language_id", OracleDbType.Raw, language_id.ToByteArray)
         OracleDbHelper.AddParameter(cmd, "po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
+            Return Fetch(cmd, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -79,12 +79,12 @@ Public Class ClaimAgingDetailsDAL
 
     Public Sub LoadList(familyDS As DataSet, claim_id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
-        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
+        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, CreateConnection())
         OracleDbHelper.AddParameter(cmd, "pi_claim_id", OracleDbType.Raw, claim_id.ToByteArray)
         OracleDbHelper.AddParameter(cmd, "po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
+            Fetch(cmd, TABLE_NAME, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -92,13 +92,13 @@ Public Class ClaimAgingDetailsDAL
 
     Public Sub LoadList(familyDS As DataSet, claim_id As Guid, language_id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
-        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
+        Dim cmd As OracleCommand = CreateCommand(selectStmt, CommandType.StoredProcedure, CreateConnection())
         OracleDbHelper.AddParameter(cmd, "pi_claim_id", OracleDbType.Raw, claim_id.ToByteArray)
         OracleDbHelper.AddParameter(cmd, "pi_language_id", OracleDbType.Raw, language_id.ToByteArray)
         OracleDbHelper.AddParameter(cmd, "po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
+            Fetch(cmd, TABLE_NAME, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try

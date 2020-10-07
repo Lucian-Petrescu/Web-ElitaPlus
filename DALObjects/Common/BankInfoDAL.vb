@@ -107,7 +107,7 @@ Public Class BankInfoDAL
             If Not ds.Tables(TABLE_NAME) Is Nothing Then
                 MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
             End If
-        Catch ex As ElitaPlus.DALObjects.DataBaseIntegrityConstraintViolation
+        Catch ex As DataBaseIntegrityConstraintViolation
             'DEF-1128 - ALR - Added the exception handler in case the bankinfo object belongs to another svc center, dealer, etc..
             Return
         End Try

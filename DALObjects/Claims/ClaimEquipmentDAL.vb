@@ -1,4 +1,6 @@
 ﻿
+Imports System.Collections.Generic
+
 Public Class ClaimEquipmentDAL
     Inherits DALBase
 
@@ -160,7 +162,7 @@ Public Class ClaimEquipmentDAL
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_cursor_Result", GetType(DataSet))}
         Dim ds As New DataSet
         Dim tbl As String = "ReplacementStatus"
-        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim inParameters As New List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
         param = New DBHelper.DBHelperParameter("pi_claim_id", claimId.ToByteArray)

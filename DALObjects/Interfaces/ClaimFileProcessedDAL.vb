@@ -90,7 +90,7 @@ Public Class ClaimFileProcessedDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claimfile_processed_id", id.ToByteArray)}
+        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("claimfile_processed_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -203,13 +203,13 @@ Public Class ClaimFileProcessedDAL
         Dim selectStmt As String
 
         Select Case oClaimFileProcessedData.fileTypeCode
-            Case oClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM
+            Case ClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM
                 selectStmt = Config("/SQL/VALIDATE_NEW_CLAIM_FILE")
-            Case oClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM_HP
+            Case ClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM_HP
                 selectStmt = Config("/SQL/VALIDATE_NEW_CLAIM_HP")
-            Case oClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM
+            Case ClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM
                 selectStmt = Config("/SQL/VALIDATE_CLOSE_CLAIM_FILE")
-            Case oClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM_SUNCOM
+            Case ClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM_SUNCOM
                 selectStmt = Config("/SQL/VALIDATE_CLOSE_CLAIM_SUNCOM")
         End Select
 
@@ -225,9 +225,9 @@ Public Class ClaimFileProcessedDAL
         Dim selectStmt As String
 
         Select Case oClaimFileProcessedData.fileTypeCode
-            Case oClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM
+            Case ClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM
                 selectStmt = Config("/SQL/PROCESS_NEW_CLAIM_FILE")
-            Case oClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM_HP
+            Case ClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM_HP
                 selectStmt = Config("/SQL/PROCESS_NEW_CLAIM_HP")
             Case ClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM
                 selectStmt = Config("/SQL/PROCESS_CLOSE_CLAIM_FILE")
@@ -247,13 +247,13 @@ Public Class ClaimFileProcessedDAL
         Dim selectStmt As String
 
         Select Case oClaimFileProcessedData.fileTypeCode
-            Case oClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM
+            Case ClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM
                 selectStmt = Config("/SQL/DELETE_NEW_CLAIM_FILE")
-            Case oClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM_HP
+            Case ClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM_HP
                 selectStmt = Config("/SQL/DELETE_NEW_CLAIM_HP")
-            Case oClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM
+            Case ClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM
                 selectStmt = Config("/SQL/DELETE_CLOSE_CLAIM_FILE")
-            Case oClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM_SUNCOM
+            Case ClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM_SUNCOM
                 selectStmt = Config("/SQL/DELETE_CLOSE_CLAIM_SUNCOM")
         End Select
 

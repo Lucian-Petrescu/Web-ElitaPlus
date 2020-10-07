@@ -69,7 +69,7 @@ Public Class RuleListDAL
         parameters(1).Value = Description               'populate description
 
         Try
-            Return DBHelper.Fetch(ds, selectStmt, RuleListDAL.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try

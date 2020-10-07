@@ -1,5 +1,6 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (4/19/2007)********************
-
+Imports System.Collections.Generic
+Imports System.Text
 
 Public Class AcctSettingDAL
     Inherits DALBase
@@ -124,7 +125,7 @@ Public Class AcctSettingDAL
 
         Try
 
-            whereClauseConditions = " service_center_id = " + Common.GuidControl.GuidToHexString(ServiceCenterId)
+            whereClauseConditions = " service_center_id = " + GuidControl.GuidToHexString(ServiceCenterId)
 
             If Not whereClauseConditions = "" Then
                 selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
@@ -210,7 +211,7 @@ Public Class AcctSettingDAL
 
         Try
 
-            whereClauseConditions = " dealer_id = " + Common.GuidControl.GuidToHexString(DealerId)
+            whereClauseConditions = " dealer_id = " + GuidControl.GuidToHexString(DealerId)
 
             If Not whereClauseConditions = "" Then
                 selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
@@ -353,17 +354,17 @@ Public Class AcctSettingDAL
         End Try
     End Function
 
-    Public Function GetServiceCentersByAcctCompanies(oAcctCompanyIds As ArrayList, Optional ByVal oSVCIDs As Generic.List(Of Guid) = Nothing) As DataSet
+    Public Function GetServiceCentersByAcctCompanies(oAcctCompanyIds As ArrayList, Optional ByVal oSVCIDs As List(Of Guid) = Nothing) As DataSet
         Dim selectStmt As String = Config("/SQL/GET_SERVICE_CENTERS_BY_ACCOUNTING_COMPANIES")
         Dim whereClauseConditions As String = "", ds As DataSet = New DataSet
 
         whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(COL_NAME_ACCT_COMPANY_ID, oAcctCompanyIds, False)
 
-        Dim strSVCIDs As String, sbBuilder As System.Text.StringBuilder, blnStartPos As Boolean = True
+        Dim strSVCIDs As String, sbBuilder As StringBuilder, blnStartPos As Boolean = True
         Dim I As Integer, BATCH_SIZE As Integer = 50, SVCId As Guid, intBatch As Integer = 1
 
         If (Not oSVCIDs Is Nothing) AndAlso (oSVCIDs.Count > 0) Then
-            sbBuilder = New Text.StringBuilder
+            sbBuilder = New StringBuilder
             For Each SVCId In oSVCIDs
                 If blnStartPos Then
                     sbBuilder.Append("'")

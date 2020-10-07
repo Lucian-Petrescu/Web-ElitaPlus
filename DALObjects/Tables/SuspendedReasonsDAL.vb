@@ -1,5 +1,5 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (4/17/2013)********************
-
+Imports System.Text
 
 Public Class SuspendedReasonsDAL
     Inherits DALBase
@@ -39,15 +39,15 @@ Public Class SuspendedReasonsDAL
         '** The Structure Need to be the same as the Load_List Query in the Dal XML ***
         '******************************************************************************
         With dt.Columns
-            .Add(SuspendedReasonsDAL.COL_NAME_ID, guidTemp.ToByteArray.GetType)
-            .Add(SuspendedReasonsDAL.COL_NAME_DEALER_ID, guidTemp.ToByteArray.GetType)
-            .Add(SuspendedReasonsDAL.COL_NAME_DEALER_NAME, GetType(String))
-            .Add(SuspendedReasonsDAL.COL_NAME_CODE, GetType(String))
-            .Add(SuspendedReasonsDAL.COL_NAME_DESCRIPTION, GetType(String))
-            .Add(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED, GetType(String))
-            .Add(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED_STR, GetType(String))
-            .Add(MyBase.COL_NAME_CREATED_BY, GetType(String))
-            .Add(MyBase.COL_NAME_MODIFIED_BY, GetType(String))
+            .Add(COL_NAME_ID, guidTemp.ToByteArray.GetType)
+            .Add(COL_NAME_DEALER_ID, guidTemp.ToByteArray.GetType)
+            .Add(COL_NAME_DEALER_NAME, GetType(String))
+            .Add(COL_NAME_CODE, GetType(String))
+            .Add(COL_NAME_DESCRIPTION, GetType(String))
+            .Add(COL_NAME_CLAIM_ALLOWED, GetType(String))
+            .Add(COL_NAME_CLAIM_ALLOWED_STR, GetType(String))
+            .Add(COL_NAME_CREATED_BY, GetType(String))
+            .Add(COL_NAME_MODIFIED_BY, GetType(String))
         End With
 
     End Sub
@@ -114,20 +114,20 @@ Public Class SuspendedReasonsDAL
         Dim tmpDesc As String = ""
 
         Try
-            RowId = New Guid(CType(row(SuspendedReasonsDAL.COL_NAME_ID), Byte()))
+            RowId = New Guid(CType(row(COL_NAME_ID), Byte()))
 
-            tmpDesc = row(SuspendedReasonsDAL.COL_NAME_DESCRIPTION) & ""
+            tmpDesc = row(COL_NAME_DESCRIPTION) & ""
             FormatToSQLString(tmpDesc)
 
             ' ** Insert statement from XML
             ' ** INSERT INTO elp_suspended_reason (suspended_reason_id, dealer_id,code,description,claim_allowed,created_by)
 
             ParmStr &= "hextoraw('" & GuidToSQLString(RowId) & "')" _
-                       & ",hextoraw('" & ByteArrayToSQLString(row(SuspendedReasonsDAL.COL_NAME_DEALER_ID)) & "')" _
-                       & ",'" & row(SuspendedReasonsDAL.COL_NAME_CODE) & "'" _
+                       & ",hextoraw('" & ByteArrayToSQLString(row(COL_NAME_DEALER_ID)) & "')" _
+                       & ",'" & row(COL_NAME_CODE) & "'" _
                        & ",'" & tmpDesc & "'" _
-                       & ",'" & row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED) & "'" _
-                       & ",'" & row(SuspendedReasonsDAL.COL_NAME_CREATED_BY) & "'"
+                       & ",'" & row(COL_NAME_CLAIM_ALLOWED) & "'" _
+                       & ",'" & row(COL_NAME_CREATED_BY) & "'"
 
             '                       & ",GETCODEFROMLISTITEM('" & Me.ByteArrayToSQLString(row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED_ID)) & "')" _
 
@@ -148,16 +148,16 @@ Public Class SuspendedReasonsDAL
         Dim tmpDesc As String = ""
 
         Try
-            RowId = New Guid(CType(row(SuspendedReasonsDAL.COL_NAME_ID), Byte()))
+            RowId = New Guid(CType(row(COL_NAME_ID), Byte()))
 
-            tmpDesc = row(SuspendedReasonsDAL.COL_NAME_DESCRIPTION) & ""
+            tmpDesc = row(COL_NAME_DESCRIPTION) & ""
             FormatToSQLString(tmpDesc)
 
-            selectStmt = selectStmt.Replace(":dealer_id", "hextoraw('" & ByteArrayToSQLString(row(SuspendedReasonsDAL.COL_NAME_DEALER_ID)) & "')")
+            selectStmt = selectStmt.Replace(":dealer_id", "hextoraw('" & ByteArrayToSQLString(row(COL_NAME_DEALER_ID)) & "')")
             selectStmt = selectStmt.Replace(":description", "'" & tmpDesc & "'")
             '            selectStmt = selectStmt.Replace(":claim_allowed", "GETCODEFROMLISTITEM('" & Me.ByteArrayToSQLString(row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED_ID)) & "')")
-            selectStmt = selectStmt.Replace(":claim_allowed", "'" & row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED) & "'")
-            selectStmt = selectStmt.Replace(":modified_by", "'" & row(SuspendedReasonsDAL.COL_NAME_MODIFIED_BY) & "'")
+            selectStmt = selectStmt.Replace(":claim_allowed", "'" & row(COL_NAME_CLAIM_ALLOWED) & "'")
+            selectStmt = selectStmt.Replace(":modified_by", "'" & row(COL_NAME_MODIFIED_BY) & "'")
             selectStmt = selectStmt.Replace(":SUSPENDED_REASON_ID", "hextoraw('" & GuidToSQLString(RowId) & "')")
 
             DBHelper.Execute(selectStmt, Nothing, Nothing, Nothing)
@@ -169,7 +169,7 @@ Public Class SuspendedReasonsDAL
     End Sub
     Public Shared Function ByteArrayToSQLString(byteArray As Byte()) As String
         Dim i As Integer
-        Dim result As New System.Text.StringBuilder
+        Dim result As New StringBuilder
 
         For i = 0 To byteArray.Length - 1
             Dim hexStr As String = byteArray(i).ToString("X")

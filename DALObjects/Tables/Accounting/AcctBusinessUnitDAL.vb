@@ -70,7 +70,7 @@ Public Class AcctBusinessUnitDAL
         End If
 
         If Not myAcctCompany Is Nothing Then
-            whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(AcctBusinessUnitDAL.COL_NAME_ACCT_COMPANY_ID_ALIAS, myAcctCompany, False)
+            whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(COL_NAME_ACCT_COMPANY_ID_ALIAS, myAcctCompany, False)
         End If
 
         If (whereClauseConditions <> "") Then

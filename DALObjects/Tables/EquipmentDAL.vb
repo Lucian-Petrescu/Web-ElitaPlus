@@ -320,7 +320,7 @@
 
         Try
 
-            Return DBHelper.Fetch(ds, selectStmt, EquipmentDAL.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

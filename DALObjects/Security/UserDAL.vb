@@ -595,8 +595,8 @@ Public Class UserDAL
         Dim inputParameters(1) As DBHelper.DBHelperParameter
         Dim selectStmt As String = Config("/SQL/GET_EXTERNAL_USER_SERVICE_CENTERS")
 
-        inputParameters(0) = New DBHelper.DBHelperParameter(UserDAL.COL_NAME_SERVICE_CENTER_ID, oServiceCenterId.ToByteArray)
-        inputParameters(1) = New DBHelper.DBHelperParameter(UserDAL.COL_NAME_SERVICE_CENTER_ID, oServiceCenterId.ToByteArray)
+        inputParameters(0) = New DBHelper.DBHelperParameter(COL_NAME_SERVICE_CENTER_ID, oServiceCenterId.ToByteArray)
+        inputParameters(1) = New DBHelper.DBHelperParameter(COL_NAME_SERVICE_CENTER_ID, oServiceCenterId.ToByteArray)
         Return DBHelper.Fetch(ds, selectStmt, TABLE_EXTERNAL_USER_SERVICE_CENTER, inputParameters)
     End Function
 
@@ -608,7 +608,7 @@ Public Class UserDAL
 
         Try
             ' Delete User Companies
-            inputParameters(0) = New DBHelper.DBHelperParameter(UserDAL.COL_NAME_USER_ID, oUserId.ToByteArray)
+            inputParameters(0) = New DBHelper.DBHelperParameter(COL_NAME_USER_ID, oUserId.ToByteArray)
             DBHelper.Execute(deleteStmt, inputParameters, tr)
 
             ' Insert User Companies

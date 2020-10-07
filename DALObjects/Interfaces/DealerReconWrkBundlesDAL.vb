@@ -1,4 +1,6 @@
-﻿Public Class DealerReconWrkBundlesDAL
+﻿Imports System.Xml
+
+Public Class DealerReconWrkBundlesDAL
     Inherits DALBase
 
 
@@ -74,7 +76,7 @@
 #Region "Bundles Save Method"
     Public Function SaveBundles(ds As DataSet) As Integer
         Dim selectStmt As String = Config("/SQL/UPDATE_BUNDLES")
-        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("BUNDLES", ds.GetXml, GetType(Xml.XmlDocument))}
+        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("BUNDLES", ds.GetXml, GetType(XmlDocument))}
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_RETURN, GetType(Integer))}
 
         Try

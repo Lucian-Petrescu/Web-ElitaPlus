@@ -67,7 +67,7 @@ Public Class DealerTmkReconWrkDAL
 
     Public Sub Load(familyDS As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_tmk_recon_wrk_id", id.ToByteArray)}
+        Dim parameters() As DBHelperParameter = New DBHelperParameter() {New DBHelperParameter("dealer_tmk_recon_wrk_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
@@ -151,7 +151,7 @@ Public Class DealerTmkReconWrkDAL
             outputParameter(0) = New DBHelperParameter("p_return", GetType(Integer))
         End With
         ' Call DBHelper Store Procedure
-        DBHelper.ExecuteSpParamBindByName(selectStmt, inputParameters, outputParameter)
+        ExecuteSpParamBindByName(selectStmt, inputParameters, outputParameter)
         If outputParameter(0).Value <> 0 Then
             Dim e As New ApplicationException("Return Value = " & outputParameter(0).Value)
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, e)

@@ -53,7 +53,7 @@ Public Class ProductSpecialServiceDAL
         Dim selectStmt As String = Config("/SQL/LOAD_BY_PROD_CODE_SPL_SVC")
         Try
             parameters = New OracleParameter() {New OracleParameter(COL_NAME_SPECIAL_SERVICE_ID, SpecialServiceId.ToByteArray), _
-                                New OracleParameter(ProductCodeDAL.COL_NAME_ID, ProductCodeId.ToByteArray)}
+                                New OracleParameter(COL_NAME_ID, ProductCodeId.ToByteArray)}
             Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
