@@ -43,29 +43,29 @@ Public Class KeyValueDictionary
     Private _pairSeperator As Char
     Private _delimiter As Char
 
-    Public Property KeyValueSeperator() As Char
+    Public Property KeyValueSeperator As Char
         Get
             Return _KeyValueSeperator
         End Get
-        Private Set(ByVal value As Char)
+        Private Set
             _KeyValueSeperator = value
         End Set
     End Property
 
-    Public Property PairSeperator() As Char
+    Public Property PairSeperator As Char
         Get
             Return _pairSeperator
         End Get
-        Private Set(ByVal value As Char)
+        Private Set
             _pairSeperator = value
         End Set
     End Property
 
-    Public Property Delimiter() As Char
+    Public Property Delimiter As Char
         Get
             Return _delimiter
         End Get
-        Private Set(ByVal value As Char)
+        Private Set
             _delimiter = value
         End Set
     End Property

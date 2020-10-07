@@ -96,7 +96,7 @@ Public Class FormCategory
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(FormCategoryDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -107,7 +107,7 @@ Public Class FormCategory
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=255), ValidUniqueCode("")> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(FormCategoryDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -116,13 +116,13 @@ Public Class FormCategory
                 Return CType(Row(FormCategoryDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(FormCategoryDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
-    Public Property ParentCategoryId() As Guid
+    Public Property ParentCategoryId As Guid
         Get
             CheckDeleted()
             If row(FormCategoryDAL.COL_NAME_PARENT_CATEGORY_ID) Is DBNull.Value Then
@@ -131,13 +131,13 @@ Public Class FormCategory
                 Return New Guid(CType(row(FormCategoryDAL.COL_NAME_PARENT_CATEGORY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(FormCategoryDAL.COL_NAME_PARENT_CATEGORY_ID, Value)
         End Set
     End Property
 
-    Public Property TabId() As Guid
+    Public Property TabId As Guid
         Get
             CheckDeleted()
             If Row(FormCategoryDAL.COL_NAME_TAB_ID) Is DBNull.Value Then
@@ -146,14 +146,14 @@ Public Class FormCategory
                 Return New Guid(CType(Row(FormCategoryDAL.COL_NAME_TAB_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(FormCategoryDAL.COL_NAME_TAB_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DictItemId() As Guid
+    Public Property DictItemId As Guid
         Get
             CheckDeleted()
             If row(FormCategoryDAL.COL_NAME_DICT_ITEM_ID) Is DBNull.Value Then
@@ -162,17 +162,17 @@ Public Class FormCategory
                 Return New Guid(CType(row(FormCategoryDAL.COL_NAME_DICT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(FormCategoryDAL.COL_NAME_DICT_ITEM_ID, Value)
         End Set
     End Property
     <ValueMandatoryWhenAddNew("")> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             Return _Description
         End Get
-        Set(ByVal value As String)
+        Set
             If _Description <> String.Empty AndAlso _Description <> value Then
                 _IsDescriptionChanged = True
             End If
@@ -180,7 +180,7 @@ Public Class FormCategory
         End Set
     End Property
 
-    Public ReadOnly Property IsDescriptionChanged() As Boolean
+    Public ReadOnly Property IsDescriptionChanged As Boolean
         Get
             Return _IsDescriptionChanged
         End Get

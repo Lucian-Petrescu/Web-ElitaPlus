@@ -91,7 +91,7 @@ Public Class ProductSpecialService
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ProductSpecialServiceDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@ Public Class ProductSpecialService
     End Property
 
     <ValueMandatory("")> _
-    Public Property SpecialServiceId() As Guid
+    Public Property SpecialServiceId As Guid
         Get
             CheckDeleted()
             If row(ProductSpecialServiceDAL.COL_NAME_SPECIAL_SERVICE_ID) Is DBNull.Value Then
@@ -111,7 +111,7 @@ Public Class ProductSpecialService
                 Return New Guid(CType(row(ProductSpecialServiceDAL.COL_NAME_SPECIAL_SERVICE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductSpecialServiceDAL.COL_NAME_SPECIAL_SERVICE_ID, Value)
         End Set
@@ -119,7 +119,7 @@ Public Class ProductSpecialService
 
 
     <ValueMandatory("")> _
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If row(ProductSpecialServiceDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -128,7 +128,7 @@ Public Class ProductSpecialService
                 Return New Guid(CType(row(ProductSpecialServiceDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductSpecialServiceDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set

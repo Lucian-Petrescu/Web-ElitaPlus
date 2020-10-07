@@ -92,7 +92,7 @@ Public Class RuleList
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IExpirable.ID
+    Public ReadOnly Property Id As Guid Implements IExpirable.ID
         Get
             If Row(RuleListDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -103,7 +103,7 @@ Public Class RuleList
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=255)> _
-    Public Property Code() As String Implements IExpirable.Code
+    Public Property Code As String Implements IExpirable.Code
         Get
             CheckDeleted()
             If Row(RuleListDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -112,7 +112,7 @@ Public Class RuleList
                 Return CType(Row(RuleListDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RuleListDAL.COL_NAME_CODE, Value)
         End Set
@@ -120,7 +120,7 @@ Public Class RuleList
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=2000)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(RuleListDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -129,7 +129,7 @@ Public Class RuleList
                 Return CType(Row(RuleListDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RuleListDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -137,7 +137,7 @@ Public Class RuleList
 
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EFFECTIVE)> _
-    Public Property Effective() As DateTimeType Implements IExpirable.Effective
+    Public Property Effective As DateTimeType Implements IExpirable.Effective
         Get
             CheckDeleted()
             If Row(RuleListDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -146,7 +146,7 @@ Public Class RuleList
                 Return New DateTimeType(CType(Row(RuleListDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(RuleListDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -154,7 +154,7 @@ Public Class RuleList
 
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EXPIRATION), EffectiveExpirationDateValidation(Codes.EXPIRATION)> _
-    Public Property Expiration() As DateTimeType Implements IExpirable.Expiration
+    Public Property Expiration As DateTimeType Implements IExpirable.Expiration
         Get
             CheckDeleted()
             If Row(RuleListDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -163,7 +163,7 @@ Public Class RuleList
                 Return New DateTimeType(CType(Row(RuleListDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(RuleListDAL.COL_NAME_EXPIRATION, Value)
         End Set
@@ -179,7 +179,7 @@ Public Class RuleList
         Get
             Return Nothing
         End Get
-        Set(ByVal value As Guid)
+        Set
             'do nothing
         End Set
     End Property
@@ -271,7 +271,7 @@ Public Class RuleList
     End Function
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
@@ -333,7 +333,7 @@ Public Class RuleList
 #End Region
 
 #Region "Rule List Detail View"
-    Public ReadOnly Property RuleChildren() As RuleListDetail.RuleListDetailView
+    Public ReadOnly Property RuleChildren As RuleListDetail.RuleListDetailView
         Get
             Return New RuleListDetail.RuleListDetailView(Me)
         End Get
@@ -483,7 +483,7 @@ Public Class RuleList
 #End Region
 
 #Region "Dealer Rule View"
-    Public ReadOnly Property DealerRuleChildren() As DealerRuleList.DealerRuleListDetailView
+    Public ReadOnly Property DealerRuleChildren As DealerRuleList.DealerRuleListDetailView
         Get
             Return New DealerRuleList.DealerRuleListDetailView(Me)
         End Get
@@ -585,7 +585,7 @@ Public Class RuleList
 #End Region
 
 #Region "Company Rule View"
-    Public ReadOnly Property CompanyRuleChildren() As CompanyRuleList.CompanyRuleListDetailView
+    Public ReadOnly Property CompanyRuleChildren As CompanyRuleList.CompanyRuleListDetailView
         Get
             Return New CompanyRuleList.CompanyRuleListDetailView(Me)
         End Get

@@ -98,7 +98,7 @@ Public Class RegionTaxDetail
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(RegionTaxDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -109,7 +109,7 @@ Public Class RegionTaxDetail
     End Property
 
     <ValueMandatory("")> _
-    Public Property RegionTaxId() As Guid
+    Public Property RegionTaxId As Guid
         Get
             CheckDeleted()
             If row(RegionTaxDetailDAL.COL_NAME_REGION_TAX_ID) Is DBNull.Value Then
@@ -118,7 +118,7 @@ Public Class RegionTaxDetail
                 Return New Guid(CType(row(RegionTaxDetailDAL.COL_NAME_REGION_TAX_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RegionTaxDetailDAL.COL_NAME_REGION_TAX_ID, Value)
         End Set
@@ -126,7 +126,7 @@ Public Class RegionTaxDetail
 
 
     <ValueMandatory("")> _
-    Public Property TaxBucket() As LongType
+    Public Property TaxBucket As LongType
         Get
             CheckDeleted()
             If row(RegionTaxDetailDAL.COL_NAME_TAX_BUCKET) Is DBNull.Value Then
@@ -135,7 +135,7 @@ Public Class RegionTaxDetail
                 Return New LongType(CType(row(RegionTaxDetailDAL.COL_NAME_TAX_BUCKET), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(RegionTaxDetailDAL.COL_NAME_TAX_BUCKET, Value)
         End Set
@@ -143,7 +143,7 @@ Public Class RegionTaxDetail
 
 
 
-    Public Property Percent() As DecimalType
+    Public Property Percent As DecimalType
         Get
             CheckDeleted()
             If row(RegionTaxDetailDAL.COL_NAME_PERCENT) Is DBNull.Value Then
@@ -152,7 +152,7 @@ Public Class RegionTaxDetail
                 Return New DecimalType(CType(row(RegionTaxDetailDAL.COL_NAME_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(RegionTaxDetailDAL.COL_NAME_PERCENT, Value)
         End Set
@@ -160,7 +160,7 @@ Public Class RegionTaxDetail
 
 
 
-    Public Property NonTaxable() As DecimalType
+    Public Property NonTaxable As DecimalType
         Get
             CheckDeleted()
             If row(RegionTaxDetailDAL.COL_NAME_NON_TAXABLE) Is DBNull.Value Then
@@ -169,7 +169,7 @@ Public Class RegionTaxDetail
                 Return New DecimalType(CType(row(RegionTaxDetailDAL.COL_NAME_NON_TAXABLE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(RegionTaxDetailDAL.COL_NAME_NON_TAXABLE, Value)
         End Set
@@ -177,7 +177,7 @@ Public Class RegionTaxDetail
 
 
 
-    Public Property MinimumTax() As DecimalType
+    Public Property MinimumTax As DecimalType
         Get
             CheckDeleted()
             If row(RegionTaxDetailDAL.COL_NAME_MINIMUM_TAX) Is DBNull.Value Then
@@ -186,7 +186,7 @@ Public Class RegionTaxDetail
                 Return New DecimalType(CType(row(RegionTaxDetailDAL.COL_NAME_MINIMUM_TAX), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(RegionTaxDetailDAL.COL_NAME_MINIMUM_TAX, Value)
         End Set
@@ -194,7 +194,7 @@ Public Class RegionTaxDetail
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property GlAccountNumber() As String
+    Public Property GlAccountNumber As String
         Get
             CheckDeleted()
             If Row(RegionTaxDetailDAL.COL_NAME_GL_ACCOUNT_NUMBER) Is DBNull.Value Then
@@ -203,18 +203,18 @@ Public Class RegionTaxDetail
                 Return CType(Row(RegionTaxDetailDAL.COL_NAME_GL_ACCOUNT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RegionTaxDetailDAL.COL_NAME_GL_ACCOUNT_NUMBER, Value)
         End Set
     End Property
 
 
-    Public Property Description() As String
+    Public Property Description As String
         Get
             Return mTaxBucketDesc
         End Get
-        Set(ByVal Value As String)
+        Set
             mTaxBucketDesc = Value
         End Set
     End Property

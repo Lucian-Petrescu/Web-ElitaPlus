@@ -116,7 +116,7 @@ Namespace Reports
                     InitializeForm()
 
                     'Req-818 changes for two reports
-                    If oCountry.Code.ToUpper = "CN" And Not Request.QueryString("REPORT_SERVER").Equals("SSRS") Then
+                    If oCountry.Code.ToUpper = "CN" AndAlso Not Request.QueryString("REPORT_SERVER").Equals("SSRS") Then
                         TheRptCeInputControl.populateReportLanguages(RPT_FILENAME_CHINA)
                     Else
                         TheRptCeInputControl.populateReportLanguages(RPT_FILENAME)
@@ -326,7 +326,7 @@ Namespace Reports
             Dim culturecode As String = TheRptCeInputControl.getCultureValue(False)
             'Req-818 changes for two reports
             Dim reportName As String
-            If oCountry.Code.ToUpper = "CN" And Not Request.QueryString("REPORT_SERVER").Equals("SSRS") Then
+            If oCountry.Code.ToUpper = "CN" AndAlso Not Request.QueryString("REPORT_SERVER").Equals("SSRS") Then
                 reportName = TheRptCeInputControl.getReportName(RPT_FILENAME_CHINA, False)
             Else
                 reportName = TheRptCeInputControl.getReportName(RPT_FILENAME, False)
@@ -338,7 +338,7 @@ Namespace Reports
             If (reportFormat = ReportCeBase.RptFormat.TEXT_TAB OrElse
                 reportFormat = ReportCeBase.RptFormat.TEXT_CSV) Then
                 'Req-818 changes for two reports
-                If oCountry.Code.ToUpper = "CN" And Not Request.QueryString("REPORT_SERVER").Equals("SSRS") Then
+                If oCountry.Code.ToUpper = "CN" AndAlso Not Request.QueryString("REPORT_SERVER").Equals("SSRS") Then
                     reportName = TheRptCeInputControl.getReportName(RPT_FILENAME_CHINA_EXPORT, True)
                 Else
                     reportName = TheRptCeInputControl.getReportName(RPT_FILENAME_EXPORT, True)
@@ -459,7 +459,7 @@ Namespace Reports
                 If selectedSvcCtrId.Equals(Guid.Empty) Then
                     ElitaPlusPage.SetLabelError(SvcCtrLabel)
                     Throw New GUIException(Message.MSG_INVALID_SERVICE_CENTER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_SERVICE_CENTER_MUST_BE_SELECTED_ERR)
-                ElseIf cboCountry.Visible = True And selectedCountryId.Equals(Guid.Empty) Then
+                ElseIf cboCountry.Visible = True AndAlso selectedCountryId.Equals(Guid.Empty) Then
                     'ElitaPlusPage.SetLabelError(moCountryLabel)
                     Throw New GUIException(Message.MSG_INVALID_COUNTRY, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COUNTRY_MUST_BE_SELECTED_ERR)
                 End If

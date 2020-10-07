@@ -91,7 +91,7 @@ Public Class AfaAcctAmtSrcMapping
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AfaAcctAmtSrcMappingDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@ Public Class AfaAcctAmtSrcMapping
     End Property
 
     <ValueMandatory("")> _
-    Public Property AcctAmtSrcId() As Guid
+    Public Property AcctAmtSrcId As Guid
         Get
             CheckDeleted()
             If row(AfaAcctAmtSrcMappingDAL.COL_NAME_ACCT_AMT_SRC_ID) Is DBNull.Value Then
@@ -111,7 +111,7 @@ Public Class AfaAcctAmtSrcMapping
                 Return New Guid(CType(row(AfaAcctAmtSrcMappingDAL.COL_NAME_ACCT_AMT_SRC_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_ACCT_AMT_SRC_ID, Value)
         End Set
@@ -119,7 +119,7 @@ Public Class AfaAcctAmtSrcMapping
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property Operation() As String
+    Public Property Operation As String
         Get
             CheckDeleted()
             If row(AfaAcctAmtSrcMappingDAL.COL_NAME_OPERATION) Is DBNull.Value Then
@@ -128,7 +128,7 @@ Public Class AfaAcctAmtSrcMapping
                 Return CType(row(AfaAcctAmtSrcMappingDAL.COL_NAME_OPERATION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_OPERATION, Value)
         End Set
@@ -136,7 +136,7 @@ Public Class AfaAcctAmtSrcMapping
 
 
     <ValueMandatory("")> _
-    Public Property InvRateBucketId() As Guid
+    Public Property InvRateBucketId As Guid
         Get
             CheckDeleted()
             If row(AfaAcctAmtSrcMappingDAL.COL_NAME_INV_RATE_BUCKET_ID) Is DBNull.Value Then
@@ -145,7 +145,7 @@ Public Class AfaAcctAmtSrcMapping
                 Return New Guid(CType(row(AfaAcctAmtSrcMappingDAL.COL_NAME_INV_RATE_BUCKET_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_INV_RATE_BUCKET_ID, Value)
         End Set
@@ -153,7 +153,7 @@ Public Class AfaAcctAmtSrcMapping
 
 
 
-    Public Property AfaProductId() As Guid
+    Public Property AfaProductId As Guid
         Get
             CheckDeleted()
             If row(AfaAcctAmtSrcMappingDAL.COL_NAME_AFA_PRODUCT_ID) Is DBNull.Value Then
@@ -162,7 +162,7 @@ Public Class AfaAcctAmtSrcMapping
                 Return New Guid(CType(row(AfaAcctAmtSrcMappingDAL.COL_NAME_AFA_PRODUCT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_AFA_PRODUCT_ID, Value)
         End Set
@@ -170,7 +170,7 @@ Public Class AfaAcctAmtSrcMapping
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property LossType() As String
+    Public Property LossType As String
         Get
             CheckDeleted()
             If Row(AfaAcctAmtSrcMappingDAL.COL_NAME_LOSS_TYPE) Is DBNull.Value Then
@@ -179,7 +179,7 @@ Public Class AfaAcctAmtSrcMapping
                 Return CType(Row(AfaAcctAmtSrcMappingDAL.COL_NAME_LOSS_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             If Not (Value = String.Empty AndAlso Row(AfaAcctAmtSrcMappingDAL.COL_NAME_LOSS_TYPE) Is DBNull.Value) Then
                 'don't overwrite the null value and trigger the object dirty
@@ -190,7 +190,7 @@ Public Class AfaAcctAmtSrcMapping
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property Countfieldtouse() As String
+    Public Property Countfieldtouse As String
         Get
             CheckDeleted()
             If Row(AfaAcctAmtSrcMappingDAL.COL_NAME_COUNTFIELDTOUSE) Is DBNull.Value Then
@@ -199,7 +199,7 @@ Public Class AfaAcctAmtSrcMapping
                 Return CType(Row(AfaAcctAmtSrcMappingDAL.COL_NAME_COUNTFIELDTOUSE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_COUNTFIELDTOUSE, Value)
         End Set

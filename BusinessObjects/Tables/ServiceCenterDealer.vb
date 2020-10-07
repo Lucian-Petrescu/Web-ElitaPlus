@@ -90,7 +90,7 @@ Public Class ServiceCenterDealer
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ServiceCenterDealerDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ServiceCenterDealer
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If row(ServiceCenterDealerDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ServiceCenterDealer
                 Return New Guid(CType(row(ServiceCenterDealerDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDealerDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ServiceCenterDealer
 
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(ServiceCenterDealerDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ServiceCenterDealer
                 Return New Guid(CType(row(ServiceCenterDealerDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDealerDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class ServiceCenterDealer
 
 
     <ValueMandatory("")> _
-    Public Property PreferredDealerFlag() As Boolean
+    Public Property PreferredDealerFlag As Boolean
         Get
             CheckDeleted()
             If row(ServiceCenterDealerDAL.COL_NAME_PREFERRED_DEALER_FLAG) Is DBNull.Value Then
@@ -145,7 +145,7 @@ Public Class ServiceCenterDealer
 
             End If
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             CheckDeleted()
 
             'If Value Then

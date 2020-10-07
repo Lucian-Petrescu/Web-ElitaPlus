@@ -92,7 +92,7 @@ Public Class GetRoutes
 
 #Region "Properties"
 
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -100,14 +100,14 @@ Public Class GetRoutes
                 Return (CType(Row(DATA_COL_NAME_DEALER_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
 
-    Private ReadOnly Property ServiceNetworkID() As Guid
+    Private ReadOnly Property ServiceNetworkID As Guid
         Get
             If _dealerId.Equals(Guid.Empty) Then
 

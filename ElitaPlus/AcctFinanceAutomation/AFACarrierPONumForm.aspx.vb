@@ -445,7 +445,7 @@ Public Class AFACarrierPONumForm
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim objDDL As DropDownList, strTemp As String
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     If .RowIndex = Grid.EditIndex Then
                         'OrElse (State.gridAction = PageAction.EditExisting AndAlso State.myBO.InvoiceMonth = dvRow("invoice_month").ToString) Then

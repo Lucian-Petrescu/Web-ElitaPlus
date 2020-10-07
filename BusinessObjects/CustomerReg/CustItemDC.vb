@@ -33,7 +33,7 @@ Public Class CustItemDC
         Get
             Return __token
         End Get
-        Set(ByVal value As String)
+        Set
             __token = value
         End Set
     End Property
@@ -43,7 +43,7 @@ Public Class CustItemDC
         Get
             Return __dealer_Code
         End Get
-        Set(ByVal value As String)
+        Set
             __dealer_Code = value
         End Set
     End Property
@@ -53,7 +53,7 @@ Public Class CustItemDC
         Get
             Return __email_Id
         End Get
-        Set(ByVal value As String)
+        Set
             __email_Id = value
         End Set
     End Property
@@ -63,7 +63,7 @@ Public Class CustItemDC
         Get
             Return __registration_Date
         End Get
-        Set(ByVal value As Date)
+        Set
             __registration_Date = value
         End Set
     End Property
@@ -73,7 +73,7 @@ Public Class CustItemDC
         Get
             Return __imei_Number
         End Get
-        Set(ByVal value As String)
+        Set
             __imei_Number = value
         End Set
     End Property
@@ -83,7 +83,7 @@ Public Class CustItemDC
         Get
             Return __make
         End Get
-        Set(ByVal value As String)
+        Set
             __make = value
         End Set
     End Property
@@ -93,7 +93,7 @@ Public Class CustItemDC
         Get
             Return __model
         End Get
-        Set(ByVal value As String)
+        Set
             __model = value
         End Set
     End Property
@@ -103,7 +103,7 @@ Public Class CustItemDC
         Get
             Return __item_Name
         End Get
-        Set(ByVal value As String)
+        Set
             __item_Name = value
         End Set
     End Property
@@ -113,7 +113,7 @@ Public Class CustItemDC
         Get
             Return __registration_Status
         End Get
-        Set(ByVal value As String)
+        Set
             __registration_Status = value
         End Set
     End Property
@@ -123,7 +123,7 @@ Public Class CustItemDC
         Get
             Return __coverage
         End Get
-        Set(ByVal value As String)
+        Set
             __coverage = value
         End Set
     End Property
@@ -133,7 +133,7 @@ Public Class CustItemDC
         Get
             Return __order_Reference_Number
         End Get
-        Set(ByVal value As String)
+        Set
             __order_Reference_Number = value
         End Set
     End Property
@@ -143,7 +143,7 @@ Public Class CustItemDC
         Get
             Return __product_Key
         End Get
-        Set(ByVal value As String)
+        Set
             __product_Key = value
         End Set
     End Property
@@ -153,7 +153,7 @@ Public Class CustItemDC
         Get
             Return __country_Code
         End Get
-        Set(ByVal value As String)
+        Set
             __country_Code = value
         End Set
     End Property
@@ -163,7 +163,7 @@ Public Class CustItemDC
         Get
             Return __cellPhone
         End Get
-        Set(ByVal value As String)
+        Set
             __cellPhone = value
         End Set
     End Property

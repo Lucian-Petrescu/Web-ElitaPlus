@@ -124,7 +124,7 @@ Partial Class ClaimStatusByGroupForm
     Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
-            If CMD.Value Is Nothing Or CMD.Value = "" Then
+            If CMD.Value Is Nothing OrElse CMD.Value = "" Then
                 CMD.Value = Request.Params("CMD")
             End If
 
@@ -209,7 +209,7 @@ Partial Class ClaimStatusByGroupForm
         Try
             BaseItemBound(source, e)
 
-            If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem Then
+            If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
                 If (e.Item.Cells(GRID_COL_ACTIVE_IDX).FindControl(GRID_CTL_ACTIVE) IsNot Nothing) Then
                     Dim YESNOdv As DataView = State.YESNOdv
                     Dim dropdownActive As DropDownList = CType(e.Item.Cells(GRID_COL_ACTIVE_IDX).FindControl(GRID_CTL_ACTIVE), DropDownList)
@@ -388,45 +388,45 @@ Partial Class ClaimStatusByGroupForm
                         Dim isDirty As Boolean = False
 
                         If dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_STATUS_ORDER) IsNot DBNull.Value Then
-                            isDirty = isDirty Or (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_STATUS_ORDER), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_STATUS_ORDER_IDX).FindControl(GRID_CTL_STATUS_ORDER), TextBox).Text, String)))
+                            isDirty = isDirty OrElse (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_STATUS_ORDER), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_STATUS_ORDER_IDX).FindControl(GRID_CTL_STATUS_ORDER), TextBox).Text, String)))
                         Else
-                            isDirty = isDirty Or ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_STATUS_ORDER_IDX).FindControl(GRID_CTL_STATUS_ORDER), TextBox).Text, String)))
+                            isDirty = isDirty OrElse ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_STATUS_ORDER_IDX).FindControl(GRID_CTL_STATUS_ORDER), TextBox).Text, String)))
                         End If
 
                         If dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_OWNER_ID) IsNot DBNull.Value Then
-                            isDirty = isDirty Or Not ((New Guid(CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_OWNER_ID), Byte()))).Equals(ownerId))
+                            isDirty = isDirty OrElse Not ((New Guid(CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_OWNER_ID), Byte()))).Equals(ownerId))
                         Else
-                            isDirty = isDirty Or Not ((Guid.Empty).Equals(ownerId))
+                            isDirty = isDirty OrElse Not ((Guid.Empty).Equals(ownerId))
                         End If
 
                         If dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_SKIPPING_ALLOWED_ID) IsNot DBNull.Value Then
-                            isDirty = isDirty Or Not ((New Guid(CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_SKIPPING_ALLOWED_ID), Byte()))).Equals(skippingAllowedId))
+                            isDirty = isDirty OrElse Not ((New Guid(CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_SKIPPING_ALLOWED_ID), Byte()))).Equals(skippingAllowedId))
                         Else
-                            isDirty = isDirty Or Not ((Guid.Empty).Equals(skippingAllowedId))
+                            isDirty = isDirty OrElse Not ((Guid.Empty).Equals(skippingAllowedId))
                         End If
 
                         If dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_ACTIVE_ID) IsNot DBNull.Value Then
-                            isDirty = isDirty Or Not ((New Guid(CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_ACTIVE_ID), Byte()))).Equals(activeId))
+                            isDirty = isDirty OrElse Not ((New Guid(CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_ACTIVE_ID), Byte()))).Equals(activeId))
                         Else
-                            isDirty = isDirty Or Not ((Guid.Empty).Equals(activeId))
+                            isDirty = isDirty OrElse Not ((Guid.Empty).Equals(activeId))
                         End If
 
                         If dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_GROUP_NUMBER) IsNot DBNull.Value Then
-                            isDirty = isDirty Or (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_GROUP_NUMBER), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_GROUP_NUMBER_IDX).FindControl(GRID_CTL_GROUP_NUMBER), TextBox).Text, String)))
+                            isDirty = isDirty OrElse (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_GROUP_NUMBER), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_GROUP_NUMBER_IDX).FindControl(GRID_CTL_GROUP_NUMBER), TextBox).Text, String)))
                         Else
-                            isDirty = isDirty Or ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_GROUP_NUMBER_IDX).FindControl(GRID_CTL_GROUP_NUMBER), TextBox).Text, String)))
+                            isDirty = isDirty OrElse ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_GROUP_NUMBER_IDX).FindControl(GRID_CTL_GROUP_NUMBER), TextBox).Text, String)))
                         End If
 
                         If dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TURNAROUND_DAYS) IsNot DBNull.Value Then
-                            isDirty = isDirty Or (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TURNAROUND_DAYS), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_TURNAROUND_DAYS_IDX).FindControl(GRID_CTL_TURNAROUND_DAYS), TextBox).Text, String)))
+                            isDirty = isDirty OrElse (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TURNAROUND_DAYS), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_TURNAROUND_DAYS_IDX).FindControl(GRID_CTL_TURNAROUND_DAYS), TextBox).Text, String)))
                         Else
-                            isDirty = isDirty Or ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_TURNAROUND_DAYS_IDX).FindControl(GRID_CTL_TURNAROUND_DAYS), TextBox).Text, String)))
+                            isDirty = isDirty OrElse ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_TURNAROUND_DAYS_IDX).FindControl(GRID_CTL_TURNAROUND_DAYS), TextBox).Text, String)))
                         End If
 
                         If dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TAT_REMINDER_HOURS) IsNot DBNull.Value Then
-                            isDirty = isDirty Or (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TAT_REMINDER_HOURS), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(GRID_CTL_TAT_REMINDER_HOURS), TextBox).Text, String)))
+                            isDirty = isDirty OrElse (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TAT_REMINDER_HOURS), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(GRID_CTL_TAT_REMINDER_HOURS), TextBox).Text, String)))
                         Else
-                            isDirty = isDirty Or ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(GRID_CTL_TAT_REMINDER_HOURS), TextBox).Text, String)))
+                            isDirty = isDirty OrElse ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(GRID_CTL_TAT_REMINDER_HOURS), TextBox).Text, String)))
                         End If
 
                         If isDirty Then
@@ -569,7 +569,7 @@ Partial Class ClaimStatusByGroupForm
                             Throw New GUIException(ERR_CLAIM_STATUS_GROUP_IN_USED, ERR_CLAIM_STATUS_GROUP_IN_USED)
                         End If
                     Else
-                        If (statusOrder IsNot Nothing AndAlso statusOrder <> "") Or Not ownerId.Equals(Guid.Empty) Or Not skippingAllowedId.Equals(Guid.Empty) Or Not activeId.Equals(Guid.Empty) Then
+                        If (statusOrder IsNot Nothing AndAlso statusOrder <> "") OrElse Not ownerId.Equals(Guid.Empty) OrElse Not skippingAllowedId.Equals(Guid.Empty) OrElse Not activeId.Equals(Guid.Empty) Then
                             ' Show error
                             SetPageAndSelectedIndexFromGuid(State.searchDV, New Guid(listItemId), DataGridDropdowns, State.PageIndex)
                             Throw New GUIException(ERR_CLAIM_STATUS_GROUP_NOT_CHECKED, ERR_CLAIM_STATUS_GROUP_NOT_CHECKED)

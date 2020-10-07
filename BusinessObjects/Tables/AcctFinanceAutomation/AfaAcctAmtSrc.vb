@@ -90,7 +90,7 @@ Public Class AfaAcctAmtSrc
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AfaAcctAmtSrcDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class AfaAcctAmtSrc
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(AfaAcctAmtSrcDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class AfaAcctAmtSrc
                 Return New Guid(CType(row(AfaAcctAmtSrcDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AfaAcctAmtSrcDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class AfaAcctAmtSrc
 
 
     <ValueMandatory("")> _
-    Public Property AcctAmtSrcFieldTypeId() As Guid
+    Public Property AcctAmtSrcFieldTypeId As Guid
         Get
             CheckDeleted()
             If row(AfaAcctAmtSrcDAL.COL_NAME_ACCT_AMT_SRC_FIELD_TYPE_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class AfaAcctAmtSrc
                 Return New Guid(CType(row(AfaAcctAmtSrcDAL.COL_NAME_ACCT_AMT_SRC_FIELD_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AfaAcctAmtSrcDAL.COL_NAME_ACCT_AMT_SRC_FIELD_TYPE_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class AfaAcctAmtSrc
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property EntityByRegion() As String
+    Public Property EntityByRegion As String
         Get
             CheckDeleted()
             If Row(AfaAcctAmtSrcDAL.COL_NAME_ENTITY_BY_REGION) Is DBNull.Value Then
@@ -144,14 +144,14 @@ Public Class AfaAcctAmtSrc
                 Return CType(Row(AfaAcctAmtSrcDAL.COL_NAME_ENTITY_BY_REGION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaAcctAmtSrcDAL.COL_NAME_ENTITY_BY_REGION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property EntityByRegionCoverageType() As String
+    Public Property EntityByRegionCoverageType As String
         Get
             CheckDeleted()
             If Row(AfaAcctAmtSrcDAL.COL_NAME_ENTITY_BY_REGION_COVERAGE_TYPE) Is DBNull.Value Then
@@ -160,7 +160,7 @@ Public Class AfaAcctAmtSrc
                 Return CType(Row(AfaAcctAmtSrcDAL.COL_NAME_ENTITY_BY_REGION_COVERAGE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             If Not (Value = String.Empty AndAlso Row(AfaAcctAmtSrcDAL.COL_NAME_ENTITY_BY_REGION_COVERAGE_TYPE) Is DBNull.Value) Then
                 'don't overwrite the null value and trigger the object dirty
@@ -170,7 +170,7 @@ Public Class AfaAcctAmtSrc
     End Property
 
     <ValidStringLength("", Max:=1)> _
-    Public Property ReconcilWithInvoice() As String
+    Public Property ReconcilWithInvoice As String
         Get
             CheckDeleted()
             If Row(AfaAcctAmtSrcDAL.COL_NAME_RECONCIL_WITH_INVOICE) Is DBNull.Value Then
@@ -179,14 +179,14 @@ Public Class AfaAcctAmtSrc
                 Return CType(Row(AfaAcctAmtSrcDAL.COL_NAME_RECONCIL_WITH_INVOICE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaAcctAmtSrcDAL.COL_NAME_RECONCIL_WITH_INVOICE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1), CheckDuplicateCLIPFormula("")> _
-    Public Property UseFormulaForClip() As String
+    Public Property UseFormulaForClip As String
         Get
             CheckDeleted()
             If Row(AfaAcctAmtSrcDAL.COL_NAME_USE_FORMULA_FOR_CLIP) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class AfaAcctAmtSrc
                 Return CType(Row(AfaAcctAmtSrcDAL.COL_NAME_USE_FORMULA_FOR_CLIP), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaAcctAmtSrcDAL.COL_NAME_USE_FORMULA_FOR_CLIP, Value)
         End Set

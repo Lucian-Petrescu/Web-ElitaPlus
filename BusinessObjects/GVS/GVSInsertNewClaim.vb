@@ -47,20 +47,20 @@ Public Class GVSInsertNewClaim
 
 #Region "Properties"
 
-    Private Property InputXml() As String
+    Private Property InputXml As String
         Get
             Return msInputXml
         End Get
-        Set(ByVal value As String)
+        Set
             msInputXml = value
         End Set
     End Property
 
-    Private Property FuncToProc() As String
+    Private Property FuncToProc As String
         Get
             Return msFunctionToProcess
         End Get
-        Set(ByVal value As String)
+        Set
             msFunctionToProcess = value
         End Set
     End Property

@@ -106,7 +106,7 @@ Public Class SubmitClaim
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property CustomerIdentifier() As String
+    Public Property CustomerIdentifier As String
         Get
             If Row(DATA_COL_NAME_CUSTOMER_IDENTIFIER) Is DBNull.Value Then
                 Return Nothing
@@ -114,14 +114,14 @@ Public Class SubmitClaim
                 Return CType(Row(DATA_COL_NAME_CUSTOMER_IDENTIFIER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CUSTOMER_IDENTIFIER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property IdentifierType() As String
+    Public Property IdentifierType As String
         Get
             If Row(DATA_COL_NAME_IDENTIFIER_TYPE) Is DBNull.Value Then
                 Return Nothing
@@ -129,14 +129,14 @@ Public Class SubmitClaim
                 Return CType(Row(DATA_COL_NAME_IDENTIFIER_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_IDENTIFIER_TYPE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_DEALER_CODE) Is DBNull.Value Then
@@ -145,14 +145,14 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_DEALER_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ContactName() As String
+    Public Property ContactName As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CONTACT_NAME) Is DBNull.Value Then
@@ -161,14 +161,14 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_CONTACT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CONTACT_NAME, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CustomerAuthentication() As String
+    Public Property CustomerAuthentication As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CUSTOMER_AUTHENTICATION) Is DBNull.Value Then
@@ -177,14 +177,14 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_CUSTOMER_AUTHENTICATION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CUSTOMER_AUTHENTICATION, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CustomerAuthenticationType() As String
+    Public Property CustomerAuthenticationType As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CUSTOMER_AUTHENTICATION_TYPE) Is DBNull.Value Then
@@ -193,14 +193,14 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_CUSTOMER_AUTHENTICATION_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CUSTOMER_AUTHENTICATION_TYPE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-        Public Property CallerName() As String
+        Public Property CallerName As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CALLER_NAME) Is DBNull.Value Then
@@ -209,13 +209,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_CALLER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CALLER_NAME, Value)
         End Set
     End Property
 
-    Public Property SerialNumber() As String
+    Public Property SerialNumber As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_SERIAL_NUMBER) Is DBNull.Value Then
@@ -224,14 +224,14 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_SERIAL_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Make() As String
+    Public Property Make As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_MAKE) Is DBNull.Value Then
@@ -240,14 +240,14 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_MAKE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_MAKE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_MODEL) Is DBNull.Value Then
@@ -256,13 +256,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_MODEL, Value)
         End Set
     End Property
 
-    Public Property CauseOfLossCode() As String
+    Public Property CauseOfLossCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CAUSE_OF_LOSS_CODE) Is DBNull.Value Then
@@ -271,14 +271,14 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_CAUSE_OF_LOSS_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CAUSE_OF_LOSS_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property LossDate() As DateType
+    Public Property LossDate As DateType
         Get
             CheckDeleted()
             If Row(SOURCE_COL_LOSS_DATE) Is DBNull.Value Then
@@ -287,14 +287,14 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_LOSS_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_LOSS_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CoverageCode() As String
+    Public Property CoverageCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_COVERAGE_CODE) Is DBNull.Value Then
@@ -303,13 +303,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_COVERAGE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_COVERAGE_CODE, Value)
         End Set
     End Property
 
-    Public Property ServiceCenterCode() As String
+    Public Property ServiceCenterCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_SERVICE_CENTER_CODE) Is DBNull.Value Then
@@ -318,13 +318,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_SERVICE_CENTER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
-    Public Property ProblemDescription() As String
+    Public Property ProblemDescription As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_PROBLEM_DESCRIPTION) Is DBNull.Value Then
@@ -333,13 +333,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_PROBLEM_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_PROBLEM_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property RepairEstimate() As Decimal
+    Public Property RepairEstimate As Decimal
         Get
             CheckDeleted()
             If Row(SOURCE_COL_REPAIR_ESTIMATE) Is DBNull.Value Then
@@ -348,13 +348,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_REPAIR_ESTIMATE), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_REPAIR_ESTIMATE, Value)
         End Set
     End Property
 
-    Public Property VisitDate() As DateType
+    Public Property VisitDate As DateType
         Get
             CheckDeleted()
             If Row(SOURCE_COL_VISIT_DATE) Is DBNull.Value Then
@@ -363,13 +363,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_VISIT_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_VISIT_DATE, Value)
         End Set
     End Property
 
-    Public Property CallerTaxNumber() As String
+    Public Property CallerTaxNumber As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CALLER_TAX_NUMBER) Is DBNull.Value Then
@@ -378,13 +378,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_CALLER_TAX_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CALLER_TAX_NUMBER, Value)
         End Set
     End Property
 
-    Public Property SpecialInstruction() As String
+    Public Property SpecialInstruction As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_SPECIAL_INSTRUCTION) Is DBNull.Value Then
@@ -393,13 +393,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_SPECIAL_INSTRUCTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_SPECIAL_INSTRUCTION, Value)
         End Set
     End Property
 
-    Public Property InvoiceDate() As DateType
+    Public Property InvoiceDate As DateType
         Get
             CheckDeleted()
             If Row(SOURCE_COL_INVOICE_DATE) Is DBNull.Value Then
@@ -408,13 +408,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_INVOICE_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_INVOICE_DATE, Value)
         End Set
     End Property
 
-    Public Property PaymentMethod() As String
+    Public Property PaymentMethod As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_PAYMENT_METHOD) Is DBNull.Value Then
@@ -423,13 +423,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_PAYMENT_METHOD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_PAYMENT_METHOD, Value)
         End Set
     End Property
 
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_ADDRESS1) Is DBNull.Value Then
@@ -438,13 +438,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_ADDRESS1, Value)
         End Set
     End Property
 
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_ADDRESS2) Is DBNull.Value Then
@@ -453,13 +453,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_ADDRESS2, Value)
         End Set
     End Property
 
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CITY) Is DBNull.Value Then
@@ -468,13 +468,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CITY, Value)
         End Set
     End Property
 
-    Public Property Region() As String
+    Public Property Region As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_REGION) Is DBNull.Value Then
@@ -483,13 +483,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_REGION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_REGION, Value)
         End Set
     End Property
 
-    Public Property PostalCode() As String
+    Public Property PostalCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_POSTAL_CODE) Is DBNull.Value Then
@@ -498,13 +498,13 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_POSTAL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_POSTAL_CODE, Value)
         End Set
     End Property
 
-    Public Property CountryCode() As String
+    Public Property CountryCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_COUNTRY_CODE) Is DBNull.Value Then
@@ -513,7 +513,7 @@ Public Class SubmitClaim
                 Return CType(Row(SOURCE_COL_COUNTRY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_COUNTRY_CODE, Value)
         End Set

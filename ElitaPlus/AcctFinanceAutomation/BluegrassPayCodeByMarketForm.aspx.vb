@@ -440,7 +440,7 @@ Partial Class BluegrassPayCodeByMarketForm
             Dim objRow As AfaInvoiceManaulData = CType(e.Row.DataItem, AfaInvoiceManaulData)
             Dim objDDL As DropDownList, strTemp As String
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     If .RowIndex = Grid.EditIndex Then
                         objDDL = CType(e.Row.FindControl(GRID_CTRL_NAME_AcctPeriod_Year), DropDownList)

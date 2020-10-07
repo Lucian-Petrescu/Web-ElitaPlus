@@ -308,7 +308,7 @@
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
         Dim oTextBox As TextBox
 
-        If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+        If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
             With e.Item
                 PopulateControlFromBOProperty(.Cells(GRID_COL_LIST_ITEM_ID), dvRow(CodeMapping.ListItemSearchDV.GRID_COL_LIST_ITEM_ID))
                 'Me.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_CODE_MAPPING_ID), dvRow(CodeMapping.ListItemSearchDV.GRID_COL_CODE_MAPPING_ID))
@@ -408,7 +408,7 @@
             If Not newCode = "" Then
                 If CodeMappId.Equals(Guid.Empty) Then
                     'DEF-1444. Start
-                    If i = 0 Or State.MyBO Is Nothing Or Not isFirstCodeMap Then
+                    If i = 0 OrElse State.MyBO Is Nothing OrElse Not isFirstCodeMap Then
                         State.MyBO = New CodeMapping
                         PopulateBOProperty(State.MyBO, "CompanyId", State.companyId)
                         PopulateBOProperty(State.MyBO, "ListItemId", New Guid(moListItemGrid.Items(i).Cells(GRID_COL_LIST_ITEM_ID).Text))
@@ -424,7 +424,7 @@
                     End If
                 Else
                     'DEF-1444. Start
-                    If i = 0 Or State.MyBO Is Nothing Or Not isFirstCodeMap Then
+                    If i = 0 OrElse State.MyBO Is Nothing OrElse Not isFirstCodeMap Then
                         State.MyBO = New CodeMapping(CodeMappId)
                         PopulateBOProperty(State.MyBO, "NewDescription", CType(moListItemGrid.Items(moListItemGrid.SelectedIndex).Cells(GRID_COL_NEW_DESCRIPTION_ALIAS).FindControl(NEW_DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text)
                         isFirstCodeMap = True
@@ -438,7 +438,7 @@
             ElseIf newCode = "" Then
                 If Not CodeMappId.Equals(Guid.Empty) Then
                     'DEF-1444. Start
-                    If i = 0 Or State.MyBO Is Nothing Or Not isFirstCodeMap Then
+                    If i = 0 OrElse State.MyBO Is Nothing OrElse Not isFirstCodeMap Then
                         State.MyBO = New CodeMapping(CodeMappId)
                         State.MyBO.Delete()
                         isFirstCodeMap = True

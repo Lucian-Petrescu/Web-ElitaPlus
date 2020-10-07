@@ -167,7 +167,7 @@ Namespace Reports
             Dim params As ReportCeBaseForm.Params
             Dim lastnumberofFiles As Integer
 
-            If txtnumber.Text.Trim.ToString = String.Empty Or Not IsNumeric(txtnumber.Text.Trim.ToString) Then
+            If txtnumber.Text.Trim.ToString = String.Empty OrElse Not IsNumeric(txtnumber.Text.Trim.ToString) Then
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER_OF_ACTIVE_DAYS_ERR)
             Else
                 lastnumberofFiles = CType(txtnumber.Text, Integer)

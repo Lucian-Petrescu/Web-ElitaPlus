@@ -105,7 +105,7 @@ Public Class Question
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IExpirable.ID
+    Public ReadOnly Property Id As Guid Implements IExpirable.ID
         Get
             If Row(QuestionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -116,7 +116,7 @@ Public Class Question
     End Property
 
     <ValueMandatory("")> _
-    Public Property SoftQuestionGroupId() As Guid
+    Public Property SoftQuestionGroupId As Guid
         Get
             CheckDeleted()
             If Row(QuestionDAL.COL_NAME_SOFT_QUESTION_GROUP_ID) Is DBNull.Value Then
@@ -125,7 +125,7 @@ Public Class Question
                 Return New Guid(CType(Row(QuestionDAL.COL_NAME_SOFT_QUESTION_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(QuestionDAL.COL_NAME_SOFT_QUESTION_GROUP_ID, Value)
         End Set
@@ -133,7 +133,7 @@ Public Class Question
 
 
 
-    Public Property ParentId() As Guid
+    Public Property ParentId As Guid
         Get
             CheckDeleted()
             If Row(QuestionDAL.COL_NAME_PARENT_ID) Is DBNull.Value Then
@@ -142,7 +142,7 @@ Public Class Question
                 Return New Guid(CType(Row(QuestionDAL.COL_NAME_PARENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(QuestionDAL.COL_NAME_PARENT_ID, Value)
         End Set
@@ -150,7 +150,7 @@ Public Class Question
 
 
     <ValueMandatory("")> _
-    Public Property ChildOrder() As LongType
+    Public Property ChildOrder As LongType
         Get
             CheckDeleted()
             If Row(QuestionDAL.COL_NAME_CHILD_ORDER) Is DBNull.Value Then
@@ -159,7 +159,7 @@ Public Class Question
                 Return New LongType(CType(Row(QuestionDAL.COL_NAME_CHILD_ORDER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(QuestionDAL.COL_NAME_CHILD_ORDER, Value)
         End Set
@@ -167,7 +167,7 @@ Public Class Question
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(QuestionDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -176,13 +176,13 @@ Public Class Question
                 Return CType(Row(QuestionDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(QuestionDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public ReadOnly Property TranslatedDescription() As String
+    Public ReadOnly Property TranslatedDescription As String
         Get
             If Row(QuestionDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
                 Return Nothing
@@ -194,7 +194,7 @@ Public Class Question
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=255), ValidateDuplicateCode("")> _
-    Public Property Code() As String Implements IExpirable.Code
+    Public Property Code As String Implements IExpirable.Code
         Get
             CheckDeleted()
             If Row(QuestionDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -203,14 +203,14 @@ Public Class Question
                 Return CType(Row(QuestionDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(QuestionDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property QuestionTypeId() As Guid
+    Public Property QuestionTypeId As Guid
         Get
             CheckDeleted()
             If Row(QuestionDAL.COL_NAME_QUESTION_TYPE_ID) Is DBNull.Value Then
@@ -219,13 +219,13 @@ Public Class Question
                 Return New Guid(CType(Row(QuestionDAL.COL_NAME_QUESTION_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(QuestionDAL.COL_NAME_QUESTION_TYPE_ID, Value)
         End Set
     End Property
     <ValidateImpactsClaimId("")> _
-    Public Property ImpactsClaimId() As Guid
+    Public Property ImpactsClaimId As Guid
         Get
             CheckDeleted()
             If Row(QuestionDAL.COL_NAME_IMPACTS_CLAIM_ID) Is DBNull.Value Then
@@ -234,7 +234,7 @@ Public Class Question
                 Return New Guid(CType(Row(QuestionDAL.COL_NAME_IMPACTS_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(QuestionDAL.COL_NAME_IMPACTS_CLAIM_ID, Value)
         End Set
@@ -242,7 +242,7 @@ Public Class Question
 
 
     <ValueMandatory("")> _
-    Public Property AnswerTypeId() As Guid
+    Public Property AnswerTypeId As Guid
         Get
             CheckDeleted()
             If Row(QuestionDAL.COL_NAME_ANSWER_TYPE_ID) Is DBNull.Value Then
@@ -251,7 +251,7 @@ Public Class Question
                 Return New Guid(CType(Row(QuestionDAL.COL_NAME_ANSWER_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(QuestionDAL.COL_NAME_ANSWER_TYPE_ID, Value)
         End Set
@@ -259,7 +259,7 @@ Public Class Question
 
 
     <ValidStringLength("", Max:=2000)> _
-    Public Property CustomerMessage() As String
+    Public Property CustomerMessage As String
         Get
             CheckDeleted()
             If Row(QuestionDAL.COL_NAME_CUSTOMER_MESSAGE) Is DBNull.Value Then
@@ -268,7 +268,7 @@ Public Class Question
                 Return CType(Row(QuestionDAL.COL_NAME_CUSTOMER_MESSAGE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(QuestionDAL.COL_NAME_CUSTOMER_MESSAGE, Value)
         End Set
@@ -276,7 +276,7 @@ Public Class Question
 
 
 
-    Public Property EntityAttributeId() As Guid
+    Public Property EntityAttributeId As Guid
         Get
             CheckDeleted()
             If Row(QuestionDAL.COL_NAME_ENTITY_ATTRIBUTE_ID) Is DBNull.Value Then
@@ -285,7 +285,7 @@ Public Class Question
                 Return New Guid(CType(Row(QuestionDAL.COL_NAME_ENTITY_ATTRIBUTE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(QuestionDAL.COL_NAME_ENTITY_ATTRIBUTE_ID, Value)
         End Set
@@ -293,7 +293,7 @@ Public Class Question
 
 
     <ValidStringLength("", Max:=255)> _
-    Public Property SearchTags() As String
+    Public Property SearchTags As String
         Get
             CheckDeleted()
             If Row(QuestionDAL.COL_NAME_SEARCH_TAGS) Is DBNull.Value Then
@@ -302,7 +302,7 @@ Public Class Question
                 Return CType(Row(QuestionDAL.COL_NAME_SEARCH_TAGS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(QuestionDAL.COL_NAME_SEARCH_TAGS, Value)
         End Set
@@ -310,7 +310,7 @@ Public Class Question
 
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EFFECTIVE)> _
-    Public Property Effective() As DateTimeType Implements IExpirable.Effective
+    Public Property Effective As DateTimeType Implements IExpirable.Effective
         Get
             CheckDeleted()
             If Row(QuestionDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -319,7 +319,7 @@ Public Class Question
                 Return New DateTimeType(CType(Row(QuestionDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(QuestionDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -327,7 +327,7 @@ Public Class Question
 
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EXPIRATION), EffectiveExpirationDateValidation(Codes.EXPIRATION)> _
-    Public Property Expiration() As DateTimeType Implements IExpirable.Expiration
+    Public Property Expiration As DateTimeType Implements IExpirable.Expiration
         Get
             CheckDeleted()
             If Row(QuestionDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -336,7 +336,7 @@ Public Class Question
                 Return New DateTimeType(CType(Row(QuestionDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(QuestionDAL.COL_NAME_EXPIRATION, Value)
         End Set
@@ -348,7 +348,7 @@ Public Class Question
         Get
             Return Guid.Empty
         End Get
-        Set(ByVal value As Guid)
+        Set
             'do nothing
         End Set
     End Property
@@ -377,7 +377,7 @@ Public Class Question
     End Sub
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
@@ -413,7 +413,7 @@ Public Class Question
         End Try
     End Function
 
-    Public Overrides ReadOnly Property IsNew() As Boolean Implements IExpirable.IsNew
+    Public Overrides ReadOnly Property IsNew As Boolean Implements IExpirable.IsNew
         Get
             Return MyBase.IsNew
         End Get
@@ -530,7 +530,7 @@ Public Class Question
 
 #Region "Answers Selection View"
     <ValidateMinanswerRequired("")> _
-    Public ReadOnly Property AnswerChildren() As Answer.AnswerList
+    Public ReadOnly Property AnswerChildren As Answer.AnswerList
         Get
             Dim Activeon As DateTime = DateTime.Now
             If Expiration.Value < DateTime.Now Then

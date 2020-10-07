@@ -372,7 +372,7 @@ Namespace Reports
                     'Me.chkTotalsPageByCov.Visible = True
                     'Me.lblTotalsByCov.Visible = True
                     trCoverage.Style.Add("display", "block")
-                    If rGroup.Checked = True Or GetSelectedItem(cboDealerGroup) <> Guid.Empty Then ' cboDealerGroup.SelectedItem.ToString <> String.Empty Then
+                    If rGroup.Checked = True OrElse GetSelectedItem(cboDealerGroup) <> Guid.Empty Then ' cboDealerGroup.SelectedItem.ToString <> String.Empty Then
                         chkTotalsPageByCov.Enabled = True
                         lblTotalsByCov.Enabled = True
                     Else
@@ -557,7 +557,7 @@ Namespace Reports
                 ElseIf rGroup.Checked Then
                     selectByGroup = ALL
                     dealerCode = ALL
-                ElseIf selectedDealerId.Equals(Guid.Empty) And selectedGroupId.Equals(Guid.Empty) Then
+                ElseIf selectedDealerId.Equals(Guid.Empty) AndAlso selectedGroupId.Equals(Guid.Empty) Then
                     ElitaPlusPage.SetLabelError(UserDealerMultipleDrop.CaptionLabel)
                     Throw New GUIException(Message.MSG_INVALID_DEALER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
                 End If

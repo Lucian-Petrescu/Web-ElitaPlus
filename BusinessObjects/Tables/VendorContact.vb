@@ -91,7 +91,7 @@ Public Class VendorContact
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IExpirable.ID
+    Public ReadOnly Property Id As Guid Implements IExpirable.ID
         Get
             If Row(VendorContactDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@ Public Class VendorContact
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(VendorContactDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -111,7 +111,7 @@ Public Class VendorContact
                 Return New Guid(CType(Row(VendorContactDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VendorContactDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
@@ -119,7 +119,7 @@ Public Class VendorContact
 
 
     <ValueMandatory("")> _
-    Public Property ContactInfoId() As Guid
+    Public Property ContactInfoId As Guid
         Get
             CheckDeleted()
             If Row(VendorContactDAL.COL_NAME_CONTACT_INFO_ID) Is DBNull.Value Then
@@ -128,7 +128,7 @@ Public Class VendorContact
                 Return New Guid(CType(Row(VendorContactDAL.COL_NAME_CONTACT_INFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VendorContactDAL.COL_NAME_CONTACT_INFO_ID, Value)
         End Set
@@ -136,7 +136,7 @@ Public Class VendorContact
 
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EFFECTIVE)> _
-    Public Property Effective() As DateTimeType Implements IExpirable.Effective
+    Public Property Effective As DateTimeType Implements IExpirable.Effective
         Get
             CheckDeleted()
             If Row(VendorContactDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -145,7 +145,7 @@ Public Class VendorContact
                 Return New DateTimeType(CType(Row(VendorContactDAL.COL_NAME_EFFECTIVE), DateTime))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(VendorContactDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -153,7 +153,7 @@ Public Class VendorContact
 
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EXPIRATION), EffectiveExpirationDateValidation(Codes.EXPIRATION)> _
-    Public Property Expiration() As DateTimeType Implements IExpirable.Expiration
+    Public Property Expiration As DateTimeType Implements IExpirable.Expiration
         Get
             CheckDeleted()
             If Row(VendorContactDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -162,13 +162,13 @@ Public Class VendorContact
                 Return New DateTimeType(CType(Row(VendorContactDAL.COL_NAME_EXPIRATION), DateTime))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(VendorContactDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
-    Public Property AddressTypeId() As Guid
+    Public Property AddressTypeId As Guid
         Get
             CheckDeleted()
             If Row(VendorContactDAL.COL_NAME_ADDRESS_TYPE_ID) Is DBNull.Value Then
@@ -177,13 +177,13 @@ Public Class VendorContact
                 Return New Guid(CType(Row(VendorContactDAL.COL_NAME_ADDRESS_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VendorContactDAL.COL_NAME_ADDRESS_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property Name() As String
+    Public Property Name As String
         Get
             CheckDeleted()
             If Row(VendorContactDAL.COL_NAME_NAME) Is DBNull.Value Then
@@ -192,13 +192,13 @@ Public Class VendorContact
                 Return CType(Row(VendorContactDAL.COL_NAME_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VendorContactDAL.COL_NAME_NAME, Value)
         End Set
     End Property
 
-    Public Property Email() As String
+    Public Property Email As String
         Get
             CheckDeleted()
             If Row(VendorContactDAL.COL_NAME_EMAIL) Is DBNull.Value Then
@@ -207,13 +207,13 @@ Public Class VendorContact
                 Return CType(Row(VendorContactDAL.COL_NAME_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VendorContactDAL.COL_NAME_EMAIL, Value)
         End Set
     End Property
 
-    Public Property Company() As String
+    Public Property Company As String
         Get
             CheckDeleted()
             If Row(VendorContactDAL.COL_NAME_COMPANY) Is DBNull.Value Then
@@ -222,13 +222,13 @@ Public Class VendorContact
                 Return CType(Row(VendorContactDAL.COL_NAME_COMPANY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VendorContactDAL.COL_NAME_COMPANY, Value)
         End Set
     End Property
 
-    Public Property JobTitle() As String
+    Public Property JobTitle As String
         Get
             CheckDeleted()
             If Row(VendorContactDAL.COL_NAME_JOB_TITLE) Is DBNull.Value Then
@@ -237,7 +237,7 @@ Public Class VendorContact
                 Return CType(Row(VendorContactDAL.COL_NAME_JOB_TITLE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VendorContactDAL.COL_NAME_JOB_TITLE, Value)
         End Set
@@ -304,7 +304,7 @@ Public Class VendorContact
         Get
 
         End Get
-        Set(value As String)
+        Set
 
         End Set
     End Property
@@ -313,7 +313,7 @@ Public Class VendorContact
         Get
 
         End Get
-        Set(value As System.Guid)
+        Set
 
         End Set
     End Property

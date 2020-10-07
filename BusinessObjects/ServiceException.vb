@@ -1,7 +1,7 @@
 ﻿Imports System.Runtime.Serialization
 Imports Assurant.ElitaPlus.Common
 
-<Serializable()> _
+<Serializable> _
 Public NotInheritable Class ServiceException
     Inherits ElitaPlusException
 

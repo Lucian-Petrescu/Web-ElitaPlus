@@ -207,7 +207,7 @@ Namespace Reports
             Dim beginDate As String = moBeginDateText.Text
 
             'Dates
-            If (endDate = String.Empty And beginDate = String.Empty) Then
+            If (endDate = String.Empty AndAlso beginDate = String.Empty) Then
                 endDate = String.Empty
                 beginDate = String.Empty
             Else

@@ -371,7 +371,7 @@ Partial Class ClaimIssueDetailForm
             PopulateControlFromBOProperty(Label_ProcessedDate, .ProcessedDate)
             PopulateControlFromBOProperty(Label_IssueStatus, LookupListNew.GetDescriptionFromCode(LookupListCache.LK_CLAIM_ISSUE_STATUS, .StatusCode))
 
-            If (State.MyBO.StatusCode = Codes.CLAIMISSUE_STATUS__RESOLVED Or State.MyBO.StatusCode = Codes.CLAIMISSUE_STATUS__WAIVED) Then
+            If (State.MyBO.StatusCode = Codes.CLAIMISSUE_STATUS__RESOLVED OrElse State.MyBO.StatusCode = Codes.CLAIMISSUE_STATUS__WAIVED) Then
                 cssClassName = "StatActive"
             Else
                 cssClassName = "StatClosed"
@@ -382,7 +382,7 @@ Partial Class ClaimIssueDetailForm
         End With
 
         EnableDisableFields()
-        If ((State.MyBO.StatusCode = STATUS_OPEN Or State.MyBO.StatusCode = STATUS_PENDING) AndAlso (State.MyBO.Claim.EvaluatePreConditions(State.MyBO.Issue.PreConditionList))) Then
+        If ((State.MyBO.StatusCode = STATUS_OPEN OrElse State.MyBO.StatusCode = STATUS_PENDING) AndAlso (State.MyBO.Claim.EvaluatePreConditions(State.MyBO.Issue.PreConditionList))) Then
             ControlMgr.SetEnableControl(Me, btnProcess, True)
             ControlMgr.SetEnableControl(Me, btnWaive, True)
             ControlMgr.SetEnableControl(Me, btnUndo, True)
@@ -815,7 +815,7 @@ Partial Class ClaimIssueDetailForm
         Next
 
         'DEF-2862
-        If (policeReportNumber.Trim <> String.Empty And policeStationId <> Nothing AndAlso
+        If (policeReportNumber.Trim <> String.Empty AndAlso policeStationId <> Nothing AndAlso
               Not policeReportNumber.Trim.ToUpper().Equals("N/A") AndAlso
               Not policeReportNumber.Trim.ToUpper().Equals("N-A")) Then
 
@@ -1159,7 +1159,7 @@ Partial Class ClaimIssueDetailForm
                     End If
                 End If
             Next
-            If sOutcome.Contains("Y") And iQuestionCount = grdQuestions.Rows.Count Then
+            If sOutcome.Contains("Y") AndAlso iQuestionCount = grdQuestions.Rows.Count Then
                 sStatus = STATUS_RESOLVED
             End If
             If sOutcome.Contains("P") Then

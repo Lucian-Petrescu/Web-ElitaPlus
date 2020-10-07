@@ -156,7 +156,7 @@
 
     Private Sub moDataGrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
 
-        If e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.Item Then
+        If e.Item.ItemType = ListItemType.AlternatingItem OrElse e.Item.ItemType = ListItemType.Item Then
             Dim drv As DataRowView = CType(e.Item.DataItem, DataRowView)
             e.Item.Cells(GRID_COL_ACCT_TRANSMISSION_ID_IDX).Text = GuidControl.ByteArrayToGuid(CType(drv(AcctTransmission.AcctTransmissionSearchDV.COL_ACCT_TRANSMISSION_ID), Byte())).ToString
         End If

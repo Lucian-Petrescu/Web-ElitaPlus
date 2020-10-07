@@ -156,7 +156,7 @@ Public Class SvcNotificationReconWrk
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(SvcNotificationReconWrkDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -167,7 +167,7 @@ Public Class SvcNotificationReconWrk
     End Property
 
     <ValueMandatory("")> _
-    Public Property SvcNotificationProcessedId() As Guid
+    Public Property SvcNotificationProcessedId As Guid
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_SVC_NOTIFICATION_PROCESSED_ID) Is DBNull.Value Then
@@ -176,7 +176,7 @@ Public Class SvcNotificationReconWrk
                 Return New Guid(CType(Row(SvcNotificationReconWrkDAL.COL_NAME_SVC_NOTIFICATION_PROCESSED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_SVC_NOTIFICATION_PROCESSED_ID, Value)
         End Set
@@ -184,7 +184,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=3)> _
-    Public Property RejectCode() As String
+    Public Property RejectCode As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_REJECT_CODE) Is DBNull.Value Then
@@ -193,7 +193,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_REJECT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_REJECT_CODE, Value)
         End Set
@@ -201,7 +201,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=100)> _
-    Public Property RejectReason() As String
+    Public Property RejectReason As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_REJECT_REASON) Is DBNull.Value Then
@@ -210,7 +210,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_REJECT_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_REJECT_REASON, Value)
         End Set
@@ -218,7 +218,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property ClaimLoaded() As String
+    Public Property ClaimLoaded As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_CLAIM_LOADED) Is DBNull.Value Then
@@ -227,7 +227,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_CLAIM_LOADED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_CLAIM_LOADED, Value)
         End Set
@@ -235,7 +235,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=3000)> _
-    Public Property EntireRecord() As String
+    Public Property EntireRecord As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_ENTIRE_RECORD) Is DBNull.Value Then
@@ -244,7 +244,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_ENTIRE_RECORD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_ENTIRE_RECORD, Value)
         End Set
@@ -252,7 +252,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=12)> _
-    Public Property SvcNotificationNumber() As String
+    Public Property SvcNotificationNumber As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_SVC_NOTIFICATION_NUMBER) Is DBNull.Value Then
@@ -261,7 +261,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_SVC_NOTIFICATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_SVC_NOTIFICATION_NUMBER, Value)
         End Set
@@ -269,7 +269,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=2)> _
-    Public Property SvcNotificationType() As String
+    Public Property SvcNotificationType As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_SVC_NOTIFICATION_TYPE) Is DBNull.Value Then
@@ -278,7 +278,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_SVC_NOTIFICATION_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_SVC_NOTIFICATION_TYPE, Value)
         End Set
@@ -286,7 +286,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -295,7 +295,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -303,7 +303,7 @@ Public Class SvcNotificationReconWrk
 
 
 
-    Public Property CreatedOn() As DateType
+    Public Property CreatedOn As DateType
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_CREATED_ON) Is DBNull.Value Then
@@ -312,7 +312,7 @@ Public Class SvcNotificationReconWrk
                 Return New DateType(CType(Row(SvcNotificationReconWrkDAL.COL_NAME_CREATED_ON), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_CREATED_ON, Value)
         End Set
@@ -320,7 +320,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=8)> _
-    Public Property ChangedOn() As String
+    Public Property ChangedOn As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_CHANGED_ON) Is DBNull.Value Then
@@ -329,7 +329,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_CHANGED_ON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_CHANGED_ON, Value)
         End Set
@@ -337,7 +337,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=32)> _
-    Public Property RequiredStartDate() As String
+    Public Property RequiredStartDate As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_REQUIRED_START_DATE) Is DBNull.Value Then
@@ -346,7 +346,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_REQUIRED_START_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_REQUIRED_START_DATE, Value)
         End Set
@@ -354,7 +354,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=24)> _
-    Public Property RequiredStartTime() As String
+    Public Property RequiredStartTime As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_REQUIRED_START_TIME) Is DBNull.Value Then
@@ -363,7 +363,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_REQUIRED_START_TIME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_REQUIRED_START_TIME, Value)
         End Set
@@ -371,7 +371,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=32)> _
-    Public Property RequiredEndDate() As String
+    Public Property RequiredEndDate As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_REQUIRED_END_DATE) Is DBNull.Value Then
@@ -380,7 +380,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_REQUIRED_END_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_REQUIRED_END_DATE, Value)
         End Set
@@ -388,7 +388,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=24)> _
-    Public Property RequestedEndTime() As String
+    Public Property RequestedEndTime As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_REQUESTED_END_TIME) Is DBNull.Value Then
@@ -397,7 +397,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_REQUESTED_END_TIME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_REQUESTED_END_TIME, Value)
         End Set
@@ -405,7 +405,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=18)> _
-    Public Property ArticleNumber() As String
+    Public Property ArticleNumber As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_ARTICLE_NUMBER) Is DBNull.Value Then
@@ -414,7 +414,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_ARTICLE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_ARTICLE_NUMBER, Value)
         End Set
@@ -422,7 +422,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=10)> _
-    Public Property CustAcctNumber() As String
+    Public Property CustAcctNumber As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_ACCT_NUMBER) Is DBNull.Value Then
@@ -431,7 +431,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_ACCT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_CUST_ACCT_NUMBER, Value)
         End Set
@@ -439,7 +439,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=35)> _
-    Public Property CustName1() As String
+    Public Property CustName1 As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_NAME_1) Is DBNull.Value Then
@@ -448,7 +448,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_NAME_1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_CUST_NAME_1, Value)
         End Set
@@ -456,7 +456,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=35)> _
-    Public Property CustName2() As String
+    Public Property CustName2 As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_NAME_2) Is DBNull.Value Then
@@ -465,7 +465,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_NAME_2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_CUST_NAME_2, Value)
         End Set
@@ -473,7 +473,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=35)> _
-    Public Property CustCity() As String
+    Public Property CustCity As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_CITY) Is DBNull.Value Then
@@ -482,7 +482,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_CUST_CITY, Value)
         End Set
@@ -490,7 +490,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=25)> _
-    Public Property CustPostalCode() As String
+    Public Property CustPostalCode As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_POSTAL_CODE) Is DBNull.Value Then
@@ -499,7 +499,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_POSTAL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_CUST_POSTAL_CODE, Value)
         End Set
@@ -507,7 +507,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=3)> _
-    Public Property CustRegion() As String
+    Public Property CustRegion As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_REGION) Is DBNull.Value Then
@@ -516,7 +516,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_REGION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_CUST_REGION, Value)
         End Set
@@ -524,7 +524,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=35)> _
-    Public Property CustAddress() As String
+    Public Property CustAddress As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_ADDRESS) Is DBNull.Value Then
@@ -533,7 +533,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_ADDRESS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_CUST_ADDRESS, Value)
         End Set
@@ -541,7 +541,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=16)> _
-    Public Property CustPhoneNumber() As String
+    Public Property CustPhoneNumber As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_PHONE_NUMBER) Is DBNull.Value Then
@@ -550,7 +550,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_PHONE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_CUST_PHONE_NUMBER, Value)
         End Set
@@ -558,7 +558,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=31)> _
-    Public Property CustFaxNumber() As String
+    Public Property CustFaxNumber As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_FAX_NUMBER) Is DBNull.Value Then
@@ -567,7 +567,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_CUST_FAX_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_CUST_FAX_NUMBER, Value)
         End Set
@@ -575,7 +575,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=30)> _
-    Public Property Equipment() As String
+    Public Property Equipment As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_EQUIPMENT) Is DBNull.Value Then
@@ -584,7 +584,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_EQUIPMENT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_EQUIPMENT, Value)
         End Set
@@ -592,7 +592,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=30)> _
-    Public Property MfgName() As String
+    Public Property MfgName As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_MFG_NAME) Is DBNull.Value Then
@@ -601,7 +601,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_MFG_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_MFG_NAME, Value)
         End Set
@@ -609,7 +609,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=100)>
-    Public Property ModelNumber() As String
+    Public Property ModelNumber As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_MODEL_NUMBER) Is DBNull.Value Then
@@ -618,7 +618,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_MODEL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_MODEL_NUMBER, Value)
         End Set
@@ -626,7 +626,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=30)> _
-    Public Property MfgPartNumber() As String
+    Public Property MfgPartNumber As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_MFG_PART_NUMBER) Is DBNull.Value Then
@@ -635,7 +635,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_MFG_PART_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_MFG_PART_NUMBER, Value)
         End Set
@@ -643,7 +643,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=30)> _
-    Public Property SerialNumber() As String
+    Public Property SerialNumber As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_SERIAL_NUMBER) Is DBNull.Value Then
@@ -652,7 +652,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_SERIAL_NUMBER, Value)
         End Set
@@ -660,7 +660,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=30)> _
-    Public Property SvcNotificationStatus() As String
+    Public Property SvcNotificationStatus As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_SVC_NOTIFICATION_STATUS) Is DBNull.Value Then
@@ -669,7 +669,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_SVC_NOTIFICATION_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_SVC_NOTIFICATION_STATUS, Value)
         End Set
@@ -677,7 +677,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=4)> _
-    Public Property SeqTaskNumber() As String
+    Public Property SeqTaskNumber As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_SEQ_TASK_NUMBER) Is DBNull.Value Then
@@ -686,7 +686,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_SEQ_TASK_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_SEQ_TASK_NUMBER, Value)
         End Set
@@ -694,7 +694,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property SeqTaskDescription() As String
+    Public Property SeqTaskDescription As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_SEQ_TASK_DESCRIPTION) Is DBNull.Value Then
@@ -703,7 +703,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_SEQ_TASK_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_SEQ_TASK_DESCRIPTION, Value)
         End Set
@@ -711,7 +711,7 @@ Public Class SvcNotificationReconWrk
 
 
 
-    Public Property ConsecutiveActivityNumber() As LongType
+    Public Property ConsecutiveActivityNumber As LongType
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_CONSECUTIVE_ACTIVITY_NUMBER) Is DBNull.Value Then
@@ -720,7 +720,7 @@ Public Class SvcNotificationReconWrk
                 Return New LongType(CType(Row(SvcNotificationReconWrkDAL.COL_NAME_CONSECUTIVE_ACTIVITY_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_CONSECUTIVE_ACTIVITY_NUMBER, Value)
         End Set
@@ -728,7 +728,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property ActivityText() As String
+    Public Property ActivityText As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_ACTIVITY_TEXT) Is DBNull.Value Then
@@ -737,7 +737,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_ACTIVITY_TEXT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_ACTIVITY_TEXT, Value)
         End Set
@@ -745,7 +745,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=500)> _
-    Public Property ProblemDescription() As String
+    Public Property ProblemDescription As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_PROBLEM_DESCRIPTION) Is DBNull.Value Then
@@ -754,7 +754,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_PROBLEM_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_PROBLEM_DESCRIPTION, Value)
         End Set
@@ -762,7 +762,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=4)> _
-    Public Property Site() As String
+    Public Property Site As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_SITE) Is DBNull.Value Then
@@ -771,7 +771,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_SITE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_SITE, Value)
         End Set
@@ -779,7 +779,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property PrpCodAmt() As String
+    Public Property PrpCodAmt As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_PRP_COD_AMT) Is DBNull.Value Then
@@ -788,7 +788,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_PRP_COD_AMT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_PRP_COD_AMT, Value)
         End Set
@@ -796,7 +796,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property OpIndicator() As String
+    Public Property OpIndicator As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_OP_INDICATOR) Is DBNull.Value Then
@@ -805,7 +805,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_OP_INDICATOR), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_OP_INDICATOR, Value)
         End Set
@@ -813,7 +813,7 @@ Public Class SvcNotificationReconWrk
 
 
     <ValidStringLength("", Max:=35)> _
-    Public Property TransactionNumber() As String
+    Public Property TransactionNumber As String
         Get
             CheckDeleted()
             If Row(SvcNotificationReconWrkDAL.COL_NAME_TRANSACTION_NUMBER) Is DBNull.Value Then
@@ -822,7 +822,7 @@ Public Class SvcNotificationReconWrk
                 Return CType(Row(SvcNotificationReconWrkDAL.COL_NAME_TRANSACTION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SvcNotificationReconWrkDAL.COL_NAME_TRANSACTION_NUMBER, Value)
         End Set

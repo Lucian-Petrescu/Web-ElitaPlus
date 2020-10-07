@@ -98,7 +98,7 @@ Public Class AcctExecLog
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AcctExecLogDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -109,7 +109,7 @@ Public Class AcctExecLog
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(AcctExecLogDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -118,7 +118,7 @@ Public Class AcctExecLog
                 Return New Guid(CType(row(AcctExecLogDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctExecLogDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -126,7 +126,7 @@ Public Class AcctExecLog
 
 
     <ValueMandatory("")> _
-    Public Property AcctEventId() As Guid
+    Public Property AcctEventId As Guid
         Get
             CheckDeleted()
             If row(AcctExecLogDAL.COL_NAME_ACCT_EVENT_ID) Is DBNull.Value Then
@@ -135,7 +135,7 @@ Public Class AcctExecLog
                 Return New Guid(CType(row(AcctExecLogDAL.COL_NAME_ACCT_EVENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctExecLogDAL.COL_NAME_ACCT_EVENT_ID, Value)
         End Set
@@ -143,7 +143,7 @@ Public Class AcctExecLog
 
 
     <ValueMandatory("")> _
-    Public Property LastRunDate() As DateType
+    Public Property LastRunDate As DateType
         Get
             CheckDeleted()
             If row(AcctExecLogDAL.COL_NAME_LAST_RUN_DATE) Is DBNull.Value Then
@@ -152,14 +152,14 @@ Public Class AcctExecLog
                 Return New DateType(CType(row(AcctExecLogDAL.COL_NAME_LAST_RUN_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(AcctExecLogDAL.COL_NAME_LAST_RUN_DATE, Value)
         End Set
     End Property
 
 
-    Public Property PreviousRunDate() As DateType
+    Public Property PreviousRunDate As DateType
         Get
             CheckDeleted()
             If Row(AcctExecLogDAL.COL_NAME_PREVIOUS_RUN_DATE) Is DBNull.Value Then
@@ -168,7 +168,7 @@ Public Class AcctExecLog
                 Return New DateType(CType(Row(AcctExecLogDAL.COL_NAME_PREVIOUS_RUN_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(AcctExecLogDAL.COL_NAME_PREVIOUS_RUN_DATE, Value)
         End Set
@@ -176,7 +176,7 @@ Public Class AcctExecLog
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property Status() As String
+    Public Property Status As String
         Get
             CheckDeleted()
             If Row(AcctExecLogDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -185,7 +185,7 @@ Public Class AcctExecLog
                 Return CType(Row(AcctExecLogDAL.COL_NAME_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctExecLogDAL.COL_NAME_STATUS, Value)
         End Set

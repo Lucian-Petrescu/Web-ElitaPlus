@@ -153,7 +153,7 @@
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(EquipmentReconDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -164,7 +164,7 @@
     End Property
 
     <ValueMandatory("")> _
-    Public Property FileProcessedId() As Guid
+    Public Property FileProcessedId As Guid
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_FILE_PROCESSED_ID) Is DBNull.Value Then
@@ -173,7 +173,7 @@
                 Return New Guid(CType(Row(EquipmentReconDAL.COL_NAME_FILE_PROCESSED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_FILE_PROCESSED_ID, Value)
         End Set
@@ -181,7 +181,7 @@
 
 
     <ValidStringLength("", Max:=5)> _
-    Public Property RecordType() As String
+    Public Property RecordType As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_RECORD_TYPE) Is DBNull.Value Then
@@ -190,14 +190,14 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_RECORD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_RECORD_TYPE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=255)> _
-    Public Property Manufacturer() As String
+    Public Property Manufacturer As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_MANUFACTURER) Is DBNull.Value Then
@@ -206,13 +206,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_MANUFACTURER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_MANUFACTURER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=100)>
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -221,7 +221,7 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_MODEL, Value)
         End Set
@@ -229,7 +229,7 @@
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -238,14 +238,14 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)> _
-    Public Property IsMaster() As String
+    Public Property IsMaster As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_IS_MASTER) Is DBNull.Value Then
@@ -254,14 +254,14 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_IS_MASTER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_IS_MASTER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)> _
-    Public Property MasterEquipmentDescription() As String
+    Public Property MasterEquipmentDescription As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_MASTER_EQUIPMENT_DESCRIPTION) Is DBNull.Value Then
@@ -270,14 +270,14 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_MASTER_EQUIPMENT_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_MASTER_EQUIPMENT_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=255)> _
-    Public Property EquipmentClass() As String
+    Public Property EquipmentClass As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_EQUIPMENT_CLASS) Is DBNull.Value Then
@@ -287,14 +287,14 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_EQUIPMENT_CLASS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_EQUIPMENT_CLASS, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=255)> _
-    Public Property EquipmentType() As String
+    Public Property EquipmentType As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_EQUIPMENT_TYPE) Is DBNull.Value Then
@@ -303,14 +303,14 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_EQUIPMENT_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_EQUIPMENT_TYPE, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=99)> _
-    Public Property ManufacturerWarranty() As LongType
+    Public Property ManufacturerWarranty As LongType
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_MANUFACTURER_WARRANTY) Is DBNull.Value Then
@@ -319,13 +319,13 @@
                 Return New LongType(CType(Row(EquipmentReconDAL.COL_NAME_MANUFACTURER_WARRANTY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_MANUFACTURER_WARRANTY, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
-    Public Property Attributes() As String
+    Public Property Attributes As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_ATTRIBUTES) Is DBNull.Value Then
@@ -334,13 +334,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_ATTRIBUTES), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_ATTRIBUTES, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
-    Public Property Note1() As String
+    Public Property Note1 As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_NOTE1) Is DBNull.Value Then
@@ -349,13 +349,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_NOTE1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_NOTE1, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
-    Public Property Note2() As String
+    Public Property Note2 As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_NOTE2) Is DBNull.Value Then
@@ -364,13 +364,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_NOTE2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_NOTE2, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
-    Public Property Note3() As String
+    Public Property Note3 As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_NOTE3) Is DBNull.Value Then
@@ -379,13 +379,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_NOTE3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_NOTE3, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
-    Public Property Note4() As String
+    Public Property Note4 As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_NOTE4) Is DBNull.Value Then
@@ -394,13 +394,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_NOTE4), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_NOTE4, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
-    Public Property Note5() As String
+    Public Property Note5 As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_NOTE5) Is DBNull.Value Then
@@ -409,13 +409,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_NOTE5), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_NOTE5, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
-    Public Property Note6() As String
+    Public Property Note6 As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_NOTE6) Is DBNull.Value Then
@@ -424,13 +424,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_NOTE6), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_NOTE6, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
-    Public Property Note7() As String
+    Public Property Note7 As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_NOTE7) Is DBNull.Value Then
@@ -439,13 +439,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_NOTE7), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_NOTE7, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
-    Public Property Note8() As String
+    Public Property Note8 As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_NOTE8) Is DBNull.Value Then
@@ -454,13 +454,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_NOTE8), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_NOTE8, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
-    Public Property Note9() As String
+    Public Property Note9 As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_NOTE9) Is DBNull.Value Then
@@ -469,13 +469,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_NOTE9), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_NOTE9, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
-    Public Property Note10() As String
+    Public Property Note10 As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_NOTE10) Is DBNull.Value Then
@@ -484,13 +484,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_NOTE10), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_NOTE10, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=200)> _
-    Public Property RejectReason() As String
+    Public Property RejectReason As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_REJECT_REASON) Is DBNull.Value Then
@@ -499,13 +499,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_REJECT_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_REJECT_REASON, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=12)> _
-    Public Property RejectCode() As String
+    Public Property RejectCode As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_REJECT_CODE) Is DBNull.Value Then
@@ -514,13 +514,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_REJECT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_REJECT_CODE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=1)> _
-    Public Property LoadStatus() As String
+    Public Property LoadStatus As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_LOAD_STATUS) Is DBNull.Value Then
@@ -529,13 +529,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_LOAD_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_LOAD_STATUS, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)> _
-    Public Property Reject_Msg_Parms() As DecimalType
+    Public Property Reject_Msg_Parms As DecimalType
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_REJECT_MSG_PARMS) Is DBNull.Value Then
@@ -545,12 +545,12 @@
                 Return New DecimalType(CType(Row(EquipmentReconDAL.COL_NAME_REJECT_MSG_PARMS), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_REJECT_MSG_PARMS, Value)
         End Set
     End Property
-    Public Property ModifiedDate() As DateType
+    Public Property ModifiedDate As DateType
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_MODIFIED_DATE) Is DBNull.Value Then
@@ -559,12 +559,12 @@
                 Return New DateType(CType(Row(EquipmentReconDAL.COL_NAME_MODIFIED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_MODIFIED_DATE, Value)
         End Set
     End Property
-    Public Property ModifiedBy() As String
+    Public Property ModifiedBy As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_MODIFIED_BY) Is DBNull.Value Then
@@ -573,13 +573,13 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_MODIFIED_BY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_MODIFIED_BY, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=255)> _
-    Public Property Repairable() As String
+    Public Property Repairable As String
         Get
             CheckDeleted()
             If Row(EquipmentReconDAL.COL_NAME_REPAIRABLE) Is DBNull.Value Then
@@ -588,7 +588,7 @@
                 Return CType(Row(EquipmentReconDAL.COL_NAME_REPAIRABLE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentReconDAL.COL_NAME_REPAIRABLE, Value)
         End Set

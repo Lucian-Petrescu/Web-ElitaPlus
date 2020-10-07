@@ -128,7 +128,7 @@ Public Class Manufacturer
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ManufacturerDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -139,7 +139,7 @@ Public Class Manufacturer
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=255)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ManufacturerDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -148,7 +148,7 @@ Public Class Manufacturer
                 Return CType(Row(ManufacturerDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ManufacturerDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -156,7 +156,7 @@ Public Class Manufacturer
 
 
     <ValueMandatory("")> _
-    Public ReadOnly Property companyGroupId() As Guid
+    Public ReadOnly Property companyGroupId As Guid
         Get
             CheckDeleted()
             If Row(ManufacturerDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then

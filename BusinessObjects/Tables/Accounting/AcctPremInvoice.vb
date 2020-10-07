@@ -90,7 +90,7 @@ Public Class AcctPremInvoice
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AcctPremInvoiceDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class AcctPremInvoice
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class AcctPremInvoice
                 Return New Guid(CType(row(AcctPremInvoiceDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class AcctPremInvoice
 
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class AcctPremInvoice
                 Return New Guid(CType(row(AcctPremInvoiceDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property BranchId() As Guid
+    Public Property BranchId As Guid
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_BRANCH_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class AcctPremInvoice
                 Return New Guid(CType(row(AcctPremInvoiceDAL.COL_NAME_BRANCH_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_BRANCH_ID, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class AcctPremInvoice
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=60)> _
-    Public Property InvoiceNumber() As String
+    Public Property InvoiceNumber As String
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_INVOICE_NUMBER) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class AcctPremInvoice
                 Return CType(row(AcctPremInvoiceDAL.COL_NAME_INVOICE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_INVOICE_NUMBER, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class AcctPremInvoice
 
 
     <ValidStringLength("", Max:=60)> _
-    Public Property CreditNoteNumber() As String
+    Public Property CreditNoteNumber As String
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_CREDIT_NOTE_NUMBER) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class AcctPremInvoice
                 Return CType(row(AcctPremInvoiceDAL.COL_NAME_CREDIT_NOTE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_CREDIT_NOTE_NUMBER, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property PreviousInvoiceDate() As DateType
+    Public Property PreviousInvoiceDate As DateType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_PREVIOUS_INVOICE_DATE) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class AcctPremInvoice
                 Return New DateType(CType(row(AcctPremInvoiceDAL.COL_NAME_PREVIOUS_INVOICE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_PREVIOUS_INVOICE_DATE, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property NewTotalCert() As LongType
+    Public Property NewTotalCert As LongType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_NEW_TOTAL_CERT) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class AcctPremInvoice
                 Return New LongType(CType(row(AcctPremInvoiceDAL.COL_NAME_NEW_TOTAL_CERT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_NEW_TOTAL_CERT, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property NewGrossAmtRecvd() As DecimalType
+    Public Property NewGrossAmtRecvd As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_NEW_GROSS_AMT_RECVD) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_NEW_GROSS_AMT_RECVD), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_NEW_GROSS_AMT_RECVD, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property NewPremiumWritten() As DecimalType
+    Public Property NewPremiumWritten As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_NEW_PREMIUM_WRITTEN) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_NEW_PREMIUM_WRITTEN), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_NEW_PREMIUM_WRITTEN, Value)
         End Set
@@ -254,7 +254,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property NewCommission() As DecimalType
+    Public Property NewCommission As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_NEW_COMMISSION) Is DBNull.Value Then
@@ -263,7 +263,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_NEW_COMMISSION), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_NEW_COMMISSION, Value)
         End Set
@@ -271,7 +271,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property NewTax1() As DecimalType
+    Public Property NewTax1 As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_NEW_TAX1) Is DBNull.Value Then
@@ -280,7 +280,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_NEW_TAX1), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_NEW_TAX1, Value)
         End Set
@@ -288,7 +288,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property NewTax2() As DecimalType
+    Public Property NewTax2 As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_NEW_TAX2) Is DBNull.Value Then
@@ -297,7 +297,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_NEW_TAX2), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_NEW_TAX2, Value)
         End Set
@@ -305,7 +305,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property NewTax3() As DecimalType
+    Public Property NewTax3 As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_NEW_TAX3) Is DBNull.Value Then
@@ -314,7 +314,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_NEW_TAX3), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_NEW_TAX3, Value)
         End Set
@@ -322,7 +322,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property NewTax4() As DecimalType
+    Public Property NewTax4 As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_NEW_TAX4) Is DBNull.Value Then
@@ -331,7 +331,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_NEW_TAX4), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_NEW_TAX4, Value)
         End Set
@@ -339,7 +339,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property NewTax5() As DecimalType
+    Public Property NewTax5 As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_NEW_TAX5) Is DBNull.Value Then
@@ -348,7 +348,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_NEW_TAX5), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_NEW_TAX5, Value)
         End Set
@@ -356,7 +356,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property NewTax6() As DecimalType
+    Public Property NewTax6 As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_NEW_TAX6) Is DBNull.Value Then
@@ -365,7 +365,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_NEW_TAX6), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_NEW_TAX6, Value)
         End Set
@@ -373,7 +373,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property NewPremiumTotal() As DecimalType
+    Public Property NewPremiumTotal As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_NEW_PREMIUM_TOTAL) Is DBNull.Value Then
@@ -382,7 +382,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_NEW_PREMIUM_TOTAL), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_NEW_PREMIUM_TOTAL, Value)
         End Set
@@ -390,7 +390,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property CancelTotalCert() As LongType
+    Public Property CancelTotalCert As LongType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_CANCEL_TOTAL_CERT) Is DBNull.Value Then
@@ -399,7 +399,7 @@ Public Class AcctPremInvoice
                 Return New LongType(CType(row(AcctPremInvoiceDAL.COL_NAME_CANCEL_TOTAL_CERT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_CANCEL_TOTAL_CERT, Value)
         End Set
@@ -407,7 +407,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property CancelGrossAmtRecvd() As DecimalType
+    Public Property CancelGrossAmtRecvd As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_CANCEL_GROSS_AMT_RECVD) Is DBNull.Value Then
@@ -416,7 +416,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_CANCEL_GROSS_AMT_RECVD), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_CANCEL_GROSS_AMT_RECVD, Value)
         End Set
@@ -424,7 +424,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property CancelPremiumWritten() As DecimalType
+    Public Property CancelPremiumWritten As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_CANCEL_PREMIUM_WRITTEN) Is DBNull.Value Then
@@ -433,7 +433,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_CANCEL_PREMIUM_WRITTEN), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_CANCEL_PREMIUM_WRITTEN, Value)
         End Set
@@ -441,7 +441,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property CancelCommission() As DecimalType
+    Public Property CancelCommission As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_CANCEL_COMMISSION) Is DBNull.Value Then
@@ -450,7 +450,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_CANCEL_COMMISSION), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_CANCEL_COMMISSION, Value)
         End Set
@@ -458,7 +458,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property CancelTax1() As DecimalType
+    Public Property CancelTax1 As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX1) Is DBNull.Value Then
@@ -467,7 +467,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX1), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX1, Value)
         End Set
@@ -475,7 +475,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property CancelTax2() As DecimalType
+    Public Property CancelTax2 As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX2) Is DBNull.Value Then
@@ -484,7 +484,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX2), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX2, Value)
         End Set
@@ -492,7 +492,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property CancelTax3() As DecimalType
+    Public Property CancelTax3 As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX3) Is DBNull.Value Then
@@ -501,7 +501,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX3), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX3, Value)
         End Set
@@ -509,7 +509,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property CancelTax4() As DecimalType
+    Public Property CancelTax4 As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX4) Is DBNull.Value Then
@@ -518,7 +518,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX4), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX4, Value)
         End Set
@@ -526,7 +526,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property CancelTax5() As DecimalType
+    Public Property CancelTax5 As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX5) Is DBNull.Value Then
@@ -535,7 +535,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX5), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX5, Value)
         End Set
@@ -543,7 +543,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property CancelTax6() As DecimalType
+    Public Property CancelTax6 As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX6) Is DBNull.Value Then
@@ -552,7 +552,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX6), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_CANCEL_TAX6, Value)
         End Set
@@ -560,7 +560,7 @@ Public Class AcctPremInvoice
 
 
 
-    Public Property CancelPremiumTotal() As DecimalType
+    Public Property CancelPremiumTotal As DecimalType
         Get
             CheckDeleted()
             If row(AcctPremInvoiceDAL.COL_NAME_CANCEL_PREMIUM_TOTAL) Is DBNull.Value Then
@@ -569,7 +569,7 @@ Public Class AcctPremInvoice
                 Return New DecimalType(CType(row(AcctPremInvoiceDAL.COL_NAME_CANCEL_PREMIUM_TOTAL), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctPremInvoiceDAL.COL_NAME_CANCEL_PREMIUM_TOTAL, Value)
         End Set

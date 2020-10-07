@@ -306,8 +306,8 @@ Partial Class RedoListForm
     Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-        If dvRow IsNot Nothing And Not State.bnoRow Then
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+        If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Row.Cells(GRID_COL_CLAIM_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimRedoDV.COL_CLAIM_ID), Byte()))
                 e.Row.Cells(GRID_COL_CLAIM_NUMBERX).Text = dvRow(Claim.ClaimRedoDV.COL_CLAIM_NUMBER).ToString
                 e.Row.Cells(GRID_COL_SERVICE_CENTER_CODEX).Text = dvRow(Claim.ClaimRedoDV.COL_SERVICE_CENTER_CODE).ToString

@@ -90,7 +90,7 @@ Public Class AfaReportingRates
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(AFARepRateDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class AfaReportingRates
     End Property
 
     <ValueMandatory("")> _
-    Public Property AfaInvoiceRateId() As Guid
+    Public Property AfaInvoiceRateId As Guid
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_AFA_INVOICE_RATE_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class AfaReportingRates
                 Return New Guid(CType(row(AFARepRateDAL.COL_NAME_AFA_INVOICE_RATE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AFARepRateDAL.COL_NAME_AFA_INVOICE_RATE_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class AfaReportingRates
 
 
 
-    Public Property RiskFee() As DecimalType
+    Public Property RiskFee As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_RISK_FEE) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_RISK_FEE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFARepRateDAL.COL_NAME_RISK_FEE, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class AfaReportingRates
 
 
 
-    Public Property SpmCoe() As DecimalType
+    Public Property SpmCoe As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_SPM_COE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_SPM_COE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFARepRateDAL.COL_NAME_SPM_COE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class AfaReportingRates
 
 
 
-    Public Property FullfillmentNotification() As DecimalType
+    Public Property FullfillmentNotification As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_FULLFILLMENT_NOTIFICATION) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_FULLFILLMENT_NOTIFICATION), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFARepRateDAL.COL_NAME_FULLFILLMENT_NOTIFICATION, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class AfaReportingRates
 
 
 
-    Public Property MarketingExpenses() As DecimalType
+    Public Property MarketingExpenses As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_MARKETING_EXPENSES) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_MARKETING_EXPENSES), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFARepRateDAL.COL_NAME_MARKETING_EXPENSES, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class AfaReportingRates
 
 
 
-    Public Property PremiumTaxes() As DecimalType
+    Public Property PremiumTaxes As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_PREMIUM_TAXES) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_PREMIUM_TAXES), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFARepRateDAL.COL_NAME_PREMIUM_TAXES, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class AfaReportingRates
 
 
 
-    Public Property LossReserveCost() As DecimalType
+    Public Property LossReserveCost As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_LOSS_RESERVE_COST) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_LOSS_RESERVE_COST), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFARepRateDAL.COL_NAME_LOSS_RESERVE_COST, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class AfaReportingRates
 
 
 
-    Public Property Overhead() As DecimalType
+    Public Property Overhead As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_OVERHEAD) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_OVERHEAD), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFARepRateDAL.COL_NAME_OVERHEAD, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class AfaReportingRates
 
 
 
-    Public Property GeneralExpenses() As DecimalType
+    Public Property GeneralExpenses As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_GENERAL_EXPENSES) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_GENERAL_EXPENSES), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFARepRateDAL.COL_NAME_GENERAL_EXPENSES, Value)
         End Set
@@ -254,7 +254,7 @@ Public Class AfaReportingRates
 
 
 
-    Public Property Assessments() As DecimalType
+    Public Property Assessments As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_ASSESSMENTS) Is DBNull.Value Then
@@ -263,14 +263,14 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_ASSESSMENTS), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFARepRateDAL.COL_NAME_ASSESSMENTS, Value)
         End Set
     End Property
 
 
-    Public Property Lae() As DecimalType
+    Public Property Lae As DecimalType
         Get
             CheckDeleted()
             If Row(AFARepRateDAL.COL_NAME_LAE) Is DBNull.Value Then
@@ -279,7 +279,7 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(Row(AFARepRateDAL.COL_NAME_LAE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFARepRateDAL.COL_NAME_LAE, Value)
         End Set

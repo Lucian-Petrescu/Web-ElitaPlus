@@ -8,7 +8,7 @@ Namespace DocAdminImaging
         Private Shared syncRoot As Object = New Object()
         Private Shared oDocAdminServiceClient As DocumentAdminClient
 
-        Private Shared ReadOnly Property ClientProxy() As DocumentAdminClient
+        Private Shared ReadOnly Property ClientProxy As DocumentAdminClient
             Get
                 Dim wrkQueClient As DocumentAdminClient
                 If (oDocAdminServiceClient Is Nothing OrElse oDocAdminServiceClient.State <> ServiceModel.CommunicationState.Opened) Then

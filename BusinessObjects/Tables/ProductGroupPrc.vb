@@ -128,7 +128,7 @@ Public Class ProductGroupPrc
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ProductGroupPrcDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -139,7 +139,7 @@ Public Class ProductGroupPrc
     End Property
 
     <ValueMandatory("")> _
-    Public Property ProductGroupId() As Guid
+    Public Property ProductGroupId As Guid
         Get
             CheckDeleted()
             If Row(ProductGroupPrcDAL.COL_NAME_PRODUCT_GROUP_ID) Is DBNull.Value Then
@@ -148,7 +148,7 @@ Public Class ProductGroupPrc
                 Return New Guid(CType(Row(ProductGroupPrcDAL.COL_NAME_PRODUCT_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductGroupPrcDAL.COL_NAME_PRODUCT_GROUP_ID, Value)
         End Set
@@ -156,7 +156,7 @@ Public Class ProductGroupPrc
 
 
     <ValueMandatory("")> _
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If Row(ProductGroupPrcDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -165,7 +165,7 @@ Public Class ProductGroupPrc
                 Return New Guid(CType(Row(ProductGroupPrcDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductGroupPrcDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set

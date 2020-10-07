@@ -379,7 +379,7 @@ Namespace Claims
                 'If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then
                 If e.Row.RowType = DataControlRowType.DataRow Then
                     '''Edit only on the row that was clicked by the user.
-                    If State.isEditMode And Grid.EditIndex = e.Row.RowIndex Then
+                    If State.isEditMode AndAlso Grid.EditIndex = e.Row.RowIndex Then
                         If (e.Row.Cells(GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_AUTHORIZED_AMOUNT) IsNot Nothing) Then
                             txt = CType(e.Row.Cells(GRID_COL_AUTHORIZED_AMT_IDX).FindControl(GRID_AUTHORIZED_AMOUNT), TextBox)
                             '''''if claim is of special service then allow the user to edit the authorization amount

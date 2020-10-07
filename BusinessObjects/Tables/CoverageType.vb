@@ -90,7 +90,7 @@ Public Class CoverageType
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CoverageTypeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class CoverageType
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(CoverageTypeDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class CoverageType
                 Return CType(Row(CoverageTypeDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageTypeDAL.COL_NAME_CODE, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class CoverageType
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property MaintainableByUser() As String
+    Public Property MaintainableByUser As String
         Get
             CheckDeleted()
             If Row(CoverageTypeDAL.COL_NAME_MAINTAINABLE_BY_USER) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class CoverageType
                 Return CType(Row(CoverageTypeDAL.COL_NAME_MAINTAINABLE_BY_USER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageTypeDAL.COL_NAME_MAINTAINABLE_BY_USER, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class CoverageType
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property DisplayToUser() As String
+    Public Property DisplayToUser As String
         Get
             CheckDeleted()
             If Row(CoverageTypeDAL.COL_NAME_DISPLAY_TO_USER) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class CoverageType
                 Return CType(Row(CoverageTypeDAL.COL_NAME_DISPLAY_TO_USER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageTypeDAL.COL_NAME_DISPLAY_TO_USER, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class CoverageType
 
 
     <ValueMandatory("")> _
-    Public Property ListId() As Guid
+    Public Property ListId As Guid
         Get
             CheckDeleted()
             If Row(CoverageTypeDAL.COL_NAME_LIST_ID) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class CoverageType
                 Return New Guid(CType(Row(CoverageTypeDAL.COL_NAME_LIST_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageTypeDAL.COL_NAME_LIST_ID, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class CoverageType
 
 
     <ValueMandatory("")> _
-    Public Property DictItemId() As Guid
+    Public Property DictItemId As Guid
         Get
             CheckDeleted()
             If Row(CoverageTypeDAL.COL_NAME_DICT_ITEM_ID) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class CoverageType
                 Return New Guid(CType(Row(CoverageTypeDAL.COL_NAME_DICT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageTypeDAL.COL_NAME_DICT_ITEM_ID, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class CoverageType
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property ActiveFlag() As String
+    Public Property ActiveFlag As String
         Get
             CheckDeleted()
             If Row(CoverageTypeDAL.COL_NAME_ACTIVE_FLAG) Is DBNull.Value Then
@@ -195,13 +195,13 @@ Public Class CoverageType
                 Return CType(Row(CoverageTypeDAL.COL_NAME_ACTIVE_FLAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageTypeDAL.COL_NAME_ACTIVE_FLAG, Value)
         End Set
     End Property
 
-    Public ReadOnly Property AssociatedCoveragesLoss() As CoverageLoss.CovLossList
+    Public ReadOnly Property AssociatedCoveragesLoss As CoverageLoss.CovLossList
         Get
             Return New CoverageLoss.CovLossList(Me)
         End Get
@@ -214,11 +214,11 @@ Public Class CoverageType
     End Property
 
     <CheckDefaultValue("Selected Default Value")> _
-    Public Property AvailableDefaultValue() As String
+    Public Property AvailableDefaultValue As String
         Get
             Return defVal
         End Get
-        Set(ByVal value As String)
+        Set
             defVal = value
         End Set
     End Property
@@ -244,7 +244,7 @@ Public Class CoverageType
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get

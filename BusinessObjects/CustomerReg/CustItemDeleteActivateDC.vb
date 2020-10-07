@@ -24,7 +24,7 @@ Public Class CustItemDeleteActivateDC
         Get
             Return __token
         End Get
-        Set(ByVal value As String)
+        Set
             __token = value
         End Set
     End Property
@@ -34,7 +34,7 @@ Public Class CustItemDeleteActivateDC
         Get
             Return __imei_Number
         End Get
-        Set(ByVal value As String)
+        Set
             __imei_Number = value
         End Set
     End Property
@@ -43,7 +43,7 @@ Public Class CustItemDeleteActivateDC
         Get
             Return __dealer_Code
         End Get
-        Set(ByVal value As String)
+        Set
             __dealer_Code = value
         End Set
     End Property
@@ -53,7 +53,7 @@ Public Class CustItemDeleteActivateDC
         Get
             Return __email_Id
         End Get
-        Set(ByVal value As String)
+        Set
             __email_Id = value
         End Set
     End Property
@@ -63,7 +63,7 @@ Public Class CustItemDeleteActivateDC
         Get
             Return __country_Code
         End Get
-        Set(ByVal value As String)
+        Set
             __country_Code = value
         End Set
     End Property

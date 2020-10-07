@@ -123,7 +123,7 @@ Public Class RoleAuthCtrlExclusion
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(RoleAuthCtrlExclusionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -134,7 +134,7 @@ Public Class RoleAuthCtrlExclusion
     End Property
 
     <ValueMandatory("")> _
-    Public Property RoleId() As Guid
+    Public Property RoleId As Guid
         Get
             CheckDeleted()
             If row(RoleAuthCtrlExclusionDAL.COL_NAME_ROLE_ID) Is DBNull.Value Then
@@ -143,7 +143,7 @@ Public Class RoleAuthCtrlExclusion
                 Return New Guid(CType(row(RoleAuthCtrlExclusionDAL.COL_NAME_ROLE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RoleAuthCtrlExclusionDAL.COL_NAME_ROLE_ID, Value)
         End Set
@@ -151,7 +151,7 @@ Public Class RoleAuthCtrlExclusion
 
 
     <ValueMandatory("")> _
-    Public Property FormId() As Guid
+    Public Property FormId As Guid
         Get
             CheckDeleted()
             If row(RoleAuthCtrlExclusionDAL.COL_NAME_FORM_ID) Is DBNull.Value Then
@@ -160,7 +160,7 @@ Public Class RoleAuthCtrlExclusion
                 Return New Guid(CType(row(RoleAuthCtrlExclusionDAL.COL_NAME_FORM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RoleAuthCtrlExclusionDAL.COL_NAME_FORM_ID, Value)
         End Set
@@ -168,7 +168,7 @@ Public Class RoleAuthCtrlExclusion
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)> _
-    Public Property ControlName() As String
+    Public Property ControlName As String
         Get
             CheckDeleted()
             If row(RoleAuthCtrlExclusionDAL.COL_NAME_CONTROL_NAME) Is DBNull.Value Then
@@ -177,14 +177,14 @@ Public Class RoleAuthCtrlExclusion
                 Return CType(row(RoleAuthCtrlExclusionDAL.COL_NAME_CONTROL_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RoleAuthCtrlExclusionDAL.COL_NAME_CONTROL_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)> _
-    Public Property PermissionType() As String
+    Public Property PermissionType As String
         Get
             CheckDeleted()
             If Row(RoleAuthCtrlExclusionDAL.COL_NAME_PERMISSION_TYPE) Is DBNull.Value Then
@@ -193,7 +193,7 @@ Public Class RoleAuthCtrlExclusion
                 Return CType(Row(RoleAuthCtrlExclusionDAL.COL_NAME_PERMISSION_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RoleAuthCtrlExclusionDAL.COL_NAME_PERMISSION_TYPE, Value)
         End Set

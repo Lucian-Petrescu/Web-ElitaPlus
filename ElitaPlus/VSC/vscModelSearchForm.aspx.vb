@@ -93,7 +93,7 @@ Namespace Tables
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     RestoreGuiState()
                     If State.IsGridVisible Then
-                        If Not (State.PageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.PageSize = Grid.PageSize) Then
+                        If Not (State.PageSize = DEFAULT_NEW_UI_PAGE_SIZE) OrElse Not (State.PageSize = Grid.PageSize) Then
                             cboPageSize.SelectedValue = CType(State.PageSize, String)
                             Grid.PageSize = State.PageSize
                         End If
@@ -503,7 +503,7 @@ Namespace Tables
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 Dim active_New As String = e.Item.Cells(GRID_COL_ACTIVE_NEW).Text
                 Dim active_Used As String = e.Item.Cells(GRID_COL_ACTIVE_USED).Text
                 e.Item.Cells(GRID_COL_MODEL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(VSCModel.VSCModelSearchDV.COL_NAME_MODEL_ID), Byte()))

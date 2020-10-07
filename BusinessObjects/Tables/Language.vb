@@ -90,7 +90,7 @@ Public Class Language
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(LanguageDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class Language
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=160)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(LanguageDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class Language
                 Return CType(row(LanguageDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(LanguageDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class Language
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(LanguageDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class Language
                 Return CType(row(LanguageDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(LanguageDAL.COL_NAME_CODE, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class Language
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=160)> _
-    Public Property CultureCode() As String
+    Public Property CultureCode As String
         Get
             CheckDeleted()
             If row(LanguageDAL.COL_NAME_CULTURE_CODE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class Language
                 Return CType(row(LanguageDAL.COL_NAME_CULTURE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(LanguageDAL.COL_NAME_CULTURE_CODE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class Language
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property ActiveFlag() As String
+    Public Property ActiveFlag As String
         Get
             CheckDeleted()
             If row(LanguageDAL.COL_NAME_ACTIVE_FLAG) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class Language
                 Return CType(row(LanguageDAL.COL_NAME_ACTIVE_FLAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(LanguageDAL.COL_NAME_ACTIVE_FLAG, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class Language
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property Territory() As String
+    Public Property Territory As String
         Get
             CheckDeleted()
             If row(LanguageDAL.COL_NAME_TERRITORY) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class Language
                 Return CType(row(LanguageDAL.COL_NAME_TERRITORY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(LanguageDAL.COL_NAME_TERRITORY, Value)
         End Set

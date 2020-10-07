@@ -266,7 +266,7 @@ Partial Class VSCPlanListForm
     Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
-        If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+        If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
             e.Item.Cells(GRID_COL_PLAN_CODE_IDX).Text = dvRow(VSCPlan.VSCPlanSearchDV.COL_CODE).ToString
             e.Item.Cells(GRID_COL_PLAN_DESC_IDX).Text = dvRow(VSCPlan.VSCPlanSearchDV.COL_DESCRIPTION).ToString
             e.Item.Cells(GRID_COL_PLAN_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(VSCPlan.VSCPlanSearchDV.COL_VSCPlan_ID), Byte()))

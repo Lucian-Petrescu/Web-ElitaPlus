@@ -102,7 +102,7 @@ Public Class AcctTransLog
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(AcctTransLogDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -113,7 +113,7 @@ Public Class AcctTransLog
     End Property
 
     <ValueMandatory("")>
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -122,13 +122,13 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -137,13 +137,13 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -152,13 +152,13 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
     End Property
 
-    Public Property CommissionEntityId() As Guid
+    Public Property CommissionEntityId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_COMMISSION_ENTITY_ID) Is DBNull.Value Then
@@ -167,13 +167,13 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_COMMISSION_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_COMMISSION_ENTITY_ID, Value)
         End Set
     End Property
 
-    Public Property AcctEventTypeId() As Guid
+    Public Property AcctEventTypeId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ACCT_EVENT_TYPE_ID) Is DBNull.Value Then
@@ -182,7 +182,7 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_ACCT_EVENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_ACCT_EVENT_TYPE_ID, Value)
         End Set
@@ -190,7 +190,7 @@ Public Class AcctTransLog
 
 
 
-    Public Property AcctEventFieldId() As Guid
+    Public Property AcctEventFieldId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ACCT_EVENT_FIELD_ID) Is DBNull.Value Then
@@ -199,7 +199,7 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_ACCT_EVENT_FIELD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_ACCT_EVENT_FIELD_ID, Value)
         End Set
@@ -207,7 +207,7 @@ Public Class AcctTransLog
 
 
     <ValueMandatory("")>
-    Public Property AcctCompanyId() As Guid
+    Public Property AcctCompanyId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ACCT_COMPANY_ID) Is DBNull.Value Then
@@ -216,7 +216,7 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_ACCT_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_ACCT_COMPANY_ID, Value)
         End Set
@@ -224,7 +224,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=160)>
-    Public Property Country() As String
+    Public Property Country As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_COUNTRY) Is DBNull.Value Then
@@ -233,7 +233,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_COUNTRY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_COUNTRY, Value)
         End Set
@@ -241,7 +241,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=16)>
-    Public Property Region() As String
+    Public Property Region As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_REGION) Is DBNull.Value Then
@@ -250,7 +250,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_REGION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_REGION, Value)
         End Set
@@ -258,7 +258,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=160)>
-    Public Property RegionDescription() As String
+    Public Property RegionDescription As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_REGION_DESCRIPTION) Is DBNull.Value Then
@@ -267,7 +267,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_REGION_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_REGION_DESCRIPTION, Value)
         End Set
@@ -275,7 +275,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=400)>
-    Public Property TaxIdCode() As String
+    Public Property TaxIdCode As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_TAX_ID_CODE) Is DBNull.Value Then
@@ -284,7 +284,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_TAX_ID_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_TAX_ID_CODE, Value)
         End Set
@@ -292,7 +292,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=48)>
-    Public Property Currency() As String
+    Public Property Currency As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_CURRENCY) Is DBNull.Value Then
@@ -301,7 +301,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_CURRENCY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_CURRENCY, Value)
         End Set
@@ -309,7 +309,7 @@ Public Class AcctTransLog
 
 
 
-    Public Property BankId() As String
+    Public Property BankId As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_ID) Is DBNull.Value Then
@@ -318,7 +318,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_BANK_ID, Value)
         End Set
@@ -326,7 +326,7 @@ Public Class AcctTransLog
 
 
 
-    Public Property BankAccountNumber() As String
+    Public Property BankAccountNumber As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_ACCOUNT_NUMBER) Is DBNull.Value Then
@@ -335,7 +335,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_ACCOUNT_NUMBER), Long)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_BANK_ACCOUNT_NUMBER, Value)
         End Set
@@ -343,7 +343,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=320)>
-    Public Property Certificate() As String
+    Public Property Certificate As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_CERTIFICATE) Is DBNull.Value Then
@@ -352,7 +352,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_CERTIFICATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_CERTIFICATE, Value)
         End Set
@@ -360,7 +360,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=120)>
-    Public Property Payee() As String
+    Public Property Payee As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_PAYEE) Is DBNull.Value Then
@@ -369,7 +369,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_PAYEE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_PAYEE, Value)
         End Set
@@ -377,7 +377,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=120)>
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ADDRESS1) Is DBNull.Value Then
@@ -386,7 +386,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_ADDRESS1, Value)
         End Set
@@ -394,7 +394,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=120)>
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ADDRESS2) Is DBNull.Value Then
@@ -403,7 +403,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_ADDRESS2, Value)
         End Set
@@ -411,7 +411,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=120)>
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_CITY) Is DBNull.Value Then
@@ -420,7 +420,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_CITY, Value)
         End Set
@@ -428,7 +428,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=120)>
-    Public Property Zip() As String
+    Public Property Zip As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ZIP) Is DBNull.Value Then
@@ -437,7 +437,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_ZIP), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_ZIP, Value)
         End Set
@@ -445,7 +445,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=640)>
-    Public Property AuthorizationNumber() As String
+    Public Property AuthorizationNumber As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -454,7 +454,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
@@ -462,7 +462,7 @@ Public Class AcctTransLog
 
 
 
-    Public Property PaymentAmount() As LongType
+    Public Property PaymentAmount As LongType
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT) Is DBNull.Value Then
@@ -471,7 +471,7 @@ Public Class AcctTransLog
                 Return New LongType(CType(Row(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT, Value)
         End Set
@@ -479,7 +479,7 @@ Public Class AcctTransLog
 
 
 
-    Public Property PaymentAmountRev() As LongType
+    Public Property PaymentAmountRev As LongType
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT_REV) Is DBNull.Value Then
@@ -488,7 +488,7 @@ Public Class AcctTransLog
                 Return New LongType(CType(Row(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT_REV), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT_REV, Value)
         End Set
@@ -496,7 +496,7 @@ Public Class AcctTransLog
 
 
 
-    Public Property PaymentDate() As DateType
+    Public Property PaymentDate As DateType
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_PAYMENT_DATE) Is DBNull.Value Then
@@ -505,7 +505,7 @@ Public Class AcctTransLog
                 Return New DateType(CType(Row(AcctTransLogDAL.COL_NAME_PAYMENT_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_DATE, Value)
         End Set
@@ -513,7 +513,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=28)>
-    Public Property AcctPeriod() As String
+    Public Property AcctPeriod As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ACCT_PERIOD) Is DBNull.Value Then
@@ -522,7 +522,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_ACCT_PERIOD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_ACCT_PERIOD, Value)
         End Set
@@ -530,7 +530,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=80)>
-    Public Property CoverageType() As String
+    Public Property CoverageType As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_COVERAGE_TYPE) Is DBNull.Value Then
@@ -539,7 +539,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_COVERAGE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_COVERAGE_TYPE, Value)
         End Set
@@ -547,7 +547,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=800)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -556,7 +556,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -564,7 +564,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=160)>
-    Public Property NetworkId() As String
+    Public Property NetworkId As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_NETWORK_ID) Is DBNull.Value Then
@@ -573,7 +573,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_NETWORK_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_NETWORK_ID, Value)
         End Set
@@ -581,7 +581,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=160)>
-    Public Property PaymentNumber() As String
+    Public Property PaymentNumber As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_PAYMENT_NUMBER) Is DBNull.Value Then
@@ -590,7 +590,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_PAYMENT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_NUMBER, Value)
         End Set
@@ -598,7 +598,7 @@ Public Class AcctTransLog
 
 
     <ValidStringLength("", Max:=1600)>
-    Public Property TransactionIdNumber() As String
+    Public Property TransactionIdNumber As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_TRANSACTION_ID_NUMBER) Is DBNull.Value Then
@@ -607,13 +607,13 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_TRANSACTION_ID_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_TRANSACTION_ID_NUMBER, Value)
         End Set
     End Property
 
-    Public Property ProcessDate() As DateType
+    Public Property ProcessDate As DateType
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_PROCESS_DATE) Is DBNull.Value Then
@@ -622,13 +622,13 @@ Public Class AcctTransLog
                 Return New DateType(CType(Row(AcctTransLogDAL.COL_NAME_PROCESS_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_PROCESS_DATE, Value)
         End Set
     End Property
 
-    Public Property AcctTransmissionId() As Guid
+    Public Property AcctTransmissionId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ACCT_TRANSMISSION_ID) Is DBNull.Value Then
@@ -637,14 +637,14 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_ACCT_TRANSMISSION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_ACCT_TRANSMISSION_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)>
-    Public Property VendorUpdate() As String
+    Public Property VendorUpdate As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_VENDOR_UPDATE) Is DBNull.Value Then
@@ -653,14 +653,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_VENDOR_UPDATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_VENDOR_UPDATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)>
-    Public Property PaymentToCustomer() As String
+    Public Property PaymentToCustomer As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_PAYMENT_TO_CUSTOMER) Is DBNull.Value Then
@@ -669,14 +669,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_PAYMENT_TO_CUSTOMER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_TO_CUSTOMER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankSortCode() As String
+    Public Property BankSortCode As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_SORTCODE) Is DBNull.Value Then
@@ -685,14 +685,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_SORTCODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_BANK_SORTCODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankAddress1() As String
+    Public Property BankAddress1 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_1) Is DBNull.Value Then
@@ -701,14 +701,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_1, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankAddress2() As String
+    Public Property BankAddress2 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_2) Is DBNull.Value Then
@@ -717,14 +717,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_2, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankAddress3() As String
+    Public Property BankAddress3 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_3) Is DBNull.Value Then
@@ -733,14 +733,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_3, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankAddress4() As String
+    Public Property BankAddress4 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_4) Is DBNull.Value Then
@@ -749,14 +749,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_4), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_4, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankName1() As String
+    Public Property BankName1 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_NAME_1) Is DBNull.Value Then
@@ -765,14 +765,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_NAME_1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_BANK_NAME_1, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankName2() As String
+    Public Property BankName2 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_NAME_2) Is DBNull.Value Then
@@ -781,14 +781,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_NAME_2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_BANK_NAME_2, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankIBAN() As String
+    Public Property BankIBAN As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_IBAN) Is DBNull.Value Then
@@ -797,14 +797,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_IBAN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_BANK_IBAN, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankBranch() As String
+    Public Property BankBranch As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_BRANCH) Is DBNull.Value Then
@@ -813,14 +813,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_BRANCH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_BANK_BRANCH, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property WarrSalesDate() As String
+    Public Property WarrSalesDate As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_WARR_SALES_DATE) Is DBNull.Value Then
@@ -829,13 +829,13 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_WARR_SALES_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_WARR_SALES_DATE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
-    Public Property ContractInceptionDate() As String
+    Public Property ContractInceptionDate As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_CONTRACT_INCEPTION_DATE) Is DBNull.Value Then
@@ -844,13 +844,13 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_CONTRACT_INCEPTION_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_CONTRACT_INCEPTION_DATE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=15)>
-    Public Property AccountCode() As String
+    Public Property AccountCode As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ACCOUNT_NUMBER) Is DBNull.Value Then
@@ -859,13 +859,13 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_ACCOUNT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_ACCOUNT_NUMBER, Value)
         End Set
     End Property
 
-    Public Property PolicyNumber() As String
+    Public Property PolicyNumber As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_POLICY_NUMBER) Is DBNull.Value Then
@@ -874,7 +874,7 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_POLICY_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransLogDAL.COL_NAME_POLICY_NUMBER, Value)
         End Set

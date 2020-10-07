@@ -91,7 +91,7 @@ Public Class DailyObdFileDetailTemp
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(DailyObdFileDetailTempDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@ Public Class DailyObdFileDetailTemp
     End Property
 
     <ValueMandatory("")> _
-    Public Property CertId() As Guid
+    Public Property CertId As Guid
         Get
             CheckDeleted()
             If row(DailyObdFileDetailTempDAL.COL_NAME_CERT_ID) Is DBNull.Value Then
@@ -111,7 +111,7 @@ Public Class DailyObdFileDetailTemp
                 Return New Guid(CType(row(DailyObdFileDetailTempDAL.COL_NAME_CERT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DailyObdFileDetailTempDAL.COL_NAME_CERT_ID, Value)
         End Set
@@ -119,7 +119,7 @@ Public Class DailyObdFileDetailTemp
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=80)> _
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
             CheckDeleted()
             If row(DailyObdFileDetailTempDAL.COL_NAME_CERT_NUMBER) Is DBNull.Value Then
@@ -128,7 +128,7 @@ Public Class DailyObdFileDetailTemp
                 Return CType(row(DailyObdFileDetailTempDAL.COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DailyObdFileDetailTempDAL.COL_NAME_CERT_NUMBER, Value)
         End Set
@@ -136,7 +136,7 @@ Public Class DailyObdFileDetailTemp
 
 
     <ValueMandatory("")> _
-    Public Property CertCreatedDate() As DateType
+    Public Property CertCreatedDate As DateType
         Get
             CheckDeleted()
             If row(DailyObdFileDetailTempDAL.COL_NAME_CERT_CREATED_DATE) Is DBNull.Value Then
@@ -145,7 +145,7 @@ Public Class DailyObdFileDetailTemp
                 Return New DateType(CType(row(DailyObdFileDetailTempDAL.COL_NAME_CERT_CREATED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DailyObdFileDetailTempDAL.COL_NAME_CERT_CREATED_DATE, Value)
         End Set
@@ -153,7 +153,7 @@ Public Class DailyObdFileDetailTemp
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=80)> _
-    Public Property RecordType() As String
+    Public Property RecordType As String
         Get
             CheckDeleted()
             If row(DailyObdFileDetailTempDAL.COL_NAME_RECORD_TYPE) Is DBNull.Value Then
@@ -162,14 +162,14 @@ Public Class DailyObdFileDetailTemp
                 Return CType(row(DailyObdFileDetailTempDAL.COL_NAME_RECORD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DailyObdFileDetailTempDAL.COL_NAME_RECORD_TYPE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property RecCancel() As String
+    Public Property RecCancel As String
         Get
             CheckDeleted()
             If row(DailyObdFileDetailTempDAL.COL_NAME_REC_CANCEL) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class DailyObdFileDetailTemp
                 Return CType(row(DailyObdFileDetailTempDAL.COL_NAME_REC_CANCEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DailyObdFileDetailTempDAL.COL_NAME_REC_CANCEL, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class DailyObdFileDetailTemp
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property RecNewBusiness() As String
+    Public Property RecNewBusiness As String
         Get
             CheckDeleted()
             If row(DailyObdFileDetailTempDAL.COL_NAME_REC_NEW_BUSINESS) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class DailyObdFileDetailTemp
                 Return CType(row(DailyObdFileDetailTempDAL.COL_NAME_REC_NEW_BUSINESS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DailyObdFileDetailTempDAL.COL_NAME_REC_NEW_BUSINESS, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class DailyObdFileDetailTemp
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property RecBilling() As String
+    Public Property RecBilling As String
         Get
             CheckDeleted()
             If row(DailyObdFileDetailTempDAL.COL_NAME_REC_BILLING) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class DailyObdFileDetailTemp
                 Return CType(row(DailyObdFileDetailTempDAL.COL_NAME_REC_BILLING), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DailyObdFileDetailTempDAL.COL_NAME_REC_BILLING, Value)
         End Set

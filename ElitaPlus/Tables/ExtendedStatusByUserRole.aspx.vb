@@ -174,7 +174,7 @@ Public Class ExtendedStatusByUserRole
 
             zAxisName = PreventInjection(zAxisName)
 
-            If Guid.TryParse(zAxisValue, zAxisParseValueId) And IsValidValue(zAxisName) Then
+            If Guid.TryParse(zAxisValue, zAxisParseValueId) AndAlso IsValidValue(zAxisName) Then
                 grantsNode = xmlDoc.SelectNodes("RoleCompanyStatus/Grants/Grant[" & zAxisName & "Id = '" & zAxisParseValueId.ToString() & "']")
             Else
                 Throw New Exception()
@@ -198,7 +198,7 @@ Public Class ExtendedStatusByUserRole
                     xAxisName = PreventInjection(xAxisName)
                     yAxisName = PreventInjection(yAxisName)
 
-                    If IsValidValue(xAxisName) And IsValidValue(yAxisName) And IsValidValue(grantInfo_xAxis) And IsValidValue(grantInfo_yAxis) Then
+                    If IsValidValue(xAxisName) AndAlso IsValidValue(yAxisName) AndAlso IsValidValue(grantInfo_xAxis) AndAlso IsValidValue(grantInfo_yAxis) Then
 
                         xAxisNode = xmlDoc.SelectSingleNode(GetNodePath(xAxisName) & "[Code='" & grantInfo_xAxis & "']/Id")
                         xAxisId = xAxisNode.InnerText
@@ -220,7 +220,7 @@ Public Class ExtendedStatusByUserRole
 
                     'check grant already exist
 
-                    If Guid.TryParse(axisValues.Item("Company"), companyParseId) And Guid.TryParse(axisValues.Item("Role"), roleParseId) And Guid.TryParse(axisValues.Item("ExtendedStatus"), extendedStatusParseId) Then
+                    If Guid.TryParse(axisValues.Item("Company"), companyParseId) AndAlso Guid.TryParse(axisValues.Item("Role"), roleParseId) AndAlso Guid.TryParse(axisValues.Item("ExtendedStatus"), extendedStatusParseId) Then
 
                         grantExist = xmlDoc.SelectSingleNode("RoleCompanyStatus/Grants/Grant[CompanyId = '" & companyParseId.ToString() & "' and RoleId = '" &
                     roleParseId.ToString() & "' and ExtendedStatusId = '" & extendedStatusParseId.ToString() & "']")

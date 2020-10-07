@@ -229,7 +229,7 @@ Public Class DealerReconWrk
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DealerReconWrkDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -240,7 +240,7 @@ Public Class DealerReconWrk
     End Property
 
     <ValueMandatory("")>
-    Public Property DealerfileProcessedId() As Guid
+    Public Property DealerfileProcessedId As Guid
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID) Is DBNull.Value Then
@@ -249,13 +249,13 @@ Public Class DealerReconWrk
                 Return New Guid(CType(Row(DealerReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=3)>
-    Public Property RejectCode() As String
+    Public Property RejectCode As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_REJECT_CODE) Is DBNull.Value Then
@@ -264,14 +264,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_REJECT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_REJECT_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)>
-    Public Property SkuNumber() As String
+    Public Property SkuNumber As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_SKU_NUMBER) Is DBNull.Value Then
@@ -280,14 +280,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_SKU_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_SKU_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)>
-    Public Property RejectReason() As String
+    Public Property RejectReason As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_REJECT_REASON) Is DBNull.Value Then
@@ -296,14 +296,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_REJECT_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_REJECT_REASON, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)>
-    Public Property CertificateLoaded() As String
+    Public Property CertificateLoaded As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_CERTIFICATE_LOADED) Is DBNull.Value Then
@@ -312,7 +312,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_CERTIFICATE_LOADED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_CERTIFICATE_LOADED, Value)
         End Set
@@ -320,7 +320,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=2)>
-    Public Property RecordType() As String
+    Public Property RecordType As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_RECORD_TYPE) Is DBNull.Value Then
@@ -329,7 +329,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_RECORD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_RECORD_TYPE, Value)
         End Set
@@ -337,7 +337,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=10)>
-    Public Property ItemCode() As String
+    Public Property ItemCode As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_ITEM_CODE) Is DBNull.Value Then
@@ -346,7 +346,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_ITEM_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_ITEM_CODE, Value)
         End Set
@@ -354,7 +354,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=50)>
-    Public Property Item() As String
+    Public Property Item As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_ITEM) Is DBNull.Value Then
@@ -363,7 +363,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_ITEM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_ITEM, Value)
         End Set
@@ -371,7 +371,7 @@ Public Class DealerReconWrk
 
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property ProductPrice() As DecimalType
+    Public Property ProductPrice As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_PRODUCT_PRICE) Is DBNull.Value Then
@@ -380,7 +380,7 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_PRODUCT_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_PRODUCT_PRICE, Value)
         End Set
@@ -388,7 +388,7 @@ Public Class DealerReconWrk
 
 
     <ValidNumericRange("", Min:=0, Max:=99999)>
-    Public Property ManWarranty() As LongType
+    Public Property ManWarranty As LongType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_MAN_WARRANTY) Is DBNull.Value Then
@@ -397,7 +397,7 @@ Public Class DealerReconWrk
                 Return New LongType(CType(Row(DealerReconWrkDAL.COL_NAME_MAN_WARRANTY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_MAN_WARRANTY, Value)
         End Set
@@ -405,7 +405,7 @@ Public Class DealerReconWrk
 
 
     <ValidNumericRange("", Min:=0, Max:=99999)>
-    Public Property ExtWarranty() As LongType
+    Public Property ExtWarranty As LongType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_EXT_WARRANTY) Is DBNull.Value Then
@@ -414,7 +414,7 @@ Public Class DealerReconWrk
                 Return New LongType(CType(Row(DealerReconWrkDAL.COL_NAME_EXT_WARRANTY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_EXT_WARRANTY, Value)
         End Set
@@ -422,7 +422,7 @@ Public Class DealerReconWrk
 
 
     <ValidNumericRange("", Min:=-999999999.99, Max:=NEW_MAX_DOUBLE)>
-    Public Property PricePol() As DecimalType
+    Public Property PricePol As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_PRICE_POL) Is DBNull.Value Then
@@ -431,7 +431,7 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_PRICE_POL), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_PRICE_POL, Value)
         End Set
@@ -439,7 +439,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=30)>
-    Public Property Sr() As String
+    Public Property Sr As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_SR) Is DBNull.Value Then
@@ -448,7 +448,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_SR), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_SR, Value)
         End Set
@@ -456,7 +456,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=10)>
-    Public Property BranchCode() As String
+    Public Property BranchCode As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_BRANCH_CODE) Is DBNull.Value Then
@@ -465,14 +465,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_BRANCH_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_BRANCH_CODE, Value)
         End Set
     End Property
     'REQ-976 changed max value from 10 to 40
     <ValidStringLength("", Max:=100)>
-    Public Property NewBranchCode() As String
+    Public Property NewBranchCode As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_NEW_BRANCH_CODE) Is DBNull.Value Then
@@ -481,14 +481,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_NEW_BRANCH_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_NEW_BRANCH_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)>
-    Public Property NumberComp() As String
+    Public Property NumberComp As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_NUMBER_COMP) Is DBNull.Value Then
@@ -497,13 +497,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_NUMBER_COMP), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_NUMBER_COMP, Value)
         End Set
     End Property
 
-    Public Property DateComp() As DateType
+    Public Property DateComp As DateType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_DATE_COMP) Is DBNull.Value Then
@@ -512,7 +512,7 @@ Public Class DealerReconWrk
                 Return New DateType(CType(Row(DealerReconWrkDAL.COL_NAME_DATE_COMP), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_DATE_COMP, Value)
         End Set
@@ -520,7 +520,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=20), CertNumberValidation("")>
-    Public Property Certificate() As String
+    Public Property Certificate As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_CERTIFICATE) Is DBNull.Value Then
@@ -529,7 +529,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_CERTIFICATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_CERTIFICATE, Value)
         End Set
@@ -537,7 +537,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=20)>
-    Public Property IdentificationNumber() As String
+    Public Property IdentificationNumber As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_IDENTIFICATION_NUMBER) Is DBNull.Value Then
@@ -546,7 +546,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_IDENTIFICATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_IDENTIFICATION_NUMBER, Value)
         End Set
@@ -554,7 +554,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=50)>
-    Public Property CustomerName() As String
+    Public Property CustomerName As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
@@ -563,14 +563,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_CUSTOMER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_CUSTOMER_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)>
-    Public Property LanguagePref() As String
+    Public Property LanguagePref As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_LANGUAGE_PREF) Is DBNull.Value Then
@@ -579,14 +579,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_LANGUAGE_PREF), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_LANGUAGE_PREF, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)>
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_ADDRESS1) Is DBNull.Value Then
@@ -595,7 +595,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_ADDRESS1, Value)
         End Set
@@ -603,7 +603,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=50)>
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_CITY) Is DBNull.Value Then
@@ -612,7 +612,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_CITY, Value)
         End Set
@@ -620,7 +620,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=25)>
-    Public Property Zip() As String
+    Public Property Zip As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_ZIP) Is DBNull.Value Then
@@ -629,7 +629,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_ZIP), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_ZIP, Value)
         End Set
@@ -637,7 +637,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=50)>
-    Public Property StateProvince() As String
+    Public Property StateProvince As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_STATE_PROVINCE) Is DBNull.Value Then
@@ -646,7 +646,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_STATE_PROVINCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_STATE_PROVINCE, Value)
         End Set
@@ -654,7 +654,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=20)>
-    Public Property HomePhone() As String
+    Public Property HomePhone As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_HOME_PHONE) Is DBNull.Value Then
@@ -663,14 +663,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_HOME_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_HOME_PHONE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property WorkPhone() As String
+    Public Property WorkPhone As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_WORK_PHONE) Is DBNull.Value Then
@@ -679,13 +679,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_WORK_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_WORK_PHONE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=80)>
-    Public Property Occupation() As String
+    Public Property Occupation As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_OCCUPATION) Is DBNull.Value Then
@@ -694,7 +694,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_OCCUPATION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_OCCUPATION, Value)
         End Set
@@ -702,7 +702,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=1)>
-    Public Property Currency() As String
+    Public Property Currency As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_CURRENCY) Is DBNull.Value Then
@@ -711,13 +711,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_CURRENCY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_CURRENCY, Value)
         End Set
     End Property
 
-    Public Property ExtwarrSaledate() As DateType
+    Public Property ExtwarrSaledate As DateType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_EXTWARR_SALEDATE) Is DBNull.Value Then
@@ -726,7 +726,7 @@ Public Class DealerReconWrk
                 Return New DateType(CType(Row(DealerReconWrkDAL.COL_NAME_EXTWARR_SALEDATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_EXTWARR_SALEDATE, Value)
         End Set
@@ -734,7 +734,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=10)>
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
@@ -743,7 +743,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
@@ -751,7 +751,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=1)>
-    Public Property TypePayment() As String
+    Public Property TypePayment As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_TYPE_PAYMENT) Is DBNull.Value Then
@@ -760,7 +760,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_TYPE_PAYMENT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_TYPE_PAYMENT, Value)
         End Set
@@ -768,7 +768,7 @@ Public Class DealerReconWrk
 
 
     <ValidNumericRange("", Min:=0, Max:=99999)>
-    Public Property NumberMonthly() As LongType
+    Public Property NumberMonthly As LongType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_NUMBER_MONTHLY) Is DBNull.Value Then
@@ -777,7 +777,7 @@ Public Class DealerReconWrk
                 Return New LongType(CType(Row(DealerReconWrkDAL.COL_NAME_NUMBER_MONTHLY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_NUMBER_MONTHLY, Value)
         End Set
@@ -785,7 +785,7 @@ Public Class DealerReconWrk
 
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property MonthlyPayment() As DecimalType
+    Public Property MonthlyPayment As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_MONTHLY_PAYMENT) Is DBNull.Value Then
@@ -794,7 +794,7 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_MONTHLY_PAYMENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_MONTHLY_PAYMENT, Value)
         End Set
@@ -802,7 +802,7 @@ Public Class DealerReconWrk
 
 
     <ValidNumericRange("", Min:=0, Max:=999.9999)>
-    Public Property CoefFin() As DecimalType
+    Public Property CoefFin As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_COEF_FIN) Is DBNull.Value Then
@@ -811,7 +811,7 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_COEF_FIN), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_COEF_FIN, Value)
         End Set
@@ -819,7 +819,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=1)>
-    Public Property CurrencyPayment() As String
+    Public Property CurrencyPayment As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_CURRENCY_PAYMENT) Is DBNull.Value Then
@@ -828,7 +828,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_CURRENCY_PAYMENT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_CURRENCY_PAYMENT, Value)
         End Set
@@ -836,7 +836,7 @@ Public Class DealerReconWrk
 
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property FinancedValue() As DecimalType
+    Public Property FinancedValue As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_FINANCED_VALUE) Is DBNull.Value Then
@@ -845,7 +845,7 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_FINANCED_VALUE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_FINANCED_VALUE, Value)
         End Set
@@ -853,7 +853,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=2)>
-    Public Property CreditCardType() As String
+    Public Property CreditCardType As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_CREDIT_CARD_TYPE) Is DBNull.Value Then
@@ -862,7 +862,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_CREDIT_CARD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_CREDIT_CARD_TYPE, Value)
         End Set
@@ -870,7 +870,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=16)>
-    Public Property CreditCard() As String
+    Public Property CreditCard As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_CREDIT_CARD) Is DBNull.Value Then
@@ -879,7 +879,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_CREDIT_CARD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_CREDIT_CARD, Value)
         End Set
@@ -887,7 +887,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=10)>
-    Public Property CreditAuthorizationNumber() As String
+    Public Property CreditAuthorizationNumber As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_CREDIT_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -896,7 +896,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_CREDIT_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_CREDIT_AUTHORIZATION_NUMBER, Value)
         End Set
@@ -904,7 +904,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=5)>
-    Public Property CancellationCode() As String
+    Public Property CancellationCode As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_CANCELLATION_CODE) Is DBNull.Value Then
@@ -913,7 +913,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_CANCELLATION_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_CANCELLATION_CODE, Value)
         End Set
@@ -921,7 +921,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=50)>
-    Public Property Manufacturer() As String
+    Public Property Manufacturer As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_MANUFACTURER) Is DBNull.Value Then
@@ -930,7 +930,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_MANUFACTURER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_MANUFACTURER, Value)
         End Set
@@ -938,7 +938,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=100)>
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -947,7 +947,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_MODEL, Value)
         End Set
@@ -955,7 +955,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=30)>
-    Public Property SerialNumber() As String
+    Public Property SerialNumber As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_SERIAL_NUMBER) Is DBNull.Value Then
@@ -964,14 +964,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_SERIAL_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property IMEINumber() As String
+    Public Property IMEINumber As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_IMEI_NUMBER) Is DBNull.Value Then
@@ -980,13 +980,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_IMEI_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_IMEI_NUMBER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=20)>
-    Public Property Layout() As String
+    Public Property Layout As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_LAYOUT) Is DBNull.Value Then
@@ -995,7 +995,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_LAYOUT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_LAYOUT, Value)
         End Set
@@ -1003,7 +1003,7 @@ Public Class DealerReconWrk
 
 
     <ValidStringLength("", Max:=100)>
-    Public Property NewProductCode() As String
+    Public Property NewProductCode As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_NEW_PRODUCT_CODE) Is DBNull.Value Then
@@ -1012,13 +1012,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_NEW_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_NEW_PRODUCT_CODE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4)>
-    Public Property DocumentType() As String
+    Public Property DocumentType As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_DOCUMENT_TYPE) Is DBNull.Value Then
@@ -1027,14 +1027,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_DOCUMENT_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_DOCUMENT_TYPE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property DocumentAgency() As String
+    Public Property DocumentAgency As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_DOCUMENT_AGENCY) Is DBNull.Value Then
@@ -1043,12 +1043,12 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_DOCUMENT_AGENCY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_DOCUMENT_AGENCY, Value)
         End Set
     End Property
-    Public Property DocumentIssueDate() As DateType
+    Public Property DocumentIssueDate As DateType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_DOCUMENT_ISSUE_DATE) Is DBNull.Value Then
@@ -1057,14 +1057,14 @@ Public Class DealerReconWrk
                 Return New DateType(CType(Row(DealerReconWrkDAL.COL_NAME_DOCUMENT_ISSUE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_DOCUMENT_ISSUE_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property RGNumber() As String
+    Public Property RGNumber As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_RG_NUMBER) Is DBNull.Value Then
@@ -1073,14 +1073,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_RG_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_RG_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property IDType() As String
+    Public Property IDType As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_ID_TYPE) Is DBNull.Value Then
@@ -1089,14 +1089,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_ID_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_ID_TYPE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)>
-    Public Property MultipleDurations() As String
+    Public Property MultipleDurations As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_MULTIPLE_DURATIONS) Is DBNull.Value Then
@@ -1105,14 +1105,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_MULTIPLE_DURATIONS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_MULTIPLE_DURATIONS, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property SalesTax() As DecimalType
+    Public Property SalesTax As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_SALES_TAX) Is DBNull.Value Then
@@ -1121,14 +1121,14 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_SALES_TAX), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_SALES_TAX, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)>
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_ADDRESS2) Is DBNull.Value Then
@@ -1137,14 +1137,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_ADDRESS2, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)>
-    Public Property Address3() As String
+    Public Property Address3 As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_ADDRESS3) Is DBNull.Value Then
@@ -1153,14 +1153,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_ADDRESS3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_ADDRESS3, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=255)>
-    Public Property Email() As String
+    Public Property Email As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_EMAIL) Is DBNull.Value Then
@@ -1169,14 +1169,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_EMAIL, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=2)>
-    Public Property CustCountry() As String
+    Public Property CustCountry As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_CUST_COUNTRY) Is DBNull.Value Then
@@ -1185,14 +1185,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_CUST_COUNTRY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_CUST_COUNTRY, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=2)>
-    Public Property CountryPurch() As String
+    Public Property CountryPurch As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_COUNTRY_PURCH) Is DBNull.Value Then
@@ -1201,14 +1201,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_COUNTRY_PURCH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_COUNTRY_PURCH, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=3)>
-    Public Property IsoCode() As String
+    Public Property IsoCode As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_ISO_CODE) Is DBNull.Value Then
@@ -1217,14 +1217,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_ISO_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_ISO_CODE, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=99)>
-    Public Property BillingFrequency() As LongType
+    Public Property BillingFrequency As LongType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_BILLING_FREQUENCY) Is DBNull.Value Then
@@ -1233,14 +1233,14 @@ Public Class DealerReconWrk
                 Return New LongType(CType(Row(DealerReconWrkDAL.COL_NAME_BILLING_FREQUENCY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_BILLING_FREQUENCY, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=99)>
-    Public Property NumberOfInstallments() As LongType
+    Public Property NumberOfInstallments As LongType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_NUMBER_OF_INSTALLMENTS) Is DBNull.Value Then
@@ -1249,14 +1249,14 @@ Public Class DealerReconWrk
                 Return New LongType(CType(Row(DealerReconWrkDAL.COL_NAME_NUMBER_OF_INSTALLMENTS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_NUMBER_OF_INSTALLMENTS, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property InstallmentAmount() As DecimalType
+    Public Property InstallmentAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_INSTALLMENT_AMOUNT) Is DBNull.Value Then
@@ -1265,14 +1265,14 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_INSTALLMENT_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_INSTALLMENT_AMOUNT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=999999999)>
-    Public Property BankRtnNumber() As String
+    Public Property BankRtnNumber As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_BANK_RTN_NUMBER) Is DBNull.Value Then
@@ -1281,14 +1281,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_BANK_RTN_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_BANK_RTN_NUMBER, Value)
         End Set
     End Property
 
     <ValidAcctNumber(""), ValidStringLength("", Max:=29)>
-    Public Property BankAccountNumber() As String
+    Public Property BankAccountNumber As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_BANK_ACCOUNT_NUMBER) Is DBNull.Value Then
@@ -1297,14 +1297,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_BANK_ACCOUNT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_BANK_ACCOUNT_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property BankBranchNumber() As String
+    Public Property BankBranchNumber As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_BANK_BRANCH_NUMBER) Is DBNull.Value Then
@@ -1313,14 +1313,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_BANK_BRANCH_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_BANK_BRANCH_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)>
-    Public Property BankAcctOwnerName() As String
+    Public Property BankAcctOwnerName As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_BANK_ACCT_OWNER_NAME) Is DBNull.Value Then
@@ -1329,14 +1329,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_BANK_ACCT_OWNER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_BANK_ACCT_OWNER_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property PostPrePaid() As String
+    Public Property PostPrePaid As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_POST_PRE_PAID) Is DBNull.Value Then
@@ -1345,14 +1345,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_POST_PRE_PAID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_POST_PRE_PAID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property Salutation() As String
+    Public Property Salutation As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_SALUTATION) Is DBNull.Value Then
@@ -1361,13 +1361,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_SALUTATION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_SALUTATION, Value)
         End Set
     End Property
 
-    Public Property DatePaidFor() As DateType
+    Public Property DatePaidFor As DateType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_DATE_PAID_FOR) Is DBNull.Value Then
@@ -1376,14 +1376,14 @@ Public Class DealerReconWrk
                 Return New DateType(CType(Row(DealerReconWrkDAL.COL_NAME_DATE_PAID_FOR), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_DATE_PAID_FOR, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property MembershipNumber() As String
+    Public Property MembershipNumber As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_MEMBERSHIP_NUMBER) Is DBNull.Value Then
@@ -1392,14 +1392,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_MEMBERSHIP_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_MEMBERSHIP_NUMBER, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property OriginalRetailPrice() As DecimalType
+    Public Property OriginalRetailPrice As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_ORIGINAL_RETAIL_PRICE) Is DBNull.Value Then
@@ -1408,14 +1408,14 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_ORIGINAL_RETAIL_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_ORIGINAL_RETAIL_PRICE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property BillingPlan() As String
+    Public Property BillingPlan As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_BILLING_PLAN) Is DBNull.Value Then
@@ -1424,14 +1424,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_BILLING_PLAN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_BILLING_PLAN, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property BillingCycle() As String
+    Public Property BillingCycle As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_BILLING_CYCLE) Is DBNull.Value Then
@@ -1440,14 +1440,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_BILLING_CYCLE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_BILLING_CYCLE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)>
-    Public Property SubscriberStatus() As String
+    Public Property SubscriberStatus As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_SUBSCRIBER_STATUS) Is DBNull.Value Then
@@ -1456,13 +1456,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_SUBSCRIBER_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_SUBSCRIBER_STATUS, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=250)>
-    Public Property SuspendedReason() As String
+    Public Property SuspendedReason As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_SUSPENDED_REASON) Is DBNull.Value Then
@@ -1471,14 +1471,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_SUSPENDED_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_SUSPENDED_REASON, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)>
-    Public Property MobileType() As String
+    Public Property MobileType As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_MOBILE_TYPE) Is DBNull.Value Then
@@ -1487,13 +1487,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_MOBILE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_MOBILE_TYPE, Value)
         End Set
     End Property
 
-    Public Property FirstUseDate() As DateType
+    Public Property FirstUseDate As DateType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_FIRST_USE_DATE) Is DBNull.Value Then
@@ -1502,13 +1502,13 @@ Public Class DealerReconWrk
                 Return New DateType(CType(Row(DealerReconWrkDAL.COL_NAME_FIRST_USE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_FIRST_USE_DATE, Value)
         End Set
     End Property
 
-    Public Property LastUseDate() As DateType
+    Public Property LastUseDate As DateType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_LAST_USE_DATE) Is DBNull.Value Then
@@ -1517,14 +1517,14 @@ Public Class DealerReconWrk
                 Return New DateType(CType(Row(DealerReconWrkDAL.COL_NAME_LAST_USE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_LAST_USE_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property SimCardNumber() As String
+    Public Property SimCardNumber As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_SIM_CARD_NUMBER) Is DBNull.Value Then
@@ -1533,14 +1533,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_SIM_CARD_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_SIM_CARD_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=25)>
-    Public Property Region() As String
+    Public Property Region As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_REGION) Is DBNull.Value Then
@@ -1549,14 +1549,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_REGION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_REGION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)>
-    Public Property MembershipType() As String
+    Public Property MembershipType As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_MEMBERSHIP_TYPE) Is DBNull.Value Then
@@ -1565,14 +1565,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_MEMBERSHIP_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_MEMBERSHIP_TYPE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)>
-    Public Property CessOffice() As String
+    Public Property CessOffice As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_CESS_OFFICE) Is DBNull.Value Then
@@ -1581,14 +1581,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_CESS_OFFICE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_CESS_OFFICE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property CessSalesrep() As String
+    Public Property CessSalesrep As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_CESS_SALESREP) Is DBNull.Value Then
@@ -1597,14 +1597,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_CESS_SALESREP), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_CESS_SALESREP, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)>
-    Public Property Businessline() As String
+    Public Property Businessline As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_BUSINESSLINE) Is DBNull.Value Then
@@ -1613,14 +1613,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_BUSINESSLINE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_BUSINESSLINE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)>
-    Public Property SalesDepartment() As String
+    Public Property SalesDepartment As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_SALES_DEPARTMENT) Is DBNull.Value Then
@@ -1629,14 +1629,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_SALES_DEPARTMENT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_SALES_DEPARTMENT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property LinkedCertNumber() As String
+    Public Property LinkedCertNumber As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_LINKED_CERT_NUMBER) Is DBNull.Value Then
@@ -1645,14 +1645,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_LINKED_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_LINKED_CERT_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)>
-    Public Property AdditionalInfo() As String
+    Public Property AdditionalInfo As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_ADDITIONAL_INFO) Is DBNull.Value Then
@@ -1661,7 +1661,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_ADDITIONAL_INFO), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_ADDITIONAL_INFO, Value)
         End Set
@@ -1674,7 +1674,7 @@ Public Class DealerReconWrk
     ''' <returns></returns>
     ''' <remarks></remarks>
     <ValidStringLength("", Max:=4, Min:=4)>
-    Public Property CreditCardLastFourDigit() As String
+    Public Property CreditCardLastFourDigit As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_CREDITCARD_LAST_FOUR_DIGIT) Is DBNull.Value Then
@@ -1683,7 +1683,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_CREDITCARD_LAST_FOUR_DIGIT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_CREDITCARD_LAST_FOUR_DIGIT, Value)
         End Set
@@ -1691,7 +1691,7 @@ Public Class DealerReconWrk
     'REQ-1169
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property Financed_Amount() As DecimalType
+    Public Property Financed_Amount As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_FINANCED_AMOUNT) Is DBNull.Value Then
@@ -1700,14 +1700,14 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_FINANCED_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_FINANCED_AMOUNT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=99)>
-    Public Property FinancedFrequency() As DecimalType
+    Public Property FinancedFrequency As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_FINANCED_FREQUENCY) Is DBNull.Value Then
@@ -1716,14 +1716,14 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_FINANCED_FREQUENCY), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_FINANCED_FREQUENCY, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property FinancedInstallmentAmount() As DecimalType
+    Public Property FinancedInstallmentAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_FINANCED_INSTALLMENT_AMOUNT) Is DBNull.Value Then
@@ -1732,14 +1732,14 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_FINANCED_INSTALLMENT_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_FINANCED_INSTALLMENT_AMOUNT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=99)>
-    Public Property FinancedInstallmentNumber() As DecimalType
+    Public Property FinancedInstallmentNumber As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_FINANCED_INSTALLMENT_NUMBER) Is DBNull.Value Then
@@ -1748,14 +1748,14 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_FINANCED_INSTALLMENT_NUMBER), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_FINANCED_INSTALLMENT_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)>
-    Public Property Gender() As String
+    Public Property Gender As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_GENDER) Is DBNull.Value Then
@@ -1764,13 +1764,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_GENDER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_GENDER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
-    Public Property Marital_Status() As String
+    Public Property Marital_Status As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_MARITAL_STATUS) Is DBNull.Value Then
@@ -1779,13 +1779,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_MARITAL_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_MARITAL_STATUS, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
-    Public Property Nationality() As String
+    Public Property Nationality As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_NATIONALITY) Is DBNull.Value Then
@@ -1794,13 +1794,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_NATIONALITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_NATIONALITY, Value)
         End Set
     End Property
 
-    Public Property Birth_Date() As DateType
+    Public Property Birth_Date As DateType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_BIRTH_DATE) Is DBNull.Value Then
@@ -1809,7 +1809,7 @@ Public Class DealerReconWrk
                 Return New DateType(CType(Row(DealerReconWrkDAL.COL_NAME_BIRTH_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_BIRTH_DATE, Value)
         End Set
@@ -1817,7 +1817,7 @@ Public Class DealerReconWrk
     'REQ-5657 - Start
 
     <ValidStringLength("", Max:=8)>
-    Public Property FinanceDate() As String
+    Public Property FinanceDate As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_FINANCE_DATE) Is DBNull.Value Then
@@ -1826,14 +1826,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_FINANCE_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_FINANCE_DATE, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property DownPayment() As DecimalType
+    Public Property DownPayment As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_DOWN_PAYMENT) Is DBNull.Value Then
@@ -1842,14 +1842,14 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_DOWN_PAYMENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_DOWN_PAYMENT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property AdvancePayment() As DecimalType
+    Public Property AdvancePayment As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_ADVANCE_PAYMENT) Is DBNull.Value Then
@@ -1858,14 +1858,14 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_ADVANCE_PAYMENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_ADVANCE_PAYMENT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=999)>
-    Public Property UpgradeTerm() As Nullable(Of Integer)
+    Public Property UpgradeTerm As Nullable(Of Integer)
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_UPGRADE_TERM) Is DBNull.Value Then
@@ -1874,14 +1874,14 @@ Public Class DealerReconWrk
                 Return (CType(Row(DealerReconWrkDAL.COL_NAME_UPGRADE_TERM), Integer))
             End If
         End Get
-        Set(ByVal Value As Nullable(Of Integer))
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_UPGRADE_TERM, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BillingAccountNumber() As String
+    Public Property BillingAccountNumber As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_BILLING_ACCOUNT_NUMBER) Is DBNull.Value Then
@@ -1890,13 +1890,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_BILLING_ACCOUNT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_BILLING_ACCOUNT_NUMBER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
-    Public Property dealer_current_plan_code() As String
+    Public Property dealer_current_plan_code As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_DEALER_CURRENT_PLAN_CODE) Is DBNull.Value Then
@@ -1905,13 +1905,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_DEALER_CURRENT_PLAN_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_DEALER_CURRENT_PLAN_CODE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
-    Public Property dealer_scheduled_plan_code() As String
+    Public Property dealer_scheduled_plan_code As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_DEALER_SCHEDULED_PLAN_CODE) Is DBNull.Value Then
@@ -1920,13 +1920,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_DEALER_SCHEDULED_PLAN_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_DEALER_SCHEDULED_PLAN_CODE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
-    Public Property dealer_update_reason() As String
+    Public Property dealer_update_reason As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_DEALER_UPDATE_REASON) Is DBNull.Value Then
@@ -1935,7 +1935,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_DEALER_UPDATE_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_DEALER_UPDATE_REASON, Value)
         End Set
@@ -1943,7 +1943,7 @@ Public Class DealerReconWrk
     'REQ-5657 - End
     'REQ-5681 Begin
     <ValidStringLength("", Max:=2)>
-    Public Property Place_Of_Birth() As String
+    Public Property Place_Of_Birth As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_PLACE_OF_BIRTH) Is DBNull.Value Then
@@ -1952,14 +1952,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_PLACE_OF_BIRTH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_PLACE_OF_BIRTH, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)>
-    Public Property Person_Type() As String
+    Public Property Person_Type As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_PERSON_TYPE) Is DBNull.Value Then
@@ -1968,14 +1968,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_PERSON_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_PERSON_TYPE, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=999)>
-    Public Property Num_Of_Consecutive_Payments() As Nullable(Of Integer)
+    Public Property Num_Of_Consecutive_Payments As Nullable(Of Integer)
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_NUM_OF_CONSECUTIVE_PAYMENTS) Is DBNull.Value Then
@@ -1984,14 +1984,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_NUM_OF_CONSECUTIVE_PAYMENTS), Integer)
             End If
         End Get
-        Set(ByVal Value As Nullable(Of Integer))
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_NUM_OF_CONSECUTIVE_PAYMENTS, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property CUIT_CUIL() As String
+    Public Property CUIT_CUIL As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_CUIT_CUIL) Is DBNull.Value Then
@@ -2000,7 +2000,7 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_CUIT_CUIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_CUIT_CUIL, Value)
         End Set
@@ -2008,7 +2008,7 @@ Public Class DealerReconWrk
     'REQ-5681 End
 
     <ValidStringLength("", Max:=50)>
-    Public Property ServiceLineNumber() As String
+    Public Property ServiceLineNumber As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_SERVICE_LINE_NUMBER) Is DBNull.Value Then
@@ -2017,14 +2017,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_SERVICE_LINE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_SERVICE_LINE_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property LoanCode() As String
+    Public Property LoanCode As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_LOAN_CODE) Is DBNull.Value Then
@@ -2033,14 +2033,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_LOAN_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_LOAN_CODE, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=999)>
-    Public Property PaymentShiftNumber() As Nullable(Of Integer)
+    Public Property PaymentShiftNumber As Nullable(Of Integer)
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_PAYMENT_SHIFT_NUMBER) Is DBNull.Value Then
@@ -2049,13 +2049,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_PAYMENT_SHIFT_NUMBER), Integer)
             End If
         End Get
-        Set(ByVal Value As Nullable(Of Integer))
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_PAYMENT_SHIFT_NUMBER, Value)
         End Set
     End Property
 
-    Public Property Upgrade_Date() As DateType
+    Public Property Upgrade_Date As DateType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_UPGRADE_DATE) Is DBNull.Value Then
@@ -2064,14 +2064,14 @@ Public Class DealerReconWrk
                 Return New DateType(CType(Row(DealerReconWrkDAL.COL_NAME_UPGRADE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_UPGRADE_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property Voucher_Number() As String
+    Public Property Voucher_Number As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_VOUCHER_NUMBER) Is DBNull.Value Then
@@ -2080,13 +2080,13 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_VOUCHER_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_VOUCHER_NUMBER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=20)>
-    Public Property RMA() As String
+    Public Property RMA As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_RMA) Is DBNull.Value Then
@@ -2095,14 +2095,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_RMA), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_RMA, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property RefundAmount() As DecimalType
+    Public Property RefundAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_REFUND_AMOUNT) Is DBNull.Value Then
@@ -2111,14 +2111,14 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_REFUND_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_REFUND_AMOUNT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property DeviceType() As String
+    Public Property DeviceType As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_DEVICE_TYPE) Is DBNull.Value Then
@@ -2127,14 +2127,14 @@ Public Class DealerReconWrk
                 Return CType(Row(DealerReconWrkDAL.COL_NAME_DEVICE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_DEVICE_TYPE, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property AppleCareFee() As DecimalType
+    Public Property AppleCareFee As DecimalType
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_APPLECARE_FEE) Is DBNull.Value Then
@@ -2143,7 +2143,7 @@ Public Class DealerReconWrk
                 Return New DecimalType(CType(Row(DealerReconWrkDAL.COL_NAME_APPLECARE_FEE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerReconWrkDAL.COL_NAME_APPLECARE_FEE, Value)
         End Set

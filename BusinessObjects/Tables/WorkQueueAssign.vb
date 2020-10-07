@@ -90,7 +90,7 @@ Public Class WorkQueueAssign
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(WorkQueueAssignDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class WorkQueueAssign
     End Property
 
 
-    Public Property WorkqueueId() As Guid
+    Public Property WorkqueueId As Guid
         Get
             CheckDeleted()
             If Row(WorkQueueAssignDAL.COL_NAME_WORKQUEUE_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class WorkQueueAssign
                 Return New Guid(CType(Row(WorkQueueAssignDAL.COL_NAME_WORKQUEUE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(WorkQueueAssignDAL.COL_NAME_WORKQUEUE_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class WorkQueueAssign
 
 
 
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(WorkQueueAssignDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class WorkQueueAssign
                 Return New Guid(CType(Row(WorkQueueAssignDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(WorkQueueAssignDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class WorkQueueAssign
 
 
 
-    Public Property UserId() As Guid
+    Public Property UserId As Guid
         Get
             CheckDeleted()
             If Row(WorkQueueAssignDAL.COL_NAME_USER_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class WorkQueueAssign
                 Return New Guid(CType(Row(WorkQueueAssignDAL.COL_NAME_USER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(WorkQueueAssignDAL.COL_NAME_USER_ID, Value)
         End Set

@@ -227,15 +227,15 @@ Namespace Reports
                 ElitaPlusPage.SetLabelError(lblCertNumberFrom)
                 ElitaPlusPage.SetLabelError(lblCertNumberTo)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION)
-            ElseIf ((Not txtBeginDate.Text.Equals(String.Empty) And txtEndDate.Text.Equals(String.Empty)) Or (txtBeginDate.Text.Equals(String.Empty) And Not txtEndDate.Text.Equals(String.Empty))) Then
+            ElseIf ((Not txtBeginDate.Text.Equals(String.Empty) AndAlso txtEndDate.Text.Equals(String.Empty)) OrElse (txtBeginDate.Text.Equals(String.Empty) AndAlso Not txtEndDate.Text.Equals(String.Empty))) Then
                 ElitaPlusPage.SetLabelError(lblBeginDate)
                 ElitaPlusPage.SetLabelError(lblEndDate)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_AND_END_DATES_MUST_BE_SELECTED_ERR)
-            ElseIf ((Not txtCertNumberFrom.Text.Equals(String.Empty) And txtCertNumberTo.Text.Equals(String.Empty)) Or (txtCertNumberFrom.Text.Equals(String.Empty) And Not txtCertNumberTo.Text.Equals(String.Empty))) Then
+            ElseIf ((Not txtCertNumberFrom.Text.Equals(String.Empty) AndAlso txtCertNumberTo.Text.Equals(String.Empty)) OrElse (txtCertNumberFrom.Text.Equals(String.Empty) AndAlso Not txtCertNumberTo.Text.Equals(String.Empty))) Then
                 ElitaPlusPage.SetLabelError(lblBeginDate)
                 ElitaPlusPage.SetLabelError(lblEndDate)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_AND_END_DATES_MUST_BE_SELECTED_ERR)
-            ElseIf Not txtBeginDate.Text.Equals(String.Empty) And Not txtEndDate.Text.Equals(String.Empty) Then
+            ElseIf Not txtBeginDate.Text.Equals(String.Empty) AndAlso Not txtEndDate.Text.Equals(String.Empty) Then
 
                 ReportExtractBase.ValidateBeginEndDate(lblBeginDate, txtBeginDate.Text, lblEndDate, txtEndDate.Text)
                 endDate = ReportExtractBase.FormatDate(lblEndDate, txtEndDate.Text)
@@ -247,7 +247,7 @@ Namespace Reports
                 End If
                 CertNumberFrom = String.Empty
                 CertNumberTo = String.Empty
-            ElseIf Not txtCertNumberFrom.Text.Equals(String.Empty) And Not txtCertNumberTo.Text.Equals(String.Empty) Then
+            ElseIf Not txtCertNumberFrom.Text.Equals(String.Empty) AndAlso Not txtCertNumberTo.Text.Equals(String.Empty) Then
                 CertNumberFrom = txtCertNumberFrom.Text
                 CertNumberTo = txtCertNumberTo.Text
                 beginDate = String.Empty

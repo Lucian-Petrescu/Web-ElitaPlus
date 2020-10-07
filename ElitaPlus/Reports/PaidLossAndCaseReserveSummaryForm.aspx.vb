@@ -209,7 +209,7 @@ Namespace Reports
                                                                 })
 
             Dim filteredYearList As DataElements.ListItem() = (From x In YearList
-                                                               Where x.Description = currentAccountingYear.ToString() Or x.Description = (currentAccountingYear - 1).ToString()
+                                                               Where x.Description = currentAccountingYear.ToString() OrElse x.Description = (currentAccountingYear - 1).ToString()
                                                                Select x).ToArray()
 
             YearDropDownList.Populate(filteredYearList,
@@ -310,7 +310,7 @@ Namespace Reports
             If selectedMonthID.Equals(Guid.Empty) OrElse selectedYear.Equals(String.Empty) Then
                 ElitaPlusPage.SetLabelError(MonthYearLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_YEARMONTH_MUST_BE_SELECTED_ERR)
-            ElseIf CType(selectedMonth, Integer) > currentAccountingMonth And CType(selectedYear, Integer) >= currentAccountingYear Then
+            ElseIf CType(selectedMonth, Integer) > currentAccountingMonth AndAlso CType(selectedYear, Integer) >= currentAccountingYear Then
                 ElitaPlusPage.SetLabelError(MonthYearLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ACCOUNTING_MONTH_NOT_YET_COMPLETED_IS_NOT_ALLOWED)
             End If
@@ -343,7 +343,7 @@ Namespace Reports
             If (queryStringCaller = "CR") Then
                 Dim selectedDealerId As Guid = DealerMultipleDrop.SelectedGuid
                 'either of the three options should be selected
-                If (rdealer.Checked = False And selectedDealerId.Equals(Guid.Empty) And ddlDealerCurrency.SelectedIndex = 0) Then
+                If (rdealer.Checked = False AndAlso selectedDealerId.Equals(Guid.Empty) AndAlso ddlDealerCurrency.SelectedIndex = 0) Then
                     Throw New GUIException(Message.MSG_GUI_INVALID_SELECTION, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_REQUIRED)
                 End If
                 'currency should be selected for every run

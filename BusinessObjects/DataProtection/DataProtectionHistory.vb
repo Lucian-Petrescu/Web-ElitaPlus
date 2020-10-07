@@ -91,7 +91,7 @@ Public Class DataProtectionHistory
 
 #Region "Properties"
 
-    Public ReadOnly Property Comment() As String
+    Public ReadOnly Property Comment As String
         Get
             If Row(DataProtectionHistoryDAL.COL_NAME_COMMENTS) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class DataProtectionHistory
         End Get
     End Property
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(DataProtectionHistoryDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -112,7 +112,7 @@ Public Class DataProtectionHistory
     End Property
 	
     <ValueMandatory(""),ValidStringLength("", Max:=50)> _
-    Public Property EntityType() As String
+    Public Property EntityType As String
         Get
             CheckDeleted()
             If row(DataProtectionHistoryDAL.COL_NAME_ENTITY_TYPE) Is DBNull.Value Then
@@ -121,7 +121,7 @@ Public Class DataProtectionHistory
                 Return CType(row(DataProtectionHistoryDAL.COL_NAME_ENTITY_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DataProtectionHistoryDAL.COL_NAME_ENTITY_TYPE, Value)
         End Set
@@ -129,7 +129,7 @@ Public Class DataProtectionHistory
 	
 	
     <ValueMandatory("")> _
-    Public Property EntityId() As Guid
+    Public Property EntityId As Guid
         Get
             CheckDeleted()
             If row(DataProtectionHistoryDAL.COL_NAME_ENTITY_ID) Is DBNull.Value Then
@@ -138,7 +138,7 @@ Public Class DataProtectionHistory
                 Return New Guid(CType(row(DataProtectionHistoryDAL.COL_NAME_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DataProtectionHistoryDAL.COL_NAME_ENTITY_ID, Value)
         End Set
@@ -146,7 +146,7 @@ Public Class DataProtectionHistory
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property RequestId() As String
+    Public Property RequestId As String
         Get
             CheckDeleted()
             If row(DataProtectionHistoryDAL.COL_NAME_REQUEST_ID) Is DBNull.Value Then
@@ -155,7 +155,7 @@ Public Class DataProtectionHistory
                 Return CType(row(DataProtectionHistoryDAL.COL_NAME_REQUEST_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DataProtectionHistoryDAL.COL_NAME_REQUEST_ID, Value)
         End Set
@@ -164,7 +164,7 @@ Public Class DataProtectionHistory
 
 
 
-    Public Property CommentId() As Guid
+    Public Property CommentId As Guid
         Get
             CheckDeleted()
             If Row(DataProtectionHistoryDAL.COL_NAME_COMMENT_ID) Is DBNull.Value Then
@@ -173,7 +173,7 @@ Public Class DataProtectionHistory
                 Return New Guid(CType(Row(DataProtectionHistoryDAL.COL_NAME_COMMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DataProtectionHistoryDAL.COL_NAME_COMMENT_ID, Value)
         End Set
@@ -181,7 +181,7 @@ Public Class DataProtectionHistory
 
 
 
-    Public Property Status() As Guid
+    Public Property Status As Guid
         Get
             CheckDeleted()
             If row(DataProtectionHistoryDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -190,7 +190,7 @@ Public Class DataProtectionHistory
                 Return New Guid(CType(row(DataProtectionHistoryDAL.COL_NAME_STATUS), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DataProtectionHistoryDAL.COL_NAME_STATUS, Value)
         End Set
@@ -198,7 +198,7 @@ Public Class DataProtectionHistory
 
 
 
-    Public Property StartDate() As DateType
+    Public Property StartDate As DateType
         Get
             CheckDeleted()
             If row(DataProtectionHistoryDAL.COL_NAME_START_DATE) Is DBNull.Value Then
@@ -207,7 +207,7 @@ Public Class DataProtectionHistory
                 Return New DateType(CType(row(DataProtectionHistoryDAL.COL_NAME_START_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DataProtectionHistoryDAL.COL_NAME_START_DATE, Value)
         End Set
@@ -215,7 +215,7 @@ Public Class DataProtectionHistory
 
 
 
-    Public Property EndDate() As DateType
+    Public Property EndDate As DateType
         Get
             CheckDeleted()
             If row(DataProtectionHistoryDAL.COL_NAME_END_DATE) Is DBNull.Value Then
@@ -224,13 +224,13 @@ Public Class DataProtectionHistory
                 Return New DateType(CType(row(DataProtectionHistoryDAL.COL_NAME_END_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DataProtectionHistoryDAL.COL_NAME_END_DATE, Value)
         End Set
     End Property
 
-    Public Property AddedBy() As String
+    Public Property AddedBy As String
         Get
             If Row(DataProtectionHistoryDAL.COL_NAME_CREATED_BY) Is DBNull.Value Then
                 Return Nothing
@@ -238,27 +238,27 @@ Public Class DataProtectionHistory
                 Return CType(Row(DataProtectionHistoryDAL.COL_NAME_CREATED_BY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DataProtectionHistoryDAL.COL_NAME_CREATED_BY, Value)
         End Set
 
     End Property
 
-    Public Property RestrictedStatus() As String
+    Public Property RestrictedStatus As String
         Get
             Return _restrict
         End Get
-        Set(ByVal Value As String)
+        Set
             _restrict = Value
         End Set
     End Property
 
-    Public Property IsRequestIdUsed() As String
+    Public Property IsRequestIdUsed As String
         Get
             Return _isRequestIdUsed
         End Get
-        Set(ByVal Value As String)
+        Set
             _isRequestIdUsed = Value
         End Set
     End Property

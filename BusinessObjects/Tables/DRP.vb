@@ -13,7 +13,7 @@ Partial Public Class DRP
 
 #Region "Properties"
 
-    Private Shared ReadOnly Property ClientProxy() As MaxValueRecoveryClient
+    Private Shared ReadOnly Property ClientProxy As MaxValueRecoveryClient
         Get
 
             If (oDRPSystemService Is Nothing OrElse oDRPSystemService.State <> ServiceModel.CommunicationState.Opened) Then

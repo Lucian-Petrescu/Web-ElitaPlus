@@ -257,9 +257,9 @@ Partial Class DelayFactorListForm
 
 
         Try
-            If dvRow IsNot Nothing And Not State.bnoRow Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Row.Cells(GRID_COL_DEALER_IDX).Text = dvRow(DelayFactor.DelayFactorSearchDV.COL_DEALER_NAME).ToString
                     e.Row.Cells(GRID_COL_START_DATE_IDX).Text = dvRow(DelayFactor.DelayFactorSearchDV.COL_EFFECTIVE_DATE).ToString
                     e.Row.Cells(GRID_COL_END_DATE_IDX).Text = dvRow(DelayFactor.DelayFactorSearchDV.COL_EXPIRATION_DATE).ToString

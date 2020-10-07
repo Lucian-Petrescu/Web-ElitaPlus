@@ -675,7 +675,7 @@ Partial Class APInvoiceListForm
         Dim invoiceHeaderId As String = String.Empty
 
         Try
-            If (Not e.CommandArgument.ToString().Equals(String.Empty)) And (e.CommandName = SELECT_COMMAND_NAME) Then
+            If (Not e.CommandArgument.ToString().Equals(String.Empty)) AndAlso (e.CommandName = SELECT_COMMAND_NAME) Then
                 rowIndex = CInt(e.CommandArgument)
 
                 If State Is Nothing Then

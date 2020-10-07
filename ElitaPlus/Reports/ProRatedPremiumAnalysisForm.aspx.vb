@@ -200,7 +200,7 @@ Namespace Reports
 
             month = LookupListNew.GetCodeFromId(LookupListNew.GetMonthsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), New Guid(GetSelectedValue(cboMonth)))
             year = moYearText.Text
-            If (year.Length < 4 Or Not Integer.TryParse(year, i)) Then
+            If (year.Length < 4 OrElse Not Integer.TryParse(year, i)) Then
                 ElitaPlusPage.SetLabelError(moMonthYearLabel)
                 Throw New GUIException(Message.MSG_INVALID_YEARMONTH, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_YEAR_ENTERED_ERROR)
             End If

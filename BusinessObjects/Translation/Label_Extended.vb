@@ -100,7 +100,7 @@ Public Class Label_Extended
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(LabelDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -111,7 +111,7 @@ Public Class Label_Extended
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property UiProgCode() As String
+    Public Property UiProgCode As String
         Get
             CheckDeleted()
             If row(LabelDAL.COL_NAME_UI_PROG_CODE) Is DBNull.Value Then
@@ -120,7 +120,7 @@ Public Class Label_Extended
                 Return CType(row(LabelDAL.COL_NAME_UI_PROG_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(LabelDAL.COL_NAME_UI_PROG_CODE, Value)
         End Set
@@ -128,7 +128,7 @@ Public Class Label_Extended
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property InUse() As String
+    Public Property InUse As String
         Get
             CheckDeleted()
             If Row(LabelDAL.COL_NAME_IN_USE) Is DBNull.Value Then
@@ -137,7 +137,7 @@ Public Class Label_Extended
                 Return CType(Row(LabelDAL.COL_NAME_IN_USE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(LabelDAL.COL_NAME_IN_USE, Value)
         End Set
@@ -145,7 +145,7 @@ Public Class Label_Extended
 
 
     <ValueMandatory("")> _
-    Public Property DictItemId() As Guid
+    Public Property DictItemId As Guid
         Get
             CheckDeleted()
             If Row(LabelDAL.COL_NAME_DICT_ITEM_ID) Is DBNull.Value Then
@@ -154,7 +154,7 @@ Public Class Label_Extended
                 Return New Guid(CType(Row(LabelDAL.COL_NAME_DICT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(LabelDAL.COL_NAME_DICT_ITEM_ID, Value)
         End Set

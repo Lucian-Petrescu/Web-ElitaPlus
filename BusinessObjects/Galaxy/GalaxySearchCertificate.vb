@@ -117,7 +117,7 @@ Public Class GalaxySearchCertificate
 #Region "Properties"
 
     <ValidateParameters("")> _
-    Public Property IdentificationNumber() As String
+    Public Property IdentificationNumber As String
         Get
             If Row(DATA_COL_NAME_IDENTIFICATION_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -125,13 +125,13 @@ Public Class GalaxySearchCertificate
                 Return (CType(Row(DATA_COL_NAME_IDENTIFICATION_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_IDENTIFICATION_NUMBER, Value)
         End Set
     End Property
     <ValidateParameters("")> _
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
             If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -139,7 +139,7 @@ Public Class GalaxySearchCertificate
                 Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
@@ -147,7 +147,7 @@ Public Class GalaxySearchCertificate
 
 
     <ValidateParameters("")> _
-    Public Property VehicleLicenseTag() As String
+    Public Property VehicleLicenseTag As String
         Get
             If Row(DATA_COL_NAME_VEHICLE_LICENSE_TAG) Is DBNull.Value Then
                 Return Nothing
@@ -155,7 +155,7 @@ Public Class GalaxySearchCertificate
                 Return CType(Row(DATA_COL_NAME_VEHICLE_LICENSE_TAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_VEHICLE_LICENSE_TAG, Value)
         End Set
@@ -163,7 +163,7 @@ Public Class GalaxySearchCertificate
 
 
     <ValidateParameters("")> _
-    Public Property CustomerName() As String
+    Public Property CustomerName As String
         Get
             If Row(DATA_COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -171,14 +171,14 @@ Public Class GalaxySearchCertificate
                 Return CType(Row(DATA_COL_NAME_CUSTOMER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CUSTOMER_NAME, Value)
         End Set
     End Property
 
     <ValidateParameters("")> _
-     Public Property VinLocator() As String
+     Public Property VinLocator As String
         Get
             If Row(DATA_COL_NAME_VIN_LOCATOR) Is DBNull.Value Then
                 Return Nothing
@@ -186,7 +186,7 @@ Public Class GalaxySearchCertificate
                 Return CType(Row(DATA_COL_NAME_VIN_LOCATOR), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_VIN_LOCATOR, Value)
         End Set
@@ -194,7 +194,7 @@ Public Class GalaxySearchCertificate
 
 
     <ValidateParameters("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
@@ -202,14 +202,14 @@ Public Class GalaxySearchCertificate
                 Return CType(Row(DATA_COL_NAME_DEALER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
     <ValidateParameters("")> _
-    Public Property DealerName() As String
+    Public Property DealerName As String
         Get
             If Row(DATA_COL_NAME_DEALER_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -217,14 +217,14 @@ Public Class GalaxySearchCertificate
                 Return CType(Row(DATA_COL_NAME_DEALER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER_NAME, Value)
         End Set
     End Property
 
     <ValidateParameters("")> _
-    Public Property CustomerPhone() As String
+    Public Property CustomerPhone As String
         Get
             If Row(DATA_COL_NAME_CUSTOMER_PHONE) Is DBNull.Value Then
                 Return Nothing
@@ -232,18 +232,18 @@ Public Class GalaxySearchCertificate
                 Return CType(Row(DATA_COL_NAME_CUSTOMER_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CUSTOMER_PHONE, Value)
         End Set
     End Property
 
 
-    Public Property RecordsToReturn() As Integer
+    Public Property RecordsToReturn As Integer
         Get
             Return _recordsToRreturn
         End Get
-        Set(ByVal Value As Integer)
+        Set
             _recordsToRreturn = Value
         End Set
     End Property

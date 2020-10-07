@@ -67,7 +67,7 @@ Public Class Region
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(RegionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -78,7 +78,7 @@ Public Class Region
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=30), RegionDescriptionValidator("")> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(RegionDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -87,7 +87,7 @@ Public Class Region
                 Return CType(Row(RegionDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             If Not Value Is Nothing Then
                 SetValue(RegionDAL.COL_NAME_DESCRIPTION, Value.Trim())
@@ -98,7 +98,7 @@ Public Class Region
     End Property
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(RegionDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -107,14 +107,14 @@ Public Class Region
                 Return New Guid(CType(Row(RegionDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RegionDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=5), RegionCodeValidator("")> _
-    Public Property ShortDesc() As String
+    Public Property ShortDesc As String
         Get
             CheckDeleted()
             If Row(RegionDAL.COL_NAME_SHORT_DESC) Is DBNull.Value Then
@@ -123,7 +123,7 @@ Public Class Region
                 Return CType(Row(RegionDAL.COL_NAME_SHORT_DESC), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             If Not Value Is Nothing Then
                 SetValue(RegionDAL.COL_NAME_SHORT_DESC, Value.Trim())
@@ -135,7 +135,7 @@ Public Class Region
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=5)> _
-       Public Property AccountingCode() As String
+       Public Property AccountingCode As String
         Get
             CheckDeleted()
             If Row(RegionDAL.COL_NAME_ACCOUNTING_CODE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class Region
                 Return CType(Row(RegionDAL.COL_NAME_ACCOUNTING_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             If Not Value Is Nothing Then
                 SetValue(RegionDAL.COL_NAME_ACCOUNTING_CODE, Value.Trim())
@@ -156,7 +156,7 @@ Public Class Region
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property InvoiceTaxGLAcct() As String
+    Public Property InvoiceTaxGLAcct As String
         Get
             CheckDeleted()
             If Row(RegionDAL.COL_NAME_INVOICE_TAX_GL) Is DBNull.Value Then
@@ -165,7 +165,7 @@ Public Class Region
                 Return CType(Row(RegionDAL.COL_NAME_INVOICE_TAX_GL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             If Not Value Is Nothing Then
                 SetValue(RegionDAL.COL_NAME_INVOICE_TAX_GL, Value.Trim())
@@ -177,7 +177,7 @@ Public Class Region
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property ExtendedCode() As String
+    Public Property ExtendedCode As String
         Get
             CheckDeleted()
             If Row(RegionDAL.COL_NAME_EXTENDED_CODE) Is DBNull.Value Then
@@ -186,7 +186,7 @@ Public Class Region
                 Return CType(Row(RegionDAL.COL_NAME_EXTENDED_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             If Not Value Is Nothing Then
                 SetValue(RegionDAL.COL_NAME_EXTENDED_CODE, Value.Trim())

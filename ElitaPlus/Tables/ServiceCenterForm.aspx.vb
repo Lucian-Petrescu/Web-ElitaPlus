@@ -545,7 +545,7 @@ Partial Class ServiceCenterForm
 
                     If Not State.IsNew Then
 
-                        If Not String.IsNullOrEmpty(State.priceListApprovalflag) And State.priceListApprovalflag = Codes.EXT_YESNO_Y Then
+                        If Not String.IsNullOrEmpty(State.priceListApprovalflag) AndAlso State.priceListApprovalflag = Codes.EXT_YESNO_Y Then
                             'Only after Approval, Price List will be associated to Service Center
                             PopulateBOProperty(State.MyBO, "PriceListCode", State.CurrentPriceListCode)
                         End If
@@ -966,13 +966,13 @@ Partial Class ServiceCenterForm
             State.priceListApprovalflag = Codes.EXT_YESNO_N
         End Try
 
-        If State.priceListApprovalflag IsNot Nothing And Not State.priceListApprovalflag = String.Empty And State.priceListApprovalflag = Codes.EXT_YESNO_Y Then
+        If State.priceListApprovalflag IsNot Nothing AndAlso Not State.priceListApprovalflag = String.Empty AndAlso State.priceListApprovalflag = Codes.EXT_YESNO_Y Then
 
             PL_APPROVE_SEC.Visible = True
 
             If Not IsNothing(State.MyBO.CurrentSVCPLRecon) Then
 
-                If Not String.IsNullOrEmpty(State.MyBO.CurrentSVCPLRecon.Status_xcd) And State.MyBO.CurrentSVCPLRecon.Status_xcd = STATUS_SVC_PL_PROCESS_PENDINGAPPROVAL Then
+                If Not String.IsNullOrEmpty(State.MyBO.CurrentSVCPLRecon.Status_xcd) AndAlso State.MyBO.CurrentSVCPLRecon.Status_xcd = STATUS_SVC_PL_PROCESS_PENDINGAPPROVAL Then
                     ddlPriceList.Enabled = False
                 Else
                     ddlPriceList.Enabled = True
@@ -1281,11 +1281,9 @@ Partial Class ServiceCenterForm
             If State.stIsComingFromDealerform Then
                 SetSelectedItem(cboOriginalDealer_WRITE, State.stdealerid)
             Else
-                If LookupListNew.GetCodeFromId(LookupListNew.GetCompanyLookupList, ElitaPlusIdentity.Current.ActiveUser.CompanyId) = Codes.COMPANY__VBR And
-                    State.MyBO.OriginalDealerId.Equals(Guid.Empty) Then
+                If LookupListNew.GetCodeFromId(LookupListNew.GetCompanyLookupList, ElitaPlusIdentity.Current.ActiveUser.CompanyId) = Codes.COMPANY__VBR AndAlso State.MyBO.OriginalDealerId.Equals(Guid.Empty) Then
                     cboOriginalDealer_WRITE.SelectedIndex = NOTHING_SELECTED
-                ElseIf LookupListNew.GetCodeFromId(LookupListNew.GetCompanyLookupList, ElitaPlusIdentity.Current.ActiveUser.CompanyId) = Codes.COMPANY__VBR And
-                    Not State.MyBO.OriginalDealerId.Equals(Guid.Empty) Then
+                ElseIf LookupListNew.GetCodeFromId(LookupListNew.GetCompanyLookupList, ElitaPlusIdentity.Current.ActiveUser.CompanyId) = Codes.COMPANY__VBR AndAlso Not State.MyBO.OriginalDealerId.Equals(Guid.Empty) Then
                     If State.MyBO.IsNew Then
                         cboOriginalDealer_WRITE.SelectedIndex = NOTHING_SELECTED
                     Else
@@ -1424,8 +1422,7 @@ Partial Class ServiceCenterForm
 
         With State.MyBO
 
-            If LookupListNew.GetCodeFromId(LookupListNew.GetCompanyLookupList, ElitaPlusIdentity.Current.ActiveUser.CompanyId) = Codes.COMPANY__VBR And
-                cboOriginalDealer_WRITE.SelectedValue.Trim.Length > 0 Then
+            If LookupListNew.GetCodeFromId(LookupListNew.GetCompanyLookupList, ElitaPlusIdentity.Current.ActiveUser.CompanyId) = Codes.COMPANY__VBR AndAlso cboOriginalDealer_WRITE.SelectedValue.Trim.Length > 0 Then
                 PopulateBOProperty(State.MyBO, "OriginalDealerId", cboOriginalDealer_WRITE)
             End If
 
@@ -1547,7 +1544,7 @@ Partial Class ServiceCenterForm
 
                     PopulateBOProperty(State.MyBO.CurrentSVCPLRecon, "PriceListId", LookupListNew.GetIdFromCode(LookupListCache.LK_PRICE_LIST, State.MyBO.PriceListCode))
 
-                    If Not State.priceListApprovalflag = String.Empty And State.priceListApprovalflag = Codes.EXT_YESNO_Y Then
+                    If Not State.priceListApprovalflag = String.Empty AndAlso State.priceListApprovalflag = Codes.EXT_YESNO_Y Then
                         PopulateBOProperty(State.MyBO.CurrentSVCPLRecon, "Status_xcd", SVCPLProcessStatusPending)
                     Else
                         PopulateBOProperty(State.MyBO.CurrentSVCPLRecon, "Status_xcd", SVCPLProcessStatusApproved)
@@ -1557,7 +1554,7 @@ Partial Class ServiceCenterForm
 
                 Else
 
-                    If Not State.priceListApprovalflag = String.Empty And State.priceListApprovalflag = Codes.EXT_YESNO_Y And Not State.MyBO.IsNew Then
+                    If Not State.priceListApprovalflag = String.Empty AndAlso State.priceListApprovalflag = Codes.EXT_YESNO_Y AndAlso Not State.MyBO.IsNew Then
                         AddSVRcReconRec(GetSelectedItem(ddlPriceList), SVCPLProcessStatusPending)
                     Else
                         AddSVRcReconRec(GetSelectedItem(ddlPriceList), SVCPLProcessStatusApproved)
@@ -2789,11 +2786,11 @@ Partial Class ServiceCenterForm
                 BindSelectItem(.ServiceClassId.ToString, ddlServiceClass)
             End If
             txtEffective = CType(gRow.Cells(GRID_SCHEDULE_COL_EFFECTIVE).FindControl(GRID_CONTROL_EFFECTIVE), TextBox)
-            If txtEffective IsNot Nothing And .Effective IsNot Nothing Then
+            If txtEffective IsNot Nothing AndAlso .Effective IsNot Nothing Then
                 txtEffective.Text = GetDateFormattedString(CType(.Effective.ToString, Date))
             End If
             txtExpiration = CType(gRow.Cells(GRID_SCHEDULE_COL_EXPIRATION).FindControl(GRID_CONTROL_EXPIRATION), TextBox)
-            If txtExpiration IsNot Nothing And .Expiration IsNot Nothing Then
+            If txtExpiration IsNot Nothing AndAlso .Expiration IsNot Nothing Then
                 txtExpiration.Text = GetDateFormattedString(CType(.Expiration.ToString, Date))
             End If
 
@@ -3365,7 +3362,7 @@ Partial Class ServiceCenterForm
         State.MethodOfRepairAction = MethodOfRepairNone
 
         ' Remove it from Database
-        If Not State.MethodOfRepairWorkingItem.IsNew And Not State.MyBO.IsNew Then
+        If Not State.MethodOfRepairWorkingItem.IsNew AndAlso Not State.MyBO.IsNew Then
             '    'if not new object, delete from database
             State.MethodOfRepairWorkingItem.Delete()
             State.MethodOfRepairWorkingItem.SaveWithoutCheckDsCreator()
@@ -3618,7 +3615,7 @@ Partial Class ServiceCenterForm
             End If
 
 
-            If dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_PRICE_LIST_ID) IsNot Nothing And dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_PRICE_LIST_ID) IsNot DBNull.Value Then
+            If dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_PRICE_LIST_ID) IsNot Nothing AndAlso dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_PRICE_LIST_ID) IsNot DBNull.Value Then
                 e.Row.Cells(SVC_PRICE_LIST_ID_COL).Text = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PRICE_LIST, GetGuidFromString(GetGuidStringFromByteArray(CType(dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_PRICE_LIST_ID), Byte()))))
             End If
 

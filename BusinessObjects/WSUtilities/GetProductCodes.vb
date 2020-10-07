@@ -101,7 +101,7 @@ Public Class GetProductCodes
 
 #Region "Properties"
 
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -109,13 +109,13 @@ Public Class GetProductCodes
                 Return (CType(Row(DATA_COL_NAME_DEALER_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
-    Public Property WarrantySalesDate() As DateTime
+    Public Property WarrantySalesDate As DateTime
         Get
             If Row(DATA_COL_NAME_WARRANTY_SALES_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -123,13 +123,13 @@ Public Class GetProductCodes
                 Return CType(Row(DATA_COL_NAME_WARRANTY_SALES_DATE), String)
             End If
         End Get
-        Set(ByVal Value As Date)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_WARRANTY_SALES_DATE, Value)
         End Set
     End Property
 
-    Public Property SortBy() As String
+    Public Property SortBy As String
         Get
             If Row(DATA_COL_NAME_SORT_BY) Is DBNull.Value Then
                 Return Nothing
@@ -137,13 +137,13 @@ Public Class GetProductCodes
                 Return CType(Row(DATA_COL_NAME_SORT_BY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_SORT_BY, Value)
         End Set
     End Property
 
-    Public Property AscDescOrder() As String
+    Public Property AscDescOrder As String
         Get
             If Row(DATA_COL_NAME_ASC_DESC_ORDER) Is DBNull.Value Then
                 Return Nothing
@@ -151,13 +151,13 @@ Public Class GetProductCodes
                 Return CType(Row(DATA_COL_NAME_ASC_DESC_ORDER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_ASC_DESC_ORDER, Value)
         End Set
     End Property
 
-    Public Property ProductClassCode() As String
+    Public Property ProductClassCode As String
         Get
             If Row(DATA_COL_NAME_PRODUCT_CLASS_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -165,7 +165,7 @@ Public Class GetProductCodes
                 Return (CType(Row(DATA_COL_NAME_PRODUCT_CLASS_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_PRODUCT_CLASS_CODE, Value)
         End Set

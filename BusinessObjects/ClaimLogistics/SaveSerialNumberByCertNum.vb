@@ -96,7 +96,7 @@ Public Class SaveSerialNumberByCertNum
 
 #Region "Properties"
 
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
             If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -104,13 +104,13 @@ Public Class SaveSerialNumberByCertNum
                 Return (CType(Row(DATA_COL_NAME_CERT_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -118,13 +118,13 @@ Public Class SaveSerialNumberByCertNum
                 Return (CType(Row(DATA_COL_NAME_DEALER_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
-    Public Property SerialNumber() As String
+    Public Property SerialNumber As String
         Get
             If Row(DATA_COL_NAME_SERIAL_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -132,7 +132,7 @@ Public Class SaveSerialNumberByCertNum
                 Return (CType(Row(DATA_COL_NAME_SERIAL_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_SERIAL_NUMBER, Value)
         End Set
@@ -175,7 +175,7 @@ Public Class SaveSerialNumberByCertNum
 
 #Region "Extended Properties"
 
-    Private ReadOnly Property DealerId() As Guid
+    Private ReadOnly Property DealerId As Guid
         Get
             If _dealerId.Equals(Guid.Empty) Then
 

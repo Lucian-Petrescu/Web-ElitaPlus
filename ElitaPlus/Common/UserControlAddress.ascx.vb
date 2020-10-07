@@ -172,7 +172,7 @@ Partial Class UserControlAddress
             If Address.IsAddressComponentRequired(strAddFmt, "ZIP") AndAlso (Not moPostalLabel.Text.StartsWith("*")) Then
                 moPostalLabel.Text = "* " & moPostalLabel.Text
             End If
-            If (Address.IsAddressComponentRequired(strAddFmt, "RGCODE") OrElse Address.IsAddressComponentRequired(strAddFmt, "RGNAME")) And (Not moRegionLabel.Text.StartsWith("*")) Then
+            If (Address.IsAddressComponentRequired(strAddFmt, "RGCODE") OrElse Address.IsAddressComponentRequired(strAddFmt, "RGNAME")) AndAlso (Not moRegionLabel.Text.StartsWith("*")) Then
                 moRegionLabel.Text = "* " & moRegionLabel.Text
             End If
         End If

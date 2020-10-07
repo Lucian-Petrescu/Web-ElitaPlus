@@ -2096,7 +2096,7 @@ Namespace Tables
                             ShareCustSave()
                             State.MyBO.Save()
 
-                            If ddlFullfileProcess.Visible = True And LookupListNew.GetCodeFromId(LookupListNew.LK_FLP, State.MyBO.UseFullFileProcessId) <> Codes.FLP_NO Then
+                            If ddlFullfileProcess.Visible = True AndAlso LookupListNew.GetCodeFromId(LookupListNew.LK_FLP, State.MyBO.UseFullFileProcessId) <> Codes.FLP_NO Then
                                 State.MyBO.CreateExternalTable()
                             End If
                             'REQ-5467 : If LawsuitMandatory Value has changed from No to YES then create a Asynchronous Job to Update any Claims that needs to catch up
@@ -2137,8 +2137,7 @@ Namespace Tables
                         End If
                         PopulateFormFromBOs()
                         EnableDisableFields()
-                        If State.blnIsComingFromNew And
-                           LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, State.MyBO.DealerTypeId) = Codes.DEALER_TYPES__VSC Then
+                        If State.blnIsComingFromNew AndAlso LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, State.MyBO.DealerTypeId) = Codes.DEALER_TYPES__VSC Then
                             DisplayMessage(Message.MSG_PROMPT_FOR_SETUP_SERVICE_CENTER_OF_DEALER, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                         Else
                             'Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
@@ -2679,8 +2678,8 @@ Namespace Tables
                         .AddBlankItem = True
                         }
 
-                If dvRow IsNot Nothing And Not State.MerchantCodeSearchDV.Count > 0 Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then
+                If dvRow IsNot Nothing AndAlso Not State.MerchantCodeSearchDV.Count > 0 Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem OrElse itemType = ListItemType.EditItem Then
                         CType(e.Row.Cells(MERCHANT_CODE_ID).FindControl(ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(MerchantCode.MerchantCodeSearchDV.COL_MERCHANT_CODE_ID), Byte()))
                         If (State.IsMerchantCodeEditMode = True AndAlso State.MerchantCodeID.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(MerchantCode.MerchantCodeSearchDV.COL_MERCHANT_CODE_ID), Byte())))) Then
                             'BindListControlToDataView(CType(e.Row.Cells(Me.COMPANY_CREDIT_CARD_ID).FindControl(Me.COMPANY_CREDIT_CARD_CONTROL_NAME), DropDownList), LookupListNew.GetCompanyCreditCardsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.State.MyBO.CompanyId))

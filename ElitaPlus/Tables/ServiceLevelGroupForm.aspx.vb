@@ -244,8 +244,8 @@ Partial Class ServiceLevelGroupForm
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-            If dvRow IsNot Nothing And Not State.bNoRow Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If dvRow IsNot Nothing AndAlso Not State.bNoRow Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     CType(e.Row.Cells(GRID_COL_SLG_ID).FindControl("SLGIdLabel"), Label).Text = GetGuidStringFromByteArray(CType(dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_SERVICE_LEVEL_GROUP_ID), Byte()))
 
                     If (State.IsEditMode = True AndAlso State.SelectedSLGId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_SERVICE_LEVEL_GROUP_ID), Byte())))) Then

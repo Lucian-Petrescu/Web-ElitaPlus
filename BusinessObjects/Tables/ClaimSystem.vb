@@ -90,7 +90,7 @@ Public Class ClaimSystem
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimSystemDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ClaimSystem
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(ClaimSystemDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ClaimSystem
                 Return CType(row(ClaimSystemDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimSystemDAL.COL_NAME_CODE, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ClaimSystem
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(ClaimSystemDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ClaimSystem
                 Return CType(row(ClaimSystemDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimSystemDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class ClaimSystem
 
 
 
-    Public Property NewClaimId() As Guid
+    Public Property NewClaimId As Guid
         Get
             CheckDeleted()
             If row(ClaimSystemDAL.COL_NAME_NEW_CLAIM_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class ClaimSystem
                 Return New Guid(CType(row(ClaimSystemDAL.COL_NAME_NEW_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimSystemDAL.COL_NAME_NEW_CLAIM_ID, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class ClaimSystem
 
 
 
-    Public Property PayClaimId() As Guid
+    Public Property PayClaimId As Guid
         Get
             CheckDeleted()
             If row(ClaimSystemDAL.COL_NAME_PAY_CLAIM_ID) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class ClaimSystem
                 Return New Guid(CType(row(ClaimSystemDAL.COL_NAME_PAY_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimSystemDAL.COL_NAME_PAY_CLAIM_ID, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class ClaimSystem
 
 
 
-    Public Property MaintainClaimId() As Guid
+    Public Property MaintainClaimId As Guid
         Get
             CheckDeleted()
             If row(ClaimSystemDAL.COL_NAME_MAINTAIN_CLAIM_ID) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class ClaimSystem
                 Return New Guid(CType(row(ClaimSystemDAL.COL_NAME_MAINTAIN_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimSystemDAL.COL_NAME_MAINTAIN_CLAIM_ID, Value)
         End Set

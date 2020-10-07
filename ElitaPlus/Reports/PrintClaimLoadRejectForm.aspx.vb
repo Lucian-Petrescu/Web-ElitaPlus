@@ -242,7 +242,7 @@ Namespace Reports
             If Me.State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.CLAIM_SUSPENSE Then
                 Dim retType As New ClaimSuspenseReconForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.SearchAuthorization, State.SearchFilename, State.SearchCertificate)
                 ReturnToCallingPage(retType)
-            ElseIf State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.CLAIM_LOAD_COMMON Or State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.INVOICE_LOAD_COMMON Then
+            ElseIf State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.CLAIM_LOAD_COMMON OrElse State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.INVOICE_LOAD_COMMON Then
                 Dim retType As New ClaimLoadForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimfileProcessedId)
                 ReturnToCallingPage(retType)
             Else
@@ -343,7 +343,7 @@ Namespace Reports
             SetReportName(reportformat)
             If (State.iscultureImplemented) Then
 
-                If reportformat = ReportCeBase.RptFormat.TEXT_CSV Or reportformat = ReportCeBase.RptFormat.TEXT_TAB Then
+                If reportformat = ReportCeBase.RptFormat.TEXT_CSV OrElse reportformat = ReportCeBase.RptFormat.TEXT_TAB Then
                     culturevalue = TheRptCeInputControl.getCultureValue(True)
                 Else
                     culturevalue = TheRptCeInputControl.getCultureValue(False)
@@ -364,7 +364,7 @@ Namespace Reports
                 End With
 
             Else
-                If State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.CLAIM_LOAD_COMMON Or State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.INVOICE_LOAD_COMMON Then
+                If State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.CLAIM_LOAD_COMMON OrElse State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.INVOICE_LOAD_COMMON Then
                     repparams = New ReportCeBaseForm.RptParam() {New ReportCeBaseForm.RptParam("v_claimload_file_processed_id", DALBase.GuidToSQLString(claimfileprocessedid))}
                 Else
                     repparams = New ReportCeBaseForm.RptParam() {New ReportCeBaseForm.RptParam("v_claimfile_processed_id", DALBase.GuidToSQLString(claimfileprocessedid))}

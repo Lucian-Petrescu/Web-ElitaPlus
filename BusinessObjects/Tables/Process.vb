@@ -90,7 +90,7 @@ Public Class Process
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ProcessDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class Process
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(ProcessDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class Process
                 Return CType(row(ProcessDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProcessDAL.COL_NAME_CODE, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class Process
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4000)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(ProcessDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class Process
                 Return CType(row(ProcessDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProcessDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class Process
 
 
     <ValueMandatory("")> _
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If row(ProcessDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class Process
                 Return New DateType(CType(row(ProcessDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ProcessDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class Process
 
 
     <ValueMandatory("")> _
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If row(ProcessDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class Process
                 Return New DateType(CType(row(ProcessDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ProcessDAL.COL_NAME_EXPIRATION, Value)
         End Set

@@ -60,7 +60,7 @@ Partial Class ServiceOrderPreview
             Dim soController As New ServiceOrderController
             Dim strReportName As String = soController.GenerateReportName(oServiceOrder.ClaimId, oServiceOrder.ClaimAuthorizationId) + EXTENSION_XSLT
 
-            If oServiceOrder.ServiceOrderImage Is Nothing And System.IO.File.Exists(Server.MapPath(strReportName)) Then 'XSLT Report exists 
+            If oServiceOrder.ServiceOrderImage Is Nothing AndAlso System.IO.File.Exists(Server.MapPath(strReportName)) Then 'XSLT Report exists 
 
                 Dim xdoc As New System.Xml.XmlDocument
                 xdoc.LoadXml(oServiceOrder.ServiceOrderImageData)

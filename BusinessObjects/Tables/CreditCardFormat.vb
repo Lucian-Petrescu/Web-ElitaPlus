@@ -102,7 +102,7 @@ Public Class CreditCardFormat
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CreditCardFormatDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -113,7 +113,7 @@ Public Class CreditCardFormat
     End Property
 
     <ValueMandatory("")> _
-    Public Property CreditCardTypeId() As Guid
+    Public Property CreditCardTypeId As Guid
         Get
             CheckDeleted()
             If Row(CreditCardFormatDAL.COL_NAME_CREDIT_CARD_TYPE_ID) Is DBNull.Value Then
@@ -122,7 +122,7 @@ Public Class CreditCardFormat
                 Return New Guid(CType(Row(CreditCardFormatDAL.COL_NAME_CREDIT_CARD_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CreditCardFormatDAL.COL_NAME_CREDIT_CARD_TYPE_ID, Value)
         End Set
@@ -130,7 +130,7 @@ Public Class CreditCardFormat
 
 
     <ValueMandatory("")> _
-    Public Property RegularExpressionId() As Guid
+    Public Property RegularExpressionId As Guid
         Get
             CheckDeleted()
             If Row(CreditCardFormatDAL.COL_NAME_REGULAR_EXPRESSION_ID) Is DBNull.Value Then
@@ -139,7 +139,7 @@ Public Class CreditCardFormat
                 Return New Guid(CType(Row(CreditCardFormatDAL.COL_NAME_REGULAR_EXPRESSION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CreditCardFormatDAL.COL_NAME_REGULAR_EXPRESSION_ID, Value)
         End Set

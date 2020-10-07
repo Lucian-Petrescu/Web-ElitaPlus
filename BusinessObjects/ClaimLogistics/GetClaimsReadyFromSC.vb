@@ -130,7 +130,7 @@ Public Class GetClaimsReadyFromSC
 #Region "Properties"
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property RouteCode() As String
+    Public Property RouteCode As String
         Get
             CheckDeleted()
             If Row(COL_ROUTE_NUMBER) Is DBNull.Value Then
@@ -139,7 +139,7 @@ Public Class GetClaimsReadyFromSC
                 Return CType(Row(COL_ROUTE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_ROUTE_NUMBER, Value)
         End Set

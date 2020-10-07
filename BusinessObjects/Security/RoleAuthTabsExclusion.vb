@@ -121,7 +121,7 @@ Public Class RoleAuthTabsExclusion
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(RoleAuthTabsExclusionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -132,7 +132,7 @@ Public Class RoleAuthTabsExclusion
     End Property
 
     <ValueMandatory("")> _
-    Public Property RoleId() As Guid
+    Public Property RoleId As Guid
         Get
             CheckDeleted()
             If row(RoleAuthTabsExclusionDAL.COL_NAME_ROLE_ID) Is DBNull.Value Then
@@ -141,7 +141,7 @@ Public Class RoleAuthTabsExclusion
                 Return New Guid(CType(row(RoleAuthTabsExclusionDAL.COL_NAME_ROLE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RoleAuthTabsExclusionDAL.COL_NAME_ROLE_ID, Value)
         End Set
@@ -149,7 +149,7 @@ Public Class RoleAuthTabsExclusion
 
 
     <ValueMandatory("")> _
-    Public Property TabId() As Guid
+    Public Property TabId As Guid
         Get
             CheckDeleted()
             If row(RoleAuthTabsExclusionDAL.COL_NAME_TAB_ID) Is DBNull.Value Then
@@ -158,7 +158,7 @@ Public Class RoleAuthTabsExclusion
                 Return New Guid(CType(row(RoleAuthTabsExclusionDAL.COL_NAME_TAB_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RoleAuthTabsExclusionDAL.COL_NAME_TAB_ID, Value)
         End Set

@@ -90,7 +90,7 @@ Public Class RegularExpression
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(RegularExpressionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class RegularExpression
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=400)> _
-    Public Property Format() As String
+    Public Property Format As String
         Get
             CheckDeleted()
             If row(RegularExpressionDAL.COL_NAME_FORMAT) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class RegularExpression
                 Return CType(row(RegularExpressionDAL.COL_NAME_FORMAT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RegularExpressionDAL.COL_NAME_FORMAT, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class RegularExpression
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property BuildMethod() As String
+    Public Property BuildMethod As String
         Get
             CheckDeleted()
             If row(RegularExpressionDAL.COL_NAME_BUILD_METHOD) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class RegularExpression
                 Return CType(row(RegularExpressionDAL.COL_NAME_BUILD_METHOD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RegularExpressionDAL.COL_NAME_BUILD_METHOD, Value)
         End Set

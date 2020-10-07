@@ -685,8 +685,8 @@ Namespace Security
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Try
-                If dvRow IsNot Nothing And State.searchDV.Count > 0 Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso State.searchDV.Count > 0 Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         CType(e.Row.Cells(GRID_COL_WEB_SERVICE_ID_IDX).FindControl(GRID_CTRL_WEBSERVICE_ID), Label).Text = GetGuidStringFromByteArray(CType(dvRow("webservice_id"), Byte()))
 
                         If Not dvRow("last_operation_date").Equals(DBNull.Value) Then

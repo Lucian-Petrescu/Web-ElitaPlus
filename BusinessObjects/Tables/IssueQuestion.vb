@@ -89,7 +89,7 @@ Public Class IssueQuestion
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(IssueQuestionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class IssueQuestion
     End Property
 
     <ValueMandatory("")> _
-    Public Property IssueId() As Guid
+    Public Property IssueId As Guid
         Get
             CheckDeleted()
             If Row(IssueQuestionDAL.COL_NAME_ISSUE_ID) Is DBNull.Value Then
@@ -109,14 +109,14 @@ Public Class IssueQuestion
                 Return New Guid(CType(Row(IssueQuestionDAL.COL_NAME_ISSUE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(IssueQuestionDAL.COL_NAME_ISSUE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property SoftQuestionId() As Guid
+    Public Property SoftQuestionId As Guid
         Get
             CheckDeleted()
             If row(IssueQuestionDAL.COL_NAME_SOFT_QUESTION_ID) Is DBNull.Value Then
@@ -125,14 +125,14 @@ Public Class IssueQuestion
                 Return New Guid(CType(row(IssueQuestionDAL.COL_NAME_SOFT_QUESTION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(IssueQuestionDAL.COL_NAME_SOFT_QUESTION_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DisplayOrder() As LongType
+    Public Property DisplayOrder As LongType
         Get
             CheckDeleted()
             If Row(IssueQuestionDAL.COL_NAME_DISPLAY_ORDER) Is DBNull.Value Then
@@ -141,13 +141,13 @@ Public Class IssueQuestion
                 Return New LongType(CType(Row(IssueQuestionDAL.COL_NAME_DISPLAY_ORDER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(IssueQuestionDAL.COL_NAME_DISPLAY_ORDER, Value)
         End Set
     End Property
 
-   Public Property Effective() As DateType
+   Public Property Effective As DateType
         Get
             CheckDeleted()
             If row(IssueQuestionDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -156,7 +156,7 @@ Public Class IssueQuestion
                 Return New DateType(CType(row(IssueQuestionDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(IssueQuestionDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -164,7 +164,7 @@ Public Class IssueQuestion
 
 
 
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If row(IssueQuestionDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -173,7 +173,7 @@ Public Class IssueQuestion
                 Return New DateType(CType(row(IssueQuestionDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(IssueQuestionDAL.COL_NAME_EXPIRATION, Value)
         End Set

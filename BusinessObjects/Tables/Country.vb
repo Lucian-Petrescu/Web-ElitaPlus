@@ -93,7 +93,7 @@ Public Class Country
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CountryDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -104,7 +104,7 @@ Public Class Country
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -113,7 +113,7 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -121,7 +121,7 @@ Public Class Country
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=5)>
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -130,7 +130,7 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_CODE, Value)
         End Set
@@ -138,7 +138,7 @@ Public Class Country
 
 
     <ValueMandatory("")>
-    Public Property LanguageId() As Guid
+    Public Property LanguageId As Guid
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_LANGUAGE_ID) Is DBNull.Value Then
@@ -147,7 +147,7 @@ Public Class Country
                 Return New Guid(CType(Row(CountryDAL.COL_NAME_LANGUAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_LANGUAGE_ID, Value)
         End Set
@@ -155,7 +155,7 @@ Public Class Country
 
 
     <ValueMandatory("")>
-    Public Property PrimaryCurrencyId() As Guid
+    Public Property PrimaryCurrencyId As Guid
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_PRIMARY_CURRENCY_ID) Is DBNull.Value Then
@@ -164,7 +164,7 @@ Public Class Country
                 Return New Guid(CType(Row(CountryDAL.COL_NAME_PRIMARY_CURRENCY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_PRIMARY_CURRENCY_ID, Value)
         End Set
@@ -172,7 +172,7 @@ Public Class Country
 
 
 
-    Public Property SecondaryCurrencyId() As Guid
+    Public Property SecondaryCurrencyId As Guid
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_SECONDARY_CURRENCY_ID) Is DBNull.Value Then
@@ -181,7 +181,7 @@ Public Class Country
                 Return New Guid(CType(Row(CountryDAL.COL_NAME_SECONDARY_CURRENCY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_SECONDARY_CURRENCY_ID, Value)
         End Set
@@ -189,7 +189,7 @@ Public Class Country
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property MailAddrFormat() As String
+    Public Property MailAddrFormat As String
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_MAIL_ADDR_FORMAT) Is DBNull.Value Then
@@ -198,14 +198,14 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_MAIL_ADDR_FORMAT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_MAIL_ADDR_FORMAT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=10)>
-    Public Property BankIDLength() As LongType
+    Public Property BankIDLength As LongType
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_BANK_ID_LENGTH) Is DBNull.Value Then
@@ -214,14 +214,14 @@ Public Class Country
                 Return New LongType(CType(Row(CountryDAL.COL_NAME_BANK_ID_LENGTH), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_BANK_ID_LENGTH, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=29)>
-    Public Property BankAcctNoLength() As Integer
+    Public Property BankAcctNoLength As Integer
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_BANK_ACCT_LENGTH) Is DBNull.Value Then
@@ -230,14 +230,14 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_BANK_ACCT_LENGTH), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_BANK_ACCT_LENGTH, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property EuropeanCountryId() As Guid
+    Public Property EuropeanCountryId As Guid
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_EUROPEAN_COUNTRY_ID) Is DBNull.Value Then
@@ -246,13 +246,13 @@ Public Class Country
                 Return New Guid(CType(Row(CountryDAL.COL_NAME_EUROPEAN_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_EUROPEAN_COUNTRY_ID, value)
         End Set
     End Property
 
-    Public Property ValidateBankInfoId() As Guid
+    Public Property ValidateBankInfoId As Guid
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_VALIDATE_BANK_INFO_ID) Is DBNull.Value Then
@@ -261,14 +261,14 @@ Public Class Country
                 Return New Guid(CType(Row(CountryDAL.COL_NAME_VALIDATE_BANK_INFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_VALIDATE_BANK_INFO_ID, value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property TaxByProductTypeId() As Guid
+    Public Property TaxByProductTypeId As Guid
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_TAX_BY_PRODUCT_TYPE_ID) Is DBNull.Value Then
@@ -277,14 +277,14 @@ Public Class Country
                 Return New Guid(CType(Row(CountryDAL.COL_NAME_TAX_BY_PRODUCT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_TAX_BY_PRODUCT_TYPE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property RequireByteCheckId() As Guid
+    Public Property RequireByteCheckId As Guid
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_REQUIRE_BYTE_CONV_ID) Is DBNull.Value Then
@@ -293,13 +293,13 @@ Public Class Country
                 Return New Guid(CType(Row(CountryDAL.COL_NAME_REQUIRE_BYTE_CONV_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_REQUIRE_BYTE_CONV_ID, Value)
         End Set
     End Property
 
-    Public Property DefaultScForDeniedClaims() As Guid
+    Public Property DefaultScForDeniedClaims As Guid
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_DEFAULT_SC_FOR_DENIED_CLAIMS) Is DBNull.Value Then
@@ -308,13 +308,13 @@ Public Class Country
                 Return New Guid(CType(Row(CountryDAL.COL_NAME_DEFAULT_SC_FOR_DENIED_CLAIMS), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_DEFAULT_SC_FOR_DENIED_CLAIMS, Value)
         End Set
     End Property
 
-    Public Property DefaultSCId() As Guid
+    Public Property DefaultSCId As Guid
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_DEFAULT_SC_ID) Is DBNull.Value Then
@@ -323,14 +323,14 @@ Public Class Country
                 Return New Guid(CType(Row(CountryDAL.COL_NAME_DEFAULT_SC_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_DEFAULT_SC_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property ContactInfoReqFields() As String
+    Public Property ContactInfoReqFields As String
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_CONTACT_INFO_REQ_FIELDS) Is DBNull.Value Then
@@ -339,14 +339,14 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_CONTACT_INFO_REQ_FIELDS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_CONTACT_INFO_REQ_FIELDS, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property AddressInfoReqFields() As String
+    Public Property AddressInfoReqFields As String
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_ADDRESS_INFO_REQ_FIELDS) Is DBNull.Value Then
@@ -355,14 +355,14 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_ADDRESS_INFO_REQ_FIELDS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_ADDRESS_INFO_REQ_FIELDS, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property UseBankListId() As Guid
+    Public Property UseBankListId As Guid
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_USE_BANK_LIST_ID) Is DBNull.Value Then
@@ -371,13 +371,13 @@ Public Class Country
                 Return New Guid(CType(Row(CountryDAL.COL_NAME_USE_BANK_LIST_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_USE_BANK_LIST_ID, Value)
         End Set
     End Property
 
-    Public Property LastRegulatoryExtractDate() As DateType
+    Public Property LastRegulatoryExtractDate As DateType
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_LAST_REGULATORY_EXTRACT_DATE) Is DBNull.Value Then
@@ -386,14 +386,14 @@ Public Class Country
                 Return New DateType(CType(Row(CountryDAL.COL_NAME_LAST_REGULATORY_EXTRACT_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_LAST_REGULATORY_EXTRACT_DATE, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=100)>
-    Public Property CreditScoringPct() As LongType
+    Public Property CreditScoringPct As LongType
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_CREDIT_SCORING_PCT) Is DBNull.Value Then
@@ -402,14 +402,14 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_CREDIT_SCORING_PCT), Long)
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_CREDIT_SCORING_PCT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=1, Max:=99)>
-    Public Property AbnormalCLMFreqNo() As LongType
+    Public Property AbnormalCLMFreqNo As LongType
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_ABNORMAL_CLM_FRQ_NO) Is DBNull.Value Then
@@ -418,14 +418,14 @@ Public Class Country
                 Return (CType(Row(CountryDAL.COL_NAME_ABNORMAL_CLM_FRQ_NO), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_ABNORMAL_CLM_FRQ_NO, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=1, Max:=99)>
-    Public Property CertCountSuspOP() As LongType
+    Public Property CertCountSuspOP As LongType
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_CERT_COUNT_SUSP_OP) Is DBNull.Value Then
@@ -434,13 +434,13 @@ Public Class Country
                 Return (CType(Row(CountryDAL.COL_NAME_CERT_COUNT_SUSP_OP), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_CERT_COUNT_SUSP_OP, Value)
         End Set
     End Property
 
-    Public Property RegulatoryReportingId() As Guid
+    Public Property RegulatoryReportingId As Guid
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_REGULATORY_REPORTING_ID) Is DBNull.Value Then
@@ -449,14 +449,14 @@ Public Class Country
                 Return New Guid(CType(Row(CountryDAL.COL_NAME_REGULATORY_REPORTING_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_REGULATORY_REPORTING_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200), EmailAddress(""), RequiredConditionally("")>
-    Public Property NotifyGroupEmail() As String
+    Public Property NotifyGroupEmail As String
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_NOTIFY_GROUP_EMAIL) Is DBNull.Value Then
@@ -465,13 +465,13 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_NOTIFY_GROUP_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_NOTIFY_GROUP_EMAIL, Value)
         End Set
     End Property
     <ValueMandatory("")>
-    Public Property UseAddressValidationXcd() As String
+    Public Property UseAddressValidationXcd As String
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_USE_ADDRESS_VALIDATION_XCD) Is DBNull.Value Then
@@ -480,14 +480,14 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_USE_ADDRESS_VALIDATION_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_USE_ADDRESS_VALIDATION_XCD, Value)
         End Set
     End Property
 
     <RequiredConditionallyAllowForceAddressXcd("")>
-    Public Property AllowForceAddressXcd() As String
+    Public Property AllowForceAddressXcd As String
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_ALLOW_FORCE_ADDRESS_XCD) Is DBNull.Value Then
@@ -496,13 +496,13 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_ALLOW_FORCE_ADDRESS_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_ALLOW_FORCE_ADDRESS_XCD, Value)
         End Set
     End Property
 
-    Public Property AllowForget() As String
+    Public Property AllowForget As String
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_ALLOW_FORGOTTEN) Is DBNull.Value Then
@@ -511,12 +511,12 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_ALLOW_FORGOTTEN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_ALLOW_FORGOTTEN, Value)
         End Set
     End Property
-    Public Property PriceListApprovalNeeded() As String
+    Public Property PriceListApprovalNeeded As String
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_NEEDED) Is DBNull.Value Then
@@ -525,13 +525,13 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_NEEDED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_NEEDED, Value)
         End Set
     End Property
     <RequiredConditionallyAddressConfidenceThreshold(""), ValidNumericRange("", Min:=1, Max:=100)>
-    Public Property AddressConfidenceThreshold() As LongType
+    Public Property AddressConfidenceThreshold As LongType
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_ADDRESS_CONFIDENCE_THRESHOLD) Is DBNull.Value Then
@@ -540,14 +540,14 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_ADDRESS_CONFIDENCE_THRESHOLD), Long)
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_ADDRESS_CONFIDENCE_THRESHOLD, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)>
-    Public Property IsoCode() As String
+    Public Property IsoCode As String
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_ISO_CODE) Is DBNull.Value Then
@@ -556,14 +556,14 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_ISO_CODE), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_ISO_CODE, value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1000), PriceListApprovedEmail(""), RequiredConditionally("")>
-    Public Property PriceListApprovalEmail() As String
+    Public Property PriceListApprovalEmail As String
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_EMAIL) Is DBNull.Value Then
@@ -572,13 +572,13 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_EMAIL), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_EMAIL, value)
         End Set
     End Property
     <ValueMandatory("")>
-    Public Property FullNameFormat() As String
+    Public Property FullNameFormat As String
         Get
             CheckDeleted()
             If Row(CountryDAL.COL_NAME_FULL_NAME_FORMAT) Is DBNull.Value Then
@@ -587,7 +587,7 @@ Public Class Country
                 Return CType(Row(CountryDAL.COL_NAME_FULL_NAME_FORMAT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryDAL.COL_NAME_FULL_NAME_FORMAT, Value)
         End Set
@@ -595,7 +595,7 @@ Public Class Country
 #End Region
 
 #Region "Public Members"
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsFamilyDirty()
         End Get

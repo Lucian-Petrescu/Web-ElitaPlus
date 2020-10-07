@@ -90,7 +90,7 @@ Public Class AfaInvoiceManaulData
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AfaInvoiceManaulDataDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class AfaInvoiceManaulData
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(AfaInvoiceManaulDataDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class AfaInvoiceManaulData
                 Return New Guid(CType(row(AfaInvoiceManaulDataDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceManaulDataDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class AfaInvoiceManaulData
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=6)> _
-    Public Property InvoiceMonth() As String
+    Public Property InvoiceMonth As String
         Get
             CheckDeleted()
             If Row(AfaInvoiceManaulDataDAL.COL_NAME_INVOICE_MONTH) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class AfaInvoiceManaulData
                 Return CType(Row(AfaInvoiceManaulDataDAL.COL_NAME_INVOICE_MONTH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceManaulDataDAL.COL_NAME_INVOICE_MONTH, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class AfaInvoiceManaulData
 
 
 
-    Public Property DataAmount() As DecimalType
+    Public Property DataAmount As DecimalType
         Get
             CheckDeleted()
             If row(AfaInvoiceManaulDataDAL.COL_NAME_DATA_AMOUNT) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class AfaInvoiceManaulData
                 Return New DecimalType(CType(row(AfaInvoiceManaulDataDAL.COL_NAME_DATA_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceManaulDataDAL.COL_NAME_DATA_AMOUNT, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class AfaInvoiceManaulData
 
 
     <ValidStringLength("", Max:=255)> _
-    Public Property AmountTypeCode() As String
+    Public Property AmountTypeCode As String
         Get
             CheckDeleted()
             If Row(AfaInvoiceManaulDataDAL.COL_NAME_AMOUNT_TYPE_CODE) Is DBNull.Value Then
@@ -161,14 +161,14 @@ Public Class AfaInvoiceManaulData
                 Return CType(Row(AfaInvoiceManaulDataDAL.COL_NAME_AMOUNT_TYPE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceManaulDataDAL.COL_NAME_AMOUNT_TYPE_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=500)> _
-    Public Property DataText() As String
+    Public Property DataText As String
         Get
             CheckDeleted()
             If Row(AfaInvoiceManaulDataDAL.COL_NAME_DATA_TEXT) Is DBNull.Value Then
@@ -177,14 +177,14 @@ Public Class AfaInvoiceManaulData
                 Return CType(Row(AfaInvoiceManaulDataDAL.COL_NAME_DATA_TEXT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceManaulDataDAL.COL_NAME_DATA_TEXT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=500)> _
-    Public Property DataText2() As String
+    Public Property DataText2 As String
         Get
             CheckDeleted()
             If Row(AfaInvoiceManaulDataDAL.COL_NAME_DATA_TEXT2) Is DBNull.Value Then
@@ -193,7 +193,7 @@ Public Class AfaInvoiceManaulData
                 Return CType(Row(AfaInvoiceManaulDataDAL.COL_NAME_DATA_TEXT2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceManaulDataDAL.COL_NAME_DATA_TEXT2, Value)
         End Set
@@ -201,7 +201,7 @@ Public Class AfaInvoiceManaulData
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property DataText3() As String
+    Public Property DataText3 As String
         Get
             CheckDeleted()
             If Row(AfaInvoiceManaulDataDAL.COL_NAME_DATA_TEXT3) Is DBNull.Value Then
@@ -210,7 +210,7 @@ Public Class AfaInvoiceManaulData
                 Return CType(Row(AfaInvoiceManaulDataDAL.COL_NAME_DATA_TEXT3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceManaulDataDAL.COL_NAME_DATA_TEXT3, Value)
         End Set
@@ -218,7 +218,7 @@ Public Class AfaInvoiceManaulData
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property DataText4() As String
+    Public Property DataText4 As String
         Get
             CheckDeleted()
             If Row(AfaInvoiceManaulDataDAL.COL_NAME_DATA_TEXT4) Is DBNull.Value Then
@@ -227,13 +227,13 @@ Public Class AfaInvoiceManaulData
                 Return CType(Row(AfaInvoiceManaulDataDAL.COL_NAME_DATA_TEXT4), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceManaulDataDAL.COL_NAME_DATA_TEXT4, Value)
         End Set
     End Property
 
-    Public Property DataDate() As DateType
+    Public Property DataDate As DateType
         Get
             CheckDeleted()
             If row(AfaInvoiceManaulDataDAL.COL_NAME_DATA_DATE) Is DBNull.Value Then
@@ -242,7 +242,7 @@ Public Class AfaInvoiceManaulData
                 Return New DateType(CType(row(AfaInvoiceManaulDataDAL.COL_NAME_DATA_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceManaulDataDAL.COL_NAME_DATA_DATE, Value)
         End Set

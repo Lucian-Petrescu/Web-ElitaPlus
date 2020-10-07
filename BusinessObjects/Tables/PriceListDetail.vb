@@ -116,18 +116,18 @@ Public Class PriceListDetail
 #Region "Properties"
 
     'Following is a dummy property just implemented to handle interface constraint
-    Public Property Code() As String Implements IExpirable.Code
+    Public Property Code As String Implements IExpirable.Code
         Get
             Return String.Empty
         End Get
-        Set(ByVal value As String)
+        Set
             'do nothing
         End Set
     End Property
 
     'Key Property
     <ValidateRiskTypeEquipClassEquipment("")>
-    Public ReadOnly Property Id() As Guid Implements IExpirable.ID
+    Public ReadOnly Property Id As Guid Implements IExpirable.ID
         Get
             If Row(PriceListDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -138,7 +138,7 @@ Public Class PriceListDetail
     End Property
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EFFECTIVE)>
-    Public Property Effective() As DateTimeType Implements IExpirable.Effective
+    Public Property Effective As DateTimeType Implements IExpirable.Effective
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -147,14 +147,14 @@ Public Class PriceListDetail
                 Return New DateTimeType(CType(Row(PriceListDetailDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EXPIRATION), EffectiveExpirationDateValidation(Codes.EXPIRATION)>
-    Public Property Expiration() As DateTimeType Implements IExpirable.Expiration
+    Public Property Expiration As DateTimeType Implements IExpirable.Expiration
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -163,7 +163,7 @@ Public Class PriceListDetail
                 Return New DateTimeType(CType(Row(PriceListDetailDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_EXPIRATION, Value)
         End Set
@@ -174,12 +174,12 @@ Public Class PriceListDetail
         Get
             Return Guid.Empty
         End Get
-        Set(ByVal value As Guid)
+        Set
             'do nothing
         End Set
     End Property
 
-    Public Overrides ReadOnly Property IsNew() As Boolean Implements IExpirable.IsNew
+    Public Overrides ReadOnly Property IsNew As Boolean Implements IExpirable.IsNew
         Get
             Return MyBase.IsNew
         End Get
@@ -187,7 +187,7 @@ Public Class PriceListDetail
 
 
     <ValueMandatory("")>
-    Public Property PriceListId() As Guid
+    Public Property PriceListId As Guid
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_PRICE_LIST_ID) Is DBNull.Value Then
@@ -196,14 +196,14 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_PRICE_LIST_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_PRICE_LIST_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ServiceClassId() As Guid
+    Public Property ServiceClassId As Guid
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_SERVICE_CLASS_ID) Is DBNull.Value Then
@@ -212,13 +212,13 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_SERVICE_CLASS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_SERVICE_CLASS_ID, Value)
         End Set
     End Property
 
-    Public Property ServiceTypeId() As Guid
+    Public Property ServiceTypeId As Guid
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_SERVICE_TYPE_ID) Is DBNull.Value Then
@@ -227,13 +227,13 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_SERVICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_SERVICE_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property ServiceLevelId() As Guid
+    Public Property ServiceLevelId As Guid
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_SERVICE_LEVEL_ID) Is DBNull.Value Then
@@ -242,14 +242,14 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_SERVICE_LEVEL_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_SERVICE_LEVEL_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50), ValidatePriceListSKU("")>
-    Public Property VendorSku() As String
+    Public Property VendorSku As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_VENDOR_SKU) Is DBNull.Value Then
@@ -258,14 +258,14 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_VENDOR_SKU), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_VENDOR_SKU, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property VendorSkuDescription() As String
+    Public Property VendorSkuDescription As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_VENDOR_SKU_DESCRIPTION) Is DBNull.Value Then
@@ -274,13 +274,13 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_VENDOR_SKU_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_VENDOR_SKU_DESCRIPTION, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidNumericRange("LowPrice", Min:=MIN_DOUBLE, Max:=NEW_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM001), ValidPriceBandRange("")>
-    Public Property PriceBandRangeFrom() As DecimalType
+    Public Property PriceBandRangeFrom As DecimalType
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_FROM) Is DBNull.Value Then
@@ -289,14 +289,14 @@ Public Class PriceListDetail
                 Return New DecimalType(CType(Row(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_FROM), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_FROM, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DOUBLE, Max:=NEW_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM002), ValidatePriceBandRangeTo("")>
-    Public Property PriceBandRangeTo() As DecimalType
+    Public Property PriceBandRangeTo As DecimalType
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_TO) Is DBNull.Value Then
@@ -305,13 +305,13 @@ Public Class PriceListDetail
                 Return New DecimalType(CType(Row(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_TO), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_TO, Value)
         End Set
     End Property
 
-    Public Property EquipmentClassId() As Guid
+    Public Property EquipmentClassId As Guid
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_EQUIPMENT_CLASS_ID) Is DBNull.Value Then
@@ -320,13 +320,13 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_EQUIPMENT_CLASS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_EQUIPMENT_CLASS_ID, Value)
         End Set
     End Property
 
-    Public Property EquipmentId() As Guid
+    Public Property EquipmentId As Guid
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_EQUIPMENT_ID) Is DBNull.Value Then
@@ -335,13 +335,13 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_EQUIPMENT_ID, Value)
         End Set
     End Property
     <ValidateConditionType("")>
-    Public Property ConditionId() As Guid
+    Public Property ConditionId As Guid
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_CONDITION_ID) Is DBNull.Value Then
@@ -350,12 +350,12 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_CONDITION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_CONDITION_ID, Value)
         End Set
     End Property
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_RISK_TYPE_ID) Is DBNull.Value Then
@@ -364,14 +364,14 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_RISK_TYPE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DOUBLE, Max:=MAX_DOUBLE, Message:=ONLY_NUMBERS_ALLOWED_FOR_PRICE)>
-    Public Property Price() As DecimalType
+    Public Property Price As DecimalType
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_PRICE) Is DBNull.Value Then
@@ -380,13 +380,13 @@ Public Class PriceListDetail
                 Return New DecimalType(CType(Row(PriceListDetailDAL.COL_NAME_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_PRICE, Value)
         End Set
     End Property
     <ValueMandatory("Currency")>
-    Public Property CurrencyId() As Guid
+    Public Property CurrencyId As Guid
         Get
             CheckDeleted()
             If (Row(PriceListDetailDAL.COL_NAME_CURRENCY) Is DBNull.Value) Then
@@ -395,13 +395,13 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_CURRENCY), Byte()))
             End If
         End Get
-        Set(value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_CURRENCY, value)
         End Set
     End Property
     <ValueMandatory("")>
-    Public Property PriceListDetailTypeId() As Guid
+    Public Property PriceListDetailTypeId As Guid
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_PRICE_LIST_DETAIL_TYPE) Is DBNull.Value Then
@@ -410,12 +410,12 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_PRICE_LIST_DETAIL_TYPE), Byte()))
             End If
         End Get
-        Set(value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_PRICE_LIST_DETAIL_TYPE, value)
         End Set
     End Property
-    Public Property PriceWithSymbol() As String
+    Public Property PriceWithSymbol As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_CURRENCY_SYMBOL) Is DBNull.Value Then
@@ -424,12 +424,12 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_CURRENCY_SYMBOL), String)
             End If
         End Get
-        Set(value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_CURRENCY_SYMBOL, value)
         End Set
     End Property
-    Public Property PriceLowWithSymbol() As String
+    Public Property PriceLowWithSymbol As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_PRICE_LOW_RANGE_WITH_SYMBOL) Is DBNull.Value Then
@@ -438,12 +438,12 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_PRICE_LOW_RANGE_WITH_SYMBOL), String)
             End If
         End Get
-        Set(value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_PRICE_LOW_RANGE_WITH_SYMBOL, value)
         End Set
     End Property
-    Public Property PriceHighWithSymbol() As String
+    Public Property PriceHighWithSymbol As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_PRICE_HIGH_RANGE_WITH_SYMBOL) Is DBNull.Value Then
@@ -452,12 +452,12 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_PRICE_HIGH_RANGE_WITH_SYMBOL), String)
             End If
         End Get
-        Set(value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_PRICE_HIGH_RANGE_WITH_SYMBOL, value)
         End Set
     End Property
-    Public ReadOnly Property CalculationPercent() As DecimalType
+    Public ReadOnly Property CalculationPercent As DecimalType
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_CALCULATION_PERCENTAGE) Is DBNull.Value Then
@@ -468,7 +468,7 @@ Public Class PriceListDetail
         End Get
     End Property
 
-    Public Property ReplacementTaxType() As Guid
+    Public Property ReplacementTaxType As Guid
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_REPLACEMENT_TAX_TYPE) Is DBNull.Value Then
@@ -477,13 +477,13 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_REPLACEMENT_TAX_TYPE), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_REPLACEMENT_TAX_TYPE, Value)
         End Set
     End Property
 
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -492,12 +492,12 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
-    Public Property MakeId() As Guid
+    Public Property MakeId As Guid
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_MAKE_ID) Is DBNull.Value Then
@@ -506,12 +506,12 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_MAKE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_MAKE_ID, Value)
         End Set
     End Property
-    Public Property Make() As String
+    Public Property Make As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_MAKE) Is DBNull.Value Then
@@ -520,13 +520,13 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_MAKE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_MAKE, Value)
         End Set
     End Property
 
-    Public Property ServiceClassCode() As String
+    Public Property ServiceClassCode As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_SERVICE_CLASS_CODE) Is DBNull.Value Then
@@ -535,13 +535,13 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_SERVICE_CLASS_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_SERVICE_CLASS_CODE, Value)
         End Set
     End Property
 
-    Public Property ServiceTypeCode() As String
+    Public Property ServiceTypeCode As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_SERVICE_TYPE_CODE) Is DBNull.Value Then
@@ -550,13 +550,13 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_SERVICE_TYPE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_SERVICE_TYPE_CODE, Value)
         End Set
     End Property
 
-    Public Property ServiceLevelCode() As String
+    Public Property ServiceLevelCode As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_SERVICE_LEVEL_CODE) Is DBNull.Value Then
@@ -565,13 +565,13 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_SERVICE_LEVEL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_SERVICE_LEVEL_CODE, Value)
         End Set
     End Property
 
-    Public Property RiskTypeCode() As String
+    Public Property RiskTypeCode As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_RISK_TYPE_CODE) Is DBNull.Value Then
@@ -580,13 +580,13 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_RISK_TYPE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_RISK_TYPE_CODE, Value)
         End Set
     End Property
 
-    Public Property EquipmentCode() As String
+    Public Property EquipmentCode As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_EQUIPMENT_CODE) Is DBNull.Value Then
@@ -595,13 +595,13 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_EQUIPMENT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_EQUIPMENT_CODE, Value)
         End Set
     End Property
 
-    Public Property ConditionTypeCode() As String
+    Public Property ConditionTypeCode As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_CONDITION_TYPE_CODE) Is DBNull.Value Then
@@ -610,13 +610,13 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_CONDITION_TYPE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_CONDITION_TYPE_CODE, Value)
         End Set
     End Property
 
-    Public Property VendorQuantity() As Integer
+    Public Property VendorQuantity As Integer
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_VENDOR_QUANTITY) Is DBNull.Value Then
@@ -625,7 +625,7 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_VENDOR_QUANTITY), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_VENDOR_QUANTITY, Value)
         End Set
@@ -640,7 +640,7 @@ Public Class PriceListDetail
     End Property
 
     <ValidatePartsServiceClassAndType("")>
-    Public Property PartId() As Guid
+    Public Property PartId As Guid
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_PART_ID) Is DBNull.Value Then
@@ -649,13 +649,13 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_PART_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_PART_ID, Value)
         End Set
     End Property
 
-    Public Property PartCode() As String
+    Public Property PartCode As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_PART_CODE) Is DBNull.Value Then
@@ -664,13 +664,13 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_PART_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_PART_CODE, Value)
         End Set
     End Property
 
-    Public Property PartDescription() As String
+    Public Property PartDescription As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_PART_DESC) Is DBNull.Value Then
@@ -679,13 +679,13 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_PART_DESC), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_PART_DESC, Value)
         End Set
     End Property
 
-    Public Property ManufacturerOriginCode() As String
+    Public Property ManufacturerOriginCode As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_MANUFACTURER_ORIGIN) Is DBNull.Value Then
@@ -694,13 +694,13 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_MANUFACTURER_ORIGIN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_MANUFACTURER_ORIGIN, Value)
         End Set
     End Property
 
-    Public Property ManufacturerOriginDescription() As String
+    Public Property ManufacturerOriginDescription As String
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_MANUFACTURER_ORIGIN_DESC) Is DBNull.Value Then
@@ -709,14 +709,14 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_MANUFACTURER_ORIGIN_DESC), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDetailDAL.COL_NAME_MANUFACTURER_ORIGIN_DESC, Value)
         End Set
     End Property
 
     'US 255424 - Adding properties for Parent object
-    Public Property Parent_ConditionId() As Guid
+    Public Property Parent_ConditionId As Guid
         Get
             CheckDeleted()
             If Not Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_CONDITION_ID) OrElse Row(PriceListDetailDAL.COL_NAME_PARENT_CONDITION_ID) Is DBNull.Value Then
@@ -725,7 +725,7 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_PARENT_CONDITION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             If Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_CONDITION_ID) Then
                 CheckDeleted()
                 SetValue(PriceListDetailDAL.COL_NAME_PARENT_CONDITION_ID, Value)
@@ -734,7 +734,7 @@ Public Class PriceListDetail
     End Property
 
 
-    Public Property Parent_ConditionTypeCode() As String
+    Public Property Parent_ConditionTypeCode As String
         Get
             CheckDeleted()
             If Not Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_CONDITION_TYPE_CODE) OrElse Row(PriceListDetailDAL.COL_NAME_PARENT_CONDITION_TYPE_CODE) Is DBNull.Value Then
@@ -743,7 +743,7 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_PARENT_CONDITION_TYPE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
 
             If Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_CONDITION_TYPE_CODE) Then
                 CheckDeleted()
@@ -753,7 +753,7 @@ Public Class PriceListDetail
         End Set
     End Property
 
-    Public Property Parent_Model() As String
+    Public Property Parent_Model As String
         Get
             CheckDeleted()
             If Not Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_MODEL) OrElse Row(PriceListDetailDAL.COL_NAME_PARENT_MODEL) Is DBNull.Value Then
@@ -762,14 +762,14 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_PARENT_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             If Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_MODEL) Then
                 CheckDeleted()
                 SetValue(PriceListDetailDAL.COL_NAME_PARENT_MODEL, Value)
             End If
         End Set
     End Property
-    Public Property Parent_MakeId() As Guid
+    Public Property Parent_MakeId As Guid
         Get
             CheckDeleted()
             If Not Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_MAKE_ID) OrElse Row(PriceListDetailDAL.COL_NAME_PARENT_MAKE_ID) Is DBNull.Value Then
@@ -778,7 +778,7 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_PARENT_MAKE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             If Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_MAKE_ID) Then
                 CheckDeleted()
                 SetValue(PriceListDetailDAL.COL_NAME_PARENT_MAKE_ID, Value)
@@ -787,7 +787,7 @@ Public Class PriceListDetail
     End Property
 
 
-    Public Property Parent_Make() As String
+    Public Property Parent_Make As String
         Get
             CheckDeleted()
             If Not Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_MAKE) OrElse Row(PriceListDetailDAL.COL_NAME_PARENT_MAKE) Is DBNull.Value Then
@@ -796,7 +796,7 @@ Public Class PriceListDetail
                 Return CType(Row(PriceListDetailDAL.COL_NAME_PARENT_MAKE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             If Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_MAKE) Then
                 CheckDeleted()
                 SetValue(PriceListDetailDAL.COL_NAME_PARENT_MAKE, Value)
@@ -805,7 +805,7 @@ Public Class PriceListDetail
         End Set
     End Property
 
-    Public Property Parent_EquipmentId() As Guid
+    Public Property Parent_EquipmentId As Guid
         Get
             CheckDeleted()
             If Not Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_EQUIPMENT_ID) OrElse Row(PriceListDetailDAL.COL_NAME_PARENT_EQUIPMENT_ID) Is DBNull.Value Then
@@ -814,7 +814,7 @@ Public Class PriceListDetail
                 Return New Guid(CType(Row(PriceListDetailDAL.COL_NAME_PARENT_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
 
             If Row.Table.Columns.Contains(PriceListDetailDAL.COL_NAME_PARENT_EQUIPMENT_ID) Then
                 CheckDeleted()
@@ -873,7 +873,7 @@ Public Class PriceListDetail
     End Sub
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty OrElse AnyColumnHasChanged
         End Get

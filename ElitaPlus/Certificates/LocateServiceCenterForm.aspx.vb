@@ -447,9 +447,7 @@ Partial Class LocateServiceCenterForm
             End If
 
             MethodOfRepairType = LookupListNew.GetCodeFromId(LookupListNew.LK_METHODS_OF_REPAIR, methodOfRepairId)
-            If MethodOfRepairType = Codes.METHOD_OF_REPAIR__RECOVERY Or
-               MethodOfRepairType = Codes.METHOD_OF_REPAIR__GENERAL Or
-               MethodOfRepairType = Codes.METHOD_OF_REPAIR__LEGAL Then
+            If MethodOfRepairType = Codes.METHOD_OF_REPAIR__RECOVERY OrElse MethodOfRepairType = Codes.METHOD_OF_REPAIR__GENERAL OrElse MethodOfRepairType = Codes.METHOD_OF_REPAIR__LEGAL Then
                 FlagMethodOfRepairRecovery = True
             End If
 

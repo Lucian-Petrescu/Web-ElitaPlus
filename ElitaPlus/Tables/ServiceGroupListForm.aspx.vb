@@ -212,7 +212,7 @@ Partial Class ServiceGroupListForm
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Item.Cells(GRID_COL_SG_ID).Text = New Guid(CType(dvRow(ServiceGroup.ServiceGroupSearchDV.COL_NAME_SERVICE_GROUP_ID), Byte())).ToString
                 e.Item.Cells(GRID_COL_COUNTRY).Text = dvRow(ServiceGroup.ServiceGroupSearchDV.COL_COUNTRY_DESC).ToString
                 e.Item.Cells(GRID_COL_CODE).Text = dvRow(ServiceGroup.ServiceGroupSearchDV.COL_NAME_SHORT_DESC).ToString

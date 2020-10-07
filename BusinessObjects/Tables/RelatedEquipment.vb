@@ -90,7 +90,7 @@ Public Class RelatedEquipment
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(RelatedEquipmentDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class RelatedEquipment
     End Property
 
     <ValueMandatory("")> _
-    Public Property EquipmentId() As Guid
+    Public Property EquipmentId As Guid
         Get
             CheckDeleted()
             If row(RelatedEquipmentDAL.COL_NAME_EQUIPMENT_ID) Is DBNull.Value Then
@@ -110,13 +110,13 @@ Public Class RelatedEquipment
                 Return New Guid(CType(row(RelatedEquipmentDAL.COL_NAME_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RelatedEquipmentDAL.COL_NAME_EQUIPMENT_ID, Value)
         End Set
     End Property
 
-    Public Property ChildEquipmentId() As Guid
+    Public Property ChildEquipmentId As Guid
         Get
             CheckDeleted()
             If row(RelatedEquipmentDAL.COL_NAME_CHILD_EQUIPMENT_ID) Is DBNull.Value Then
@@ -125,13 +125,13 @@ Public Class RelatedEquipment
                 Return New Guid(CType(row(RelatedEquipmentDAL.COL_NAME_CHILD_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RelatedEquipmentDAL.COL_NAME_CHILD_EQUIPMENT_ID, Value)
         End Set
     End Property
 
-    Public Property IsInOemBoxId() As Guid
+    Public Property IsInOemBoxId As Guid
         Get
             CheckDeleted()
             If row(RelatedEquipmentDAL.COL_NAME_IS_IN_OEM_BOX_ID) Is DBNull.Value Then
@@ -140,13 +140,13 @@ Public Class RelatedEquipment
                 Return New Guid(CType(row(RelatedEquipmentDAL.COL_NAME_IS_IN_OEM_BOX_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RelatedEquipmentDAL.COL_NAME_IS_IN_OEM_BOX_ID, Value)
         End Set
     End Property
 
-    Public Property IsCoveredId() As Guid
+    Public Property IsCoveredId As Guid
         Get
             CheckDeleted()
             If row(RelatedEquipmentDAL.COL_NAME_IS_COVERED_ID) Is DBNull.Value Then
@@ -155,13 +155,13 @@ Public Class RelatedEquipment
                 Return New Guid(CType(row(RelatedEquipmentDAL.COL_NAME_IS_COVERED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RelatedEquipmentDAL.COL_NAME_IS_COVERED_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property MakeID() As Guid
+    Public ReadOnly Property MakeID As Guid
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -172,7 +172,7 @@ Public Class RelatedEquipment
         End Get
     End Property
 
-    Public ReadOnly Property EquipmentTypeID() As Guid
+    Public ReadOnly Property EquipmentTypeID As Guid
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_EQUIPMENT_TYPE_ID) Is DBNull.Value Then
@@ -183,7 +183,7 @@ Public Class RelatedEquipment
         End Get
     End Property
 
-    Public ReadOnly Property Model() As String
+    Public ReadOnly Property Model As String
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -194,7 +194,7 @@ Public Class RelatedEquipment
         End Get
     End Property
 
-    Public ReadOnly Property EquipmentDescription() As String
+    Public ReadOnly Property EquipmentDescription As String
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then

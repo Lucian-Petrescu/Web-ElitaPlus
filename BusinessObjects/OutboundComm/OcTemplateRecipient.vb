@@ -89,7 +89,7 @@ Public Class OcTemplateRecipient
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(OcTemplateRecipientDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class OcTemplateRecipient
     End Property
 	
     <ValueMandatory("")> _
-    Public Property OcTemplateId() As Guid
+    Public Property OcTemplateId As Guid
         Get
             CheckDeleted()
             If row(OcTemplateRecipientDAL.COL_NAME_OC_TEMPLATE_ID) Is DBNull.Value Then
@@ -109,14 +109,14 @@ Public Class OcTemplateRecipient
                 Return New Guid(CType(row(OcTemplateRecipientDAL.COL_NAME_OC_TEMPLATE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(OcTemplateRecipientDAL.COL_NAME_OC_TEMPLATE_ID, Value)
         End Set
     End Property
 
     <NewValueMandatory(""), ValidStringLength("", Max:=400)>
-    Public Property RecipientSourceFieldXcd() As String
+    Public Property RecipientSourceFieldXcd As String
         Get
             CheckDeleted()
             If row(OcTemplateRecipientDAL.COL_NAME_RECIPIENT_SOURCE_FIELD_XCD) Is DBNull.Value Then
@@ -125,13 +125,13 @@ Public Class OcTemplateRecipient
                 Return CType(row(OcTemplateRecipientDAL.COL_NAME_RECIPIENT_SOURCE_FIELD_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateRecipientDAL.COL_NAME_RECIPIENT_SOURCE_FIELD_XCD, Value)
         End Set
     End Property
 
-    Public Property RecipientSourceFieldDescription() As String
+    Public Property RecipientSourceFieldDescription As String
         Get
             CheckDeleted()
             If Row(OcTemplateRecipientDAL.COL_NAME_RECIPIENT_SOURCE_FIELD_DESCRIPTION) Is DBNull.Value Then
@@ -140,14 +140,14 @@ Public Class OcTemplateRecipient
                 Return CType(Row(OcTemplateRecipientDAL.COL_NAME_RECIPIENT_SOURCE_FIELD_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateRecipientDAL.COL_NAME_RECIPIENT_SOURCE_FIELD_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=800)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(OcTemplateRecipientDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -156,14 +156,14 @@ Public Class OcTemplateRecipient
                 Return CType(row(OcTemplateRecipientDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateRecipientDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidEmailAddress("")>
-    Public Property RecipientAddress() As String
+    Public Property RecipientAddress As String
         Get
             CheckDeleted()
             If Row(OcTemplateRecipientDAL.COL_NAME_RECIPIENT_ADDRESS) Is DBNull.Value Then
@@ -172,7 +172,7 @@ Public Class OcTemplateRecipient
                 Return CType(Row(OcTemplateRecipientDAL.COL_NAME_RECIPIENT_ADDRESS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateRecipientDAL.COL_NAME_RECIPIENT_ADDRESS, Value)
         End Set

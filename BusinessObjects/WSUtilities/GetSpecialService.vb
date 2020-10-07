@@ -97,7 +97,7 @@ Public Class GetSpecialService
 
 #Region "Properties"
 
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             If Row(DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -105,13 +105,13 @@ Public Class GetSpecialService
                 Return CType(Row(DATA_COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
-    Public Property CertificateNumber() As String
+    Public Property CertificateNumber As String
         Get
             If Row(DATA_COL_NAME_CERTIFICATE_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -119,14 +119,14 @@ Public Class GetSpecialService
                 Return CType(Row(DATA_COL_NAME_CERTIFICATE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERTIFICATE_NUMBER, Value)
         End Set
     End Property
 
 
-    Public Property CoverageTypeCode() As String
+    Public Property CoverageTypeCode As String
         Get
             If Row(DATA_COL_NAME_CERT_ITEM_COVERAGE_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -134,7 +134,7 @@ Public Class GetSpecialService
                 Return (CType(Row(DATA_COL_NAME_CERT_ITEM_COVERAGE_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERT_ITEM_COVERAGE_CODE, Value)
         End Set
@@ -165,7 +165,7 @@ Public Class GetSpecialService
 
 #Region "Extended Properties"
 
-    Private ReadOnly Property CoverageTypeId() As Guid
+    Private ReadOnly Property CoverageTypeId As Guid
         Get
             If Not String.IsNullOrEmpty(CoverageTypeCode) Then
                 Dim list As DataView = LookupListNew.GetCoverageTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)

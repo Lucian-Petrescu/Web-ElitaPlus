@@ -126,7 +126,7 @@ Public Class SVCUpdateClaim
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property ClaimIDString() As String
+    Public Property ClaimIDString As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -135,13 +135,13 @@ Public Class SVCUpdateClaim
                 Return CType(Row(SOURCE_COL_NAME_CLAIM_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
 
-    Public Property VisitDate() As DateType
+    Public Property VisitDate As DateType
         Get
             CheckDeleted()
             If Row(SOURCE_COL_VISIT_DATE) Is DBNull.Value Then
@@ -150,13 +150,13 @@ Public Class SVCUpdateClaim
                 Return CType(Row(SOURCE_COL_VISIT_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_VISIT_DATE, Value)
         End Set
     End Property
 
-    Public Property RepairDate() As DateType
+    Public Property RepairDate As DateType
         Get
             CheckDeleted()
             If Row(SOURCE_COL_REPAIR_DATE) Is DBNull.Value Then
@@ -165,13 +165,13 @@ Public Class SVCUpdateClaim
                 Return CType(Row(SOURCE_COL_REPAIR_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_REPAIR_DATE, Value)
         End Set
     End Property
 
-    Public Property ShippingAmount() As Decimal
+    Public Property ShippingAmount As Decimal
         Get
             CheckDeleted()
             If Row(SOURCE_COL_SHIPPING_AMOUNT) Is DBNull.Value Then
@@ -180,13 +180,13 @@ Public Class SVCUpdateClaim
                 Return CType(Row(SOURCE_COL_SHIPPING_AMOUNT), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_SHIPPING_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property LaborAmount() As Decimal
+    Public Property LaborAmount As Decimal
         Get
             CheckDeleted()
             If Row(SOURCE_COL_LABOR_AMOUNT) Is DBNull.Value Then
@@ -195,13 +195,13 @@ Public Class SVCUpdateClaim
                 Return CType(Row(SOURCE_COL_LABOR_AMOUNT), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_LABOR_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property ServiceChargeAmount() As Decimal
+    Public Property ServiceChargeAmount As Decimal
         Get
             CheckDeleted()
             If Row(SOURCE_COL_SERVICE_CHARGE_AMOUNT) Is DBNull.Value Then
@@ -210,13 +210,13 @@ Public Class SVCUpdateClaim
                 Return CType(Row(SOURCE_COL_SERVICE_CHARGE_AMOUNT), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_SERVICE_CHARGE_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property TripAmount() As Decimal
+    Public Property TripAmount As Decimal
         Get
             CheckDeleted()
             If Row(SOURCE_COL_TRIP_AMOUNT) Is DBNull.Value Then
@@ -225,13 +225,13 @@ Public Class SVCUpdateClaim
                 Return CType(Row(SOURCE_COL_TRIP_AMOUNT), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_TRIP_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property OtherAmount() As Decimal
+    Public Property OtherAmount As Decimal
         Get
             CheckDeleted()
             If Row(SOURCE_COL_OTHER_AMOUNT) Is DBNull.Value Then
@@ -240,13 +240,13 @@ Public Class SVCUpdateClaim
                 Return CType(Row(SOURCE_COL_OTHER_AMOUNT), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_OTHER_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property OtherDescription() As String
+    Public Property OtherDescription As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_OTHER_DESCRIPTION) Is DBNull.Value Then
@@ -255,13 +255,13 @@ Public Class SVCUpdateClaim
                 Return CType(Row(SOURCE_COL_OTHER_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_OTHER_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property AuthorizationNumber() As String
+    Public Property AuthorizationNumber As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -270,7 +270,7 @@ Public Class SVCUpdateClaim
                 Return CType(Row(SOURCE_COL_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_AUTHORIZATION_NUMBER, Value)
         End Set
@@ -280,7 +280,7 @@ Public Class SVCUpdateClaim
 
 #Region "Extended Properties"
 
-    Private Property ClaimBO() As Claim
+    Private Property ClaimBO As Claim
         Get
             If _claimBo Is Nothing Then
                 If Not ClaimIDString.Equals(String.Empty) AndAlso ClaimIDString.Length = 32 Then
@@ -298,7 +298,7 @@ Public Class SVCUpdateClaim
 
             Return _claimBo
         End Get
-        Set(ByVal value As Claim)
+        Set
             _claimBo = value
         End Set
     End Property

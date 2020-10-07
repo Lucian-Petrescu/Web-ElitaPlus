@@ -303,7 +303,7 @@ Namespace Interfaces
         Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
             If IsReturningFromChild Then
                 ValidateSelection()
-                If (DealerMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Or DealerGroupMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Or rdParentFile.Checked) Then
+                If (DealerMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED OrElse DealerGroupMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED OrElse rdParentFile.Checked) Then
                     TheState.IsGridVisible = True
                     PopulateGrid(ThePage.POPULATE_ACTION_SAVE)
                     ControlMgr.SetVisibleForControlFamily(ThePage, moButtonPanel, True, True)
@@ -370,8 +370,8 @@ Namespace Interfaces
             Try
                 ClearAll()
                 ValidateSelection()
-                If DealerMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Or DealerGroupMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Or rdParentFile.Checked Then
-                    If (TheState.moInterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.PAYM Or TheState.moInterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.PYMT) AndAlso
+                If DealerMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED OrElse DealerGroupMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED OrElse rdParentFile.Checked Then
+                    If (TheState.moInterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.PAYM OrElse TheState.moInterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.PYMT) AndAlso
                       Not DealerMultipleDrop.NothingSelected Then
                         Dim _dealer As Dealer = New Dealer(DealerMultipleDrop.SelectedGuid)
                         'If _dealer.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS) Is Nothing Then
@@ -837,7 +837,7 @@ Namespace Interfaces
                 End If
                 params = SetParameters(TheState.intStatusId, ClientID + "_")
                 Session(InterfaceBaseForm.SESSION_PARAMETERS_KEY) = params
-                If ((oSP = SP_VALIDATE) Or (oSP = SP_PROCESS) Or (oSP = SP_GENRATE_RESPONSE)) Then
+                If ((oSP = SP_VALIDATE) OrElse (oSP = SP_PROCESS) OrElse (oSP = SP_GENRATE_RESPONSE)) Then
                     'Disable TheInterfaceProgress if supported
                 Else
                     TheInterfaceProgress.EnableInterfaceProgress(ClientID + "_")
@@ -1085,8 +1085,7 @@ Namespace Interfaces
                         If .IsChildFile Then
                             ControlMgr.SetEnableControl(ThePage, BtnRejectReport, False)
                             ControlMgr.SetEnableControl(ThePage, BtnErrorExport, False)
-                        ElseIf Me.TheState.moInterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.PYMT Or
-                               Me.TheState.moInterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.INVC Then
+                        ElseIf Me.TheState.moInterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.PYMT OrElse Me.TheState.moInterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.INVC Then
                             ControlMgr.SetEnableControl(ThePage, BtnValidate_WRITE, True)
                             ControlMgr.SetEnableControl(ThePage, BtnRejectReport, False)
                             ControlMgr.SetEnableControl(ThePage, BtnErrorExport, False)
@@ -1183,7 +1182,7 @@ Namespace Interfaces
 
                 'Disable Validate, Delete and Process button based on the File Status --> PENDING/RUNNING
                 If (ThePage.GetSelectedGridText(moDataGrid, GRID_COL_STATUS_IDX).Trim.ToUpper = FILE_STATUS_PENDING) _
-                        Or (ThePage.GetSelectedGridText(moDataGrid, GRID_COL_STATUS_IDX).Trim.ToUpper = FILE_STATUS_RUNNING) Then
+                        OrElse (ThePage.GetSelectedGridText(moDataGrid, GRID_COL_STATUS_IDX).Trim.ToUpper = FILE_STATUS_RUNNING) Then
                     ControlMgr.SetEnableControl(ThePage, BtnValidate_WRITE, False)
                     ControlMgr.SetEnableControl(ThePage, BtnLoadCertificate_WRITE, False)
                     ControlMgr.SetEnableControl(ThePage, BtnDeleteDealerFile_WRITE, False)
@@ -1210,9 +1209,9 @@ Namespace Interfaces
                     oLinkButtonRemainingRejected = CType(moDataGrid.Rows(i).Cells(GRID_COL_REMAINING_REJECTED_IDX).FindControl(GRID_LINK_BTN_REMAINING_REJECTED), LinkButton)
                     oLinkButtonBypassed = CType(moDataGrid.Rows(i).Cells(GRID_COL_BYPASSED_IDX).FindControl(GRID_LINK_BTN_BYPASSED), LinkButton)
 
-                    edt.Enabled = ((oLinkButtonRejected.Text.Trim() <> "0" And oLinkButtonRejected.Text.Trim() <> "") _
-                                   OrElse (oLinkButtonRemainingRejected.Text.Trim() <> "0" And oLinkButtonRemainingRejected.Text.Trim() <> "") _
-                                    OrElse (oLinkButtonBypassed.Text.Trim() <> "0" And oLinkButtonBypassed.Text.Trim() <> ""))
+                    edt.Enabled = ((oLinkButtonRejected.Text.Trim() <> "0" AndAlso oLinkButtonRejected.Text.Trim() <> "") _
+                                   OrElse (oLinkButtonRemainingRejected.Text.Trim() <> "0" AndAlso oLinkButtonRemainingRejected.Text.Trim() <> "") _
+                                    OrElse (oLinkButtonBypassed.Text.Trim() <> "0" AndAlso oLinkButtonBypassed.Text.Trim() <> ""))
                 End If
             Next
 
@@ -1562,8 +1561,7 @@ Namespace Interfaces
                     Dim objDealer As New Dealer(DealerMultipleDrop.SelectedGuid)
 
                     If ((LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objDealer.ReconRejRecTypeId) = Codes.YESNO_Y AndAlso
-                       TheState.moInterfaceTypeCode <> DealerFileProcessedData.InterfaceTypeCode.PAYM) Or
-                       (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objDealer.PaymentRejectedRecordReconcileId) = Codes.YESNO_Y AndAlso
+                       TheState.moInterfaceTypeCode <> DealerFileProcessedData.InterfaceTypeCode.PAYM) OrElse (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objDealer.PaymentRejectedRecordReconcileId) = Codes.YESNO_Y AndAlso
                        TheState.moInterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.PAYM)) AndAlso
                        TheState.DealerType <> DealerType_VSC Then
                         moDataGrid.Columns(GRID_COL_REMAINING_REJECTED_IDX).Visible = True

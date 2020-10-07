@@ -482,7 +482,7 @@ Public Class AFAProductForm
 
             If dvRow IsNot Nothing Then
                 strID = GetGuidStringFromByteArray(CType(dvRow(AfAProduct.AFAProductSearchDV.COL_AFA_PRODUCT_ID), Byte()))
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     CType(e.Row.Cells(GRID_COL_PRODUCT_ID_IDX).FindControl(GRID_CTRL_NAME_LABEL_PRODUCT_ID), Label).Text = strID
 
                     If (State.IsEditMode = True AndAlso State.productID.ToString.Equals(strID)) Then

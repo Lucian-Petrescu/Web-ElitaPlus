@@ -103,7 +103,7 @@ Public Class ZipDistrict
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ZipDistrictDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -130,7 +130,7 @@ Public Class ZipDistrict
     'End Property
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(ZipDistrictDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -139,7 +139,7 @@ Public Class ZipDistrict
                 Return New Guid(CType(Row(ZipDistrictDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ZipDistrictDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
@@ -147,7 +147,7 @@ Public Class ZipDistrict
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)> _
-    Public Property ShortDesc() As String
+    Public Property ShortDesc As String
         Get
             CheckDeleted()
             If Row(ZipDistrictDAL.COL_NAME_SHORT_DESC) Is DBNull.Value Then
@@ -156,7 +156,7 @@ Public Class ZipDistrict
                 Return CType(Row(ZipDistrictDAL.COL_NAME_SHORT_DESC), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ZipDistrictDAL.COL_NAME_SHORT_DESC, Value)
         End Set
@@ -164,7 +164,7 @@ Public Class ZipDistrict
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ZipDistrictDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -173,7 +173,7 @@ Public Class ZipDistrict
                 Return CType(Row(ZipDistrictDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ZipDistrictDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -216,7 +216,7 @@ Public Class ZipDistrict
     End Sub
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
@@ -266,7 +266,7 @@ Public Class ZipDistrict
 
 
 #Region "Children Related"
-    Public ReadOnly Property ZipCodeChildren() As ZipDistrictDetailList
+    Public ReadOnly Property ZipCodeChildren As ZipDistrictDetailList
         Get
             Return New ZipDistrictDetailList(Me)
         End Get
@@ -416,7 +416,7 @@ Public Class ZipDistrict
     End Sub
 
     Private zipCodesInUseByOtherZipDistrictsDv As DataView
-    Private ReadOnly Property ZipCodesInUseByOtherZipDistricts() As DataView
+    Private ReadOnly Property ZipCodesInUseByOtherZipDistricts As DataView
         Get
             If zipCodesInUseByOtherZipDistrictsDv Is Nothing Then
                 zipCodesInUseByOtherZipDistrictsDv = ZipDistrictDetail.GetZipCodesUsedInOtherZipDistricts(Id)

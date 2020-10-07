@@ -90,7 +90,7 @@ Public Class DictionaryItem
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(DictionaryItemDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing

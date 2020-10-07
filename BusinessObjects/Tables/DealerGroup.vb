@@ -71,7 +71,7 @@ Public Class DealerGroup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(DealerGroupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -87,7 +87,7 @@ Public Class DealerGroup
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=255)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(DealerGroupDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -96,7 +96,7 @@ Public Class DealerGroup
                 Return CType(row(DealerGroupDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerGroupDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -104,7 +104,7 @@ Public Class DealerGroup
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=5)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(DealerGroupDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -113,7 +113,7 @@ Public Class DealerGroup
                 Return CType(row(DealerGroupDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerGroupDAL.COL_NAME_CODE, Value)
         End Set
@@ -121,7 +121,7 @@ Public Class DealerGroup
 
 
     <ValueMandatory("")> _
-        Public Property CompanyGroupId() As Guid
+        Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If row(DealerGroupDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -130,14 +130,14 @@ Public Class DealerGroup
                 Return New Guid(CType(row(DealerGroupDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerGroupDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AcctingByGroupId() As Guid
+    Public Property AcctingByGroupId As Guid
         Get
             CheckDeleted()
             If Row(DealerGroupDAL.COL_NAME_ACCTING_BY_GROUP_ID) Is DBNull.Value Then
@@ -146,13 +146,13 @@ Public Class DealerGroup
                 Return New Guid(CType(Row(DealerGroupDAL.COL_NAME_ACCTING_BY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerGroupDAL.COL_NAME_ACCTING_BY_GROUP_ID, Value)
         End Set
     End Property
 
-    Public Property UseClientCodeYNId() As Guid
+    Public Property UseClientCodeYNId As Guid
         Get
             CheckDeleted()
             If Row(DealerGroupDAL.COL_NAME_USE_CLIENT_CODE_YNID) Is DBNull.Value Then
@@ -161,13 +161,13 @@ Public Class DealerGroup
                 Return New Guid(CType(Row(DealerGroupDAL.COL_NAME_USE_CLIENT_CODE_YNID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerGroupDAL.COL_NAME_USE_CLIENT_CODE_YNID, Value)
         End Set
     End Property
 
-    Public Property AutoRejErrTypeId() As Guid
+    Public Property AutoRejErrTypeId As Guid
         Get
             CheckDeleted()
             If Row(DealerGroupDAL.COL_NAME_AUTO_REJ_ERR_TYPE_ID) Is DBNull.Value Then
@@ -176,13 +176,13 @@ Public Class DealerGroup
                 Return New Guid(CType(Row(DealerGroupDAL.COL_NAME_AUTO_REJ_ERR_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerGroupDAL.COL_NAME_AUTO_REJ_ERR_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property BankInfoId() As Guid
+    Public Property BankInfoId As Guid
         Get
             CheckDeleted()
             If Row(DealerGroupDAL.COL_NAME_BANK_INFO_ID) Is DBNull.Value Then
@@ -191,7 +191,7 @@ Public Class DealerGroup
                 Return New Guid(CType(Row(DealerGroupDAL.COL_NAME_BANK_INFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerGroupDAL.COL_NAME_BANK_INFO_ID, Value)
         End Set

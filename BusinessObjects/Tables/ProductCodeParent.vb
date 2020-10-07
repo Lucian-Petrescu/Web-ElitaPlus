@@ -134,14 +134,14 @@
                 Return New Guid(CType(Row(ProductCodeParentDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             SetValue(ProductCodeParentDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
 
     End Property
 
     <ValueMandatory("")>
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If Row(ProductCodeParentDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -150,14 +150,14 @@
                 Return New DateType(CType(Row(ProductCodeParentDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeParentDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             If Row(ProductCodeParentDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
                 Return Nothing
@@ -165,14 +165,14 @@
                 Return New DateType(CType(Row(ProductCodeParentDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(value As DateType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeParentDAL.COL_NAME_EXPIRATION, value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=9999999999999.99)>
-    Public Property SmartBundleFlatAmt() As DecimalType
+    Public Property SmartBundleFlatAmt As DecimalType
         Get
             CheckDeleted()
             If Row(ProductCodeParentDAL.COL_NAME_SMART_BUNDLE_FLAT_AMT) Is DBNull.Value Then
@@ -181,13 +181,13 @@
                 Return New DecimalType(CType(Row(ProductCodeParentDAL.COL_NAME_SMART_BUNDLE_FLAT_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeParentDAL.COL_NAME_SMART_BUNDLE_FLAT_AMT, Value)
         End Set
     End Property
 
-    Public Property SmartBundleFlatAmtCurrency() As Guid
+    Public Property SmartBundleFlatAmtCurrency As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeParentDAL.COL_NAME_SMART_BUNDLE_FLAT_AMT_CURRENCY) Is DBNull.Value Then
@@ -196,13 +196,13 @@
                 Return New Guid(CType(Row(ProductCodeParentDAL.COL_NAME_SMART_BUNDLE_FLAT_AMT_CURRENCY), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeParentDAL.COL_NAME_SMART_BUNDLE_FLAT_AMT_CURRENCY, Value)
         End Set
     End Property
 
-    Public Property PaymentSplitRuleId() As Guid
+    Public Property PaymentSplitRuleId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeParentDAL.COL_NAME_PAYMENT_SPLIT_RULE_ID) Is DBNull.Value Then
@@ -211,7 +211,7 @@
                 Return New Guid(CType(Row(ProductCodeParentDAL.COL_NAME_PAYMENT_SPLIT_RULE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeParentDAL.COL_NAME_PAYMENT_SPLIT_RULE_ID, Value)
         End Set

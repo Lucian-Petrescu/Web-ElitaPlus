@@ -11,7 +11,7 @@
 
 #Region "Properties"
 
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(DealerInflationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -21,7 +21,7 @@
         End Get
     End Property
    
-    Public Property DealerInflationId() As Guid
+    Public Property DealerInflationId As Guid
         Get
             CheckDeleted()
             If Row(DealerInflationDAL.COL_NAME_DEALER_INFLATION_ID) Is DBNull.Value Then
@@ -30,13 +30,13 @@
                 Return New Guid(CType(Row(DealerInflationDAL.COL_NAME_DEALER_INFLATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerInflationDAL.COL_NAME_DEALER_INFLATION_ID, Value)
         End Set
     End Property
 
-    Public Property Dealer() As String
+    Public Property Dealer As String
         Get
             CheckDeleted()
             If Row(DealerInflationDAL.COL_NAME_INFLATION_MONTH) Is DBNull.Value Then
@@ -45,13 +45,13 @@
                 Return CType(Row(DealerInflationDAL.COL_NAME_INFLATION_MONTH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerInflationDAL.COL_NAME_INFLATION_MONTH, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(DealerInflationDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -60,14 +60,14 @@
                 Return New Guid(CType(Row(DealerInflationDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerInflationDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
     
     <ValueMandatory("")>
-    Public Property InflationMonth() As String
+    Public Property InflationMonth As String
         Get
             CheckDeleted()
             If Row(DealerInflationDAL.COL_NAME_INFLATION_MONTH) Is DBNull.Value Then
@@ -76,14 +76,14 @@
                 Return CType(Row(DealerInflationDAL.COL_NAME_INFLATION_MONTH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerInflationDAL.COL_NAME_INFLATION_MONTH, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property InflationYear() As string
+    Public Property InflationYear As string
         Get
             CheckDeleted()
             If Row(DealerInflationDAL.COL_NAME_INFLATION_YEAR) Is DBNull.Value Then
@@ -92,14 +92,14 @@
                 Return CType(Row(DealerInflationDAL.COL_NAME_INFLATION_YEAR), string)
             End If
         End Get
-        Set(ByVal Value As string)
+        Set
             CheckDeleted()
             SetValue(DealerInflationDAL.COL_NAME_INFLATION_YEAR, Value)
         End Set
     End Property
 
     <ValueMandatoryDealerInflationPct(""),ValidNumericRange("", Min:=0, Max:=9999.99)>
-    Public Property InflationPct() As DecimalType
+    Public Property InflationPct As DecimalType
         Get
             CheckDeleted()
             If Row(DealerInflationDAL.COL_NAME_INFLATION_PCT) Is DBNull.Value Then
@@ -108,7 +108,7 @@
                 Return New DecimalType(CType(Row(DealerInflationDAL.COL_NAME_INFLATION_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DealerInflationDAL.COL_NAME_INFLATION_PCT, Value)
         End Set

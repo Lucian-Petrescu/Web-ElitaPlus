@@ -94,7 +94,7 @@ Public Class CaseConseqDamage
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CaseConseqDamageDal.TableKeyName) Is DBNull.Value Then
                 Return Nothing
@@ -105,7 +105,7 @@ Public Class CaseConseqDamage
     End Property
 
 
-    Public Property CaseId() As Guid
+    Public Property CaseId As Guid
         Get
             CheckDeleted()
             If Row(CaseConseqDamageDal.ColNameCaseId) Is DBNull.Value Then
@@ -114,7 +114,7 @@ Public Class CaseConseqDamage
                 Return New Guid(CType(Row(CaseConseqDamageDal.ColNameCaseId), Byte()))
             End If
         End Get
-        Set(value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseConseqDamageDal.ColNameCaseId, value)
         End Set
@@ -122,7 +122,7 @@ Public Class CaseConseqDamage
 
 
 
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If Row(CaseConseqDamageDal.ColNameClaimId) Is DBNull.Value Then
@@ -131,7 +131,7 @@ Public Class CaseConseqDamage
                 Return New Guid(CType(Row(CaseConseqDamageDal.ColNameClaimId), Byte()))
             End If
         End Get
-        Set(value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseConseqDamageDal.ColNameClaimId, value)
         End Set
@@ -139,7 +139,7 @@ Public Class CaseConseqDamage
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property ConseqDamageXcd() As String
+    Public Property ConseqDamageXcd As String
         Get
             CheckDeleted()
             If Row(CaseConseqDamageDal.ColNameConseqDamageXcd) Is DBNull.Value Then
@@ -148,7 +148,7 @@ Public Class CaseConseqDamage
                 Return CType(Row(CaseConseqDamageDal.ColNameConseqDamageXcd), String)
             End If
         End Get
-        Set(value As String)
+        Set
             CheckDeleted()
             SetValue(CaseConseqDamageDal.ColNameConseqDamageXcd, value)
         End Set
@@ -156,7 +156,7 @@ Public Class CaseConseqDamage
 
 
 
-    Public Property CoverageConseqDamageId() As Guid
+    Public Property CoverageConseqDamageId As Guid
         Get
             CheckDeleted()
             If Row(CaseConseqDamageDal.ColNameCoverageConseqDamageId) Is DBNull.Value Then
@@ -165,7 +165,7 @@ Public Class CaseConseqDamage
                 Return New Guid(CType(Row(CaseConseqDamageDal.ColNameCoverageConseqDamageId), Byte()))
             End If
         End Get
-        Set(value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseConseqDamageDal.ColNameCoverageConseqDamageId, value)
         End Set
@@ -173,7 +173,7 @@ Public Class CaseConseqDamage
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property StatusXcd() As String
+    Public Property StatusXcd As String
         Get
             CheckDeleted()
             If Row(CaseConseqDamageDal.ColNameStatusXcd) Is DBNull.Value Then
@@ -182,7 +182,7 @@ Public Class CaseConseqDamage
                 Return CType(Row(CaseConseqDamageDal.ColNameStatusXcd), String)
             End If
         End Get
-        Set(value As String)
+        Set
             CheckDeleted()
             SetValue(CaseConseqDamageDal.ColNameStatusXcd, value)
         End Set
@@ -190,7 +190,7 @@ Public Class CaseConseqDamage
 
 
     <ValueMandatory("")>
-    Public Property RequestedAmount() As DecimalType
+    Public Property RequestedAmount As DecimalType
         Get
             CheckDeleted()
             If Row(CaseConseqDamageDal.ColNameRequestedAmount) Is DBNull.Value Then
@@ -199,7 +199,7 @@ Public Class CaseConseqDamage
                 Return New DecimalType(CType(Row(CaseConseqDamageDal.ColNameRequestedAmount), Decimal))
             End If
         End Get
-        Set(value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CaseConseqDamageDal.ColNameRequestedAmount, value)
         End Set
@@ -207,7 +207,7 @@ Public Class CaseConseqDamage
 
 
     <ValueMandatory("")>
-    Public Property ApprovedAmount() As DecimalType
+    Public Property ApprovedAmount As DecimalType
         Get
             CheckDeleted()
             If Row(CaseConseqDamageDal.ColNameApprovedAmount) Is DBNull.Value Then
@@ -216,7 +216,7 @@ Public Class CaseConseqDamage
                 Return New DecimalType(CType(Row(CaseConseqDamageDal.ColNameApprovedAmount), Decimal))
             End If
         End Get
-        Set(value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CaseConseqDamageDal.ColNameApprovedAmount, value)
         End Set
@@ -324,19 +324,19 @@ Public Class CaseConseqDamage
 #End Region
 #End Region
 #Region "Consequential Issues"
-    Public ReadOnly Property ConseqDamageIssueList() As ClaimIssue.ConseqDamageIssueList
+    Public ReadOnly Property ConseqDamageIssueList As ClaimIssue.ConseqDamageIssueList
         Get
             Return New ClaimIssue.ConseqDamageIssueList(Me)
         End Get
     End Property
 
-    Public ReadOnly Property IssuesStatus() As String
+    Public ReadOnly Property IssuesStatus As String
         Get
             Return EvaluateIssues()
         End Get
     End Property
 
-    Public ReadOnly Property HasIssues() As Boolean
+    Public ReadOnly Property HasIssues As Boolean
         Get
             If (ConseqDamageIssueList.Count > 0) Then
                 Return True
@@ -346,7 +346,7 @@ Public Class CaseConseqDamage
         End Get
     End Property
 
-    Public ReadOnly Property AllIssuesResolvedOrWaived() As Boolean
+    Public ReadOnly Property AllIssuesResolvedOrWaived As Boolean
         Get
             If HasIssues Then
                 Dim issueStatus As String = EvaluateIssues()

@@ -378,7 +378,7 @@ Partial Class RepairAndLogisticsForm
             'START DEF-2726
             PopulateBOsFromForm()
             If State.MyBO.IsDirty Then
-                If (State.MyBO.ClaimVerificationNumLength IsNot Nothing) And (TextboxVerificationNumber.Text.Length <> State.MyBO.ClaimVerificationNumLength) Then
+                If (State.MyBO.ClaimVerificationNumLength IsNot Nothing) AndAlso (TextboxVerificationNumber.Text.Length <> State.MyBO.ClaimVerificationNumLength) Then
                     Dim errors() As ValidationError = {New ValidationError(String.Format(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_VERIFICATION_NUM_MUST_BE_IN_POSITIONS), State.MyBO.ClaimVerificationNumLength.ToString()), GetType(RepairAndLogistics), Nothing, "VerificationNumber", Nothing)}
                     Throw New BOValidationException(errors, GetType(RepairAndLogistics).FullName)
                 Else

@@ -294,7 +294,7 @@ Public Class DailyOutboundFileForm
             If HiddenIsCheckBoxEdited.Value = "1" Then
                 Dim selectedList As New ArrayList
                 selectedList = CType(Session("Checked_Items"), ArrayList)
-                If (selectedList IsNot Nothing And selectedList.Count > 0) Then
+                If (selectedList IsNot Nothing AndAlso selectedList.Count > 0) Then
                     For Each gv As GridViewRow In Grid.Rows
                         Dim index As String = String.Empty ' Guid = GuidControl.ByteArrayToGuid(Grid.DataKeys(gv.RowIndex).Value)
                         index = gv.Cells(1).Text.ToString() + gv.Cells(3).Text.ToString() + gv.Cells(4).Text.ToString() + gv.Cells(5).Text.ToString() + GuidControl.ByteArrayToGuid(Grid.DataKeys(gv.RowIndex).Values(7)).ToString()
@@ -681,7 +681,7 @@ Public Class DailyOutboundFileForm
             HiddenIsCheckBoxEdited.Value = "0"
             Session("Checked_Items") = Nothing
             Session("Selcted_Items") = Nothing
-            If (txtComDescription.Text = "" And txtDeaDescription.Text = "" And txtCertificatenumb.Text = "" And txtbegindate.Text = "" And txtEnddate.Text = "") Then
+            If (txtComDescription.Text = "" AndAlso txtDeaDescription.Text = "" AndAlso txtCertificatenumb.Text = "" AndAlso txtbegindate.Text = "" AndAlso txtEnddate.Text = "") Then
 
             ElseIf (txtComDescription.Text = "") Then
                 Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_REQUIRED)
@@ -689,7 +689,7 @@ Public Class DailyOutboundFileForm
             ElseIf (txtDeaDescription.Text = "") Then
                 Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_REQUIRED)
 
-            ElseIf (txtbegindate.Text = "" And txtEnddate.Text = "") Then
+            ElseIf (txtbegindate.Text = "" AndAlso txtEnddate.Text = "") Then
                 Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_VALUE_IS_REQUIRED_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_VALUE_IS_REQUIRED_ERR)
 
             ElseIf (txtbegindate.Text = "") Then
@@ -817,7 +817,7 @@ Public Class DailyOutboundFileForm
                 btnDelectRecords.Visible = False
 
                 'If Me.State.SelectAllClicked = False Then
-                If checkboxParentHidden.Value = "selectAllNotChecked" Or checkboxParentHidden.Value = "" Then
+                If checkboxParentHidden.Value = "selectAllNotChecked" OrElse checkboxParentHidden.Value = "" Then
                     If State.IsRecordDeleted = False Then
                         HandleGridMessages(NO_Record_Found, True)
                     End If
@@ -927,7 +927,7 @@ Public Class DailyOutboundFileForm
 
             Else
                 ''''save select all records
-                If State.SelectAllClicked = True And selectedList Is Nothing Then
+                If State.SelectAllClicked = True AndAlso selectedList Is Nothing Then
                     For Each dr As DataRow In State.searchDV.Table.Rows
                         company_id = GuidControl.ByteArrayToGuid(dr("company_id"))
                         dealer_id = GuidControl.ByteArrayToGuid(dr("dealer_id"))

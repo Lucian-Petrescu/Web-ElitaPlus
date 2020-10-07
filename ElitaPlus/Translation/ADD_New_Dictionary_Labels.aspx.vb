@@ -189,7 +189,7 @@ Namespace Translation
                     PopulateBOProperty(State.Mybo, "EnglishTranslation", strEngText)
                     If .MsgCode <> String.Empty Then .MsgCode = String.Empty
                     If .MsgType <> String.Empty Then .MsgType = String.Empty
-                    If .MsgParameterCount IsNot Nothing And .MsgParameterCount <> 0 Then .MsgParameterCount = 0
+                    If .MsgParameterCount IsNot Nothing AndAlso .MsgParameterCount <> 0 Then .MsgParameterCount = 0
                 End If
                 If .IsNew AndAlso .IsDirty Then
                     PopulateBOProperty(State.Mybo, "DictItemId", New Guid(oguid))
@@ -375,7 +375,7 @@ Namespace Translation
             If (dvRow IsNot Nothing) AndAlso dvRow.Row.RowState = DataRowState.Added Then
                 grdLabels.EditItemIndex = e.Item.ItemIndex
             End If
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 Try
                     Dim ddl As DropDownList = CType(e.Item.Cells(GRID_COL_MSG_TYPE).FindControl(GRID_CONTROL_MSG_TYPE), DropDownList)
                     If ddl IsNot Nothing Then

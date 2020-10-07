@@ -309,8 +309,8 @@ Namespace Tables
 
 
 
-                If dvRow IsNot Nothing And Not State.bnoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         CType(e.Row.Cells(GRID_COL_BILLING_PLAN_ID_IDX).FindControl("BillingPlanIdLabel"), Label).Text = GetGuidStringFromByteArray(CType(dvRow(BillingPlan.BillingPlanSearchDV.COL_BILLING_PLAN_ID), Byte()))
                         If (State.IsEditMode = True AndAlso State.BillingPlanId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(BillingPlan.BillingPlanSearchDV.COL_BILLING_PLAN_ID), Byte())))) Then
 
@@ -499,7 +499,7 @@ Namespace Tables
             Try
                 Dim errors() As ValidationError = {New ValidationError("Dealer or Dealer Group is required", GetType(BillingPlan), Nothing, "DealerID", Nothing)}
                 PopulateBOFromForm()
-                If ((State.myBO.DealerGroupId.ToString = Guid.Empty.ToString) And (State.myBO.DealerId.ToString = Guid.Empty.ToString)) Then
+                If ((State.myBO.DealerGroupId.ToString = Guid.Empty.ToString) AndAlso (State.myBO.DealerId.ToString = Guid.Empty.ToString)) Then
                     Throw New BOValidationException(errors, GetType(BillingPlan).FullName)
                 End If
                 If (State.myBO.IsDirty) Then

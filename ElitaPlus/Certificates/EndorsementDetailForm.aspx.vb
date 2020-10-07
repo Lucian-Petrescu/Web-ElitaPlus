@@ -426,7 +426,7 @@ Partial Class EndorsementDetailForm
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Item.Cells(GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).Text = dvRow(CertEndorseCov.CertEndorsementCoverageSearchDV.GRID_COL_COVERAGE_TYPE_DESCRIPTION).ToString
                     e.Item.Cells(GRID_COL_COVERAGE_BEGIN_DATE_PRE_IDX).Text = GetDateFormattedString(CType(dvRow(CertEndorseCov.CertEndorsementCoverageSearchDV.GRID_COL_COVERAGE_BEGIN_DATE_PRE), Date))
                     e.Item.Cells(GRID_COL_COVERAGE_BEGIN_DATE_POST_IDX).Text = GetDateFormattedString(CType(dvRow(CertEndorseCov.CertEndorsementCoverageSearchDV.GRID_COL_COVERAGE_BEGIN_DATE_POST), Date))
@@ -448,7 +448,7 @@ Partial Class EndorsementDetailForm
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Item.Cells(GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).Text = dvRow(CertEndorseCov.CertEndorsementCoverageSearchDV.GRID_COL_COVERAGE_TYPE_DESCRIPTION).ToString
                     e.Item.Cells(GRID_COL_COVERAGE_BEGIN_DATE_PRE_IDX).Text = GetDateFormattedString(CType(dvRow(CertEndorseCov.CertEndorsementCoverageSearchDV.GRID_COL_COVERAGE_BEGIN_DATE_PRE), Date))
                     e.Item.Cells(GRID_COL_COVERAGE_BEGIN_DATE_POST_IDX).Text = GetDateFormattedString(CType(dvRow(CertEndorseCov.CertEndorsementCoverageSearchDV.GRID_COL_COVERAGE_BEGIN_DATE_POST), Date))

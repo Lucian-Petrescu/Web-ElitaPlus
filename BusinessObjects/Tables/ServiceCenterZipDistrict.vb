@@ -91,7 +91,7 @@ Public Class ServiceCenterZipDistrict
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ServiceCenterZipDistrictDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@ Public Class ServiceCenterZipDistrict
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterZipDistrictDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -111,7 +111,7 @@ Public Class ServiceCenterZipDistrict
                 Return New Guid(CType(Row(ServiceCenterZipDistrictDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterZipDistrictDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
@@ -119,7 +119,7 @@ Public Class ServiceCenterZipDistrict
 
 
     <ValueMandatory("")> _
-    Public Property ZipDistrictId() As Guid
+    Public Property ZipDistrictId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterZipDistrictDAL.COL_NAME_ZIP_DISTRICT_ID) Is DBNull.Value Then
@@ -128,7 +128,7 @@ Public Class ServiceCenterZipDistrict
                 Return New Guid(CType(Row(ServiceCenterZipDistrictDAL.COL_NAME_ZIP_DISTRICT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterZipDistrictDAL.COL_NAME_ZIP_DISTRICT_ID, Value)
         End Set

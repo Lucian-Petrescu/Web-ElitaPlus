@@ -99,7 +99,7 @@ Public Class FalabellaIntegration
                         dvClaimStatuses.RowFilter = "code= '" & EXT_STAT_COMPENSATION_PROCESS_INITIATED & "'"
                         If (dvClaimStatuses.Count > 0) Then
                             Dim tDate As Date
-                            If (dvClaimStatuses(0)("status_date") IsNot Nothing And dvClaimStatuses(0)("status_date") IsNot DBNull.Value) Then
+                            If (dvClaimStatuses(0)("status_date") IsNot Nothing AndAlso dvClaimStatuses(0)("status_date") IsNot DBNull.Value) Then
                                 'If (dvClaimStatuses(0)("status_date") Is Nothing Or Not dvClaimStatuses(0)("status_date") Is DBNull.Value) Then
                                 tDate = CType(dvClaimStatuses(0)("status_date"), Date)
                             Else
@@ -161,7 +161,7 @@ Public Class FalabellaIntegration
 
                     name = .Certificate.CustomerName
 
-                    If (name IsNot Nothing And name IsNot DBNull.Value And name.IndexOf(" ") > 0) Then
+                    If (name IsNot Nothing AndAlso name IsNot DBNull.Value AndAlso name.IndexOf(" ") > 0) Then
 
                         request.FirstName = name.Substring(0, name.IndexOf(" "))
                         request.LastName = name.Substring(name.IndexOf(" "))
@@ -187,7 +187,7 @@ Public Class FalabellaIntegration
 
 
             'Save error code and error message to claim comments 
-            If (Not String.IsNullOrEmpty(response.ErrorCode) And Not Convert.ToString(response.ErrorCode) = "0") Then
+            If (Not String.IsNullOrEmpty(response.ErrorCode) AndAlso Not Convert.ToString(response.ErrorCode) = "0") Then
                 Logger.AddInfo("InvokeFalabellaService new claim Fill error code " + response.ErrorCode + "   " + response.ErrorMessage)
                 AddCommentToClaim(response.ErrorCode + ";" + response.ErrorMessage, OClaim)
                 Return response.ErrorMessage
@@ -235,7 +235,7 @@ Public Class FalabellaIntegration
             End Try
 
             'Save error code and error message to claim comments 
-            If (Not String.IsNullOrEmpty(response.ErrorCode) And Not Convert.ToString(response.ErrorCode) = "0") Then
+            If (Not String.IsNullOrEmpty(response.ErrorCode) AndAlso Not Convert.ToString(response.ErrorCode) = "0") Then
                 AddCommentToClaim(response.ErrorCode + ";" + response.ErrorMessage, OClaim)
                 Return response.ErrorMessage
             End If

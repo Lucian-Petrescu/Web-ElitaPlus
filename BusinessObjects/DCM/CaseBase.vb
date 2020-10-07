@@ -125,7 +125,7 @@ Public Class CaseBase
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CaseDAL.TableKeyName) Is DBNull.Value Then
                 Return Nothing
@@ -136,7 +136,7 @@ Public Class CaseBase
     End Property
 
     <ValueMandatory("")>
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCompanyId) Is DBNull.Value Then
@@ -145,13 +145,13 @@ Public Class CaseBase
                 Return New Guid(CType(Row(CaseDAL.ColNameCompanyId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCompanyId, value)
         End Set
     End Property
     <ValidStringLength("", Max:=70)>
-    Public Property CompanyDesc() As String
+    Public Property CompanyDesc As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCompanyDesc) Is DBNull.Value Then
@@ -160,14 +160,14 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameCompanyDesc), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCompanyDesc, value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=120)>
-    Public Property CaseNumber() As String
+    Public Property CaseNumber As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCaseNumber) Is DBNull.Value Then
@@ -176,7 +176,7 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameCaseNumber), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCaseNumber, value)
         End Set
@@ -184,7 +184,7 @@ Public Class CaseBase
 
 
     <ValueMandatory("")>
-    Public Property CaseOpenDate() As DateType
+    Public Property CaseOpenDate As DateType
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCaseOpenDate) Is DBNull.Value Then
@@ -193,14 +193,14 @@ Public Class CaseBase
                 Return New DateType(CType(Row(CaseDAL.ColNameCaseOpenDate), Date))
             End If
         End Get
-        Set(ByVal value As DateType)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCaseOpenDate, value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property CasePurposeCode() As String
+    Public Property CasePurposeCode As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCasePurposeCode) Is DBNull.Value Then
@@ -209,14 +209,14 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameCasePurposeCode), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCasePurposeCode, value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)>
-    Public Property CaseStatusCode() As String
+    Public Property CaseStatusCode As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCaseStatusCode) Is DBNull.Value Then
@@ -225,7 +225,7 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameCaseStatusCode), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCaseStatusCode, value)
         End Set
@@ -233,7 +233,7 @@ Public Class CaseBase
 
 
     <ValueMandatory("")>
-    Public Property InitialInteractionId() As Guid
+    Public Property InitialInteractionId As Guid
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameInitialInteractionId) Is DBNull.Value Then
@@ -242,14 +242,14 @@ Public Class CaseBase
                 Return New Guid(CType(Row(CaseDAL.ColNameInitialInteractionId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameInitialInteractionId, value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property InitialCallerName() As String
+    Public Property InitialCallerName As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameInitialCallerName) Is DBNull.Value Then
@@ -258,13 +258,13 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameInitialCallerName), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameInitialCallerName, value)
         End Set
     End Property
 
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameClaimId) Is DBNull.Value Then
@@ -273,13 +273,13 @@ Public Class CaseBase
                 Return New Guid(CType(Row(CaseDAL.ColNameClaimId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameClaimId, value)
         End Set
     End Property
     <ValidStringLength("", Max:=20)>
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameClaimNumber) Is DBNull.Value Then
@@ -288,14 +288,14 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameClaimNumber), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameClaimNumber, value)
         End Set
     End Property
 
 
-    Public Property CertId() As Guid
+    Public Property CertId As Guid
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCertId) Is DBNull.Value Then
@@ -304,13 +304,13 @@ Public Class CaseBase
                 Return New Guid(CType(Row(CaseDAL.ColNameCertId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCertId, value)
         End Set
     End Property
     <ValidStringLength("", Max:=20)>
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCertNumber) Is DBNull.Value Then
@@ -319,14 +319,14 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameCertNumber), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCertNumber, value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property LastActivityDate() As DateType
+    Public Property LastActivityDate As DateType
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameLastActivityDate) Is DBNull.Value Then
@@ -335,7 +335,7 @@ Public Class CaseBase
                 Return New DateType(CType(Row(CaseDAL.ColNameLastActivityDate), Date))
             End If
         End Get
-        Set(ByVal value As DateType)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameLastActivityDate, value)
         End Set
@@ -343,7 +343,7 @@ Public Class CaseBase
 
 
 
-    Public Property CaseCloseDate() As DateType
+    Public Property CaseCloseDate As DateType
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCaseCloseDate) Is DBNull.Value Then
@@ -352,7 +352,7 @@ Public Class CaseBase
                 Return New DateType(CType(Row(CaseDAL.ColNameCaseCloseDate), Date))
             End If
         End Get
-        Set(ByVal value As DateType)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCaseCloseDate, value)
         End Set
@@ -360,7 +360,7 @@ Public Class CaseBase
 
 
     <ValidStringLength("", Max:=200)>
-    Public Property CaseCloseCode() As String
+    Public Property CaseCloseCode As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCaseCloseCode) Is DBNull.Value Then
@@ -369,7 +369,7 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameCaseCloseCode), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCaseCloseCode, value)
         End Set

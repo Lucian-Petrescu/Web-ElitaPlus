@@ -123,7 +123,7 @@ Public Class ClaimStage
 
     'Key Property
     <ValidOnlyOneEntity(""), ValidOneEntitySelected("")>
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ClaimStageDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -134,7 +134,7 @@ Public Class ClaimStage
     End Property
 
     <ValueMandatory("")> _
-    Public Property StageNameId() As Guid
+    Public Property StageNameId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_STAGE_NAME_ID) Is DBNull.Value Then
@@ -143,14 +143,14 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_STAGE_NAME_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStageDAL.COL_NAME_STAGE_NAME_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property StartStatusId() As Guid
+    Public Property StartStatusId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_START_STATUS_ID) Is DBNull.Value Then
@@ -159,13 +159,13 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_START_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStageDAL.COL_NAME_START_STATUS_ID, Value)
         End Set
     End Property
 
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -174,13 +174,13 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStageDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -189,13 +189,13 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStageDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -204,14 +204,14 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStageDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5), ValidProductCode("")> _
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
@@ -220,14 +220,14 @@ Public Class ClaimStage
                 Return CType(Row(ClaimStageDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimStageDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
     <ValidCoverageType("")> _
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -236,14 +236,14 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStageDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), RejectOverlapsOrGaps("")> _
-    Public Property EffectiveDate() As DateTime?
+    Public Property EffectiveDate As DateTime?
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -252,7 +252,7 @@ Public Class ClaimStage
                 Return CType(Row(ClaimStageDAL.COL_NAME_EFFECTIVE_DATE), Date)
             End If
         End Get
-        Set(ByVal Value As DateTime?)
+        Set
             If Value.HasValue Then
                 CheckDeleted()
                 SetValue(ClaimStageDAL.COL_NAME_EFFECTIVE_DATE, Value)
@@ -261,7 +261,7 @@ Public Class ClaimStage
     End Property
 
     <ValueMandatory(""), EffectiveExpirationDateValidation("ExpirationDate")> _
-    Public Property ExpirationDate() As DateTime?
+    Public Property ExpirationDate As DateTime?
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -270,7 +270,7 @@ Public Class ClaimStage
                 Return CType(Row(ClaimStageDAL.COL_NAME_EXPIRATION_DATE), Date)
             End If
         End Get
-        Set(ByVal Value As DateTime?)
+        Set
             If Value.HasValue Then
                 CheckDeleted()
                 SetValue(ClaimStageDAL.COL_NAME_EXPIRATION_DATE, Value)
@@ -279,7 +279,7 @@ Public Class ClaimStage
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=99)> _
-    Public Property Sequence() As LongType
+    Public Property Sequence As LongType
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_SEQUENCE) Is DBNull.Value Then
@@ -288,14 +288,14 @@ Public Class ClaimStage
                 Return New LongType(CType(Row(ClaimStageDAL.COL_NAME_SEQUENCE), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimStageDAL.COL_NAME_SEQUENCE, Value)
         End Set
     End Property
 
     <ValidScreenValue("")> _
-    Public Property ScreenId() As Guid
+    Public Property ScreenId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_SCREEN_ID) Is DBNull.Value Then
@@ -304,14 +304,14 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_SCREEN_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStageDAL.COL_NAME_SCREEN_ID, Value)
         End Set
     End Property
 
     <ValidPortalValue("")> _
-    Public Property PortalId() As Guid
+    Public Property PortalId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_PORTAL_ID) Is DBNull.Value Then
@@ -320,19 +320,19 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_PORTAL_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStageDAL.COL_NAME_PORTAL_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property OriginalEffectiveDate() As DateType
+    Public ReadOnly Property OriginalEffectiveDate As DateType
         Get
             Return New DateType(CType(Row(AFAInvoiceRateDAL.COL_NAME_EFFECTIVE_DATE, DataRowVersion.Original), Date))
         End Get
     End Property
 
-    Public ReadOnly Property OriginalExpirationDate() As DateType
+    Public ReadOnly Property OriginalExpirationDate As DateType
         Get
             Return New DateType(CType(Row(AFAInvoiceRateDAL.COL_NAME_EXPIRATION_DATE, DataRowVersion.Original), Date))
         End Get
@@ -344,7 +344,7 @@ Public Class ClaimStage
 
 #Region "Public Members"
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsFamilyDirty()
         End Get

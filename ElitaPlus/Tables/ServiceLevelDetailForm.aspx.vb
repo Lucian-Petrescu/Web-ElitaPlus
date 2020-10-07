@@ -295,8 +295,8 @@ Partial Class ServiceLevelDetailForm
 
 
 
-            If dvRow IsNot Nothing And Not State.bnoRow Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     CType(e.Row.Cells(GRID_COL_SERVICE_LEVEL_DETAIL_ID_IDX).FindControl("ServiceLevelDetailIdLabel"), Label).Text = GetGuidStringFromByteArray(CType(dvRow(ServiceLevelDetail.ServiceLevelDetailSearchDV.COL_SERVICE_LEVEL_DETAIL_ID), Byte()))
 
                     If (State.IsEditMode = True AndAlso State.ServiceLevelDetailId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(ServiceLevelDetail.ServiceLevelDetailSearchDV.COL_SERVICE_LEVEL_DETAIL_ID), Byte())))) Then

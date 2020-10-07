@@ -105,7 +105,7 @@
                 Return New Guid(CType(Row(ProductCodeDetailDAL.COL_NAME_PRODUCT_CODE_PARENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDetailDAL.COL_NAME_PRODUCT_CODE_PARENT_ID, Value)
         End Set
@@ -119,14 +119,14 @@
                 Return New Guid(CType(Row(ProductCodeDetailDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDetailDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If Row(ProductCodeDetailDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -135,14 +135,14 @@
                 Return New DateType(CType(Row(ProductCodeDetailDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDetailDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             If Row(ProductCodeDetailDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
                 Return Nothing
@@ -150,12 +150,12 @@
                 Return New DateType(CType(Row(ProductCodeDetailDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(value As DateType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDetailDAL.COL_NAME_EXPIRATION, value)
         End Set
     End Property
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             If Row(ProductCodeDetailDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
                 Return Nothing
@@ -163,12 +163,12 @@
                 Return New Guid(CType(Row(ProductCodeDetailDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDetailDAL.COL_NAME_DEALER_ID, value)
         End Set
     End Property
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             If Row(ProductCodeDetailDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
                 Return Nothing
@@ -176,7 +176,7 @@
                 Return New Guid(CType(Row(ProductCodeDetailDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDetailDAL.COL_NAME_COMPANY_ID, value)
         End Set

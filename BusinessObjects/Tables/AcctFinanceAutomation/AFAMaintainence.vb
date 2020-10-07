@@ -35,7 +35,7 @@ Public Class AFAMaintainence
 
 #Region "Properties"
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(ReconciliationDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -44,13 +44,13 @@ Public Class AFAMaintainence
                 Return New Guid(CType(Row(AFAMaintainenceDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(ReconciliationDAL.COL_NAME_DEALER_ID, value)
         End Set
     End Property
 
-    Public Property ProcessType() As String
+    Public Property ProcessType As String
         Get
             CheckDeleted()
             If Row(AFAMaintainenceDAL.COL_NAME_PROCESS_TYPE) Is DBNull.Value Then
@@ -59,13 +59,13 @@ Public Class AFAMaintainence
                 Return CType(Row(AFAMaintainenceDAL.COL_NAME_PROCESS_TYPE), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(AFAMaintainenceDAL.COL_NAME_PROCESS_TYPE, value)
         End Set
     End Property
 
-    Public Property Status() As String
+    Public Property Status As String
         Get
             CheckDeleted()
             If Row(AFAMaintainenceDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -74,13 +74,13 @@ Public Class AFAMaintainence
                 Return CType(Row(AFAMaintainenceDAL.COL_NAME_STATUS), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(AFAMaintainenceDAL.COL_NAME_STATUS, value)
         End Set
     End Property
 
-    Public Property Comments() As String
+    Public Property Comments As String
         Get
             CheckDeleted()
             If Row(AFAMaintainenceDAL.COL_NAME_COMMENTS) Is DBNull.Value Then
@@ -89,13 +89,13 @@ Public Class AFAMaintainence
                 Return CType(Row(AFAMaintainenceDAL.COL_NAME_COMMENTS), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(AFAMaintainenceDAL.COL_NAME_COMMENTS, value)
         End Set
     End Property
 
-    Public Property StartDateTime() As DateTimeType
+    Public Property StartDateTime As DateTimeType
         Get
             CheckDeleted()
             If Row(AFAMaintainenceDAL.COL_NAME_START_DATE_TIME) Is DBNull.Value Then
@@ -104,13 +104,13 @@ Public Class AFAMaintainence
                 Return New DateTimeType(CType(Row(AFAMaintainenceDAL.COL_NAME_START_DATE_TIME), Date))
             End If
         End Get
-        Set(ByVal value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(AFAMaintainenceDAL.COL_NAME_START_DATE_TIME, value)
         End Set
     End Property
 
-    Public Property CompletionDateTime() As DateTimeType
+    Public Property CompletionDateTime As DateTimeType
         Get
             CheckDeleted()
             If Row(AFAMaintainenceDAL.COL_NAME_COMPLETION_DATE_TIME) Is DBNull.Value Then
@@ -119,7 +119,7 @@ Public Class AFAMaintainence
                 Return New DateTimeType(CType(Row(AFAMaintainenceDAL.COL_NAME_COMPLETION_DATE_TIME), Date))
             End If
         End Get
-        Set(ByVal value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(AFAMaintainenceDAL.COL_NAME_COMPLETION_DATE_TIME, value)
         End Set

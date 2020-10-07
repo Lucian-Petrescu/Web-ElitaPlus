@@ -117,7 +117,7 @@ Public Class ServiceGroupRiskType
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ServiceGroupRiskTypeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -128,7 +128,7 @@ Public Class ServiceGroupRiskType
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServiceGroupId() As Guid
+    Public Property ServiceGroupId As Guid
         Get
             CheckDeleted()
             If Row(ServiceGroupRiskTypeDAL.COL_NAME_SERVICE_GROUP_ID) Is DBNull.Value Then
@@ -137,7 +137,7 @@ Public Class ServiceGroupRiskType
                 Return New Guid(CType(Row(ServiceGroupRiskTypeDAL.COL_NAME_SERVICE_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceGroupRiskTypeDAL.COL_NAME_SERVICE_GROUP_ID, Value)
         End Set
@@ -145,7 +145,7 @@ Public Class ServiceGroupRiskType
 
 
     <ValueMandatory("")> _
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             CheckDeleted()
             If Row(ServiceGroupRiskTypeDAL.COL_NAME_RISK_TYPE_ID) Is DBNull.Value Then
@@ -154,7 +154,7 @@ Public Class ServiceGroupRiskType
                 Return New Guid(CType(Row(ServiceGroupRiskTypeDAL.COL_NAME_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceGroupRiskTypeDAL.COL_NAME_RISK_TYPE_ID, Value)
             'Set RiskType Description
@@ -165,7 +165,7 @@ Public Class ServiceGroupRiskType
     End Property
 
 
-    Public ReadOnly Property RiskTypeDescription() As String
+    Public ReadOnly Property RiskTypeDescription As String
         Get
             CheckDeleted()
             If Row(ServiceGroupRiskTypeDAL.COL_NAME_RISK_TYPE_DESCRIPTION) Is DBNull.Value Then
@@ -197,7 +197,7 @@ Public Class ServiceGroupRiskType
     End Sub
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
@@ -209,7 +209,7 @@ Public Class ServiceGroupRiskType
 
 #Region "Children Related"
 
-    Public ReadOnly Property SgRtManufacturerChildren() As sgRtManufacturerList
+    Public ReadOnly Property SgRtManufacturerChildren As sgRtManufacturerList
         Get
             Return New SgRtManufacturerList(Me)
         End Get

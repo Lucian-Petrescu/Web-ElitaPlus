@@ -90,7 +90,7 @@ Public Class DictItemTranslation
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(DictItemTranslationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class DictItemTranslation
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Translation() As String
+    Public Property Translation As String
         Get
             CheckDeleted()
             If row(DictItemTranslationDAL.COL_NAME_TRANSLATION) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class DictItemTranslation
                 Return CType(row(DictItemTranslationDAL.COL_NAME_TRANSLATION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DictItemTranslationDAL.COL_NAME_TRANSLATION, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class DictItemTranslation
 
 
     <ValueMandatory("")> _
-    Public Property LanguageId() As Guid
+    Public Property LanguageId As Guid
         Get
             CheckDeleted()
             If row(DictItemTranslationDAL.COL_NAME_LANGUAGE_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class DictItemTranslation
                 Return New Guid(CType(row(DictItemTranslationDAL.COL_NAME_LANGUAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DictItemTranslationDAL.COL_NAME_LANGUAGE_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class DictItemTranslation
 
 
     <ValueMandatory("")> _
-    Public Property DictItemId() As Guid
+    Public Property DictItemId As Guid
         Get
             CheckDeleted()
             If row(DictItemTranslationDAL.COL_NAME_DICT_ITEM_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class DictItemTranslation
                 Return New Guid(CType(row(DictItemTranslationDAL.COL_NAME_DICT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DictItemTranslationDAL.COL_NAME_DICT_ITEM_ID, Value)
         End Set

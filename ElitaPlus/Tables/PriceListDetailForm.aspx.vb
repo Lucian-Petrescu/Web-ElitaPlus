@@ -431,7 +431,7 @@ Public Class PriceListDetailForm
     Private Sub btnNew_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd.Click
         Try
             PopulateBOsFormFrom()
-            If (State.MyBO.IsDirty) And Not (State.MyBO.Code = String.Empty Or State.MyBO.Code = Nothing) Then
+            If (State.MyBO.IsDirty) AndAlso Not (State.MyBO.Code = String.Empty OrElse State.MyBO.Code = Nothing) Then
                 DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
@@ -1093,7 +1093,7 @@ Public Class PriceListDetailForm
     End Sub
 
     Private Sub PopulateSelectedVendors()
-        If Not (State.MyBO.Code = Nothing Or State.MyBO.Code = String.Empty) Then
+        If Not (State.MyBO.Code = Nothing OrElse State.MyBO.Code = String.Empty) Then
             'ElitaPlusPage.BindListControlToDataView(moSelectedList, Me.State.MyBO.GetServiceCenterSelectionView(), "description", "service_center_id", False)
             Dim ServiceCenterList As New Collections.Generic.List(Of DataElements.ListItem)
             For Each detail As ServiceCenter In State.MyBO.ServiceCenterChildren
@@ -1391,7 +1391,7 @@ Public Class PriceListDetailForm
                             CommonConfigManager.Current.ListManager.GetList(listCode:="TTYP", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
         Dim FilteredTaxTypeList As DataElements.ListItem() = (From lst In TaxTypeList
-                                                              Where lst.Code = "7" Or lst.Code = "8"
+                                                              Where lst.Code = "7" OrElse lst.Code = "8"
                                                               Select lst).ToArray()
 
         ddlNewItemReplacementTaxType.Populate(FilteredTaxTypeList.ToArray(), New PopulateOptions() With
@@ -1848,7 +1848,7 @@ Public Class PriceListDetailForm
                 btnEditItem.CommandName = ElitaPlusSearchPage.EDIT_COMMAND_NAME
 
                 If Not (e.Row.Cells(GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString().Equals(String.Empty)) Then
-                    If (DateHelper.GetDateValue(e.Row.Cells(GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString()) < DateTime.Now And lblStatusXCD.Text = "PL_RECON_PROCESS-APPROVED") Then
+                    If (DateHelper.GetDateValue(e.Row.Cells(GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString()) < DateTime.Now AndAlso lblStatusXCD.Text = "PL_RECON_PROCESS-APPROVED") Then
                         'e.Row.Cells(Me.GRID_COL_EDITID_IDX).Visible = False
                         btnEditItem.Visible = False
                     End If
@@ -1866,7 +1866,7 @@ Public Class PriceListDetailForm
                 'Me.AddControlMsg(btnDeleteItem, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
 
                 If Not (e.Row.Cells(GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString().Equals(String.Empty)) Then
-                    If (DateHelper.GetDateValue(e.Row.Cells(GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString()) < DateTime.Now And lblStatusXCD.Text = "PL_RECON_PROCESS-APPROVED") Then
+                    If (DateHelper.GetDateValue(e.Row.Cells(GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString()) < DateTime.Now AndAlso lblStatusXCD.Text = "PL_RECON_PROCESS-APPROVED") Then
                         btnDeleteItem.Visible = False
                     End If
                 End If
@@ -1893,10 +1893,8 @@ Public Class PriceListDetailForm
         'Dim cellField As String = row.Cells(cellIndex)
         Dim dvRow As DataRowView = CType(row.DataItem, DataRowView)
 
-        If ((dvRow(valueField) Is DBNull.Value Or
-            (TypeOf (dvRow(valueField)) Is Byte() AndAlso (New Guid(CType(dvRow(valueField), Byte())) <> Guid.Empty))) AndAlso
-            (dvRow(parentValueField) IsNot DBNull.Value Or
-            (TypeOf (dvRow(parentValueField)) Is Byte() AndAlso (New Guid(CType(dvRow(parentValueField), Byte())) = Guid.Empty)))) Then
+        If ((dvRow(valueField) Is DBNull.Value OrElse (TypeOf (dvRow(valueField)) Is Byte() AndAlso (New Guid(CType(dvRow(valueField), Byte())) <> Guid.Empty))) AndAlso
+            (dvRow(parentValueField) IsNot DBNull.Value OrElse (TypeOf (dvRow(parentValueField)) Is Byte() AndAlso (New Guid(CType(dvRow(parentValueField), Byte())) = Guid.Empty)))) Then
 
             dvRow(valueField) = dvRow(parentValueField)
         End If
@@ -2486,10 +2484,10 @@ Public Class PriceListDetailForm
 
                 index = index + 1
             Next
-            If boxlist IsNot Nothing And boxlist.Count > 0 Then
+            If boxlist IsNot Nothing AndAlso boxlist.Count > 0 Then
                 ViewState("SelectedValues") = boxlist
             End If
-            If lstPriceListDetail IsNot Nothing And lstPriceListDetail.Count > 0 Then
+            If lstPriceListDetail IsNot Nothing AndAlso lstPriceListDetail.Count > 0 Then
                 ViewState("SelectedPriceListDeatilId") = lstPriceListDetail
             End If
         End If

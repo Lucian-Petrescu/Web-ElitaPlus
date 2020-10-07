@@ -90,7 +90,7 @@ Public Class ServiceCenterManufacturer
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ServiceCenterManufacturerDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ServiceCenterManufacturer
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterManufacturerDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ServiceCenterManufacturer
                 Return New Guid(CType(Row(ServiceCenterManufacturerDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterManufacturerDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ServiceCenterManufacturer
 
 
     <ValueMandatory("")> _
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterManufacturerDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ServiceCenterManufacturer
                 Return New Guid(CType(Row(ServiceCenterManufacturerDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterManufacturerDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set

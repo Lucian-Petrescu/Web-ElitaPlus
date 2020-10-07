@@ -250,8 +250,8 @@ Public Class PremiumAdjustmentSettingsListForm
     Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-        If dvRow IsNot Nothing And Not State.bnoRow Then
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+        If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Row.Cells(GRID_COL_DEALER_CODE_IDX).Text = dvRow(PremiumAdjustmentSettings.PremiumAdjustnmentSettingSearchDV.COL_DEALER_CODE).ToString
                 e.Row.Cells(GRID_COL_ADJUSTMENT_BY_IDX).Text = LookupListNew.GetDescriptionFromId("FIN_ADJ_BY", New Guid(GetGuidStringFromByteArray(CType(dvRow(PremiumAdjustmentSettings.PremiumAdjustnmentSettingSearchDV.COL_ADJUSTMENT_BY), Byte()))))
                 e.Row.Cells(GRID_COL_EFFECTIVE_DATE_IDX).Text = dvRow(PremiumAdjustmentSettings.PremiumAdjustnmentSettingSearchDV.COL_EFFECTIVE_DATE).ToString

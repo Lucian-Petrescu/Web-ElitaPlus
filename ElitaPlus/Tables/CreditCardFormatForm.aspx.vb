@@ -252,7 +252,7 @@ Namespace Tables
         Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 PopulateBOsFormFrom()
-                If State.MyBO.IsDirty Or State.MyBO.IsFamilyDirty Then
+                If State.MyBO.IsDirty OrElse State.MyBO.IsFamilyDirty Then
                     AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
                     State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
@@ -270,7 +270,7 @@ Namespace Tables
         Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
                 PopulateBOsFormFrom()
-                If State.MyBO.IsDirty Or State.MyBO.IsFamilyDirty Then
+                If State.MyBO.IsDirty OrElse State.MyBO.IsFamilyDirty Then
                     State.MyBO.Save()
                     State.HasDataChanged = True
                     EnableDisableFields()
@@ -320,7 +320,7 @@ Namespace Tables
         Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
                 PopulateBOsFormFrom()
-                If State.MyBO.IsDirty Or State.MyBO.IsFamilyDirty Then
+                If State.MyBO.IsDirty OrElse State.MyBO.IsFamilyDirty Then
                     AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
                     State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
@@ -336,7 +336,7 @@ Namespace Tables
         Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
                 PopulateBOsFormFrom()
-                If State.MyBO.IsDirty Or State.MyBO.IsFamilyDirty Then
+                If State.MyBO.IsDirty OrElse State.MyBO.IsFamilyDirty Then
                     AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
                     State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else

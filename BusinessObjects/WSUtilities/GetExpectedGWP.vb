@@ -119,7 +119,7 @@ Public Class GetExpectedGWP
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -127,14 +127,14 @@ Public Class GetExpectedGWP
                 Return (CType(Row(DATA_COL_NAME_DEALER_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             If Row(DATA_COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -142,14 +142,14 @@ Public Class GetExpectedGWP
                 Return (CType(Row(DATA_COL_NAME_PRODUCT_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CertificateDuration() As Integer
+    Public Property CertificateDuration As Integer
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_CERT_DURATION) Is DBNull.Value Then
@@ -158,14 +158,14 @@ Public Class GetExpectedGWP
                 Return CType(Row(DATA_COL_NAME_CERT_DURATION), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERT_DURATION, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property WarrantySalesDate() As DateTime
+    Public Property WarrantySalesDate As DateTime
         Get
             If Row(DATA_COL_NAME_WARRANTY_SALES_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -173,13 +173,13 @@ Public Class GetExpectedGWP
                 Return CType(Row(DATA_COL_NAME_WARRANTY_SALES_DATE), String)
             End If
         End Get
-        Set(ByVal Value As Date)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_WARRANTY_SALES_DATE, Value)
         End Set
     End Property
 
-    Public Property PurchasePrice() As Double
+    Public Property PurchasePrice As Double
         Get
             If Row(DATA_COL_NAME_PURCHASE_PRICE) Is DBNull.Value Then
                 Return Nothing
@@ -187,14 +187,14 @@ Public Class GetExpectedGWP
                 Return (CType(Row(DATA_COL_NAME_PURCHASE_PRICE), Double))
             End If
         End Get
-        Set(ByVal Value As Double)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_PURCHASE_PRICE, Value)
         End Set
     End Property
 
 
-    Public Property CoverageDuration() As Integer
+    Public Property CoverageDuration As Integer
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_MANUFACTURER_DURATION) Is DBNull.Value Then
@@ -203,13 +203,13 @@ Public Class GetExpectedGWP
                 Return CType(Row(DATA_COL_NAME_MANUFACTURER_DURATION), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MANUFACTURER_DURATION, Value)
         End Set
     End Property
 
-    Public Property ProductPurchaseDate() As DateTime
+    Public Property ProductPurchaseDate As DateTime
         Get
             If Row(DATA_COL_NAME_PRODUCT_PURCHASE_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -217,7 +217,7 @@ Public Class GetExpectedGWP
                 Return CType(Row(DATA_COL_NAME_PRODUCT_PURCHASE_DATE), String)
             End If
         End Get
-        Set(ByVal Value As Date)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_PRODUCT_PURCHASE_DATE, Value)
         End Set

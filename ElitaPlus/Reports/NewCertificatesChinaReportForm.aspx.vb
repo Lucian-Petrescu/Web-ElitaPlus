@@ -297,18 +297,18 @@ Namespace Reports
             End If
 
 
-            If (rdealer.Checked.Equals(True) And rbDealerTypeHW.Checked) Then
+            If (rdealer.Checked.Equals(True) AndAlso rbDealerTypeHW.Checked) Then
                 selectedDealerType = "HW"
                 reportParams.AppendFormat("pi_dealer_type => '{0}'", selectedDealerType)
-            ElseIf (rdealer.Checked.Equals(True) And rbDealerTypeESC.Checked) Then
+            ElseIf (rdealer.Checked.Equals(True) AndAlso rbDealerTypeESC.Checked) Then
                 selectedDealerType = "ESC/Mobile"
                 reportParams.AppendFormat("pi_dealer_type => '{0}'", selectedDealerType)
 
-            ElseIf (rdealer2.Checked.Equals(True) And rbDealerTypeHW.Checked) Then
+            ElseIf (rdealer2.Checked.Equals(True) AndAlso rbDealerTypeHW.Checked) Then
                 selectedDealerType = "HW"
                 reportParams.AppendFormat("pi_dealer_type => '{0}'", selectedDealerType)
 
-            ElseIf (rdealer2.Checked.Equals(True) And rbDealerTypeESC.Checked) Then
+            ElseIf (rdealer2.Checked.Equals(True) AndAlso rbDealerTypeESC.Checked) Then
                 selectedDealerType = "ESC/Mobile"
                 reportParams.AppendFormat("pi_dealer_type => '{0}'", selectedDealerType)
 

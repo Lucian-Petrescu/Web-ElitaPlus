@@ -160,7 +160,7 @@ Public Class ProductCode
     End Property
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IAttributable.Id
+    Public ReadOnly Property Id As Guid Implements IAttributable.Id
         Get
             If Row(ProductCodeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -172,7 +172,7 @@ Public Class ProductCode
 
 
     <ValueMandatory("")>
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -181,7 +181,7 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -189,7 +189,7 @@ Public Class ProductCode
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=5)>
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
@@ -198,7 +198,7 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
@@ -206,7 +206,7 @@ Public Class ProductCode
 
 
     <ValueMandatory("")>
-    Public Property RiskGroupId() As Guid
+    Public Property RiskGroupId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_RISK_GROUP_ID) Is DBNull.Value Then
@@ -215,7 +215,7 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_RISK_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_RISK_GROUP_ID, Value)
         End Set
@@ -223,7 +223,7 @@ Public Class ProductCode
 
 
     <ValueMandatory("")>
-    Public Property PriceMatrixId() As Guid
+    Public Property PriceMatrixId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_PRICE_MATRIX_ID) Is DBNull.Value Then
@@ -232,14 +232,14 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_PRICE_MATRIX_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_PRICE_MATRIX_ID, Value)
         End Set
     End Property
 
 
-    Public Property PercentOfRetail() As DecimalType
+    Public Property PercentOfRetail As DecimalType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_PERCENT_OF_RETAIL) Is DBNull.Value Then
@@ -248,7 +248,7 @@ Public Class ProductCode
                 Return New DecimalType(CType(Row(ProductCodeDAL.COL_NAME_PERCENT_OF_RETAIL), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_PERCENT_OF_RETAIL, Value)
         End Set
@@ -256,7 +256,7 @@ Public Class ProductCode
 
 
     <ValidStringLength("", Max:=255)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -265,7 +265,7 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -273,7 +273,7 @@ Public Class ProductCode
 
 
     <ValueMandatory("")>
-    Public Property MethodOfRepairId() As Guid
+    Public Property MethodOfRepairId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_METHOD_OF_REPAIR_ID) Is DBNull.Value Then
@@ -282,7 +282,7 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_METHOD_OF_REPAIR_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
         End Set
@@ -290,7 +290,7 @@ Public Class ProductCode
 
 
     <ValueMandatory("")>
-    Public Property TypeOfEquipmentId() As Guid
+    Public Property TypeOfEquipmentId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID) Is DBNull.Value Then
@@ -299,14 +299,14 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property UseDepreciation() As Guid
+    Public Property UseDepreciation As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_USE_DEPRECIATION) Is DBNull.Value Then
@@ -315,14 +315,14 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_USE_DEPRECIATION), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_USE_DEPRECIATION, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property BundledItemId() As Guid
+    Public Property BundledItemId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_BUNDLED_ITEM_ID) Is DBNull.Value Then
@@ -331,14 +331,14 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_BUNDLED_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_BUNDLED_ITEM_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property MethodOfRepairByPriceId() As Guid
+    Public Property MethodOfRepairByPriceId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_METHOD_OF_REPAIR_BY_PRICE_ID) Is DBNull.Value Then
@@ -347,14 +347,14 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_METHOD_OF_REPAIR_BY_PRICE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_METHOD_OF_REPAIR_BY_PRICE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property SplitWarrantyId() As Guid
+    Public Property SplitWarrantyId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_SPLIT_WARRANTY_ID) Is DBNull.Value Then
@@ -363,14 +363,14 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_SPLIT_WARRANTY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_SPLIT_WARRANTY_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1000)>
-    Public Property Comments() As String
+    Public Property Comments As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_COMMENTS) Is DBNull.Value Then
@@ -379,14 +379,14 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_COMMENTS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_COMMENTS, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)>
-    Public Property SpecialService() As String
+    Public Property SpecialService As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_SPECIAL_SERVICE) Is DBNull.Value Then
@@ -395,7 +395,7 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_SPECIAL_SERVICE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_SPECIAL_SERVICE, Value)
         End Set
@@ -404,7 +404,7 @@ Public Class ProductCode
 
     '<ValueMandatory("")> _
     <Valid_BillingFrequency("")>
-    Public Property BillingFrequencyId() As Guid
+    Public Property BillingFrequencyId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_BILLING_FREQUENCY_ID) Is DBNull.Value Then
@@ -413,14 +413,14 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_BILLING_FREQUENCY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_BILLING_FREQUENCY_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=99), Valid_Numb_Of_Installment("")>
-    Public Property NumberOfInstallments() As Integer
+    Public Property NumberOfInstallments As Integer
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_NUMBER_OF_INSTALLMENTS) Is DBNull.Value Then
@@ -429,14 +429,14 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_NUMBER_OF_INSTALLMENTS), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_NUMBER_OF_INSTALLMENTS, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=9999), ValidateNumOfClaims("")>
-    Public Property NumOfClaims() As LongType
+    Public Property NumOfClaims As LongType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_NUM_OF_CLAIMS) Is DBNull.Value Then
@@ -445,7 +445,7 @@ Public Class ProductCode
                 Return New LongType(CType(Row(ProductCodeDAL.COL_NAME_NUM_OF_CLAIMS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_NUM_OF_CLAIMS, Value)
         End Set
@@ -468,7 +468,7 @@ Public Class ProductCode
     '    End Set
     'End Property
     <ValidNumericRange("", Max:=99)>
-    Public Property ClaimWaitingPeriod() As LongType
+    Public Property ClaimWaitingPeriod As LongType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_CLAIM_WAITING_PERIOD) Is DBNull.Value Then
@@ -477,14 +477,14 @@ Public Class ProductCode
                 Return New LongType(CType(Row(ProductCodeDAL.COL_NAME_CLAIM_WAITING_PERIOD), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_CLAIM_WAITING_PERIOD, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=999)>
-    Public Property FullRefundDays() As LongType
+    Public Property FullRefundDays As LongType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_FULL_REFUND_DAYS) Is DBNull.Value Then
@@ -493,14 +493,14 @@ Public Class ProductCode
                 Return New LongType(CType(Row(ProductCodeDAL.COL_NAME_FULL_REFUND_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_FULL_REFUND_DAYS, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property UpgradeProgramId() As Guid
+    Public Property UpgradeProgramId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_UPGRADE_PROGRAM_ID) Is DBNull.Value Then
@@ -509,7 +509,7 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_UPGRADE_PROGRAM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_UPGRADE_PROGRAM_ID, Value)
         End Set
@@ -525,7 +525,7 @@ Public Class ProductCode
         End Get
     End Property
 
-    Public Property UPGFinanceBalCompMethId() As Guid
+    Public Property UPGFinanceBalCompMethId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_UPG_FINANCE_BAL_COMP_METH_ID) Is DBNull.Value Then
@@ -534,13 +534,13 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_UPG_FINANCE_BAL_COMP_METH_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_UPG_FINANCE_BAL_COMP_METH_ID, Value)
         End Set
     End Property
 
-    Public Property IgnoreWaitingPeriodWsdPsd() As Guid
+    Public Property IgnoreWaitingPeriodWsdPsd As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_IGNORE_WAITING_PERIOD_WSD_PSD) Is DBNull.Value Then
@@ -549,14 +549,14 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_IGNORE_WAITING_PERIOD_WSD_PSD), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_IGNORE_WAITING_PERIOD_WSD_PSD, Value)
         End Set
     End Property
 
 
-    Public Property ProdLiabilityLimitBasedOnId() As Guid
+    Public Property ProdLiabilityLimitBasedOnId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT_BASE_ID) Is DBNull.Value Then
@@ -565,13 +565,13 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT_BASE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT_BASE_ID, Value)
         End Set
     End Property
     <ValidateProdLiabilityLimitPolicy("")>
-    Public Property ProdLiabilityLimitPolicyId() As Guid
+    Public Property ProdLiabilityLimitPolicyId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT_POLICY_ID) Is DBNull.Value Then
@@ -580,12 +580,12 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT_POLICY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT_POLICY_ID, Value)
         End Set
     End Property
-    Public Property PerIncidentLiabilityLimitCap() As DecimalType
+    Public Property PerIncidentLiabilityLimitCap As DecimalType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_PER_INCIDENT_LIABILITY_LIMIT_CAP) Is DBNull.Value Then
@@ -594,13 +594,13 @@ Public Class ProductCode
                 Return New DecimalType(CType(Row(ProductCodeDAL.COL_NAME_PER_INCIDENT_LIABILITY_LIMIT_CAP), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_PER_INCIDENT_LIABILITY_LIMIT_CAP, Value)
         End Set
     End Property
 
-    Public Property ProdLiabilityLimit() As DecimalType
+    Public Property ProdLiabilityLimit As DecimalType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT) Is DBNull.Value Then
@@ -609,13 +609,13 @@ Public Class ProductCode
                 Return New DecimalType(CType(Row(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT, Value)
         End Set
     End Property
 
-    Public Property ProdLiabilityLimitPercent() As LongType
+    Public Property ProdLiabilityLimitPercent As LongType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT_PERCENT) Is DBNull.Value Then
@@ -624,14 +624,14 @@ Public Class ProductCode
                 Return New LongType(CType(Row(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT_PERCENT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_PROD_LIABILITY_LIMIT_PERCENT, Value)
         End Set
     End Property
 
     '<ValidNumericRange("", Min:=1, MinExclusive:=False, Max:=100, MaxExclusive:=False, Message:=Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER)> _
-    Public Property ClaimAutoApprovePsp() As DecimalType
+    Public Property ClaimAutoApprovePsp As DecimalType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_CLAIM_AUTO_APPROVE_PSP) Is DBNull.Value Then
@@ -640,14 +640,14 @@ Public Class ProductCode
                 Return New DecimalType(CType(Row(ProductCodeDAL.COL_NAME_CLAIM_AUTO_APPROVE_PSP), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_CLAIM_AUTO_APPROVE_PSP, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=9999, MaxExclusive:=False)>
-    Public Property NumOfRepairClaims() As LongType
+    Public Property NumOfRepairClaims As LongType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_NUM_OF_REPAIR_CLAIMS) Is DBNull.Value Then
@@ -656,14 +656,14 @@ Public Class ProductCode
                 Return New LongType(CType(Row(ProductCodeDAL.COL_NAME_NUM_OF_REPAIR_CLAIMS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_NUM_OF_REPAIR_CLAIMS, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=9999, MaxExclusive:=False)>
-    Public Property NumOfReplacementClaims() As LongType
+    Public Property NumOfReplacementClaims As LongType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_NUM_OF_REPLACEMENT_CLAIMS) Is DBNull.Value Then
@@ -672,7 +672,7 @@ Public Class ProductCode
                 Return New LongType(CType(Row(ProductCodeDAL.COL_NAME_NUM_OF_REPLACEMENT_CLAIMS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_NUM_OF_REPLACEMENT_CLAIMS, Value)
         End Set
@@ -680,7 +680,7 @@ Public Class ProductCode
 
     'pavan REQ-5733
     ' <ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False), ValidNoOfReplacementClaims(""), MandatoryNoOfReplacementClaimsAttribute("")> _
-    Public Property AnalysisCode1() As String
+    Public Property AnalysisCode1 As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_1) Is DBNull.Value Then
@@ -689,7 +689,7 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_1, Value)
         End Set
@@ -697,7 +697,7 @@ Public Class ProductCode
 
     'pavan REQ-5733
     '<ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False), ValidNoOfReplacementClaims(""), MandatoryNoOfReplacementClaimsAttribute("")> _
-    Public Property AnalysisCode2() As String
+    Public Property AnalysisCode2 As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_2) Is DBNull.Value Then
@@ -706,7 +706,7 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_2, Value)
         End Set
@@ -714,7 +714,7 @@ Public Class ProductCode
 
     'pavan REQ-5733
     '<ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False), ValidNoOfReplacementClaims(""), MandatoryNoOfReplacementClaimsAttribute("")> _
-    Public Property AnalysisCode3() As String
+    Public Property AnalysisCode3 As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_3) Is DBNull.Value Then
@@ -723,7 +723,7 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_3, Value)
         End Set
@@ -731,7 +731,7 @@ Public Class ProductCode
 
     'pavan REQ-5733
     '<ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False), ValidNoOfReplacementClaims(""), MandatoryNoOfReplacementClaimsAttribute("")> _
-    Public Property AnalysisCode4() As String
+    Public Property AnalysisCode4 As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_4) Is DBNull.Value Then
@@ -740,7 +740,7 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_4), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_4, Value)
         End Set
@@ -748,7 +748,7 @@ Public Class ProductCode
 
     'pavan REQ-5733
     '<ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False), ValidNoOfReplacementClaims(""), MandatoryNoOfReplacementClaimsAttribute("")> _
-    Public Property AnalysisCode5() As String
+    Public Property AnalysisCode5 As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_5) Is DBNull.Value Then
@@ -757,7 +757,7 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_5), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_5, Value)
         End Set
@@ -765,7 +765,7 @@ Public Class ProductCode
 
     'pavan REQ-5733
     '<ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False), ValidNoOfReplacementClaims(""), MandatoryNoOfReplacementClaimsAttribute("")> _
-    Public Property AnalysisCode6() As String
+    Public Property AnalysisCode6 As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_6) Is DBNull.Value Then
@@ -774,7 +774,7 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_6), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_6, Value)
         End Set
@@ -782,7 +782,7 @@ Public Class ProductCode
 
     'pavan REQ-5733
     '<ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False), ValidNoOfReplacementClaims(""), MandatoryNoOfReplacementClaimsAttribute("")> _
-    Public Property AnalysisCode7() As String
+    Public Property AnalysisCode7 As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_7) Is DBNull.Value Then
@@ -791,7 +791,7 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_7), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_7, Value)
         End Set
@@ -799,7 +799,7 @@ Public Class ProductCode
 
     'pavan REQ-5733
     '<ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False), ValidNoOfReplacementClaims(""), MandatoryNoOfReplacementClaimsAttribute("")> _
-    Public Property AnalysisCode8() As String
+    Public Property AnalysisCode8 As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_8) Is DBNull.Value Then
@@ -808,7 +808,7 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_8), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_8, Value)
         End Set
@@ -817,7 +817,7 @@ Public Class ProductCode
 
     'pavan REQ-5733
     '<ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False), ValidNoOfReplacementClaims(""), MandatoryNoOfReplacementClaimsAttribute("")> _
-    Public Property AnalysisCode9() As String
+    Public Property AnalysisCode9 As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_9) Is DBNull.Value Then
@@ -826,7 +826,7 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_9), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_9, Value)
         End Set
@@ -834,7 +834,7 @@ Public Class ProductCode
 
     'pavan REQ-5733
     '<ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False), ValidNoOfReplacementClaims(""), MandatoryNoOfReplacementClaimsAttribute("")> _
-    Public Property AnalysisCode10() As String
+    Public Property AnalysisCode10 As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_10) Is DBNull.Value Then
@@ -843,12 +843,12 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_10), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_ANALYSIS_CODE_10, Value)
         End Set
     End Property
-    Public Property IsReInsuredId() As Guid
+    Public Property IsReInsuredId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_IS_REINSURED_ID) Is DBNull.Value Then
@@ -857,13 +857,13 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_IS_REINSURED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_IS_REINSURED_ID, Value)
         End Set
     End Property
 
-    Public Property UpgFinanceInfoRequireId() As Guid
+    Public Property UpgFinanceInfoRequireId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_UPG_FINANCE_INFO_REQUIRE_ID) Is DBNull.Value Then
@@ -872,13 +872,13 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_UPG_FINANCE_INFO_REQUIRE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_UPG_FINANCE_INFO_REQUIRE_ID, Value)
         End Set
     End Property
 
-    Public Property UpgradeTermUomId() As Guid
+    Public Property UpgradeTermUomId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_UPGRADE_TERM_UOM_ID) Is DBNull.Value Then
@@ -887,13 +887,13 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_UPGRADE_TERM_UOM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_UPGRADE_TERM_UOM_ID, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0, Max:=9999)>
-    Public Property UpgradeTermFrom() As LongType
+    Public Property UpgradeTermFrom As LongType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_UPGRADE_TERM_FROM) Is DBNull.Value Then
@@ -902,13 +902,13 @@ Public Class ProductCode
                 Return New LongType(CType(Row(ProductCodeDAL.COL_NAME_UPGRADE_TERM_FROM), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_UPGRADE_TERM_FROM, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0, Max:=9999)>
-    Public Property UpgradeTermTo() As LongType
+    Public Property UpgradeTermTo As LongType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_UPGRADE_TERM_TO) Is DBNull.Value Then
@@ -917,13 +917,13 @@ Public Class ProductCode
                 Return New LongType(CType(Row(ProductCodeDAL.COL_NAME_UPGRADE_TERM_TO), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_UPGRADE_TERM_TO, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0, Max:=999)>
-    Public Property UpgradeFixedTerm() As LongType
+    Public Property UpgradeFixedTerm As LongType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_UPGRADE_FIXED_TERM) Is DBNull.Value Then
@@ -932,13 +932,13 @@ Public Class ProductCode
                 Return New LongType(CType(Row(ProductCodeDAL.COL_NAME_UPGRADE_FIXED_TERM), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_UPGRADE_FIXED_TERM, Value)
         End Set
     End Property
 
-    Public Property InstallmentRepricableId() As Guid
+    Public Property InstallmentRepricableId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_INSTALLMENT_REPRICABLE_ID) Is DBNull.Value Then
@@ -947,14 +947,14 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_INSTALLMENT_REPRICABLE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_INSTALLMENT_REPRICABLE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)>
-    Public Property Inuseflag() As String
+    Public Property Inuseflag As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_INUSEFLAG) Is DBNull.Value Then
@@ -963,13 +963,13 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_INUSEFLAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_INUSEFLAG, Value)
         End Set
     End Property
 
-    Public Property CnlDependencyId() As Guid
+    Public Property CnlDependencyId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_CNL_DEPENDENCY_ID) Is DBNull.Value Then
@@ -978,13 +978,13 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_CNL_DEPENDENCY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_CNL_DEPENDENCY_ID, Value)
         End Set
     End Property
 
-    Public Property BillingCriteriaId() As Guid
+    Public Property BillingCriteriaId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_BILLING_CRITERIA_ID) Is DBNull.Value Then
@@ -993,13 +993,13 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_BILLING_CRITERIA_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_BILLING_CRITERIA_ID, Value)
         End Set
     End Property
 
-    Public Property PostPrePaidId() As Guid
+    Public Property PostPrePaidId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_POST_PRE_PAID_ID) Is DBNull.Value Then
@@ -1008,13 +1008,13 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_POST_PRE_PAID_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_POST_PRE_PAID_ID, Value)
         End Set
     End Property
 
-    Public Property CnlLumpsumBillingId() As Guid
+    Public Property CnlLumpsumBillingId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_CNL_LUMPSUM_BILLING_ID) Is DBNull.Value Then
@@ -1023,13 +1023,13 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_CNL_LUMPSUM_BILLING_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_CNL_LUMPSUM_BILLING_ID, Value)
         End Set
     End Property
     'REQ-5980
-    Public ReadOnly Property IsParentProduct() As Boolean
+    Public ReadOnly Property IsParentProduct As Boolean
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_IS_PARENT_PRODUCT) Is DBNull.Value Then
@@ -1040,7 +1040,7 @@ Public Class ProductCode
         End Get
     End Property
     <ValueMandatory("")>
-    Public Property ProductEquipmentValidation() As String
+    Public Property ProductEquipmentValidation As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_IS_PRODUCT_EQUIPMENT_VALIDATION) Is DBNull.Value Then
@@ -1049,12 +1049,12 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_IS_PRODUCT_EQUIPMENT_VALIDATION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_IS_PRODUCT_EQUIPMENT_VALIDATION, Value)
         End Set
     End Property
-    Public Property UpgradeFee() As DecimalType
+    Public Property UpgradeFee As DecimalType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_UPGRADE_FEE) Is DBNull.Value Then
@@ -1063,14 +1063,14 @@ Public Class ProductCode
                 Return New DecimalType(CType(Row(ProductCodeDAL.COL_NAME_UPGRADE_FEE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_UPGRADE_FEE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property AllowRegisteredItems() As String
+    Public Property AllowRegisteredItems As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_ALLOW_REGISTERED_ITEMS) Is DBNull.Value Then
@@ -1079,13 +1079,13 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_ALLOW_REGISTERED_ITEMS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_ALLOW_REGISTERED_ITEMS, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0, Max:=999)>
-    Public Property MaxAgeOfRegisteredItem() As LongType
+    Public Property MaxAgeOfRegisteredItem As LongType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_MAX_AGE_OF_REGISTERED_ITEM) Is DBNull.Value Then
@@ -1094,13 +1094,13 @@ Public Class ProductCode
                 Return New LongType(CType(Row(ProductCodeDAL.COL_NAME_MAX_AGE_OF_REGISTERED_ITEM), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_MAX_AGE_OF_REGISTERED_ITEM, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0, Max:=999)>
-    Public Property MaxRegistrationsAllowed() As LongType
+    Public Property MaxRegistrationsAllowed As LongType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_MAX_REGISTRATIONS_ALLOWED) Is DBNull.Value Then
@@ -1109,13 +1109,13 @@ Public Class ProductCode
                 Return New LongType(CType(Row(ProductCodeDAL.COL_NAME_MAX_REGISTRATIONS_ALLOWED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_MAX_REGISTRATIONS_ALLOWED, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0, Max:=999)>
-    Public Property MaxClaimsAllowedPerRegisteredItem() As LongType
+    Public Property MaxClaimsAllowedPerRegisteredItem As LongType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_CLAIM_LIMIT_PER_REG_ITEM) Is DBNull.Value Then
@@ -1124,13 +1124,13 @@ Public Class ProductCode
                 Return New LongType(CType(Row(ProductCodeDAL.COL_NAME_CLAIM_LIMIT_PER_REG_ITEM), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_CLAIM_LIMIT_PER_REG_ITEM, Value)
         End Set
     End Property
     <ListOfDeviceGroupsValidation("")>
-    Public Property ListForDeviceGroups() As Guid
+    Public Property ListForDeviceGroups As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_LIST_FOR_DEVICE_GROUPS) Is DBNull.Value Then
@@ -1139,12 +1139,12 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_LIST_FOR_DEVICE_GROUPS), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_LIST_FOR_DEVICE_GROUPS, Value)
         End Set
     End Property
-    Public Property ListForDeviceGroupCode() As String
+    Public Property ListForDeviceGroupCode As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_LIST_FOR_DEVICE_GROUP_CODE) Is DBNull.Value Then
@@ -1153,13 +1153,13 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_LIST_FOR_DEVICE_GROUP_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_LIST_FOR_DEVICE_GROUP_CODE, Value)
         End Set
     End Property
     <UpdateReplaceRegItemsIdValidation("")>
-    Public Property UpdateReplaceRegItemsId() As Guid
+    Public Property UpdateReplaceRegItemsId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_UPDATE_REPLACE_REG_ITEMS_ID) Is DBNull.Value Then
@@ -1168,13 +1168,13 @@ Public Class ProductCode
                 Return New Guid(CType(Row(ProductCodeDAL.COL_NAME_UPDATE_REPLACE_REG_ITEMS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_UPDATE_REPLACE_REG_ITEMS_ID, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=1, Max:=999)>
-    Public Property RegisteredItemsLimit() As LongType
+    Public Property RegisteredItemsLimit As LongType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_REGISTERED_ITEMS_LIMIT) Is DBNull.Value Then
@@ -1183,17 +1183,17 @@ Public Class ProductCode
                 Return New LongType(CType(Row(ProductCodeDAL.COL_NAME_REGISTERED_ITEMS_LIMIT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_REGISTERED_ITEMS_LIMIT, Value)
         End Set
     End Property
 
-    Public Property _ClaimRecordingXcd() As String
+    Public Property _ClaimRecordingXcd As String
         Get
             Return mClaimRecordingXcd
         End Get
-        Set(ByVal Value As String)
+        Set
             mClaimRecordingXcd = Value
         End Set
     End Property
@@ -1203,7 +1203,7 @@ Public Class ProductCode
     'COL_NAME_PROD_LIMIT_APPLICABLE_TO_XCD
     REM ValidateClaimLiabilityLimitAppliedTo
     <ValidateClaimLiabilityLimitAppliedTo("")>
-    Public Property ProductLimitApplicableToXCD() As String
+    Public Property ProductLimitApplicableToXCD As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_PROD_LIMIT_APPLICABLE_TO_XCD) Is DBNull.Value Then
@@ -1212,13 +1212,13 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_PROD_LIMIT_APPLICABLE_TO_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_PROD_LIMIT_APPLICABLE_TO_XCD, Value)
         End Set
     End Property
 
-    Public Property CancellationWithinTerm() As String
+    Public Property CancellationWithinTerm As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_CANCELLATION_WITHIN_TERM_XCD) Is DBNull.Value Then
@@ -1227,14 +1227,14 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_CANCELLATION_WITHIN_TERM_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_CANCELLATION_WITHIN_TERM_XCD, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=1, Max:=999)>
-    Public Property ExpirationNotificationDays() As LongType
+    Public Property ExpirationNotificationDays As LongType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_EXPIRATION_NOTIFICATION_DAYS) Is DBNull.Value Then
@@ -1243,12 +1243,12 @@ Public Class ProductCode
                 Return New LongType(CType(Row(ProductCodeDAL.COL_NAME_EXPIRATION_NOTIFICATION_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_EXPIRATION_NOTIFICATION_DAYS, Value)
         End Set
     End Property
-    Public Property FullillmentReimburesementThreshold() As DecimalType
+    Public Property FullillmentReimburesementThreshold As DecimalType
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.ColNameFulfillmentReimThreshold) Is DBNull.Value Then
@@ -1257,13 +1257,13 @@ Public Class ProductCode
                 Return New DecimalType(CType(Row(ProductCodeDAL.ColNameFulfillmentReimThreshold), Decimal))
             End If
         End Get
-        Set(ByVal value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.ColNameFulfillmentReimThreshold, value)
         End Set
     End Property
 
-    Public Property BenefitEligibleFlagXCD() As String
+    Public Property BenefitEligibleFlagXCD As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_BENEFIT_ELIGIBLE_XCD) Is DBNull.Value Then
@@ -1272,13 +1272,13 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_BENEFIT_ELIGIBLE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_BENEFIT_ELIGIBLE_XCD, Value)
         End Set
     End Property
     <BenefitEligibleActionValidation("")>
-    Public Property BenefitEligibleActionXCD() As String
+    Public Property BenefitEligibleActionXCD As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_BENEFIT_ELIGIBLE_ACTION_XCD) Is DBNull.Value Then
@@ -1287,13 +1287,13 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_BENEFIT_ELIGIBLE_ACTION_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_BENEFIT_ELIGIBLE_ACTION_XCD, Value)
         End Set
     End Property
 
-    Public Property CalcCovgEndDateBasedOnXCD() As String
+    Public Property CalcCovgEndDateBasedOnXCD As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_CALC_COVG_END_DATE_BASED_ON_XCD) Is DBNull.Value Then
@@ -1302,13 +1302,13 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_CALC_COVG_END_DATE_BASED_ON_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_CALC_COVG_END_DATE_BASED_ON_XCD, Value)
         End Set
     End Property
 
-    Public Property ClaimProfile() As String
+    Public Property ClaimProfile As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.ColNameClaimProfileCode) Is DBNull.Value Then
@@ -1317,13 +1317,13 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.ColNameClaimProfileCode), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.ColNameClaimProfileCode, Value)
         End Set
     End Property
 
-    Public Property PriceMatrixUsesWpXcd() As String
+    Public Property PriceMatrixUsesWpXcd As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_PRICE_MATRIX_USES_WP_XCD) Is DBNull.Value Then
@@ -1332,13 +1332,13 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_PRICE_MATRIX_USES_WP_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_PRICE_MATRIX_USES_WP_XCD, Value)
         End Set
     End Property
 
-    Public Property ExpectedPremiumIsWpXcd() As String
+    Public Property ExpectedPremiumIsWpXcd As String
         Get
             CheckDeleted()
             If Row(ProductCodeDAL.COL_NAME_EXPECTED_PREMIUM_IS_WP_XCD) Is DBNull.Value Then
@@ -1347,7 +1347,7 @@ Public Class ProductCode
                 Return CType(Row(ProductCodeDAL.COL_NAME_EXPECTED_PREMIUM_IS_WP_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeDAL.COL_NAME_EXPECTED_PREMIUM_IS_WP_XCD, Value)
         End Set
@@ -1389,7 +1389,7 @@ Public Class ProductCode
             Return dal.UpdateCoverageReinsurance(ProductCodeId, ModeOperation)
         End If
     End Function
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Dim bDirty As Boolean
 
@@ -1665,7 +1665,7 @@ Public Class ProductCode
 #Region "ProductCodes"
 
 
-    Public ReadOnly Property ProductRegionChildren() As ProductRegionList
+    Public ReadOnly Property ProductRegionChildren As ProductRegionList
         Get
             Return New ProductRegionList(Me)
         End Get
@@ -1787,7 +1787,7 @@ Public Class ProductCode
 #Region "Device Types"
 
 
-    Public ReadOnly Property ProductDeviceTypeChildren() As ProductDeviceTypeList
+    Public ReadOnly Property ProductDeviceTypeChildren As ProductDeviceTypeList
         Get
             Return New ProductDeviceTypeList(Me)
         End Get
@@ -1956,7 +1956,7 @@ Public Class ProductCode
 
 #Region "Policy"
 
-    Public ReadOnly Property ProductPolicyDetailChildren() As ProductPolicy.ProductPolicyDetailList
+    Public ReadOnly Property ProductPolicyDetailChildren As ProductPolicy.ProductPolicyDetailList
         Get
             Return New ProductPolicy.ProductPolicyDetailList(Me)
         End Get
@@ -2012,7 +2012,7 @@ Public Class ProductCode
 
 #Region "Product Rewards"
 
-    Public ReadOnly Property ProductRewardsDetailChildren() As ProductRewards.ProductRewardsDetailList
+    Public ReadOnly Property ProductRewardsDetailChildren As ProductRewards.ProductRewardsDetailList
         Get
             Return New ProductRewards.ProductRewardsDetailList(Me)
         End Get
@@ -2067,7 +2067,7 @@ Public Class ProductCode
 #End Region
 
 #Region "Product Benefits"
-    Public ReadOnly Property ProductBenefitsDetailChildren() As ProductEquipment.ProductBenefitsDetailList
+    Public ReadOnly Property ProductBenefitsDetailChildren As ProductEquipment.ProductBenefitsDetailList
         Get
             Return New ProductEquipment.ProductBenefitsDetailList(Me)
         End Get
@@ -2100,7 +2100,7 @@ Public Class ProductCode
 
 #Region "Depreciation Schedule"
 
-    Public ReadOnly Property ProductDepreciationScdChildren() As DepreciationScdRelation.ProductDepreciationScdList
+    Public ReadOnly Property ProductDepreciationScdChildren As DepreciationScdRelation.ProductDepreciationScdList
         Get
             Return New DepreciationScdRelation.ProductDepreciationScdList(Me)
         End Get

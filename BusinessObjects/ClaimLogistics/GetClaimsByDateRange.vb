@@ -92,7 +92,7 @@ Public Class GetClaimsByDateRange
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property StartDate() As DateTime
+    Public Property StartDate As DateTime
         Get
             If Row(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -100,14 +100,14 @@ Public Class GetClaimsByDateRange
                 Return CType(Row(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE), String)
             End If
         End Get
-        Set(ByVal Value As Date)
+        Set
             CheckDeleted()
             SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property EndDate() As DateTime
+    Public Property EndDate As DateTime
         Get
             If Row(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -115,14 +115,14 @@ Public Class GetClaimsByDateRange
                 Return CType(Row(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE), String)
             End If
         End Get
-        Set(ByVal Value As Date)
+        Set
             CheckDeleted()
             SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServiceCenterCode() As String
+    Public Property ServiceCenterCode As String
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_SERVICE_CENTER_CODE) Is DBNull.Value Then
@@ -131,13 +131,13 @@ Public Class GetClaimsByDateRange
                 Return CType(Row(DATA_COL_NAME_SERVICE_CENTER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
-    Public ReadOnly Property ServiceCenterID() As Guid
+    Public ReadOnly Property ServiceCenterID As Guid
         Get
             If _serviceCenterId.Equals(Guid.Empty) AndAlso Not ServiceCenterCode Is Nothing AndAlso ServiceCenterCode <> "" Then
 

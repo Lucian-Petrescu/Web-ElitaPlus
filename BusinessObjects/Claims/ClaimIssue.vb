@@ -44,17 +44,17 @@ Public Class ClaimIssue
 
 #Region "Properties"
     <ValueMandatory("")> _
-    Public ReadOnly Property ClaimIssueId() As Guid
+    Public ReadOnly Property ClaimIssueId As Guid
         Get
             Return Id
         End Get
     End Property
 
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             Return EntityId
         End Get
-        Set(Value As Guid)
+        Set
             EntityId = Value
         End Set
     End Property
@@ -76,31 +76,31 @@ Public Class ClaimIssue
             End If
             Return _claim
         End Get
-        Private Set(value As ClaimBase)
+        Private Set
             _claim = value
         End Set
     End Property
 
-    Public ReadOnly Property Issue() As Issue
+    Public ReadOnly Property Issue As Issue
         Get
             Dim oIssue As New Issue(IssueId)
             Return oIssue
         End Get
     End Property
 
-    Public ReadOnly Property IssueCode() As String
+    Public ReadOnly Property IssueCode As String
         Get
             Return Issue.Code
         End Get
     End Property
 
-    Public ReadOnly Property IssueDescription() As String
+    Public ReadOnly Property IssueDescription As String
         Get
             Return Issue.Description
         End Get
     End Property
 
-    Public ReadOnly Property ClaimIssueQuestionList() As IssueQuestionsChildrenList
+    Public ReadOnly Property ClaimIssueQuestionList As IssueQuestionsChildrenList
         Get
             Dim claimIssue As New Issue(IssueId)
             Return claimIssue.IssueQuestionsChildren
@@ -114,19 +114,19 @@ Public Class ClaimIssue
         End Get
     End Property
 
-    Public ReadOnly Property ClaimIssueResponseList() As ClaimIssueResponse.ClaimIssueResponseList
+    Public ReadOnly Property ClaimIssueResponseList As ClaimIssueResponse.ClaimIssueResponseList
         Get
             Return New ClaimIssueResponse.ClaimIssueResponseList(Me)
         End Get
     End Property
 
-    Public ReadOnly Property ClaimIssueStatusList() As ClaimIssueStatus.ClaimIssueStatusList
+    Public ReadOnly Property ClaimIssueStatusList As ClaimIssueStatus.ClaimIssueStatusList
         Get
             Return New ClaimIssueStatus.ClaimIssueStatusList(Me)
         End Get
     End Property
 
-    Public Property ProcessedDate() As DateType
+    Public Property ProcessedDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimIssue.COL_NAME_PROCESSED_DATE) Is DBNull.Value Then
@@ -135,13 +135,13 @@ Public Class ClaimIssue
                 Return New DateType(CType(Row(ClaimIssue.COL_NAME_PROCESSED_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimIssue.COL_NAME_PROCESSED_DATE, Value)
         End Set
     End Property
 
-    Public Property ProcessedBy() As String
+    Public Property ProcessedBy As String
         Get
             CheckDeleted()
             If Row(ClaimIssue.COL_NAME_PROCESSED_BY) Is DBNull.Value Then
@@ -150,13 +150,13 @@ Public Class ClaimIssue
                 Return CType(Row(ClaimIssue.COL_NAME_PROCESSED_BY), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimIssue.COL_NAME_PROCESSED_BY, Value)
         End Set
     End Property
 
-    Public ReadOnly Property StatusId() As Guid
+    Public ReadOnly Property StatusId As Guid
         Get
             CheckDeleted()
             If Row(ClaimIssue.COL_NAME_STATUS_ID) Is DBNull.Value Then
@@ -168,7 +168,7 @@ Public Class ClaimIssue
         End Get
     End Property
 
-    Public Property StatusCode() As String
+    Public Property StatusCode As String
         Get
             CheckDeleted()
             If Row(ClaimIssue.COL_NAME_STATUS_CODE) Is DBNull.Value Then
@@ -177,13 +177,13 @@ Public Class ClaimIssue
                 Return CType(Row(ClaimIssue.COL_NAME_STATUS_CODE), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimIssue.COL_NAME_STATUS_CODE, Value)
         End Set
     End Property
 
-    Public Property CreatedBy() As String
+    Public Property CreatedBy As String
         Get
             CheckDeleted()
             If Row(ClaimIssue.COL_NAME_CREATED_BY) Is DBNull.Value Then
@@ -192,26 +192,26 @@ Public Class ClaimIssue
                 Return CType(Row(ClaimIssue.COL_NAME_CREATED_BY), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimIssue.COL_NAME_CREATED_BY, Value)
         End Set
     End Property
 
-    Public Property CreatedById() As String
+    Public Property CreatedById As String
         Get
             CheckDeleted()
             If Row(DALBase.COL_NAME_CREATED_BY) Is DBNull.Value Then Return Nothing
             Return CType(Row(DALBase.COL_NAME_CREATED_BY), String)
         End Get
-        Set(value As String)
+        Set
             CheckDeleted()
             SetValue(DALBase.COL_NAME_CREATED_BY, value)
         End Set
     End Property
 
 
-    Public Property CreatedDate() As DateTime
+    Public Property CreatedDate As DateTime
         Get
             CheckDeleted()
             If Row(ClaimIssueDAL.COL_NAME_CREATED_DATE) Is DBNull.Value Then
@@ -220,7 +220,7 @@ Public Class ClaimIssue
                 Return CType(Row(ClaimIssueDAL.COL_NAME_CREATED_DATE), DateTime)
             End If
         End Get
-        Set(Value As DateTime)
+        Set
             CheckDeleted()
             SetValue(ClaimIssueDAL.COL_NAME_CREATED_DATE, Value)
         End Set
@@ -320,7 +320,7 @@ Public Class ClaimIssue
     End Sub
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get

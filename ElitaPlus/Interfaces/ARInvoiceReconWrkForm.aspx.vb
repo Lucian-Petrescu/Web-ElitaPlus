@@ -1060,7 +1060,7 @@ Namespace Interfaces
             End If
             'Freeze Headers - Start
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     .Attributes("onclick") = "setHighlighter(this)"
                     'Freeze Columns - Start

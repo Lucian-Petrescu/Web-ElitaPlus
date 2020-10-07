@@ -321,7 +321,7 @@ Namespace Tables
                 State.IsUndo = True
                 PopulateAll()
 
-                If State.IsNewWithCopy And State.IsUndo Then
+                If State.IsNewWithCopy AndAlso State.IsUndo Then
                     State.IsUndo = False
                     State.IsNewWithCopy = False
                     State.IsEarningPatternNew = False
@@ -422,7 +422,7 @@ Namespace Tables
         Public Function SavePercentList() As Boolean
             Dim i As Integer = 0
             Try
-                If State.IsNewWithCopy = True And State.moPercentList IsNot Nothing Then
+                If State.IsNewWithCopy = True AndAlso State.moPercentList IsNot Nothing Then
                     'Associate each detail record to the newly created pattern record
                     'and Save each detail Record
                     For i = 0 To State.moPercentList.Length - 1
@@ -571,9 +571,9 @@ Namespace Tables
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-            If dvRow IsNot Nothing And Not State.bnoRow Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     CType(e.Row.Cells(DBEARNING_PERCENT_ID).FindControl("moEARNING_PERCENT_ID"), Label).Text = GetGuidStringFromByteArray(CType(dvRow(DBEARNING_PERCENT_ID), Byte()))
                     If (State.IsEditMode = True _
                             AndAlso State.selectedEarningPercentId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(DBEARNING_PERCENT_ID), Byte())))) Then
@@ -748,7 +748,7 @@ Namespace Tables
             Dim oEarningCode As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="EarningCodesByCompanyGroup", context:=oListContext)
             Dim earningPatterns As ListItem() = CommonConfigManager.Current.ListManager.GetList("EPSO", Thread.CurrentPrincipal.GetLanguageCode())
 
-            If State.IsNewWithCopy And State.IsUndo Then
+            If State.IsNewWithCopy AndAlso State.IsUndo Then
                 State.moEarningPatternId = State.moOldEarningPatternId
                 moEarningPattern = New EarningPattern(State.moEarningPatternId)
             End If
@@ -785,7 +785,7 @@ Namespace Tables
 
         Private Sub PopulateFields()
             Try
-                If IsPostBack And Not State.IsUndo Then
+                If IsPostBack AndAlso Not State.IsUndo Then
                     ' JLR - Restore Presviously Selected Values
                     moDescriptionText.Text = State.selectedDescription
                     moCodeText.Text = State.selectedCode
@@ -896,7 +896,7 @@ Namespace Tables
             Try
                 With TheEarningPattern
                     PopulateBOsFromForm()
-                    If .IsLastPattern() = False And .IsFirstPattern = False Then
+                    If .IsLastPattern() = False AndAlso .IsFirstPattern = False Then
                         moErrorController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.EARNING_PATTERN_CANNOT_BE_DELETED)
                         moErrorController.Show()
                         .cancelEdit()
@@ -929,7 +929,7 @@ Namespace Tables
                     Return False
                 Else
                     If CType(.Effective.ToString, Date) <> moEffectiveDate _
-                    Or CType(.Expiration.ToString, Date) <> moExpirationDate Then
+                    OrElse CType(.Expiration.ToString, Date) <> moExpirationDate Then
                         Return True
                     Else
                         Return False
@@ -971,7 +971,7 @@ Namespace Tables
             Dim oEarningPercent As EarningPercent
             Dim oDataView As DataView, oDataViewOld As DataView
 
-            If State.IsEarningPatternNew = True And Not State.IsNewWithCopy Then Return
+            If State.IsEarningPatternNew = True AndAlso Not State.IsNewWithCopy Then Return
 
             Try
 

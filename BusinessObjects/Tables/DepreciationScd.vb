@@ -97,7 +97,7 @@ Public Class DepreciationScd
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DepreciationScdDal.TableKeyName) Is DBNull.Value Then
                 Return Nothing
@@ -108,7 +108,7 @@ Public Class DepreciationScd
     End Property
 
     <ValueMandatory("")>
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(DepreciationScdDal.ColNameCompanyId) Is DBNull.Value Then
@@ -117,7 +117,7 @@ Public Class DepreciationScd
                 Return New Guid(CType(Row(DepreciationScdDal.ColNameCompanyId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdDal.ColNameCompanyId, value)
         End Set
@@ -125,7 +125,7 @@ Public Class DepreciationScd
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020), ValidateDepreciationCode("")>
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(DepreciationScdDal.ColNameCode) Is DBNull.Value Then
@@ -134,7 +134,7 @@ Public Class DepreciationScd
                 Return CType(Row(DepreciationScdDal.ColNameCode), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdDal.ColNameCode, value)
         End Set
@@ -142,7 +142,7 @@ Public Class DepreciationScd
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(DepreciationScdDal.ColNameDescription) Is DBNull.Value Then
@@ -151,7 +151,7 @@ Public Class DepreciationScd
                 Return CType(Row(DepreciationScdDal.ColNameDescription), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdDal.ColNameDescription, value)
         End Set
@@ -159,7 +159,7 @@ Public Class DepreciationScd
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)>
-    Public Property ActiveXcd() As String
+    Public Property ActiveXcd As String
         Get
             CheckDeleted()
             If Row(DepreciationScdDal.ColNameActiveXcd) Is DBNull.Value Then
@@ -168,7 +168,7 @@ Public Class DepreciationScd
                 Return CType(Row(DepreciationScdDal.ColNameActiveXcd), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdDal.ColNameActiveXcd, value)
         End Set

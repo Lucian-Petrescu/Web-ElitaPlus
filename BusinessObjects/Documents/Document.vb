@@ -104,7 +104,7 @@ Namespace Documents
 #Region "Properties"
 
         'Key Property
-        Public ReadOnly Property Id() As Guid
+        Public ReadOnly Property Id As Guid
             Get
                 If Row(DocumentDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                     Return Nothing
@@ -115,7 +115,7 @@ Namespace Documents
         End Property
 
         <ValueMandatory(""), ValidStringLength("", Max:=50), CheckFileType("")>
-        Public Property FileType() As String
+        Public Property FileType As String
             Get
                 CheckDeleted()
                 If Row(DocumentDAL.COL_NAME_FILE_TYPE) Is DBNull.Value Then
@@ -124,14 +124,14 @@ Namespace Documents
                     Return CType(Row(DocumentDAL.COL_NAME_FILE_TYPE), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
                 SetValue(DocumentDAL.COL_NAME_FILE_TYPE, Value)
             End Set
         End Property
 
         <ValueMandatory(""), ValidStringLength("", Max:=100)>
-        Public Property HashValue() As String
+        Public Property HashValue As String
             Get
                 CheckDeleted()
                 If Row(DocumentDAL.COL_NAME_HASH_VALUE) Is DBNull.Value Then
@@ -140,7 +140,7 @@ Namespace Documents
                     Return CType(Row(DocumentDAL.COL_NAME_HASH_VALUE), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
                 If (IsNew) Then
                     SetValue(DocumentDAL.COL_NAME_HASH_VALUE, Value)
@@ -152,7 +152,7 @@ Namespace Documents
         End Property
 
         <ValueMandatory(""), ValidStringLength("", Max:=500)>
-        Public Property FileName() As String
+        Public Property FileName As String
             Get
                 CheckDeleted()
                 If Row(DocumentDAL.COL_NAME_FILE_NAME) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Namespace Documents
                     Return CType(Row(DocumentDAL.COL_NAME_FILE_NAME), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
                 SetValue(DocumentDAL.COL_NAME_FILE_NAME, Value)
             End Set
@@ -169,7 +169,7 @@ Namespace Documents
 
 
         <ValueMandatory(""), ValidStringLength("", Max:=50), CheckRepository("")>
-        Public Property RepositoryCode() As String
+        Public Property RepositoryCode As String
             Get
                 CheckDeleted()
                 If Row(DocumentDAL.COL_NAME_REPOSITORY_CODE) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Namespace Documents
                     Return CType(Row(DocumentDAL.COL_NAME_REPOSITORY_CODE), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
                 SetValue(DocumentDAL.COL_NAME_REPOSITORY_CODE, Value)
             End Set
@@ -186,7 +186,7 @@ Namespace Documents
 
 
         <ValueMandatory(""), CheckFileSize("")>
-        Public Property FileSizeBytes() As LongType
+        Public Property FileSizeBytes As LongType
             Get
                 CheckDeleted()
                 If Row(DocumentDAL.COL_NAME_FILE_SIZE_BYTES) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Namespace Documents
                     Return New LongType(CType(Row(DocumentDAL.COL_NAME_FILE_SIZE_BYTES), Long))
                 End If
             End Get
-            Set(ByVal Value As LongType)
+            Set
                 CheckDeleted()
                 SetValue(DocumentDAL.COL_NAME_FILE_SIZE_BYTES, Value)
             End Set
@@ -228,7 +228,7 @@ Namespace Documents
         Private _data As Byte() = Nothing
 
         <CheckData(""), CheckMaxData("")>
-        Public Property Data() As Byte()
+        Public Property Data As Byte()
             Get
                 CheckDeleted()
                 If _data Is Nothing Then
@@ -272,7 +272,7 @@ Namespace Documents
                     Return _data
                 End If
             End Get
-            Set(ByVal value As Byte())
+            Set
                 CheckDeleted()
                 If (IsNew) Then
                     _data = value

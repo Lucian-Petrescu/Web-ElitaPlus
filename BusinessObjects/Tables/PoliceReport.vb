@@ -137,7 +137,7 @@ Public Class PoliceReport
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(PoliceReportDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -148,7 +148,7 @@ Public Class PoliceReport
     End Property
 
     <ValueMandatory("")> _
-    Public Property PoliceStationId() As Guid
+    Public Property PoliceStationId As Guid
         Get
             CheckDeleted()
             If row(PoliceReportDAL.COL_NAME_POLICE_STATION_ID) Is DBNull.Value Then
@@ -157,7 +157,7 @@ Public Class PoliceReport
                 Return New Guid(CType(row(PoliceReportDAL.COL_NAME_POLICE_STATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PoliceReportDAL.COL_NAME_POLICE_STATION_ID, Value)
         End Set
@@ -165,7 +165,7 @@ Public Class PoliceReport
 
 
     <ValueMandatory("")> _
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If row(PoliceReportDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -174,7 +174,7 @@ Public Class PoliceReport
                 Return New Guid(CType(row(PoliceReportDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PoliceReportDAL.COL_NAME_CLAIM_ID, Value)
         End Set
@@ -210,7 +210,7 @@ Public Class PoliceReport
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property ReportNumber() As String
+    Public Property ReportNumber As String
         Get
             CheckDeleted()
             If Row(PoliceReportDAL.COL_NAME_REPORT_NUMBER) Is DBNull.Value Then
@@ -219,14 +219,14 @@ Public Class PoliceReport
                 Return CType(Row(PoliceReportDAL.COL_NAME_REPORT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PoliceReportDAL.COL_NAME_REPORT_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property OfficerName() As String
+    Public Property OfficerName As String
         Get
             CheckDeleted()
             If Row(PoliceReportDAL.COL_NAME_OFFICER_NAME) Is DBNull.Value Then
@@ -235,7 +235,7 @@ Public Class PoliceReport
                 Return CType(Row(PoliceReportDAL.COL_NAME_OFFICER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PoliceReportDAL.COL_NAME_OFFICER_NAME, Value)
         End Set
@@ -312,7 +312,7 @@ Public Class PoliceReport
 
 #End Region
 
-    Public ReadOnly Property IsEmpty() As Boolean
+    Public ReadOnly Property IsEmpty As Boolean
         Get
             If (Not IsEmptyString(ReportNumber)) AndAlso _
                 (Not PoliceStationId.Equals(Guid.Empty)) Then

@@ -249,7 +249,7 @@ Partial Public Class ClaimStatusByGroupListForm
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
         Try
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_COMPANY_GROUP_NAME_IDX), dvRow(ClaimStatusByGroup.ClaimStatusByGroupSearchDV.COL_NAME_COMPANY_GROUP_NAME))
                 PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_COMPANY_GROUP_CODE_IDX), dvRow(ClaimStatusByGroup.ClaimStatusByGroupSearchDV.COL_NAME_COMPANY_GROUP_CODE))
             End If

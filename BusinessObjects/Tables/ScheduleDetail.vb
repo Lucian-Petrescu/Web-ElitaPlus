@@ -198,7 +198,7 @@ Public Class ScheduleDetail
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ScheduleDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -209,7 +209,7 @@ Public Class ScheduleDetail
     End Property
 
     <ValueMandatory("")> _
-    Public Property ScheduleId() As Guid
+    Public Property ScheduleId As Guid
         Get
             CheckDeleted()
             If Row(ScheduleDetailDAL.COL_NAME_SCHEDULE_ID) Is DBNull.Value Then
@@ -218,7 +218,7 @@ Public Class ScheduleDetail
                 Return New Guid(CType(Row(ScheduleDetailDAL.COL_NAME_SCHEDULE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ScheduleDetailDAL.COL_NAME_SCHEDULE_ID, Value)
         End Set
@@ -226,7 +226,7 @@ Public Class ScheduleDetail
 
 
     <ValueMandatory("")> _
-    Public Property DayOfWeekId() As Guid
+    Public Property DayOfWeekId As Guid
         Get
             CheckDeleted()
             If Row(ScheduleDetailDAL.COL_NAME_DAY_OF_WEEK_ID) Is DBNull.Value Then
@@ -235,14 +235,14 @@ Public Class ScheduleDetail
                 Return New Guid(CType(Row(ScheduleDetailDAL.COL_NAME_DAY_OF_WEEK_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ScheduleDetailDAL.COL_NAME_DAY_OF_WEEK_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property FromTime() As DateType
+    Public Property FromTime As DateType
         Get
             CheckDeleted()
             If Row(ScheduleDetailDAL.COL_NAME_FROM_TIME) Is DBNull.Value Then
@@ -251,7 +251,7 @@ Public Class ScheduleDetail
                 Return New DateType(DateHelper.GetDateValue(Row(ScheduleDetailDAL.COL_NAME_FROM_TIME).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ScheduleDetailDAL.COL_NAME_FROM_TIME, Value)
         End Set
@@ -260,7 +260,7 @@ Public Class ScheduleDetail
     <ValueMandatory(""), DateCompareValidator("", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_FROM_TIME_HIGHER_THAN_TO_TIME, "FromTime", DateCompareValidatorAttribute.CompareType.GreaterThan), _
          OverlapValidator("", DataRowPropertyName:="DataRow", DataTablePropertyName:="DataTable", EffectiveDateColumnName:=ScheduleDetailDAL.COL_NAME_FROM_TIME, ExpirationDateColumnName:=ScheduleDetailDAL.COL_NAME_TO_TIME, _
         KeyColumns:=New String() {ScheduleDetailDAL.COL_NAME_DAY_OF_WEEK_ID})> _
-    Public Property ToTime() As DateType
+    Public Property ToTime As DateType
         Get
             CheckDeleted()
             If Row(ScheduleDetailDAL.COL_NAME_TO_TIME) Is DBNull.Value Then
@@ -269,7 +269,7 @@ Public Class ScheduleDetail
                 Return New DateType(DateHelper.GetDateValue(Row(ScheduleDetailDAL.COL_NAME_TO_TIME).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ScheduleDetailDAL.COL_NAME_TO_TIME, Value)
         End Set

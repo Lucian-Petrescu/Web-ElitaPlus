@@ -90,7 +90,7 @@ Public Class ClaimIssueResponse
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimIssueResponseDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ClaimIssueResponse
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimIssueId() As Guid
+    Public Property ClaimIssueId As Guid
         Get
             CheckDeleted()
             If row(ClaimIssueResponseDAL.COL_NAME_CLAIM_ISSUE_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ClaimIssueResponse
                 Return New Guid(CType(row(ClaimIssueResponseDAL.COL_NAME_CLAIM_ISSUE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimIssueResponseDAL.COL_NAME_CLAIM_ISSUE_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ClaimIssueResponse
 
 
     <ValueMandatory("")> _
-    Public Property AnswerId() As Guid
+    Public Property AnswerId As Guid
         Get
             CheckDeleted()
             If row(ClaimIssueResponseDAL.COL_NAME_ANSWER_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ClaimIssueResponse
                 Return New Guid(CType(row(ClaimIssueResponseDAL.COL_NAME_ANSWER_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimIssueResponseDAL.COL_NAME_ANSWER_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class ClaimIssueResponse
 
 
     <ValueMandatory("")> _
-    Public Property SupportsClaimId() As Guid
+    Public Property SupportsClaimId As Guid
         Get
             CheckDeleted()
             If row(ClaimIssueResponseDAL.COL_NAME_SUPPORTS_CLAIM_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class ClaimIssueResponse
                 Return New Guid(CType(row(ClaimIssueResponseDAL.COL_NAME_SUPPORTS_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimIssueResponseDAL.COL_NAME_SUPPORTS_CLAIM_ID, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class ClaimIssueResponse
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property AnswerDescription() As String
+    Public Property AnswerDescription As String
         Get
             CheckDeleted()
             If row(ClaimIssueResponseDAL.COL_NAME_ANSWER_DESCRIPTION) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class ClaimIssueResponse
                 Return CType(row(ClaimIssueResponseDAL.COL_NAME_ANSWER_DESCRIPTION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimIssueResponseDAL.COL_NAME_ANSWER_DESCRIPTION, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class ClaimIssueResponse
 
 
     <ValidStringLength("", Max:=1020)> _
-    Public Property AnswerValue() As String
+    Public Property AnswerValue As String
         Get
             CheckDeleted()
             If row(ClaimIssueResponseDAL.COL_NAME_ANSWER_VALUE) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class ClaimIssueResponse
                 Return CType(row(ClaimIssueResponseDAL.COL_NAME_ANSWER_VALUE), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimIssueResponseDAL.COL_NAME_ANSWER_VALUE, Value)
         End Set

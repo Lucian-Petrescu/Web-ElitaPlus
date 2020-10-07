@@ -5,7 +5,7 @@ Imports System.Web
 
 
 
-<Serializable()>
+<Serializable>
 Public NotInheritable Class ElitaPlusPrincipal
     Implements IPrincipal
 
@@ -61,33 +61,33 @@ Public NotInheritable Class ElitaPlusPrincipal
 #Region " Public Properties "
 
 
-    Public ReadOnly Property Identity() As System.Security.Principal.IIdentity Implements System.Security.Principal.IPrincipal.Identity
+    Public ReadOnly Property Identity As System.Security.Principal.IIdentity Implements System.Security.Principal.IPrincipal.Identity
         Get
             Return _identity
         End Get
     End Property
-    Public Property WebServiceOffLineMessage() As String
+    Public Property WebServiceOffLineMessage As String
         Get
             Return _webServiceOffLineMessage
         End Get
-        Set(ByVal value As String)
+        Set
             _webServiceOffLineMessage = value
         End Set
     End Property
 
-    Public Property WebServiceFunctionOffLineMessage() As String
+    Public Property WebServiceFunctionOffLineMessage As String
         Get
             Return _webServiceFunctionOffLineMessage
         End Get
-        Set(ByVal value As String)
+        Set
             _webServiceFunctionOffLineMessage = value
         End Set
     End Property
-    Public Property IdToken() As String
+    Public Property IdToken As String
         Get
             Return _idToken
         End Get
-        Set(ByVal value As String)
+        Set
             _idToken = value
         End Set
     End Property
@@ -115,7 +115,7 @@ Public NotInheritable Class ElitaPlusPrincipal
 
 
 
-    Public Shared ReadOnly Property Current() As ElitaPlusPrincipal
+    Public Shared ReadOnly Property Current As ElitaPlusPrincipal
         Get
             If (TypeOf System.Threading.Thread.CurrentPrincipal Is ElitaPlusPrincipal) Then
                 Return CType(System.Threading.Thread.CurrentPrincipal, ElitaPlusPrincipal)

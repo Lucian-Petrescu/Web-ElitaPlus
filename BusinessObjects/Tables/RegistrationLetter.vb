@@ -90,7 +90,7 @@ Public Class RegistrationLetter
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(RegistrationLetterDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class RegistrationLetter
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(RegistrationLetterDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,14 +110,14 @@ Public Class RegistrationLetter
                 Return New Guid(CType(row(RegistrationLetterDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RegistrationLetterDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=3)> _
-    Public Property LetterType() As String
+    Public Property LetterType As String
         Get
             CheckDeleted()
             If Row(RegistrationLetterDAL.COL_NAME_LETTER_TYPE) Is DBNull.Value Then
@@ -126,14 +126,14 @@ Public Class RegistrationLetter
                 Return CType(Row(RegistrationLetterDAL.COL_NAME_LETTER_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RegistrationLetterDAL.COL_NAME_LETTER_TYPE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0)> _
-    Public Property NumberOfDays() As LongType
+    Public Property NumberOfDays As LongType
         Get
             CheckDeleted()
             If Row(RegistrationLetterDAL.COL_NAME_NUMBER_OF_DAYS) Is DBNull.Value Then
@@ -142,14 +142,14 @@ Public Class RegistrationLetter
                 Return New LongType(CType(Row(RegistrationLetterDAL.COL_NAME_NUMBER_OF_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(RegistrationLetterDAL.COL_NAME_NUMBER_OF_DAYS, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)> _
-    Public Property EmailSubject() As String
+    Public Property EmailSubject As String
         Get
             CheckDeleted()
             If Row(RegistrationLetterDAL.COL_NAME_EMAIL_SUBJECT) Is DBNull.Value Then
@@ -158,14 +158,14 @@ Public Class RegistrationLetter
                 Return CType(Row(RegistrationLetterDAL.COL_NAME_EMAIL_SUBJECT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RegistrationLetterDAL.COL_NAME_EMAIL_SUBJECT, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=4000)> _
-    Public Property EmailText() As String
+    Public Property EmailText As String
         Get
             CheckDeleted()
             If Row(RegistrationLetterDAL.COL_NAME_EMAIL_TEXT) Is DBNull.Value Then
@@ -174,20 +174,20 @@ Public Class RegistrationLetter
                 Return CType(Row(RegistrationLetterDAL.COL_NAME_EMAIL_TEXT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RegistrationLetterDAL.COL_NAME_EMAIL_TEXT, Value)
         End Set
     End Property
 
-    Public ReadOnly Property OriginalNumberOfDays() As LongType
+    Public ReadOnly Property OriginalNumberOfDays As LongType
         Get
             Return New LongType(CType(Row(RegistrationLetterDAL.COL_NAME_NUMBER_OF_DAYS, DataRowVersion.Original), Long))
         End Get
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)> _
-    Public Property EmailFrom() As String
+    Public Property EmailFrom As String
         Get
             CheckDeleted()
             If Row(RegistrationLetterDAL.COL_NAME_EMAIL_FROM) Is DBNull.Value Then
@@ -196,14 +196,14 @@ Public Class RegistrationLetter
                 Return CType(Row(RegistrationLetterDAL.COL_NAME_EMAIL_FROM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RegistrationLetterDAL.COL_NAME_EMAIL_FROM, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)> _
-    Public Property EmailTo() As String
+    Public Property EmailTo As String
         Get
             CheckDeleted()
             If Row(RegistrationLetterDAL.COL_NAME_EMAIL_TO) Is DBNull.Value Then
@@ -212,14 +212,14 @@ Public Class RegistrationLetter
                 Return CType(Row(RegistrationLetterDAL.COL_NAME_EMAIL_TO), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RegistrationLetterDAL.COL_NAME_EMAIL_TO, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)> _
-    Public Property AttachmentFileName() As String
+    Public Property AttachmentFileName As String
         Get
             CheckDeleted()
             If Row(RegistrationLetterDAL.COL_NAME_ATTACHMENT_FILE_NAME) Is DBNull.Value Then
@@ -228,7 +228,7 @@ Public Class RegistrationLetter
                 Return CType(Row(RegistrationLetterDAL.COL_NAME_ATTACHMENT_FILE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RegistrationLetterDAL.COL_NAME_ATTACHMENT_FILE_NAME, Value)
         End Set

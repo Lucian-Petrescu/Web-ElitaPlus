@@ -337,7 +337,7 @@ Partial Public Class TransExceptionManagementForm
 
 
 
-            If e.Row.RowType = ListItemType.Item Or e.Row.RowType = ListItemType.AlternatingItem Or e.Row.RowType = ListItemType.EditItem Then
+            If e.Row.RowType = ListItemType.Item OrElse e.Row.RowType = ListItemType.AlternatingItem OrElse e.Row.RowType = ListItemType.EditItem Then
                 Dim drv As DataRowView = CType(e.Row.DataItem, DataRowView)
                 Dim transIdStr As String = String.Empty
 
@@ -370,7 +370,7 @@ Partial Public Class TransExceptionManagementForm
                             'transIdStr = GuidControl.GuidToHexString(transId)
 
                             'If Guid.Empty.Equals(transId) Then
-                            If functionType.Equals(GVS_TRANSACTION_UPDATE) Or functionType.Equals(ELITA_TRANSACTION_UPDATE) Then
+                            If functionType.Equals(GVS_TRANSACTION_UPDATE) OrElse functionType.Equals(ELITA_TRANSACTION_UPDATE) Then
                                 ControlMgr.SetVisibleControl(Me, e.Row.Cells(GRID_COL_EDIT_IDX).FindControl(GRID_CTRL_NAME_EDIT_BUTTON), False)
                             End If
                         Catch ex As Exception
@@ -545,7 +545,7 @@ Partial Public Class TransExceptionManagementForm
             Dim cellCount As Integer = 0
             For Each tc As TableCell In grid.HeaderRow.Cells
 
-                If tc.HasControls And cellCount > 2 Then
+                If tc.HasControls AndAlso cellCount > 2 Then
 
                     lnk = CType(tc.Controls(0), LinkButton)
                     If lnk IsNot Nothing Then
@@ -722,7 +722,7 @@ Partial Public Class TransExceptionManagementForm
                         checkValueArray = checkRecords.Value.Split(":"c)
 
                         For i = 0 To checkValueArray.Length - 1
-                            If (checkValueArray(i) IsNot Nothing And checkValueArray(i) <> "") Then
+                            If (checkValueArray(i) IsNot Nothing AndAlso checkValueArray(i) <> "") Then
                                 checkValues = checkValueArray(i).ToString & ":" & checkValues
                             End If
                         Next

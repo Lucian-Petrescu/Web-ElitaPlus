@@ -478,7 +478,7 @@ Namespace Translation
             Dim oTextBox As TextBox
             Dim oLabel As Label
             
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 With e.Item
                     PopulateControlFromBOProperty(.Cells(GRID_COL_DICT_ITEM_ID), dvRow(DictItemTranslation.TranslationSearchDV.GRID_COL_ID))
                     oTextBox = CType(e.Item.Cells(GRID_COL_TRANSLATION_ALIAS).FindControl(TRANSLATION_IN_GRID_CONTROL_NAME), TextBox)

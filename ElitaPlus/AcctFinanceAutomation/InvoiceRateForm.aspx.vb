@@ -489,7 +489,7 @@ Public Class InvoiceRateForm
 
             If dvRow IsNot Nothing Then
                 strID = GetGuidStringFromByteArray(CType(dvRow(AfaInvoiceRate.InvRateSearchDV.COL_AFA_INVOICE_RATE_ID), Byte()))
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     CType(e.Row.Cells(GRID_COL_INV_RATE_ID_IDX).FindControl(GRID_CTRL_NAME_LABEL_INV_RATE_ID), Label).Text = strID
 
                     If (State.IsEditMode = True AndAlso State.InvoiceRateID.ToString.Equals(strID)) Then
@@ -506,7 +506,7 @@ Public Class InvoiceRateForm
 
                         Dim regulatoryStateList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.RegionsByCountry, Thread.CurrentPrincipal.GetLanguageCode(), oListContext)
                         ddlRegulatoryState.Populate(regulatoryStateList, New PopulateOptions() With {.AddBlankItem = True, .BlankItemValue = String.Empty, .ValueFunc = AddressOf PopulateOptions.GetCode})
-                        If (State.IsGridAddNew Or dvRow(AfaInvoiceRate.InvRateSearchDV.COL_REGULATORY_STATE) Is Nothing) Then
+                        If (State.IsGridAddNew OrElse dvRow(AfaInvoiceRate.InvRateSearchDV.COL_REGULATORY_STATE) Is Nothing) Then
                             ddlRegulatoryState.SelectedIndex = NO_ITEM_SELECTED_INDEX
                         Else
                             SetSelectedItem(ddlRegulatoryState, dvRow(AfaInvoiceRate.InvRateSearchDV.COL_REGULATORY_STATE).ToString)

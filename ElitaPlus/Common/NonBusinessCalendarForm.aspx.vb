@@ -224,7 +224,7 @@ Partial Class NonBusinessCalendarForm
         Dim enCulture As New CultureInfo("en-us")
 
         For i = 0 To checkDatesArray.Length - 1
-            If (checkDatesArray(i) IsNot Nothing And checkDatesArray(i) <> "") Then
+            If (checkDatesArray(i) IsNot Nothing AndAlso checkDatesArray(i) <> "") Then
                 Dim dt As DateTime = DateHelper.GetDateInMonddyyyy(checkDatesArray(i))
                 Dim dateStr As String = dt.ToString(MMM_DD_YYYY, enCulture)
                 Dim id As Guid = GetNonbusinessCalendarID(dateStr)
@@ -237,7 +237,7 @@ Partial Class NonBusinessCalendarForm
         Next
 
         For i = 0 To uncheckDatesArray.Length - 1
-            If (uncheckDatesArray(i) IsNot Nothing And uncheckDatesArray(i) <> "") Then
+            If (uncheckDatesArray(i) IsNot Nothing AndAlso uncheckDatesArray(i) <> "") Then
                 Dim dt As DateTime = DateHelper.GetDateInMonddyyyy(uncheckDatesArray(i))
                 Dim dateStr As String = dt.ToString(MMM_DD_YYYY, enCulture)
                 Dim id As Guid = GetNonbusinessCalendarID(dateStr)
@@ -256,7 +256,7 @@ Partial Class NonBusinessCalendarForm
     End Sub
 
     Function IsPageDirty() As Boolean
-        Return (checkDates.Value <> "" Or uncheckDates.Value <> "")
+        Return (checkDates.Value <> "" OrElse uncheckDates.Value <> "")
     End Function
 
     Private Sub ConfirmationCheck()
@@ -277,7 +277,7 @@ Partial Class NonBusinessCalendarForm
     End Sub
 
     Private Sub NavAction()
-        If isBtnBackClicked IsNot Nothing And isBtnBackClicked.Value = "Y" Then
+        If isBtnBackClicked IsNot Nothing AndAlso isBtnBackClicked.Value = "Y" Then
             ReturnToTabHomePage()
         Else
             ResetDates()

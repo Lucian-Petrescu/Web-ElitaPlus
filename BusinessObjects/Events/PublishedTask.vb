@@ -142,7 +142,7 @@ Public Class PublishedTask
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(PublishedTaskDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -153,7 +153,7 @@ Public Class PublishedTask
     End Property
 
 
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -162,7 +162,7 @@ Public Class PublishedTask
                 Return New Guid(CType(row(PublishedTaskDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
@@ -170,7 +170,7 @@ Public Class PublishedTask
 
 
 
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -179,7 +179,7 @@ Public Class PublishedTask
                 Return New Guid(CType(row(PublishedTaskDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -187,7 +187,7 @@ Public Class PublishedTask
 
 
 
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -196,7 +196,7 @@ Public Class PublishedTask
                 Return New Guid(CType(row(PublishedTaskDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
@@ -204,7 +204,7 @@ Public Class PublishedTask
 
 
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -213,13 +213,13 @@ Public Class PublishedTask
                 Return New Guid(CType(row(PublishedTaskDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(PublishedTaskDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -228,14 +228,14 @@ Public Class PublishedTask
                 Return New Guid(CType(Row(PublishedTaskDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
@@ -244,7 +244,7 @@ Public Class PublishedTask
                 Return CType(row(PublishedTaskDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
@@ -252,7 +252,7 @@ Public Class PublishedTask
 
 
 
-    Public Property EventTypeId() As Guid
+    Public Property EventTypeId As Guid
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_EVENT_TYPE_ID) Is DBNull.Value Then
@@ -261,7 +261,7 @@ Public Class PublishedTask
                 Return New Guid(CType(row(PublishedTaskDAL.COL_NAME_EVENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_EVENT_TYPE_ID, Value)
         End Set
@@ -269,7 +269,7 @@ Public Class PublishedTask
 
 
 
-    Public Property EventDate() As DateType
+    Public Property EventDate As DateType
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_EVENT_DATE) Is DBNull.Value Then
@@ -278,7 +278,7 @@ Public Class PublishedTask
                 Return New DateType(CType(row(PublishedTaskDAL.COL_NAME_EVENT_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_EVENT_DATE, Value)
         End Set
@@ -286,7 +286,7 @@ Public Class PublishedTask
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)>
-    Public Property Sender() As String
+    Public Property Sender As String
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_SENDER) Is DBNull.Value Then
@@ -295,7 +295,7 @@ Public Class PublishedTask
                 Return CType(row(PublishedTaskDAL.COL_NAME_SENDER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_SENDER, Value)
         End Set
@@ -303,7 +303,7 @@ Public Class PublishedTask
 
 
     <ValidStringLength("", Max:=4000)>
-    Public Property Arguments() As String
+    Public Property Arguments As String
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_ARGUMENTS) Is DBNull.Value Then
@@ -312,7 +312,7 @@ Public Class PublishedTask
                 Return CType(row(PublishedTaskDAL.COL_NAME_ARGUMENTS), String)
             End If
         End Get
-        Private Set(ByVal Value As String)
+        Private Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_ARGUMENTS, Value)
         End Set
@@ -337,7 +337,7 @@ Public Class PublishedTask
 
 
     <ValueMandatory("")>
-    Public Property TaskId() As Guid
+    Public Property TaskId As Guid
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_TASK_ID) Is DBNull.Value Then
@@ -346,7 +346,7 @@ Public Class PublishedTask
                 Return New Guid(CType(row(PublishedTaskDAL.COL_NAME_TASK_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_TASK_ID, Value)
         End Set
@@ -354,7 +354,7 @@ Public Class PublishedTask
 
 
 
-    Public Property LockDate() As DateType
+    Public Property LockDate As DateType
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_LOCK_DATE) Is DBNull.Value Then
@@ -363,7 +363,7 @@ Public Class PublishedTask
                 Return New DateType(CType(row(PublishedTaskDAL.COL_NAME_LOCK_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_LOCK_DATE, Value)
         End Set
@@ -371,7 +371,7 @@ Public Class PublishedTask
 
 
     <ValueMandatory("")>
-    Public Property TaskStatusId() As Guid
+    Public Property TaskStatusId As Guid
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_TASK_STATUS_ID) Is DBNull.Value Then
@@ -380,7 +380,7 @@ Public Class PublishedTask
                 Return New Guid(CType(row(PublishedTaskDAL.COL_NAME_TASK_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_TASK_STATUS_ID, Value)
         End Set
@@ -388,7 +388,7 @@ Public Class PublishedTask
 
 
 
-    Public Property RetryCount() As LongType
+    Public Property RetryCount As LongType
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_RETRY_COUNT) Is DBNull.Value Then
@@ -397,7 +397,7 @@ Public Class PublishedTask
                 Return New LongType(CType(row(PublishedTaskDAL.COL_NAME_RETRY_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_RETRY_COUNT, Value)
         End Set
@@ -405,7 +405,7 @@ Public Class PublishedTask
 
 
 
-    Public Property LastAttemptDate() As DateType
+    Public Property LastAttemptDate As DateType
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_LAST_ATTEMPT_DATE) Is DBNull.Value Then
@@ -414,7 +414,7 @@ Public Class PublishedTask
                 Return New DateType(CType(row(PublishedTaskDAL.COL_NAME_LAST_ATTEMPT_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_LAST_ATTEMPT_DATE, Value)
         End Set
@@ -422,7 +422,7 @@ Public Class PublishedTask
 
 
     <ValidStringLength("", Max:=200)>
-    Public Property MachineName() As String
+    Public Property MachineName As String
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_MACHINE_NAME) Is DBNull.Value Then
@@ -431,7 +431,7 @@ Public Class PublishedTask
                 Return CType(row(PublishedTaskDAL.COL_NAME_MACHINE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_MACHINE_NAME, Value)
         End Set
@@ -456,7 +456,7 @@ Public Class PublishedTask
                 Return New Guid(CType(Row(PublishedTaskDAL.COL_NAME_DEALER_GROUP_ID), Byte()))
             End If
         End Get
-        Set(value As Guid)
+        Set
             CheckDeleted()
             SetValue(PublishedTaskDAL.COL_NAME_DEALER_GROUP_ID, value)
         End Set

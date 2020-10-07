@@ -90,7 +90,7 @@ Public Class GetVSCEngineVersions
 
 #Region "Properties"
 
-    Public Property CompanyGroupCode() As String
+    Public Property CompanyGroupCode As String
         Get
             If Row(DATA_COL_NAME_COMPANY_GROUP_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -98,14 +98,14 @@ Public Class GetVSCEngineVersions
                 Return (CType(Row(DATA_COL_NAME_COMPANY_GROUP_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_COMPANY_GROUP_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Make() As String
+    Public Property Make As String
         Get
             If Row(DATA_COL_NAME_MAKE) Is DBNull.Value Then
                 Return Nothing
@@ -113,14 +113,14 @@ Public Class GetVSCEngineVersions
                 Return (CType(Row(DATA_COL_NAME_MAKE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MAKE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Model() As String
+    Public Property Model As String
         Get
             If Row(DATA_COL_NAME_MODEL) Is DBNull.Value Then
                 Return Nothing
@@ -128,7 +128,7 @@ Public Class GetVSCEngineVersions
                 Return (CType(Row(DATA_COL_NAME_MODEL), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MODEL, Value)
         End Set

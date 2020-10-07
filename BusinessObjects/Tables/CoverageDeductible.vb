@@ -98,7 +98,7 @@
 
 #Region "Properties"
     <ValueMandatory("")> _
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             CheckDeleted()
             If Row(CoverageDeductibleDAL.COL_NAME_COVERAGE_DED_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@
     End Property
 
     <ValueMandatory("")> _
-    Public Property CoverageId() As Guid
+    Public Property CoverageId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDeductibleDAL.COL_NAME_COVERAGE_ID) Is DBNull.Value Then
@@ -119,14 +119,14 @@
                 Return New Guid(CType(Row(CoverageDeductibleDAL.COL_NAME_COVERAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDeductibleDAL.COL_NAME_COVERAGE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), MethodOfRepairValidator("")> _
-    Public Property MethodOfRepairId() As Guid
+    Public Property MethodOfRepairId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDeductibleDAL.COL_NAME_METHOD_OF_REPAIR_ID) Is DBNull.Value Then
@@ -135,14 +135,14 @@
                 Return New Guid(CType(Row(CoverageDeductibleDAL.COL_NAME_METHOD_OF_REPAIR_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDeductibleDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property DeductibleBasedOnId() As Guid
+    Public Property DeductibleBasedOnId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDeductibleDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID) Is DBNull.Value Then
@@ -151,13 +151,13 @@
                 Return New Guid(CType(Row(CoverageDeductibleDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDeductibleDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID, Value)
         End Set
     End Property
 
-    Public Property DeductibleExpressionId() As Guid
+    Public Property DeductibleExpressionId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDeductibleDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID) Is DBNull.Value Then
@@ -166,7 +166,7 @@
                 Return New Guid(CType(Row(CoverageDeductibleDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDeductibleDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID, value)
         End Set
@@ -174,7 +174,7 @@
 
     ''TODO- Add Custom Validation, The value should not exceed 100 if percentage and ok to exceed otherwise
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=Decimal.MaxValue), DeductibleAmount("")>
-    Public Property Deductible() As DecimalType
+    Public Property Deductible As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageDeductibleDAL.COL_NAME_DEDUCTIBLE) Is DBNull.Value Then
@@ -183,7 +183,7 @@
                 Return New DecimalType(CType(Row(CoverageDeductibleDAL.COL_NAME_DEDUCTIBLE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageDeductibleDAL.COL_NAME_DEDUCTIBLE, Value)
         End Set

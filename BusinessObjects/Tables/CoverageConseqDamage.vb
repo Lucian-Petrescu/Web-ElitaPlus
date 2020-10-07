@@ -116,7 +116,7 @@ Public Class CoverageConseqDamage
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CoverageConseqDamageDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -127,7 +127,7 @@ Public Class CoverageConseqDamage
     End Property
 
     <ValueMandatory("")>
-    Public Property CoverageId() As Guid
+    Public Property CoverageId As Guid
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_COVERAGE_ID) Is DBNull.Value Then
@@ -136,7 +136,7 @@ Public Class CoverageConseqDamage
                 Return New Guid(CType(Row(CoverageConseqDamageDAL.COL_NAME_COVERAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageConseqDamageDAL.COL_NAME_COVERAGE_ID, Value)
         End Set
@@ -144,7 +144,7 @@ Public Class CoverageConseqDamage
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)>
-    Public Property ConseqDamageTypeXcd() As String
+    Public Property ConseqDamageTypeXcd As String
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_CONSEQ_DAMAGE_TYPE_XCD) Is DBNull.Value Then
@@ -153,7 +153,7 @@ Public Class CoverageConseqDamage
                 Return CType(Row(CoverageConseqDamageDAL.COL_NAME_CONSEQ_DAMAGE_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageConseqDamageDAL.COL_NAME_CONSEQ_DAMAGE_TYPE_XCD, Value)
         End Set
@@ -161,7 +161,7 @@ Public Class CoverageConseqDamage
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)>
-    Public Property LiabilityLimitBaseXcd() As String
+    Public Property LiabilityLimitBaseXcd As String
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_BASE_XCD) Is DBNull.Value Then
@@ -170,14 +170,14 @@ Public Class CoverageConseqDamage
                 Return CType(Row(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_BASE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_BASE_XCD, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)>
-    Public Property FulfilmentMethodXcd() As String
+    Public Property FulfilmentMethodXcd As String
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_FULFILMENT_METHOD_XCD) Is DBNull.Value Then
@@ -186,14 +186,14 @@ Public Class CoverageConseqDamage
                 Return CType(Row(CoverageConseqDamageDAL.COL_NAME_FULFILMENT_METHOD_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageConseqDamageDAL.COL_NAME_FULFILMENT_METHOD_XCD, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=Decimal.MaxValue)>
-    Public Property LiabilityLimitPerIncident() As DecimalType
+    Public Property LiabilityLimitPerIncident As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_PER_INCIDENT) Is DBNull.Value Then
@@ -202,7 +202,7 @@ Public Class CoverageConseqDamage
                 Return New DecimalType(CType(Row(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_PER_INCIDENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_PER_INCIDENT, Value)
         End Set
@@ -210,7 +210,7 @@ Public Class CoverageConseqDamage
 
 
     <RequiredConditionally_Liability_Limit_Cumulative(""), ValidNumericRange("", Min:=0, Max:=Decimal.MaxValue)>
-    Public Property LiabilityLimitCumulative() As DecimalType
+    Public Property LiabilityLimitCumulative As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_CUMULATIVE) Is DBNull.Value Then
@@ -219,7 +219,7 @@ Public Class CoverageConseqDamage
                 Return New DecimalType(CType(Row(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_CUMULATIVE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_CUMULATIVE, Value)
         End Set
@@ -227,7 +227,7 @@ Public Class CoverageConseqDamage
 
 
     <ValueMandatory(""), ValidateEffectiveDate("")>
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -236,7 +236,7 @@ Public Class CoverageConseqDamage
                 Return New DateType(CType(Row(CoverageConseqDamageDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CoverageConseqDamageDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -244,7 +244,7 @@ Public Class CoverageConseqDamage
 
 
     <ValueMandatory(""), ValidExpirationDate("")>
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -253,7 +253,7 @@ Public Class CoverageConseqDamage
                 Return New DateType(CType(Row(CoverageConseqDamageDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CoverageConseqDamageDAL.COL_NAME_EXPIRATION, Value)
         End Set

@@ -91,7 +91,7 @@ Public Class AcctEventDetailIncExc
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(AcctEventDetailIncexcDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@ Public Class AcctEventDetailIncExc
     End Property
 
     <ValueMandatory("")> _
-    Public Property AcctEventDetailId() As Guid
+    Public Property AcctEventDetailId As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailIncexcDAL.COL_NAME_ACCT_EVENT_DETAIL_ID) Is DBNull.Value Then
@@ -111,7 +111,7 @@ Public Class AcctEventDetailIncExc
                 Return New Guid(CType(Row(AcctEventDetailIncexcDAL.COL_NAME_ACCT_EVENT_DETAIL_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailIncexcDAL.COL_NAME_ACCT_EVENT_DETAIL_ID, Value)
         End Set
@@ -119,7 +119,7 @@ Public Class AcctEventDetailIncExc
 
 
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailIncexcDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -128,7 +128,7 @@ Public Class AcctEventDetailIncExc
                 Return New Guid(CType(Row(AcctEventDetailIncexcDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailIncexcDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -136,7 +136,7 @@ Public Class AcctEventDetailIncExc
 
 
     <Config_Criteria_Valid(""), Duplicate_Config_Exists("")> _
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailIncexcDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -145,13 +145,13 @@ Public Class AcctEventDetailIncExc
                 Return New Guid(CType(Row(AcctEventDetailIncexcDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailIncexcDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property CoverageTypeDescription() As String
+    Public ReadOnly Property CoverageTypeDescription As String
         Get
             If _CoverageTypeDescription = String.Empty AndAlso CoverageTypeId <> Guid.Empty Then
                 _CoverageTypeDescription = LookupListNew.GetDescriptionFromId(LookupListNew.LK_COVERAGE_TYPES, CoverageTypeId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
@@ -160,7 +160,7 @@ Public Class AcctEventDetailIncExc
         End Get
     End Property
 
-    Public ReadOnly Property DealerDescription() As String
+    Public ReadOnly Property DealerDescription As String
         Get
             If _DealerDescription = String.Empty AndAlso DealerId <> Guid.Empty Then
                 Dim objDealer As New Dealer(DealerId)

@@ -126,7 +126,7 @@ Public Class MerchantCode
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(MerchantCodeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -138,7 +138,7 @@ Public Class MerchantCode
 
     '<ValueMandatory(""), ValidateDuplicateCreditCardType("")> _
     <ValueMandatory("")> _
-    Public Property CompanyCreditCardId() As Guid
+    Public Property CompanyCreditCardId As Guid
         Get
             CheckDeleted()
             If Row(MerchantCodeDAL.COL_NAME_COMPANY_CREDIT_CARD_ID) Is DBNull.Value Then
@@ -147,7 +147,7 @@ Public Class MerchantCode
                 Return New Guid(CType(Row(MerchantCodeDAL.COL_NAME_COMPANY_CREDIT_CARD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(MerchantCodeDAL.COL_NAME_COMPANY_CREDIT_CARD_ID, Value)
         End Set
@@ -155,7 +155,7 @@ Public Class MerchantCode
 
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(MerchantCodeDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -164,7 +164,7 @@ Public Class MerchantCode
                 Return New Guid(CType(Row(MerchantCodeDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(MerchantCodeDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -172,7 +172,7 @@ Public Class MerchantCode
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=15)> _
-    Public Property MerchantCode() As String
+    Public Property MerchantCode As String
         Get
             CheckDeleted()
             If Row(MerchantCodeDAL.COL_NAME_MERCHANT_CODE) Is DBNull.Value Then
@@ -181,13 +181,13 @@ Public Class MerchantCode
                 Return CType(Row(MerchantCodeDAL.COL_NAME_MERCHANT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(MerchantCodeDAL.COL_NAME_MERCHANT_CODE, Value)
         End Set
     End Property
 
-    Public ReadOnly Property CreditCardFormatId() As Guid
+    Public ReadOnly Property CreditCardFormatId As Guid
         Get
             If (_creditCardFormatId.Equals(Guid.Empty)) Then
                 Dim objCompanyCreditCard As New CompanyCreditCard(CompanyCreditCardId)

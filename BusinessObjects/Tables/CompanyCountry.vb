@@ -123,7 +123,7 @@ Public Class CompanyCountry
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CompanyCountryDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -134,7 +134,7 @@ Public Class CompanyCountry
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(CompanyCountryDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -143,7 +143,7 @@ Public Class CompanyCountry
                 Return New Guid(CType(row(CompanyCountryDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyCountryDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -151,7 +151,7 @@ Public Class CompanyCountry
 
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If row(CompanyCountryDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -160,7 +160,7 @@ Public Class CompanyCountry
                 Return New Guid(CType(row(CompanyCountryDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyCountryDAL.COL_NAME_COUNTRY_ID, Value)
         End Set

@@ -125,7 +125,7 @@ Public Class CoverageLoss
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CoverageLossDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -136,7 +136,7 @@ Public Class CoverageLoss
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(CoverageLossDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -145,7 +145,7 @@ Public Class CoverageLoss
                 Return New Guid(CType(Row(CoverageLossDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageLossDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
@@ -153,7 +153,7 @@ Public Class CoverageLoss
 
 
     <ValueMandatory("")> _
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(CoverageLossDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -162,7 +162,7 @@ Public Class CoverageLoss
                 Return New Guid(CType(Row(CoverageLossDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageLossDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
@@ -170,7 +170,7 @@ Public Class CoverageLoss
 
 
     <ValueMandatory("")> _
-    Public Property CauseOfLossId() As Guid
+    Public Property CauseOfLossId As Guid
         Get
             CheckDeleted()
             If Row(CoverageLossDAL.COL_NAME_CAUSE_OF_LOSS_ID) Is DBNull.Value Then
@@ -179,13 +179,13 @@ Public Class CoverageLoss
                 Return New Guid(CType(Row(CoverageLossDAL.COL_NAME_CAUSE_OF_LOSS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageLossDAL.COL_NAME_CAUSE_OF_LOSS_ID, Value)
         End Set
     End Property
 
-    Public Property DefaultFlag() As String
+    Public Property DefaultFlag As String
         Get
             CheckDeleted()
             If Row(CoverageLossDAL.COL_NAME_DEFAULT_FLAG) Is DBNull.Value Then
@@ -194,13 +194,13 @@ Public Class CoverageLoss
                 Return CType(Row(CoverageLossDAL.COL_NAME_DEFAULT_FLAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageLossDAL.COL_NAME_DEFAULT_FLAG, Value)
         End Set
     End Property
 
-    Public Property Active() As String
+    Public Property Active As String
         Get
             CheckDeleted()
             If Row(CoverageLossDAL.COL_NAME_ACTIVE) Is DBNull.Value Then
@@ -209,7 +209,7 @@ Public Class CoverageLoss
                 Return CType(Row(CoverageLossDAL.COL_NAME_ACTIVE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageLossDAL.COL_NAME_ACTIVE, Value)
         End Set

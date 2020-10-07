@@ -90,7 +90,7 @@ Public Class SearchConfigAssignment
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(SearchConfigAssignmentDAL.TableKeyName) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class SearchConfigAssignment
     End Property
 	
     <ValueMandatory("")> _
-    Public Property SearchConfigId() As Guid
+    Public Property SearchConfigId As Guid
         Get
             CheckDeleted()
             If row(SearchConfigAssignmentDAL.ColNameSearchConfigId) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class SearchConfigAssignment
                 Return New Guid(CType(row(SearchConfigAssignmentDAL.ColNameSearchConfigId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(SearchConfigAssignmentDAL.ColNameSearchConfigId, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class SearchConfigAssignment
 	
 	
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(SearchConfigAssignmentDAL.ColNameCompanyId) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class SearchConfigAssignment
                 Return New Guid(CType(row(SearchConfigAssignmentDAL.ColNameCompanyId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(SearchConfigAssignmentDAL.ColNameCompanyId, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class SearchConfigAssignment
 	
 	
     
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(SearchConfigAssignmentDAL.ColNameDealerId) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class SearchConfigAssignment
                 Return New Guid(CType(row(SearchConfigAssignmentDAL.ColNameDealerId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(SearchConfigAssignmentDAL.ColNameDealerId, Value)
         End Set

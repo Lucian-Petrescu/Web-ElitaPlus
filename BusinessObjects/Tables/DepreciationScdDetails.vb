@@ -125,7 +125,7 @@ Public Class DepreciationScdDetails
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DepreciationSchDetailsDal.TableKeyName) Is DBNull.Value Then
                 Return Nothing
@@ -136,7 +136,7 @@ Public Class DepreciationScdDetails
     End Property
 
     <ValueMandatory("")>
-    Public Property DepreciationScheduleId() As Guid
+    Public Property DepreciationScheduleId As Guid
         Get
             CheckDeleted()
             If Row(DepreciationSchDetailsDal.ColNameDepreciationScheduleId) Is DBNull.Value Then
@@ -145,7 +145,7 @@ Public Class DepreciationScdDetails
                 Return New Guid(CType(Row(DepreciationSchDetailsDal.ColNameDepreciationScheduleId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(DepreciationSchDetailsDal.ColNameDepreciationScheduleId, value)
         End Set
@@ -153,7 +153,7 @@ Public Class DepreciationScdDetails
 
 
     <ValueMandatory(""), ValidNumericRange("LowMonth", Min:=MinMonth, Max:=MaxMonth, Message:=DepreciationScheduleForm001), ValidDepreciationSchedule("")>
-    Public Property LowMonth() As LongType
+    Public Property LowMonth As LongType
         Get
             CheckDeleted()
             If Row(DepreciationSchDetailsDal.ColNameLowMonth) Is DBNull.Value Then
@@ -162,7 +162,7 @@ Public Class DepreciationScdDetails
                 Return New LongType(CType(Row(DepreciationSchDetailsDal.ColNameLowMonth), Long))
             End If
         End Get
-        Set(ByVal value As LongType)
+        Set
             CheckDeleted()
             SetValue(DepreciationSchDetailsDal.ColNameLowMonth, value)
         End Set
@@ -170,7 +170,7 @@ Public Class DepreciationScdDetails
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MinMonth, Max:=MaxMonth, Message:=DepreciationScheduleForm002)>
-    Public Property HighMonth() As LongType
+    Public Property HighMonth As LongType
         Get
             CheckDeleted()
             If Row(DepreciationSchDetailsDal.ColNameHighMonth) Is DBNull.Value Then
@@ -179,7 +179,7 @@ Public Class DepreciationScdDetails
                 Return New LongType(CType(Row(DepreciationSchDetailsDal.ColNameHighMonth), Long))
             End If
         End Get
-        Set(ByVal value As LongType)
+        Set
             CheckDeleted()
             SetValue(DepreciationSchDetailsDal.ColNameHighMonth, value)
         End Set
@@ -187,7 +187,7 @@ Public Class DepreciationScdDetails
 
 
     <ValidNumericRange("", Min:=MinPercent, Max:=MaxPercent, Message:=DepreciationScheduleForm003), ValidDepreciationSchedulePercentAmount("")>
-    Public Property Percent() As LongType
+    Public Property Percent As LongType
         Get
             CheckDeleted()
             If Row(DepreciationSchDetailsDal.ColNamePercent) Is DBNull.Value Then
@@ -196,14 +196,14 @@ Public Class DepreciationScdDetails
                 Return New LongType(CType(Row(DepreciationSchDetailsDal.ColNamePercent), Long))
             End If
         End Get
-        Set(ByVal value As LongType)
+        Set
             CheckDeleted()
             SetValue(DepreciationSchDetailsDal.ColNamePercent, value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=MinAmount, Max:=NEW_MAX_LONG, Message:=DepreciationScheduleForm004)>
-    Public Property Amount() As LongType
+    Public Property Amount As LongType
         Get
             CheckDeleted()
             If Row(DepreciationSchDetailsDal.ColNameAmount) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class DepreciationScdDetails
                 Return New LongType(CType(Row(DepreciationSchDetailsDal.ColNameAmount), Long))
             End If
         End Get
-        Set(ByVal value As LongType)
+        Set
             CheckDeleted()
             SetValue(DepreciationSchDetailsDal.ColNameAmount, value)
         End Set

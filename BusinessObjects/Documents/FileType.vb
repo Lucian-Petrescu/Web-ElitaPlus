@@ -41,7 +41,7 @@ Namespace Documents
 #Region "Properties"
 
         'Key Property
-        Public ReadOnly Property Id() As Guid
+        Public ReadOnly Property Id As Guid
             Get
                 If Row(FileTypeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                     Return Nothing
@@ -52,7 +52,7 @@ Namespace Documents
         End Property
 
         <ValueMandatory(""), ValidStringLength("", Max:=50), CheckDuplicateCode("")> _
-        Public Property Code() As String
+        Public Property Code As String
             Get
                 CheckDeleted()
                 If Row(FileTypeDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -61,7 +61,7 @@ Namespace Documents
                     Return CType(Row(FileTypeDAL.COL_NAME_CODE), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
                 SetValue(FileTypeDAL.COL_NAME_CODE, Value)
             End Set
@@ -69,7 +69,7 @@ Namespace Documents
 
 
         <ValueMandatory(""), ValidStringLength("", Max:=100)> _
-        Public Property Description() As String
+        Public Property Description As String
             Get
                 CheckDeleted()
                 If Row(FileTypeDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -78,7 +78,7 @@ Namespace Documents
                     Return CType(Row(FileTypeDAL.COL_NAME_DESCRIPTION), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
                 SetValue(FileTypeDAL.COL_NAME_DESCRIPTION, Value)
             End Set
@@ -86,7 +86,7 @@ Namespace Documents
 
 
         <ValueMandatory(""), ValidStringLength("", Max:=10), CheckDuplicateExtension("")> _
-        Public Property Extension() As String
+        Public Property Extension As String
             Get
                 CheckDeleted()
                 If Row(FileTypeDAL.COL_NAME_EXTENSION) Is DBNull.Value Then
@@ -95,14 +95,14 @@ Namespace Documents
                     Return CType(Row(FileTypeDAL.COL_NAME_EXTENSION), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
                 SetValue(FileTypeDAL.COL_NAME_EXTENSION, Value)
             End Set
         End Property
 
         <ValueMandatory(""), ValidStringLength("", Max:=100)> _
-        Public Property MimeType() As String
+        Public Property MimeType As String
             Get
                 CheckDeleted()
                 If Row(FileTypeDAL.COL_NAME_MIME_TYPE) Is DBNull.Value Then
@@ -111,7 +111,7 @@ Namespace Documents
                     Return CType(Row(FileTypeDAL.COL_NAME_MIME_TYPE), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
                 SetValue(FileTypeDAL.COL_NAME_MIME_TYPE, Value)
             End Set

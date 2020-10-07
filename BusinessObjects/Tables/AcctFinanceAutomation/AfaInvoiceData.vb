@@ -123,7 +123,7 @@ Public Class AfaInvoiceData
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AfaInvoiceDataDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -134,7 +134,7 @@ Public Class AfaInvoiceData
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(AfaInvoiceDataDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -143,7 +143,7 @@ Public Class AfaInvoiceData
                 Return New Guid(CType(row(AfaInvoiceDataDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceDataDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -151,7 +151,7 @@ Public Class AfaInvoiceData
 
 
     <ValidStringLength("", Max:=24)> _
-    Public Property InvoiceMonth() As String
+    Public Property InvoiceMonth As String
         Get
             CheckDeleted()
             If row(AfaInvoiceDataDAL.COL_NAME_INVOICE_MONTH) Is DBNull.Value Then
@@ -160,7 +160,7 @@ Public Class AfaInvoiceData
                 Return CType(row(AfaInvoiceDataDAL.COL_NAME_INVOICE_MONTH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceDataDAL.COL_NAME_INVOICE_MONTH, Value)
         End Set
@@ -168,7 +168,7 @@ Public Class AfaInvoiceData
 
 
 
-    Public Property InvoiceXmlData() As Object
+    Public Property InvoiceXmlData As Object
         Get
             CheckDeleted()
             If row(AfaInvoiceDataDAL.COL_NAME_INVOICE_XML_DATA) Is DBNull.Value Then
@@ -177,7 +177,7 @@ Public Class AfaInvoiceData
                 Return CType(row(AfaInvoiceDataDAL.COL_NAME_INVOICE_XML_DATA), Object)
             End If
         End Get
-        Set(ByVal Value As Object)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceDataDAL.COL_NAME_INVOICE_XML_DATA, Value)
         End Set
@@ -185,7 +185,7 @@ Public Class AfaInvoiceData
 
 
     <ValidStringLength("", Max:=4)> _
-    Public Property Deleted() As String
+    Public Property Deleted As String
         Get
             CheckDeleted()
             If row(AfaInvoiceDataDAL.COL_NAME_DELETED) Is DBNull.Value Then
@@ -194,13 +194,13 @@ Public Class AfaInvoiceData
                 Return CType(row(AfaInvoiceDataDAL.COL_NAME_DELETED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceDataDAL.COL_NAME_DELETED, Value)
         End Set
     End Property
 
-    Public Property InvoiceHtml() As String
+    Public Property InvoiceHtml As String
         Get
             CheckDeleted()
             If Row(AfaInvoiceDataDAL.COL_NAME_INVOICE_HTML) Is DBNull.Value Then
@@ -210,13 +210,13 @@ Public Class AfaInvoiceData
                 Return Row(AfaInvoiceDataDAL.COL_NAME_INVOICE_HTML).ToString()
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceDataDAL.COL_NAME_INVOICE_HTML, Value)
         End Set
     End Property
 
-    Public Property InvoiceCSV() As String
+    Public Property InvoiceCSV As String
         Get
             CheckDeleted()
             If Row(AfaInvoiceDataDAL.COL_NAME_INVOICE_CSV) Is DBNull.Value Then
@@ -226,14 +226,14 @@ Public Class AfaInvoiceData
                 Return Row(AfaInvoiceDataDAL.COL_NAME_INVOICE_CSV).ToString()
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceDataDAL.COL_NAME_INVOICE_CSV, Value)
         End Set
     End Property
 
 
-    Public Property Filename() As String
+    Public Property Filename As String
         Get
             CheckDeleted()
             If Row(AfaInvoiceDataDAL.COL_NAME_FILENAME) Is DBNull.Value Then
@@ -242,13 +242,13 @@ Public Class AfaInvoiceData
                 Return Row(AfaInvoiceDataDAL.COL_NAME_FILENAME).ToString()
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceDataDAL.COL_NAME_FILENAME, Value)
         End Set
     End Property
 
-    Public Property DirectoryName() As String
+    Public Property DirectoryName As String
         Get
             CheckDeleted()
             If Row(AfaInvoiceDataDAL.COL_NAME_DIRECTORY_NAME) Is DBNull.Value Then
@@ -257,7 +257,7 @@ Public Class AfaInvoiceData
                 Return Row(AfaInvoiceDataDAL.COL_NAME_DIRECTORY_NAME).ToString()
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AfaInvoiceDataDAL.COL_NAME_DIRECTORY_NAME, Value)
         End Set

@@ -169,12 +169,12 @@ Partial Class AccountingSettingListForm
             With State
                 .sDealerName = txtDealerName.Text.Trim
                 .sDealerCode = txtDealerCode.Text.Trim
-                If .sDealerName.Length = 0 And .sDealerCode.Length = 0 Then
+                If .sDealerName.Length = 0 AndAlso .sDealerCode.Length = 0 Then
                     moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
                     Exit Sub
                 End If
 
-                If .sDealerName.Length > 0 And .sDealerCode.Length > 0 Then
+                If .sDealerName.Length > 0 AndAlso .sDealerCode.Length > 0 Then
                     moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_ENTER_ONLY_DEALER_NAME_OR_CODE_ERR)
                     Exit Sub
                 End If
@@ -185,12 +185,12 @@ Partial Class AccountingSettingListForm
             With State
                 .sDealerGroupName = txtDealerGroupName.Text.Trim
                 .sDealerGroupCode = txtDealerGroupCode.Text.Trim
-                If .sDealerGroupName.Length = 0 And .sDealerGroupCode.Length = 0 Then
+                If .sDealerGroupName.Length = 0 AndAlso .sDealerGroupCode.Length = 0 Then
                     moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
                     Exit Sub
                 End If
 
-                If .sDealerGroupName.Length > 0 And .sDealerGroupCode.Length > 0 Then
+                If .sDealerGroupName.Length > 0 AndAlso .sDealerGroupCode.Length > 0 Then
                     moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_ENTER_ONLY_DEALER_NAME_OR_CODE_ERR)
                     Exit Sub
                 End If
@@ -201,11 +201,11 @@ Partial Class AccountingSettingListForm
             With State
                 .sSCCode = txtSCCode.Text.Trim
                 .sSCName = txtSCName.Text.Trim
-                If .sSCCode.Length = 0 And .sSCName.Length = 0 Then
+                If .sSCCode.Length = 0 AndAlso .sSCName.Length = 0 Then
                     moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
                     Exit Sub
                 End If
-                If .sSCCode.Length > 0 And .sSCName.Length > 0 Then
+                If .sSCCode.Length > 0 AndAlso .sSCName.Length > 0 Then
                     moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_ENTER_ONLY_SERVICE_CENTER_NAME_OR_CODE_ERR)
                     Exit Sub
                 End If
@@ -216,12 +216,12 @@ Partial Class AccountingSettingListForm
             With State
                 .sBranchCode = txtBranchCode.Text.Trim
                 .sBranchName = txtBranchName.Text.Trim
-                If .sBranchName.Length = 0 And .sBranchCode.Length = 0 Then
+                If .sBranchName.Length = 0 AndAlso .sBranchCode.Length = 0 Then
                     moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
                     Exit Sub
                 End If
 
-                If .sBranchName.Length > 0 And .sBranchCode.Length > 0 Then
+                If .sBranchName.Length > 0 AndAlso .sBranchCode.Length > 0 Then
                     moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_ENTER_ONLY_BRANCH_NAME_OR_CODE_ERR)
                     Exit Sub
                 End If

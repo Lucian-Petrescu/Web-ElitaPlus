@@ -597,19 +597,19 @@ Partial Class PayBatchClaimListForm
                             dr.RESERVE_AMOUNT = Double.Parse(dgItem.Cells(GRID_CLAIM_COL_RESERVE_AMOUNT_IDX).Text)
                             dr.SPARE_PARTS = dgItem.Cells(GRID_CLAIM_COL_SPARE_PARTS_IDX).Text
                             dr.USER_ID = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.Id)
-                            If chkExclDeduc IsNot Nothing And chkExclDeduc.Checked = True Then
+                            If chkExclDeduc IsNot Nothing AndAlso chkExclDeduc.Checked = True Then
                                 dr.EXCLUDE_DEDUCTIBLE = "Y"
                             End If
                             dt.Rows.Add(dr)
                         End If
                         If chk.Checked = True Then
-                            If (Boolean.Parse(dgItem.Cells(GRID_CLAIM_COL_EXCLUDE_DEDUCTIBLE_SELECTED_IDX).Text) = True And chkExclDeduc.Checked = False) Or (Boolean.Parse(dgItem.Cells(GRID_CLAIM_COL_EXCLUDE_DEDUCTIBLE_SELECTED_IDX).Text) = False And chkExclDeduc.Checked = True) Then
+                            If (Boolean.Parse(dgItem.Cells(GRID_CLAIM_COL_EXCLUDE_DEDUCTIBLE_SELECTED_IDX).Text) = True AndAlso chkExclDeduc.Checked = False) OrElse (Boolean.Parse(dgItem.Cells(GRID_CLAIM_COL_EXCLUDE_DEDUCTIBLE_SELECTED_IDX).Text) = False AndAlso chkExclDeduc.Checked = True) Then
 
 
                                 Dim invoiceTransDetailId As Guid = New Guid(dgItem.Cells(GRID_CLAIM_INVOICE_TRANS_DETAIL_IDX).Text)
                                 Dim excludeDeductible As String
 
-                                If chkExclDeduc IsNot Nothing And chkExclDeduc.Checked = True Then
+                                If chkExclDeduc IsNot Nothing AndAlso chkExclDeduc.Checked = True Then
                                     excludeDeductible = "Y"
                                 Else
                                     excludeDeductible = "N"
@@ -640,7 +640,7 @@ Partial Class PayBatchClaimListForm
                             dr.RESERVE_AMOUNT = Double.Parse(dgItem.Cells(GRID_CLAIM_COL_RESERVE_AMOUNT_IDX).Text)
                             dr.SPARE_PARTS = dgItem.Cells(GRID_CLAIM_COL_SPARE_PARTS_IDX).Text
                             dr.USER_ID = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.Id)
-                            If chkExclDeduc IsNot Nothing And chkExclDeduc.Checked = True Then
+                            If chkExclDeduc IsNot Nothing AndAlso chkExclDeduc.Checked = True Then
                                 dr.EXCLUDE_DEDUCTIBLE = "Y"
                             End If
                             dt.Rows.Add(dr)
@@ -761,7 +761,7 @@ Partial Class PayBatchClaimListForm
         End If
         FillClaims()
         Dim statusId As String = LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, State.MyBO.InvoiceStatusId)
-        If statusId = INVOICE_STATUS_PAID Or statusId = INVOICE_STATUS_REJECTED Then
+        If statusId = INVOICE_STATUS_PAID OrElse statusId = INVOICE_STATUS_REJECTED Then
             ControlMgr.SetEnableControl(Me, btnSave_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnNEXT_WRITE, False)
         End If
@@ -871,7 +871,7 @@ Partial Class PayBatchClaimListForm
         Dim boolErr As Boolean = False
 
         'Validate Invoice Number
-        If TextBoxSearchInvoiceNumber.Text.Trim.Length = 0 Or TextBoxSearchInvoiceNumber.Text = Nothing Then
+        If TextBoxSearchInvoiceNumber.Text.Trim.Length = 0 OrElse TextBoxSearchInvoiceNumber.Text = Nothing Then
             MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVOICE_NUMBER_MUST_BE_ENTERED_ERR, True)
             boolErr = True
         End If
@@ -902,12 +902,12 @@ Partial Class PayBatchClaimListForm
         End If
 
         'Validate Service Center or batch number Selection
-        If (cboServiceCenter.SelectedValue = Nothing Or cboServiceCenter.SelectedValue = "" Or cboServiceCenter.SelectedValue = Guid.Empty.ToString) Then
+        If (cboServiceCenter.SelectedValue = Nothing OrElse cboServiceCenter.SelectedValue = "" OrElse cboServiceCenter.SelectedValue = Guid.Empty.ToString) Then
             MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_SERVICE_CENTER_MUST_BE_SELECTED_ERR, True)
             boolErr = True
         End If
 
-        If (ddlInvTyp.SelectedValue = Nothing Or ddlInvTyp.SelectedValue = "" Or ddlInvTyp.SelectedValue = Guid.Empty.ToString) Then
+        If (ddlInvTyp.SelectedValue = Nothing OrElse ddlInvTyp.SelectedValue = "" OrElse ddlInvTyp.SelectedValue = Guid.Empty.ToString) Then
             MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVOICE_TYPE_MUST_BE_SELECTED_ERR, True)
             boolErr = True
         End If
@@ -1091,7 +1091,7 @@ Partial Class PayBatchClaimListForm
             State.MyBO.UserId = ElitaPlusIdentity.Current.ActiveUser.Id
 
             'Validate Invoice Number
-            If TextBoxSearchInvoiceNumber.Text.Trim.Length = 0 Or TextBoxSearchInvoiceNumber.Text = Nothing Then
+            If TextBoxSearchInvoiceNumber.Text.Trim.Length = 0 OrElse TextBoxSearchInvoiceNumber.Text = Nothing Then
                 MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVOICE_NUMBER_MUST_BE_ENTERED_ERR, True)
                 boolErr = True
             End If
@@ -1119,13 +1119,13 @@ Partial Class PayBatchClaimListForm
             End If
 
             'Validate Service Center Selection
-            If cboServiceCenter.SelectedValue = Nothing Or cboServiceCenter.SelectedValue = "" Or cboServiceCenter.SelectedValue = Guid.Empty.ToString Then
+            If cboServiceCenter.SelectedValue = Nothing OrElse cboServiceCenter.SelectedValue = "" OrElse cboServiceCenter.SelectedValue = Guid.Empty.ToString Then
                 MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_SERVICE_CENTER_MUST_BE_SELECTED_ERR, True)
                 boolErr = True
             End If
 
             'Validate Invoice Type Selection
-            If ddlInvTyp.SelectedValue = Nothing Or ddlInvTyp.SelectedValue = "" Or ddlInvTyp.SelectedValue = Guid.Empty.ToString Then
+            If ddlInvTyp.SelectedValue = Nothing OrElse ddlInvTyp.SelectedValue = "" OrElse ddlInvTyp.SelectedValue = Guid.Empty.ToString Then
                 MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVOICE_TYPE_MUST_BE_SELECTED_ERR, True)
                 boolErr = True
             End If
@@ -1227,7 +1227,7 @@ Partial Class PayBatchClaimListForm
                 'If Not chkAll Is Nothing Then
                 '    chkAll.Attributes("onClick") = "javascript:SelectAll('" & chkAll.ClientID & "')"
                 'End If
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, State.MyBO.InvoiceStatusId) = INVOICE_STATUS_PAID Or LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, State.MyBO.InvoiceStatusId) = INVOICE_STATUS_REJECTED Then
+                If LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, State.MyBO.InvoiceStatusId) = INVOICE_STATUS_PAID OrElse LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, State.MyBO.InvoiceStatusId) = INVOICE_STATUS_REJECTED Then
                     ControlMgr.SetEnableControl(Me, chkAll, False)
                 End If
 
@@ -1239,12 +1239,12 @@ Partial Class PayBatchClaimListForm
                 'If Not chkAll Is Nothing Then
                 '    chkAll.Attributes("onClick") = "javascript:SelectExcludeDedAll('" & chkAll.ClientID & "')"
                 'End If
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, State.MyBO.InvoiceStatusId) = INVOICE_STATUS_PAID Or LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, State.MyBO.InvoiceStatusId) = INVOICE_STATUS_REJECTED Then
+                If LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, State.MyBO.InvoiceStatusId) = INVOICE_STATUS_PAID OrElse LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, State.MyBO.InvoiceStatusId) = INVOICE_STATUS_REJECTED Then
                     ControlMgr.SetEnableControl(Me, chkAll, False)
                 End If
             End If
-            If dvRow IsNot Nothing And Not State.bnoRow Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_CLAIM_ID_IDX), dvRow(Claim.ClaimsForBatchProcessDV.COL_NAME_CLAIM_ID))
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_AUTHORIZATION_NUMBER_IDX), dvRow(Claim.ClaimsForBatchProcessDV.COL_NAME_AUTHORIZATION_NUMBER))
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_CLAIM_NUMBER_IDX), dvRow(Claim.ClaimsForBatchProcessDV.COL_NAME_CLAIM_NUMBER))
@@ -1267,7 +1267,7 @@ Partial Class PayBatchClaimListForm
                     Dim chk As CheckBox
                     chk = CType(e.Row.Cells(GRID_CLAIM_COL_ADD_IDX).FindControl(GRID_CLAIM_ADD_CLAIM_CHECKBOX), CheckBox)
 
-                    If (e.Row.Cells(GRID_CLAIM_COL_BATCH_NUMBER_IDX).Text IsNot Nothing And Not e.Row.Cells(GRID_CLAIM_COL_BATCH_NUMBER_IDX).Text.Equals("")) AndAlso State.batchState.Equals(True) Then
+                    If (e.Row.Cells(GRID_CLAIM_COL_BATCH_NUMBER_IDX).Text IsNot Nothing AndAlso Not e.Row.Cells(GRID_CLAIM_COL_BATCH_NUMBER_IDX).Text.Equals("")) AndAlso State.batchState.Equals(True) Then
                         chk.Checked = True
                         dvRow(Claim.ClaimsForBatchProcessDV.COL_NAME_SELECTED) = True
                     End If
@@ -1310,7 +1310,7 @@ Partial Class PayBatchClaimListForm
                                 Dim oDealer As New Dealer(oCert.DealerId)
                                 Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)
                                 Dim yFullId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)
-                                If oDealer.PayDeductibleId.Equals(noId) Or oDealer.PayDeductibleId.Equals(yFullId) Then
+                                If oDealer.PayDeductibleId.Equals(noId) OrElse oDealer.PayDeductibleId.Equals(yFullId) Then
                                     ControlMgr.SetEnableControl(Me, chk1, False)
                                     chk1.ToolTip = "Dealer does not pay deductble"
                                 End If
@@ -1318,7 +1318,7 @@ Partial Class PayBatchClaimListForm
                         End If
                         PopulateControlFromBOProperty(chk1, dvRow(Claim.ClaimsForBatchProcessDV.COL_NAME_EXCLUDE_DEDUCTIBLE))
                     End If
-                    If LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, State.MyBO.InvoiceStatusId) = INVOICE_STATUS_PAID Or LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, State.MyBO.InvoiceStatusId) = INVOICE_STATUS_REJECTED Then
+                    If LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, State.MyBO.InvoiceStatusId) = INVOICE_STATUS_PAID OrElse LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, State.MyBO.InvoiceStatusId) = INVOICE_STATUS_REJECTED Then
                         ControlMgr.SetEnableControl(Me, chk, False)
                         ControlMgr.SetEnableControl(Me, chk1, False)
                     End If
@@ -1336,8 +1336,8 @@ Partial Class PayBatchClaimListForm
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
         Try
-            If dvRow IsNot Nothing And Not State.bnoRow Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                     Dim del As ImageButton = CType(e.Row.Cells(GRID_INV_COL_DELETE_IDX).FindControl("btnDeleteClaims"), ImageButton)
                     Dim ad As ImageButton = CType(e.Row.Cells(GRID_INV_COL_ADD_IDX).FindControl("btnAddClaims"), ImageButton)

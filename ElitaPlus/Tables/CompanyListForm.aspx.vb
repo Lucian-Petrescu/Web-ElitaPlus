@@ -211,8 +211,8 @@ Partial Class CompanyListForm
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim btnEditItem As LinkButton
-        If dvRow IsNot Nothing And Not State.bnoRow Then
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+        If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 btnEditItem = CType(e.Row.Cells(GRID_COL_DESCRIPTION_IDX).FindControl("SelectAction"), LinkButton)
                 btnEditItem.Text = dvRow(Company.CompanySearchDV.COL_DESCRIPTION).ToString
                 e.Row.Cells(GRID_COL_CODE_IDX).Text = dvRow(Company.CompanySearchDV.COL_CODE).ToString

@@ -106,7 +106,7 @@ Namespace Certificates
             lblRecordCount.Visible = Grid.Visible
 
             If ErrControllerMaster.Visible Then
-                If Grid.Visible And Grid.Rows.Count < 10 Then
+                If Grid.Visible AndAlso Grid.Rows.Count < 10 Then
                     Dim fillerHight As Integer = 200
                     fillerHight = fillerHight - Grid.Rows.Count * 20
                     spanFiller.Text = "<tr><td colspan=""2"" style=""height:" & fillerHight & "px"">&nbsp;</td></tr>"
@@ -271,13 +271,13 @@ Namespace Certificates
                 txtAddress.Text = State.address
                 txtZip.Text = State.zip
                 txtPhone.Text = State.PhoneNum
-                If State.dealerId <> Guid.Empty And ddlDealer.Items.Count > 0 Then SetSelectedItem(ddlDealer, State.dealerId)
-                If State.selectedSortById <> Guid.Empty And ddlSortBy.Items.Count > 0 Then
+                If State.dealerId <> Guid.Empty AndAlso ddlDealer.Items.Count > 0 Then SetSelectedItem(ddlDealer, State.dealerId)
+                If State.selectedSortById <> Guid.Empty AndAlso ddlSortBy.Items.Count > 0 Then
                     SetSelectedItem(ddlSortBy, State.selectedSortById)
                 End If
 
                 'Added for Req-610
-                If State.PhoneTypeId <> Guid.Empty And ddlPhoneType.Items.Count > 0 Then SetSelectedItem(ddlPhoneType, State.PhoneTypeId)
+                If State.PhoneTypeId <> Guid.Empty AndAlso ddlPhoneType.Items.Count > 0 Then SetSelectedItem(ddlPhoneType, State.PhoneTypeId)
             Catch ex As Exception
                 HandleErrors(ex, ErrControllerMaster)
             End Try

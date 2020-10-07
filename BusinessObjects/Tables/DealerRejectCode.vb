@@ -97,7 +97,7 @@ Public Class DealerRejectCode
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DealerRejectCodeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -108,7 +108,7 @@ Public Class DealerRejectCode
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(DealerRejectCodeDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -117,7 +117,7 @@ Public Class DealerRejectCode
                 Return New Guid(CType(Row(DealerRejectCodeDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerRejectCodeDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -125,7 +125,7 @@ Public Class DealerRejectCode
 
 
     <ValueMandatory("")> _
-    Public Property MsgCodeId() As Guid
+    Public Property MsgCodeId As Guid
         Get
             CheckDeleted()
             If Row(DealerRejectCodeDAL.COL_NAME_MSG_CODE_ID) Is DBNull.Value Then
@@ -134,7 +134,7 @@ Public Class DealerRejectCode
                 Return New Guid(CType(Row(DealerRejectCodeDAL.COL_NAME_MSG_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerRejectCodeDAL.COL_NAME_MSG_CODE_ID, Value)
         End Set
@@ -142,7 +142,7 @@ Public Class DealerRejectCode
 
 
     <ValueMandatory("")> _
-    Public Property RecordTypeId() As Guid
+    Public Property RecordTypeId As Guid
         Get
             CheckDeleted()
             If Row(DealerRejectCodeDAL.COL_NAME_RECORD_TYPE_ID) Is DBNull.Value Then
@@ -151,7 +151,7 @@ Public Class DealerRejectCode
                 Return New Guid(CType(Row(DealerRejectCodeDAL.COL_NAME_RECORD_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerRejectCodeDAL.COL_NAME_RECORD_TYPE_ID, Value)
         End Set

@@ -318,7 +318,7 @@ Namespace Interfaces
             Dim oExtWarrSaleDateText As TextBox
             Dim oTextBox As TextBox
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 '   Display Only
                 With e.Row
                     PopulateControlFromBOProperty(.Cells(ID_COL), dvRow(ARPaymentReconWrkDAL.COL_NAME_PAYMENT_INTERFACE_ID))

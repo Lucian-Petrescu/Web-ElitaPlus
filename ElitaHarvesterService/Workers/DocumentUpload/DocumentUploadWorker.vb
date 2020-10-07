@@ -70,7 +70,7 @@ Namespace Workers.DocumentUpload
             Dim hasWork = ProcessDropFolder()
 
             '' Step 4 - Find Files from Staging Folder, when no files found then do nothing
-            hasWork = hasWork Or ProcessStagingFolder()
+            hasWork = hasWork OrElse ProcessStagingFolder()
 
             '' Step 5 - Determine if System needs to Sleep or Work
             If (Not hasWork) Then
@@ -333,7 +333,7 @@ Namespace Workers.DocumentUpload
 
             For Each tuple In outputAndTriggers
                 Try
-                    If Not String.IsNullOrWhiteSpace(tuple.Item1) And Not String.IsNullOrWhiteSpace(tuple.Item2) Then
+                    If Not String.IsNullOrWhiteSpace(tuple.Item1) AndAlso Not String.IsNullOrWhiteSpace(tuple.Item2) Then
                         'upload files
                         objUnixFtp.UploadFile(tuple.Item1)
                         objUnixFtp.UploadFile(tuple.Item2)

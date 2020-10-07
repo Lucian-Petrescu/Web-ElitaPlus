@@ -90,7 +90,7 @@ Public Class ServiceNetwork
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ServiceNetworkDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ServiceNetwork
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(ServiceNetworkDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ServiceNetwork
                 Return New Guid(CType(Row(ServiceNetworkDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceNetworkDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ServiceNetwork
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=80)> _
-    Public Property ShortDesc() As String
+    Public Property ShortDesc As String
         Get
             CheckDeleted()
             If Row(ServiceNetworkDAL.COL_NAME_SHORT_DESC) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ServiceNetwork
                 Return CType(Row(ServiceNetworkDAL.COL_NAME_SHORT_DESC), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceNetworkDAL.COL_NAME_SHORT_DESC, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class ServiceNetwork
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ServiceNetworkDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -144,14 +144,14 @@ Public Class ServiceNetwork
                 Return CType(Row(ServiceNetworkDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceNetworkDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     Dim _Route As Route
-    Public ReadOnly Property moRoute() As Route
+    Public ReadOnly Property moRoute As Route
         Get
             If (_Route Is Nothing) Then
                 _Route = New Route(Id, Nothing)
@@ -184,7 +184,7 @@ Public Class ServiceNetwork
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty 
         End Get
@@ -213,7 +213,7 @@ Public Class ServiceNetwork
 
 #Region "Children Related"
 
-    Public ReadOnly Property ServiceNetworkSvcChildren() As ServiceNetworkSVCList
+    Public ReadOnly Property ServiceNetworkSvcChildren As ServiceNetworkSVCList
         Get
             Return New ServiceNetworkSVCList(Me)
         End Get

@@ -90,7 +90,7 @@ Public Class GetDealers
 
 #Region "Properties"
 
-    Public Property CompanyCode() As String
+    Public Property CompanyCode As String
         Get
             If Row(DATA_COL_NAME_COMPANY_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -98,7 +98,7 @@ Public Class GetDealers
                 Return (CType(Row(DATA_COL_NAME_COMPANY_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_COMPANY_CODE, Value)
         End Set

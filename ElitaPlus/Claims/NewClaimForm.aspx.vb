@@ -675,8 +675,7 @@ Partial Class NewClaimForm
                             State.MyBO.StatusCode = Codes.CLAIM_STATUS__DENIED
                         End If
 
-                        If (State.MyBO.IsClaimReportedWithinGracePeriod(State.MyBO.CertificateId, State.MyBO.CertItemCoverageId, objDateOfLoss.Value, objDateOfReport.Value)) And
-                         (State.MyBO.IsClaimReportedWithValidCoverage(State.MyBO.CertificateId, State.MyBO.CertItemCoverageId, objDateOfLoss.Value, objDateOfReport.Value)) Then
+                        If (State.MyBO.IsClaimReportedWithinGracePeriod(State.MyBO.CertificateId, State.MyBO.CertItemCoverageId, objDateOfLoss.Value, objDateOfReport.Value)) AndAlso (State.MyBO.IsClaimReportedWithValidCoverage(State.MyBO.CertificateId, State.MyBO.CertItemCoverageId, objDateOfLoss.Value, objDateOfReport.Value)) Then
                             'Display warning Message if the Maximum number of Replacements have been exceeded
                             If State.MyBO.IsMaxReplacementExceeded(State.MyBO.CertificateId, State.MyBO.LossDate.Value) Then
                                 Dim denialMessage As String = CreateClaimDenialMessage(True, Message.MSG_CLAIM_MAX_REPLACEMENT_EXCEEDED, False)
@@ -837,29 +836,29 @@ Partial Class NewClaimForm
                 bAllowSvcWarrantyClaims = True
             End If
 
-            If (oClmSystem.NewClaimId.Equals(State.noId) AndAlso bAllowSvcWarrantyClaims = False) Or State.MyBO.IsClaimChild = Codes.YESNO_Y Then
+            If (oClmSystem.NewClaimId.Equals(State.noId) AndAlso bAllowSvcWarrantyClaims = False) OrElse State.MyBO.IsClaimChild = Codes.YESNO_Y Then
 
                 MyBase.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_UPDATE_NOT_ALLOWED, True)
 
-                If btnCreateClaim_WRITE.Visible And btnCreateClaim_WRITE.Enabled Then
+                If btnCreateClaim_WRITE.Visible AndAlso btnCreateClaim_WRITE.Enabled Then
                     ControlMgr.SetEnableControl(Me, btnCreateClaim_WRITE, False)
                 End If
-                If ButtonOverride_Write.Visible And ButtonOverride_Write.Enabled Then
+                If ButtonOverride_Write.Visible AndAlso ButtonOverride_Write.Enabled Then
                     ControlMgr.SetEnableControl(Me, ButtonOverride_Write, False)
                 End If
-                If ButtonUpdateClaim_Write.Visible And ButtonUpdateClaim_Write.Enabled Then
+                If ButtonUpdateClaim_Write.Visible AndAlso ButtonUpdateClaim_Write.Enabled Then
                     ControlMgr.SetEnableControl(Me, ButtonUpdateClaim_Write, False)
                 End If
-                If ButtonCancel_Write.Visible And ButtonCancel_Write.Enabled Then
+                If ButtonCancel_Write.Visible AndAlso ButtonCancel_Write.Enabled Then
                     ControlMgr.SetEnableControl(Me, ButtonCancel_Write, False)
                 End If
-                If btnCancelClaim.Visible And btnCancelClaim.Enabled Then
+                If btnCancelClaim.Visible AndAlso btnCancelClaim.Enabled Then
                     ControlMgr.SetEnableControl(Me, btnCancelClaim, False)
                 End If
-                If btnComment.Visible And btnComment.Enabled Then
+                If btnComment.Visible AndAlso btnComment.Enabled Then
                     ControlMgr.SetEnableControl(Me, btnComment, False)
                 End If
-                If btnDenyClaim_Write.Visible And btnDenyClaim_Write.Enabled Then
+                If btnDenyClaim_Write.Visible AndAlso btnDenyClaim_Write.Enabled Then
                     ControlMgr.SetEnableControl(Me, btnDenyClaim_Write, False)
                 End If
             End If
@@ -886,7 +885,7 @@ Partial Class NewClaimForm
         'JLR==> Me.ChangeEnabledProperty(Me.TextboxAuthorizedAmount, False)
         ' Comment the next line for troubleshooting (to see the field on the screen)
         If Not (State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__AUTOMOTIVE _
-        Or State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__GENERAL Or State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__LEGAL Or State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY) Then
+        OrElse State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__GENERAL OrElse State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__LEGAL OrElse State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY) Then
             TextboxAuthorizedAmount.Style.Add(HtmlTextWriterStyle.Display, "none") ' Set true field to invisible
         Else
             TextboxAuthorizedAmountShadow.Style.Add(HtmlTextWriterStyle.Display, "none") ' Set Shadow field to invisible
@@ -1034,7 +1033,7 @@ Partial Class NewClaimForm
             ControlMgr.SetVisibleControl(Me, LabelCALLER_TAX_NUMBER, True)
             ControlMgr.SetVisibleControl(Me, LabelConditionalReqquired, True)
             TextboxCallerName.Attributes.Add("onchange", "ClearCallerTaxNumber();")
-            If State.MyBO.CallerTaxNumber Is Nothing Or (State.MyBO.CallerTaxNumber IsNot Nothing AndAlso State.MyBO.CallerTaxNumber.Equals(String.Empty)) Then
+            If State.MyBO.CallerTaxNumber Is Nothing OrElse (State.MyBO.CallerTaxNumber IsNot Nothing AndAlso State.MyBO.CallerTaxNumber.Equals(String.Empty)) Then
                 ControlMgr.SetEnableControl(Me, TextboxCALLER_TAX_NUMBER, True)
             Else
                 ControlMgr.SetEnableControl(Me, TextboxCALLER_TAX_NUMBER, False)
@@ -1087,7 +1086,7 @@ Partial Class NewClaimForm
             oDeductible = CertItemCoverage.GetDeductible(State.MyBO.CertItemCoverageId, State.MyBO.MethodOfRepairId)
             State.DEDUCTIBLE_BASED_ON = oDeductible.DeductibleBasedOn
             'req 1157 added additional condition
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, State.mDealer.NewDeviceSkuRequiredId) = Codes.YESNO_Y Or (State.DEDUCTIBLE_BASED_ON = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE) Then
+            If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, State.mDealer.NewDeviceSkuRequiredId) = Codes.YESNO_Y OrElse (State.DEDUCTIBLE_BASED_ON = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE) Then
                 ControlMgr.SetVisibleControl(Me, lblNewDeviceSKU, True)
                 ControlMgr.SetVisibleControl(Me, txtNewDeviceSKU, True)
             End If
@@ -1133,8 +1132,8 @@ Partial Class NewClaimForm
             ' show the dates when its NOT service warranty
             ControlMgr.SetVisibleControl(Me, btnDenyClaim_Write, True)
             If State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__AT_HOME _
-                Or State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__CARRY_IN _
-                Or State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT Then
+                OrElse State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__CARRY_IN _
+                OrElse State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT Then
                 ' show the controls only when its method of repair is at home or carry in or replacement
 
 
@@ -1185,7 +1184,7 @@ Partial Class NewClaimForm
         End If
 
         ''req-784 (DEF-1607)
-        If State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__PICK_UP Or State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT Then
+        If State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__PICK_UP OrElse State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT Then
             ControlMgr.SetVisibleControl(Me, LabelUseShipAddress, True)
             ControlMgr.SetVisibleControl(Me, cboUseShipAddress, True)
         End If
@@ -1691,8 +1690,7 @@ Partial Class NewClaimForm
             PopulateControlFromBOProperty(TextboxAssurantPays, .AssurantPays)
             PopulateControlFromBOProperty(TextboxConsumerPays, .ConsumerPays)
             PopulateControlFromBOProperty(TextboxDueToSCFromAssurant, .DueToSCFromAssurant)
-            If (moDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)) Or
-                (moDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
+            If (moDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)) OrElse (moDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
                 ControlMgr.SetVisibleControl(Me, LabelDueToSCFromAssurant, False)
                 ControlMgr.SetVisibleControl(Me, TextboxDueToSCFromAssurant, False)
                 ControlMgr.SetVisibleControl(Me, TextboxDueToSCFromAssurantShadow, False)
@@ -1790,7 +1788,7 @@ Partial Class NewClaimForm
 
                 dtLossDate = DateHelper.GetDateValue(TextboxLossDate.Text)
                 strSKU = txtNewDeviceSKU.Text.Trim
-                If strSKU = String.Empty Or (Not ListPrice.IsSKUValid(moCert.DealerId, strSKU, dtLossDate, deductible)) Then
+                If strSKU = String.Empty OrElse (Not ListPrice.IsSKUValid(moCert.DealerId, strSKU, dtLossDate, deductible)) Then
                     strSKU = moCertItem.SkuNumber
                     deductible = ListPrice.GetListPrice(moCert.DealerId, strSKU, dtLossDate.ToString("yyyyMMdd"))
                 End If
@@ -1818,13 +1816,13 @@ Partial Class NewClaimForm
     Sub PopulateClaimedEnrolledDetails()
         Dim allowEnrolledDeviceUpdate As AttributeValue = State.MyBO.Dealer.AttributeValues.FirstOrDefault(Function(attributeValue) attributeValue.Attribute.UiProgCode = Codes.DLR_ATTR_ALLOW_MODIFY_CLAIMED_DEVICE)
         With State.MyBO
-            If .EnrolledEquipment IsNot Nothing Or .ClaimedEquipment IsNot Nothing Then
+            If .EnrolledEquipment IsNot Nothing OrElse .ClaimedEquipment IsNot Nothing Then
                 With ucClaimDeviceInfo
                     .thisPage = Me
                     .ClaimBO = CType(State.MyBO, ClaimBase)
                     If allowEnrolledDeviceUpdate IsNot Nothing AndAlso allowEnrolledDeviceUpdate.Value = Codes.YESNO_Y Then
                         For Each i As ClaimIssue In State.MyBO.ClaimIssuesList
-                            If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS and i.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Then
+                            If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS AndAlso i.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Then
                                     .ShowDeviceEditImg = True
                                     Exit For
                              Else 
@@ -1950,7 +1948,7 @@ Partial Class NewClaimForm
         PopulateControlFromBOProperty(TextBoxReplacementCost, nReplacementCost)
 
 
-        If ((State.MyBO.ClaimActivityCode Is Nothing OrElse State.MyBO.ClaimActivityCode.Trim.Length = 0) AndAlso dv IsNot Nothing) Or State.MyBO.ClaimSpecialServiceId = State.yesId Then
+        If ((State.MyBO.ClaimActivityCode Is Nothing OrElse State.MyBO.ClaimActivityCode.Trim.Length = 0) AndAlso dv IsNot Nothing) OrElse State.MyBO.ClaimSpecialServiceId = State.yesId Then
             ''''REQ_1106 - Price list integration
 
             'calculating the estimate price
@@ -1987,8 +1985,7 @@ Partial Class NewClaimForm
         End If
 
         If (State.MyBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT _
-       And (State.MyBO.ClaimSpecialServiceId.Equals(Guid.Empty) Or
-            State.MyBO.ClaimSpecialServiceId = State.noId)) Then
+       AndAlso (State.MyBO.ClaimSpecialServiceId.Equals(Guid.Empty) OrElse State.MyBO.ClaimSpecialServiceId = State.noId)) Then
             ' Replacement Price
             If State.MyBO.StatusCode = Codes.CLAIM_STATUS__PENDING Then
                 TextBoxReplacementCost.Text = TextboxAuthorizedAmount.Text
@@ -2161,14 +2158,14 @@ Partial Class NewClaimForm
                     End If
                 End If
 
-                If blnClaimReportedWithinGracePeriod And blnCoverageTypeNotMissing Then
-                    If .IsNew AndAlso Not (State.MyBO.CheckSvcWrantyClaimControl() And State.MyBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK) Then
+                If blnClaimReportedWithinGracePeriod AndAlso blnCoverageTypeNotMissing Then
+                    If .IsNew AndAlso Not (State.MyBO.CheckSvcWrantyClaimControl() AndAlso State.MyBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK) Then
                         blnExceedMaxReplacements = .IsMaxReplacementExceeded(.CertificateId, .LossDate.Value)
                     End If
                 End If
 
             Else
-                If .IsNew AndAlso Not (State.MyBO.CheckSvcWrantyClaimControl() And State.MyBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK) Then 'only check the condition for new claim
+                If .IsNew AndAlso Not (State.MyBO.CheckSvcWrantyClaimControl() AndAlso State.MyBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK) Then 'only check the condition for new claim
                     blnExceedMaxReplacements = .IsMaxReplacementExceeded(.CertificateId, .LossDate.Value)
                     If Not State.MyBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK Then ' Not a Valid Check for Service Warranty Claims
                         blnClaimReportedWithinPeriod = .IsClaimReportedWithinPeriod(.CertificateId, .LossDate.Value, .ReportedDate.Value)
@@ -2187,7 +2184,7 @@ Partial Class NewClaimForm
             End If
 
             blnIsDealerDRPTradeInQuoteFlag = .GetDealerDRPTradeInQuoteFlag(.DealerCode)
-            If blnIsDealerDRPTradeInQuoteFlag = True And .IsNew Then
+            If blnIsDealerDRPTradeInQuoteFlag = True AndAlso .IsNew Then
                 'call DRP web service to check if active trade-in or quotes exist for the device
                 If .VerifyIMEIWithDRPSystem(.SerialNumber) Then
                     Throw New GUIException(Message.MSG_ACTIVE_TRADEIN_QUOTE_EXISTS_ERR, Assurant.ElitaPlus.Common.ErrorCodes.ACTIVE_TRADEIN_QUOTE_EXISTS_ERR)
@@ -2214,7 +2211,7 @@ Partial Class NewClaimForm
                 c.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED_COVERAGE_TYPE_MISSING)
             End If
 
-            If blnClaimReportedWithinGracePeriod And blnCoverageTypeNotMissing Then
+            If blnClaimReportedWithinGracePeriod AndAlso blnCoverageTypeNotMissing Then
 
                 If blnExceedMaxReplacements Then
                     c.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED_REPLACEMENT_EXCEED)
@@ -2368,7 +2365,7 @@ Partial Class NewClaimForm
                     c = State.MyBO.AddNewComment()
                     c.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__PENDING_PAYMENT_ON_OUTSTANDING_PREMIUM)
                     State.MyBO.StatusCode = Codes.CLAIM_STATUS__PENDING
-                ElseIf State.oOutstandingPremAmt = 0 And blnChangeStatustoActive Then
+                ElseIf State.oOutstandingPremAmt = 0 AndAlso blnChangeStatustoActive Then
                     State.MyBO.StatusCode = Codes.CLAIM_STATUS__ACTIVE
                     c.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__PENDING_CLAIM_APPROVED)
                 End If
@@ -2410,7 +2407,7 @@ Partial Class NewClaimForm
 
             'Display a Popup Message to Collect the Deductible if the Dealer is set up for Collection and then Save the Claim
             'Make sure the claim is Authorized and has deductible greater than 0
-            If State.MyBO.StatusCode = Codes.CLAIM_STATUS__ACTIVE And State.MyBO.Deductible.Value > 0D Then
+            If State.MyBO.StatusCode = Codes.CLAIM_STATUS__ACTIVE AndAlso State.MyBO.Deductible.Value > 0D Then
                 If (State.mDealer Is Nothing) Then
                     State.mDealer = New Dealer(State.MyBO.CompanyId, State.MyBO.DealerCode)
                 End If
@@ -2481,7 +2478,7 @@ Partial Class NewClaimForm
                         End If
                     End If
 
-                    If preCheckError IsNot Nothing And preCheckError.Length = 0 Then
+                    If preCheckError IsNot Nothing AndAlso preCheckError.Length = 0 Then
                         If hasBenefit IsNot Nothing AndAlso hasBenefit.Length > 0 Then
                             If hasBenefit(0)("field_value") IsNot Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper() Then
                                 RunPreCheck(hasBenefit)
@@ -2524,8 +2521,8 @@ Partial Class NewClaimForm
                     ((State.PoliceReportBO Is Nothing) OrElse
                      (State.PoliceReportBO IsNot Nothing AndAlso Not State.PoliceReportBO.IsEmpty)) Then
 
-                    If TextboxRepairdate.Visible = True And (State.MyBO.RepairDate IsNot Nothing) _
-                        And TextboxPickUpDate.Visible = True And (State.MyBO.PickUpDate IsNot Nothing) Then
+                    If TextboxRepairdate.Visible = True AndAlso (State.MyBO.RepairDate IsNot Nothing) _
+                        AndAlso TextboxPickUpDate.Visible = True AndAlso (State.MyBO.PickUpDate IsNot Nothing) Then
                         ' for backend claim
                         NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_ORDER) = Nothing
                     Else
@@ -2634,7 +2631,7 @@ Partial Class NewClaimForm
         Dim caseFieldValues() As String
 
         If lossType IsNot Nothing AndAlso lossType.Length > 0 Then
-            If lossType(0)("field_value") IsNot Nothing AndAlso (lossType(0)("field_value").ToString().ToUpper() = "ADH1234" Or lossType(0)("field_value").ToString().ToUpper() = "ADH5") Then
+            If lossType(0)("field_value") IsNot Nothing AndAlso (lossType(0)("field_value").ToString().ToUpper() = "ADH1234" OrElse lossType(0)("field_value").ToString().ToUpper() = "ADH5") Then
                 caseFieldXcds = { "CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING" }
                 caseFieldValues = { Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper() }
             Else If lossType(0)("field_value") IsNot Nothing AndAlso lossType(0)("field_value").ToString().ToUpper() = "THEFT/LOSS" Then
@@ -2902,21 +2899,21 @@ Partial Class NewClaimForm
 
             PopulateBOsFromForm()
 
-            If TextboxRepairdate.Visible = True And TextboxPickUpDate.Visible = True Then
-                If (State.MyBO.RepairDate IsNot Nothing) And (State.MyBO.PickUpDate Is Nothing) Then
+            If TextboxRepairdate.Visible = True AndAlso TextboxPickUpDate.Visible = True Then
+                If (State.MyBO.RepairDate IsNot Nothing) AndAlso (State.MyBO.PickUpDate Is Nothing) Then
                     'display error
                     ElitaPlusPage.SetLabelError(LabelPickUpDate)
                     Throw New GUIException(Message.MSG_INVALID_AUTHORIZED_AMOUNT_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_PICKUP_DATE_IS_REQUIRED_ERR)
                 End If
 
-                If (State.MyBO.RepairDate Is Nothing) And (State.MyBO.PickUpDate IsNot Nothing) Then
+                If (State.MyBO.RepairDate Is Nothing) AndAlso (State.MyBO.PickUpDate IsNot Nothing) Then
                     'display error
                     ElitaPlusPage.SetLabelError(LabelRepairDate)
                     Throw New GUIException(Message.MSG_INVALID_AUTHORIZED_AMOUNT_ERR, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR5)
                 End If
 
                 'if backend claim then invoice number must be entered
-                If (State.MyBO.RepairDate IsNot Nothing) And (State.MyBO.PickUpDate IsNot Nothing) Then
+                If (State.MyBO.RepairDate IsNot Nothing) AndAlso (State.MyBO.PickUpDate IsNot Nothing) Then
                     If (State.MyBO.AuthorizationNumber Is Nothing) Then
                         ElitaPlusPage.SetLabelError(LabelInvoiceNumber)
                         Throw New GUIException(Message.MSG_INVALID_AUTHORIZED_AMOUNT_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVOICE_NUMBER_MUST_BE_ENTERED_ERR)
@@ -2925,7 +2922,7 @@ Partial Class NewClaimForm
 
             End If
 
-            If (State.MyBO.RepairDate IsNot Nothing) And (State.MyBO.PickUpDate IsNot Nothing) Then
+            If (State.MyBO.RepairDate IsNot Nothing) AndAlso (State.MyBO.PickUpDate IsNot Nothing) Then
                 If (State.MyBO.AuthorizationNumber Is Nothing) Then
                     ElitaPlusPage.SetLabelError(LabelInvoiceNumber)
                     Throw New GUIException(Message.MSG_INVALID_AUTHORIZED_AMOUNT_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVOICE_NUMBER_MUST_BE_ENTERED_ERR)
@@ -2966,8 +2963,7 @@ Partial Class NewClaimForm
                     End If
                 End If
 
-                If (State.MyBO.IsClaimReportedWithinGracePeriod(State.MyBO.CertificateId, State.MyBO.CertItemCoverageId, DateHelper.GetDateValue(State.MyBO.LossDate), DateHelper.GetDateValue(State.MyBO.ReportedDate))) And
-                   (State.MyBO.IsClaimReportedWithValidCoverage(State.MyBO.CertificateId, State.MyBO.CertItemCoverageId, DateHelper.GetDateValue(State.MyBO.LossDate), DateHelper.GetDateValue(State.MyBO.ReportedDate))) Then
+                If (State.MyBO.IsClaimReportedWithinGracePeriod(State.MyBO.CertificateId, State.MyBO.CertItemCoverageId, DateHelper.GetDateValue(State.MyBO.LossDate), DateHelper.GetDateValue(State.MyBO.ReportedDate))) AndAlso (State.MyBO.IsClaimReportedWithValidCoverage(State.MyBO.CertificateId, State.MyBO.CertItemCoverageId, DateHelper.GetDateValue(State.MyBO.LossDate), DateHelper.GetDateValue(State.MyBO.ReportedDate))) Then
                     If State.maxReplacementExceed_MessageDisplayed = False Then
                         If State.MyBO.IsMaxReplacementExceeded(State.MyBO.CertificateId, State.MyBO.LossDate.Value) Then
                             Dim denialMessage As String = CreateClaimDenialMessage(True, Message.MSG_CLAIM_MAX_REPLACEMENT_EXCEEDED, True)
@@ -3003,8 +2999,8 @@ Partial Class NewClaimForm
             If State.MyBO.CertificateItem.IsEquipmentRequired Then
                 Dim msgList As List(Of String) = New List(Of String)
                 Dim flag As Boolean = True
-                flag = flag And State.MyBO.ClaimedEquipment.ValidateForClaimProcess(msgList)
-                If State.MyBO.EnrolledEquipment IsNot Nothing Then flag = flag And State.MyBO.EnrolledEquipment.ValidateForClaimProcess(msgList)
+                flag = flag AndAlso State.MyBO.ClaimedEquipment.ValidateForClaimProcess(msgList)
+                If State.MyBO.EnrolledEquipment IsNot Nothing Then flag = flag AndAlso State.MyBO.EnrolledEquipment.ValidateForClaimProcess(msgList)
 
                 If Not flag Then
                     MasterPage.MessageController.AddError(msgList.ToArray)
@@ -3545,8 +3541,7 @@ Partial Class NewClaimForm
 
                 ' Convert short status codes to full description with css
                 e.Row.Cells(GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(CLAIM_ISSUE_LIST, dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString)
-                If (dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED Or
-                          dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__WAIVED) Then
+                If (dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED OrElse dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__WAIVED) Then
                     e.Row.Cells(GRID_COL_STATUS_CODE_IDX).CssClass = "StatActive"
                 Else
                     e.Row.Cells(GRID_COL_STATUS_CODE_IDX).CssClass = "StatInactive"
@@ -3633,7 +3628,7 @@ Partial Class NewClaimForm
 
         Catch ex As Exception
             Dim GetExceptionType As String = ex.GetBaseException.GetType().Name
-            If ((Not GetExceptionType.Equals(String.Empty)) And GetExceptionType.Equals("BOValidationException")) Then
+            If ((Not GetExceptionType.Equals(String.Empty)) AndAlso GetExceptionType.Equals("BOValidationException")) Then
                 ControlMgr.SetVisibleControl(Me, CaseQuestionAnswerGrid, False)
                 lblQuestionRecordFound.Visible = False
             End If

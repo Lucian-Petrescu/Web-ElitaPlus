@@ -90,7 +90,7 @@ Public Class PreInvoiceDetails
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(PreInvoiceDetailsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class PreInvoiceDetails
     End Property
 	
     <ValueMandatory("")> _
-    Public Property PreInvoiceId() As Guid
+    Public Property PreInvoiceId As Guid
         Get
             CheckDeleted()
             If row(PreInvoiceDetailsDAL.COL_NAME_PRE_INVOICE_ID) Is DBNull.Value Then
@@ -110,14 +110,14 @@ Public Class PreInvoiceDetails
                 Return New Guid(CType(row(PreInvoiceDetailsDAL.COL_NAME_PRE_INVOICE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PreInvoiceDetailsDAL.COL_NAME_PRE_INVOICE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If row(PreInvoiceDetailsDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -126,7 +126,7 @@ Public Class PreInvoiceDetails
                 Return New Guid(CType(row(PreInvoiceDetailsDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PreInvoiceDetailsDAL.COL_NAME_CLAIM_ID, Value)
         End Set

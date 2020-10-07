@@ -90,7 +90,7 @@ Public Class UserNotification
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(UserNotificationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class UserNotification
     End Property
 
     <ValueMandatory("")> _
-    Public Property UserId() As Guid
+    Public Property UserId As Guid
         Get
             CheckDeleted()
             If row(UserNotificationDAL.COL_NAME_USER_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class UserNotification
                 Return New Guid(CType(row(UserNotificationDAL.COL_NAME_USER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(UserNotificationDAL.COL_NAME_USER_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class UserNotification
 
 
     <ValueMandatory("")> _
-    Public Property NotificationId() As Guid
+    Public Property NotificationId As Guid
         Get
             CheckDeleted()
             If row(UserNotificationDAL.COL_NAME_NOTIFICATION_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class UserNotification
                 Return New Guid(CType(row(UserNotificationDAL.COL_NAME_NOTIFICATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(UserNotificationDAL.COL_NAME_NOTIFICATION_ID, Value)
         End Set

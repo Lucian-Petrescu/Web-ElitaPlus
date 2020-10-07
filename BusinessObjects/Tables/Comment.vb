@@ -114,7 +114,7 @@ Public Class Comment
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CommentDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -125,7 +125,7 @@ Public Class Comment
     End Property
 
     <MandatryCertOrForgetRequest("")>
-    Public Property CertId() As Guid
+    Public Property CertId As Guid
         Get
             CheckDeleted()
             If Row(CommentDAL.COL_NAME_CERT_ID) Is DBNull.Value Then
@@ -134,7 +134,7 @@ Public Class Comment
                 Return New Guid(CType(Row(CommentDAL.COL_NAME_CERT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommentDAL.COL_NAME_CERT_ID, Value)
             'refresh the certifcate object
@@ -142,7 +142,7 @@ Public Class Comment
         End Set
     End Property
 
-    Public ReadOnly Property Certificate() As Certificate
+    Public ReadOnly Property Certificate As Certificate
         Get
             If _cert Is Nothing Then
                 If Not CertId.Equals(Guid.Empty) Then
@@ -154,7 +154,7 @@ Public Class Comment
     End Property
 
 
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If Row(CommentDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -163,7 +163,7 @@ Public Class Comment
                 Return New Guid(CType(Row(CommentDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommentDAL.COL_NAME_CLAIM_ID, Value)
             'refresh the claim
@@ -171,7 +171,7 @@ Public Class Comment
         End Set
     End Property
 
-    Public ReadOnly Property Claim() As ClaimBase
+    Public ReadOnly Property Claim As ClaimBase
         Get
             If _claim Is Nothing Then
                 If Not ClaimId.Equals(Guid.Empty) Then
@@ -184,7 +184,7 @@ Public Class Comment
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property CallerName() As String
+    Public Property CallerName As String
         Get
             CheckDeleted()
             If Row(CommentDAL.COL_NAME_CALLER_NAME) Is DBNull.Value Then
@@ -193,7 +193,7 @@ Public Class Comment
                 Return CType(Row(CommentDAL.COL_NAME_CALLER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommentDAL.COL_NAME_CALLER_NAME, Value)
         End Set
@@ -201,7 +201,7 @@ Public Class Comment
 
 
     <ValueMandatory("")> _
-    Public Property CommentTypeId() As Guid
+    Public Property CommentTypeId As Guid
         Get
             CheckDeleted()
             If Row(CommentDAL.COL_NAME_COMMENT_TYPE_ID) Is DBNull.Value Then
@@ -210,7 +210,7 @@ Public Class Comment
                 Return New Guid(CType(Row(CommentDAL.COL_NAME_COMMENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommentDAL.COL_NAME_COMMENT_TYPE_ID, Value)
         End Set
@@ -218,7 +218,7 @@ Public Class Comment
 
 
     <ValidStringLength("", Max:=1000)>
-    Public Property Comments() As String
+    Public Property Comments As String
         Get
             CheckDeleted()
             If Row(CommentDAL.COL_NAME_COMMENTS) Is DBNull.Value Then
@@ -227,14 +227,14 @@ Public Class Comment
                 Return CType(Row(CommentDAL.COL_NAME_COMMENTS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommentDAL.COL_NAME_COMMENTS, Value)
         End Set
     End Property
 
     <MandatryCertOrForgetRequest("")>
-    Public Property ForgotRequestId() As Guid
+    Public Property ForgotRequestId As Guid
         Get
             CheckDeleted()
             If Row(CommentDAL.COL_NAME_FORGOT_REQUEST_ID) Is DBNull.Value Then
@@ -243,13 +243,13 @@ Public Class Comment
                 Return New Guid(CType(Row(CommentDAL.COL_NAME_FORGOT_REQUEST_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommentDAL.COL_NAME_FORGOT_REQUEST_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property AddedBy() As String
+    Public ReadOnly Property AddedBy As String
         Get
             Dim userCode As String = CreatedById
             If userCode Is Nothing Then
@@ -260,7 +260,7 @@ Public Class Comment
     End Property
 
 
-    Public ReadOnly Property CertificateNumber() As String
+    Public ReadOnly Property CertificateNumber As String
         Get
             If Not Certificate Is Nothing Then
                 Return Certificate.CertNumber
@@ -270,7 +270,7 @@ Public Class Comment
         End Get
     End Property
 
-    Public ReadOnly Property ClaimNumber() As String
+    Public ReadOnly Property ClaimNumber As String
         Get
             If Not Claim Is Nothing Then
                 Return Claim.ClaimNumber
@@ -280,7 +280,7 @@ Public Class Comment
         End Get
     End Property
 
-    Public ReadOnly Property ClaimStatus() As String
+    Public ReadOnly Property ClaimStatus As String
         Get
             If Not Claim Is Nothing Then
                 Return Claim.StatusCode
@@ -290,7 +290,7 @@ Public Class Comment
         End Get
     End Property
 
-    Public ReadOnly Property Dealer() As String
+    Public ReadOnly Property Dealer As String
         Get
             If Not Certificate Is Nothing Then
                 Return LookupListNew.GetDescriptionFromId(LookupListNew.LK_DEALERS, Certificate.DealerId)

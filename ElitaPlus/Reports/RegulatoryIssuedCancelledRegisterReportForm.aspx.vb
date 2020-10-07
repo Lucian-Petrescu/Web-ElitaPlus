@@ -420,7 +420,7 @@ Namespace Reports
                 Throw New GUIException(Message.MSG_INVALID_DEALER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
             End If
 
-            If TheReportCeInputControl.RadioButtonVIEWControl.Checked = True Or TheReportCeInputControl.RadioButtonTXTControl.Checked = True Then
+            If TheReportCeInputControl.RadioButtonVIEWControl.Checked = True OrElse TheReportCeInputControl.RadioButtonTXTControl.Checked = True Then
                 viewOption = "View"
                 Dim selectedYear As String = GetSelectedDescription(moYearDropDownList)
                 Dim selectedMonthID As Guid = GetSelectedItem(moMonthDropDownList)

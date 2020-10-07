@@ -89,7 +89,7 @@ Public Class BillingCycle
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(BillingCycleDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class BillingCycle
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -109,13 +109,13 @@ Public Class BillingCycle
                 Return New Guid(CType(Row(BillingCycleDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BillingCycleDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property Dealer() As String
+    Public ReadOnly Property Dealer As String
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class BillingCycle
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=255), CheckDuplicate("")> _
-    Public Property BillingCycleCode() As String
+    Public Property BillingCycleCode As String
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_BILLING_CYCLE_CODE) Is DBNull.Value Then
@@ -136,14 +136,14 @@ Public Class BillingCycle
                 Return CType(Row(BillingCycleDAL.COL_NAME_BILLING_CYCLE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BillingCycleDAL.COL_NAME_BILLING_CYCLE_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Max:=31, Min:=1)> _
-    Public Property StartDay() As LongType
+    Public Property StartDay As LongType
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_START_DAY) Is DBNull.Value Then
@@ -152,14 +152,14 @@ Public Class BillingCycle
                 Return New LongType(CType(Row(BillingCycleDAL.COL_NAME_START_DAY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(BillingCycleDAL.COL_NAME_START_DAY, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Max:=31, Min:=1)> _
-    Public Property EndDay() As LongType
+    Public Property EndDay As LongType
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_END_DAY) Is DBNull.Value Then
@@ -168,14 +168,14 @@ Public Class BillingCycle
                 Return New LongType(CType(Row(BillingCycleDAL.COL_NAME_END_DAY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(BillingCycleDAL.COL_NAME_END_DAY, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=99, Min:=-99)> _
-     Public Property BillingRunDateOffsetDays() As LongType
+     Public Property BillingRunDateOffsetDays As LongType
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_BILLING_RUN_DATE_OFFSET_DAYS) Is DBNull.Value Then
@@ -184,13 +184,13 @@ Public Class BillingCycle
                 Return New LongType(CType(Row(BillingCycleDAL.COL_NAME_BILLING_RUN_DATE_OFFSET_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(BillingCycleDAL.COL_NAME_BILLING_RUN_DATE_OFFSET_DAYS, Value)
         End Set
     End Property
 
-    Public Property DateOfPaymentOptionId() As Guid
+    Public Property DateOfPaymentOptionId As Guid
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_DATE_OF_PAYMENT_OPTION_ID) Is DBNull.Value Then
@@ -199,14 +199,14 @@ Public Class BillingCycle
                 Return New Guid(CType(Row(BillingCycleDAL.COL_NAME_DATE_OF_PAYMENT_OPTION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BillingCycleDAL.COL_NAME_DATE_OF_PAYMENT_OPTION_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=99, Min:=-99)>
-    Public Property DateOfPaymentOffsetDays() As LongType
+    Public Property DateOfPaymentOffsetDays As LongType
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_DATE_OF_PAYMENT_OFFSET_DAYS) Is DBNull.Value Then
@@ -215,13 +215,13 @@ Public Class BillingCycle
                 Return New LongType(CType(Row(BillingCycleDAL.COL_NAME_DATE_OF_PAYMENT_OFFSET_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(BillingCycleDAL.COL_NAME_DATE_OF_PAYMENT_OFFSET_DAYS, Value)
         End Set
     End Property
 
-    Public Property NumberOfDigitsRoundOffId() As Guid
+    Public Property NumberOfDigitsRoundOffId As Guid
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_NUMBER_OF_DIGITS_ROUNDOFF_ID) Is DBNull.Value Then
@@ -230,7 +230,7 @@ Public Class BillingCycle
                 Return New Guid(CType(Row(BillingCycleDAL.COL_NAME_NUMBER_OF_DIGITS_ROUNDOFF_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BillingCycleDAL.COL_NAME_NUMBER_OF_DIGITS_ROUNDOFF_ID, Value)
         End Set
@@ -262,7 +262,7 @@ Public Class BillingCycle
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Dim bDirty As Boolean
 

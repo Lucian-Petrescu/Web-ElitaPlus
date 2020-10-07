@@ -47,7 +47,7 @@
                 Return _Position
             End Get
             Set(Value As Integer)
-                If Value > 0 And Value < 7 Then _Position = Value
+                If Value > 0 AndAlso Value < 7 Then _Position = Value
             End Set
         End Property
     End Class

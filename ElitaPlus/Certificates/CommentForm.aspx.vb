@@ -266,7 +266,7 @@ Partial Class CommentForm
                 End If
 
                 If State.ClaimBO IsNot Nothing Then
-                    If State.ClaimBO.IsAuthorizationLimitExceeded And (State.ClaimBO.StatusCode = Codes.CLAIM_STATUS__PENDING) Then
+                    If State.ClaimBO.IsAuthorizationLimitExceeded AndAlso (State.ClaimBO.StatusCode = Codes.CLAIM_STATUS__PENDING) Then
                         MasterPage.MessageController.Clear()
                         MasterPage.MessageController.AddInformation("MSG_AUTHORIZATION_LIMIT_EXCEEDED")
                     End If
@@ -416,7 +416,7 @@ Partial Class CommentForm
                         End If
                     End If
 
-                    If preCheckError IsNot Nothing And preCheckError.Length = 0 Then
+                    If preCheckError IsNot Nothing AndAlso preCheckError.Length = 0 Then
                         If hasBenefit IsNot Nothing AndAlso hasBenefit.Length > 0 Then
                             If hasBenefit(0)("field_value") IsNot Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper() Then
                                 RunPreCheck(hasBenefit)
@@ -496,7 +496,7 @@ Partial Class CommentForm
         Dim caseFieldValues() As String
 
         If lossType IsNot Nothing AndAlso lossType.Length > 0 Then
-            If lossType(0)("field_value") IsNot Nothing AndAlso (lossType(0)("field_value").ToString().ToUpper() = "ADH1234" Or lossType(0)("field_value").ToString().ToUpper() = "ADH5") Then
+            If lossType(0)("field_value") IsNot Nothing AndAlso (lossType(0)("field_value").ToString().ToUpper() = "ADH1234" OrElse lossType(0)("field_value").ToString().ToUpper() = "ADH5") Then
                 caseFieldXcds = { "CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING" }
                 caseFieldValues = { Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper() }
             Else If lossType(0)("field_value") IsNot Nothing AndAlso lossType(0)("field_value").ToString().ToUpper() = "THEFT/LOSS" Then
@@ -650,7 +650,7 @@ Partial Class CommentForm
                 cbEmailToServiceCenter.Checked = True
             End If
             EmailToServiceCenterText.Text = oServiceCenter.Email
-            If Not State.ClaimBO.Dealer.DefaultSalvgeCenterId = Guid.Empty And State.ClaimBO.ClaimNumber.Substring(State.ClaimBO.ClaimNumber.Length - 1) = "R" Then
+            If Not State.ClaimBO.Dealer.DefaultSalvgeCenterId = Guid.Empty AndAlso State.ClaimBO.ClaimNumber.Substring(State.ClaimBO.ClaimNumber.Length - 1) = "R" Then
                 Dim oSalvageCenter As ServiceCenter = New ServiceCenter(State.ClaimBO.Dealer.DefaultSalvgeCenterId)
                 EmailToSalvageCenterText.Text = oSalvageCenter.Email
                 If Not EmailToSalvageCenterText.Text = Nothing Then

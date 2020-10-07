@@ -124,12 +124,12 @@ Namespace Tables
 
         Private Function GetEventArgumentBasedOnEventType(EventTypeCode As String) As DataView
             If (EventTypeCode = "ISSUE_OPENED" _
-                    Or EventTypeCode = "ISSUE_RESOLVED" _
-                    Or EventTypeCode = "ISSUE_REJECTED" _
-                    Or EventTypeCode = "ISSUE_CLOSED" _
-                    Or EventTypeCode = "ISSUE_PENDING" _
-                    Or EventTypeCode = "ISSUE_WAIVED" _
-                    Or EventTypeCode = "ISSUE_REOPENED") Then
+                    OrElse EventTypeCode = "ISSUE_RESOLVED" _
+                    OrElse EventTypeCode = "ISSUE_REJECTED" _
+                    OrElse EventTypeCode = "ISSUE_CLOSED" _
+                    OrElse EventTypeCode = "ISSUE_PENDING" _
+                    OrElse EventTypeCode = "ISSUE_WAIVED" _
+                    OrElse EventTypeCode = "ISSUE_REOPENED") Then
                 Return LookupListNew.GetIssueLookupListGlobal()
             ElseIf (EventTypeCode = "CLM_EXT_STATUS") Then
                 Return LookupListNew.GetExtendedStatusLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
@@ -381,12 +381,12 @@ Namespace Tables
                 'Else
                 '    Me.BindListControlToDataView(Me.ddlEventArgument, dv, , , True)
                 If (EventTypeCode = "ISSUE_OPENED" _
-                  Or EventTypeCode = "ISSUE_RESOLVED" _
-                  Or EventTypeCode = "ISSUE_REJECTED" _
-                  Or EventTypeCode = "ISSUE_CLOSED" _
-                  Or EventTypeCode = "ISSUE_PENDING" _
-                  Or EventTypeCode = "ISSUE_WAIVED" _
-                  Or EventTypeCode = "ISSUE_REOPENED") Then
+                  OrElse EventTypeCode = "ISSUE_RESOLVED" _
+                  OrElse EventTypeCode = "ISSUE_REJECTED" _
+                  OrElse EventTypeCode = "ISSUE_CLOSED" _
+                  OrElse EventTypeCode = "ISSUE_PENDING" _
+                  OrElse EventTypeCode = "ISSUE_WAIVED" _
+                  OrElse EventTypeCode = "ISSUE_REOPENED") Then
                     ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList(ListCodes.GetIssue, Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                       {
                                        .AddBlankItem = True
@@ -606,12 +606,12 @@ Namespace Tables
             'Else
             'Me.BindListControlToDataView(Me.ddlEventArgument, dv, , , True)
             If (EventTypeCode = "ISSUE_OPENED" _
-                  Or EventTypeCode = "ISSUE_RESOLVED" _
-                  Or EventTypeCode = "ISSUE_REJECTED" _
-                  Or EventTypeCode = "ISSUE_CLOSED" _
-                  Or EventTypeCode = "ISSUE_PENDING" _
-                  Or EventTypeCode = "ISSUE_WAIVED" _
-                  Or EventTypeCode = "ISSUE_REOPENED") Then
+                  OrElse EventTypeCode = "ISSUE_RESOLVED" _
+                  OrElse EventTypeCode = "ISSUE_REJECTED" _
+                  OrElse EventTypeCode = "ISSUE_CLOSED" _
+                  OrElse EventTypeCode = "ISSUE_PENDING" _
+                  OrElse EventTypeCode = "ISSUE_WAIVED" _
+                  OrElse EventTypeCode = "ISSUE_REOPENED") Then
                 ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList(ListCodes.GetIssue, Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                           {
                                            .AddBlankItem = True

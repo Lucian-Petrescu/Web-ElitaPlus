@@ -139,7 +139,7 @@ Public Class CoverageRate
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CoverageRateDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -150,7 +150,7 @@ Public Class CoverageRate
     End Property
 
     <ValueMandatory("")>
-    Public Property CoverageId() As Guid
+    Public Property CoverageId As Guid
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_COVERAGE_ID) Is DBNull.Value Then
@@ -159,7 +159,7 @@ Public Class CoverageRate
                 Return New Guid(CType(Row(CoverageRateDAL.COL_NAME_COVERAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_COVERAGE_ID, Value)
         End Set
@@ -167,7 +167,7 @@ Public Class CoverageRate
 
 
     <ValueMandatory(""), ValidNumericRange("LowPrice", Min:=MIN_DOUBLE, Max:=NEW_COVERAGE_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM001), ValidCoverageRates("")>
-    Public Property LowPrice() As DecimalType
+    Public Property LowPrice As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_LOW_PRICE) Is DBNull.Value Then
@@ -176,7 +176,7 @@ Public Class CoverageRate
                 Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_LOW_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_LOW_PRICE, Value)
         End Set
@@ -184,7 +184,7 @@ Public Class CoverageRate
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DOUBLE, Max:=NEW_COVERAGE_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM002)>
-    Public Property HighPrice() As DecimalType
+    Public Property HighPrice As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_HIGH_PRICE) Is DBNull.Value Then
@@ -193,7 +193,7 @@ Public Class CoverageRate
                 Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_HIGH_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_HIGH_PRICE, Value)
         End Set
@@ -201,7 +201,7 @@ Public Class CoverageRate
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DOUBLE, Max:=NEW_COVERAGE_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM003)>
-    Public Property GrossAmt() As DecimalType
+    Public Property GrossAmt As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_GROSS_AMT) Is DBNull.Value Then
@@ -210,7 +210,7 @@ Public Class CoverageRate
                 Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_GROSS_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_GROSS_AMT, Value)
         End Set
@@ -218,7 +218,7 @@ Public Class CoverageRate
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DOUBLE, Max:=MAX_DOUBLE, Message:=COVERAGE_RATE_FORM004), ValidCoverageSum(""), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
-    Public Property CommissionsPercent() As DecimalType
+    Public Property CommissionsPercent As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT) Is DBNull.Value Then
@@ -227,7 +227,7 @@ Public Class CoverageRate
                 Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT, Value)
         End Set
@@ -235,7 +235,7 @@ Public Class CoverageRate
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DOUBLE, Max:=MAX_DOUBLE, Message:=COVERAGE_RATE_FORM005), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
-    Public Property MarketingPercent() As DecimalType
+    Public Property MarketingPercent As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_MARKETING_PERCENT) Is DBNull.Value Then
@@ -244,7 +244,7 @@ Public Class CoverageRate
                 Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_MARKETING_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_MARKETING_PERCENT, Value)
         End Set
@@ -252,7 +252,7 @@ Public Class CoverageRate
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DOUBLE, Max:=NEW_COVERAGE_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM006), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
-    Public Property AdminExpense() As DecimalType
+    Public Property AdminExpense As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE) Is DBNull.Value Then
@@ -261,7 +261,7 @@ Public Class CoverageRate
                 Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE, Value)
         End Set
@@ -269,7 +269,7 @@ Public Class CoverageRate
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DOUBLE, Max:=NEW_COVERAGE_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM007), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
-    Public Property ProfitExpense() As DecimalType
+    Public Property ProfitExpense As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_PROFIT_EXPENSE) Is DBNull.Value Then
@@ -278,7 +278,7 @@ Public Class CoverageRate
                 Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_PROFIT_EXPENSE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_PROFIT_EXPENSE, Value)
         End Set
@@ -286,7 +286,7 @@ Public Class CoverageRate
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DOUBLE, Max:=MAX_DOUBLE, Message:=COVERAGE_RATE_FORM008), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
-    Public Property LossCostPercent() As DecimalType
+    Public Property LossCostPercent As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT) Is DBNull.Value Then
@@ -295,14 +295,14 @@ Public Class CoverageRate
                 Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=MIN_DOUBLE, Max:=MAX_DOUBLE, Message:=COVERAGE_RATE_FORM013), ValidGrossAmountPercent(""), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
-    Public Property GrossAmountPercent() As DecimalType
+    Public Property GrossAmountPercent As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_GROSS_AMOUNT_PERCENT) Is DBNull.Value Then
@@ -311,14 +311,14 @@ Public Class CoverageRate
                 Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_GROSS_AMOUNT_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_GROSS_AMOUNT_PERCENT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=999, Message:=COVERAGE_RATE_FORM014), ValidateRenewalNumber("")>
-    Public Property RenewalNumber() As LongType
+    Public Property RenewalNumber As LongType
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_RENEWAL_NUMBER) Is DBNull.Value Then
@@ -327,12 +327,12 @@ Public Class CoverageRate
                 Return New LongType(CType(Row(CoverageRateDAL.COL_NAME_RENEWAL_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_RENEWAL_NUMBER, Value)
         End Set
     End Property
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -341,12 +341,12 @@ Public Class CoverageRate
                 Return New Guid(CType(Row(CoverageRateDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
-    Public Property TaxRegion() As String
+    Public Property TaxRegion As String
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_TAX_REGION) Is DBNull.Value Then
@@ -355,7 +355,7 @@ Public Class CoverageRate
                 Return CType(Row(CoverageRateDAL.COL_NAME_TAX_REGION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_TAX_REGION, Value)
         End Set
@@ -363,7 +363,7 @@ Public Class CoverageRate
 
     'US 521697
     <ValidStringLength("", Max:=50, Message:="CommissionsPercentSourceXcd should be between 1 to 30 chars.")>
-    Public Property CommissionsPercentSourceXcd() As String
+    Public Property CommissionsPercentSourceXcd As String
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD) Is DBNull.Value Then
@@ -372,14 +372,14 @@ Public Class CoverageRate
                 Return CType(Row(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50, Message:="MarketingPercentSourceXcd should be between 1 to 30 chars.")>
-    Public Property MarketingPercentSourceXcd() As String
+    Public Property MarketingPercentSourceXcd As String
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD) Is DBNull.Value Then
@@ -388,14 +388,14 @@ Public Class CoverageRate
                 Return CType(Row(CoverageRateDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50, Message:="AdminExpenseSourceXcd should be between 1 to 30 chars.")>
-    Public Property AdminExpenseSourceXcd() As String
+    Public Property AdminExpenseSourceXcd As String
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD) Is DBNull.Value Then
@@ -404,14 +404,14 @@ Public Class CoverageRate
                 Return CType(Row(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50, Message:="ProfitPercentSourceXcd should be between 1 to 30 chars.")>
-    Public Property ProfitPercentSourceXcd() As String
+    Public Property ProfitPercentSourceXcd As String
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD) Is DBNull.Value Then
@@ -420,14 +420,14 @@ Public Class CoverageRate
                 Return CType(Row(CoverageRateDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50, Message:="LossCostPercentSourceXcd should be between 1 to 30 chars.")>
-    Public Property LossCostPercentSourceXcd() As String
+    Public Property LossCostPercentSourceXcd As String
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD) Is DBNull.Value Then
@@ -436,7 +436,7 @@ Public Class CoverageRate
                 Return CType(Row(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD, Value)
         End Set
@@ -444,7 +444,7 @@ Public Class CoverageRate
     
     'US-489838    
     <ValidNumericRange("", Min:=MIN_DOUBLE, Max:=NEW_COVERAGE_LIABILITY_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM017)>
-    Public Property CovLiabilityLimit() As DecimalType
+    Public Property CovLiabilityLimit As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT) Is DBNull.Value Then
@@ -453,7 +453,7 @@ Public Class CoverageRate
                 Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT, Value)
         End Set
@@ -461,7 +461,7 @@ Public Class CoverageRate
     
     'US-489838        
     <ValidNumericRange("", Min:=MIN_PERCENT, Max:=MAX_PERCENT, Message:=COVERAGE_RATE_FORM018), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
-    Public Property CovLiabilityLimitPercent() As DecimalType
+    Public Property CovLiabilityLimitPercent As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT_PERCENT) Is DBNull.Value Then
@@ -470,17 +470,17 @@ Public Class CoverageRate
                 Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT_PERCENT, Value)
         End Set
     End Property
 #End Region
-    Public Property IsProductSetForSequenceRenewalNo() As Boolean
+    Public Property IsProductSetForSequenceRenewalNo As Boolean
         Get
             Return IsProductCodeSetForSequenceRenewalNo
         End Get
-        Set(ByVal value As Boolean)
+        Set
             IsProductCodeSetForSequenceRenewalNo = value
         End Set
     End Property

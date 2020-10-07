@@ -8,14 +8,14 @@ Public Class TranslationBase
 
 #Region "Properties"
 
-    Public Property TranslationMissingList() As ArrayList
+    Public Property TranslationMissingList As ArrayList
         Get
 
             Return mTranslationMissingList
 
         End Get
 
-        Set(ByVal Value As ArrayList)
+        Set
 
             mTranslationMissingList = Value
 

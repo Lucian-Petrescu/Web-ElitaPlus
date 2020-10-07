@@ -91,7 +91,7 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
 
 #Region "Properties"
     <ValueMandatory("")> _
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             CheckDeleted()
             If Row(dataAccessObject.TABLE_KEY_NAME) Is DBNull.Value Then
@@ -103,7 +103,7 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
     End Property
 
     <ValueMandatory("")> _
-    Public Property PermissionId() As Guid
+    Public Property PermissionId As Guid
         Get
             CheckDeleted()
             If Row(dataAccessObject.COL_NAME_PERMISSION_ID) Is DBNull.Value Then
@@ -112,14 +112,14 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
                 Return New Guid(CType(Row(dataAccessObject.COL_NAME_PERMISSION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(dataAccessObject.COL_NAME_PERMISSION_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property EntityId() As Guid
+    Public Property EntityId As Guid
         Get
             CheckDeleted()
             If Row(dataAccessObject.COL_NAME_ENTITY_ID) Is DBNull.Value Then
@@ -128,7 +128,7 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
                 Return New Guid(CType(Row(dataAccessObject.COL_NAME_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(dataAccessObject.COL_NAME_ENTITY_ID, Value)
         End Set

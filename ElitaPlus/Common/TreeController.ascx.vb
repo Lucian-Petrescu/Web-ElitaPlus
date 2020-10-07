@@ -117,7 +117,7 @@ Namespace Generic
 
             Private Function GoUp() As Boolean
                 Dim bContinue As Boolean = True
-                While (moNodeEnum.MoveNext = False) And bContinue
+                While (moNodeEnum.MoveNext = False) AndAlso bContinue
                     If moEnumStack.Count > 0 Then
                         ' Go up one level
                         moNodeEnum = CType(moEnumStack(moEnumStack.Count - 1), IEnumerator)
@@ -364,7 +364,7 @@ Namespace Generic
                 End If
 
 
-            Loop While Not bBreak And bContinue
+            Loop While Not bBreak AndAlso bContinue
             Return bContinue
 
         End Function

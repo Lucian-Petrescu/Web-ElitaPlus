@@ -330,8 +330,8 @@ Namespace Tables
         Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-            If dvRow IsNot Nothing And Not State.bnoRow Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Row.Cells(COMMISSION_PERIOD_ID).Text = GetGuidStringFromByteArray(CType(dvRow(CommissionPeriod.CommissionPeriodSearchDV.COL_COMMISSION_PERIOD_ID), Byte()))
                     e.Row.Cells(GRID_COL_COMPANY_CODE_IDX).Text = dvRow(CommissionPeriod.CommissionPeriodSearchDV.COL_COMPANY_CODE).ToString
                     e.Row.Cells(GRID_COL_DEALER_IDX).Text = dvRow(CommissionPeriod.CommissionPeriodSearchDV.COL_DEALER_NAME).ToString
@@ -405,8 +405,8 @@ Namespace Tables
         Private Sub GridCommPrd_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridCommPrd.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-            If dvRow IsNot Nothing And Not State.bnoRow Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Row.Cells(COMM_P_CODE_ID).Text = GetGuidStringFromByteArray(CType(dvRow(CommissionPeriod.CommPrdPeriodSearchDV.COL_COMM_P_CODE_ID), Byte()))
                     e.Row.Cells(GRID_COL_COMPANY_CODE_IDX).Text = dvRow(CommissionPeriod.CommPrdPeriodSearchDV.COL_COMPANY_CODE).ToString
                     e.Row.Cells(GRID_COL_DEALER_IDX).Text = dvRow(CommissionPeriod.CommPrdPeriodSearchDV.COL_DEALER_NAME).ToString
@@ -696,7 +696,7 @@ Namespace Tables
            Handles moDealerMultipleDrop.SelectedDropChanged
             Try
                 State.moDealerId = moDealerMultipleDrop.SelectedGuid
-                If moDealerMultipleDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX And chkIsCommProdCode.Checked Then
+                If moDealerMultipleDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX AndAlso chkIsCommProdCode.Checked Then
                     PopulateProductCode()
                 End If
             Catch ex As Exception

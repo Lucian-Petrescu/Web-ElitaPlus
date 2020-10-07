@@ -86,7 +86,7 @@ Public Class GetClaimStatusHistory
 #Region "Properties"
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             If Row(DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -94,13 +94,13 @@ Public Class GetClaimStatusHistory
                 Return (CType(Row(DATA_COL_NAME_CLAIM_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
-    Private ReadOnly Property ClaimID() As Guid
+    Private ReadOnly Property ClaimID As Guid
         Get
             If _claimId.Equals(Guid.Empty) Then
                 _claimId = Claim.GetClaimID(ElitaPlusIdentity.Current.ActiveUser.Companies, ClaimNumber)

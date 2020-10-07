@@ -232,7 +232,7 @@ Partial Class ExchangeRateListForm
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
         Try
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Item.Cells(GRID_COL_CURRENCY_CONVERSION_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(CurrencyConversion.CurrencyRateDV.COL_NAME_CURRENCY_CONVERSION_ID), Byte()))
                 e.Item.Cells(GRID_COL_DEALER_CODE_IDX).Text = dvRow(CurrencyConversion.CurrencyRateDV.COL_DEALER_CODE).ToString
                 e.Item.Cells(GRID_COL_DEALER_NAME_IDX).Text = dvRow(CurrencyConversion.CurrencyRateDV.COL_DEALER_NAME).ToString
@@ -309,11 +309,11 @@ Partial Class ExchangeRateListForm
                 State.HasDataChanged = False
                 State.MyBO = New CurrencyConversion
 
-                If txtFromDate.Text <> "" And txtToDate.Text = "" Then
+                If txtFromDate.Text <> "" AndAlso txtToDate.Text = "" Then
                     txtToDate = txtFromDate
                 End If
 
-                If txtToDate.Text <> "" And txtFromDate.Text = "" Then
+                If txtToDate.Text <> "" AndAlso txtFromDate.Text = "" Then
                     txtFromDate = txtToDate
                 End If
 
@@ -322,7 +322,7 @@ Partial Class ExchangeRateListForm
                 End If
                 'Dates
                 'High date must be higher than low date.
-                If txtFromDate.Text <> "" Or txtToDate.Text <> "" Then
+                If txtFromDate.Text <> "" OrElse txtToDate.Text <> "" Then
                     ValidateBeginEndDate(lblFromDate, txtFromDate.Text, lblToDate, txtToDate.Text)
                 End If
 

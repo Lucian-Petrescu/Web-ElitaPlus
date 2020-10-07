@@ -213,7 +213,7 @@ Namespace Interfaces
             Dim oExtWarrSaleDateText As TextBox
             Dim oTextBox As TextBox
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 '   Display Only
                 With e.Item
                     PopulateControlFromBOProperty(.Cells(ID_COL), dvRow(ClaimReconWrk.COL_NAME_CLAIM_RECON_WRK_ID))

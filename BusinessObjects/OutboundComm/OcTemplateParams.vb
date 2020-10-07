@@ -90,7 +90,7 @@ Public Class OcTemplateParams
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(OcTemplateParamsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class OcTemplateParams
     End Property
 	
     <ValueMandatory("")> _
-    Public Property OcTemplateId() As Guid
+    Public Property OcTemplateId As Guid
         Get
             CheckDeleted()
             If row(OcTemplateParamsDAL.COL_NAME_OC_TEMPLATE_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class OcTemplateParams
                 Return New Guid(CType(row(OcTemplateParamsDAL.COL_NAME_OC_TEMPLATE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(OcTemplateParamsDAL.COL_NAME_OC_TEMPLATE_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class OcTemplateParams
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=600)> _
-    Public Property ParamName() As String
+    Public Property ParamName As String
         Get
             CheckDeleted()
             If row(OcTemplateParamsDAL.COL_NAME_PARAM_NAME) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class OcTemplateParams
                 Return CType(row(OcTemplateParamsDAL.COL_NAME_PARAM_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateParamsDAL.COL_NAME_PARAM_NAME, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class OcTemplateParams
 
 
     <ValidStringLength("", Max:=400)>
-    Public Property ParamValueSourceXcd() As String
+    Public Property ParamValueSourceXcd As String
         Get
             CheckDeleted()
             If row(OcTemplateParamsDAL.COL_NAME_PARAM_VALUE_SOURCE_XCD) Is DBNull.Value Then
@@ -144,13 +144,13 @@ Public Class OcTemplateParams
                 Return CType(row(OcTemplateParamsDAL.COL_NAME_PARAM_VALUE_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateParamsDAL.COL_NAME_PARAM_VALUE_SOURCE_XCD, Value)
         End Set
     End Property
 
-    Public Property ParamValueSourceDescription() As String
+    Public Property ParamValueSourceDescription As String
         Get
             CheckDeleted()
             If Row(OcTemplateParamsDAL.COL_NAME_PARAM_VALUE_SOURCE_DESCRIPTION) Is DBNull.Value Then
@@ -159,14 +159,14 @@ Public Class OcTemplateParams
                 Return CType(Row(OcTemplateParamsDAL.COL_NAME_PARAM_VALUE_SOURCE_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateParamsDAL.COL_NAME_PARAM_VALUE_SOURCE_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidDataType("")>
-    Public Property ParamValue() As String
+    Public Property ParamValue As String
         Get
             CheckDeleted()
             If Row(OcTemplateParamsDAL.COL_NAME_PARAM_VALUE) Is DBNull.Value Then
@@ -175,13 +175,13 @@ Public Class OcTemplateParams
                 Return CType(Row(OcTemplateParamsDAL.COL_NAME_PARAM_VALUE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateParamsDAL.COL_NAME_PARAM_VALUE, Value)
         End Set
     End Property
 
-    Public Property ParamType() As String
+    Public Property ParamType As String
         Get
             CheckDeleted()
             If Row(OcTemplateParamsDAL.COL_NAME_PARAM_TYPE) Is DBNull.Value Then
@@ -190,14 +190,14 @@ Public Class OcTemplateParams
                 Return CType(Row(OcTemplateParamsDAL.COL_NAME_PARAM_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateParamsDAL.COL_NAME_PARAM_TYPE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=400)>
-    Public Property ParamDataTypeXcd() As String
+    Public Property ParamDataTypeXcd As String
         Get
             CheckDeleted()
             If row(OcTemplateParamsDAL.COL_NAME_PARAM_DATA_TYPE_XCD) Is DBNull.Value Then
@@ -206,13 +206,13 @@ Public Class OcTemplateParams
                 Return CType(row(OcTemplateParamsDAL.COL_NAME_PARAM_DATA_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateParamsDAL.COL_NAME_PARAM_DATA_TYPE_XCD, Value)
         End Set
     End Property
 
-    Public Property ParamDataTypeDescription() As String
+    Public Property ParamDataTypeDescription As String
         Get
             CheckDeleted()
             If Row(OcTemplateParamsDAL.COL_NAME_PARAM_DATA_TYPE_DESCRIPTION) Is DBNull.Value Then
@@ -221,14 +221,14 @@ Public Class OcTemplateParams
                 Return CType(Row(OcTemplateParamsDAL.COL_NAME_PARAM_DATA_TYPE_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateParamsDAL.COL_NAME_PARAM_DATA_TYPE_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=400)> _
-    Public Property DateFormatString() As String
+    Public Property DateFormatString As String
         Get
             CheckDeleted()
             If row(OcTemplateParamsDAL.COL_NAME_DATE_FORMAT_STRING) Is DBNull.Value Then
@@ -237,7 +237,7 @@ Public Class OcTemplateParams
                 Return CType(row(OcTemplateParamsDAL.COL_NAME_DATE_FORMAT_STRING), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateParamsDAL.COL_NAME_DATE_FORMAT_STRING, Value)
         End Set
@@ -245,7 +245,7 @@ Public Class OcTemplateParams
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)>
-    Public Property AllowEmptyValueXcd() As String
+    Public Property AllowEmptyValueXcd As String
         Get
             CheckDeleted()
             If row(OcTemplateParamsDAL.COL_NAME_ALLOW_EMPTY_VALUE_XCD) Is DBNull.Value Then
@@ -254,13 +254,13 @@ Public Class OcTemplateParams
                 Return CType(row(OcTemplateParamsDAL.COL_NAME_ALLOW_EMPTY_VALUE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateParamsDAL.COL_NAME_ALLOW_EMPTY_VALUE_XCD, Value)
         End Set
     End Property
 
-    Public Property AllowEmptyValueDescription() As String
+    Public Property AllowEmptyValueDescription As String
         Get
             CheckDeleted()
             If Row(OcTemplateParamsDAL.COL_NAME_ALLOW_EMPTY_VALUE_DESCRIPTION) Is DBNull.Value Then
@@ -269,7 +269,7 @@ Public Class OcTemplateParams
                 Return CType(Row(OcTemplateParamsDAL.COL_NAME_ALLOW_EMPTY_VALUE_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateParamsDAL.COL_NAME_ALLOW_EMPTY_VALUE_DESCRIPTION, Value)
         End Set

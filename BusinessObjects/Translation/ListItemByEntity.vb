@@ -95,60 +95,60 @@ Public Class ListItemByEntity
 
 #Region "Properties"
 
-    Public Property ListCode() As String
+    Public Property ListCode As String
         Get
             Return _listCode
         End Get
-        Set(ByVal Value As String)
+        Set
             _listCode = Value
         End Set
     End Property
 
-    Public Property EntityCode() As String
+    Public Property EntityCode As String
         Get
             Return _entityCode
         End Get
-        Set(ByVal Value As String)
+        Set
             _entityCode = Value
         End Set
     End Property
-    Public Property ListDescription() As String
+    Public Property ListDescription As String
         Get
             Return _listDescription
         End Get
-        Set(ByVal Value As String)
+        Set
             _listDescription = Value
         End Set
     End Property
 
-    Public Property EntityDescription() As String
+    Public Property EntityDescription As String
         Get
             Return _entityDescription
         End Get
-        Set(ByVal Value As String)
+        Set
             _entityDescription = Value
         End Set
     End Property
-    Public Property EntityType() As String
+    Public Property EntityType As String
         Get
             Return _entityType
         End Get
-        Set(ByVal Value As String)
+        Set
             _entityType = Value
         End Set
     End Property
 
-    Public Property SearchType() As String
+    Public Property SearchType As String
         Get
             Return _searchType
         End Get
-        Set(ByVal Value As String)
+        Set
             _searchType = Value
         End Set
     End Property
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ListItemByEntityDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -159,7 +159,7 @@ Public Class ListItemByEntity
     End Property
 	
     <ValueMandatory(""),ValidStringLength("", Max:=100)> _
-    Public Property EntityReference() As String
+    Public Property EntityReference As String
         Get
             CheckDeleted()
             If row(ListItemByEntityDAL.COL_NAME_ENTITY_REFERENCE) Is DBNull.Value Then
@@ -168,7 +168,7 @@ Public Class ListItemByEntity
                 Return CType(row(ListItemByEntityDAL.COL_NAME_ENTITY_REFERENCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ListItemByEntityDAL.COL_NAME_ENTITY_REFERENCE, Value)
         End Set
@@ -176,7 +176,7 @@ Public Class ListItemByEntity
 	
 	
     <ValueMandatory("")> _
-    Public Property EntityReferenceId() As Guid
+    Public Property EntityReferenceId As Guid
         Get
             CheckDeleted()
             If row(ListItemByEntityDAL.COL_NAME_ENTITY_REFERENCE_ID) Is DBNull.Value Then
@@ -185,7 +185,7 @@ Public Class ListItemByEntity
                 Return New Guid(CType(row(ListItemByEntityDAL.COL_NAME_ENTITY_REFERENCE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ListItemByEntityDAL.COL_NAME_ENTITY_REFERENCE_ID, Value)
         End Set
@@ -193,7 +193,7 @@ Public Class ListItemByEntity
 	
 	
     <ValueMandatory("")> _
-    Public Property ListItemId() As Guid
+    Public Property ListItemId As Guid
         Get
             CheckDeleted()
             If row(ListItemByEntityDAL.COL_NAME_LIST_ITEM_ID) Is DBNull.Value Then
@@ -202,7 +202,7 @@ Public Class ListItemByEntity
                 Return New Guid(CType(row(ListItemByEntityDAL.COL_NAME_LIST_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ListItemByEntityDAL.COL_NAME_LIST_ITEM_ID, Value)
         End Set

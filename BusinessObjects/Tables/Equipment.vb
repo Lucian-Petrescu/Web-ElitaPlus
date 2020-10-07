@@ -100,7 +100,7 @@ Public Class Equipment
     End Property
 
     <ValueMandatory("")> _
-    Public ReadOnly Property Id() As Guid Implements IAttributable.Id
+    Public ReadOnly Property Id As Guid Implements IAttributable.Id
         Get
             If Row(EquipmentDAL.COL_NAME_EQUIPMENT_ID) Is DBNull.Value Then
                 Return Nothing
@@ -111,7 +111,7 @@ Public Class Equipment
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -120,14 +120,14 @@ Public Class Equipment
                 Return Row(EquipmentDAL.COL_NAME_DESCRIPTION)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100), ValueMandatoryIfNotMasterModel(""), CheckDuplicate("")>
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -136,13 +136,13 @@ Public Class Equipment
                 Return Row(EquipmentDAL.COL_NAME_MODEL)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
 
-    Public Property MasterEquipmentId() As Guid
+    Public Property MasterEquipmentId As Guid
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_MASTER_EQUIPMENT_ID) Is DBNull.Value Then
@@ -151,14 +151,14 @@ Public Class Equipment
                 Return New Guid(CType(Row(EquipmentDAL.COL_NAME_MASTER_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EquipmentDAL.COL_NAME_MASTER_EQUIPMENT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property RepairableId() As Guid
+    Public Property RepairableId As Guid
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_REPAIRABLE_ID) Is DBNull.Value Then
@@ -167,13 +167,13 @@ Public Class Equipment
                 Return New Guid(CType(Row(EquipmentDAL.COL_NAME_REPAIRABLE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EquipmentDAL.COL_NAME_REPAIRABLE_ID, Value)
         End Set
     End Property
 
-    Public Property ManufacturerWarrenty() As LongType
+    Public Property ManufacturerWarrenty As LongType
         Get
             Dim manufacurerCoverage As MfgCoverage
             CheckDeleted()
@@ -192,7 +192,7 @@ Public Class Equipment
                 Return Nothing
             End If
         End Get
-        Set(ByVal value As LongType)
+        Set
             CheckDeleted()
             Dim manufacurerCoverage As MfgCoverage
             If (Row.Table.DataSet.Tables.Contains(MfgCoverageDAL.TABLE_NAME)) AndAlso _
@@ -222,7 +222,7 @@ Public Class Equipment
     End Property
 
     <ValueMandatory("")> _
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -231,14 +231,14 @@ Public Class Equipment
                 Return New Guid(CType(Row(EquipmentDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EquipmentDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property EquipmentClassId() As Guid
+    Public Property EquipmentClassId As Guid
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_EQUIPMENT_CLASS_ID) Is DBNull.Value Then
@@ -247,14 +247,14 @@ Public Class Equipment
                 Return New Guid(CType(Row(EquipmentDAL.COL_NAME_EQUIPMENT_CLASS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EquipmentDAL.COL_NAME_EQUIPMENT_CLASS_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property EquipmentTypeId() As Guid
+    Public Property EquipmentTypeId As Guid
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_EQUIPMENT_TYPE_ID) Is DBNull.Value Then
@@ -263,13 +263,13 @@ Public Class Equipment
                 Return New Guid(CType(Row(EquipmentDAL.COL_NAME_EQUIPMENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EquipmentDAL.COL_NAME_EQUIPMENT_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -278,13 +278,13 @@ Public Class Equipment
                 Return New DateType(CType(Row(EquipmentDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(EquipmentDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -293,14 +293,14 @@ Public Class Equipment
                 Return New DateType(CType(Row(EquipmentDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(EquipmentDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property IsMasterEquipment() As Guid
+    Public Property IsMasterEquipment As Guid
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_IS_MASTER_EQUIPMENT) Is DBNull.Value Then
@@ -309,7 +309,7 @@ Public Class Equipment
                 Return New Guid(CType(Row(EquipmentDAL.COL_NAME_IS_MASTER_EQUIPMENT), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EquipmentDAL.COL_NAME_IS_MASTER_EQUIPMENT, Value)
         End Set
@@ -322,7 +322,7 @@ Public Class Equipment
     End Property
 
 
-    Public Property Color() As String
+    Public Property Color As String
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_COLOR_XCD_ID) Is DBNull.Value Then
@@ -331,13 +331,13 @@ Public Class Equipment
                 Return Row(EquipmentDAL.COL_NAME_COLOR_XCD_ID)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentDAL.COL_NAME_COLOR_XCD_ID, Value)
         End Set
     End Property
 
-    Public Property Memory() As String
+    Public Property Memory As String
         Get
             CheckDeleted()
             If Row(EquipmentDAL.COL_NAME_MEMORY_XCD_ID) Is DBNull.Value Then
@@ -346,13 +346,13 @@ Public Class Equipment
                 Return Row(EquipmentDAL.COL_NAME_MEMORY_XCD_ID)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()            
             SetValue(EquipmentDAL.COL_NAME_MEMORY_XCD_ID, Value)
         End Set
      End Property
     
-        Public Property Carrier() As String
+        Public Property Carrier As String
             Get
                 CheckDeleted()
                 If Row(EquipmentDAL.COL_NAME_CARRIER_XCD_ID) Is DBNull.Value Then
@@ -361,7 +361,7 @@ Public Class Equipment
                     Return Row(EquipmentDAL.COL_NAME_CARRIER_XCD_ID)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
                 SetValue(EquipmentDAL.COL_NAME_CARRIER_XCD_ID, Value)
             End Set
@@ -401,7 +401,7 @@ Public Class Equipment
     End Sub
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
@@ -602,7 +602,7 @@ Public Class Equipment
 #Region "Children Related"
 
 #Region "Images"
-    Public ReadOnly Property EquipmentImageChildren() As EquipmentImage.EquipmentImageList
+    Public ReadOnly Property EquipmentImageChildren As EquipmentImage.EquipmentImageList
         Get
             Return New EquipmentImage.EquipmentImageList(Me)
         End Get
@@ -659,7 +659,7 @@ Public Class Equipment
 #End Region
 
 #Region "Comments"
-    Public ReadOnly Property EquipmentCommentChildren() As EquipmentComment.EquipmentCommentList
+    Public ReadOnly Property EquipmentCommentChildren As EquipmentComment.EquipmentCommentList
         Get
             Return New EquipmentComment.EquipmentCommentList(Me)
         End Get
@@ -708,7 +708,7 @@ Public Class Equipment
 
 #Region "Related Equipment"
 
-    Public ReadOnly Property RelatedEquipmentChildren() As RelatedEquipment.RelatedEquipmentList
+    Public ReadOnly Property RelatedEquipmentChildren As RelatedEquipment.RelatedEquipmentList
         Get
             Return New RelatedEquipment.RelatedEquipmentList(Me)
         End Get

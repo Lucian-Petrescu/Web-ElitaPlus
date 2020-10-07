@@ -107,7 +107,7 @@ Public Class EventConfig
 
     'Key Property
     <ValidOnlyOneEntity(""), ValidOneEntitySelected("")>
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(EventConfigDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -118,7 +118,7 @@ Public Class EventConfig
     End Property
 
 
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(EventConfigDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -127,13 +127,13 @@ Public Class EventConfig
                 Return New Guid(CType(Row(EventConfigDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventConfigDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(EventConfigDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -142,14 +142,14 @@ Public Class EventConfig
                 Return New Guid(CType(Row(EventConfigDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventConfigDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
 
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(EventConfigDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -158,13 +158,13 @@ Public Class EventConfig
                 Return New Guid(CType(Row(EventConfigDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventConfigDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
-    Public Property DealerGroupId() As Guid
+    Public Property DealerGroupId As Guid
         Get
             CheckDeleted()
             If Row(EventConfigDAL.COL_NAME_DEALER_GROUP_ID) Is DBNull.Value Then
@@ -173,13 +173,13 @@ Public Class EventConfig
                 Return New Guid(CType(Row(EventConfigDAL.COL_NAME_DEALER_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventConfigDAL.COL_NAME_DEALER_GROUP_ID, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(EventConfigDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -188,14 +188,14 @@ Public Class EventConfig
                 Return New Guid(CType(Row(EventConfigDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventConfigDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5), ValidProductCode("")>
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             CheckDeleted()
             If Row(EventConfigDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
@@ -204,14 +204,14 @@ Public Class EventConfig
                 Return CType(Row(EventConfigDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EventConfigDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property EventTypeId() As Guid
+    Public Property EventTypeId As Guid
         Get
             CheckDeleted()
             If Row(EventConfigDAL.COL_NAME_EVENT_TYPE_ID) Is DBNull.Value Then
@@ -220,14 +220,14 @@ Public Class EventConfig
                 Return New Guid(CType(Row(EventConfigDAL.COL_NAME_EVENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventConfigDAL.COL_NAME_EVENT_TYPE_ID, Value)
         End Set
     End Property
 
     '<ValidCoverageType("")>
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(EventConfigDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -236,13 +236,13 @@ Public Class EventConfig
                 Return New Guid(CType(Row(EventConfigDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventConfigDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property EventArgumentId() As Guid
+    Public Property EventArgumentId As Guid
         Get
             CheckDeleted()
             If Row(EventConfigDAL.COL_NAME_EVENT_ARGUMENT_ID) Is DBNull.Value Then
@@ -251,7 +251,7 @@ Public Class EventConfig
                 Return New Guid(CType(Row(EventConfigDAL.COL_NAME_EVENT_ARGUMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventConfigDAL.COL_NAME_EVENT_ARGUMENT_ID, Value)
         End Set

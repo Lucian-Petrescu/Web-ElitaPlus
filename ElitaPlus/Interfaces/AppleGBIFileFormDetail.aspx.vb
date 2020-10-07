@@ -447,7 +447,7 @@ Namespace Interfaces
                 Dim oTextBox As TextBox
                 Dim oLabel As Label
                 If dvRow IsNot Nothing Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                         REM e.Row.Cells(GridDefenitionEnum.GbiClaimReconWrkId).Text = GetGuidStringFromByteArray(CType(dvRow(AppleGBIFileReconWrk.COL_NAME_DET_BEN_GBICLAIM_RECON_WRK_ID), Byte()))
                         oLabel = CType(e.Row.FindControl("moReconWrkId"), Label)

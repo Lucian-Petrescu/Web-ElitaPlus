@@ -82,7 +82,7 @@
 
             Return String.Empty
         End Get
-        Set(ByVal value As String)
+        Set
             For Each dr As DataRow In Row.Table.Rows
                 dr(InterfaceSplitRuleDAL.COL_NAME_SOURCE_CODE) = value
             Next
@@ -99,7 +99,7 @@
 
             Return String.Empty
         End Get
-        Set(ByVal value As String)
+        Set
             For Each dr As DataRow In Row.Table.Rows
                 dr(InterfaceSplitRuleDAL.COL_NAME_SOURCE) = value
             Next
@@ -151,7 +151,7 @@
 
 #Region "Properties"
     <ValueMandatory("")> _
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(InterfaceSplitRuleDAL.COL_NAME_INTERFACE_SPLIT_RULE_ID) Is DBNull.Value Then
                 Return Nothing
@@ -162,7 +162,7 @@
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)> _
-    Public Property Source() As String
+    Public Property Source As String
         Get
             CheckDeleted()
             If Row(InterfaceSplitRuleDAL.COL_NAME_SOURCE) Is DBNull.Value Then
@@ -171,14 +171,14 @@
                 Return Row(InterfaceSplitRuleDAL.COL_NAME_SOURCE)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InterfaceSplitRuleDAL.COL_NAME_SOURCE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property SourceCode() As String
+    Public Property SourceCode As String
         Get
             CheckDeleted()
             If Row(InterfaceSplitRuleDAL.COL_NAME_SOURCE_CODE) Is DBNull.Value Then
@@ -187,14 +187,14 @@
                 Return Row(InterfaceSplitRuleDAL.COL_NAME_SOURCE_CODE)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InterfaceSplitRuleDAL.COL_NAME_SOURCE_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property NewSourceCode() As String
+    Public Property NewSourceCode As String
         Get
             CheckDeleted()
             If Row(InterfaceSplitRuleDAL.COL_NAME_NEW_SOURCE_CODE) Is DBNull.Value Then
@@ -203,14 +203,14 @@
                 Return Row(InterfaceSplitRuleDAL.COL_NAME_NEW_SOURCE_CODE)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InterfaceSplitRuleDAL.COL_NAME_NEW_SOURCE_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property Active() As String
+    Public Property Active As String
         Get
             CheckDeleted()
             If Row(InterfaceSplitRuleDAL.COL_NAME_ACTIVE) Is DBNull.Value Then
@@ -219,14 +219,14 @@
                 Return Row(InterfaceSplitRuleDAL.COL_NAME_ACTIVE)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InterfaceSplitRuleDAL.COL_NAME_ACTIVE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=400)> _
-    Public Property FieldName() As String
+    Public Property FieldName As String
         Get
             CheckDeleted()
             If Row(InterfaceSplitRuleDAL.COL_NAME_FIELD_NAME) Is DBNull.Value Then
@@ -235,14 +235,14 @@
                 Return Row(InterfaceSplitRuleDAL.COL_NAME_FIELD_NAME)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InterfaceSplitRuleDAL.COL_NAME_FIELD_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)> _
-    Public Property FieldOperator() As String
+    Public Property FieldOperator As String
         Get
             CheckDeleted()
             If Row(InterfaceSplitRuleDAL.COL_NAME_FIELD_OPERATOR) Is DBNull.Value Then
@@ -251,14 +251,14 @@
                 Return Row(InterfaceSplitRuleDAL.COL_NAME_FIELD_OPERATOR)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InterfaceSplitRuleDAL.COL_NAME_FIELD_OPERATOR, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=2000)> _
-    Public Property FieldValue() As String
+    Public Property FieldValue As String
         Get
             CheckDeleted()
             If Row(InterfaceSplitRuleDAL.COL_NAME_FIELD_VALUE) Is DBNull.Value Then
@@ -267,7 +267,7 @@
                 Return Row(InterfaceSplitRuleDAL.COL_NAME_FIELD_VALUE)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InterfaceSplitRuleDAL.COL_NAME_FIELD_VALUE, Value)
         End Set

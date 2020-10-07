@@ -105,7 +105,7 @@ Public Class ProdRepairPrice
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ProdRepairPriceDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -116,7 +116,7 @@ Public Class ProdRepairPrice
     End Property
 
     <ValueMandatory("")> _
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If row(ProdRepairPriceDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -125,14 +125,14 @@ Public Class ProdRepairPrice
                 Return New Guid(CType(row(ProdRepairPriceDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProdRepairPriceDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("LowPrice", MIN:=MIN_DOUBLE, Max:=NEW_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM001), ValidPriceBandRange("")> _
-    Public Property PriceRangeFrom() As DecimalType
+    Public Property PriceRangeFrom As DecimalType
         Get
             CheckDeleted()
             If Row(ProdRepairPriceDAL.COL_NAME_PRICE_RANGE_FROM) Is DBNull.Value Then
@@ -141,7 +141,7 @@ Public Class ProdRepairPrice
                 Return New DecimalType(CType(Row(ProdRepairPriceDAL.COL_NAME_PRICE_RANGE_FROM), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ProdRepairPriceDAL.COL_NAME_PRICE_RANGE_FROM, Value)
         End Set
@@ -149,7 +149,7 @@ Public Class ProdRepairPrice
 
 
     <ValueMandatory(""), ValidNumericRange("", MIN:=MIN_DOUBLE, Max:=NEW_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM002)> _
-     Public Property PriceRangeTo() As DecimalType
+     Public Property PriceRangeTo As DecimalType
         Get
             CheckDeleted()
             If Row(ProdRepairPriceDAL.COL_NAME_PRICE_RANGE_TO) Is DBNull.Value Then
@@ -158,7 +158,7 @@ Public Class ProdRepairPrice
                 Return New DecimalType(CType(Row(ProdRepairPriceDAL.COL_NAME_PRICE_RANGE_TO), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ProdRepairPriceDAL.COL_NAME_PRICE_RANGE_TO, Value)
         End Set
@@ -166,7 +166,7 @@ Public Class ProdRepairPrice
 
 
     <ValueMandatory("")> _
-    Public Property MethodOfRepairId() As Guid
+    Public Property MethodOfRepairId As Guid
         Get
             CheckDeleted()
             If row(ProdRepairPriceDAL.COL_NAME_METHOD_OF_REPAIR_ID) Is DBNull.Value Then
@@ -175,7 +175,7 @@ Public Class ProdRepairPrice
                 Return New Guid(CType(row(ProdRepairPriceDAL.COL_NAME_METHOD_OF_REPAIR_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProdRepairPriceDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
         End Set

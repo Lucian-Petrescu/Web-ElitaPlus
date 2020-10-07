@@ -90,7 +90,7 @@ Public Class RepairAndLogistics
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(RepairAndLogisticsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class RepairAndLogistics
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property CustomerName() As String
+    Public Property CustomerName As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CUSTOMER_NAME), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_CUSTOMER_NAME, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class RepairAndLogistics
 
 
     <ValidStringLength("", Max:=4000)> _
-    Public Property CoverageType() As String
+    Public Property CoverageType As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_COVERAGE_TYPE) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_COVERAGE_TYPE), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_COVERAGE_TYPE, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class RepairAndLogistics
 
 
     <ValidStringLength("", Max:=20)> _
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class RepairAndLogistics
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIM_NUMBER, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class RepairAndLogistics
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property ClaimStatus() As String
+    Public Property ClaimStatus As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_CLAIM_STATUS) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIM_STATUS), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIM_STATUS, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class RepairAndLogistics
 
 
     <ValueMandatory("")> _
-    Public Property DateOfClaim() As DateType
+    Public Property DateOfClaim As DateType
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_DATE_OF_CLAIM) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class RepairAndLogistics
                 Return New DateType(CType(Row(RepairAndLogisticsDAL.COL_NAME_DATE_OF_CLAIM), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_DATE_OF_CLAIM, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class RepairAndLogistics
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property Pos() As String
+    Public Property Pos As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_POS) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_POS), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_POS, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class RepairAndLogistics
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property ServiceCenter() As String
+    Public Property ServiceCenter As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_SERVICE_CENTER) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_SERVICE_CENTER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_SERVICE_CENTER, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class RepairAndLogistics
 
 
     <ValidStringLength("", Max:=1020)> _
-    Public Property ClaimedDeviceManufacturer() As String
+    Public Property ClaimedDeviceManufacturer As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_MANUFACTURER) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_MANUFACTURER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_MANUFACTURER, Value)
         End Set
@@ -254,7 +254,7 @@ Public Class RepairAndLogistics
 
 
     <ValidStringLength("", Max:=160)> _
-    Public Property ClaimedDeviceModel() As String
+    Public Property ClaimedDeviceModel As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_MODEL) Is DBNull.Value Then
@@ -263,7 +263,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_MODEL), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_MODEL, Value)
         End Set
@@ -271,7 +271,7 @@ Public Class RepairAndLogistics
 
 
     <ValidStringLength("", Max:=72)> _
-    Public Property ClaimedDeviceSku() As String
+    Public Property ClaimedDeviceSku As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_SKU) Is DBNull.Value Then
@@ -280,7 +280,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_SKU), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_SKU, Value)
         End Set
@@ -288,7 +288,7 @@ Public Class RepairAndLogistics
 
 
     <ValidStringLength("", Max:=120)> _
-    Public Property ClaimedDeviceSerialNumber() As String
+    Public Property ClaimedDeviceSerialNumber As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_SERIAL_NUMBER) Is DBNull.Value Then
@@ -297,14 +297,14 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_SERIAL_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)> _
-    Public Property ClaimedDeviceIMEINumber() As String
+    Public Property ClaimedDeviceIMEINumber As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_IMEI_NUMBER) Is DBNull.Value Then
@@ -313,14 +313,14 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_IMEI_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIMED_DEVICE_IMEI_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=2000)> _
-    Public Property ProblemDescription() As String
+    Public Property ProblemDescription As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_PROBLEM_DESCRIPTION) Is DBNull.Value Then
@@ -329,7 +329,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_PROBLEM_DESCRIPTION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_PROBLEM_DESCRIPTION, Value)
         End Set
@@ -337,7 +337,7 @@ Public Class RepairAndLogistics
 
 
 
-    Public Property DeviceReceptionDate() As DateType
+    Public Property DeviceReceptionDate As DateType
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_DEVICE_RECEPTION_DATE) Is DBNull.Value Then
@@ -346,7 +346,7 @@ Public Class RepairAndLogistics
                 Return New DateType(CType(Row(RepairAndLogisticsDAL.COL_NAME_DEVICE_RECEPTION_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_DEVICE_RECEPTION_DATE, Value)
         End Set
@@ -354,7 +354,7 @@ Public Class RepairAndLogistics
 
 
     <ValidStringLength("", Max:=4000)> _
-    Public Property ReplacementType() As String
+    Public Property ReplacementType As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_REPLACEMENT_TYPE) Is DBNull.Value Then
@@ -363,7 +363,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_REPLACEMENT_TYPE), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACEMENT_TYPE, Value)
         End Set
@@ -371,7 +371,7 @@ Public Class RepairAndLogistics
 
 
     <ValidStringLength("", Max:=1020)> _
-    Public Property ReplacedDeviceManufacturer() As String
+    Public Property ReplacedDeviceManufacturer As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_MANUFACTURER) Is DBNull.Value Then
@@ -380,7 +380,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_MANUFACTURER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_MANUFACTURER, Value)
         End Set
@@ -388,7 +388,7 @@ Public Class RepairAndLogistics
 
 
     <ValidStringLength("", Max:=120)> _
-    Public Property ReplacedDeviceModel() As String
+    Public Property ReplacedDeviceModel As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_MODEL) Is DBNull.Value Then
@@ -397,7 +397,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_MODEL), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_MODEL, Value)
         End Set
@@ -405,7 +405,7 @@ Public Class RepairAndLogistics
 
 
     <ValidStringLength("", Max:=120)> _
-    Public Property ReplacedDeviceSerialNumber() As String
+    Public Property ReplacedDeviceSerialNumber As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_SERIAL_NUMBER) Is DBNull.Value Then
@@ -414,14 +414,14 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_SERIAL_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)> _
-    Public Property ReplacedDeviceIMEINumber() As String
+    Public Property ReplacedDeviceIMEINumber As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_IMEI_NUMBER) Is DBNull.Value Then
@@ -430,14 +430,14 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_IMEI_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_IMEI_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=72)> _
-    Public Property ReplacedDeviceSku() As String
+    Public Property ReplacedDeviceSku As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_SKU) Is DBNull.Value Then
@@ -446,7 +446,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_SKU), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_REPLACED_DEVICE_SKU, Value)
         End Set
@@ -454,7 +454,7 @@ Public Class RepairAndLogistics
 
 
 
-    Public Property LaborAmount() As DecimalType
+    Public Property LaborAmount As DecimalType
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_LABOR_AMOUNT) Is DBNull.Value Then
@@ -463,7 +463,7 @@ Public Class RepairAndLogistics
                 Return New DecimalType(CType(Row(RepairAndLogisticsDAL.COL_NAME_LABOR_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_LABOR_AMOUNT, Value)
         End Set
@@ -471,7 +471,7 @@ Public Class RepairAndLogistics
 
 
 
-    Public Property PartAmount() As DecimalType
+    Public Property PartAmount As DecimalType
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_PART_AMOUNT) Is DBNull.Value Then
@@ -480,7 +480,7 @@ Public Class RepairAndLogistics
                 Return New DecimalType(CType(Row(RepairAndLogisticsDAL.COL_NAME_PART_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_PART_AMOUNT, Value)
         End Set
@@ -488,7 +488,7 @@ Public Class RepairAndLogistics
 
 
 
-    Public Property ServiceCharge() As DecimalType
+    Public Property ServiceCharge As DecimalType
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_SERVICE_CHARGE) Is DBNull.Value Then
@@ -497,7 +497,7 @@ Public Class RepairAndLogistics
                 Return New DecimalType(CType(Row(RepairAndLogisticsDAL.COL_NAME_SERVICE_CHARGE), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_SERVICE_CHARGE, Value)
         End Set
@@ -505,7 +505,7 @@ Public Class RepairAndLogistics
 
 
 
-    Public Property ShippingAmount() As DecimalType
+    Public Property ShippingAmount As DecimalType
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_SHIPPING_AMOUNT) Is DBNull.Value Then
@@ -514,7 +514,7 @@ Public Class RepairAndLogistics
                 Return New DecimalType(CType(Row(RepairAndLogisticsDAL.COL_NAME_SHIPPING_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_SHIPPING_AMOUNT, Value)
         End Set
@@ -522,7 +522,7 @@ Public Class RepairAndLogistics
 
 
 
-    Public Property AuthorizedAmount() As DecimalType
+    Public Property AuthorizedAmount As DecimalType
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_AUTHORIZED_AMOUNT) Is DBNull.Value Then
@@ -531,7 +531,7 @@ Public Class RepairAndLogistics
                 Return New DecimalType(CType(Row(RepairAndLogisticsDAL.COL_NAME_AUTHORIZED_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_AUTHORIZED_AMOUNT, Value)
         End Set
@@ -539,7 +539,7 @@ Public Class RepairAndLogistics
 
 
     <ValidStringLength("", Max:=400)> _
-    Public Property ServiceLevel() As String
+    Public Property ServiceLevel As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_SERVICE_LEVEL) Is DBNull.Value Then
@@ -548,7 +548,7 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_SERVICE_LEVEL), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_SERVICE_LEVEL, Value)
         End Set
@@ -556,7 +556,7 @@ Public Class RepairAndLogistics
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property ProblemFound() As String
+    Public Property ProblemFound As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_PROBLEM_FOUND) Is DBNull.Value Then
@@ -565,13 +565,13 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_PROBLEM_FOUND), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_PROBLEM_FOUND, Value)
         End Set
     End Property
 
-    Public Property VerificationNumber() As String
+    Public Property VerificationNumber As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_VERIFICATION_NUMBER) Is DBNull.Value Then
@@ -580,13 +580,13 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_VERIFICATION_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_VERIFICATION_NUMBER, Value)
         End Set
     End Property
 
-    Public Property Company() As String
+    Public Property Company As String
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_COMPANY) Is DBNull.Value Then
@@ -595,13 +595,13 @@ Public Class RepairAndLogistics
                 Return CType(Row(RepairAndLogisticsDAL.COL_NAME_COMPANY), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_COMPANY, Value)
         End Set
     End Property
 
-    Public Property ClaimVerificationNumLength() As LongType
+    Public Property ClaimVerificationNumLength As LongType
         Get
             CheckDeleted()
             If Row(RepairAndLogisticsDAL.COL_NAME_CLAIM_VERIFICATION_NUM_LENGTH) Is DBNull.Value Then
@@ -610,7 +610,7 @@ Public Class RepairAndLogistics
                 Return New LongType(CType(Row(RepairAndLogisticsDAL.COL_NAME_CLAIM_VERIFICATION_NUM_LENGTH), Long))
             End If
         End Get
-        Set(Value As LongType)
+        Set
             CheckDeleted()
             SetValue(RepairAndLogisticsDAL.COL_NAME_CLAIM_VERIFICATION_NUM_LENGTH, Value)
         End Set

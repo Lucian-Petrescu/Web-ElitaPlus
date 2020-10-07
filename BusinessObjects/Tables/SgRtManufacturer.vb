@@ -90,7 +90,7 @@ Public Class SgRtManufacturer
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(SgRtManufacturerDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class SgRtManufacturer
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServiceGroupRiskTypeId() As Guid
+    Public Property ServiceGroupRiskTypeId As Guid
         Get
             CheckDeleted()
             If row(SgRtManufacturerDAL.COL_NAME_SERVICE_GROUP_RISK_TYPE_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class SgRtManufacturer
                 Return New Guid(CType(row(SgRtManufacturerDAL.COL_NAME_SERVICE_GROUP_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SgRtManufacturerDAL.COL_NAME_SERVICE_GROUP_RISK_TYPE_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class SgRtManufacturer
 
 
     <ValueMandatory("")> _
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If row(SgRtManufacturerDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class SgRtManufacturer
                 Return New Guid(CType(row(SgRtManufacturerDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SgRtManufacturerDAL.COL_NAME_MANUFACTURER_ID, Value)
             'Set the Manufacturer Description
@@ -137,7 +137,7 @@ Public Class SgRtManufacturer
         End Set
     End Property
 
-    Public ReadOnly Property ManufacturerDescription() As String
+    Public ReadOnly Property ManufacturerDescription As String
         Get
             CheckDeleted()
             If row(SgRtManufacturerDAL.COL_NAME_MANUFACTURER_DESCRIPTION) Is DBNull.Value Then

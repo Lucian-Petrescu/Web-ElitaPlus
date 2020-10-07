@@ -512,7 +512,7 @@ Public Class GalaxyInsertClaim
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property CertificateNumber() As String
+    Public Property CertificateNumber As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CERTIFICATE_NUMBER) Is DBNull.Value Then
@@ -521,14 +521,14 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_CERTIFICATE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CERTIFICATE_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_DEALER_CODE) Is DBNull.Value Then
@@ -537,14 +537,14 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_DEALER_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CLAIM_NUMBER) Is DBNull.Value Then
@@ -553,14 +553,14 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CLAIM_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ContactName() As String
+    Public Property ContactName As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CONTACT_NAME) Is DBNull.Value Then
@@ -569,14 +569,14 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_CONTACT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CONTACT_NAME, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CallerName() As String
+    Public Property CallerName As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CALLER_NAME) Is DBNull.Value Then
@@ -585,13 +585,13 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_CALLER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CALLER_NAME, Value)
         End Set
     End Property
 
-    Public Property ServiceCenterCode() As String
+    Public Property ServiceCenterCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_SERVICE_CENTER_CODE) Is DBNull.Value Then
@@ -600,13 +600,13 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_SERVICE_CENTER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
-    Public Property RepairCodeCode() As String
+    Public Property RepairCodeCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_REPAIR_CODE_CODE) Is DBNull.Value Then
@@ -615,13 +615,13 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_REPAIR_CODE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_REPAIR_CODE_CODE, Value)
         End Set
     End Property
 
-    Public Property CauseOfLossCode() As String
+    Public Property CauseOfLossCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CAUSE_OF_LOSS_CODE) Is DBNull.Value Then
@@ -630,13 +630,13 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_CAUSE_OF_LOSS_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CAUSE_OF_LOSS_CODE, Value)
         End Set
     End Property
 
-    Public Property ProblemDescription() As String
+    Public Property ProblemDescription As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_PROBLEM_DESCRIPTION) Is DBNull.Value Then
@@ -645,13 +645,13 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_PROBLEM_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_PROBLEM_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property SpecialInstruction() As String
+    Public Property SpecialInstruction As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_SPECIAL_INSTRUCTION) Is DBNull.Value Then
@@ -660,7 +660,7 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_SPECIAL_INSTRUCTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_SPECIAL_INSTRUCTION, Value)
         End Set
@@ -682,7 +682,7 @@ Public Class GalaxyInsertClaim
     'End Property
 
     <ValueMandatory("")> _
-    Public Property LossDate() As DateType
+    Public Property LossDate As DateType
         Get
             CheckDeleted()
             If Row(SOURCE_COL_LOSS_DATE) Is DBNull.Value Then
@@ -691,13 +691,13 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_LOSS_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_LOSS_DATE, Value)
         End Set
     End Property
 
-    Public Property RepairEstimate() As Decimal
+    Public Property RepairEstimate As Decimal
         Get
             CheckDeleted()
             If Row(SOURCE_COL_REPAIR_ESTIMATE) Is DBNull.Value Then
@@ -706,13 +706,13 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_REPAIR_ESTIMATE), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_REPAIR_ESTIMATE, Value)
         End Set
     End Property
 
-    Public Property VisitDate() As DateType
+    Public Property VisitDate As DateType
         Get
             CheckDeleted()
             If Row(SOURCE_COL_VISIT_DATE) Is DBNull.Value Then
@@ -721,13 +721,13 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_VISIT_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_VISIT_DATE, Value)
         End Set
     End Property
 
-    Public Property CallerTaxNumber() As String
+    Public Property CallerTaxNumber As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CALLER_TAX_NUMBER) Is DBNull.Value Then
@@ -736,13 +736,13 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_CALLER_TAX_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CALLER_TAX_NUMBER, Value)
         End Set
     End Property
 
-    Public Property StatusCode() As String
+    Public Property StatusCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_STATUS_CODE) Is DBNull.Value Then
@@ -751,13 +751,13 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_STATUS_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_STATUS_CODE, Value)
         End Set
     End Property
 
-    Public Property UnitNumber() As LongType
+    Public Property UnitNumber As LongType
         Get
             CheckDeleted()
             If Row(SOURCE_COL_UNIT_NUMBER) Is DBNull.Value Then
@@ -766,14 +766,14 @@ Public Class GalaxyInsertClaim
                 Return New LongType(CType(Row(SOURCE_COL_UNIT_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_UNIT_NUMBER, Value)
         End Set
     End Property
 
     'Added for Def-1782
-    Public Property InvoiceDate() As DateType
+    Public Property InvoiceDate As DateType
         Get
             CheckDeleted()
             If Row(SOURCE_COL_INVOICE_DATE) Is DBNull.Value Then
@@ -782,13 +782,13 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_INVOICE_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_INVOICE_DATE, Value)
         End Set
     End Property
 
-    Public Property CurrentOdometer() As Integer
+    Public Property CurrentOdometer As Integer
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CURRENT_ODOMETER) Is DBNull.Value Then
@@ -797,7 +797,7 @@ Public Class GalaxyInsertClaim
                 Return CType(Row(SOURCE_COL_CURRENT_ODOMETER), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CURRENT_ODOMETER, Value)
         End Set

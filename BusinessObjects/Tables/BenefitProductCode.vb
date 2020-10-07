@@ -147,7 +147,7 @@ Public Class BenefitProductCode
     End Property
 
     <ValueMandatory("")>
-    Public ReadOnly Property Id() As Guid Implements IAttributable.Id
+    Public ReadOnly Property Id As Guid Implements IAttributable.Id
         Get
             If Row(BenefitProductCodeDAL.COL_NAME_BEN_PRODUCT_CODE_ID) Is DBNull.Value Then
                 Return Nothing
@@ -169,7 +169,7 @@ Public Class BenefitProductCode
             End If
         End Get
 
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(BenefitProductCodeDAL.COL_NAME_DEALER_ID, value)
         End Set
@@ -186,7 +186,7 @@ Public Class BenefitProductCode
             End If
         End Get
 
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(BenefitProductCodeDAL.COL_NAME_VENDOR_ID, value)
         End Set
@@ -204,7 +204,7 @@ Public Class BenefitProductCode
             End If
         End Get
 
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(BenefitProductCodeDAL.COL_NAME_BEN_PRODUCT_CODE, value)
         End Set
@@ -222,7 +222,7 @@ Public Class BenefitProductCode
             End If
         End Get
 
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(BenefitProductCodeSearchDV.COL_DESCRIPTION, value)
         End Set
@@ -239,7 +239,7 @@ Public Class BenefitProductCode
             End If
         End Get
 
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(BenefitProductCodeDAL.COL_NAME_CURRENCY_ISO_CODE, value)
         End Set
@@ -257,7 +257,7 @@ Public Class BenefitProductCode
             End If
         End Get
 
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(BenefitProductCodeDAL.COL_NAME_PRICE_UOM, value)
         End Set
@@ -274,7 +274,7 @@ Public Class BenefitProductCode
             End If
         End Get
 
-        Set(ByVal value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(BenefitProductCodeDAL.COL_NAME_NET_PRICE, value)
         End Set
@@ -292,7 +292,7 @@ Public Class BenefitProductCode
             End If
         End Get
 
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(BenefitProductCodeDAL.COL_NAME_TAX_TYPE_XCD, value)
         End Set
@@ -310,7 +310,7 @@ Public Class BenefitProductCode
             End If
         End Get
 
-        Set(ByVal value As LongType)
+        Set
             CheckDeleted()
             SetValue(BenefitProductCodeDAL.COL_NAME_DURATIONINMONTH, value)
         End Set
@@ -328,7 +328,7 @@ Public Class BenefitProductCode
             End If
         End Get
 
-        Set(ByVal value As DateType)
+        Set
             CheckDeleted()
             SetValue(BenefitProductCodeDAL.COL_NAME_EFFECTIVE_DATE, value)
         End Set
@@ -345,7 +345,7 @@ Public Class BenefitProductCode
             End If
         End Get
 
-        Set(ByVal value As DateType)
+        Set
             CheckDeleted()
             SetValue(BenefitProductCodeDAL.COL_NAME_EXPIRATION_DATE, value)
         End Set
@@ -363,7 +363,7 @@ Public Class BenefitProductCode
             End If
         End Get
 
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(BenefitProductCodeDAL.COL_NAME_VENDOR_BILLABLE_PART_NUM, value)
         End Set
@@ -380,7 +380,7 @@ Public Class BenefitProductCode
             End If
         End Get
 
-        Set(ByVal value As LongType)
+        Set
             CheckDeleted()
             SetValue(BenefitProductCodeDAL.COL_NAME_DAYSTOEXPIREAFTERENDDAY, value)
         End Set
@@ -477,7 +477,7 @@ Public Class BenefitProductCode
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get

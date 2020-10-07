@@ -16,29 +16,29 @@ Public NotInheritable Class OverlapValidatorAttribute
 
     End Sub
 
-    Public Property ExpirationDateColumnName() As String
+    Public Property ExpirationDateColumnName As String
         Get
             Return _expirationDateColumnName
         End Get
-        Set(ByVal value As String)
+        Set
             _expirationDateColumnName = value
         End Set
     End Property
 
-    Public Property EffectiveDateColumnName() As String
+    Public Property EffectiveDateColumnName As String
         Get
             Return _effectiveDateColumnName
         End Get
-        Set(ByVal value As String)
+        Set
             _effectiveDateColumnName = value
         End Set
     End Property
 
-    Public Property KeyColumns() As String()
+    Public Property KeyColumns As String()
         Get
             Return _keyColumns
         End Get
-        Set(ByVal value As String())
+        Set
             _keyColumns = value
         End Set
     End Property
@@ -47,7 +47,7 @@ Public NotInheritable Class OverlapValidatorAttribute
         Get
             Return _dataTablePropertyName
         End Get
-        Set(ByVal value As String)
+        Set
             _dataTablePropertyName = value
         End Set
     End Property
@@ -56,7 +56,7 @@ Public NotInheritable Class OverlapValidatorAttribute
         Get
             Return _dataRowPropertyName
         End Get
-        Set(ByVal value As String)
+        Set
             _dataRowPropertyName = value
         End Set
     End Property

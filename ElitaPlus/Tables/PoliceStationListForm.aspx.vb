@@ -231,7 +231,7 @@ Partial Class PoliceStationListForm
     Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
-        If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+        If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
             e.Item.Cells(GRID_COL_POLICE_STATION_CODE_IDX).Text = dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_CODE).ToString
             e.Item.Cells(GRID_COL_POLICE_STATION_NAME_IDX).Text = dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_NAME).ToString
             e.Item.Cells(GRID_COL_POLICE_STATION_DISTRICT_CODE_IDX).Text = dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_DISTRICT_CODE).ToString

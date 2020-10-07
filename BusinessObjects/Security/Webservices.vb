@@ -96,7 +96,7 @@ Public Class Webservices
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(WebservicesDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -107,7 +107,7 @@ Public Class Webservices
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=120)> _
-    Public Property WebServiceName() As String
+    Public Property WebServiceName As String
         Get
             CheckDeleted()
             If row(WebservicesDAL.COL_NAME_WEB_SERVICE_NAME) Is DBNull.Value Then
@@ -116,7 +116,7 @@ Public Class Webservices
                 Return CType(row(WebservicesDAL.COL_NAME_WEB_SERVICE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WebservicesDAL.COL_NAME_WEB_SERVICE_NAME, Value)
         End Set
@@ -124,7 +124,7 @@ Public Class Webservices
 
 
     <ValueMandatory("")> _
-    Public Property OnLineId() As Guid
+    Public Property OnLineId As Guid
         Get
             CheckDeleted()
             If row(WebservicesDAL.COL_NAME_ON_LINE_ID) Is DBNull.Value Then
@@ -133,7 +133,7 @@ Public Class Webservices
                 Return New Guid(CType(row(WebservicesDAL.COL_NAME_ON_LINE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(WebservicesDAL.COL_NAME_ON_LINE_ID, Value)
         End Set
@@ -141,7 +141,7 @@ Public Class Webservices
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property OffLineMessage() As String
+    Public Property OffLineMessage As String
         Get
             CheckDeleted()
             If row(WebservicesDAL.COL_NAME_OFF_LINE_MESSAGE) Is DBNull.Value Then
@@ -150,13 +150,13 @@ Public Class Webservices
                 Return CType(row(WebservicesDAL.COL_NAME_OFF_LINE_MESSAGE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WebservicesDAL.COL_NAME_OFF_LINE_MESSAGE, Value)
         End Set
     End Property
 
-    Public Property LastOperationDate() As DateType
+    Public Property LastOperationDate As DateType
         Get
             CheckDeleted()
             If Row(WebServicesDAL.COL_NAME_LAST_OPERATION_DATE) Is DBNull.Value Then
@@ -165,7 +165,7 @@ Public Class Webservices
                 Return New DateType(CType(Row(WebServicesDAL.COL_NAME_LAST_OPERATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(WebServicesDAL.COL_NAME_LAST_OPERATION_DATE, Value)
         End Set

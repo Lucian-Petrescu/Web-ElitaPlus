@@ -90,25 +90,25 @@ Public Class CertForgotRequest
 
 
 #Region "Properties"
-    Public Property RestrictedStatus() As String
+    Public Property RestrictedStatus As String
         Get
             Return _restrict
         End Get
-        Set(ByVal Value As String)
+        Set
             _restrict = Value
         End Set
     End Property
 
-    Public Property IsRequestIdUsed() As String
+    Public Property IsRequestIdUsed As String
         Get
             Return _isRequestIdUsed
         End Get
-        Set(ByVal Value As String)
+        Set
             _isRequestIdUsed = Value
         End Set
     End Property
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CertForgotRequestDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -119,7 +119,7 @@ Public Class CertForgotRequest
     End Property
 	
     <ValueMandatory("")> _
-    Public Property CertId() As Guid
+    Public Property CertId As Guid
         Get
             CheckDeleted()
             If row(CertForgotRequestDAL.COL_NAME_CERT_ID) Is DBNull.Value Then
@@ -128,7 +128,7 @@ Public Class CertForgotRequest
                 Return New Guid(CType(row(CertForgotRequestDAL.COL_NAME_CERT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CertForgotRequestDAL.COL_NAME_CERT_ID, Value)
         End Set
@@ -136,7 +136,7 @@ Public Class CertForgotRequest
 	
 	
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(CertForgotRequestDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -145,7 +145,7 @@ Public Class CertForgotRequest
                 Return New Guid(CType(row(CertForgotRequestDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CertForgotRequestDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -153,7 +153,7 @@ Public Class CertForgotRequest
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)>
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
             CheckDeleted()
             If row(CertForgotRequestDAL.COL_NAME_CERT_NUMBER) Is DBNull.Value Then
@@ -162,7 +162,7 @@ Public Class CertForgotRequest
                 Return CType(row(CertForgotRequestDAL.COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CertForgotRequestDAL.COL_NAME_CERT_NUMBER, Value)
         End Set
@@ -170,7 +170,7 @@ Public Class CertForgotRequest
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=1)> _
-    Public Property IsForgotten() As String
+    Public Property IsForgotten As String
         Get
             CheckDeleted()
             If row(CertForgotRequestDAL.COL_NAME_IS_FORGOTTEN) Is DBNull.Value Then
@@ -179,7 +179,7 @@ Public Class CertForgotRequest
                 Return CType(row(CertForgotRequestDAL.COL_NAME_IS_FORGOTTEN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CertForgotRequestDAL.COL_NAME_IS_FORGOTTEN, Value)
         End Set
@@ -187,7 +187,7 @@ Public Class CertForgotRequest
 	
 	
     
-    Public Property DeletedDate() As DateType
+    Public Property DeletedDate As DateType
         Get
             CheckDeleted()
             If row(CertForgotRequestDAL.COL_NAME_DELETED_DATE) Is DBNull.Value Then
@@ -196,7 +196,7 @@ Public Class CertForgotRequest
                 Return New DateType(CType(row(CertForgotRequestDAL.COL_NAME_DELETED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CertForgotRequestDAL.COL_NAME_DELETED_DATE, Value)
         End Set
@@ -204,7 +204,7 @@ Public Class CertForgotRequest
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property RequestId() As String
+    Public Property RequestId As String
         Get
             CheckDeleted()
             If row(CertForgotRequestDAL.COL_NAME_REQUEST_ID) Is DBNull.Value Then
@@ -213,7 +213,7 @@ Public Class CertForgotRequest
                 Return CType(row(CertForgotRequestDAL.COL_NAME_REQUEST_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CertForgotRequestDAL.COL_NAME_REQUEST_ID, Value)
         End Set

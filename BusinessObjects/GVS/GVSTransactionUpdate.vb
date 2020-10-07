@@ -27,20 +27,20 @@ Public Class GVSTransactionUpdate
 
 #Region "Properties"
 
-    Private Property InputXml() As String
+    Private Property InputXml As String
         Get
             Return msInputXml
         End Get
-        Set(ByVal value As String)
+        Set
             msInputXml = value
         End Set
     End Property
 
-    Private Property FuncToProc() As String
+    Private Property FuncToProc As String
         Get
             Return msFunctionToProcess
         End Get
-        Set(ByVal value As String)
+        Set
             msFunctionToProcess = value
         End Set
     End Property
@@ -218,29 +218,29 @@ Public Class GVSTransactionUpdate
 #End Region
 
 #Region "Properties"
-    Public Property TransactionId() As String
+    Public Property TransactionId As String
         Get
             Return _transactionId
         End Get
-        Set(ByVal Value As String)
+        Set
             _transactionId = Value
         End Set
     End Property
 
-    Public Property GVSOriginalTransNo() As String
+    Public Property GVSOriginalTransNo As String
         Get
             Return _GVSOriginalTransNo
         End Get
-        Set(ByVal Value As String)
+        Set
             _GVSOriginalTransNo = Value
         End Set
     End Property
 
-    Public Property FunctionTypeCode() As String
+    Public Property FunctionTypeCode As String
         Get
             Return _functionTypeCode
         End Get
-        Set(ByVal Value As String)
+        Set
             _functionTypeCode = Value
         End Set
     End Property

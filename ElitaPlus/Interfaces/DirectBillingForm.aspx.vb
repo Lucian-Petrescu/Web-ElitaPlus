@@ -140,9 +140,9 @@ Partial Public Class DirectBillingForm
                 AddCalendar(btnBeginDate, txtBeginDate)
                 AddCalendar(btnEndDate, txtEndDate)
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                If IsReturningFromChild And State.IsGridVisible Then
+                If IsReturningFromChild AndAlso State.IsGridVisible Then
                     cboPageSize.SelectedValue = CType(State.PageSize, String)
-                    If State.BillingFileByDealerForAllUserCompanies Or State.SelectedComanyBillingFileByDealer Then
+                    If State.BillingFileByDealerForAllUserCompanies OrElse State.SelectedComanyBillingFileByDealer Then
                         moBillingGrid.PageSize = State.PageSize
                     Else
                         moVSCBillingGrid.PageSize = State.PageSize
@@ -181,7 +181,7 @@ Partial Public Class DirectBillingForm
             State.IsGridVisible = True
             State.BillingHeaderID = Guid.Empty
             State.searchDV = Nothing
-            If State.BillingFileByDealerForAllUserCompanies Or State.MixedBillingFileByDealerForUserCompanies Then
+            If State.BillingFileByDealerForAllUserCompanies OrElse State.MixedBillingFileByDealerForUserCompanies Then
                 State.SearchedComanyID = TheCompanyControl.SelectedGuid
                 If State.alCompanies.Count > 1 AndAlso State.SearchedComanyID.Equals(Guid.Empty) Then
                     ElitaPlusPage.SetLabelError(TheCompanyControl.CaptionLabel)
@@ -209,7 +209,7 @@ Partial Public Class DirectBillingForm
         Try
             Dim blnBillingFileByDealer As Boolean
             If e.CommandName = "SelectAction" Then
-                If State.BillingFileByDealerForAllUserCompanies Or State.SelectedComanyBillingFileByDealer Then
+                If State.BillingFileByDealerForAllUserCompanies OrElse State.SelectedComanyBillingFileByDealer Then
                     lblControl = CType(moBillingGrid.Items(e.Item.ItemIndex).Cells(GRID_COL_BILLING_IDX).FindControl(GRID_CONTROL_NAME_BILLING_IDX), Label)
                     blnBillingFileByDealer = True
                 Else
@@ -289,7 +289,7 @@ Partial Public Class DirectBillingForm
     Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            If State.BillingFileByDealerForAllUserCompanies Or State.SelectedComanyBillingFileByDealer Then
+            If State.BillingFileByDealerForAllUserCompanies OrElse State.SelectedComanyBillingFileByDealer Then
                 State.PageIndex = NewCurrentPageIndex(moBillingGrid, State.searchDV.Count, State.PageSize)
                 moBillingGrid.CurrentPageIndex = State.PageIndex
             Else
@@ -306,8 +306,8 @@ Partial Public Class DirectBillingForm
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
         Try
-            If dvRow IsNot Nothing And State.searchDV.Count > 0 Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If dvRow IsNot Nothing AndAlso State.searchDV.Count > 0 Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     If dvRow(BillingHeader.BillingSearchDV.COL_SOURCE).ToString = BILLING_HEADER_REJECT_SOURCE Then
                         CType(e.Item.Cells(GRID_COL_EDIT_IDX).FindControl(GRID_CTRL_EDIT_BUTTON_IMAGE_ID), ImageButton).Visible = False
                     End If
@@ -442,7 +442,7 @@ Partial Public Class DirectBillingForm
         End If
 
 
-        If State.BillingFileByDealerForAllUserCompanies Or State.SelectedComanyBillingFileByDealer Then  'Company dropdown is hidden, no company selection
+        If State.BillingFileByDealerForAllUserCompanies OrElse State.SelectedComanyBillingFileByDealer Then  'Company dropdown is hidden, no company selection
             ' hide the VSC grid
             moVSCBillingInformation.Attributes("style") = "display: none"
             ' Show the ESC grid
@@ -546,7 +546,7 @@ Partial Public Class DirectBillingForm
         State.SearchedBeginDate = Date.MinValue
         State.SearchedEndDate = Date.MinValue
 
-        If State.BillingFileByDealerForAllUserCompanies Or State.MixedBillingFileByDealerForUserCompanies Then
+        If State.BillingFileByDealerForAllUserCompanies OrElse State.MixedBillingFileByDealerForUserCompanies Then
             State.SearchedComanyID = TheCompanyControl.SelectedGuid
         End If
 
@@ -573,13 +573,13 @@ Partial Public Class DirectBillingForm
         Else
             dtEnd = Date.MinValue
         End If
-        If strBeginDtTemp = "" And strEndDtTemp <> "" Then
+        If strBeginDtTemp = "" AndAlso strEndDtTemp <> "" Then
             SetLabelError(moBeginDateLabel)
             State.errLabel = moBeginDateLabel.UniqueID
             Throw New GUIException(Message.MSG_INVALID_DATE, Message.MSG_INVALID_DATE)
         End If
 
-        If strBeginDtTemp <> "" And strEndDtTemp = "" Then
+        If strBeginDtTemp <> "" AndAlso strEndDtTemp = "" Then
             SetLabelError(moEndDateLabel)
             State.errLabel = moEndDateLabel.UniqueID
             Throw New GUIException(Message.MSG_INVALID_DATE, Message.MSG_INVALID_DATE)

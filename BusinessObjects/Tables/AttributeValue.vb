@@ -94,7 +94,7 @@ Public Class AttributeValue
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AttributeValueDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -105,7 +105,7 @@ Public Class AttributeValue
     End Property
 
     <ValueMandatory("")> _
-    Public Property AttributeId() As Guid
+    Public Property AttributeId As Guid
         Get
             CheckDeleted()
             If row(AttributeValueDAL.COL_NAME_ATTRIBUTE_ID) Is DBNull.Value Then
@@ -114,7 +114,7 @@ Public Class AttributeValue
                 Return New Guid(CType(row(AttributeValueDAL.COL_NAME_ATTRIBUTE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             If (AttributeId <> Value) Then
                 Attribute = Nothing
@@ -125,7 +125,7 @@ Public Class AttributeValue
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=255), CheckDuplicateAttribute("")> _
-    Public Property Value() As String
+    Public Property Value As String
         Get
             CheckDeleted()
             If Row(AttributeValueDAL.COL_NAME_ATTRIBUTE_VALUE) Is DBNull.Value Then
@@ -134,7 +134,7 @@ Public Class AttributeValue
                 Return CType(Row(AttributeValueDAL.COL_NAME_ATTRIBUTE_VALUE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AttributeValueDAL.COL_NAME_ATTRIBUTE_VALUE, Value)
         End Set
@@ -142,7 +142,7 @@ Public Class AttributeValue
 
 
     <ValueMandatory("")> _
-    Public Property ReferenceId() As Guid
+    Public Property ReferenceId As Guid
         Get
             CheckDeleted()
             If row(AttributeValueDAL.COL_NAME_REFERENCE_ID) Is DBNull.Value Then
@@ -151,7 +151,7 @@ Public Class AttributeValue
                 Return New Guid(CType(row(AttributeValueDAL.COL_NAME_REFERENCE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AttributeValueDAL.COL_NAME_REFERENCE_ID, Value)
         End Set
@@ -159,7 +159,7 @@ Public Class AttributeValue
 
 
     <EffectiveDateMandatory(""), AttributeValue.EffectiveExpirationDate("")> _
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(AttributeValueDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -168,7 +168,7 @@ Public Class AttributeValue
                 Return New DateType(CType(Row(AttributeValueDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(AttributeValueDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
@@ -176,7 +176,7 @@ Public Class AttributeValue
 
 
     <ExpirationDateMandatory("")> _
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(AttributeValueDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -185,7 +185,7 @@ Public Class AttributeValue
                 Return New DateType(CType(Row(AttributeValueDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(AttributeValueDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
@@ -208,7 +208,7 @@ Public Class AttributeValue
             End If
             Return _attribute
         End Get
-        Private Set(ByVal value As ElitaAttribute)
+        Private Set
             If (_attribute Is Nothing OrElse value Is Nothing OrElse Not _attribute.Equals(value)) Then
                 _attribute = value
             End If
@@ -473,7 +473,7 @@ Public Class AttributeValueList(Of TParent As {IAttributable})
 
             Return Where(Function(av) av.AttributeId = oAttribute.Id).Select(Function(av) av.Value).FirstOrDefault()
         End Get
-        Set(ByVal value As String)
+        Set
             Dim oAttribute As ElitaAttribute = Attribues.Where(Function(a) a.UiProgCode = uiProgCode).FirstOrDefault()
             If (oAttribute Is Nothing) Then
                 Throw New InvalidOperationException(String.Format("Attribute {0} Not Configured for table {1}", uiProgCode, _Parent.TableName))

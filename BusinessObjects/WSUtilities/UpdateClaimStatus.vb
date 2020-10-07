@@ -101,7 +101,7 @@ Public Class UpdateClaimStatus
 
 #Region "Properties"
 
-    Public Property CertificateNumber() As String
+    Public Property CertificateNumber As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CERTIFICATE_NUMBER) Is DBNull.Value Then
@@ -110,13 +110,13 @@ Public Class UpdateClaimStatus
                 Return CType(Row(SOURCE_COL_CERTIFICATE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CERTIFICATE_NUMBER, Value)
         End Set
     End Property
 
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_DEALER_CODE) Is DBNull.Value Then
@@ -125,13 +125,13 @@ Public Class UpdateClaimStatus
                 Return CType(Row(SOURCE_COL_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_DEALER_CODE, Value)
         End Set
     End Property
 
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CLAIM_NUMBER) Is DBNull.Value Then
@@ -140,13 +140,13 @@ Public Class UpdateClaimStatus
                 Return CType(Row(SOURCE_COL_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CLAIM_NUMBER, Value)
         End Set
     End Property
 
-    Public Property StatusCode() As String
+    Public Property StatusCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_STATUS_CODE) Is DBNull.Value Then
@@ -155,13 +155,13 @@ Public Class UpdateClaimStatus
                 Return CType(Row(SOURCE_COL_STATUS_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_STATUS_CODE, Value)
         End Set
     End Property
 
-    Public Property Comments() As String
+    Public Property Comments As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_COMMENTS) Is DBNull.Value Then
@@ -170,7 +170,7 @@ Public Class UpdateClaimStatus
                 Return CType(Row(SOURCE_COL_COMMENTS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_COMMENTS, Value)
         End Set

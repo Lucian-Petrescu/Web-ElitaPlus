@@ -260,8 +260,8 @@ Namespace Reports
         Protected Sub OnFromDrop_Changed(sender As Object, e As System.EventArgs) _
                      Handles moReportCeInputControl.SelectedDestOptionChanged
 
-            If moReportCeInputControl.DestinationCodeSelected = OPTION_FTP And State.dealertype = DealerType_VSC _
-                And State.reportType.Equals(REJECT_REPORT) And Me.State.moInterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.CERT Then
+            If moReportCeInputControl.DestinationCodeSelected = OPTION_FTP AndAlso State.dealertype = DealerType_VSC _
+                AndAlso State.reportType.Equals(REJECT_REPORT) AndAlso Me.State.moInterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.CERT Then
                 moReportCeInputControl.UpdateFileNameControlVisible(True)
             Else
                 moReportCeInputControl.UpdateFileNameControlVisible(False)
@@ -284,7 +284,7 @@ Namespace Reports
             Dim params As New ReportCeBaseForm.Params
             Dim repParams() As ReportCeBaseForm.RptParam
 
-            If reportFormat = ReportCeBase.RptFormat.TEXT_CSV Or reportFormat = ReportCeBase.RptFormat.TEXT_TAB Then
+            If reportFormat = ReportCeBase.RptFormat.TEXT_CSV OrElse reportFormat = ReportCeBase.RptFormat.TEXT_TAB Then
                 culturevalue = MasterPage.ReportCeInputControl.getCultureValue(True)
             Else
                 culturevalue = MasterPage.ReportCeInputControl.getCultureValue(False)
@@ -395,7 +395,7 @@ Namespace Reports
                 .moAction = ReportCeBaseForm.RptAction.SCHEDULE_VIEW
                 .moRptParams = repParams
 
-                If State.reportType.Equals(ERROR_EXPORT) Or State.reportType.Equals(PROCESSED_EXPORT) Then
+                If State.reportType.Equals(ERROR_EXPORT) OrElse State.reportType.Equals(PROCESSED_EXPORT) Then
                     .msCsvDelimiter = ReportCeBaseForm.CsvDelimiter.CSV_DELIMITER_DQUOTE
                     .msCsvSeparator = ReportCeBaseForm.CsvSeparator.CSV_SEPARATOR_COMMA
                 End If

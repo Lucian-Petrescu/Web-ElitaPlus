@@ -155,8 +155,7 @@ Public Class UserControlConsequentialDamage
 
                 '' Convert short status codes to full description with css
                 e.Row.Cells(GridConseqdamageIssueColStatusCodeIdx).Text = LookupListNew.GetDescriptionFromCode(ClaimIssueList, dvRow(CaseConseqDamage.ConsequentialDamageIssuesView.COL_STATUS_CODE).ToString)
-                If (dvRow(CaseConseqDamage.ConsequentialDamageIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED Or
-                          dvRow(CaseConseqDamage.ConsequentialDamageIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__WAIVED) Then
+                If (dvRow(CaseConseqDamage.ConsequentialDamageIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED OrElse dvRow(CaseConseqDamage.ConsequentialDamageIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__WAIVED) Then
                     e.Row.Cells(GridConseqdamageIssueColStatusCodeIdx).CssClass = "StatActive"
                 Else
                     e.Row.Cells(GridConseqdamageIssueColStatusCodeIdx).CssClass = "StatInactive"

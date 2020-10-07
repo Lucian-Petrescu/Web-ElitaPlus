@@ -669,11 +669,11 @@ Namespace Claims.AccountPayable
 
                 If dvRow IsNot Nothing AndAlso dvRow.Row.Table.Columns.Count > 0 Then
 
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                         CType(e.Row.Cells(ApInvoiceLineIdCol).FindControl(ApInvoiceLineIdControlLabel), Label).Text = GetGuidStringFromByteArray(CType(dvRow(ApInvoiceLines.AP_LINE_ID), Byte()))
 
-                        If ((State.IsEditMode Or State.IsNewInvoiceLine) AndAlso State.ApInvoiceLineId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(ApInvoiceLines.AP_LINE_ID), Byte())))) Then
+                        If ((State.IsEditMode OrElse State.IsNewInvoiceLine) AndAlso State.ApInvoiceLineId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(ApInvoiceLines.AP_LINE_ID), Byte())))) Then
 
                             Dim moLineTypeDropDown As DropDownList = CType(e.Row.Cells(LineTypeCol).FindControl(LineTypeControlName), DropDownList)
                             SetSelectedItemByText(moLineTypeDropDown, If(String.IsNullOrEmpty(dvRow(ApInvoiceLines.LINE_TYPE_COL).ToString), "LINE", dvRow(ApInvoiceLines.LINE_TYPE_COL).ToString))

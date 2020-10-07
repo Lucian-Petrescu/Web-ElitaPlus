@@ -101,7 +101,7 @@ Public Class ClaimStatusAction
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimStatusActionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -112,7 +112,7 @@ Public Class ClaimStatusAction
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If row(ClaimStatusActionDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -121,7 +121,7 @@ Public Class ClaimStatusAction
                 Return New Guid(CType(row(ClaimStatusActionDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusActionDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
@@ -129,7 +129,7 @@ Public Class ClaimStatusAction
 
 
     <ValueMandatory("")> _
-    Public Property ActionId() As Guid
+    Public Property ActionId As Guid
         Get
             CheckDeleted()
             If row(ClaimStatusActionDAL.COL_NAME_ACTION_ID) Is DBNull.Value Then
@@ -138,7 +138,7 @@ Public Class ClaimStatusAction
                 Return New Guid(CType(row(ClaimStatusActionDAL.COL_NAME_ACTION_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusActionDAL.COL_NAME_ACTION_ID, Value)
         End Set
@@ -146,7 +146,7 @@ Public Class ClaimStatusAction
 
 
     <ValueMandatory("")> _
-    Public Property CurrentStatusId() As Guid
+    Public Property CurrentStatusId As Guid
         Get
             CheckDeleted()
             If row(ClaimStatusActionDAL.COL_NAME_CURRENT_STATUS_ID) Is DBNull.Value Then
@@ -155,7 +155,7 @@ Public Class ClaimStatusAction
                 Return New Guid(CType(row(ClaimStatusActionDAL.COL_NAME_CURRENT_STATUS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusActionDAL.COL_NAME_CURRENT_STATUS_ID, Value)
         End Set
@@ -163,7 +163,7 @@ Public Class ClaimStatusAction
 
 
     <ValueMandatory("")> _
-    Public Property NextStatusId() As Guid
+    Public Property NextStatusId As Guid
         Get
             CheckDeleted()
             If row(ClaimStatusActionDAL.COL_NAME_NEXT_STATUS_ID) Is DBNull.Value Then
@@ -172,7 +172,7 @@ Public Class ClaimStatusAction
                 Return New Guid(CType(row(ClaimStatusActionDAL.COL_NAME_NEXT_STATUS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusActionDAL.COL_NAME_NEXT_STATUS_ID, Value)
         End Set

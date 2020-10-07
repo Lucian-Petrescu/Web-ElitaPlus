@@ -84,7 +84,7 @@ Public Class EquipmentList
 
 #Region "Properties"
     <ValueMandatory("")> _
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(EquipmentListDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -95,7 +95,7 @@ Public Class EquipmentList
     End Property
 
     <ValidStringLength("", Max:=30), ValueMandatory(""), CheckListCodeDatesOverlaped("")> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(EquipmentListDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -104,14 +104,14 @@ Public Class EquipmentList
                 Return Row(EquipmentListDAL.COL_NAME_CODE)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentListDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=500)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(EquipmentListDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -120,14 +120,14 @@ Public Class EquipmentList
                 Return Row(EquipmentListDAL.COL_NAME_DESCRIPTION)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentListDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=500)> _
-    Public Property Comments() As String
+    Public Property Comments As String
         Get
             CheckDeleted()
             If Row(EquipmentListDAL.COL_NAME_COMMENTS) Is DBNull.Value Then
@@ -136,14 +136,14 @@ Public Class EquipmentList
                 Return Row(EquipmentListDAL.COL_NAME_COMMENTS)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentListDAL.COL_NAME_COMMENTS, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If Row(EquipmentListDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -152,14 +152,14 @@ Public Class EquipmentList
                 Return New DateType(DateHelper.GetDateValue(Row(EquipmentListDAL.COL_NAME_EFFECTIVE).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(EquipmentListDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If Row(EquipmentListDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -168,7 +168,7 @@ Public Class EquipmentList
                 Return New DateType(DateHelper.GetDateValue(Row(EquipmentListDAL.COL_NAME_EXPIRATION).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(EquipmentListDAL.COL_NAME_EXPIRATION, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class EquipmentList
     End Sub
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
@@ -347,7 +347,7 @@ Public Class EquipmentList
 
 #Region "Children Related"
 
-    Public ReadOnly Property BestEquipmentListChildren() As EquipmentListDetailList
+    Public ReadOnly Property BestEquipmentListChildren As EquipmentListDetailList
         Get
             Return New EquipmentListDetailList(Me)
         End Get

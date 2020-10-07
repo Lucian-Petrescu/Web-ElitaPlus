@@ -145,7 +145,7 @@ Namespace Reports
             'Validating Range Period - Should be less than or equal to 1 year
             If ReportPeriodBasedOn.SelectedValue = "R" Then
                 'User Selected Range Option
-                If BeginDate.Text.Equals(String.Empty) Or BeginDate.Text Is Nothing Then
+                If BeginDate.Text.Equals(String.Empty) OrElse BeginDate.Text Is Nothing Then
                     ' Begin Date is Not Selected
                     ElitaPlusPage.SetLabelError(lblRange)
                     Try
@@ -157,7 +157,7 @@ Namespace Reports
                 Else
                     oStartDateTime = DateHelper.GetDateValue(BeginDate.Text)
 
-                    If EndDate.Text.Equals(String.Empty) Or EndDate.Text Is Nothing Then
+                    If EndDate.Text.Equals(String.Empty) OrElse EndDate.Text Is Nothing Then
                         ' End Date is Not Selected
                         ElitaPlusPage.SetLabelError(lblRange)
                         Try
@@ -196,7 +196,7 @@ Namespace Reports
 
             If ReportPeriodBasedOn.SelectedValue = "MY" Then
                 'User Selected Month and Year Option
-                If MonthDropDown.SelectedValue Is Nothing Or MonthDropDown.SelectedValue.Equals(String.Empty) Or MonthDropDown.SelectedValue = "00000000-0000-0000-0000-000000000000" Then
+                If MonthDropDown.SelectedValue Is Nothing OrElse MonthDropDown.SelectedValue.Equals(String.Empty) OrElse MonthDropDown.SelectedValue = "00000000-0000-0000-0000-000000000000" Then
                     'Month is Not Selected
                     ElitaPlusPage.SetLabelError(MonthYearLabel)
                     Try
@@ -205,7 +205,7 @@ Namespace Reports
                         HandleErrors(ex, MasterPage.MessageController)
                         runReport = False
                     End Try
-                ElseIf YearDropDown.SelectedValue Is Nothing Or YearDropDown.SelectedValue.Equals(String.Empty) Or YearDropDown.SelectedValue = "0" Then
+                ElseIf YearDropDown.SelectedValue Is Nothing OrElse YearDropDown.SelectedValue.Equals(String.Empty) OrElse YearDropDown.SelectedValue = "0" Then
                     'Year is Not Selected
                     ElitaPlusPage.SetLabelError(MonthYearLabel)
                     Try

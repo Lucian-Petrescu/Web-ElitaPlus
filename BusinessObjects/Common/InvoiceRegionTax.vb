@@ -13,7 +13,7 @@
 #End Region
 
 #Region "Properties"
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(InvoiceRegionTaxDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -23,7 +23,7 @@
         End Get
     End Property
 
-    Public Property InvoiceRegionTaxId() As Guid
+    Public Property InvoiceRegionTaxId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceRegionTaxDAL.COL_NAME_INVOICE_REGION_TAX_ID) Is DBNull.Value Then
@@ -32,13 +32,13 @@
                 Return New Guid(CType(Row(InvoiceRegionTaxDAL.COL_NAME_INVOICE_REGION_TAX_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceRegionTaxDAL.COL_NAME_INVOICE_REGION_TAX_ID, Value)
         End Set
     End Property
 
-    Public Property InvoiceTransactionId() As Guid
+    Public Property InvoiceTransactionId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceRegionTaxDAL.COL_NAME_INVOICE_TRANS_ID) Is DBNull.Value Then
@@ -47,13 +47,13 @@
                 Return New Guid(CType(Row(InvoiceRegionTaxDAL.COL_NAME_INVOICE_TRANS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceRegionTaxDAL.COL_NAME_INVOICE_TRANS_ID, Value)
         End Set
     End Property
 
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceRegionTaxDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -62,13 +62,13 @@
                 Return New Guid(CType(Row(InvoiceRegionTaxDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceRegionTaxDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
 
-    Public Property TaxType() As String
+    Public Property TaxType As String
         Get
             CheckDeleted()
             If Row(InvoiceRegionTaxDAL.COL_NAME_TAX_TYPE_XCD) Is DBNull.Value Then
@@ -77,14 +77,14 @@
                 Return CType(Row(InvoiceRegionTaxDAL.COL_NAME_TAX_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceRegionTaxDAL.COL_NAME_TAX_TYPE_XCD, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=400)>
-    Public Property RegionDescription() As String
+    Public Property RegionDescription As String
         Get
             CheckDeleted()
             If Row(InvoiceRegionTaxDAL.COL_NAME_REGION_DESCRIPTION) Is DBNull.Value Then
@@ -93,14 +93,14 @@
                 Return CType(Row(InvoiceRegionTaxDAL.COL_NAME_REGION_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceRegionTaxDAL.COL_NAME_REGION_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValueMandatoryIIBBtaxAmount(""), ValidNumericRange("", Min:=0, Max:=999999999.99)>
-    Public Property TaxAmount() As DecimalType
+    Public Property TaxAmount As DecimalType
         Get
             CheckDeleted()
             If Row(InvoiceRegionTaxDAL.COL_NAME_TAX_AMOUNT) Is DBNull.Value Then
@@ -109,7 +109,7 @@
                 Return New DecimalType(CType(Row(InvoiceRegionTaxDAL.COL_NAME_TAX_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(InvoiceRegionTaxDAL.COL_NAME_TAX_AMOUNT, Value)
         End Set

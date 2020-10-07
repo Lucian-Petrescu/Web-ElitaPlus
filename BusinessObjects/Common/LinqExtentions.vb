@@ -9,7 +9,7 @@ Public Module LinqExtentions
         Descending = 2
     End Enum
 
-    <Extension()> _
+    <Extension> _
     Public Function OrderBy(Of TKey)(ByVal array As TKey(), ByVal propertyName As String, ByVal direction As SortDirection) As IOrderedEnumerable(Of TKey)
         If (direction = SortDirection.Descending) Then
             Return array.OrderByDescending(Function(item) GetPropertyValueByName(item, propertyName))

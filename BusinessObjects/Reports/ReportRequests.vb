@@ -91,7 +91,7 @@ Public Class ReportRequests
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ReportRequestsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@ Public Class ReportRequests
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property ReportType() As String
+    Public Property ReportType As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_REPORT_TYPE) Is DBNull.Value Then
@@ -111,7 +111,7 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_REPORT_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportRequestsDAL.COL_NAME_REPORT_TYPE, Value)
         End Set
@@ -119,7 +119,7 @@ Public Class ReportRequests
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property FtpFilename() As String
+    Public Property FtpFilename As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_FTP_FILENAME) Is DBNull.Value Then
@@ -128,7 +128,7 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_FTP_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportRequestsDAL.COL_NAME_FTP_FILENAME, Value)
         End Set
@@ -136,7 +136,7 @@ Public Class ReportRequests
 
 
     <ValidStringLength("", Max:=4000)> _
-    Public Property ReportParameters() As String
+    Public Property ReportParameters As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_REPORT_PARAMETERS) Is DBNull.Value Then
@@ -145,7 +145,7 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_REPORT_PARAMETERS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportRequestsDAL.COL_NAME_REPORT_PARAMETERS, Value)
         End Set
@@ -153,7 +153,7 @@ Public Class ReportRequests
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property Status() As String
+    Public Property Status As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -162,7 +162,7 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportRequestsDAL.COL_NAME_STATUS, Value)
         End Set
@@ -170,7 +170,7 @@ Public Class ReportRequests
 
 
 
-    Public Property StartDate() As DateType
+    Public Property StartDate As DateType
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_START_DATE) Is DBNull.Value Then
@@ -179,7 +179,7 @@ Public Class ReportRequests
                 Return New DateType(CType(row(ReportRequestsDAL.COL_NAME_START_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ReportRequestsDAL.COL_NAME_START_DATE, Value)
         End Set
@@ -187,7 +187,7 @@ Public Class ReportRequests
 
 
 
-    Public Property EndDate() As DateType
+    Public Property EndDate As DateType
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_END_DATE) Is DBNull.Value Then
@@ -196,7 +196,7 @@ Public Class ReportRequests
                 Return New DateType(CType(row(ReportRequestsDAL.COL_NAME_END_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ReportRequestsDAL.COL_NAME_END_DATE, Value)
         End Set
@@ -204,7 +204,7 @@ Public Class ReportRequests
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property ErrorMessage() As String
+    Public Property ErrorMessage As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_ERROR_MESSAGE) Is DBNull.Value Then
@@ -213,7 +213,7 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_ERROR_MESSAGE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportRequestsDAL.COL_NAME_ERROR_MESSAGE, Value)
         End Set
@@ -221,7 +221,7 @@ Public Class ReportRequests
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property UserEmailAddress() As String
+    Public Property UserEmailAddress As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_USER_EMAIL_ADDRESS) Is DBNull.Value Then
@@ -230,7 +230,7 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_USER_EMAIL_ADDRESS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportRequestsDAL.COL_NAME_USER_EMAIL_ADDRESS, Value)
         End Set
@@ -238,7 +238,7 @@ Public Class ReportRequests
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property ReportProc() As String
+    Public Property ReportProc As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_REPORT_PROC) Is DBNull.Value Then
@@ -247,7 +247,7 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_REPORT_PROC), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportRequestsDAL.COL_NAME_REPORT_PROC, Value)
         End Set
@@ -255,7 +255,7 @@ Public Class ReportRequests
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property Sourceurl() As String
+    Public Property Sourceurl As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_SOURCEURL) Is DBNull.Value Then
@@ -264,13 +264,13 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_SOURCEURL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportRequestsDAL.COL_NAME_SOURCEURL, Value)
         End Set
     End Property
 
-    Public ReadOnly Property Requester() As String
+    Public ReadOnly Property Requester As String
         Get
             Return ElitaPlusIdentity.Current.ActiveUser.NetworkId
         End Get

@@ -216,7 +216,7 @@ Namespace Tables
 
             Try
                 Dim mchkIndex As Boolean = chkExcludeCoveragesAndRates.Checked
-                If rCopyDelete.SelectedIndex = COPY_INDEX And Not mchkIndex Then
+                If rCopyDelete.SelectedIndex = COPY_INDEX AndAlso Not mchkIndex Then
                     ControlMgr.SetVisibleControl(Me, LabelEnterCovDateHeader, True)
                     ControlMgr.SetVisibleControl(Me, LabelStar1, True)
                     ControlMgr.SetVisibleControl(Me, LabelStar2, True)
@@ -254,7 +254,7 @@ Namespace Tables
                 If rCopyDelete.SelectedIndex = COPY_INDEX Then
                     If Not chkExcludeCoveragesAndRates.Checked Then
                         ' The dates must be entered 
-                        If TextboxEffDate.Text = "" Or TextboxExpDate.Text = "" Then
+                        If TextboxEffDate.Text = "" OrElse TextboxExpDate.Text = "" Then
                             Throw New GUIException(Message.MSG_GUI_INVALID_EMPTY_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EMPTY_DATE)
                         End If
                         'check is the effective date is less than the expiration date
@@ -306,7 +306,7 @@ Namespace Tables
 #Region " Private Methods"
         Private Function ValidSelection() As Boolean
             If rCopyDelete.SelectedIndex = COPY_INDEX Then
-                If FromMultipleDrop.SelectedGuid.Equals(Guid.Empty) Or ToMultipleDrop.SelectedGuid.Equals(Guid.Empty) Then
+                If FromMultipleDrop.SelectedGuid.Equals(Guid.Empty) OrElse ToMultipleDrop.SelectedGuid.Equals(Guid.Empty) Then
                     Return False
                 ElseIf FromMultipleDrop.SelectedIndex = ToMultipleDrop.SelectedIndex Then
                     Return False

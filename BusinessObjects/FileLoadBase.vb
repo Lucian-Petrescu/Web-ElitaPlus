@@ -96,7 +96,7 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
         Get
             Return _header
         End Get
-        Private Set(ByVal value As THeader)
+        Private Set
             _header = value
         End Set
     End Property
@@ -105,7 +105,7 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
         Get
             Return _recordsProcessed
         End Get
-        Private Set(ByVal value As Long)
+        Private Set
             _recordsProcessed = value
         End Set
     End Property
@@ -114,7 +114,7 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
         Get
             Return _interfaceStatusId
         End Get
-        Set(ByVal value As Nullable(Of Guid))
+        Set
             _interfaceStatusId = value
         End Set
     End Property

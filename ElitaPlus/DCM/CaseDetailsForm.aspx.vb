@@ -245,7 +245,7 @@
 
         Catch ex As Exception
             Dim getExceptionType As String = ex.GetBaseException.GetType().Name
-            If ((Not getExceptionType.Equals(String.Empty)) And getExceptionType.Equals("BOValidationException")) Then
+            If ((Not getExceptionType.Equals(String.Empty)) AndAlso getExceptionType.Equals("BOValidationException")) Then
                 ControlMgr.SetVisibleControl(Me, CaseInteractionGrid, False)
                 lblInteractionRecordFound.Visible = False
             End If
@@ -292,7 +292,7 @@
 
         Catch ex As Exception
             Dim getExceptionType As String = ex.GetBaseException.GetType().Name
-            If ((Not getExceptionType.Equals(String.Empty)) And getExceptionType.Equals("BOValidationException")) Then
+            If ((Not getExceptionType.Equals(String.Empty)) AndAlso getExceptionType.Equals("BOValidationException")) Then
                 ControlMgr.SetVisibleControl(Me, CaseActionGrid, False)
                 lblActionRecordFound.Visible = False
             End If
@@ -337,7 +337,7 @@
 
         Catch ex As Exception
             Dim getExceptionType As String = ex.GetBaseException.GetType().Name
-            If ((Not getExceptionType.Equals(String.Empty)) And getExceptionType.Equals("BOValidationException")) Then
+            If ((Not getExceptionType.Equals(String.Empty)) AndAlso getExceptionType.Equals("BOValidationException")) Then
                 ControlMgr.SetVisibleControl(Me, CaseQuestionAnswerGrid, False)
                 lblQuestionRecordFound.Visible = False
             End If
@@ -389,7 +389,7 @@
 
         Catch ex As Exception
             Dim getExceptionType As String = ex.GetBaseException.GetType().Name
-            If ((Not getExceptionType.Equals(String.Empty)) And getExceptionType.Equals("BOValidationException")) Then
+            If ((Not getExceptionType.Equals(String.Empty)) AndAlso getExceptionType.Equals("BOValidationException")) Then
                 ControlMgr.SetVisibleControl(Me, CaseDeniedReasonsGrid, False)
                 lblQuestionRecordFound.Visible = False
             End If
@@ -435,7 +435,7 @@
 
         Catch ex As Exception
             Dim getExceptionType As String = ex.GetBaseException.GetType().Name
-            If ((Not getExceptionType.Equals(String.Empty)) And getExceptionType.Equals("BOValidationException")) Then
+            If ((Not getExceptionType.Equals(String.Empty)) AndAlso getExceptionType.Equals("BOValidationException")) Then
                 ControlMgr.SetVisibleControl(Me, GridViewCaseNotes, False)
                 LabelCaseNotesRecordFound.Visible = False
             End If

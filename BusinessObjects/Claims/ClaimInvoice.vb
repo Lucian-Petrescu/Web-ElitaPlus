@@ -35,25 +35,25 @@ Public Interface IInvoiceable
     ReadOnly Property ServiceCenterObject As ServiceCenter
     ReadOnly Property CreatedDate As DateType
     ReadOnly Property CreatedDateTime As DateTimeType
-    Property LoanerCenterId() As Guid
-    Property LoanerReturnedDate() As DateType
-    ReadOnly Property IsDirty() As Boolean
-    ReadOnly Property CanDisplayVisitAndPickUpDates() As Boolean
-    ReadOnly Property RiskType() As String
+    Property LoanerCenterId As Guid
+    Property LoanerReturnedDate As DateType
+    ReadOnly Property IsDirty As Boolean
+    ReadOnly Property CanDisplayVisitAndPickUpDates As Boolean
+    ReadOnly Property RiskType As String
     ReadOnly Property MethodOfRepairCode As String
-    Property RiskTypeId() As Guid
+    Property RiskTypeId As Guid
 
     ReadOnly Property AssurantPays As DecimalType
-    Property Deductible() As DecimalType
-    Property DiscountAmount() As DecimalType
-    ReadOnly Property AboveLiability() As DecimalType
-    ReadOnly Property PayDeductibleId() As Guid
-    ReadOnly Property ConsumerPays() As DecimalType
-    Property LiabilityLimit() As DecimalType
+    Property Deductible As DecimalType
+    Property DiscountAmount As DecimalType
+    ReadOnly Property AboveLiability As DecimalType
+    ReadOnly Property PayDeductibleId As Guid
+    ReadOnly Property ConsumerPays As DecimalType
+    Property LiabilityLimit As DecimalType
 
     'KDDI changes'
-    ReadOnly Property IsReshipmentAllowed() As String
-    ReadOnly Property IsCancelShipmentAllowed() As String
+    ReadOnly Property IsReshipmentAllowed As String
+    ReadOnly Property IsCancelShipmentAllowed As String
     'Methods to be implemented
     Sub SaveClaim(Optional ByVal Transaction As IDbTransaction = Nothing)
     Sub VerifyConcurrency(sModifiedDate As String)
@@ -891,7 +891,7 @@ Public Class ClaimInvoice
             End If
             Return _invoiceable
         End Get
-        Private Set(value As IInvoiceable)
+        Private Set
             _invoiceable = value
         End Set
     End Property
@@ -1067,7 +1067,7 @@ Public Class ClaimInvoice
     End Sub
 
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
@@ -1108,7 +1108,7 @@ Public Class ClaimInvoice
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ClaimInvoiceDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -1119,7 +1119,7 @@ Public Class ClaimInvoice
     End Property
 
     <ValueMandatory("")>
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -1128,32 +1128,32 @@ Public Class ClaimInvoice
                 Return New Guid(CType(Row(ClaimInvoiceDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
-    Public Property CancelPolicy() As Boolean
+    Public Property CancelPolicy As Boolean
         Get
             Return _cancelPolicy
         End Get
-        Set(Value As Boolean)
+        Set
             _cancelPolicy = Value
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property CloseClaim() As Boolean
+    Public Property CloseClaim As Boolean
         Get
             Return _closeClaim
         End Get
-        Set(Value As Boolean)
+        Set
             _closeClaim = Value
         End Set
     End Property
     <ValueMandatory("")>
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -1162,13 +1162,13 @@ Public Class ClaimInvoice
                 Return New Guid(CType(Row(ClaimInvoiceDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
 
-    Public Property RepairCodeId() As Guid
+    Public Property RepairCodeId As Guid
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_REPAIR_CODE_ID) Is DBNull.Value Then
@@ -1177,7 +1177,7 @@ Public Class ClaimInvoice
                 Return New Guid(CType(Row(ClaimInvoiceDAL.COL_NAME_REPAIR_CODE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_REPAIR_CODE_ID, Value)
         End Set
@@ -1185,7 +1185,7 @@ Public Class ClaimInvoice
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)>
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
@@ -1194,14 +1194,14 @@ Public Class ClaimInvoice
                 Return CType(Row(ClaimInvoiceDAL.COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)>
-    Public Property SvcControlNumber() As String
+    Public Property SvcControlNumber As String
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_SVC_CONTROL_NUMBER) Is DBNull.Value Then
@@ -1210,7 +1210,7 @@ Public Class ClaimInvoice
                 Return CType(Row(ClaimInvoiceDAL.COL_NAME_SVC_CONTROL_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_SVC_CONTROL_NUMBER, Value)
         End Set
@@ -1218,7 +1218,7 @@ Public Class ClaimInvoice
 
 
     <ValueMandatory("")>
-    Public Property RecordCount() As LongType
+    Public Property RecordCount As LongType
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_RECORD_COUNT) Is DBNull.Value Then
@@ -1227,7 +1227,7 @@ Public Class ClaimInvoice
                 Return New LongType(CType(Row(ClaimInvoiceDAL.COL_NAME_RECORD_COUNT), Long))
             End If
         End Get
-        Set(Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_RECORD_COUNT, Value)
         End Set
@@ -1235,7 +1235,7 @@ Public Class ClaimInvoice
 
 
     <ValidStringLength("", Max:=15)>
-    Public Property BatchNumber() As String
+    Public Property BatchNumber As String
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_BATCH_NUMBER) Is DBNull.Value Then
@@ -1244,14 +1244,14 @@ Public Class ClaimInvoice
                 Return CType(Row(ClaimInvoiceDAL.COL_NAME_BATCH_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_BATCH_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidCauseOfLoss("")>
-    Public Property CauseOfLossID() As Guid
+    Public Property CauseOfLossID As Guid
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_CAUSE_OF_LOSS_ID) Is DBNull.Value Then
@@ -1260,7 +1260,7 @@ Public Class ClaimInvoice
                 Return New Guid(CType(Row(ClaimInvoiceDAL.COL_NAME_CAUSE_OF_LOSS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_CAUSE_OF_LOSS_ID, Value)
         End Set
@@ -1268,7 +1268,7 @@ Public Class ClaimInvoice
 
 
     <ValueMandatory(""), ValidRepairDate("")>
-    Public Property RepairDate() As DateType
+    Public Property RepairDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_REPAIR_DATE) Is DBNull.Value Then
@@ -1277,14 +1277,14 @@ Public Class ClaimInvoice
                 Return New DateType(CType(Row(ClaimInvoiceDAL.COL_NAME_REPAIR_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_REPAIR_DATE, Value)
         End Set
     End Property
 
     <ValueMandatoryConditionallyForInvDate(""), ValidInvoiceDate("")>
-    Public Property InvoiceDate() As DateType
+    Public Property InvoiceDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_INVOICE_DATE) Is DBNull.Value Then
@@ -1293,7 +1293,7 @@ Public Class ClaimInvoice
                 Return New DateType(CType(Row(ClaimInvoiceDAL.COL_NAME_INVOICE_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_INVOICE_DATE, Value)
         End Set
@@ -1302,17 +1302,17 @@ Public Class ClaimInvoice
     'Invoice property is Not a Derived Property of Claim Authorization.
     ' It is only being set and used for the Payment of Claim Authorizations
     Dim _Invoice As Invoice
-    Public Property Invoice() As Invoice
+    Public Property Invoice As Invoice
         Get
             Return _Invoice
         End Get
-        Set(value As Invoice)
+        Set
             _Invoice = value
         End Set
     End Property
 
     <ValidLoanerReturnedDate("")>
-    Public Property LoanerReturnedDate() As DateType
+    Public Property LoanerReturnedDate As DateType
         Get
             If Not Invoiceable.LoanerCenterId.Equals(Guid.Empty) Then
                 Return Invoiceable.LoanerReturnedDate
@@ -1320,7 +1320,7 @@ Public Class ClaimInvoice
                 Return Nothing
             End If
         End Get
-        Set(Value As DateType)
+        Set
             If Not Invoiceable.LoanerCenterId.Equals(Guid.Empty) Then
                 Invoiceable.LoanerReturnedDate = Value
             Else
@@ -1330,7 +1330,7 @@ Public Class ClaimInvoice
     End Property
 
 
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -1339,13 +1339,13 @@ Public Class ClaimInvoice
                 Return New Guid(CType(Row(ClaimInvoiceDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
 
-    Public Property RepairEstimate() As DecimalType
+    Public Property RepairEstimate As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_REPAIR_ESTIMATE) Is DBNull.Value Then
@@ -1353,7 +1353,7 @@ Public Class ClaimInvoice
             End If
             Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_REPAIR_ESTIMATE), Decimal))
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_REPAIR_ESTIMATE, Value)
         End Set
@@ -1361,7 +1361,7 @@ Public Class ClaimInvoice
 
 
 
-    Public Property LaborAmt() As DecimalType
+    Public Property LaborAmt As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_LABOR_AMT) Is DBNull.Value Then
@@ -1369,7 +1369,7 @@ Public Class ClaimInvoice
             End If
             Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_LABOR_AMT), Decimal))
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_LABOR_AMT, Value)
         End Set
@@ -1393,7 +1393,7 @@ Public Class ClaimInvoice
     '    End Set
     'End Property
 
-    Public Property LaborTax() As DecimalType
+    Public Property LaborTax As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_LABOR_TAX) Is DBNull.Value Then
@@ -1402,7 +1402,7 @@ Public Class ClaimInvoice
                 Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_LABOR_TAX), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_LABOR_TAX, Value)
         End Set
@@ -1410,7 +1410,7 @@ Public Class ClaimInvoice
 
 
 
-    Public Property PartAmount() As DecimalType
+    Public Property PartAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_PART_AMOUNT) Is DBNull.Value Then
@@ -1419,7 +1419,7 @@ Public Class ClaimInvoice
             Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_PART_AMOUNT), Decimal))
 
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_PART_AMOUNT, Value)
         End Set
@@ -1427,7 +1427,7 @@ Public Class ClaimInvoice
 
 
 
-    Public Property PartTax() As DecimalType
+    Public Property PartTax As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_PART_TAX) Is DBNull.Value Then
@@ -1436,7 +1436,7 @@ Public Class ClaimInvoice
                 Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_PART_TAX), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_PART_TAX, Value)
         End Set
@@ -1444,7 +1444,7 @@ Public Class ClaimInvoice
 
 
 
-    Public Property ServiceCharge() As DecimalType
+    Public Property ServiceCharge As DecimalType
         Get
             CheckDeleted()
 
@@ -1454,13 +1454,13 @@ Public Class ClaimInvoice
             Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_SERVICE_CHARGE), Decimal))
 
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_SERVICE_CHARGE, Value)
         End Set
     End Property
 
-    Public Property TripAmount() As DecimalType
+    Public Property TripAmount As DecimalType
         Get
             CheckDeleted()
 
@@ -1470,13 +1470,13 @@ Public Class ClaimInvoice
             Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_TRIP_AMOUNT), Decimal))
 
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_TRIP_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property ShippingAmount() As DecimalType
+    Public Property ShippingAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_SHIPPING_AMOUNT) Is DBNull.Value Then
@@ -1485,14 +1485,14 @@ Public Class ClaimInvoice
             Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_SHIPPING_AMOUNT), Decimal))
 
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_SHIPPING_AMOUNT, Value)
         End Set
     End Property
 
 
-    Public Property PaytocustomerAmount() As DecimalType
+    Public Property PaytocustomerAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_PAY_TO_CUST_AMOUNT) Is DBNull.Value Then
@@ -1501,13 +1501,13 @@ Public Class ClaimInvoice
                 Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_PAY_TO_CUST_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_PAY_TO_CUST_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property OtherAmount() As DecimalType
+    Public Property OtherAmount As DecimalType
         Get
             CheckDeleted()
 
@@ -1517,7 +1517,7 @@ Public Class ClaimInvoice
             Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_OTHER_AMOUNT), Decimal))
 
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_OTHER_AMOUNT, Value)
         End Set
@@ -1525,7 +1525,7 @@ Public Class ClaimInvoice
 
 
     <ValidStringLength("", Max:=255)>
-    Public Property OtherExplanation() As String
+    Public Property OtherExplanation As String
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_OTHER_EXPLANATION) Is DBNull.Value Then
@@ -1534,13 +1534,13 @@ Public Class ClaimInvoice
                 Return CType(Row(ClaimInvoiceDAL.COL_NAME_OTHER_EXPLANATION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_OTHER_EXPLANATION, Value)
         End Set
     End Property
 
-    Public Property DeductibleAmount() As DecimalType
+    Public Property DeductibleAmount As DecimalType
         Get
             CheckDeleted()
 
@@ -1550,13 +1550,13 @@ Public Class ClaimInvoice
             Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_DEDUCTIBLE_AMOUNT), Decimal))
 
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_DEDUCTIBLE_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property DeductibleTaxAmount() As DecimalType
+    Public Property DeductibleTaxAmount As DecimalType
         Get
             CheckDeleted()
 
@@ -1566,13 +1566,13 @@ Public Class ClaimInvoice
             Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_DEDUCTIBLE_TAX_AMOUNT), Decimal))
 
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_DEDUCTIBLE_TAX_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property IvaAmount() As DecimalType
+    Public Property IvaAmount As DecimalType
         Get
             CheckDeleted()
 
@@ -1582,13 +1582,13 @@ Public Class ClaimInvoice
             Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_IVA_AMOUNT), Decimal))
 
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_IVA_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property TotalTaxAmount() As DecimalType
+    Public Property TotalTaxAmount As DecimalType
         Get
             CheckDeleted()
 
@@ -1598,7 +1598,7 @@ Public Class ClaimInvoice
             Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_TOTAL_TAX_AMOUNT), Decimal))
 
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_TOTAL_TAX_AMOUNT, Value)
         End Set
@@ -1606,7 +1606,7 @@ Public Class ClaimInvoice
 
 
     <ValueMandatory(""), ValidAmount(""), ValidateUserLimit("")>
-    Public Property Amount() As DecimalType
+    Public Property Amount As DecimalType
         Get
             CheckDeleted()
 
@@ -1617,30 +1617,30 @@ Public Class ClaimInvoice
             Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_AMOUNT), Decimal))
 
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property AdjustmentAmount() As DecimalType
+    Public Property AdjustmentAmount As DecimalType
         Get
             Return _adjustmentAmount
         End Get
-        Set(Value As DecimalType)
+        Set
             _adjustmentAmount = Value
         End Set
     End Property
-    Public Property TotalAmount() As DecimalType
+    Public Property TotalAmount As DecimalType
         Get
             Return _totalAmount
         End Get
-        Set(Value As DecimalType)
+        Set
             _totalAmount = Value
         End Set
     End Property
 
-    Public Property DisbursementId() As Guid
+    Public Property DisbursementId As Guid
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_DISBURSEMENT_ID) Is DBNull.Value Then
@@ -1649,21 +1649,21 @@ Public Class ClaimInvoice
                 Return New Guid(CType(Row(ClaimInvoiceDAL.COL_NAME_DISBURSEMENT_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_DISBURSEMENT_ID, Value)
         End Set
     End Property
 
-    Public Property CurrentCommentId() As Guid
+    Public Property CurrentCommentId As Guid
         Get
             Return _currentCommentId
         End Get
-        Set(Value As Guid)
+        Set
             _currentCommentId = Value
         End Set
     End Property
-    Public ReadOnly Property CertItemId() As Guid
+    Public ReadOnly Property CertItemId As Guid
         Get
             CheckDeleted()
             If Invoiceable Is Nothing Then
@@ -1684,7 +1684,7 @@ Public Class ClaimInvoice
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property RejectReason() As String
+    Public Property RejectReason As String
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_REJECT_REASON) Is DBNull.Value Then
@@ -1693,7 +1693,7 @@ Public Class ClaimInvoice
                 Return CType(Row(ClaimInvoiceDAL.COL_NAME_REJECT_REASON), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_REJECT_REASON, Value)
         End Set
@@ -1701,7 +1701,7 @@ Public Class ClaimInvoice
 
 
     <ValidStringLength("", Max:=10)>
-    Public Property AuthorizationNumber() As String
+    Public Property AuthorizationNumber As String
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -1710,7 +1710,7 @@ Public Class ClaimInvoice
                 Return CType(Row(ClaimInvoiceDAL.COL_NAME_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
@@ -1718,7 +1718,7 @@ Public Class ClaimInvoice
 
 
     <ValidStringLength("", Max:=15)>
-    Public Property Source() As String
+    Public Property Source As String
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_SOURCE) Is DBNull.Value Then
@@ -1727,80 +1727,80 @@ Public Class ClaimInvoice
                 Return CType(Row(ClaimInvoiceDAL.COL_NAME_SOURCE), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_SOURCE, Value)
         End Set
     End Property
 
     Private _excludeDed As DecimalType
-    Public Property excludeDeductible() As Boolean
+    Public Property excludeDeductible As Boolean
         Get
             Return _excludeDed
         End Get
-        Set(Value As Boolean)
+        Set
             _excludeDed = Value
         End Set
     End Property
 
-    Public Property ReconciledAmount() As DecimalType
+    Public Property ReconciledAmount As DecimalType
         Get
             Return _reconciledAmount
         End Get
-        Set(Value As DecimalType)
+        Set
             _reconciledAmount = Value
         End Set
     End Property
 
     Private _PerceptionIVA As DecimalType
 
-    Public Property PerceptionIVA() As DecimalType
+    Public Property PerceptionIVA As DecimalType
         Get
             Return _PerceptionIVA
         End Get
-        Set(Value As DecimalType)
+        Set
             _PerceptionIVA = Value
         End Set
     End Property
 
     Private _PerceptionIIBB As DecimalType
-    Public Property PerceptionIIBB() As DecimalType
+    Public Property PerceptionIIBB As DecimalType
         Get
             Return _PerceptionIIBB
         End Get
-        Set(Value As DecimalType)
+        Set
             _PerceptionIIBB = Value
         End Set
     End Property
 
-    Public Property IsPaymentAdjustment() As Boolean
+    Public Property IsPaymentAdjustment As Boolean
         Get
             Return _isPaymentAdjustment
         End Get
-        Set(Value As Boolean)
+        Set
             _isPaymentAdjustment = Value
         End Set
     End Property
 
-    Public Property IsPaymentReversal() As Boolean
+    Public Property IsPaymentReversal As Boolean
         Get
             Return _isPaymentReversal
         End Get
-        Set(Value As Boolean)
+        Set
             _isPaymentReversal = Value
         End Set
     End Property
 
-    Public Property IsSalvagePayment() As Boolean
+    Public Property IsSalvagePayment As Boolean
         Get
             Return _isSalvagePayment
         End Get
-        Set(Value As Boolean)
+        Set
             _isSalvagePayment = Value
         End Set
     End Property
 
-    Public ReadOnly Property AdjustmentPercentage() As Decimal
+    Public ReadOnly Property AdjustmentPercentage As Decimal
         Get
             If Amount.Value <> 0 Then
                 Return (Amount.Value - AdjustmentAmount.Value) / Amount.Value
@@ -1811,16 +1811,16 @@ Public Class ClaimInvoice
 
     End Property
 
-    Public Property IsNewPaymentFromPaymentAdjustment() As Boolean
+    Public Property IsNewPaymentFromPaymentAdjustment As Boolean
         Get
             Return _isNewPaymentFromPaymentAdjustment
         End Get
-        Set(Value As Boolean)
+        Set
             _isNewPaymentFromPaymentAdjustment = Value
         End Set
     End Property
 
-    Public Property ClaimAuthorizationId() As Guid
+    Public Property ClaimAuthorizationId As Guid
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_CLAIM_AUTHORIZATION_ID) Is DBNull.Value Then
@@ -1829,13 +1829,13 @@ Public Class ClaimInvoice
                 Return New Guid(CType(Row(ClaimInvoiceDAL.COL_NAME_CLAIM_AUTHORIZATION_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
         End Set
     End Property
 
-    Public Property Bonus() As DecimalType
+    Public Property Bonus As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_BONUS) Is DBNull.Value Then
@@ -1844,13 +1844,13 @@ Public Class ClaimInvoice
                 Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_BONUS), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_BONUS, Value)
         End Set
     End Property
 
-    Public Property BonusTax() As DecimalType
+    Public Property BonusTax As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_BONUS_TAX) Is DBNull.Value Then
@@ -1859,14 +1859,14 @@ Public Class ClaimInvoice
                 Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_BONUS_TAX), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_BONUS_TAX, Value)
         End Set
     End Property
 
 
-    Public Property DispositionAmount() As DecimalType
+    Public Property DispositionAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_DISPOSITION_AMOUNT) Is DBNull.Value Then
@@ -1875,14 +1875,14 @@ Public Class ClaimInvoice
                 Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_DISPOSITION_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_DISPOSITION_AMOUNT, Value)
         End Set
     End Property
 
 
-    Public Property DiagnosticsAmount() As DecimalType
+    Public Property DiagnosticsAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_DIAGNOSTICS_AMOUNT) Is DBNull.Value Then
@@ -1891,14 +1891,14 @@ Public Class ClaimInvoice
                 Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_DIAGNOSTICS_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_DIAGNOSTICS_AMOUNT, Value)
         End Set
     End Property
 
 
-    Public Property WithholdingAmount() As DecimalType
+    Public Property WithholdingAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimInvoiceDAL.COL_NAME_WITHHOLDING_AMOUNT) Is DBNull.Value Then
@@ -1907,14 +1907,14 @@ Public Class ClaimInvoice
                 Return New DecimalType(CType(Row(ClaimInvoiceDAL.COL_NAME_WITHHOLDING_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimInvoiceDAL.COL_NAME_WITHHOLDING_AMOUNT, Value)
         End Set
     End Property
 
 
-    Public Property ServiceCenterWithholdingRate() As DecimalType
+    Public Property ServiceCenterWithholdingRate As DecimalType
         Get
             If Not _service_center_withhodling_rate Is Nothing Then
                 If _service_center_withhodling_rate.Value > 0 Then
@@ -1926,7 +1926,7 @@ Public Class ClaimInvoice
                 Return New DecimalType(0D)
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             _service_center_withhodling_rate = Value
         End Set
@@ -1935,7 +1935,7 @@ Public Class ClaimInvoice
 
 #Region "Address Children"
 
-    Public ReadOnly Property AddressChild() As Address
+    Public ReadOnly Property AddressChild As Address
         Get
             Dim newAddress = New Address
             Dim oCompany As New Company(CompanyId)
@@ -1972,7 +1972,7 @@ Public Class ClaimInvoice
 #End Region
 
 #Region "Derived Properties"
-    Public ReadOnly Property CurrentCertItem() As CertItem
+    Public ReadOnly Property CurrentCertItem As CertItem
         Get
             If _cert_Item Is Nothing Then
                 _cert_Item = New CertItem(CertItemId, Dataset)
@@ -1989,7 +1989,7 @@ Public Class ClaimInvoice
     '    End Get
     'End Property
 
-    Public ReadOnly Property ClaimTax() As ClaimTax
+    Public ReadOnly Property ClaimTax As ClaimTax
         Get
             If _ClaimTax Is Nothing Then
                 _ClaimTax = New ClaimTax(Dataset)
@@ -1999,7 +1999,7 @@ Public Class ClaimInvoice
 
     End Property
 
-    Public ReadOnly Property ClaimTaxManual() As ClaimTax
+    Public ReadOnly Property ClaimTaxManual As ClaimTax
         Get
             If _ClaimTaxManual Is Nothing Then
                 _ClaimTaxManual = New ClaimTax(Dataset)
@@ -2017,7 +2017,7 @@ Public Class ClaimInvoice
             End If
         End Get
     End Property
-    Public ReadOnly Property RemainingAmount() As DecimalType
+    Public ReadOnly Property RemainingAmount As DecimalType
         Get
             Dim objclaimAuth As ClaimAuthorization
             'For MultiAuth Claims, if the Authorization contains deductible then Invoiceable.Deductible.Value would contain the deductible value at claim level 
@@ -2055,7 +2055,7 @@ Public Class ClaimInvoice
             End If
         End Get
     End Property
-    Public ReadOnly Property AlreadyPaid() As DecimalType
+    Public ReadOnly Property AlreadyPaid As DecimalType
         Get
             If Not ClaimAuthorizationId = Guid.Empty Then
                 CalculateAmountsForMultiAuthClaim()
@@ -2066,12 +2066,12 @@ Public Class ClaimInvoice
             Return New DecimalType(getDecimalValue(GetClaimSumofInvoices()))
         End Get
     End Property
-    Public ReadOnly Property AlreadyPaidDeductible() As DecimalType
+    Public ReadOnly Property AlreadyPaidDeductible As DecimalType
         Get
             Return New DecimalType(getDecimalValue(GetClaimSumOfDeductibles()))
         End Get
     End Property
-    Private ReadOnly Property CurrentDisbursement() As Disbursement
+    Private ReadOnly Property CurrentDisbursement As Disbursement
         Get
             If _disbursement Is Nothing Then
                 If DisbursementId.Equals(Guid.Empty) Then
@@ -2086,7 +2086,7 @@ Public Class ClaimInvoice
         End Get
     End Property
 
-    Private ReadOnly Property CurrentComment() As Comment
+    Private ReadOnly Property CurrentComment As Comment
         Get
             If _comment Is Nothing Then
                 _comment = New Comment(Dataset)
@@ -2094,7 +2094,7 @@ Public Class ClaimInvoice
             Return _comment
         End Get
     End Property
-    Public ReadOnly Property CertificateNumber() As String
+    Public ReadOnly Property CertificateNumber As String
         Get
             Dim certNumber As String = Nothing
             If Not Invoiceable.CertificateId.Equals(Guid.Empty) Then
@@ -2105,7 +2105,7 @@ Public Class ClaimInvoice
         End Get
     End Property
 
-    Public ReadOnly Property CustomerName() As String
+    Public ReadOnly Property CustomerName As String
         Get
             If Invoiceable Is Nothing Then
                 Return Nothing
@@ -2115,7 +2115,7 @@ Public Class ClaimInvoice
         End Get
     End Property
 
-    Public ReadOnly Property ServiceCenterName() As String
+    Public ReadOnly Property ServiceCenterName As String
         Get
             If Invoiceable Is Nothing Then
                 Return Nothing
@@ -2125,7 +2125,7 @@ Public Class ClaimInvoice
         End Get
     End Property
 
-    Public ReadOnly Property RiskType() As String
+    Public ReadOnly Property RiskType As String
         Get
             If Invoiceable Is Nothing Then
                 Return Nothing
@@ -2135,7 +2135,7 @@ Public Class ClaimInvoice
         End Get
     End Property
 
-    Public ReadOnly Property Manufacturer() As String
+    Public ReadOnly Property Manufacturer As String
         Get
             If Invoiceable Is Nothing Then
                 Return Nothing
@@ -2158,7 +2158,7 @@ Public Class ClaimInvoice
             End If
         End Get
     End Property
-    Public ReadOnly Property Model() As String
+    Public ReadOnly Property Model As String
         Get
             If Invoiceable Is Nothing Then
                 Return Nothing
@@ -2176,7 +2176,7 @@ Public Class ClaimInvoice
             End If
         End Get
     End Property
-    Public ReadOnly Property SerialNumber() As String
+    Public ReadOnly Property SerialNumber As String
         Get
             If Invoiceable Is Nothing Then
                 Return Nothing
@@ -2194,7 +2194,7 @@ Public Class ClaimInvoice
             End If
         End Get
     End Property
-    Public ReadOnly Property CustomerAddressID() As Guid
+    Public ReadOnly Property CustomerAddressID As Guid
         Get
             If Invoiceable Is Nothing Then
                 Return Nothing
@@ -2208,7 +2208,7 @@ Public Class ClaimInvoice
             End If
         End Get
     End Property
-    Public ReadOnly Property ServiceCenterAddressID() As Guid
+    Public ReadOnly Property ServiceCenterAddressID As Guid
         Get
             If Invoiceable Is Nothing Then
                 Return Nothing
@@ -2414,19 +2414,19 @@ Public Class ClaimInvoice
         End Get
     End Property
 
-    Public ReadOnly Property DeductibleTaxRate() As DecimalType
+    Public ReadOnly Property DeductibleTaxRate As DecimalType
         Get
             Return GetTaxRate(True)
         End Get
     End Property
 
-    Public ReadOnly Property TaxRate() As DecimalType
+    Public ReadOnly Property TaxRate As DecimalType
         Get
             Return GetTaxRate(False)
         End Get
     End Property
 
-    Public ReadOnly Property isTaxTypeInvoice() As Boolean
+    Public ReadOnly Property isTaxTypeInvoice As Boolean
         Get
 
             Dim payeeAddress As Address = New Address(ServiceCenterAddressID)
@@ -2460,7 +2460,7 @@ Public Class ClaimInvoice
     End Property
 
 
-    Public ReadOnly Property SecondClaimInvoice() As ClaimInvoice
+    Public ReadOnly Property SecondClaimInvoice As ClaimInvoice
         Get
             If _claimInvoice Is Nothing Then
                 _claimInvoice = New ClaimInvoice(Dataset)
@@ -2473,44 +2473,44 @@ Public Class ClaimInvoice
 
 #Region "Temp Properties"
     'Created a temp property for Serial Number to be maintained between page navigation.
-    Public Property SerialNumberTempContainer() As String
+    Public Property SerialNumberTempContainer As String
         Get
             Return _serialNumberTempContainer
         End Get
-        Set(Value As String)
+        Set
             _serialNumberTempContainer = Value
         End Set
     End Property
 
     <ValueMandatoryConditionally(""), ValidPickUpDate("")> _
-    Public Property PickUpDate() As DateType
+    Public Property PickUpDate As DateType
         Get
             Return _pickupdate
         End Get
-        Set(Value As DateType)
+        Set
             _pickupdate = Value
         End Set
     End Property
 
-    Public Property PayeeAddress() As Address
+    Public Property PayeeAddress As Address
         Get
             Return _payeeAddress
         End Get
-        Set(Value As Address)
+        Set
             _payeeAddress = Value
         End Set
     End Property
 
-    Public Property PayeeBankInfo() As BankInfo
+    Public Property PayeeBankInfo As BankInfo
         Get
             Return _payeeBankInfo
         End Get
-        Set(Value As BankInfo)
+        Set
             _payeeBankInfo = Value
         End Set
     End Property
 
-    Public ReadOnly Property IsInsuranceCompany() As Boolean
+    Public ReadOnly Property IsInsuranceCompany As Boolean
         Get
             Dim objCompany As New Company(Invoiceable.CompanyId)
             If LookupListNew.GetCodeFromId(LookupListNew.LK_COMPANY_TYPE, objCompany.CompanyTypeId) = objCompany.COMPANY_TYPE_INSURANCE Then
@@ -2522,50 +2522,50 @@ Public Class ClaimInvoice
         End Get
     End Property
 
-    Public Property PayeeOptionCode() As String
+    Public Property PayeeOptionCode As String
         Get
             Return _payeeOptionCode
         End Get
-        Set(Value As String)
+        Set
             _payeeOptionCode = Value
         End Set
     End Property
 
-    Public Property PaymentMethodCode() As String
+    Public Property PaymentMethodCode As String
         Get
             Return _paymentMethodCode
         End Get
-        Set(Value As String)
+        Set
             _paymentMethodCode = Value
         End Set
     End Property
 
     <RequiredConditionally("")> _
-    Public Property PaymentMethodID() As Guid
+    Public Property PaymentMethodID As Guid
         Get
             Return _paymentMethodID
         End Get
-        Set(Value As Guid)
+        Set
             _paymentMethodID = Value
         End Set
     End Property
 
     <ValidStringLength("", Max:=5), ValueMandatoryConditionallyOnPayee("")> _
-    Public Property DocumentType() As String
+    Public Property DocumentType As String
         Get
             Return _documentType
         End Get
-        Set(Value As String)
+        Set
             _documentType = Value
         End Set
     End Property
 
     <ValidStringLength("", Max:=15), ValidTaxNumber("")> _
-    Public Property TaxId() As String
+    Public Property TaxId As String
         Get
             Return _taxId
         End Get
-        Set(Value As String)
+        Set
             _taxId = Value
         End Set
     End Property

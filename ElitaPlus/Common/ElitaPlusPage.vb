@@ -564,7 +564,7 @@ Public Class ElitaPlusPage
                 ' is not marked
                 Try
 
-                    If ((Not bWriteMarked) And ((oControl.ID Is Nothing) OrElse (Not oControl.ID.ToUpper.EndsWith(CONTROL_WRITE_MARK)))) Then
+                    If ((Not bWriteMarked) AndAlso ((oControl.ID Is Nothing) OrElse (Not oControl.ID.ToUpper.EndsWith(CONTROL_WRITE_MARK)))) Then
                         bCurrentWriteMarked = False
                     End If
                 Catch ex As Exception
@@ -614,10 +614,10 @@ Public Class ElitaPlusPage
                     Case "I"
                         oUserControl.Visible = False
                     Case "V"
-                        oUserControl.Visible = (oUserControl.Visible And True)
+                        oUserControl.Visible = (oUserControl.Visible AndAlso True)
                         EnableDisableControlGroup(oUserControl, False)
                     Case "E"
-                        oUserControl.Visible = (oUserControl.Visible And True)
+                        oUserControl.Visible = (oUserControl.Visible AndAlso True)
                         EnableDisableControlGroup(oUserControl, True)
                 End Select
             End If
@@ -702,7 +702,7 @@ Public Class ElitaPlusPage
             oWebcontrol = CType(oCurrentControl, WebControl)
 
             If Not oWebcontrol.GetType.ToString.Equals("System.Web.UI.WebControls.Label") AndAlso Not oWebcontrol.GetType.ToString.Equals("System.Web.UI.WebControls.Panel") Then
-                If (oWebcontrol.ID.ToUpper.EndsWith(CONTROL_WRITE_MARK) Or (bWriteMarked)) Then
+                If (oWebcontrol.ID.ToUpper.EndsWith(CONTROL_WRITE_MARK) OrElse (bWriteMarked)) Then
                     oWebcontrol.Enabled = False
                 End If
             End If
@@ -766,9 +766,7 @@ Public Class ElitaPlusPage
             ApplyAllowNavigation()
         End If
         'This is to avoid looping
-        If (([GetType].Name.ToLower = GetType(LoginForm).Name.ToLower & "_aspx") Or
-            ([GetType].Name.ToLower = GetType(ErrorForm).Name.ToLower & "_aspx") Or
-            ([GetType].Name.ToLower = "default".ToLower & "_aspx")) Then
+        If (([GetType].Name.ToLower = GetType(LoginForm).Name.ToLower & "_aspx") OrElse ([GetType].Name.ToLower = GetType(ErrorForm).Name.ToLower & "_aspx") OrElse ([GetType].Name.ToLower = "default".ToLower & "_aspx")) Then
             Return 'Nothin to do
         End If
 
@@ -2143,7 +2141,7 @@ Public Class ElitaPlusPage
                 piPropertyInfo.SetValue(bo, value, Nothing)
             ElseIf (isStringValue = True) Then
                 Dim value As String = GetSelectedValue(comboBox)
-                If Not (String.IsNullOrWhiteSpace(piPropertyInfo.GetValue(bo)) And String.IsNullOrWhiteSpace(value)) Then
+                If Not (String.IsNullOrWhiteSpace(piPropertyInfo.GetValue(bo)) AndAlso String.IsNullOrWhiteSpace(value)) Then
                     piPropertyInfo.SetValue(bo, value, Nothing)
                 End If
             Else
@@ -2280,11 +2278,11 @@ Public Class ElitaPlusPage
         Dim oColumn As DataGridColumn
         Dim sUniqueId As String
         Try
-            If TypeOf oControl Is Label Or TypeOf oControl Is TableCell _
-               Or TypeOf oControl Is TextBox Or TypeOf oControl Is CheckBox Then
+            If TypeOf oControl Is Label OrElse TypeOf oControl Is TableCell _
+               OrElse TypeOf oControl Is TextBox OrElse TypeOf oControl Is CheckBox Then
                 sPropertyValue = GetValueFromPropertyName(bo, propertyName)
                 PopulateControlFromBOProperty(oControl, sPropertyValue, format)
-            ElseIf TypeOf oControl Is DropDownList Or TypeOf oControl Is ListBox Then
+            ElseIf TypeOf oControl Is DropDownList OrElse TypeOf oControl Is ListBox Then
                 oPropertyValue = GetGuidValueFromPropertyName(bo, propertyName)
                 PopulateControlFromBOProperty(oControl, oPropertyValue, format)
             Else
@@ -2453,7 +2451,7 @@ Public Class ElitaPlusPage
             formattedValue = propertyValue.ToString.ToString(LocalizationMgr.CurrentFormatProvider)
             If (propertyValue.GetType Is GetType(DateType)) Then
                 formattedValue = GetDateFormattedString(CType(propertyValue, DateType).Value)
-            ElseIf (propertyValue.GetType Is GetType(DateTimeType) And format IsNot Nothing) Then
+            ElseIf (propertyValue.GetType Is GetType(DateTimeType) AndAlso format IsNot Nothing) Then
                 formattedValue = GetLongDateFormattedStringWithFormat(CType(propertyValue, DateTimeType).Value, format)
             ElseIf (propertyValue.GetType Is GetType(DateTimeType)) Then
                 formattedValue = GetLongDateFormattedString(CType(propertyValue, DateTimeType).Value)
@@ -2514,7 +2512,7 @@ Public Class ElitaPlusPage
             ElseIf TypeOf oControl Is CheckBox Then
                 oCheckBox = CType(oControl, CheckBox)
                 oCheckBox.Checked = GetFromattedCheckBox(propertyValue, format)
-            ElseIf TypeOf oControl Is DropDownList Or TypeOf oControl Is ListBox Then
+            ElseIf TypeOf oControl Is DropDownList OrElse TypeOf oControl Is ListBox Then
                 SetSelectedItem(CType(oControl, ListControl), CType(propertyValue, Guid))
             ElseIf (TypeOf oControl Is LinkButton) Then
                 oLinkButton = CType(oControl, LinkButton)
@@ -3409,7 +3407,7 @@ Public Class ElitaPlusPage
             Select Case sTemp
                 Case "System.Web.UI.WebControls.WebControl"
 
-                    If controlCurrent.GetType.ToString = "System.Web.UI.WebControls.Image" Or controlCurrent.GetType.ToString = "System.Web.UI.WebControls.Label" Or controlCurrent.GetType.ToString = "System.Web.UI.WebControls.Button" Then
+                    If controlCurrent.GetType.ToString = "System.Web.UI.WebControls.Image" OrElse controlCurrent.GetType.ToString = "System.Web.UI.WebControls.Label" OrElse controlCurrent.GetType.ToString = "System.Web.UI.WebControls.Button" Then
                         ' do nothing
                     ElseIf controlCurrent.GetType.ToString = "System.Web.UI.WebControls.TextBox" Then
                         Dim txtBox As TextBox = CType(controlCurrent, System.Web.UI.WebControls.TextBox)
@@ -3437,9 +3435,7 @@ Public Class ElitaPlusPage
         Select Case sTemp
             Case "System.Web.UI.WebControls.WebControl"
 
-                If oParentControl.GetType.ToString = "System.Web.UI.WebControls.Image" Or
-                   oParentControl.GetType.ToString = "System.Web.UI.WebControls.Label" Or
-                   oParentControl.GetType.ToString = "System.Web.UI.WebControls.Button" Then
+                If oParentControl.GetType.ToString = "System.Web.UI.WebControls.Image" OrElse oParentControl.GetType.ToString = "System.Web.UI.WebControls.Label" OrElse oParentControl.GetType.ToString = "System.Web.UI.WebControls.Button" Then
                     ' do nothing
                 ElseIf oParentControl.GetType.ToString = "System.Web.UI.WebControls.TextBox" Then
                     Dim txtBox As TextBox = CType(oParentControl, System.Web.UI.WebControls.TextBox)

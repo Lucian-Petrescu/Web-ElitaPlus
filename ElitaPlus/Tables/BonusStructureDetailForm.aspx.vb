@@ -630,7 +630,7 @@ Namespace Tables
 
         Private Function customvalidate() As Boolean
 
-            If DealerDropControl.SelectedGuid.Equals(Guid.Empty) And ServiceCenterDropControl.SelectedGuid.Equals(Guid.Empty) Then
+            If DealerDropControl.SelectedGuid.Equals(Guid.Empty) AndAlso ServiceCenterDropControl.SelectedGuid.Equals(Guid.Empty) Then
                 Throw New GUIException(Message.MSG_ENTER_A_SERVICE_CENTER_OR_DEALER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_SERVICE_CENTER_OR_DEALER_MUST_BE_SELECTED_ERR)
             End If
 

@@ -424,7 +424,7 @@ Public Class ClaimWizardForm
                             RegisterStartupScript("Startup", x)
                             Exit Sub
                         End If
-                        If ((State.CertBO.getMasterclaimProcFlag = Codes.MasterClmProc_ANYMC Or State.CertBO.getMasterclaimProcFlag = Codes.MasterClmProc_BYDOL) AndAlso
+                        If ((State.CertBO.getMasterclaimProcFlag = Codes.MasterClmProc_ANYMC OrElse State.CertBO.getMasterclaimProcFlag = Codes.MasterClmProc_BYDOL) AndAlso
                             State.CertItemCoverageBO.GetAllClaims(State.CertItemCoverageBO.Id).Count > 0) Then
                             PopulateMasterClaimGrid()
                             Dim x As String = "<script language='JavaScript'> revealModal('ModalMasterClaim'); </script>"
@@ -456,7 +456,7 @@ Public Class ClaimWizardForm
                         'Me.State.ClaimBO.AddClaimAuthorization(Me.State.SelectedServiceCenterId)
 
                         State.DoesActiveTradeInExistForIMEI = DoesAcceptedOfferExistForIMEI()
-                        If State.ClaimBO.IsNew And State.DoesActiveTradeInExistForIMEI Then
+                        If State.ClaimBO.IsNew AndAlso State.DoesActiveTradeInExistForIMEI Then
                             State.ClaimBO.StatusCode = Codes.CLAIM_STATUS__DENIED
                             State.CommentBO.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED)
                         End If
@@ -479,7 +479,7 @@ Public Class ClaimWizardForm
                                 State.DoesActiveTradeInExistForIMEI = DoesAcceptedOfferExistForIMEI()
                             End If
                         End If
-                        If State.ClaimBO.IsNew And State.DoesActiveTradeInExistForIMEI Then
+                        If State.ClaimBO.IsNew AndAlso State.DoesActiveTradeInExistForIMEI Then
                             State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__ACTIVE_TRADEIN_QUOTE_EXISTS)
                             State.ClaimBO.DenyClaim()
                         End If
@@ -511,7 +511,7 @@ Public Class ClaimWizardForm
                                     End If
                                 End If
 
-                                If preCheckError IsNot Nothing And preCheckError.Length = 0 Then
+                                If preCheckError IsNot Nothing AndAlso preCheckError.Length = 0 Then
                                     If hasBenefit IsNot Nothing AndAlso hasBenefit.Length > 0 Then
                                         If hasBenefit(0)("field_value") IsNot Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper() Then
                                             RunPreCheck(hasBenefit)
@@ -603,7 +603,7 @@ Public Class ClaimWizardForm
         Dim caseFieldValues() As String
 
         If lossType IsNot Nothing AndAlso lossType.Length > 0 Then
-            If lossType(0)("field_value") IsNot Nothing AndAlso (lossType(0)("field_value").ToString().ToUpper() = "ADH1234" Or lossType(0)("field_value").ToString().ToUpper() = "ADH5") Then
+            If lossType(0)("field_value") IsNot Nothing AndAlso (lossType(0)("field_value").ToString().ToUpper() = "ADH1234" OrElse lossType(0)("field_value").ToString().ToUpper() = "ADH5") Then
                 caseFieldXcds = {"CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING"}
                 caseFieldValues = {Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper()}
             ElseIf lossType(0)("field_value") IsNot Nothing AndAlso lossType(0)("field_value").ToString().ToUpper() = "THEFT/LOSS" Then
@@ -839,7 +839,7 @@ Public Class ClaimWizardForm
                 Case ClaimWizardSteps.Step2
                     If (ValidateInputs(State.StepName)) Then
                         If State.CertItemBO.IsFamilyDirty OrElse State.CertItemCoverageBO.IsFamilyDirty _
-                           OrElse (State.step2_claimEquipmentBO IsNot Nothing And State.step2_claimEquipmentBO.IsDirty) Then
+                           OrElse (State.step2_claimEquipmentBO IsNot Nothing AndAlso State.step2_claimEquipmentBO.IsDirty) Then
                             If (State.CertItemBO.IsFamilyDirty OrElse State.CertItemCoverageBO.IsFamilyDirty) Then
                                 If (State.CertItemCoverageBO.IsFamilyDirty) Then
                                     State.CertItemCoverageBO.Save()
@@ -925,10 +925,7 @@ Public Class ClaimWizardForm
         Catch ex As Threading.ThreadAbortException
         Catch ex As Assurant.ElitaPlus.BusinessObjectsNew.BOValidationException
             'Allow bypassing LossDate validation denying an expired item claim
-            If ex.ValidationErrorList.Count = 1 And
-               ex.ValidationErrorList(0).PropertyName = "LossDate" And
-               (State.ClaimBO.LossDate.Value > State.ClaimBO.CertificateItemCoverage.EndDate.Value Or
-                State.ClaimBO.LossDate.Value < State.ClaimBO.CertificateItemCoverage.BeginDate.Value) Then
+            If ex.ValidationErrorList.Count = 1 AndAlso ex.ValidationErrorList(0).PropertyName = "LossDate" AndAlso (State.ClaimBO.LossDate.Value > State.ClaimBO.CertificateItemCoverage.EndDate.Value OrElse State.ClaimBO.LossDate.Value < State.ClaimBO.CertificateItemCoverage.BeginDate.Value) Then
                 Dim bypassMdl As String = "<script language='JavaScript'> revealModal('ModalBypassDoL') </script>"
                 RegisterStartupScript("BpQtn", bypassMdl)
             Else
@@ -1320,7 +1317,7 @@ Public Class ClaimWizardForm
                 Dim NoId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
                 If (Not State.CertItemCoverageBO.IsClaimAllowed.Equals(NoId)) Then
                     Dim todayDate As Date
-                    If todayDate.Today < State.CertItemCoverageBO.BeginDate.Value And State.CertBO.StatusCode <> CLOSED Then
+                    If todayDate.Today < State.CertItemCoverageBO.BeginDate.Value AndAlso State.CertBO.StatusCode <> CLOSED Then
                         ControlMgr.SetEnableControl(Me, btnDenyClaim, True)
 
                     End If
@@ -2365,8 +2362,7 @@ State.step2_claimEquipmentBO IsNot Nothing Then
                     MasterPage.MessageController.AddWarning(denialMessage)
                 End If
 
-                If (State.ClaimBO.IsClaimReportedWithinGracePeriod(State.ClaimBO.CertificateId, State.ClaimBO.CertItemCoverageId, State.ClaimBO.LossDate.Value, State.ClaimBO.ReportedDate.Value)) And
-                   (State.ClaimBO.IsClaimReportedWithValidCoverage(State.ClaimBO.CertificateId, State.ClaimBO.CertItemCoverageId, State.ClaimBO.LossDate.Value, State.ClaimBO.ReportedDate.Value)) Then
+                If (State.ClaimBO.IsClaimReportedWithinGracePeriod(State.ClaimBO.CertificateId, State.ClaimBO.CertItemCoverageId, State.ClaimBO.LossDate.Value, State.ClaimBO.ReportedDate.Value)) AndAlso (State.ClaimBO.IsClaimReportedWithValidCoverage(State.ClaimBO.CertificateId, State.ClaimBO.CertItemCoverageId, State.ClaimBO.LossDate.Value, State.ClaimBO.ReportedDate.Value)) Then
                     If State.ClaimBO.IsMaxReplacementExceeded(State.ClaimBO.CertificateId, State.ClaimBO.LossDate.Value) Then
                         Dim denialMessage As String = CreateClaimDenialMessage(True, Message.MSG_CLAIM_MAX_REPLACEMENT_EXCEEDED, False)
                         MasterPage.MessageController.AddWarning(denialMessage)
@@ -2509,13 +2505,13 @@ State.step2_claimEquipmentBO IsNot Nothing Then
     Sub PopulateClaimedEnrolledDetails()
         Dim allowEnrolledDeviceUpdate As AttributeValue = State.DealerBO.AttributeValues.FirstOrDefault(Function(attributeValue) attributeValue.Attribute.UiProgCode = Codes.DLR_ATTR_ALLOW_MODIFY_CLAIMED_DEVICE)
         With State.ClaimBO
-            If .EnrolledEquipment IsNot Nothing Or .ClaimedEquipment IsNot Nothing Then
+            If .EnrolledEquipment IsNot Nothing OrElse .ClaimedEquipment IsNot Nothing Then
                 With ucClaimDeviceInfo
                     .thisPage = Me
                     .ClaimBO = CType(State.ClaimBO, ClaimBase)
                     If allowEnrolledDeviceUpdate IsNot Nothing AndAlso allowEnrolledDeviceUpdate.Value = Codes.YESNO_Y Then
                         For Each i As ClaimIssue In State.ClaimBO.ClaimIssuesList
-                            If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS And i.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Then
+                            If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS AndAlso i.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Then
                                 .ShowDeviceEditImg = True
                                 Exit For
                             Else
@@ -2606,7 +2602,7 @@ State.step2_claimEquipmentBO IsNot Nothing Then
             oDeductible = CertItemCoverage.GetDeductible(State.ClaimBO.CertItemCoverageId, State.ClaimBO.MethodOfRepairId)
             State.DEDUCTIBLE_BASED_ON = oDeductible.DeductibleBasedOn
             'req 1157 added additional condition
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, State.DealerBO.NewDeviceSkuRequiredId) = Codes.YESNO_Y Or (State.DEDUCTIBLE_BASED_ON = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE) Then
+            If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, State.DealerBO.NewDeviceSkuRequiredId) = Codes.YESNO_Y OrElse (State.DEDUCTIBLE_BASED_ON = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE) Then
                 ControlMgr.SetVisibleControl(Me, step3_lblNewDeviceSKU, True)
                 ControlMgr.SetVisibleControl(Me, step3_txtNewDeviceSKU, True)
             End If
@@ -2690,7 +2686,7 @@ State.step2_claimEquipmentBO IsNot Nothing Then
                                                             TranslationBase.TranslateLabelOrMessage("Authorization_Limit_Exceeded"), False))
         End If
 
-        If State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__PICK_UP Or State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT Then
+        If State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__PICK_UP OrElse State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT Then
             ControlMgr.SetVisibleControl(Me, step3_LabelUseShipAddress, True)
             ControlMgr.SetVisibleControl(Me, step3_cboUseShipAddress, True)
         End If
@@ -2920,9 +2916,7 @@ State.step2_claimEquipmentBO IsNot Nothing Then
             DealerType = LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, State.DealerBO.DealerTypeId)  '= Codes.DEALER_TYPES__VSC
 
 
-            If State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Or
-               State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__GENERAL Or
-               State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__LEGAL Then
+            If State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY OrElse State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__GENERAL OrElse State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__LEGAL Then
                 FlagMethodOfRepairRecovery = True
             End If
 
@@ -3251,7 +3245,7 @@ State.step2_claimEquipmentBO IsNot Nothing Then
         Dim flag As Boolean = True
         flag = State.CertItemCoverageBO.IsCoverageValidToOpenClaim(errMsg, warningMsg, step1_txtDateReported.Text)
         If (GetSelectedItem(step2_cboCalimAllowed).Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N))) Then
-            flag = flag And False
+            flag = flag AndAlso False
         End If
         Return flag
     End Function
@@ -3292,8 +3286,7 @@ State.step2_claimEquipmentBO IsNot Nothing Then
     Private Function ValidateInputForStep1BtnSearch() As Boolean
         Dim errMsg As List(Of String) = New List(Of String)
         Dim flag As Boolean = True
-        If (IsValidDate(step1_moDateOfLossText, step1_lblDateOfLoss, errMsg) And
-            IsValidDate(step1_txtDateReported, step1_lblDateReported, errMsg)) Then
+        If (IsValidDate(step1_moDateOfLossText, step1_lblDateOfLoss, errMsg) AndAlso IsValidDate(step1_txtDateReported, step1_lblDateReported, errMsg)) Then
             If (IsDateGreaterThan(DateHelper.GetDateValue(step1_moDateOfLossText.Text), DateHelper.GetDateValue(step1_txtDateReported.Text))) Then
                 AddError(step1_lblDateOfLoss, TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.INVALID_DATE_OF_INCIDENT_ERR), errMsg)
                 flag = False
@@ -3316,10 +3309,7 @@ State.step2_claimEquipmentBO IsNot Nothing Then
         Select Case wizardStep
             Case ClaimWizardSteps.Step1
                 flag = ValidateInputForStep1BtnSearch()
-                If (flag And IsDropDownSelected(step1_cboRiskType, step1_riskTypeLabel, errMsg) And
-                    IsDropDownSelected(step1_cboCoverageType, step1_coverageTypeLabel, errMsg) And
-                    IsTextBoxFilled(step1_textCallerName, step1_callerNameLabel, errMsg) And
-                    IsTextBoxFilled(step1_textProblemDescription, step1_problemDescriptionLabel, errMsg)) Then
+                If (flag AndAlso IsDropDownSelected(step1_cboRiskType, step1_riskTypeLabel, errMsg) AndAlso IsDropDownSelected(step1_cboCoverageType, step1_coverageTypeLabel, errMsg) AndAlso IsTextBoxFilled(step1_textCallerName, step1_callerNameLabel, errMsg) AndAlso IsTextBoxFilled(step1_textProblemDescription, step1_problemDescriptionLabel, errMsg)) Then
                     flag = True
                 Else
                     flag = False
@@ -3332,7 +3322,7 @@ State.step2_claimEquipmentBO IsNot Nothing Then
                         Dim msgList As New List(Of String)
                         If Not State.step2_claimEquipmentBO.ValidateForClaimProcess(msgList) Then
                             MasterPage.MessageController.AddError(msgList.ToArray, True)
-                            flag = flag And False
+                            flag = flag AndAlso False
                         End If
                     End If
                 End If
@@ -3345,21 +3335,21 @@ State.step2_claimEquipmentBO IsNot Nothing Then
                     Dim msgList As New List(Of String)
                     If Not State.ClaimBO.ClaimedEquipment.ValidateForClaimProcess(msgList) Then
                         MasterPage.MessageController.AddError(msgList.ToArray, True)
-                        flag = flag And False
+                        flag = flag AndAlso False
                     End If
 
                     'check for Enrolled equipment
                     If State.ClaimBO.EnrolledEquipment IsNot Nothing Then
                         If Not State.ClaimBO.EnrolledEquipment.ValidateForClaimProcess(msgList) Then
                             MasterPage.MessageController.AddError(msgList.ToArray, True)
-                            flag = flag And False
+                            flag = flag AndAlso False
                         End If
                     End If
                 End If
                 flag = ValidateClaim(errMsg)
             Case ClaimWizardSteps.Step4
                 If (hdnSelectedServiceCenterId.Value = "XXXX") Then
-                    flag = flag And False
+                    flag = flag AndAlso False
                     errMsg.Add("SELECT SERVICE CENTER")
                 End If
             Case ClaimWizardSteps.Step5
@@ -3411,11 +3401,10 @@ State.step2_claimEquipmentBO IsNot Nothing Then
 
         If CoverageType <> Codes.COVERAGE_TYPE__MANUFACTURER Then
             If Not State.CertBO.MethodOfRepairId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)) _
-               And ClaimControl Then
+               AndAlso ClaimControl Then
                 warningMsg.Add(Message.MSG_DEALER_USER_CLAIM_INTERFACES)
             End If
-            If Not isDaysLimitExceeded And
-               Not ClaimControl Then
+            If Not isDaysLimitExceeded AndAlso Not ClaimControl Then
                 warningMsg.Add(Message.MSG_POTENTIAL_SERVICE_WARRANTY)
             End If
         End If
@@ -3426,7 +3415,7 @@ State.step2_claimEquipmentBO IsNot Nothing Then
         Dim flag As Boolean = True
         If State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Then
             If State.ClaimBO.PolicyNumber Is Nothing Then
-                flag = flag And False
+                flag = flag AndAlso False
                 errMsg.Add(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_POLICYNUMBER_REQD)
             End If
         End If
@@ -3609,8 +3598,7 @@ State.step2_claimEquipmentBO IsNot Nothing Then
                 End If
                 ' Convert short status codes to full description with css
                 e.Row.Cells(GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(CLAIM_ISSUE_LIST, dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString)
-                If (dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED Or
-                dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__WAIVED) Then
+                If (dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED OrElse dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__WAIVED) Then
                     e.Row.Cells(GRID_COL_STATUS_CODE_IDX).CssClass = "StatActive"
                 Else
                     e.Row.Cells(GRID_COL_STATUS_CODE_IDX).CssClass = "StatInactive"
@@ -3845,7 +3833,7 @@ State.step2_claimEquipmentBO IsNot Nothing Then
 
         Catch ex As Exception
             Dim GetExceptionType As String = ex.GetBaseException.GetType().Name
-            If ((Not GetExceptionType.Equals(String.Empty)) And GetExceptionType.Equals("BOValidationException")) Then
+            If ((Not GetExceptionType.Equals(String.Empty)) AndAlso GetExceptionType.Equals("BOValidationException")) Then
                 ControlMgr.SetVisibleControl(Me, CaseQuestionAnswerGrid, False)
                 lblQuestionRecordFound.Visible = False
             End If
@@ -3969,7 +3957,7 @@ State.step2_claimEquipmentBO IsNot Nothing Then
             End If
             If wsResponseObject.GetType() Is GetType(Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse) Then
                 Dim wsResponseList As Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse = DirectCast(wsResponseObject, Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse)
-                If IsNothing(wsResponseList.FulfillmentNumber) Or IsNothing(wsResponseList.CompanyCode) Then
+                If IsNothing(wsResponseList.FulfillmentNumber) OrElse IsNothing(wsResponseList.CompanyCode) Then
                     MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, False)
                     blnSuccess = False
                 End If

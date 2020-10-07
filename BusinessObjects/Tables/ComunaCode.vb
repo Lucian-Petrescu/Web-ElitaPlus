@@ -132,7 +132,7 @@ Public Class ComunaCode
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ComunaCodeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -143,7 +143,7 @@ Public Class ComunaCode
     End Property
 
     <ValueMandatory("")> _
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If row(ComunaCodeDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -152,7 +152,7 @@ Public Class ComunaCode
                 Return New Guid(CType(row(ComunaCodeDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ComunaCodeDAL.COL_NAME_REGION_ID, Value)
         End Set
@@ -160,7 +160,7 @@ Public Class ComunaCode
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Comuna() As String
+    Public Property Comuna As String
         Get
             CheckDeleted()
             If row(ComunaCodeDAL.COL_NAME_COMUNA) Is DBNull.Value Then
@@ -169,7 +169,7 @@ Public Class ComunaCode
                 Return CType(row(ComunaCodeDAL.COL_NAME_COMUNA), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ComunaCodeDAL.COL_NAME_COMUNA, Value)
         End Set
@@ -177,7 +177,7 @@ Public Class ComunaCode
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property Postalcode() As String
+    Public Property Postalcode As String
         Get
             CheckDeleted()
             If row(ComunaCodeDAL.COL_NAME_POSTALCODE) Is DBNull.Value Then
@@ -186,7 +186,7 @@ Public Class ComunaCode
                 Return CType(row(ComunaCodeDAL.COL_NAME_POSTALCODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ComunaCodeDAL.COL_NAME_POSTALCODE, Value)
         End Set

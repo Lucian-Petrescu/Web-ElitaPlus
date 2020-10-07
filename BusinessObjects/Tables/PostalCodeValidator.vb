@@ -10,64 +10,64 @@ Public Structure PostalCodeFormatResult
     Private _comuna As String
 
 
-    Public Property LocatorStart() As Integer
+    Public Property LocatorStart As Integer
         Get
             Return _locStart
         End Get
-        Set(ByVal Value As Integer)
+        Set
             _locStart = Value
         End Set
     End Property
 
-    Public Property LocatorLength() As Integer
+    Public Property LocatorLength As Integer
         Get
             Return _locLength
         End Get
-        Set(ByVal Value As Integer)
+        Set
             _locLength = Value
         End Set
     End Property
-    Public Property ComunaEnabled() As String
+    Public Property ComunaEnabled As String
         Get
             Return _comuna
         End Get
-        Set(ByVal Value As String)
+        Set
             _comuna = Value
         End Set
     End Property
 
-    Public Property PostalCode() As String
+    Public Property PostalCode As String
         Get
             Return _pCode
         End Get
-        Set(ByVal Value As String)
+        Set
             _pCode = Value
         End Set
     End Property
 
-    Public Property ReformattedPostalCode() As String
+    Public Property ReformattedPostalCode As String
         Get
             Return _reformattedPCode
         End Get
-        Set(ByVal Value As String)
+        Set
             _reformattedPCode = Value
         End Set
     End Property
 
-    Public Property IsValid() As Boolean
+    Public Property IsValid As Boolean
         Get
             Return _valid
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _valid = Value
         End Set
     End Property
 
-    Public Property ErrorMessage() As String
+    Public Property ErrorMessage As String
         Get
             Return _errMsg
         End Get
-        Set(ByVal Value As String)
+        Set
             _errMsg = Value
         End Set
     End Property
@@ -90,19 +90,19 @@ Public Class PostalCodeValidator
 
 #Region "Properties"
 
-    Public ReadOnly Property CountryID() As Guid
+    Public ReadOnly Property CountryID As Guid
         Get
             Return couID
         End Get
     End Property
 
-    Public ReadOnly Property PostalCode() As String
+    Public ReadOnly Property PostalCode As String
         Get
             Return postCode
         End Get
     End Property
 
-    Public ReadOnly Property ReformatInput() As Boolean
+    Public ReadOnly Property ReformatInput As Boolean
         Get
             Return reformatInp
         End Get

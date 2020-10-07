@@ -88,7 +88,7 @@ Public Class CommPlanDistribution
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CommPlanDistributionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -99,7 +99,7 @@ Public Class CommPlanDistribution
     End Property
 
     <ValueMandatory("")>
-    Public Property CommissionPlanId() As Guid
+    Public Property CommissionPlanId As Guid
         Get
             CheckDeleted()
             If Row(CommPlanDistributionDAL.COL_NAME_COMM_PLAN_ID) Is DBNull.Value Then
@@ -108,13 +108,13 @@ Public Class CommPlanDistribution
                 Return New Guid(CType(Row(CommPlanDistributionDAL.COL_NAME_COMM_PLAN_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommPlanDistributionDAL.COL_NAME_COMM_PLAN_ID, Value)
         End Set
     End Property
     
-    Public Property EntityId() As Guid
+    Public Property EntityId As Guid
         Get
             CheckDeleted()
             If Row(CommPlanDistributionDAL.COL_NAME_ENTITY_ID) Is DBNull.Value Then
@@ -123,14 +123,14 @@ Public Class CommPlanDistribution
                 Return New Guid(CType(Row(CommPlanDistributionDAL.COL_NAME_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommPlanDistributionDAL.COL_NAME_ENTITY_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0)>
-    Public Property CommissionAmount() As DecimalType
+    Public Property CommissionAmount As DecimalType
         Get
             CheckDeleted()
             If Row(CommPlanDistributionDAL.COL_NAME_COMM_AMOUNT) Is DBNull.Value Then
@@ -139,14 +139,14 @@ Public Class CommPlanDistribution
                 Return New DecimalType(CType(Row(CommPlanDistributionDAL.COL_NAME_COMM_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommPlanDistributionDAL.COL_NAME_COMM_AMOUNT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0)>
-    Public Property CommissionPercent() As DecimalType
+    Public Property CommissionPercent As DecimalType
         Get
             CheckDeleted()
             If Row(CommPlanDistributionDAL.COL_NAME_COMMISSION_PERCENT) Is DBNull.Value Then
@@ -155,14 +155,14 @@ Public Class CommPlanDistribution
                 Return New DecimalType(CType(Row(CommPlanDistributionDAL.COL_NAME_COMMISSION_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommPlanDistributionDAL.COL_NAME_COMMISSION_PERCENT, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=1)>
-    Public Property Position() As LongType
+    Public Property Position As LongType
         Get
             CheckDeleted()
             If Row(CommPlanDistributionDAL.COL_NAME_POSITION) Is DBNull.Value Then
@@ -171,7 +171,7 @@ Public Class CommPlanDistribution
                 Return New LongType(CType(Row(CommPlanDistributionDAL.COL_NAME_POSITION), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CommPlanDistributionDAL.COL_NAME_POSITION, Value)
         End Set
@@ -180,11 +180,11 @@ Public Class CommPlanDistribution
     Dim _MarkupTotal As DecimalType
     '<ValidNumericRange("", Max:=100, Min:=100), ValidMarkup("")>
     '<ValidMarkup("")>
-    Public Property MarkupTotal() As DecimalType
+    Public Property MarkupTotal As DecimalType
         Get
             Return _MarkupTotal
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             _MarkupTotal = Value
         End Set
     End Property
@@ -192,17 +192,17 @@ Public Class CommPlanDistribution
     Dim _commTotal As DecimalType
     '<ValidNumericRange("", Max:=100, Min:=100), ValidComm("")>
     '<ValidComm("")>
-    Public Property CommTotal() As DecimalType
+    Public Property CommTotal As DecimalType
         Get
             Return _commTotal
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             _commTotal = Value
         End Set
     End Property
     
     <ValidStringLength("", Max:=35, Message:="CommissionsPercentSourceXcd should be between 1 to 35 chars.")>
-    Public Property CommissionsPercentSourceXcd() As String
+    Public Property CommissionsPercentSourceXcd As String
         Get
             CheckDeleted()
             If Row(CommPlanDistributionDAL.COL_NAME_COMMISSION_SOURCE_XCD) Is DBNull.Value Then
@@ -211,14 +211,14 @@ Public Class CommPlanDistribution
                 Return CType(Row(CommPlanDistributionDAL.COL_NAME_COMMISSION_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommPlanDistributionDAL.COL_NAME_COMMISSION_SOURCE_XCD, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=35, Message:="PayeeTypeXcd should be between 1 to 35 chars.")>
-    Public Property PayeeTypeXcd() As String
+    Public Property PayeeTypeXcd As String
         Get
             CheckDeleted()
             If Row(CommPlanDistributionDAL.COL_NAME_PAYEE_TYPE_XCD) Is DBNull.Value Then
@@ -227,14 +227,14 @@ Public Class CommPlanDistribution
                 Return CType(Row(CommPlanDistributionDAL.COL_NAME_PAYEE_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommPlanDistributionDAL.COL_NAME_PAYEE_TYPE_XCD, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=35, Message:="Account Entity Source Xcd should be between 1 to 35 chars.")>
-    Public Property ActEntitySourceXcd() As String
+    Public Property ActEntitySourceXcd As String
         Get
             CheckDeleted()
             If Row(CommPlanDistributionDAL.COL_NAME_ACT_ENT_SOURCE_XCD) Is DBNull.Value Then
@@ -243,7 +243,7 @@ Public Class CommPlanDistribution
                 Return CType(Row(CommPlanDistributionDAL.COL_NAME_ACT_ENT_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommPlanDistributionDAL.COL_NAME_ACT_ENT_SOURCE_XCD, Value)
         End Set

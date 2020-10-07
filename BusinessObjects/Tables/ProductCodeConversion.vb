@@ -90,7 +90,7 @@ Public Class ProductCodeConversion
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ProductCodeConversionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ProductCodeConversion
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ProductCodeConversion
                 Return New Guid(CType(Row(ProductCodeConversionDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeConversionDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ProductCodeConversion
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property ExternalProdCode() As String
+    Public Property ExternalProdCode As String
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_EXTERNAL_PROD_CODE) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ProductCodeConversion
                 Return CType(Row(ProductCodeConversionDAL.COL_NAME_EXTERNAL_PROD_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeConversionDAL.COL_NAME_EXTERNAL_PROD_CODE, If(Value Is Nothing, Value, Value.ToUpper()))
         End Set
@@ -135,7 +135,7 @@ Public Class ProductCodeConversion
 
 
     <ValueMandatory("")> _
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class ProductCodeConversion
                 Return New Guid(CType(Row(ProductCodeConversionDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductCodeConversionDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
@@ -159,14 +159,14 @@ Public Class ProductCodeConversion
     '    End Get
     'End Property
 
-    Public Shared ReadOnly Property TheProductConversionData() As ProductConversionData
+    Public Shared ReadOnly Property TheProductConversionData As ProductConversionData
         Get
             Return New ProductConversionData
         End Get
     End Property
 
     <ValidNumericRange("", MAX:=999)> _
-    Public Property CertificateDuration() As Short
+    Public Property CertificateDuration As Short
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_CERTIFICATE_DURATION) Is DBNull.Value Then
@@ -175,14 +175,14 @@ Public Class ProductCodeConversion
                 Return CType(Row(ProductCodeConversionDAL.COL_NAME_CERTIFICATE_DURATION), Short)
             End If
         End Get
-        Set(ByVal Value As Short)
+        Set
             CheckDeleted()
             SetValue(ProductCodeConversionDAL.COL_NAME_CERTIFICATE_DURATION, Value)
         End Set
     End Property
 
     <ValidNumericRange("", MAX:=99)> _
-    Public Property ManufacturerWarranty() As Short
+    Public Property ManufacturerWarranty As Short
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_MANUFACTURER_WARRANTY) Is DBNull.Value Then
@@ -191,14 +191,14 @@ Public Class ProductCodeConversion
                 Return CType(Row(ProductCodeConversionDAL.COL_NAME_MANUFACTURER_WARRANTY), Short)
             End If
         End Get
-        Set(ByVal Value As Short)
+        Set
             CheckDeleted()
             SetValue(ProductCodeConversionDAL.COL_NAME_MANUFACTURER_WARRANTY, Value)
         End Set
     End Property
 
     <ValidNumericRange("", MAX:=NEW_MAX_DOUBLE)> _
-   Public Property GrossAmount() As Double
+   Public Property GrossAmount As Double
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_GROSS_AMOUNT) Is DBNull.Value Then
@@ -207,14 +207,14 @@ Public Class ProductCodeConversion
                 Return CType(Row(ProductCodeConversionDAL.COL_NAME_GROSS_AMOUNT), Double)
             End If
         End Get
-        Set(ByVal Value As Double)
+        Set
             CheckDeleted()
             SetValue(ProductCodeConversionDAL.COL_NAME_GROSS_AMOUNT, Value)
         End Set
     End Property
 
     <ValidStringLength("", MAX:=255), Valid_DealerProdCodeMfgCombination(""), Valid_DealerProdCodeCombination("")> _
-    Public Property Manufacturer() As String
+    Public Property Manufacturer As String
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_MANUFACTURER) Is DBNull.Value Then
@@ -223,14 +223,14 @@ Public Class ProductCodeConversion
                 Return CType(Row(ProductCodeConversionDAL.COL_NAME_MANUFACTURER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeConversionDAL.COL_NAME_MANUFACTURER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)>
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -239,14 +239,14 @@ Public Class ProductCodeConversion
                 Return CType(Row(ProductCodeConversionDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductCodeConversionDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=NEW_MAX_DOUBLE)>
-    Public Property SalesPrice() As Double
+    Public Property SalesPrice As Double
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_SALES_PRICE) Is DBNull.Value Then
@@ -255,13 +255,13 @@ Public Class ProductCodeConversion
                 Return CType(Row(ProductCodeConversionDAL.COL_NAME_SALES_PRICE), Double)
             End If
         End Get
-        Set(ByVal Value As Double)
+        Set
             CheckDeleted()
             SetValue(ProductCodeConversionDAL.COL_NAME_SALES_PRICE, Value)
         End Set
     End Property
     <ValueMandatory(""),NonOverlappingProductCodeConversion("")> 
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -270,12 +270,12 @@ Public Class ProductCodeConversion
                 Return New DateType(CType(Row(ProductCodeConversionDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeConversionDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
-   Public Property ExpirationDate() As DateType
+   Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -284,7 +284,7 @@ Public Class ProductCodeConversion
                 Return New DateType(CType(Row(ProductCodeConversionDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ProductCodeConversionDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set

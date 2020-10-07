@@ -153,7 +153,7 @@ Public Class ComunaStandardization
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ComunaStandardizationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -164,7 +164,7 @@ Public Class ComunaStandardization
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property ComunaAlias() As String
+    Public Property ComunaAlias As String
         Get
             CheckDeleted()
             If row(ComunaStandardizationDAL.COL_NAME_COMUNA_ALIAS) Is DBNull.Value Then
@@ -173,7 +173,7 @@ Public Class ComunaStandardization
                 Return CType(row(ComunaStandardizationDAL.COL_NAME_COMUNA_ALIAS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ComunaStandardizationDAL.COL_NAME_COMUNA_ALIAS, Value)
         End Set
@@ -181,7 +181,7 @@ Public Class ComunaStandardization
 
 
     <ValueMandatory("")> _
-    Public Property ComunaCodeId() As Guid
+    Public Property ComunaCodeId As Guid
         Get
             CheckDeleted()
             If row(ComunaStandardizationDAL.COL_NAME_COMUNA_CODE_ID) Is DBNull.Value Then
@@ -190,7 +190,7 @@ Public Class ComunaStandardization
                 Return New Guid(CType(row(ComunaStandardizationDAL.COL_NAME_COMUNA_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ComunaStandardizationDAL.COL_NAME_COMUNA_CODE_ID, Value)
         End Set

@@ -94,7 +94,7 @@ Public Class ClaimTax
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimTaxDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -105,7 +105,7 @@ Public Class ClaimTax
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimInvoiceId() As Guid
+    Public Property ClaimInvoiceId As Guid
         Get
             CheckDeleted()
             If row(ClaimTaxDAL.COL_NAME_CLAIM_INVOICE_ID) Is DBNull.Value Then
@@ -114,7 +114,7 @@ Public Class ClaimTax
                 Return New Guid(CType(row(ClaimTaxDAL.COL_NAME_CLAIM_INVOICE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimTaxDAL.COL_NAME_CLAIM_INVOICE_ID, Value)
         End Set
@@ -122,7 +122,7 @@ Public Class ClaimTax
 
 
     <ValueMandatory("")> _
-    Public Property DisbursementId() As Guid
+    Public Property DisbursementId As Guid
         Get
             CheckDeleted()
             If row(ClaimTaxDAL.COL_NAME_DISBURSEMENT_ID) Is DBNull.Value Then
@@ -131,7 +131,7 @@ Public Class ClaimTax
                 Return New Guid(CType(row(ClaimTaxDAL.COL_NAME_DISBURSEMENT_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimTaxDAL.COL_NAME_DISBURSEMENT_ID, Value)
         End Set
@@ -139,7 +139,7 @@ Public Class ClaimTax
 
 
     <ValueMandatory("")> _
-    Public Property TaxTypeId() As Guid
+    Public Property TaxTypeId As Guid
         Get
             CheckDeleted()
             If row(ClaimTaxDAL.COL_NAME_TAX_TYPE_ID) Is DBNull.Value Then
@@ -148,7 +148,7 @@ Public Class ClaimTax
                 Return New Guid(CType(row(ClaimTaxDAL.COL_NAME_TAX_TYPE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimTaxDAL.COL_NAME_TAX_TYPE_ID, Value)
         End Set
@@ -156,7 +156,7 @@ Public Class ClaimTax
 
 
 
-    Public Property Tax1Amount() As DecimalType
+    Public Property Tax1Amount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimTaxDAL.COL_NAME_TAX1_AMOUNT) Is DBNull.Value Then
@@ -165,7 +165,7 @@ Public Class ClaimTax
                 Return New DecimalType(CType(Row(ClaimTaxDAL.COL_NAME_TAX1_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimTaxDAL.COL_NAME_TAX1_AMOUNT, Value)
         End Set
@@ -173,7 +173,7 @@ Public Class ClaimTax
 
 
     <ValidStringLength("", Max:=120)> _
-    Public Property Tax1Description() As String
+    Public Property Tax1Description As String
         Get
             CheckDeleted()
             If row(ClaimTaxDAL.COL_NAME_TAX1_DESCRIPTION) Is DBNull.Value Then
@@ -182,7 +182,7 @@ Public Class ClaimTax
                 Return CType(row(ClaimTaxDAL.COL_NAME_TAX1_DESCRIPTION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimTaxDAL.COL_NAME_TAX1_DESCRIPTION, Value)
         End Set
@@ -190,7 +190,7 @@ Public Class ClaimTax
 
 
 
-    Public Property Tax2Amount() As DecimalType
+    Public Property Tax2Amount As DecimalType
         Get
             CheckDeleted()
             If row(ClaimTaxDAL.COL_NAME_TAX2_AMOUNT) Is DBNull.Value Then
@@ -199,7 +199,7 @@ Public Class ClaimTax
                 Return New DecimalType(CType(row(ClaimTaxDAL.COL_NAME_TAX2_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimTaxDAL.COL_NAME_TAX2_AMOUNT, Value)
         End Set
@@ -207,7 +207,7 @@ Public Class ClaimTax
 
 
     <ValidStringLength("", Max:=120)> _
-    Public Property Tax2Description() As String
+    Public Property Tax2Description As String
         Get
             CheckDeleted()
             If row(ClaimTaxDAL.COL_NAME_TAX2_DESCRIPTION) Is DBNull.Value Then
@@ -216,7 +216,7 @@ Public Class ClaimTax
                 Return CType(row(ClaimTaxDAL.COL_NAME_TAX2_DESCRIPTION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimTaxDAL.COL_NAME_TAX2_DESCRIPTION, Value)
         End Set
@@ -224,7 +224,7 @@ Public Class ClaimTax
 
 
 
-    Public Property Tax3Amount() As DecimalType
+    Public Property Tax3Amount As DecimalType
         Get
             CheckDeleted()
             If row(ClaimTaxDAL.COL_NAME_TAX3_AMOUNT) Is DBNull.Value Then
@@ -233,7 +233,7 @@ Public Class ClaimTax
                 Return New DecimalType(CType(row(ClaimTaxDAL.COL_NAME_TAX3_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimTaxDAL.COL_NAME_TAX3_AMOUNT, Value)
         End Set
@@ -241,7 +241,7 @@ Public Class ClaimTax
 
 
     <ValidStringLength("", Max:=120)> _
-    Public Property Tax3Description() As String
+    Public Property Tax3Description As String
         Get
             CheckDeleted()
             If row(ClaimTaxDAL.COL_NAME_TAX3_DESCRIPTION) Is DBNull.Value Then
@@ -250,7 +250,7 @@ Public Class ClaimTax
                 Return CType(row(ClaimTaxDAL.COL_NAME_TAX3_DESCRIPTION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimTaxDAL.COL_NAME_TAX3_DESCRIPTION, Value)
         End Set
@@ -258,7 +258,7 @@ Public Class ClaimTax
 
 
 
-    Public Property Tax4Amount() As DecimalType
+    Public Property Tax4Amount As DecimalType
         Get
             CheckDeleted()
             If row(ClaimTaxDAL.COL_NAME_TAX4_AMOUNT) Is DBNull.Value Then
@@ -267,7 +267,7 @@ Public Class ClaimTax
                 Return New DecimalType(CType(row(ClaimTaxDAL.COL_NAME_TAX4_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimTaxDAL.COL_NAME_TAX4_AMOUNT, Value)
         End Set
@@ -275,7 +275,7 @@ Public Class ClaimTax
 
 
     <ValidStringLength("", Max:=120)> _
-    Public Property Tax4Description() As String
+    Public Property Tax4Description As String
         Get
             CheckDeleted()
             If row(ClaimTaxDAL.COL_NAME_TAX4_DESCRIPTION) Is DBNull.Value Then
@@ -284,7 +284,7 @@ Public Class ClaimTax
                 Return CType(row(ClaimTaxDAL.COL_NAME_TAX4_DESCRIPTION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimTaxDAL.COL_NAME_TAX4_DESCRIPTION, Value)
         End Set
@@ -292,7 +292,7 @@ Public Class ClaimTax
 
 
 
-    Public Property Tax5Amount() As DecimalType
+    Public Property Tax5Amount As DecimalType
         Get
             CheckDeleted()
             If row(ClaimTaxDAL.COL_NAME_TAX5_AMOUNT) Is DBNull.Value Then
@@ -301,7 +301,7 @@ Public Class ClaimTax
                 Return New DecimalType(CType(row(ClaimTaxDAL.COL_NAME_TAX5_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimTaxDAL.COL_NAME_TAX5_AMOUNT, Value)
         End Set
@@ -309,7 +309,7 @@ Public Class ClaimTax
 
 
     <ValidStringLength("", Max:=120)> _
-    Public Property Tax5Description() As String
+    Public Property Tax5Description As String
         Get
             CheckDeleted()
             If row(ClaimTaxDAL.COL_NAME_TAX5_DESCRIPTION) Is DBNull.Value Then
@@ -318,7 +318,7 @@ Public Class ClaimTax
                 Return CType(row(ClaimTaxDAL.COL_NAME_TAX5_DESCRIPTION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimTaxDAL.COL_NAME_TAX5_DESCRIPTION, Value)
         End Set
@@ -326,7 +326,7 @@ Public Class ClaimTax
 
 
 
-    Public Property Tax6Amount() As DecimalType
+    Public Property Tax6Amount As DecimalType
         Get
             CheckDeleted()
             If row(ClaimTaxDAL.COL_NAME_TAX6_AMOUNT) Is DBNull.Value Then
@@ -335,7 +335,7 @@ Public Class ClaimTax
                 Return New DecimalType(CType(row(ClaimTaxDAL.COL_NAME_TAX6_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimTaxDAL.COL_NAME_TAX6_AMOUNT, Value)
         End Set
@@ -343,7 +343,7 @@ Public Class ClaimTax
 
 
     <ValidStringLength("", Max:=120)> _
-    Public Property Tax6Description() As String
+    Public Property Tax6Description As String
         Get
             CheckDeleted()
             If row(ClaimTaxDAL.COL_NAME_TAX6_DESCRIPTION) Is DBNull.Value Then
@@ -352,7 +352,7 @@ Public Class ClaimTax
                 Return CType(row(ClaimTaxDAL.COL_NAME_TAX6_DESCRIPTION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimTaxDAL.COL_NAME_TAX6_DESCRIPTION, Value)
         End Set

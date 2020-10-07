@@ -573,7 +573,7 @@ Namespace Certificates
             Try
                 PopulateBOsFromForm()
                 If State.MyBO.IsDirty Then
-                    If SerialNumberText.Text <> "" Or IMEINumberText.Text <> "" Then
+                    If SerialNumberText.Text <> "" OrElse IMEINumberText.Text <> "" Then
                         Dim dv As DataView ', oCertItem As CertItem 
                         Dim compGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                         If SerialNumberText.Text <> String.Empty Then

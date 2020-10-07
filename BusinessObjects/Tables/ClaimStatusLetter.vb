@@ -104,7 +104,7 @@ Public Class ClaimStatusLetter
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimStatusLetterDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -115,7 +115,7 @@ Public Class ClaimStatusLetter
     End Property
 
     <ValidateClaimStatusByGroup("")> _
-    Public Property ClaimStatusByGroupId() As Guid
+    Public Property ClaimStatusByGroupId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID) Is DBNull.Value Then
@@ -124,7 +124,7 @@ Public Class ClaimStatusLetter
                 Return New Guid(CType(Row(ClaimStatusLetterDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusLetterDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID, Value)
         End Set
@@ -132,7 +132,7 @@ Public Class ClaimStatusLetter
 
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(ClaimStatusLetterDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -141,7 +141,7 @@ Public Class ClaimStatusLetter
                 Return New Guid(CType(row(ClaimStatusLetterDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusLetterDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -149,7 +149,7 @@ Public Class ClaimStatusLetter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property LetterType() As String
+    Public Property LetterType As String
         Get
             CheckDeleted()
             If row(ClaimStatusLetterDAL.COL_NAME_LETTER_TYPE) Is DBNull.Value Then
@@ -158,7 +158,7 @@ Public Class ClaimStatusLetter
                 Return CType(row(ClaimStatusLetterDAL.COL_NAME_LETTER_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusLetterDAL.COL_NAME_LETTER_TYPE, Value)
         End Set
@@ -166,7 +166,7 @@ Public Class ClaimStatusLetter
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=999999, Min:=0)> _
-    Public Property NumberOfDays() As LongType
+    Public Property NumberOfDays As LongType
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_NUMBER_OF_DAYS) Is DBNull.Value Then
@@ -175,7 +175,7 @@ Public Class ClaimStatusLetter
                 Return New LongType(CType(Row(ClaimStatusLetterDAL.COL_NAME_NUMBER_OF_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusLetterDAL.COL_NAME_NUMBER_OF_DAYS, Value)
         End Set
@@ -183,7 +183,7 @@ Public Class ClaimStatusLetter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=400)> _
-    Public Property EmailSubject() As String
+    Public Property EmailSubject As String
         Get
             CheckDeleted()
             If row(ClaimStatusLetterDAL.COL_NAME_EMAIL_SUBJECT) Is DBNull.Value Then
@@ -192,7 +192,7 @@ Public Class ClaimStatusLetter
                 Return CType(row(ClaimStatusLetterDAL.COL_NAME_EMAIL_SUBJECT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusLetterDAL.COL_NAME_EMAIL_SUBJECT, Value)
         End Set
@@ -200,7 +200,7 @@ Public Class ClaimStatusLetter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4000)> _
-    Public Property EmailText() As String
+    Public Property EmailText As String
         Get
             CheckDeleted()
             If row(ClaimStatusLetterDAL.COL_NAME_EMAIL_TEXT) Is DBNull.Value Then
@@ -209,7 +209,7 @@ Public Class ClaimStatusLetter
                 Return CType(row(ClaimStatusLetterDAL.COL_NAME_EMAIL_TEXT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusLetterDAL.COL_NAME_EMAIL_TEXT, Value)
         End Set
@@ -217,7 +217,7 @@ Public Class ClaimStatusLetter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100), EmailAddressFrom("")> _
-    Public Property EmailFrom() As String
+    Public Property EmailFrom As String
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_EMAIL_FROM) Is DBNull.Value Then
@@ -226,14 +226,14 @@ Public Class ClaimStatusLetter
                 Return CType(Row(ClaimStatusLetterDAL.COL_NAME_EMAIL_FROM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusLetterDAL.COL_NAME_EMAIL_FROM, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property UseServiceCenterEmail() As Guid
+    Public Property UseServiceCenterEmail As Guid
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_USE_SERVICE_CENTER_EMAIL) Is DBNull.Value Then
@@ -242,7 +242,7 @@ Public Class ClaimStatusLetter
                 Return New Guid(CType(Row(ClaimStatusLetterDAL.COL_NAME_USE_SERVICE_CENTER_EMAIL), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusLetterDAL.COL_NAME_USE_SERVICE_CENTER_EMAIL, Value)
         End Set
@@ -250,7 +250,7 @@ Public Class ClaimStatusLetter
 
 
     <ValidStringLength("", Max:=1000), ValidEmailTo(""), EmailAddressTo("")> _
-    Public Property EmailTo() As String
+    Public Property EmailTo As String
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_EMAIL_TO) Is DBNull.Value Then
@@ -259,7 +259,7 @@ Public Class ClaimStatusLetter
                 Return CType(Row(ClaimStatusLetterDAL.COL_NAME_EMAIL_TO), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusLetterDAL.COL_NAME_EMAIL_TO, Value)
         End Set
@@ -267,7 +267,7 @@ Public Class ClaimStatusLetter
 
 
     <ValueMandatory("")> _
-    Public Property IsActive() As Guid
+    Public Property IsActive As Guid
         Get
             CheckDeleted()
             If row(ClaimStatusLetterDAL.COL_NAME_IS_ACTIVE) Is DBNull.Value Then
@@ -276,14 +276,14 @@ Public Class ClaimStatusLetter
                 Return New Guid(CType(row(ClaimStatusLetterDAL.COL_NAME_IS_ACTIVE), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusLetterDAL.COL_NAME_IS_ACTIVE, Value)
         End Set
     End Property
 
     <ValidateNotificationType("")> _
-    Public Property NotificationTypeId() As Guid
+    Public Property NotificationTypeId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_NOTIFICATION_TYPE_ID) Is DBNull.Value Then
@@ -292,13 +292,13 @@ Public Class ClaimStatusLetter
                 Return New Guid(CType(Row(ClaimStatusLetterDAL.COL_NAME_NOTIFICATION_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusLetterDAL.COL_NAME_NOTIFICATION_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property UseClaimStatus() As String
+    Public Property UseClaimStatus As String
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_USE_CLAIM_STATUS) Is DBNull.Value Then
@@ -307,14 +307,14 @@ Public Class ClaimStatusLetter
                 Return CType(Row(ClaimStatusLetterDAL.COL_NAME_USE_CLAIM_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusLetterDAL.COL_NAME_USE_CLAIM_STATUS, Value)
         End Set
 
     End Property
     <ValidateGroupOwner("")> _
-    Public Property GroupOwnerId() As Guid
+    Public Property GroupOwnerId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_GROUP_OWNER_ID) Is DBNull.Value Then
@@ -323,7 +323,7 @@ Public Class ClaimStatusLetter
                 Return New Guid(CType(Row(ClaimStatusLetterDAL.COL_NAME_GROUP_OWNER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusLetterDAL.COL_NAME_GROUP_OWNER_ID, Value)
         End Set

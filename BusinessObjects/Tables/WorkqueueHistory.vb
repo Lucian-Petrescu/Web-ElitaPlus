@@ -89,7 +89,7 @@ Public Class WorkqueueHistory
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(WorkqueueHistoryDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class WorkqueueHistory
     End Property
 
     <ValueMandatory("")> _
-    Public Property WorkqueueItemId() As Guid
+    Public Property WorkqueueItemId As Guid
         Get
             CheckDeleted()
             If Row(WorkqueueHistoryDAL.COL_NAME_WORKQUEUE_ITEM_ID) Is DBNull.Value Then
@@ -109,7 +109,7 @@ Public Class WorkqueueHistory
                 Return New Guid(CType(Row(WorkqueueHistoryDAL.COL_NAME_WORKQUEUE_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(WorkqueueHistoryDAL.COL_NAME_WORKQUEUE_ITEM_ID, Value)
         End Set
@@ -117,7 +117,7 @@ Public Class WorkqueueHistory
 
 
     <ValueMandatory("")> _
-    Public Property WorkqueueId() As Guid
+    Public Property WorkqueueId As Guid
         Get
             CheckDeleted()
             If Row(WorkqueueHistoryDAL.COL_NAME_WORKQUEUE_ID) Is DBNull.Value Then
@@ -126,7 +126,7 @@ Public Class WorkqueueHistory
                 Return New Guid(CType(Row(WorkqueueHistoryDAL.COL_NAME_WORKQUEUE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(WorkqueueHistoryDAL.COL_NAME_WORKQUEUE_ID, Value)
         End Set
@@ -134,7 +134,7 @@ Public Class WorkqueueHistory
 
 
     <ValueMandatory("")> _
-    Public Property UserId() As Guid
+    Public Property UserId As Guid
         Get
             CheckDeleted()
             If Row(WorkqueueHistoryDAL.COL_NAME_USER_ID) Is DBNull.Value Then
@@ -143,7 +143,7 @@ Public Class WorkqueueHistory
                 Return New Guid(CType(Row(WorkqueueHistoryDAL.COL_NAME_USER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(WorkqueueHistoryDAL.COL_NAME_USER_ID, Value)
         End Set
@@ -151,7 +151,7 @@ Public Class WorkqueueHistory
 
 
     <ValueMandatory("")> _
-    Public Property TimeStamp() As DateType
+    Public Property TimeStamp As DateType
         Get
             CheckDeleted()
             If Row(WorkqueueHistoryDAL.COL_NAME_TIME_STAMP) Is DBNull.Value Then
@@ -160,7 +160,7 @@ Public Class WorkqueueHistory
                 Return New DateType(CType(Row(WorkqueueHistoryDAL.COL_NAME_TIME_STAMP), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(WorkqueueHistoryDAL.COL_NAME_TIME_STAMP, Value)
         End Set
@@ -168,7 +168,7 @@ Public Class WorkqueueHistory
 
 
     <ValueMandatory("")> _
-    Public Property HistoryActionId() As Guid
+    Public Property HistoryActionId As Guid
         Get
             CheckDeleted()
             If Row(WorkqueueHistoryDAL.COL_NAME_HISTORY_ACTION_ID) Is DBNull.Value Then
@@ -177,7 +177,7 @@ Public Class WorkqueueHistory
                 Return New Guid(CType(Row(WorkqueueHistoryDAL.COL_NAME_HISTORY_ACTION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(WorkqueueHistoryDAL.COL_NAME_HISTORY_ACTION_ID, Value)
         End Set
@@ -185,7 +185,7 @@ Public Class WorkqueueHistory
 
 
     <ValidStringLength("", Max:=1020)> _
-    Public Property Reason() As String
+    Public Property Reason As String
         Get
             CheckDeleted()
             If Row(WorkqueueHistoryDAL.COL_NAME_REASON) Is DBNull.Value Then
@@ -194,14 +194,14 @@ Public Class WorkqueueHistory
                 Return CType(Row(WorkqueueHistoryDAL.COL_NAME_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WorkqueueHistoryDAL.COL_NAME_REASON, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)> _
-    Public Property WorkqueueItemDesc() As String
+    Public Property WorkqueueItemDesc As String
         Get
             CheckDeleted()
             If Row(WorkqueueHistoryDAL.COL_NAME_WORKQUEUE_ITEM_DESC) Is DBNull.Value Then
@@ -210,7 +210,7 @@ Public Class WorkqueueHistory
                 Return CType(Row(WorkqueueHistoryDAL.COL_NAME_WORKQUEUE_ITEM_DESC), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WorkqueueHistoryDAL.COL_NAME_WORKQUEUE_ITEM_DESC, Value)
         End Set

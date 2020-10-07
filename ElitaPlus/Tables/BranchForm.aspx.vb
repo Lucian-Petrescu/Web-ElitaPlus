@@ -477,12 +477,12 @@ Partial Class BranchForm
 
     Public Sub ValidateDates()
 
-        If txtClosedate.Text.Trim() <> String.Empty And txtOpendate.Text.Trim() <> String.Empty Then
+        If txtClosedate.Text.Trim() <> String.Empty AndAlso txtOpendate.Text.Trim() <> String.Empty Then
             If CDate(txtOpendate.Text) >= CDate(txtClosedate.Text) Then
                 ElitaPlusPage.SetLabelError(lblOpenDate)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.BEGIN_DATE_ERR1)
             End If
-        ElseIf txtClosedate.Text.Trim() <> String.Empty And txtOpendate.Text.Trim() = String.Empty Then
+        ElseIf txtClosedate.Text.Trim() <> String.Empty AndAlso txtOpendate.Text.Trim() = String.Empty Then
             ElitaPlusPage.SetLabelError(lblOpenDate)
             Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_BEGIN_DATE)
         End If

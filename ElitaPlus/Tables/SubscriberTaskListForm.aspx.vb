@@ -536,7 +536,7 @@ Namespace Tables
 
                 If dvRow IsNot Nothing Then
                     strID = GetGuidStringFromByteArray(CType(dvRow(SubscriberTask.SubscriberTaskSearchDV.COL_SUBSCRIBER_TASK_ID), Byte()))
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         CType(e.Row.Cells(GRID_COL_SUBSCRIBER_TASK_ID_IDX).FindControl(GRID_CTRL_NAME_LABLE_SUBSCRIBER_TASK_ID), Label).Text = strID
 
                         If (State.IsEditMode = True AndAlso State.SubscriberTaskID.ToString.Equals(strID)) Then

@@ -278,11 +278,11 @@
             beginbatch = txtBeginbatch.Text.Trim
             endbatch = txtEndbatch.Text.Trim
 
-            If (beginbatch Is Nothing Or beginbatch Is String.Empty) Then
+            If (beginbatch Is Nothing OrElse beginbatch Is String.Empty) Then
                 ElitaPlusPage.SetLabelError(lblbeginbatch)
                 Throw New GUIException(Message.MSG_INVOICE_NUMBER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_BATCH_NUMBER_MUST_BE_ENTERED_ERR)
             End If
-            If (endbatch Is Nothing Or endbatch Is String.Empty) Then
+            If (endbatch Is Nothing OrElse endbatch Is String.Empty) Then
                 ElitaPlusPage.SetLabelError(lblendbatch)
                 Throw New GUIException(Message.MSG_INVOICE_NUMBER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_END_BATCH_NUMBER_MUST_BE_ENTERED_ERR)
             End If

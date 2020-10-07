@@ -94,7 +94,7 @@ Public Class RuleProcess
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IExpirable.ID
+    Public ReadOnly Property Id As Guid Implements IExpirable.ID
         Get
             If Row(RuleProcessDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -105,7 +105,7 @@ Public Class RuleProcess
     End Property
 
 
-    Public Property RuleId() As Guid
+    Public Property RuleId As Guid
         Get
             CheckDeleted()
             If row(RuleProcessDAL.COL_NAME_RULE_ID) Is DBNull.Value Then
@@ -114,7 +114,7 @@ Public Class RuleProcess
                 Return New Guid(CType(row(RuleProcessDAL.COL_NAME_RULE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RuleProcessDAL.COL_NAME_RULE_ID, Value)
         End Set
@@ -122,7 +122,7 @@ Public Class RuleProcess
 
 
 
-    Public Property ProcessId() As Guid
+    Public Property ProcessId As Guid
         Get
             CheckDeleted()
             If row(RuleProcessDAL.COL_NAME_PROCESS_ID) Is DBNull.Value Then
@@ -131,7 +131,7 @@ Public Class RuleProcess
                 Return New Guid(CType(row(RuleProcessDAL.COL_NAME_PROCESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RuleProcessDAL.COL_NAME_PROCESS_ID, Value)
         End Set
@@ -139,7 +139,7 @@ Public Class RuleProcess
 
 
     <ValueMandatory("")> _
-    Public Property Effective() As DateTimeType Implements IExpirable.Effective
+    Public Property Effective As DateTimeType Implements IExpirable.Effective
         Get
             CheckDeleted()
             If Row(RuleProcessDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -148,7 +148,7 @@ Public Class RuleProcess
                 Return New DateTimeType(CType(Row(RuleProcessDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(RuleProcessDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -156,7 +156,7 @@ Public Class RuleProcess
 
 
     <ValueMandatory("")> _
-    Public Property Expiration() As DateTimeType Implements IExpirable.Expiration
+    Public Property Expiration As DateTimeType Implements IExpirable.Expiration
         Get
             CheckDeleted()
             If Row(RuleProcessDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -165,13 +165,13 @@ Public Class RuleProcess
                 Return New DateTimeType(CType(Row(RuleProcessDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(RuleProcessDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
-    Public Property ProcessOrder() As LongType
+    Public Property ProcessOrder As LongType
         Get
             CheckDeleted()
             If Row(RuleProcessDAL.COL_NAME_PROCESS_ORDER) Is DBNull.Value Then
@@ -181,13 +181,13 @@ Public Class RuleProcess
             End If
 
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(RuleProcessDAL.COL_NAME_PROCESS_ORDER, Value)
         End Set
     End Property
 
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(RuleProcessDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -196,7 +196,7 @@ Public Class RuleProcess
                 Return CType(Row(RuleProcessDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             'do nothing
         End Set
     End Property
@@ -308,7 +308,7 @@ Public Class RuleProcess
         Get
             Return String.Empty
         End Get
-        Set(ByVal value As String)
+        Set
             'do nothing
         End Set
     End Property
@@ -317,7 +317,7 @@ Public Class RuleProcess
         Get
             Return Guid.Empty
         End Get
-        Set(ByVal value As Guid)
+        Set
             'do nothing
         End Set
     End Property

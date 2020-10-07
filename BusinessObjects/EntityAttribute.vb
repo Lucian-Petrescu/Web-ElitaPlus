@@ -92,7 +92,7 @@ Public Class EntityAttribute
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(EntityAttributeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -103,7 +103,7 @@ Public Class EntityAttribute
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Entity() As String
+    Public Property Entity As String
         Get
             CheckDeleted()
             If row(EntityAttributeDAL.COL_NAME_ENTITY) Is DBNull.Value Then
@@ -112,7 +112,7 @@ Public Class EntityAttribute
                 Return CType(row(EntityAttributeDAL.COL_NAME_ENTITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EntityAttributeDAL.COL_NAME_ENTITY, Value)
         End Set
@@ -120,7 +120,7 @@ Public Class EntityAttribute
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4000)> _
-    Public Property Attribute() As String
+    Public Property Attribute As String
         Get
             CheckDeleted()
             If row(EntityAttributeDAL.COL_NAME_ATTRIBUTE) Is DBNull.Value Then
@@ -129,7 +129,7 @@ Public Class EntityAttribute
                 Return CType(row(EntityAttributeDAL.COL_NAME_ATTRIBUTE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EntityAttributeDAL.COL_NAME_ATTRIBUTE, Value)
         End Set
@@ -137,7 +137,7 @@ Public Class EntityAttribute
 
 
     <ValueMandatory("")> _
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If row(EntityAttributeDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -146,7 +146,7 @@ Public Class EntityAttribute
                 Return New DateType(CType(row(EntityAttributeDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(EntityAttributeDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -154,7 +154,7 @@ Public Class EntityAttribute
 
 
     <ValueMandatory("")> _
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If row(EntityAttributeDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -163,7 +163,7 @@ Public Class EntityAttribute
                 Return New DateType(CType(row(EntityAttributeDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(EntityAttributeDAL.COL_NAME_EXPIRATION, Value)
         End Set

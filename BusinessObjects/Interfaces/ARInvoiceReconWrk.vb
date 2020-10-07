@@ -132,7 +132,7 @@
 #Region "Properties"
 
         'Key Property
-        Public ReadOnly Property Id() As Guid
+        Public ReadOnly Property Id As Guid
             Get
             If Row(ARInvoiceReconWrkDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -143,7 +143,7 @@
         End Property
 
     <ValueMandatory("")>
-    Public Property DealerfileProcessedId() As Guid
+    Public Property DealerfileProcessedId As Guid
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID) Is DBNull.Value Then
@@ -152,13 +152,13 @@
                 Return New Guid(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=2)>
-    Public Property RecordType() As String
+    Public Property RecordType As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_RECORD_TYPE) Is DBNull.Value Then
@@ -167,13 +167,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_RECORD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_RECORD_TYPE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=20)>
-    Public Property Certificate() As String
+    Public Property Certificate As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_CERTIFICATE) Is DBNull.Value Then
@@ -182,13 +182,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_CERTIFICATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_CERTIFICATE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=3)>
-        Public Property RejectCode() As String
+        Public Property RejectCode As String
             Get
                 CheckDeleted()
                 If Row(DealerReconWrkDAL.COL_NAME_REJECT_CODE) Is DBNull.Value Then
@@ -197,13 +197,13 @@
                     Return CType(Row(DealerReconWrkDAL.COL_NAME_REJECT_CODE), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
                 SetValue(DealerReconWrkDAL.COL_NAME_REJECT_CODE, Value)
             End Set
         End Property
 
-    Public Property BillToAddressId() As Guid
+    Public Property BillToAddressId As Guid
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_BILL_TO_ADDRESS_ID) Is DBNull.Value Then
@@ -212,13 +212,13 @@
                 Return New Guid(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_BILL_TO_ADDRESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_BILL_TO_ADDRESS_ID, Value)
         End Set
     End Property
 
-    Public Property ShipToAddressId() As Guid
+    Public Property ShipToAddressId As Guid
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_SHIP_TO_ADDRESS_ID) Is DBNull.Value Then
@@ -227,14 +227,14 @@
                 Return New Guid(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_SHIP_TO_ADDRESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_SHIP_TO_ADDRESS_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=3)>
-    Public Property CurrencyCode() As String
+    Public Property CurrencyCode As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_CURRENCY_CODE) Is DBNull.Value Then
@@ -243,14 +243,14 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_CURRENCY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_CURRENCY_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)>
-        Public Property RejectReason() As String
+        Public Property RejectReason As String
             Get
                 CheckDeleted()
                 If Row(DealerReconWrkDAL.COL_NAME_REJECT_REASON) Is DBNull.Value Then
@@ -259,13 +259,13 @@
                     Return CType(Row(DealerReconWrkDAL.COL_NAME_REJECT_REASON), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
                 SetValue(DealerReconWrkDAL.COL_NAME_REJECT_REASON, Value)
             End Set
         End Property
     <ValidStringLength("", Max:=24)>
-    Public Property ExchangeRate() As String
+    Public Property ExchangeRate As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_EXCHANGE_RATE) Is DBNull.Value Then
@@ -274,13 +274,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_EXCHANGE_RATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_EXCHANGE_RATE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
-    Public Property LineType() As String
+    Public Property LineType As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_LINE_TYPE) Is DBNull.Value Then
@@ -289,13 +289,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_LINE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_LINE_TYPE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=100)>
-    Public Property RejectMsgParams() As String
+    Public Property RejectMsgParams As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_REJECT_MSG_PARMS) Is DBNull.Value Then
@@ -304,13 +304,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_REJECT_MSG_PARMS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_REJECT_MSG_PARMS, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=30)>
-    Public Property InvoiceNumber() As String
+    Public Property InvoiceNumber As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_NUMBER) Is DBNull.Value Then
@@ -319,13 +319,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_NUMBER, Value)
         End Set
     End Property
 
-    Public Property InvoicePeriodStartDate() As DateType
+    Public Property InvoicePeriodStartDate As DateType
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_PERIOD_START_DATE) Is DBNull.Value Then
@@ -334,13 +334,13 @@
                 Return New DateType(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_PERIOD_START_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_PERIOD_START_DATE, Value)
         End Set
     End Property
 
-    Public Property InvoicePeriodEndDate() As DateType
+    Public Property InvoicePeriodEndDate As DateType
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_PERIOD_END_DATE) Is DBNull.Value Then
@@ -349,13 +349,13 @@
                 Return New DateType(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_PERIOD_END_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_PERIOD_END_DATE, Value)
         End Set
     End Property
 
-    Public Property InvoiceDate() As DateType
+    Public Property InvoiceDate As DateType
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_DATE) Is DBNull.Value Then
@@ -364,12 +364,12 @@
                 Return New DateType(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_DATE, Value)
         End Set
     End Property
-    Public Property InvoiceDueDate() As DateType
+    Public Property InvoiceDueDate As DateType
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOCE_DUE_DATE) Is DBNull.Value Then
@@ -378,7 +378,7 @@
                 Return New DateType(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOCE_DUE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOCE_DUE_DATE, Value)
         End Set
@@ -401,7 +401,7 @@
     '    End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property ItemCode() As String
+    Public Property ItemCode As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_ITEM_CODE) Is DBNull.Value Then
@@ -410,14 +410,14 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_ITEM_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_ITEM_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property EarningPartner() As String
+    Public Property EarningPartner As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_EARNING_PARTER) Is DBNull.Value Then
@@ -426,13 +426,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_EARNING_PARTER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_EARNING_PARTER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=50)>
-    Public Property Source() As String
+    Public Property Source As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_SOURCE) Is DBNull.Value Then
@@ -441,13 +441,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_SOURCE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
-    Public Property Reference() As String
+    Public Property Reference As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_REFERENCE) Is DBNull.Value Then
@@ -456,13 +456,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_REFERENCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_REFERENCE, Value)
         End Set
     End Property
 
-    Public Property ReferenceId() As Guid
+    Public Property ReferenceId As Guid
         Get
             If Row(ARInvoiceReconWrkDAL.COL_NAME_REFERENCE_ID) Is DBNull.Value Then
                 Return Nothing
@@ -470,14 +470,14 @@
                 Return New Guid(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_REFERENCE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_REFERENCE_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=99)>
-    Public Property InstallmentNumber() As String
+    Public Property InstallmentNumber As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INSTALLMENT_NUMBER) Is DBNull.Value Then
@@ -486,13 +486,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INSTALLMENT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_INSTALLMENT_NUMBER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=13)>
-    Public Property Amount() As String
+    Public Property Amount As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_AMOUNT) Is DBNull.Value Then
@@ -501,13 +501,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_AMOUNT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_AMOUNT, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
-    Public Property ParentLineNumber() As String
+    Public Property ParentLineNumber As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_PARENT_LINE_NUMBER) Is DBNull.Value Then
@@ -516,13 +516,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_PARENT_LINE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_PARENT_LINE_NUMBER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=200)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -531,12 +531,12 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
-    Public Property InvoiceHeaderId() As String
+    Public Property InvoiceHeaderId As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_HEADER_ID) Is DBNull.Value Then
@@ -545,12 +545,12 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_HEADER_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_HEADER_ID, Value)
         End Set
     End Property
-    Public Property InvoiceLineId() As String
+    Public Property InvoiceLineId As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_LINE_ID) Is DBNull.Value Then
@@ -559,13 +559,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_LINE_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_LINE_ID, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=3000)>
-    Public Property EntireRecord() As String
+    Public Property EntireRecord As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_ENTIRE_RECORD) Is DBNull.Value Then
@@ -574,13 +574,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_ENTIRE_RECORD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_ENTIRE_RECORD, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=1)>
-    Public Property InvoiceLoaded() As String
+    Public Property InvoiceLoaded As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_LOADED) Is DBNull.Value Then
@@ -589,7 +589,7 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_LOADED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_LOADED, Value)
         End Set

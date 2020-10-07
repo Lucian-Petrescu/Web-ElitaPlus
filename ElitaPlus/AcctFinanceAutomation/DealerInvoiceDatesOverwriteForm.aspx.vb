@@ -409,7 +409,7 @@ Partial Class DealerInvoiceDatesOverwriteForm
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim strTemp As String, dtTemp As Date, objBtn As Button, guidTemp As Guid
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     If .RowIndex = Grid.EditIndex Then
                         Dim objtxt As TextBox, objImg As ImageButton

@@ -89,7 +89,7 @@ Public Class SoftQuestion
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(SoftQuestionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class SoftQuestion
     End Property
 
     <ValueMandatory("")> _
-    Public Property SoftQuestionGroupId() As Guid
+    Public Property SoftQuestionGroupId As Guid
         Get
             CheckDeleted()
             If row(SoftQuestionDAL.COL_NAME_SOFT_QUESTION_GROUP_ID) Is DBNull.Value Then
@@ -109,7 +109,7 @@ Public Class SoftQuestion
                 Return New Guid(CType(row(SoftQuestionDAL.COL_NAME_SOFT_QUESTION_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SoftQuestionDAL.COL_NAME_SOFT_QUESTION_GROUP_ID, Value)
         End Set
@@ -117,7 +117,7 @@ Public Class SoftQuestion
 
 
 
-    Public Property ParentId() As Guid
+    Public Property ParentId As Guid
         Get
             CheckDeleted()
             If row(SoftQuestionDAL.COL_NAME_PARENT_ID) Is DBNull.Value Then
@@ -126,7 +126,7 @@ Public Class SoftQuestion
                 Return New Guid(CType(row(SoftQuestionDAL.COL_NAME_PARENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SoftQuestionDAL.COL_NAME_PARENT_ID, Value)
         End Set
@@ -134,7 +134,7 @@ Public Class SoftQuestion
 
 
     <ValueMandatory("")> _
-    Public Property ChildOrder() As LongType
+    Public Property ChildOrder As LongType
         Get
             CheckDeleted()
             If row(SoftQuestionDAL.COL_NAME_CHILD_ORDER) Is DBNull.Value Then
@@ -143,7 +143,7 @@ Public Class SoftQuestion
                 Return New LongType(CType(row(SoftQuestionDAL.COL_NAME_CHILD_ORDER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(SoftQuestionDAL.COL_NAME_CHILD_ORDER, Value)
         End Set
@@ -151,7 +151,7 @@ Public Class SoftQuestion
 
 
     <ValidStringLength("", Max:=100)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(SoftQuestionDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -160,7 +160,7 @@ Public Class SoftQuestion
                 Return CType(row(SoftQuestionDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SoftQuestionDAL.COL_NAME_DESCRIPTION, Value)
         End Set

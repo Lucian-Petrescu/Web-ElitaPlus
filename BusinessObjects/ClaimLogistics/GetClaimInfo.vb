@@ -109,7 +109,7 @@ Public Class GetClaimInfo
 #Region "Properties"
 
     <ValidStringLength("", Max:=50)> _
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             If Row(DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -117,14 +117,14 @@ Public Class GetClaimInfo
                 Return (CType(Row(DATA_COL_NAME_CLAIM_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-Public Property CustomerName() As String
+Public Property CustomerName As String
         Get
             If Row(DATA_COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -132,14 +132,14 @@ Public Property CustomerName() As String
                 Return (CType(Row(DATA_COL_NAME_CUSTOMER_NAME), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CUSTOMER_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-Public Property CustomerPhone() As String
+Public Property CustomerPhone As String
         Get
             If Row(DATA_COL_NAME_CUSTOMER_PHONE) Is DBNull.Value Then
                 Return Nothing
@@ -147,14 +147,14 @@ Public Property CustomerPhone() As String
                 Return (CType(Row(DATA_COL_NAME_CUSTOMER_PHONE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CUSTOMER_PHONE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property AuthorizationNumber() As String
+    Public Property AuthorizationNumber As String
         Get
             If Row(DATA_COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -162,14 +162,14 @@ Public Property CustomerPhone() As String
                 Return (CType(Row(DATA_COL_NAME_AUTHORIZATION_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property IncludeStatusHistory() As String
+    Public Property IncludeStatusHistory As String
         Get
             If Row(DATA_COL_NAME_INCLUDE_STATUS_HISTORY) Is DBNull.Value Then
                 Return Nothing
@@ -177,13 +177,13 @@ Public Property CustomerPhone() As String
                 Return (CType(Row(DATA_COL_NAME_INCLUDE_STATUS_HISTORY), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_INCLUDE_STATUS_HISTORY, Value)
         End Set
     End Property
 
-    Private ReadOnly Property ClaimID() As Guid
+    Private ReadOnly Property ClaimID As Guid
         Get
             If _claimId.Equals(Guid.Empty) And Not ClaimNumber Is Nothing Then
                 _claimId = Claim.GetClaimID(ElitaPlusIdentity.Current.ActiveUser.Companies, ClaimNumber)

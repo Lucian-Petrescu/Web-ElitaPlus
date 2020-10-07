@@ -119,7 +119,7 @@ Public Class CommissionPeriodEntity
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CommissionPeriodEntityDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -130,7 +130,7 @@ Public Class CommissionPeriodEntity
     End Property
 
     <ValueMandatory("")> _
-    Public Property CommissionPeriodId() As Guid
+    Public Property CommissionPeriodId As Guid
         Get
             CheckDeleted()
             If row(CommissionPeriodEntityDAL.COL_NAME_COMMISSION_PERIOD_ID) Is DBNull.Value Then
@@ -139,14 +139,14 @@ Public Class CommissionPeriodEntity
                 Return New Guid(CType(row(CommissionPeriodEntityDAL.COL_NAME_COMMISSION_PERIOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommissionPeriodEntityDAL.COL_NAME_COMMISSION_PERIOD_ID, Value)
         End Set
     End Property
 
 
-    Public Property EntityId() As Guid
+    Public Property EntityId As Guid
         Get
             CheckDeleted()
             If Row(CommissionPeriodEntityDAL.COL_NAME_ENTITY_ID) Is DBNull.Value Then
@@ -155,7 +155,7 @@ Public Class CommissionPeriodEntity
                 Return New Guid(CType(Row(CommissionPeriodEntityDAL.COL_NAME_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommissionPeriodEntityDAL.COL_NAME_ENTITY_ID, Value)
         End Set
@@ -163,7 +163,7 @@ Public Class CommissionPeriodEntity
 
 
     <ValueMandatory("")> _
-    Public Property Position() As LongType
+    Public Property Position As LongType
         Get
             CheckDeleted()
             If row(CommissionPeriodEntityDAL.COL_NAME_POSITION) Is DBNull.Value Then
@@ -172,13 +172,13 @@ Public Class CommissionPeriodEntity
                 Return New LongType(CType(row(CommissionPeriodEntityDAL.COL_NAME_POSITION), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CommissionPeriodEntityDAL.COL_NAME_POSITION, Value)
         End Set
     End Property
 
-    Public Property PayeeTypeId() As Guid
+    Public Property PayeeTypeId As Guid
         Get
             CheckDeleted()
             If Row(CommissionPeriodEntityDAL.COL_NAME_PAYEE_TYPE_ID) Is DBNull.Value Then
@@ -187,13 +187,13 @@ Public Class CommissionPeriodEntity
                 Return New Guid(CType(Row(CommissionPeriodEntityDAL.COL_NAME_PAYEE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommissionPeriodEntityDAL.COL_NAME_PAYEE_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get

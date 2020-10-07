@@ -91,7 +91,7 @@ Public Class DefaultClaimStatus
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(DefaultClaimStatusDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@ Public Class DefaultClaimStatus
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimStatusByGroupId() As Guid
+    Public Property ClaimStatusByGroupId As Guid
         Get
             CheckDeleted()
             If row(DefaultClaimStatusDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID) Is DBNull.Value Then
@@ -111,7 +111,7 @@ Public Class DefaultClaimStatus
                 Return New Guid(CType(row(DefaultClaimStatusDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DefaultClaimStatusDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID, Value)
         End Set
@@ -119,7 +119,7 @@ Public Class DefaultClaimStatus
 
 
     <ValueMandatory("")> _
-    Public Property DefaultTypeId() As Guid
+    Public Property DefaultTypeId As Guid
         Get
             CheckDeleted()
             If row(DefaultClaimStatusDAL.COL_NAME_DEFAULT_TYPE_ID) Is DBNull.Value Then
@@ -128,7 +128,7 @@ Public Class DefaultClaimStatus
                 Return New Guid(CType(row(DefaultClaimStatusDAL.COL_NAME_DEFAULT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DefaultClaimStatusDAL.COL_NAME_DEFAULT_TYPE_ID, Value)
         End Set
@@ -136,7 +136,7 @@ Public Class DefaultClaimStatus
 
 
 
-    Public Property MethodOfRepairId() As Guid
+    Public Property MethodOfRepairId As Guid
         Get
             CheckDeleted()
             If row(DefaultClaimStatusDAL.COL_NAME_METHOD_OF_REPAIR_ID) Is DBNull.Value Then
@@ -145,7 +145,7 @@ Public Class DefaultClaimStatus
                 Return New Guid(CType(row(DefaultClaimStatusDAL.COL_NAME_METHOD_OF_REPAIR_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DefaultClaimStatusDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
         End Set
@@ -153,7 +153,7 @@ Public Class DefaultClaimStatus
 
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(DefaultClaimStatusDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -162,7 +162,7 @@ Public Class DefaultClaimStatus
                 Return New Guid(CType(Row(DefaultClaimStatusDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DefaultClaimStatusDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set

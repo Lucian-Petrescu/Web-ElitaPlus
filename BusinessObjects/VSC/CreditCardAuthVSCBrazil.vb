@@ -277,7 +277,7 @@ Public Class CreditCardAuthVSCBrazil
 
 #Region "Properties"
 
-    Public Property CertNum() As String
+    Public Property CertNum As String
         Get
             If Row(DATA_COL_NAME_CERT_NUM) Is DBNull.Value Then
                 Return Nothing
@@ -285,12 +285,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_CERT_NUM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_CERT_NUM, Value)
         End Set
     End Property
 
-    Public Property CustomerName() As String
+    Public Property CustomerName As String
         Get
             If Row(DATA_COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -298,13 +298,13 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_CUSTOMER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_CUSTOMER_NAME, Value)
         End Set
     End Property
 
 
-    Public Property DocumentNum() As String
+    Public Property DocumentNum As String
         Get
             If Row(DATA_COL_NAME_DOC_NUM) Is DBNull.Value Then
                 Return Nothing
@@ -312,12 +312,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_DOC_NUM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_DOC_NUM, Value)
         End Set
     End Property
 
-    Public Property Amount() As Decimal
+    Public Property Amount As Decimal
         Get
             If Row(DATA_COL_NAME_AMOUNT) Is DBNull.Value Then
                 Return 0
@@ -325,12 +325,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return (CType(Row(DATA_COL_NAME_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             SetValue(DATA_COL_NAME_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property NumberOfInstallments() As Integer
+    Public Property NumberOfInstallments As Integer
         Get
             If Row(DATA_COL_NAME_NUM_OF_INSTALLMENTS) Is DBNull.Value Then
                 Return 0
@@ -338,12 +338,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_NUM_OF_INSTALLMENTS), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             SetValue(DATA_COL_NAME_NUM_OF_INSTALLMENTS, Value)
         End Set
     End Property
 
-    Public Property NameOnCard() As String
+    Public Property NameOnCard As String
         Get
             If Row(DATA_COL_NAME_NAME_ON_CARD) Is DBNull.Value Then
                 Return Nothing
@@ -351,12 +351,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_NAME_ON_CARD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_NAME_ON_CARD, Value)
         End Set
     End Property
     <PciReveal(PciDataType.CreditCardNumber), PciProtect(PciDataType.CreditCardNumber)>
-    Public Property CardNum() As String
+    Public Property CardNum As String
         Get
             If Row(DATA_COL_NAME_CARD_NUM) Is DBNull.Value Then
                 Return Nothing
@@ -364,12 +364,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_CARD_NUM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_CARD_NUM, Value)
         End Set
     End Property
 
-    Public Property CardSecurityCode() As String
+    Public Property CardSecurityCode As String
         Get
             If Row(DATA_COL_NAME_CARD_SECURITY_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -377,12 +377,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_CARD_SECURITY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_CARD_SECURITY_CODE, Value)
         End Set
     End Property
 
-    Public Property CardExpiration() As String
+    Public Property CardExpiration As String
         Get
             If Row(DATA_COL_NAME_CARD_EXPIRATION) Is DBNull.Value Then
                 Return Nothing
@@ -390,12 +390,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_CARD_EXPIRATION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_CARD_EXPIRATION, Value)
         End Set
     End Property
 
-    Public Property CardType() As String
+    Public Property CardType As String
         Get
             If Row(DATA_COL_NAME_CARD_TYPE) Is DBNull.Value Then
                 Return Nothing
@@ -403,12 +403,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_CARD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_CARD_TYPE, Value)
         End Set
     End Property
 
-    Public Property DbsCompanyCode() As String
+    Public Property DbsCompanyCode As String
         Get
             If Row(DATA_COL_NAME_DBS_COMPANY_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -416,12 +416,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_DBS_COMPANY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_DBS_COMPANY_CODE, Value)
         End Set
     End Property
 
-    Public Property DbsProductCode() As String
+    Public Property DbsProductCode As String
         Get
             If Row(DATA_COL_NAME_DBS_PRODUCT_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -429,12 +429,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_DBS_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_DBS_PRODUCT_CODE, Value)
         End Set
     End Property
 
-    Public Property DbsSystemCode() As String
+    Public Property DbsSystemCode As String
         Get
             If Row(DATA_COL_NAME_DBS_SYSTEM_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -442,12 +442,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_DBS_SYSTEM_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_DBS_SYSTEM_CODE, Value)
         End Set
     End Property
 
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -455,12 +455,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
-    Public Property Email() As String
+    Public Property Email As String
         Get
             If Row(DATA_COL_NAME_EMAIL) Is DBNull.Value Then
                 Return Nothing
@@ -468,12 +468,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_EMAIL, Value)
         End Set
     End Property
 
-    Public Property Mobile() As String
+    Public Property Mobile As String
         Get
             If Row(DATA_COL_NAME_MOBILE) Is DBNull.Value Then
                 Return Nothing
@@ -481,12 +481,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_MOBILE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_MOBILE, Value)
         End Set
     End Property
 
-    Public Property MobileAreaCode() As String
+    Public Property MobileAreaCode As String
         Get
             If Row(DATA_COL_NAME_MOBILE_AREA_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -494,12 +494,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_MOBILE_AREA_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_MOBILE_AREA_CODE, Value)
         End Set
     End Property
 
-    Public Property PhoneAreaCode() As String
+    Public Property PhoneAreaCode As String
         Get
             If Row(DATA_COL_NAME_PHONE_AREA_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -507,12 +507,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_PHONE_AREA_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_PHONE_AREA_CODE, Value)
         End Set
     End Property
 
-    Public Property Phone() As String
+    Public Property Phone As String
         Get
             If Row(DATA_COL_NAME_PHONE) Is DBNull.Value Then
                 Return Nothing
@@ -520,12 +520,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_PHONE, Value)
         End Set
     End Property
 
-    Public Property WarrantySalesDate() As String
+    Public Property WarrantySalesDate As String
         Get
             If Row(DATA_COL_NAME_WARRANTY_SALES_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -533,12 +533,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_WARRANTY_SALES_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_WARRANTY_SALES_DATE, Value)
         End Set
     End Property
 
-    Public Property CardOwnerTaxId() As String
+    Public Property CardOwnerTaxId As String
         Get
             If Row(DATA_COL_NAME_CARD_OWNER_TAX_ID) Is DBNull.Value Then
                 Return Nothing
@@ -546,12 +546,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_CARD_OWNER_TAX_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_CARD_OWNER_TAX_ID, Value)
         End Set
     End Property
 
-    Public Property DbsPaymentType() As String
+    Public Property DbsPaymentType As String
         Get
             If Row(DATA_COL_NAME_DBS_PAYMENT_TYPE) Is DBNull.Value Then
                 Return Nothing
@@ -559,12 +559,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_DBS_PAYMENT_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_DBS_PAYMENT_TYPE, Value)
         End Set
     End Property
 
-    Public Property DueDate() As String
+    Public Property DueDate As String
         Get
             If Row(DATA_COL_NAME_DUE_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -572,12 +572,12 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_DUE_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_DUE_DATE, Value)
         End Set
     End Property
 
-    Public Property ExpiredDate() As String
+    Public Property ExpiredDate As String
         Get
             If Row(DATA_COL_NAME_EXPIRED_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -585,7 +585,7 @@ Public Class CreditCardAuthVSCBrazil
                 Return CType(Row(DATA_COL_NAME_EXPIRED_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_EXPIRED_DATE, Value)
         End Set
     End Property

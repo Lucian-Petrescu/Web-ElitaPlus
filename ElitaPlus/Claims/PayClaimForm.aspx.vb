@@ -417,11 +417,11 @@ Partial Class PayClaimForm
                     State.ClaimInvoiceBO.RefreshCurrentClaim()
                 End If
 
-                If (NavController IsNot Nothing) AndAlso (NavController.PrevNavState IsNot Nothing) AndAlso (NavController.PrevNavState.Name = "AUTH_DETAIL" Or NavController.PrevNavState.Name = "PARTS_INFO") Then
+                If (NavController IsNot Nothing) AndAlso (NavController.PrevNavState IsNot Nothing) AndAlso (NavController.PrevNavState.Name = "AUTH_DETAIL" OrElse NavController.PrevNavState.Name = "PARTS_INFO") Then
                     State.ComingFromChildForm = True
                 End If
 
-                If (CalledUrl IsNot Nothing) AndAlso (CalledUrl = PayClaimManualTaxForm.URL Or CalledUrl = Claims.ReplacementForm.URL) Then
+                If (CalledUrl IsNot Nothing) AndAlso (CalledUrl = PayClaimManualTaxForm.URL OrElse CalledUrl = Claims.ReplacementForm.URL) Then
                     State.ComingFromChildForm = True
                 End If
 
@@ -489,7 +489,7 @@ Partial Class PayClaimForm
                 AddCalendar(ImageButtonInvoiceDate, txtInvoiceDate)
 
                 'Pickup date: do not display if replacement and/or interface claim
-                If State.ClaimBO IsNot Nothing AndAlso State.ClaimBO.CanDisplayVisitAndPickUpDates And Not State.isForClaimPayAdjust Then
+                If State.ClaimBO IsNot Nothing AndAlso State.ClaimBO.CanDisplayVisitAndPickUpDates AndAlso Not State.isForClaimPayAdjust Then
                     If Not State.ClaimBO.LoanerTaken Then AddCalendar(ImageButtonPickupDate, TextboxPickupDate)
                 End If
 
@@ -512,7 +512,7 @@ Partial Class PayClaimForm
                     PaymentMethodChanged(State.selectedPaymentMethodID, GetSelectedItem(cboPayeeSelector), False)
                 End If
             Else
-                If Not IsClientScriptBlockRegistered("load") AndAlso (InvoiceMethod.Value = "2" And State.AuthDetailEnabled) Then
+                If Not IsClientScriptBlockRegistered("load") AndAlso (InvoiceMethod.Value = "2" AndAlso State.AuthDetailEnabled) Then
                     ScriptManager.RegisterStartupScript(Me, [GetType](), "load", "doAmtCalc(document.getElementById('ctl00_SummaryPlaceHolder_txtLabor'));", True)
                 End If
                 loadTaxAmountsFromHiddenFields()
@@ -586,19 +586,19 @@ Partial Class PayClaimForm
             Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
             If oClmSystem.PayClaimId.Equals(noId) Then
                 State.isClaimSystemMaintAllowed = False
-                If btnSave_WRITE.Visible And btnSave_WRITE.Enabled Then
+                If btnSave_WRITE.Visible AndAlso btnSave_WRITE.Enabled Then
                     ControlMgr.SetEnableControl(Me, btnSave_WRITE, False)
                 End If
-                If btnUndo_Write.Visible And btnUndo_Write.Enabled Then
+                If btnUndo_Write.Visible AndAlso btnUndo_Write.Enabled Then
                     ControlMgr.SetEnableControl(Me, btnUndo_Write, False)
                 End If
-                If btnPartsInfo_WRITE.Visible And btnPartsInfo_WRITE.Enabled Then
+                If btnPartsInfo_WRITE.Visible AndAlso btnPartsInfo_WRITE.Enabled Then
                     ControlMgr.SetEnableControl(Me, btnPartsInfo_WRITE, False)
                 End If
-                If btnAuthDetail_WRITE.Visible And btnAuthDetail_WRITE.Enabled Then
+                If btnAuthDetail_WRITE.Visible AndAlso btnAuthDetail_WRITE.Enabled Then
                     ControlMgr.SetEnableControl(Me, btnAuthDetail_WRITE, False)
                 End If
-                If btnReplacement_WRITE.Visible And btnReplacement_WRITE.Enabled Then
+                If btnReplacement_WRITE.Visible AndAlso btnReplacement_WRITE.Enabled Then
                     ControlMgr.SetEnableControl(Me, btnReplacement_WRITE, False)
                 End If
             End If
@@ -659,15 +659,15 @@ Partial Class PayClaimForm
             Dim oInvoiceMethodId As Guid = oCompany.InvoiceMethodId
             InvoiceMethod.Value = LookupListNew.GetCodeFromId(LookupListNew.LK_INVOICE_METHOD, oInvoiceMethodId)
 
-            If oInvoiceMethodId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_INVOICE_METHOD, ClaimInvoice.INVOICE_METHOD_DETAIL)) And Not State.AuthDetailEnabled Then
-                ChangeEnabledProperty(txtLabor, (Not State.ViewOnly) And True)
-                ChangeEnabledProperty(txtParts, (Not State.ViewOnly) And True)
-                ChangeEnabledProperty(txtServiceCharge, (Not State.ViewOnly) And True)
-                ChangeEnabledProperty(txtTripAmt, (Not State.ViewOnly) And True)
-                ChangeEnabledProperty(txtOtherAmt, (Not State.ViewOnly) And True)
-                ChangeEnabledProperty(txtOtherDesc, (Not State.ViewOnly) And True)
-                ChangeEnabledProperty(txtDisposition, (Not State.ViewOnly) And True)
-                ChangeEnabledProperty(txtDiagnostics, (Not State.ViewOnly) And True)
+            If oInvoiceMethodId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_INVOICE_METHOD, ClaimInvoice.INVOICE_METHOD_DETAIL)) AndAlso Not State.AuthDetailEnabled Then
+                ChangeEnabledProperty(txtLabor, (Not State.ViewOnly) AndAlso True)
+                ChangeEnabledProperty(txtParts, (Not State.ViewOnly) AndAlso True)
+                ChangeEnabledProperty(txtServiceCharge, (Not State.ViewOnly) AndAlso True)
+                ChangeEnabledProperty(txtTripAmt, (Not State.ViewOnly) AndAlso True)
+                ChangeEnabledProperty(txtOtherAmt, (Not State.ViewOnly) AndAlso True)
+                ChangeEnabledProperty(txtOtherDesc, (Not State.ViewOnly) AndAlso True)
+                ChangeEnabledProperty(txtDisposition, (Not State.ViewOnly) AndAlso True)
+                ChangeEnabledProperty(txtDiagnostics, (Not State.ViewOnly) AndAlso True)
                 ChangeEnabledProperty(txtSubTotal, False)
                 ChangeEnabledProperty(txtTotalTaxAmount, False)
                 ChangeEnabledProperty(txtTotal, False)
@@ -690,10 +690,10 @@ Partial Class PayClaimForm
                 ChangeEnabledProperty(txtTotalTaxAmount, False)
                 ChangeEnabledProperty(txtGrandTotal, False)
                 ChangeEnabledProperty(txtSubTotal, False)
-                If State.AuthDetailEnabled And State.ClaimInvoiceBO.Invoiceable.ClaimActivityCode <> Codes.CLAIM_ACTIVITY__REWORK Then
+                If State.AuthDetailEnabled AndAlso State.ClaimInvoiceBO.Invoiceable.ClaimActivityCode <> Codes.CLAIM_ACTIVITY__REWORK Then
                     ChangeEnabledProperty(txtTotal, False)
                 Else
-                    ChangeEnabledProperty(txtTotal, (Not State.ViewOnly) And True)
+                    ChangeEnabledProperty(txtTotal, (Not State.ViewOnly) AndAlso True)
                 End If
 
                 ControlMgr.SetVisibleControl(Me, btnPartsInfo_WRITE, False)
@@ -710,7 +710,7 @@ Partial Class PayClaimForm
 
             ' as per the partsinfo specs , parts info needs to be visible only for inv method = 1 and repair claims.
             If State.ClaimInvoiceBO.Invoiceable.ClaimActivityId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT)) Then
-                ControlMgr.SetVisibleControl(Me, btnReplacement_WRITE, (Not State.ViewOnly) And True)
+                ControlMgr.SetVisibleControl(Me, btnReplacement_WRITE, (Not State.ViewOnly) AndAlso True)
                 If IsPostBack Then
                     LabelRepairDate.Text = "*" + TranslationBase.TranslateLabelOrMessage("REPLACEMENT_DATE") + ":"
                 Else
@@ -742,11 +742,11 @@ Partial Class PayClaimForm
                 Else
                     LabelRepairDate.Text = TranslationBase.TranslateLabelOrMessage("REPAIR_DATE") + ":"
                 End If
-                ControlMgr.SetVisibleControl(Me, LabelRepairCode, True And Not State.isForClaimPayAdjust)
-                ControlMgr.SetVisibleControl(Me, cboRepairCode, True And Not State.isForClaimPayAdjust)
+                ControlMgr.SetVisibleControl(Me, LabelRepairCode, True AndAlso Not State.isForClaimPayAdjust)
+                ControlMgr.SetVisibleControl(Me, cboRepairCode, True AndAlso Not State.isForClaimPayAdjust)
                 If oInvoiceMethodId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_INVOICE_METHOD, ClaimInvoice.INVOICE_METHOD_DETAIL)) Then
                     'its always viewed in this case...
-                    If State.AuthDetailEnabled And State.ClaimInvoiceBO.Invoiceable.ClaimActivityCode <> Codes.CLAIM_ACTIVITY__REWORK Then
+                    If State.AuthDetailEnabled AndAlso State.ClaimInvoiceBO.Invoiceable.ClaimActivityCode <> Codes.CLAIM_ACTIVITY__REWORK Then
                         ControlMgr.SetVisibleControl(Me, btnAuthDetail_WRITE, (Not State.ViewOnly))
                     End If
 
@@ -767,8 +767,7 @@ Partial Class PayClaimForm
             ControlMgr.SetVisibleControl(Me, cboRegionDropID, False)
             ControlMgr.SetVisibleControl(Me, lblRigion, False)
 
-            If (oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)) Or
-                (oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
+            If (oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)) OrElse (oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
                 trDeductibleAmount.Visible = False
                 trDeductibleTaxAmount.Visible = False
             End If
@@ -778,7 +777,7 @@ Partial Class PayClaimForm
                 ControlMgr.SetVisibleControl(Me, btnSave_WRITE, False)
 
             Else
-                ControlMgr.SetVisibleControl(Me, btnAuthDetail_WRITE, (Not State.ViewOnly) And State.AuthDetailEnabled)
+                ControlMgr.SetVisibleControl(Me, btnAuthDetail_WRITE, (Not State.ViewOnly) AndAlso State.AuthDetailEnabled)
                 ControlMgr.SetVisibleControl(Me, btnSave_WRITE, (Not State.ViewOnly))
                 If State.ClaimInvoiceBO.isTaxTypeInvoice() Then
                     Dim oClaim As Claim
@@ -807,11 +806,11 @@ Partial Class PayClaimForm
             End If
 
 
-            ControlMgr.SetVisibleForControlFamily(Me, ImageButtonLoanerReturnedDate, (Not State.ViewOnly) And (Not State.ClaimInvoiceBO.Invoiceable.LoanerCenterId.Equals(Guid.Empty)), True)
-            ControlMgr.SetVisibleForControlFamily(Me, ImageButtonRepairDate, (Not State.ViewOnly) And True, True)
+            ControlMgr.SetVisibleForControlFamily(Me, ImageButtonLoanerReturnedDate, (Not State.ViewOnly) AndAlso (Not State.ClaimInvoiceBO.Invoiceable.LoanerCenterId.Equals(Guid.Empty)), True)
+            ControlMgr.SetVisibleForControlFamily(Me, ImageButtonRepairDate, (Not State.ViewOnly) AndAlso True, True)
 
-            ControlMgr.SetVisibleControl(Me, LabelLoanerReturnedDate, (Not State.ViewOnly) And (Not State.ClaimInvoiceBO.Invoiceable.LoanerCenterId.Equals(Guid.Empty)))
-            ControlMgr.SetVisibleControl(Me, txtLoanerReturnedDate, (Not State.ViewOnly) And (Not State.ClaimInvoiceBO.Invoiceable.LoanerCenterId.Equals(Guid.Empty)))
+            ControlMgr.SetVisibleControl(Me, LabelLoanerReturnedDate, (Not State.ViewOnly) AndAlso (Not State.ClaimInvoiceBO.Invoiceable.LoanerCenterId.Equals(Guid.Empty)))
+            ControlMgr.SetVisibleControl(Me, txtLoanerReturnedDate, (Not State.ViewOnly) AndAlso (Not State.ClaimInvoiceBO.Invoiceable.LoanerCenterId.Equals(Guid.Empty)))
 
             ControlMgr.SetVisibleControl(Me, txtAcctStatusDate, False)
             ControlMgr.SetVisibleControl(Me, txtAcctStatusCode, False)
@@ -856,23 +855,23 @@ Partial Class PayClaimForm
                 ControlMgr.SetVisibleControl(Me, ImageButtonPickupDate, False)
             End If
 
-            ChangeEnabledProperty(txtInvoiceNumber, (Not State.ViewOnly) And True)
-            ChangeEnabledProperty(txtInvoiceDate, (Not State.ViewOnly) And True)
-            ControlMgr.SetVisibleForControlFamily(Me, ImageButtonInvoiceDate, (Not State.ViewOnly) And True, True)
+            ChangeEnabledProperty(txtInvoiceNumber, (Not State.ViewOnly) AndAlso True)
+            ChangeEnabledProperty(txtInvoiceDate, (Not State.ViewOnly) AndAlso True)
+            ControlMgr.SetVisibleForControlFamily(Me, ImageButtonInvoiceDate, (Not State.ViewOnly) AndAlso True, True)
 
             'WR 754196, Serial Number maintenance:
-            ChangeEnabledProperty(TextSerialNumber, (Not State.ViewOnly) And True)
+            ChangeEnabledProperty(TextSerialNumber, (Not State.ViewOnly) AndAlso True)
 
             'Pickup date: do not display if replacement and/or interface claim
             Dim blnCanDisplayVisitAndPickUpDates As Boolean
             If State.ClaimBO IsNot Nothing Then
                 blnCanDisplayVisitAndPickUpDates = State.ClaimBO.CanDisplayVisitAndPickUpDates
             End If
-            If State.ClaimBO IsNot Nothing AndAlso Not State.ClaimBO.LoanerTaken And Not State.isForClaimPayAdjust Then
-                ControlMgr.SetVisibleForControlFamily(Me, ImageButtonPickupDate, blnCanDisplayVisitAndPickUpDates And Not State.ViewOnly, True)
-                SetEnabledForControlFamily(ImageButtonPickupDate, blnCanDisplayVisitAndPickUpDates And Not State.ViewOnly, True)
-                ControlMgr.SetVisibleControl(Me, TextboxPickupDate, blnCanDisplayVisitAndPickUpDates And Not State.isForClaimPayAdjust)
-                ControlMgr.SetVisibleControl(Me, LabelPickUpDate, blnCanDisplayVisitAndPickUpDates And Not State.isForClaimPayAdjust)
+            If State.ClaimBO IsNot Nothing AndAlso Not State.ClaimBO.LoanerTaken AndAlso Not State.isForClaimPayAdjust Then
+                ControlMgr.SetVisibleForControlFamily(Me, ImageButtonPickupDate, blnCanDisplayVisitAndPickUpDates AndAlso Not State.ViewOnly, True)
+                SetEnabledForControlFamily(ImageButtonPickupDate, blnCanDisplayVisitAndPickUpDates AndAlso Not State.ViewOnly, True)
+                ControlMgr.SetVisibleControl(Me, TextboxPickupDate, blnCanDisplayVisitAndPickUpDates AndAlso Not State.isForClaimPayAdjust)
+                ControlMgr.SetVisibleControl(Me, LabelPickUpDate, blnCanDisplayVisitAndPickUpDates AndAlso Not State.isForClaimPayAdjust)
             Else
                 ControlMgr.SetVisibleControl(Me, TextboxPickupDate, False)
                 ControlMgr.SetVisibleControl(Me, LabelPickUpDate, False)
@@ -955,8 +954,7 @@ Partial Class PayClaimForm
     Private Sub PopulateFieldsForBankTransfer()
 
         If ((cboPayeeSelector.SelectedValue <> EMPTY_GUID AndAlso
-            LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, GetSelectedItem(cboPayeeSelector)) = ClaimInvoice.PAYEE_OPTION_CUSTOMER) Or
-            (PaymentMethodDrop.SelectedValue <> EMPTY_GUID AndAlso
+            LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, GetSelectedItem(cboPayeeSelector)) = ClaimInvoice.PAYEE_OPTION_CUSTOMER) OrElse (PaymentMethodDrop.SelectedValue <> EMPTY_GUID AndAlso
             LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, GetSelectedItem(PaymentMethodDrop)) = Codes.PAYMENT_METHOD__BANK_TRANSFER)) Then
 
             PayeeBankInfo.LoadBankSortCodeList(oCompany, oCertificate.CUIT_CUIL)
@@ -976,8 +974,7 @@ Partial Class PayClaimForm
         If oCompany IsNot Nothing AndAlso oCompany.AttributeValues.Contains(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) Then
             If oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) = Codes.YESNO_Y Then
                 If ((cboPayeeSelector.SelectedValue <> EMPTY_GUID AndAlso
-                     LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, GetSelectedItem(cboPayeeSelector)) <> ClaimInvoice.PAYEE_OPTION_CUSTOMER) Or
-                    (PaymentMethodDrop.SelectedValue <> EMPTY_GUID AndAlso
+                     LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, GetSelectedItem(cboPayeeSelector)) <> ClaimInvoice.PAYEE_OPTION_CUSTOMER) OrElse (PaymentMethodDrop.SelectedValue <> EMPTY_GUID AndAlso
                      LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, GetSelectedItem(PaymentMethodDrop)) <> Codes.PAYMENT_METHOD__BANK_TRANSFER)) Then
                     SetPayeeBankInvoiceControlsEmpty()
                 End If
@@ -1128,7 +1125,7 @@ Partial Class PayClaimForm
                 'Exclude Darty gift card from the dealers with no attribute or dealer with the attribute and payee not Customer
                 If (listItem IsNot Nothing) Then
                     If (Not hasGiftCardAttriute OrElse
-                        (hasGiftCardAttriute And (cboPayeeSelector.SelectedValue <> String.Empty AndAlso
+                        (hasGiftCardAttriute AndAlso (cboPayeeSelector.SelectedValue <> String.Empty AndAlso
                             LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, GetSelectedItem(cboPayeeSelector)) <> ClaimInvoice.PAYEE_OPTION_CUSTOMER))) Then
 
                         'PaymentMethodDrop.Items.Remove(listItem)
@@ -1354,7 +1351,7 @@ Partial Class PayClaimForm
                 PopulateControlFromBOProperty(txtAssurantPays, .Invoiceable.AssurantPays)
                 PopulateControlFromBOProperty(txtConsumerPays, .Invoiceable.ConsumerPays)
 
-                If (State.ViewOnly = True) Or (State.ComingFromChildForm = True) Then
+                If (State.ViewOnly = True) OrElse (State.ComingFromChildForm = True) Then
                     PopulateControlFromBOProperty(cboPayeeSelector, State.DisbursementBO.PayeeOptionId)
                 Else
                     Dim PayeeOptionId As Guid
@@ -1381,9 +1378,8 @@ Partial Class PayClaimForm
                     PaymentMethodChanged(State.ClaimInvoiceBO.PaymentMethodID, State.DisbursementBO.PayeeOptionId, False)
                 End If
 
-                If State.ViewOnly And PaymentMethodDrop.Visible Then
-                    If (State.DisbursementBO.PayeeOptionId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYEE, ClaimInvoice.PAYEE_OPTION_CUSTOMER) Or
-                        State.DisbursementBO.PayeeOptionId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYEE, ClaimInvoice.PAYEE_OPTION_OTHER) AndAlso
+                If State.ViewOnly AndAlso PaymentMethodDrop.Visible Then
+                    If (State.DisbursementBO.PayeeOptionId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYEE, ClaimInvoice.PAYEE_OPTION_CUSTOMER) OrElse State.DisbursementBO.PayeeOptionId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYEE, ClaimInvoice.PAYEE_OPTION_OTHER) AndAlso
                         (State.ClaimInvoiceBO.PaymentMethodID = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYMENTMETHOD, "CTT"))) Then
                         PayeeBankInfo.DisplayTaxId()
                     Else
@@ -1429,7 +1425,7 @@ Partial Class PayClaimForm
                     End If
                 End If
 
-                If (ServiceCenterIvaResponsible.Value = "Y") Or (MasterCenterIvaResponsible.Value = "Y") Or (LoanerCenterIvaResponsible.Value = "Y") Then
+                If (ServiceCenterIvaResponsible.Value = "Y") OrElse (MasterCenterIvaResponsible.Value = "Y") OrElse (LoanerCenterIvaResponsible.Value = "Y") Then
                     TaxRate.Value = .TaxRate.Value.ToString()
                     DeductibleTaxRate.Value = .DeductibleTaxRate.Value.ToString()
                     PopulateControlFromBOProperty(txtDeductibleTaxAmount, .DeductibleTaxAmount)
@@ -1437,7 +1433,7 @@ Partial Class PayClaimForm
 
                 'Pickup date: do not display if replacement and/or interface claim
                 'Interface claim = Not claim.Source.Equals(String.Empty)
-                If State.ClaimBO IsNot Nothing AndAlso (State.ClaimBO.CanDisplayVisitAndPickUpDates And Not State.ClaimBO.LoanerTaken) And Not State.isForClaimPayAdjust Then
+                If State.ClaimBO IsNot Nothing AndAlso (State.ClaimBO.CanDisplayVisitAndPickUpDates AndAlso Not State.ClaimBO.LoanerTaken) AndAlso Not State.isForClaimPayAdjust Then
                     PopulateControlFromBOProperty(TextboxPickupDate, State.ClaimBO.PickUpDate)
                 End If
                 hdAlreadyPaid.Value = .AlreadyPaid.Value.ToString()
@@ -1465,7 +1461,7 @@ Partial Class PayClaimForm
                     End If
                 End If
 
-                If State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR_REPLACEMENT Or State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT Then
+                If State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR_REPLACEMENT OrElse State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT Then
                     hdClaimMethodOfRepair.Value = "RPL"
                     LabelTaxType.Text = TranslationBase.TranslateLabelOrMessage("REPLACEMENT")
                 Else
@@ -1783,7 +1779,7 @@ Partial Class PayClaimForm
         Dim liabLimit As Decimal = CDec(CalculateLiabilityLimit())
         Dim Authorizedamount As Decimal = CDec(State.ClaimInvoiceBO.Invoiceable.AuthorizedAmount)
 
-        If (liabLimit = 0D And (CType(State.ClaimBO.Certificate.ProductLiabilityLimit, Decimal) = 0 And CType(State.ClaimBO.CertificateItemCoverage.CoverageLiabilityLimit, Decimal) = 0)) Then
+        If (liabLimit = 0D AndAlso (CType(State.ClaimBO.Certificate.ProductLiabilityLimit, Decimal) = 0 AndAlso CType(State.ClaimBO.CertificateItemCoverage.CoverageLiabilityLimit, Decimal) = 0)) Then
             liabLimit = CDec(999999999.99)
         End If
 
@@ -1892,10 +1888,10 @@ Partial Class PayClaimForm
         End If
 
         'Pickup date: do not display if replacement and/or interface claim
-        If State.ClaimBO IsNot Nothing AndAlso State.ClaimBO.CanDisplayVisitAndPickUpDates And Not State.ClaimBO.LoanerTaken And Not State.isForClaimPayAdjust Then
+        If State.ClaimBO IsNot Nothing AndAlso State.ClaimBO.CanDisplayVisitAndPickUpDates AndAlso Not State.ClaimBO.LoanerTaken AndAlso Not State.isForClaimPayAdjust Then
             PopulateBOProperty(State.ClaimInvoiceBO, "PickUpDate", TextboxPickupDate)
             PopulateBOProperty(State.ClaimBO, "PickUpDate", TextboxPickupDate)
-        ElseIf State.ClaimBO.LoanerTaken And Not State.isForClaimPayAdjust Then
+        ElseIf State.ClaimBO.LoanerTaken AndAlso Not State.isForClaimPayAdjust Then
             State.ClaimInvoiceBO.Invoiceable.SetPickUpDateFromLoanerReturnedDate()
             State.ClaimInvoiceBO.PickUpDate = State.ClaimInvoiceBO.LoanerReturnedDate
         End If
@@ -2080,9 +2076,7 @@ Partial Class PayClaimForm
     End Sub
 
     Private Sub ValidateBankInfoForCountry(code As String)
-        If (code = Codes.Country_Code_France And
-                    LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, GetSelectedItem(cboPayeeSelector)) = ClaimInvoice.PAYEE_OPTION_CUSTOMER And
-                    LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, GetSelectedItem(PaymentMethodDrop)) = Codes.PAYMENT_METHOD__BANK_TRANSFER) Then
+        If (code = Codes.Country_Code_France AndAlso LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, GetSelectedItem(cboPayeeSelector)) = ClaimInvoice.PAYEE_OPTION_CUSTOMER AndAlso LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, GetSelectedItem(PaymentMethodDrop)) = Codes.PAYMENT_METHOD__BANK_TRANSFER) Then
             If State.PayeeBankInfo.IbanNumber Is Nothing Then
                 Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_BANKIBANNO_REQD)
             End If
@@ -2187,7 +2181,7 @@ Partial Class PayClaimForm
                 Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
                         If CheckStatusAndSaveClaimInvoice() Then
-                            If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" Or NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
+                            If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                                 NavController.Navigate(Me, "back")
                             Else
                                 ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
@@ -2200,7 +2194,7 @@ Partial Class PayClaimForm
                     Case ElitaPlusPage.DetailPageCommand.Accept
                         State.ClaimInvoiceBO.CloseClaim = True
                         If SaveClaimInvoice() Then
-                            If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" Or NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
+                            If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                                 NavController.Navigate(Me, "back")
                             Else
                                 ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
@@ -2213,7 +2207,7 @@ Partial Class PayClaimForm
                             Dim claim As Claim = ClaimFacade.Instance.CreateClaim(Of Claim)()
                             claim.Handle_Replaced_Items(1, State.ClaimBO.Id, State.ClaimBO.CertificateId,
                                     State.ClaimBO.CertItemCoverageId, DateHelper.GetDateValue(txtRepairDate.Text))
-                            If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" Or NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
+                            If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                                 NavController.Navigate(Me, "back")
                             Else
                                 ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
@@ -2228,7 +2222,7 @@ Partial Class PayClaimForm
                 Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
                         State.ClaimInvoiceBO.cancelEdit()
-                        If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" Or NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
+                        If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                             NavController.Navigate(Me, "back")
                         Else
                             ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
@@ -2238,7 +2232,7 @@ Partial Class PayClaimForm
                     Case ElitaPlusPage.DetailPageCommand.Accept
                         State.ClaimInvoiceBO.CloseClaim = False
                         If SaveClaimInvoice() Then
-                            If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" Or NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
+                            If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                                 NavController.Navigate(Me, "back")
                             Else
                                 ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
@@ -2246,7 +2240,7 @@ Partial Class PayClaimForm
                         End If
                     Case ElitaPlusPage.DetailPageCommand.OK
                         If SaveClaimInvoice() Then
-                            If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" Or NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
+                            If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                                 NavController.Navigate(Me, "back")
                             Else
                                 ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
@@ -2257,7 +2251,7 @@ Partial Class PayClaimForm
                 'in this case, we need to exit after we show the message
                 'so we dont care about user's response
             ElseIf Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK Then
-                If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" Or NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
+                If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                     NavController.Navigate(Me, "back")
                 Else
                     ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
@@ -2345,7 +2339,7 @@ Partial Class PayClaimForm
 
             'Pickup date: do not display if replacement and/or interface claim
             'Interface claim = Not claim.Source.Equals(String.Empty)
-            If State.ClaimBO IsNot Nothing AndAlso State.ClaimBO.CanDisplayVisitAndPickUpDates And Not State.isForClaimPayAdjust Then
+            If State.ClaimBO IsNot Nothing AndAlso State.ClaimBO.CanDisplayVisitAndPickUpDates AndAlso Not State.isForClaimPayAdjust Then
                 If Not State.ClaimBO.LoanerTaken Then AddCalendar(ImageButtonPickupDate, TextboxPickupDate)
             End If
 
@@ -2404,7 +2398,7 @@ Partial Class PayClaimForm
                 DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" Or NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
+                If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Then
                     NavController.Navigate(Me, "back")
                 Else
                     ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
@@ -2437,7 +2431,7 @@ Partial Class PayClaimForm
             Dim claimServiceCenter As ServiceCenter = New ServiceCenter(State.ClaimInvoiceBO.Invoiceable.ServiceCenterId)
             Dim PayeeOptionCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, GetSelectedItem(cboPayeeSelector))
 
-            If claimServiceCenter.PayMaster = False And PayeeOptionCode = ClaimInvoice.PAYEE_OPTION_MASTER_CENTER Then
+            If claimServiceCenter.PayMaster = False AndAlso PayeeOptionCode = ClaimInvoice.PAYEE_OPTION_MASTER_CENTER Then
                 Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.CANNOT_PAY_MASTER_CENTER)
             End If
             If (Not IsGiftCardValid()) Then
@@ -2586,7 +2580,7 @@ Partial Class PayClaimForm
                 If (cboPayeeSelector.SelectedItem.Text.ToUpper = Payee_Customer AndAlso PaymentMethodDrop.SelectedItem.Text = listItem.Text) Then
                     If (oDealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_DARTY_GIFT_CARD_TYPE).Count > 0) Then
                         Dim attvalue As AttributeValue = oDealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_DARTY_GIFT_CARD_TYPE).First()
-                        If (attvalue.EffectiveDate < DateTime.UtcNow Or attvalue.ExpirationDate > DateTime.UtcNow) Then
+                        If (attvalue.EffectiveDate < DateTime.UtcNow OrElse attvalue.ExpirationDate > DateTime.UtcNow) Then
                             GetGiftCardInfo() 'Req-6171 - Darty gift card (claim reimbursement)
                         End If
                     End If
@@ -2668,7 +2662,7 @@ Partial Class PayClaimForm
             If State.ClaimBO IsNot Nothing Then
                 PopulateBOsFromForm(True, True)
                 'Me.State.PartsInfoReplacementClick = True
-                If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" Or NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" Or NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL" Then
+                If NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_CLADJ" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL_BACKEND" OrElse NavController.CurrentNavState.Name = "PAY_CLAIM_DETAIL" Then
                     NavController.Navigate(Me, "parts_info", BuildPartsInfoParameters)
                     'Else
                     '    Me.callPage(PartsInfoForm.URL, Me.State.ClaimBO)
@@ -3270,7 +3264,7 @@ Partial Class PayClaimForm
             If (cboPayeeSelector.SelectedItem.Text.ToUpper = Payee_Customer AndAlso PaymentMethodDrop.SelectedItem.Text = listItem.Text) Then
                 If (oDealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_DARTY_GIFT_CARD_TYPE).Count > 0) Then
                     Dim attvalue As AttributeValue = oDealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_DARTY_GIFT_CARD_TYPE).First()
-                    If (attvalue.EffectiveDate > DateTime.UtcNow Or attvalue.ExpirationDate < DateTime.UtcNow) Then
+                    If (attvalue.EffectiveDate > DateTime.UtcNow OrElse attvalue.ExpirationDate < DateTime.UtcNow) Then
                         Return False
                     End If
                 End If

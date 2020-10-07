@@ -192,8 +192,8 @@ Partial Class CoverageByCompanyGroupListForm
     Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-        If dvRow IsNot Nothing And Not State.bnoRow Then
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+        If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Row.Cells(GRID_COL_CODE_IDX).Text = dvRow(CompanyGroup.CompanyGroupDV.COL_CODE).ToString
                 e.Row.Cells(GRID_COL_DESCRIPTION_IDX).Text = dvRow(CompanyGroup.CompanyGroupDV.COL_DESCRIPTION).ToString
                 e.Row.Cells(GRID_COL_COMPANY_GROUP_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(CompanyGroup.CompanyGroupDV.COL_COMPANY_GROUP_ID), Byte()))

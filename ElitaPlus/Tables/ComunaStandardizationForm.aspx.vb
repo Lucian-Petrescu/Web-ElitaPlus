@@ -176,7 +176,7 @@ Partial Public Class ComunaStandardizationForm
     Private Sub ComunaCodeForm_LoadComplete(sender As Object, e As System.EventArgs) Handles Me.LoadComplete
         SetControlState()
         If ErrControllerMaster.Visible Then
-            If Grid.Visible And Grid.Rows.Count < 10 Then
+            If Grid.Visible AndAlso Grid.Rows.Count < 10 Then
                 Dim fillerHight As Integer = 200
                 fillerHight = fillerHight - Grid.Rows.Count * 20
                 spanFiller.Text = "<tr><td colspan=""2"" style=""height:" & fillerHight & "px"">&nbsp;</td></tr>"
@@ -263,7 +263,7 @@ Partial Public Class ComunaStandardizationForm
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim lblTemp As Label, ddl As DropDownList, txt As TextBox
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     If .RowIndex = Grid.EditIndex Then
                         ddl = CType(e.Row.FindControl(GRID_CTRL_NAME_COMUNA), DropDownList)
@@ -484,7 +484,7 @@ Partial Public Class ComunaStandardizationForm
                 With State
                     If (.MyBO.IsDirty) Then
                         .MyBO.Save()
-                        If .IsGridAddNew And .searchDV.Count = 1 Then
+                        If .IsGridAddNew AndAlso .searchDV.Count = 1 Then
                             Dim oCom As New ComunaCode(.MyBO.ComunaCodeId)
                             .searchComunaAlias = .MyBO.ComunaAlias
                             .searchComuna = oCom.Comuna

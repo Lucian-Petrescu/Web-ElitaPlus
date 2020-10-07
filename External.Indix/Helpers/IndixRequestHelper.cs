@@ -15,7 +15,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 using Assurant.ElitaPlus.BusinessObjectsNew;
 using System.Linq;
-using Assurant.ElitaPlus.External.Indix.Extensions;
 
 namespace Assurant.ElitaPlus.External.Indix.Helpers
 {

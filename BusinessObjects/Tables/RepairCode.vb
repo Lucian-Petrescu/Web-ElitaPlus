@@ -85,7 +85,7 @@ Public Class RepairCode
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(RepairCodeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -96,7 +96,7 @@ Public Class RepairCode
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanygroupId() As Guid
+    Public Property CompanygroupId As Guid
         Get
             CheckDeleted()
             If Row(RepairCodeDAL.COL_NAME_COMPANY_GROUP) Is DBNull.Value Then
@@ -105,7 +105,7 @@ Public Class RepairCode
                 Return New Guid(CType(Row(RepairCodeDAL.COL_NAME_COMPANY_GROUP), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RepairCodeDAL.COL_NAME_COMPANY_GROUP, Value)
         End Set
@@ -113,7 +113,7 @@ Public Class RepairCode
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)> _
-    Public Property ShortDesc() As String
+    Public Property ShortDesc As String
         Get
             CheckDeleted()
             If Row(RepairCodeDAL.COL_NAME_SHORT_DESC) Is DBNull.Value Then
@@ -122,7 +122,7 @@ Public Class RepairCode
                 Return CType(Row(RepairCodeDAL.COL_NAME_SHORT_DESC), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairCodeDAL.COL_NAME_SHORT_DESC, Value)
         End Set
@@ -130,7 +130,7 @@ Public Class RepairCode
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(RepairCodeDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -139,7 +139,7 @@ Public Class RepairCode
                 Return CType(Row(RepairCodeDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RepairCodeDAL.COL_NAME_DESCRIPTION, Value)
         End Set

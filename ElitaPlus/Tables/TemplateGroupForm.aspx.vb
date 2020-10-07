@@ -541,7 +541,7 @@ Namespace Tables
             Try
                 With TheTemplateGroup
                     PopulateBOsFromForm()
-                    bIsDirty = .IsDirty Or TheTemplateGroup.IsChildrenDirty
+                    bIsDirty = .IsDirty OrElse TheTemplateGroup.IsChildrenDirty
                 End With
             Catch ex As Exception
                 MasterPage.MessageController.AddError(TEMPLATE_GROUP_FORM001)
@@ -815,8 +815,8 @@ Namespace Tables
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
 
-                If dvRow IsNot Nothing And State.TemplateDV.Count > 0 Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso State.TemplateDV.Count > 0 Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         btnEditItem = CType(e.Row.Cells(GRID_COL_EDIT_IDX).FindControl("SelectAction"), LinkButton)
                         btnEditItem.Text = dvRow(OcTemplate.TemplateDV.COL_TEMPLATE_CODE).ToString
 

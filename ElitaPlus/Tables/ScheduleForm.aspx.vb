@@ -230,7 +230,7 @@ Namespace Tables
                     State.searchDV = GetDV()
                 End If
 
-                If State.IsAfterEditSave And State.IsAfterFinalSave Then
+                If State.IsAfterEditSave AndAlso State.IsAfterFinalSave Then
                     State.IsAfterEditSave = False
                     State.IsAfterFinalSave = False
                     SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, State.PageIndex)
@@ -274,8 +274,8 @@ Namespace Tables
 
             Try
 
-                If dvRow IsNot Nothing And (Not State.bnoRow) Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then
+                If dvRow IsNot Nothing AndAlso (Not State.bnoRow) Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem OrElse itemType = ListItemType.EditItem Then
                         If (State.IsEditMode AndAlso _
                            State.Id.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_SCHEDULE_DETAIL_ID), Byte())))) Then
                             PopulateControlFromBOProperty(scheduleDetailLabel, dvRow(Schedule.ScheduleDetailSelectionView.COL_NAME_SCHEDULE_DETAIL_ID))
@@ -441,7 +441,7 @@ Namespace Tables
                 Grid.DataSource = State.searchDV
                 'HighLightSortColumn(Grid, Me.State.SortExpression)
                 Grid.DataBind()
-                If (State.searchDV.Count = 1) And State.AddingNewRow And State.Canceling Then
+                If (State.searchDV.Count = 1) AndAlso State.AddingNewRow AndAlso State.Canceling Then
                     Grid.Rows(0).Visible = False
                 Else
                     Grid.Rows(0).Visible = True
@@ -513,7 +513,7 @@ Namespace Tables
         Private Sub PopulateHeader()
             UpdateReadOnlyFlag()
             TranslateGridHeader(Grid)
-            If (Not State.ScheduleId = Guid.Empty) And (State.MyBO IsNot Nothing) Then
+            If (Not State.ScheduleId = Guid.Empty) AndAlso (State.MyBO IsNot Nothing) Then
                 moScheduleCode.Enabled = False
                 moScheduleCode.Text = State.MyBO.Code
 
@@ -644,10 +644,10 @@ Namespace Tables
                         dayOfWeekList.SelectedIndex = NO_ITEM_SELECTED_INDEX
                     End If
 
-                    If (fromTimeText IsNot Nothing) And (.FromTime IsNot Nothing) And (.FromTime IsNot String.Empty) Then
+                    If (fromTimeText IsNot Nothing) AndAlso (.FromTime IsNot Nothing) AndAlso (.FromTime IsNot String.Empty) Then
                         fromTimeText.Text = CDate(.FromTime).ToString(Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern)
                     End If
-                    If (toTimeText IsNot Nothing) And (.ToTime IsNot Nothing) And (.ToTime IsNot String.Empty) Then
+                    If (toTimeText IsNot Nothing) AndAlso (.ToTime IsNot Nothing) AndAlso (.ToTime IsNot String.Empty) Then
                         toTimeText.Text = CDate(.ToTime).ToString(Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern)
                     End If
 
@@ -853,8 +853,7 @@ Namespace Tables
                 btnCopy_WRITE.Enabled = True
                 btnUndo_WRITE.Enabled = False
             Else
-                If State.Action = NEW_SCHEDULE Or _
-                   State.Action = INIT_LOAD Then
+                If State.Action = NEW_SCHEDULE OrElse State.Action = INIT_LOAD Then
                     btnBack.Enabled = True
                     btnApply_WRITE.Enabled = True
                     btnButtomNew_WRITE.Enabled = False
@@ -996,7 +995,7 @@ Namespace Tables
                 PopulateBOfromForm()
                 'Me.PopulateGrid()
                 'Me.State.PageIndex = Grid.PageIndex
-                If (Not State.bnoRow) And State.MyBO.IsDirty Then
+                If (Not State.bnoRow) AndAlso State.MyBO.IsDirty Then
                     DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                     State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
@@ -1020,7 +1019,7 @@ Namespace Tables
 
                 PopulateBOfromForm()
 
-                If Not State.bnoRow And State.MyBO.IsDirty Then
+                If Not State.bnoRow AndAlso State.MyBO.IsDirty Then
                     DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                     State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
@@ -1051,7 +1050,7 @@ Namespace Tables
                 State.ScheduleId = Guid.Empty
 
                 PopulateBOfromForm()
-                If Not State.bnoRow And State.MyBO.IsDirty Then
+                If Not State.bnoRow AndAlso State.MyBO.IsDirty Then
                     DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                     State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
@@ -1099,7 +1098,7 @@ Namespace Tables
             Try
                 PopulateBOfromForm()
                 ' We are enforcing to save the schedule Detail before saving the Schedule
-                If State.bnoRow And State.MyScheduleDetailChildBO IsNot Nothing Then
+                If State.bnoRow AndAlso State.MyScheduleDetailChildBO IsNot Nothing Then
                     If Not State.MyScheduleDetailChildBO.IsValid Then
                         State.MyScheduleDetailChildBO.BeginEdit()
                         State.MyScheduleDetailChildBO.Delete()
@@ -1108,7 +1107,7 @@ Namespace Tables
                         State.MyScheduleDetailChildBO = Nothing
                     End If
                 End If
-                If State.MyBO.IsDirty And (State.MyScheduleDetailChildBO Is Nothing Or State.CopyScheduleId <> Guid.Empty) Then
+                If State.MyBO.IsDirty AndAlso (State.MyScheduleDetailChildBO Is Nothing OrElse State.CopyScheduleId <> Guid.Empty) Then
                     State.MyBO.Save()
                     State.HasDataChanged = True
                     PopulateFormfromBO()

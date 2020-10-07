@@ -39,7 +39,7 @@ Public Class UserControlQuestion
         Dim parentControl = Parent
 
         Debug.WriteLine($"Loading UserControlQuestion ID: {ID}")
-        While (Not TypeOf parentControl Is ElitaPlusPage And parentControl IsNot Nothing)
+        While (Not TypeOf parentControl Is ElitaPlusPage AndAlso parentControl IsNot Nothing)
             parentControl = parentControl.Parent
         End While
         ElitaHostPage = DirectCast(parentControl, ElitaPlusPage)

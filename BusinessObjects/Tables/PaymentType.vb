@@ -90,7 +90,7 @@ Public Class PaymentType
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(PaymentTypeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class PaymentType
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(PaymentTypeDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class PaymentType
                 Return CType(row(PaymentTypeDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PaymentTypeDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class PaymentType
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(PaymentTypeDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -127,14 +127,14 @@ Public Class PaymentType
                 Return CType(row(PaymentTypeDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PaymentTypeDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CollectionMethodId() As Guid
+    Public Property CollectionMethodId As Guid
         Get
             CheckDeleted()
             If Row(PaymentTypeDAL.COL_NAME_COLLECTION_METHOD_ID) Is DBNull.Value Then
@@ -143,14 +143,14 @@ Public Class PaymentType
                 Return New Guid(CType(Row(PaymentTypeDAL.COL_NAME_COLLECTION_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PaymentTypeDAL.COL_NAME_COLLECTION_METHOD_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), PayPalPaymentInstruValidator("")>
-    Public Property PaymentInstrumentId() As Guid
+    Public Property PaymentInstrumentId As Guid
         Get
             CheckDeleted()
             If Row(PaymentTypeDAL.COL_NAME_PAYMENT_INSTRUMENT_ID) Is DBNull.Value Then
@@ -159,14 +159,14 @@ Public Class PaymentType
                 Return New Guid(CType(Row(PaymentTypeDAL.COL_NAME_PAYMENT_INSTRUMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PaymentTypeDAL.COL_NAME_PAYMENT_INSTRUMENT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(PaymentTypeDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -175,7 +175,7 @@ Public Class PaymentType
                 Return New Guid(CType(Row(PaymentTypeDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PaymentTypeDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set

@@ -118,7 +118,7 @@ Public Class GetClaimDetail
 #Region "Properties"
 
     <ValidStringLength("", Max:=32)> _
-    Public Property ClaimStringId() As String
+    Public Property ClaimStringId As String
         Get
             If Row(DATA_COL_NAME_CLAIM_ID) Is DBNull.Value Then
                 Return Nothing
@@ -126,14 +126,14 @@ Public Class GetClaimDetail
                 Return (CType(Row(DATA_COL_NAME_CLAIM_ID), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)> _
-    Public Property IncludePartDescription() As String
+    Public Property IncludePartDescription As String
         Get
             If Row(DATA_COL_NAME_INCLUDE_PART_DESCRIPTIONS) Is DBNull.Value Then
                 Return Nothing
@@ -141,14 +141,14 @@ Public Class GetClaimDetail
                 Return (CType(Row(DATA_COL_NAME_INCLUDE_PART_DESCRIPTIONS), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_INCLUDE_PART_DESCRIPTIONS, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property ForSvcUse() As String
+    Public Property ForSvcUse As String
         Get
             If Row(DATA_COL_NAME_FOR_SVC_USE) Is DBNull.Value Then
                 Return Nothing
@@ -156,7 +156,7 @@ Public Class GetClaimDetail
                 Return (CType(Row(DATA_COL_NAME_FOR_SVC_USE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_FOR_SVC_USE, Value)
         End Set
@@ -164,7 +164,7 @@ Public Class GetClaimDetail
 
 
     <ValidStringLength("", Max:=20)>
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
@@ -173,14 +173,14 @@ Public Class GetClaimDetail
                 Return CType(Row(DATA_COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)> _
-    Public Property CompanyCode() As String
+    Public Property CompanyCode As String
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_COMPANY_CODE) Is DBNull.Value Then
@@ -189,16 +189,16 @@ Public Class GetClaimDetail
                 Return CType(Row(DATA_COL_NAME_COMPANY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_COMPANY_CODE, Value)
         End Set
     End Property
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             Return _company_id
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _company_id = Value
         End Set
     End Property

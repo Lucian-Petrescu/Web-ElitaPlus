@@ -2,7 +2,7 @@ Imports System.Runtime.Serialization
 Imports Assurant.ElitaPlus.Common
 
 
-<Serializable()> Public NotInheritable Class BOInvalidOperationException
+<Serializable> Public NotInheritable Class BOInvalidOperationException
     Inherits ElitaPlusException
 
     Public Sub New()

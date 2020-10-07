@@ -165,7 +165,7 @@ Public Class ServiceOrder
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ServiceOrderDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -176,7 +176,7 @@ Public Class ServiceOrder
     End Property
 
     <ValueMandatory("")>
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If Row(ServiceOrderDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -185,14 +185,14 @@ Public Class ServiceOrder
                 Return New Guid(CType(Row(ServiceOrderDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceOrderDAL.COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
 
 
-    Public Property ClaimAuthorizationId() As Guid
+    Public Property ClaimAuthorizationId As Guid
         Get
             CheckDeleted()
             If Row(ServiceOrderDAL.COL_NAME_CLAIM_AUTHORIZATION_ID) Is DBNull.Value Then
@@ -201,7 +201,7 @@ Public Class ServiceOrder
                 Return New Guid(CType(Row(ServiceOrderDAL.COL_NAME_CLAIM_AUTHORIZATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceOrderDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
         End Set
@@ -209,7 +209,7 @@ Public Class ServiceOrder
 
     '08/24/2006 - ALR - Removed Mandatory property
     '                   Modified property to return the byte array from the database if it exists
-    Public ReadOnly Property ServiceOrderImage() As Byte()
+    Public ReadOnly Property ServiceOrderImage As Byte()
         Get
             CheckDeleted()
             If Not ServiceOrderImageId.Equals(Guid.Empty) Then
@@ -221,7 +221,7 @@ Public Class ServiceOrder
     End Property
 
     '08/24/2006 - ALR - Added property for the changing of serviceorder images.  Points to ELP_Service_order_image
-    Public Property ServiceOrderImageId() As Guid
+    Public Property ServiceOrderImageId As Guid
         Get
             CheckDeleted()
             If Row(ServiceOrderDAL.COL_NAME_SERVICE_ORDER_IMAGE_ID) Is DBNull.Value Then
@@ -230,7 +230,7 @@ Public Class ServiceOrder
                 Return New Guid(CType(Row(ServiceOrderDAL.COL_NAME_SERVICE_ORDER_IMAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceOrderDAL.COL_NAME_SERVICE_ORDER_IMAGE_ID, Value)
         End Set
@@ -238,7 +238,7 @@ Public Class ServiceOrder
 
     '08/24/2006 - ALR - Added property for the changing of serviceorder images.  
     '                   Stores string XML representation of the dataset used to create the service order.
-    Public Property ServiceOrderImageData() As String
+    Public Property ServiceOrderImageData As String
         Get
             CheckDeleted()
             If Row(ServiceOrderDAL.COL_NAME_SERVICE_ORDER_IMAGE_DATA) Is DBNull.Value Then
@@ -247,7 +247,7 @@ Public Class ServiceOrder
                 Return CType(Row(ServiceOrderDAL.COL_NAME_SERVICE_ORDER_IMAGE_DATA), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceOrderDAL.COL_NAME_SERVICE_ORDER_IMAGE_DATA, Value)
         End Set

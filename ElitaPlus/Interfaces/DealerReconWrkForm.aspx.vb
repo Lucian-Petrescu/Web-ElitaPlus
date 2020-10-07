@@ -1214,7 +1214,7 @@ Namespace Interfaces
             End If
             'Freeze Headers - Start
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     .Attributes("onclick") = "setHighlighter(this)"
                     'Freeze Columns - Start
@@ -1929,7 +1929,7 @@ Namespace Interfaces
 
         Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                If IsDataGPageDirty() Or (State.BundlesHashTable IsNot Nothing AndAlso State.BundlesHashTable.Count > 0) Then
+                If IsDataGPageDirty() OrElse (State.BundlesHashTable IsNot Nothing AndAlso State.BundlesHashTable.Count > 0) Then
                     DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
                     State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else

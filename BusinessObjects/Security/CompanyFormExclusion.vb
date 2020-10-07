@@ -121,7 +121,7 @@ Public Class CompanyFormExclusion
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CompanyFormExclusionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -132,7 +132,7 @@ Public Class CompanyFormExclusion
     End Property
 
     <ValueMandatory("")> _
-    Public Property FormId() As Guid
+    Public Property FormId As Guid
         Get
             CheckDeleted()
             If row(CompanyFormExclusionDAL.COL_NAME_FORM_ID) Is DBNull.Value Then
@@ -141,7 +141,7 @@ Public Class CompanyFormExclusion
                 Return New Guid(CType(row(CompanyFormExclusionDAL.COL_NAME_FORM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyFormExclusionDAL.COL_NAME_FORM_ID, Value)
         End Set
@@ -149,7 +149,7 @@ Public Class CompanyFormExclusion
 
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(CompanyFormExclusionDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -158,7 +158,7 @@ Public Class CompanyFormExclusion
                 Return New Guid(CType(row(CompanyFormExclusionDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyFormExclusionDAL.COL_NAME_COMPANY_ID, Value)
         End Set

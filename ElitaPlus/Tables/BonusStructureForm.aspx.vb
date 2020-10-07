@@ -130,7 +130,7 @@ Namespace Tables
                     PopulateServiceCenterDropDown()
              
                     If State.IsGridVisible Then
-                        If Not (State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.SelectedPageSize = Grid.PageSize) Then
+                        If Not (State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) OrElse Not (State.SelectedPageSize = Grid.PageSize) Then
                             Grid.PageSize = State.SelectedPageSize
                         End If
                         cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
@@ -328,8 +328,8 @@ Namespace Tables
 
 
 
-                If dvRow IsNot Nothing And Not State.bNoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bNoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_BONUS_STRUCTURE_IDX), dvRow(ClaimBonusSettings.BonusSettingsDV.COL_NAME_CLAIM_BONUS_SETTINGS_ID))
                         PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DEALERID_IDX), dvRow(ClaimBonusSettings.BonusSettingsDV.COL_NAME_DEALER_NAME))
                         PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_SERVICE_CENTERID_IDX), dvRow(ClaimBonusSettings.BonusSettingsDV.COL_NAME_SERVICE_CENTER))

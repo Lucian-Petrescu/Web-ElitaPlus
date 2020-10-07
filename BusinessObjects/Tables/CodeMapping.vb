@@ -90,7 +90,7 @@ Public Class CodeMapping
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CodeMappingDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class CodeMapping
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(CodeMappingDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class CodeMapping
                 Return New Guid(CType(row(CodeMappingDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CodeMappingDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class CodeMapping
 
 
     <ValueMandatory("")> _
-    Public Property ListItemId() As Guid
+    Public Property ListItemId As Guid
         Get
             CheckDeleted()
             If row(CodeMappingDAL.COL_NAME_LIST_ITEM_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class CodeMapping
                 Return New Guid(CType(row(CodeMappingDAL.COL_NAME_LIST_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CodeMappingDAL.COL_NAME_LIST_ITEM_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class CodeMapping
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=60)> _
-    Public Property NewDescription() As String
+    Public Property NewDescription As String
         Get
             CheckDeleted()
             If row(CodeMappingDAL.COL_NAME_NEW_DESCRIPTION) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class CodeMapping
                 Return CType(row(CodeMappingDAL.COL_NAME_NEW_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CodeMappingDAL.COL_NAME_NEW_DESCRIPTION, Value)
         End Set
@@ -161,7 +161,7 @@ Public Class CodeMapping
         End Get
     End Property
 
-    Public ReadOnly Property MyDataset() As DataSet
+    Public ReadOnly Property MyDataset As DataSet
         Get
             Return Dataset
         End Get

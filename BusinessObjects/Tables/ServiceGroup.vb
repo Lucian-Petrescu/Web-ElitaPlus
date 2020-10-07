@@ -96,7 +96,7 @@ Public Class ServiceGroup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ServiceGroupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -107,7 +107,7 @@ Public Class ServiceGroup
     End Property
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(ServiceGroupDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -116,7 +116,7 @@ Public Class ServiceGroup
                 Return New Guid(CType(Row(ServiceGroupDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceGroupDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
@@ -124,7 +124,7 @@ Public Class ServiceGroup
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)> _
-    Public Property ShortDesc() As String
+    Public Property ShortDesc As String
         Get
             CheckDeleted()
             If Row(ServiceGroupDAL.COL_NAME_SHORT_DESC) Is DBNull.Value Then
@@ -133,7 +133,7 @@ Public Class ServiceGroup
                 Return CType(Row(ServiceGroupDAL.COL_NAME_SHORT_DESC), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceGroupDAL.COL_NAME_SHORT_DESC, Value)
         End Set
@@ -141,7 +141,7 @@ Public Class ServiceGroup
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ServiceGroupDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -150,7 +150,7 @@ Public Class ServiceGroup
                 Return CType(Row(ServiceGroupDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceGroupDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -213,7 +213,7 @@ Public Class ServiceGroup
     End Function
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
@@ -247,7 +247,7 @@ Public Class ServiceGroup
 #End Region
 
 #Region "Children Related"
-    Public ReadOnly Property ServiceGroupRiskTypeChildren() As ServiceGroupRiskTypeList
+    Public ReadOnly Property ServiceGroupRiskTypeChildren As ServiceGroupRiskTypeList
         Get
             Return New ServiceGroupRiskTypeList(Me)
         End Get

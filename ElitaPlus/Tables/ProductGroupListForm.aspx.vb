@@ -289,7 +289,7 @@ Partial Class ProductGroupListForm
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Item.Cells(GRID_COL_EXDN_ID).Text = New Guid(CType(dvRow(ProductGroup.ProductGroupSearchDV.COL_NAME_PRODUCT_GROUP_ID), Byte())).ToString
                 e.Item.Cells(GRID_COL_CODE).Text = dvRow(ProductGroup.ProductGroupSearchDV.COL_NAME_DEALER).ToString
                 e.Item.Cells(GRID_COL_DESCRIPTION).Text = dvRow(ProductGroup.ProductGroupSearchDV.COL_NAME_DESCRIPTION).ToString

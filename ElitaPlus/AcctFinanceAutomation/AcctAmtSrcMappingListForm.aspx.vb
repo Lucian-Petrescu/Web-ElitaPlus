@@ -139,7 +139,7 @@ Partial Public Class AcctAmtSrcMappingListForm
         Try
 
             Dim result As Role.RoleSearchDV
-            If State.SearchDVMappped Is Nothing And State.SearchDVNotMappped Is Nothing Then
+            If State.SearchDVMappped Is Nothing AndAlso State.SearchDVNotMappped Is Nothing Then
                 AfaAcctAmtSrc.getList(State.searchedDealerID, State.SearchDVMappped, State.SearchDVNotMappped)
             End If
 

@@ -18,7 +18,7 @@ Public Class WorkQueueItem
 #End Region
 
 #Region "Static Components"
-    Private Shared ReadOnly Property WorkQueueClientProxy() As WrkQueue.WorkQueueServiceClient
+    Private Shared ReadOnly Property WorkQueueClientProxy As WrkQueue.WorkQueueServiceClient
         Get
             Dim wrkQueClient As WrkQueue.WorkQueueServiceClient
             If (oWorkQueueServiceClient Is Nothing OrElse oWorkQueueServiceClient.State <> ServiceModel.CommunicationState.Opened) Then
@@ -227,7 +227,7 @@ Public Class WorkQueueItem
         Get
             Return _workQueueItem.Id
         End Get
-        Set(ByVal value As Guid)
+        Set
             _workQueueItem.Id = value
         End Set
     End Property
@@ -245,7 +245,7 @@ Public Class WorkQueueItem
         End Get
     End Property
 
-    Public ReadOnly Property WorkQueueItemType() As ItemType
+    Public ReadOnly Property WorkQueueItemType As ItemType
         Get
             Dim itemType As ItemType
 
@@ -344,7 +344,7 @@ Namespace WrkQueue
             Get
                 Return MetaDataAsGuid(ServiceHelper.WQI_DT_CLAIM_ID)
             End Get
-            Set(ByVal value As Guid)
+            Set
                 Me(ServiceHelper.WQI_DT_CLAIM_ID) = value.ToString()
             End Set
         End Property
@@ -353,7 +353,7 @@ Namespace WrkQueue
             Get
                 Return MetaDataAsGuid(ServiceHelper.WQI_DT_CLAIM_ISSUE_ID)
             End Get
-            Set(ByVal value As Guid)
+            Set
                 Me(ServiceHelper.WQI_DT_CLAIM_ISSUE_ID) = value.ToString()
             End Set
         End Property
@@ -382,7 +382,7 @@ Namespace WrkQueue
                     Return oWqid.Value
                 End If
             End Get
-            Set(ByVal value As String)
+            Set
                 Dim oWorkQueueItemData As WorkQueueItemData = Nothing
                 Dim length As Integer
                 If (WorkQueueItemDataList Is Nothing) Then

@@ -99,7 +99,7 @@ Public Class BankName
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(BankNameDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -110,7 +110,7 @@ Public Class BankName
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(BankNameDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -119,7 +119,7 @@ Public Class BankName
                 Return CType(Row(BankNameDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankNameDAL.COL_NAME_CODE, Value)
         End Set
@@ -128,7 +128,7 @@ Public Class BankName
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(BankNameDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -137,13 +137,13 @@ Public Class BankName
                 Return CType(Row(BankNameDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankNameDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property CountryID() As Guid
+    Public Property CountryID As Guid
         Get
             CheckDeleted()
             If Row(BankNameDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -152,7 +152,7 @@ Public Class BankName
                 Return New Guid(CType(Row(BankNameDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BankNameDAL.COL_NAME_COUNTRY_ID, Value)
         End Set

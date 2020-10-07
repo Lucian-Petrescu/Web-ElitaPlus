@@ -90,7 +90,7 @@ Public Class OcMessage
 
 #Region "Properties"
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(OcMessageDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class OcMessage
         End Get
     End Property
 
-    Public Property OcTemplateId() As Guid
+    Public Property OcTemplateId As Guid
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_OC_TEMPLATE_ID) Is DBNull.Value Then
@@ -109,13 +109,13 @@ Public Class OcMessage
                 Return New Guid(CType(Row(OcMessageDAL.COL_NAME_OC_TEMPLATE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(OcMessageDAL.COL_NAME_OC_TEMPLATE_ID, Value)
         End Set
     End Property
 
-    Public Property TemplateCode() As String
+    Public Property TemplateCode As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_TEMPLATE_CODE) Is DBNull.Value Then
@@ -124,13 +124,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_TEMPLATE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageDAL.COL_NAME_TEMPLATE_CODE, Value)
         End Set
     End Property
 
-    Public Property TemplateDescription() As String
+    Public Property TemplateDescription As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_TEMPLATE_DESCRIPTION) Is DBNull.Value Then
@@ -139,13 +139,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_TEMPLATE_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageDAL.COL_NAME_TEMPLATE_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property SenderReason() As String
+    Public Property SenderReason As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_SENDER_REASON) Is DBNull.Value Then
@@ -154,13 +154,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_SENDER_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageDAL.COL_NAME_SENDER_REASON, Value)
         End Set
     End Property
 
-    Public Property RecipientAddress() As String
+    Public Property RecipientAddress As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_RECIPIENT_ADDRESS) Is DBNull.Value Then
@@ -169,13 +169,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_RECIPIENT_ADDRESS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageDAL.COL_NAME_RECIPIENT_ADDRESS, Value)
         End Set
     End Property
 
-    Public Property LastAttemptedOn() As DateTime
+    Public Property LastAttemptedOn As DateTime
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_ON) Is DBNull.Value Then
@@ -184,13 +184,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_ON), String)
             End If
         End Get
-        Set(ByVal Value As DateTime)
+        Set
             CheckDeleted()
             SetValue(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_ON, Value)
         End Set
     End Property
 
-    Public Property LastAttemptedStatus() As String
+    Public Property LastAttemptedStatus As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_STATUS) Is DBNull.Value Then
@@ -199,13 +199,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_STATUS, Value)
         End Set
     End Property
 
-    Public Property CertificateNumber() As String
+    Public Property CertificateNumber As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_CERT_NUMBER) Is DBNull.Value Then
@@ -214,13 +214,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageDAL.COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
@@ -229,13 +229,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageDAL.COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
-    Public Property CaseNumber() As String
+    Public Property CaseNumber As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_CASE_NUMBER) Is DBNull.Value Then
@@ -244,13 +244,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_CASE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageDAL.COL_NAME_CASE_NUMBER, Value)
         End Set
     End Property
 
-    Public ReadOnly Property MessageParametersList() As OcMessageParamsList
+    Public ReadOnly Property MessageParametersList As OcMessageParamsList
         Get
             Return New OcMessageParamsList(Me)
         End Get

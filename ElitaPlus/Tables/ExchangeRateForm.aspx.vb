@@ -192,7 +192,7 @@ Namespace Tables
             Dim DV As CurrencyConversion.CurrencyRateDV = State.MyBO.FindMaxdate(State.MyBO.DealerId, State.MyBO.Currency1Id, State.MyBO.Currency2Id)
             Dim DVRow As DataRow = DV.Table.Rows(0)
 
-            If DVRow(DV.COL_EFFECTIVE) Is DBNull.Value Or DVRow(DV.COL_EFFECTIVE) Is Nothing Then
+            If DVRow(DV.COL_EFFECTIVE) Is DBNull.Value OrElse DVRow(DV.COL_EFFECTIVE) Is Nothing Then
             ElseIf CType(DVRow(DV.COL_EFFECTIVE), Date) <> State.MyBO.EffectiveDate.Value Then
                 ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
             End If

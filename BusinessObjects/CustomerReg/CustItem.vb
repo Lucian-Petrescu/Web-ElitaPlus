@@ -98,7 +98,7 @@ Public Class CustItem
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CustItemDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -109,7 +109,7 @@ Public Class CustItem
     End Property
 
     <ValueMandatory("")> _
-    Public Property RegistrationId() As Guid
+    Public Property RegistrationId As Guid
         Get
             CheckDeleted()
             If row(CustItemDAL.COL_NAME_REGISTRATION_ID) Is DBNull.Value Then
@@ -118,7 +118,7 @@ Public Class CustItem
                 Return New Guid(CType(row(CustItemDAL.COL_NAME_REGISTRATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CustItemDAL.COL_NAME_REGISTRATION_ID, Value)
         End Set
@@ -126,7 +126,7 @@ Public Class CustItem
 
 
 
-    Public Property CertItemId() As Guid
+    Public Property CertItemId As Guid
         Get
             CheckDeleted()
             If row(CustItemDAL.COL_NAME_CERT_ITEM_ID) Is DBNull.Value Then
@@ -135,7 +135,7 @@ Public Class CustItem
                 Return New Guid(CType(row(CustItemDAL.COL_NAME_CERT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CustItemDAL.COL_NAME_CERT_ITEM_ID, Value)
         End Set
@@ -143,7 +143,7 @@ Public Class CustItem
 
 
     <ValueMandatory("")> _
-    Public Property RegistrationDate() As DateType
+    Public Property RegistrationDate As DateType
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_REGISTRATION_DATE) Is DBNull.Value Then
@@ -152,7 +152,7 @@ Public Class CustItem
                 Return New DateType(CType(Row(CustItemDAL.COL_NAME_REGISTRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CustItemDAL.COL_NAME_REGISTRATION_DATE, Value)
         End Set
@@ -160,7 +160,7 @@ Public Class CustItem
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=255)> _
-    Public Property Make() As String
+    Public Property Make As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_MAKE) Is DBNull.Value Then
@@ -169,14 +169,14 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_MAKE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustItemDAL.COL_NAME_MAKE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=255)> _
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -185,14 +185,14 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustItemDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=255)> _
-    Public Property ItemName() As String
+    Public Property ItemName As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_ITEM_NAME) Is DBNull.Value Then
@@ -201,7 +201,7 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_ITEM_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustItemDAL.COL_NAME_ITEM_NAME, Value)
         End Set
@@ -209,7 +209,7 @@ Public Class CustItem
 
 
     <ValueMandatory("")> _
-    Public Property RegistrationStatusId() As Guid
+    Public Property RegistrationStatusId As Guid
         Get
             CheckDeleted()
             If row(CustItemDAL.COL_NAME_REGISTRATION_STATUS_ID) Is DBNull.Value Then
@@ -218,7 +218,7 @@ Public Class CustItem
                 Return New Guid(CType(row(CustItemDAL.COL_NAME_REGISTRATION_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CustItemDAL.COL_NAME_REGISTRATION_STATUS_ID, Value)
         End Set
@@ -226,7 +226,7 @@ Public Class CustItem
 
 
     <ValidStringLength("", Max:=30)> _
-    Public Property Coverage() As String
+    Public Property Coverage As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_COVERAGE) Is DBNull.Value Then
@@ -235,7 +235,7 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_COVERAGE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustItemDAL.COL_NAME_COVERAGE, Value)
         End Set
@@ -243,7 +243,7 @@ Public Class CustItem
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=120)> _
-    Public Property ImeiNumber() As String
+    Public Property ImeiNumber As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_IMEI_NUMBER) Is DBNull.Value Then
@@ -252,7 +252,7 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_IMEI_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustItemDAL.COL_NAME_IMEI_NUMBER, Value)
         End Set
@@ -260,7 +260,7 @@ Public Class CustItem
 
 
     <ValidStringLength("", Max:=100)> _
-    Public Property ProductKey() As String
+    Public Property ProductKey As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_PRODUCT_KEY) Is DBNull.Value Then
@@ -269,7 +269,7 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_PRODUCT_KEY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustItemDAL.COL_NAME_PRODUCT_KEY, Value)
         End Set
@@ -277,7 +277,7 @@ Public Class CustItem
 
 
     <ValidStringLength("", Max:=100)> _
-    Public Property OrderRefNum() As String
+    Public Property OrderRefNum As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_ORDER_REF_NUM) Is DBNull.Value Then
@@ -286,13 +286,13 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_ORDER_REF_NUM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustItemDAL.COL_NAME_ORDER_REF_NUM, Value)
         End Set
     End Property
 
-    Public Property ProductProcurementDate() As DateType
+    Public Property ProductProcurementDate As DateType
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_PRODUCT_PROCUREMENT_DATE) Is DBNull.Value Then
@@ -301,14 +301,14 @@ Public Class CustItem
                 Return New DateType(CType(Row(CustItemDAL.COL_NAME_PRODUCT_PROCUREMENT_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CustItemDAL.COL_NAME_PRODUCT_PROCUREMENT_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property IsDeletedId() As Guid
+    Public Property IsDeletedId As Guid
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_IS_DELETED_ID) Is DBNull.Value Then
@@ -317,14 +317,14 @@ Public Class CustItem
                 Return New Guid(CType(Row(CustItemDAL.COL_NAME_IS_DELETED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CustItemDAL.COL_NAME_IS_DELETED_ID, Value)
         End Set
     End Property
 
     <ValueMandatoryConditionally("")> _
-    Public Property CellPhone() As String
+    Public Property CellPhone As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_CELL_PHONE) Is DBNull.Value Then
@@ -333,7 +333,7 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_CELL_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustItemDAL.COL_NAME_CELL_PHONE, Value)
         End Set
@@ -351,7 +351,7 @@ Public Class CustItem
             End If
             Return _custReg
         End Get
-        Set(ByVal value As CustRegistration)
+        Set
             _custReg = value
         End Set
     End Property
@@ -365,7 +365,7 @@ Public Class CustItem
             End If
             Return _dealer
         End Get
-        Set(ByVal value As Dealer)
+        Set
             _dealer = value
         End Set
     End Property
@@ -379,7 +379,7 @@ Public Class CustItem
             End If
             Return _equipmentId
         End Get
-        Set(ByVal value As Guid)
+        Set
             _equipmentId = value
         End Set
     End Property

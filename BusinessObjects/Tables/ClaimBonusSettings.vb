@@ -98,7 +98,7 @@ Public Class ClaimBonusSettings
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ClaimBonusSettingsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -109,7 +109,7 @@ Public Class ClaimBonusSettings
     End Property
 
 
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(ClaimBonusSettingsDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -118,13 +118,13 @@ Public Class ClaimBonusSettings
                 Return New Guid(CType(Row(ClaimBonusSettingsDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimBonusSettingsDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property ServiceCenter() As String
+    Public ReadOnly Property ServiceCenter As String
         Get
             CheckDeleted()
             If Row(ClaimBonusSettingsDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -135,7 +135,7 @@ Public Class ClaimBonusSettings
         End Get
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(ClaimBonusSettingsDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -144,13 +144,13 @@ Public Class ClaimBonusSettings
                 Return New Guid(CType(Row(ClaimBonusSettingsDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimBonusSettingsDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property Dealer() As String
+    Public ReadOnly Property Dealer As String
         Get
             CheckDeleted()
             If Row(ClaimBonusSettingsDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -160,7 +160,7 @@ Public Class ClaimBonusSettings
             End If
         End Get
     End Property
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If Row(ClaimBonusSettingsDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -169,12 +169,12 @@ Public Class ClaimBonusSettings
                 Return New Guid(CType(Row(ClaimBonusSettingsDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimBonusSettingsDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
     End Property
-    Public ReadOnly Property ProductCode() As String
+    Public ReadOnly Property ProductCode As String
         Get
             CheckDeleted()
             If Row(ClaimBonusSettingsDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -186,7 +186,7 @@ Public Class ClaimBonusSettings
     End Property
 
     <ValueMandatory("")>
-    Public Property BonusComputeMethodId() As Guid
+    Public Property BonusComputeMethodId As Guid
         Get
             CheckDeleted()
             If Row(ClaimBonusSettingsDAL.COL_NAME_BONUS_COMPUTE_METHOD_ID) Is DBNull.Value Then
@@ -195,13 +195,13 @@ Public Class ClaimBonusSettings
                 Return New Guid(CType(Row(ClaimBonusSettingsDAL.COL_NAME_BONUS_COMPUTE_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimBonusSettingsDAL.COL_NAME_BONUS_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property BonusComputeMethod() As String
+    Public ReadOnly Property BonusComputeMethod As String
         Get
             CheckDeleted()
             If Row(ClaimBonusSettingsDAL.COL_NAME_BONUS_COMPUTE_METHOD_ID) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class ClaimBonusSettings
         End Get
     End Property
     <ValueMandatory(""), ValidNumericRange("", Max:=6, Min:=1, Message:="VALID_BONUS_MONTH_VALUE")>
-    Public Property BonusAmountPeriodMonth() As LongType
+    Public Property BonusAmountPeriodMonth As LongType
         Get
             CheckDeleted()
             If Row(ClaimBonusSettingsDAL.COL_NAME_BONUS_AMOUNT_PERIOD_MONTH) Is DBNull.Value Then
@@ -221,7 +221,7 @@ Public Class ClaimBonusSettings
                 Return New LongType(CType(Row(ClaimBonusSettingsDAL.COL_NAME_BONUS_AMOUNT_PERIOD_MONTH), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimBonusSettingsDAL.COL_NAME_BONUS_AMOUNT_PERIOD_MONTH, Value)
         End Set
@@ -229,7 +229,7 @@ Public Class ClaimBonusSettings
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=1, Message:="VALID_REPLACEMENT_PERCENTAGE")>
-    Public Property ScReplacementPct() As DecimalType
+    Public Property ScReplacementPct As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimBonusSettingsDAL.COL_NAME_SC_REPLACEMENT_PCT) Is DBNull.Value Then
@@ -238,14 +238,14 @@ Public Class ClaimBonusSettings
                 Return New DecimalType(CType(Row(ClaimBonusSettingsDAL.COL_NAME_SC_REPLACEMENT_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimBonusSettingsDAL.COL_NAME_SC_REPLACEMENT_PCT, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Max:=99, Min:=1)>
-    Public Property ScAvgTat() As LongType
+    Public Property ScAvgTat As LongType
         Get
             CheckDeleted()
             If Row(ClaimBonusSettingsDAL.COL_NAME_SC_AVG_TAT) Is DBNull.Value Then
@@ -254,14 +254,14 @@ Public Class ClaimBonusSettings
                 Return New LongType(CType(Row(ClaimBonusSettingsDAL.COL_NAME_SC_AVG_TAT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimBonusSettingsDAL.COL_NAME_SC_AVG_TAT, Value)
         End Set
     End Property
 
 
-    Public Property Pecoramount() As DecimalType
+    Public Property Pecoramount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimBonusSettingsDAL.COL_NAME_PECORAMOUNT) Is DBNull.Value Then
@@ -270,7 +270,7 @@ Public Class ClaimBonusSettings
                 Return New DecimalType(CType(Row(ClaimBonusSettingsDAL.COL_NAME_PECORAMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimBonusSettingsDAL.COL_NAME_PECORAMOUNT, Value)
         End Set
@@ -278,7 +278,7 @@ Public Class ClaimBonusSettings
 
 
     <ValidNumericRange("", Max:=99, Min:=0, Message:="VALID_BONUS_SETTINGS_PRIORITY")>
-    Public Property Priority() As LongType
+    Public Property Priority As LongType
         Get
             CheckDeleted()
             If Row(ClaimBonusSettingsDAL.COL_NAME_PRIORITY) Is DBNull.Value Then
@@ -287,7 +287,7 @@ Public Class ClaimBonusSettings
                 Return New LongType(CType(Row(ClaimBonusSettingsDAL.COL_NAME_PRIORITY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimBonusSettingsDAL.COL_NAME_PRIORITY, Value)
         End Set
@@ -295,7 +295,7 @@ Public Class ClaimBonusSettings
 
 
     <ValueMandatory("")>
-    Public Property Effective() As DateTimeType
+    Public Property Effective As DateTimeType
         Get
             CheckDeleted()
             If Row(ClaimBonusSettingsDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -304,7 +304,7 @@ Public Class ClaimBonusSettings
                 Return New DateTimeType(CType(Row(ClaimBonusSettingsDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(ClaimBonusSettingsDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -312,7 +312,7 @@ Public Class ClaimBonusSettings
 
 
     <ValueMandatory("")>
-    Public Property Expiration() As DateTimeType
+    Public Property Expiration As DateTimeType
         Get
             CheckDeleted()
             If Row(ClaimBonusSettingsDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -321,7 +321,7 @@ Public Class ClaimBonusSettings
                 Return New DateTimeType(CType(Row(ClaimBonusSettingsDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(ClaimBonusSettingsDAL.COL_NAME_EXPIRATION, Value)
         End Set
@@ -353,7 +353,7 @@ Public Class ClaimBonusSettings
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Dim bDirty As Boolean
 

@@ -118,11 +118,11 @@ Public Class ContractValidation
 
 #Region "Properties"
 
-    Public Property UploadSessionId() As String
+    Public Property UploadSessionId As String
         Get
             Return _uploadSessionId
         End Get
-        Set(ByVal Value As String)
+        Set
             _uploadSessionId = Value
         End Set
     End Property

@@ -141,7 +141,7 @@ Public Class GetClaimStatusInfo
 
 #Region "Properties"
 
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
@@ -149,13 +149,13 @@ Public Class GetClaimStatusInfo
                 Return CType(Row(DATA_COL_NAME_DEALER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
-    Public Property LanguageISOCode() As String
+    Public Property LanguageISOCode As String
         Get
             If Row(DATA_COL_NAME_LANGUAGE) Is DBNull.Value Then
                 Return Nothing
@@ -163,12 +163,12 @@ Public Class GetClaimStatusInfo
                 Return CType(Row(DATA_COL_NAME_LANGUAGE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_LANGUAGE, Value)
         End Set
     End Property
-    Public Property CertificateNumber() As String
+    Public Property CertificateNumber As String
         Get
             If Row(DATA_COL_NAME_CERTIFICATE) Is DBNull.Value Then
                 Return Nothing
@@ -176,13 +176,13 @@ Public Class GetClaimStatusInfo
                 Return CType(Row(DATA_COL_NAME_CERTIFICATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERTIFICATE, Value)
         End Set
     End Property
 
-    Public Property BillingZipCode() As String
+    Public Property BillingZipCode As String
         Get
             If Row(DATA_COL_NAME_BILLING_ZIP_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -190,7 +190,7 @@ Public Class GetClaimStatusInfo
                 Return CType(Row(DATA_COL_NAME_BILLING_ZIP_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_BILLING_ZIP_CODE, Value)
         End Set
@@ -198,7 +198,7 @@ Public Class GetClaimStatusInfo
 
 
     <ValueMandatory("")> _
-    Public Property CustomerIdentifier() As String
+    Public Property CustomerIdentifier As String
         Get
             If Row(DATA_COL_NAME_CUSTOMER_IDENTIFIER) Is DBNull.Value Then
                 Return Nothing
@@ -206,14 +206,14 @@ Public Class GetClaimStatusInfo
                 Return CType(Row(DATA_COL_NAME_CUSTOMER_IDENTIFIER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CUSTOMER_IDENTIFIER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property IdentifierType() As String
+    Public Property IdentifierType As String
         Get
             If Row(DATA_COL_NAME_IDENTIFIER_TYPE) Is DBNull.Value Then
                 Return Nothing
@@ -221,7 +221,7 @@ Public Class GetClaimStatusInfo
                 Return CType(Row(DATA_COL_NAME_IDENTIFIER_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_IDENTIFIER_TYPE, Value)
         End Set

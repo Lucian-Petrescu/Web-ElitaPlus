@@ -371,7 +371,7 @@ Public Class InvoiceGroupListForm
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
             Dim btnEditButtonCode As LinkButton
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                 If (e.Item.Cells(GRID_COL_Group_NUMBER_IDX).FindControl(GRID_COL_Group_Number_CTRL) IsNot Nothing) Then
                     btnEditButtonCode = CType(e.Item.Cells(GRID_COL_Group_NUMBER_IDX).FindControl(GRID_COL_Group_Number_CTRL), LinkButton)

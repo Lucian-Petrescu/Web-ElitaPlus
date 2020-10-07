@@ -95,7 +95,7 @@
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CommPCodeEntityListDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -107,7 +107,7 @@
 
 
     <ValueMandatory("")> _
-    Public Property CommPCodeId() As Guid
+    Public Property CommPCodeId As Guid
         Get
             CheckDeleted()
             If Row(CommPCodeEntityListDAL.COL_NAME_COMM_P_CODE_ID) Is DBNull.Value Then
@@ -116,7 +116,7 @@
                 Return New Guid(CType(Row(CommPCodeEntityListDAL.COL_NAME_COMM_P_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommPCodeEntityListDAL.COL_NAME_COMM_P_CODE_ID, Value)
         End Set
@@ -124,7 +124,7 @@
 
 
     <ValueMandatory("")> _
-    Public Property PayeeTypeId() As Guid
+    Public Property PayeeTypeId As Guid
         Get
             CheckDeleted()
             If Row(CommPCodeEntityListDAL.COL_NAME_PAYEE_TYPE_ID) Is DBNull.Value Then
@@ -133,14 +133,14 @@
                 Return New Guid(CType(Row(CommPCodeEntityListDAL.COL_NAME_PAYEE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommPCodeEntityListDAL.COL_NAME_PAYEE_TYPE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-Public Property CommScheduleId() As Guid
+Public Property CommScheduleId As Guid
         Get
             CheckDeleted()
             If Row(CommPCodeEntityDAL.COL_NAME_COMM_SCHEDULE_ID) Is DBNull.Value Then
@@ -149,13 +149,13 @@ Public Property CommScheduleId() As Guid
                 Return New Guid(CType(Row(CommPCodeEntityDAL.COL_NAME_COMM_SCHEDULE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommPCodeEntityDAL.COL_NAME_COMM_SCHEDULE_ID, Value)
         End Set
     End Property
 
-    Public Property CommSchedule() As String
+    Public Property CommSchedule As String
         Get
             CheckDeleted()
             If Row(CommPCodeEntityListDAL.COL_NAME_COMM_SCHEDULE) Is DBNull.Value Then
@@ -164,13 +164,13 @@ Public Property CommScheduleId() As Guid
                 Return CType(Row(CommPCodeEntityListDAL.COL_NAME_COMM_SCHEDULE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommPCodeEntityListDAL.COL_NAME_COMM_SCHEDULE, Value)
         End Set
     End Property
 
-    Public Property PayeeType() As String
+    Public Property PayeeType As String
         Get
             CheckDeleted()
             If Row(CommPCodeEntityListDAL.COL_NAME_PAYEE_TYPE) Is DBNull.Value Then
@@ -179,13 +179,13 @@ Public Property CommScheduleId() As Guid
                 Return CType(Row(CommPCodeEntityListDAL.COL_NAME_PAYEE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommPCodeEntityListDAL.COL_NAME_PAYEE_TYPE, Value)
         End Set
     End Property
 
-    Public Property EntityId() As Guid
+    Public Property EntityId As Guid
         Get
             CheckDeleted()
             If Row(CommPCodeEntityListDAL.COL_NAME_ENTITY_ID) Is DBNull.Value Then
@@ -194,13 +194,13 @@ Public Property CommScheduleId() As Guid
                 Return New Guid(CType(Row(CommPCodeEntityListDAL.COL_NAME_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommPCodeEntityListDAL.COL_NAME_ENTITY_ID, Value)
         End Set
     End Property
 
-    Public Property Entity() As String
+    Public Property Entity As String
         Get
             CheckDeleted()
             If Row(CommPCodeEntityListDAL.COL_NAME_ENTITY) Is DBNull.Value Then
@@ -209,14 +209,14 @@ Public Property CommScheduleId() As Guid
                 Return CType(Row(CommPCodeEntityListDAL.COL_NAME_ENTITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommPCodeEntityListDAL.COL_NAME_ENTITY, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property IsCommFixedId() As Guid
+    Public Property IsCommFixedId As Guid
         Get
             CheckDeleted()
             If Row(CommPCodeEntityListDAL.COL_NAME_IS_COMM_FIXED_ID) Is DBNull.Value Then
@@ -225,13 +225,13 @@ Public Property CommScheduleId() As Guid
                 Return New Guid(CType(Row(CommPCodeEntityListDAL.COL_NAME_IS_COMM_FIXED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommPCodeEntityListDAL.COL_NAME_IS_COMM_FIXED_ID, Value)
         End Set
     End Property
 
-    Public Property IsCommFixedCode() As String
+    Public Property IsCommFixedCode As String
         Get
             CheckDeleted()
             If Row(CommPCodeEntityListDAL.COL_NAME_IS_COMM_FIXED_CODE) Is DBNull.Value Then
@@ -240,13 +240,13 @@ Public Property CommScheduleId() As Guid
                 Return CType(Row(CommPCodeEntityListDAL.COL_NAME_IS_COMM_FIXED_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommPCodeEntityListDAL.COL_NAME_IS_COMM_FIXED_CODE, Value)
         End Set
     End Property
 
-    Public Property IsCommFixed() As String
+    Public Property IsCommFixed As String
         Get
             CheckDeleted()
             If Row(CommPCodeEntityListDAL.COL_NAME_IS_COMM_FIXED) Is DBNull.Value Then
@@ -255,14 +255,14 @@ Public Property CommScheduleId() As Guid
                 Return CType(Row(CommPCodeEntityListDAL.COL_NAME_IS_COMM_FIXED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommPCodeEntityListDAL.COL_NAME_IS_COMM_FIXED, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CommissionAmount() As DecimalType
+    Public Property CommissionAmount As DecimalType
         Get
             CheckDeleted()
             If Row(CommPCodeEntityListDAL.COL_NAME_COMMISSION_AMOUNT) Is DBNull.Value Then
@@ -271,7 +271,7 @@ Public Property CommScheduleId() As Guid
                 Return New DecimalType(CType(Row(CommPCodeEntityListDAL.COL_NAME_COMMISSION_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommPCodeEntityListDAL.COL_NAME_COMMISSION_AMOUNT, Value)
         End Set
@@ -327,7 +327,7 @@ Public Property CommScheduleId() As Guid
 
 
     <ValueMandatory("")> _
-    Public Property MarkupAmount() As DecimalType
+    Public Property MarkupAmount As DecimalType
         Get
             CheckDeleted()
             If Row(CommPCodeEntityListDAL.COL_NAME_MARKUP_AMOUNT) Is DBNull.Value Then
@@ -336,7 +336,7 @@ Public Property CommScheduleId() As Guid
                 Return New DecimalType(CType(Row(CommPCodeEntityListDAL.COL_NAME_MARKUP_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommPCodeEntityListDAL.COL_NAME_MARKUP_AMOUNT, Value)
         End Set
@@ -344,7 +344,7 @@ Public Property CommScheduleId() As Guid
 
     ''REQ-976 
     <ValidNumericRange(" ", MAX:=9999)> _
-    Public Property DaysToClawback() As LongType
+    Public Property DaysToClawback As LongType
         Get
             CheckDeleted()
             If Row(CommPCodeEntityListDAL.COL_NAME_DAYS_TO_Clawback) Is DBNull.Value Then
@@ -353,12 +353,12 @@ Public Property CommScheduleId() As Guid
                 Return New LongType(CType(Row(CommPCodeEntityListDAL.COL_NAME_DAYS_TO_Clawback), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CommPCodeEntityListDAL.COL_NAME_DAYS_TO_Clawback, Value)
         End Set
     End Property
-    Public Property BranchId() As Guid
+    Public Property BranchId As Guid
         Get
             CheckDeleted()
             If Row(CommPCodeEntityListDAL.COL_NAME_BRANCH_ID) Is DBNull.Value Then
@@ -367,12 +367,12 @@ Public Property CommScheduleId() As Guid
                 Return New Guid(CType(Row(CommPCodeEntityListDAL.COL_NAME_BRANCH_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommPCodeEntityListDAL.COL_NAME_BRANCH_ID, Value)
         End Set
     End Property
-    Public Property BranchName() As String
+    Public Property BranchName As String
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_BRANCH_NAME) Is DBNull.Value Then
@@ -381,7 +381,7 @@ Public Property CommScheduleId() As Guid
                 Return CType(Row(BranchDAL.COL_NAME_BRANCH_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BranchDAL.COL_NAME_BRANCH_NAME, Value)
         End Set

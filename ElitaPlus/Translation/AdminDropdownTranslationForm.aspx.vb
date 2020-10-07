@@ -199,7 +199,7 @@ Namespace Translation
                 oLabel = CType(grdTranslation.Items(i).Cells(DG_DICT_ITEM_GUID_ID).FindControl("TransItemIDGuid"), Label)
                 nDictItemTranslationID = New Guid(oLabel.Text)
                 Dim isDirty As Boolean = False
-                isDirty = isDirty Or (sTranslation.Trim <> grdTranslation.Items(i).Cells(DG_OLD_TRANSLATION).Text.Trim)
+                isDirty = isDirty OrElse (sTranslation.Trim <> grdTranslation.Items(i).Cells(DG_OLD_TRANSLATION).Text.Trim)
                 If isDirty Then
                     Try
                         retVal = dropdownBO.UpdateTranslation(nDictItemTranslationID, sTranslation.Trim, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
@@ -278,7 +278,7 @@ Namespace Translation
             For i = 0 To grdTranslation.Items.Count - 1
                 sTranslation = CType(grdTranslation.Items(i).Cells(DG_TRANS_TRANSLATION).FindControl("txtNewTranslation"), TextBox).Text
                 Dim isPageDirty As Boolean = False
-                isPageDirty = isPageDirty Or (sTranslation.Trim.ToUpper <> grdTranslation.Items(i).Cells(DG_OLD_TRANSLATION).Text.Trim.ToUpper)
+                isPageDirty = isPageDirty OrElse (sTranslation.Trim.ToUpper <> grdTranslation.Items(i).Cells(DG_OLD_TRANSLATION).Text.Trim.ToUpper)
                 If isPageDirty Then
                     Return True
                 End If

@@ -123,7 +123,7 @@ Public Class Answer
                 Return New Guid(CType(Row(AnswerDAL.COL_NAME_SOFT_QUESTION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AnswerDAL.COL_NAME_SOFT_QUESTION_ID, Value)
         End Set
@@ -139,7 +139,7 @@ Public Class Answer
                 Return CType(Row(AnswerDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AnswerDAL.COL_NAME_CODE, Value)
         End Set
@@ -156,7 +156,7 @@ Public Class Answer
                 Return CType(Row(AnswerDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AnswerDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -172,7 +172,7 @@ Public Class Answer
                 Return New LongType(CType(Row(AnswerDAL.COL_NAME_ANSWER_ORDER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(AnswerDAL.COL_NAME_ANSWER_ORDER, Value)
         End Set
@@ -188,7 +188,7 @@ Public Class Answer
                 Return CType(Row(AnswerDAL.COL_NAME_ANSWER_VALUE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AnswerDAL.COL_NAME_ANSWER_VALUE, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class Answer
                 Return New Guid(CType(Row(AnswerDAL.COL_NAME_SUPPORTS_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AnswerDAL.COL_NAME_SUPPORTS_CLAIM_ID, Value)
         End Set
@@ -218,7 +218,7 @@ Public Class Answer
                 Return New DecimalType(CType(Row(AnswerDAL.COL_NAME_SCORE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AnswerDAL.COL_NAME_SCORE, Value)
         End Set
@@ -234,7 +234,7 @@ Public Class Answer
                 Return New DateTimeType(CType(Row(AnswerDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(AnswerDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -250,7 +250,7 @@ Public Class Answer
                 Return New DateTimeType(CType(Row(AnswerDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(AnswerDAL.COL_NAME_EXPIRATION, Value)
         End Set
@@ -265,7 +265,7 @@ Public Class Answer
                 Return New Guid(CType(Row(AnswerDAL.COL_NAME_LIST_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AnswerDAL.COL_NAME_LIST_ITEM_ID, Value)
         End Set

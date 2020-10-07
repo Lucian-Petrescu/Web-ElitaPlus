@@ -342,8 +342,8 @@ Partial Class PendingClaimListForm
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
         Try
-            If dvRow IsNot Nothing And Not State.bnoRow Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_ID_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_CLAIM_ID))
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_NUMBER_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_CLAIM_NUMBER))
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CERTIFICATE_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_CERTIFICATE_NUMBER))

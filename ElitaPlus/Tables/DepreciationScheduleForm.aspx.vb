@@ -279,7 +279,7 @@ Namespace Tables
             For i = 0 To (grid.Rows.Count - 1)
                 del = CType(grid.Rows(i).Cells(DELETE_COL).FindControl(DELETE_CONTROL_NAME), ImageButton)
                 highMonth = CType(grid.Rows(i).Cells(HighMonthCol).FindControl("moHighMonthLabel"), Label)
-                If del IsNot Nothing And highMonth IsNot Nothing Then
+                If del IsNot Nothing AndAlso highMonth IsNot Nothing Then
                     If CType(highMonth.Text, Long) <> maxHighMonth Then
                         del.Enabled = False
                         del.Visible = False

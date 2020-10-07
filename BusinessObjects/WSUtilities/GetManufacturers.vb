@@ -100,7 +100,7 @@ Public Class GetManufacturers
 
 #Region "Properties"
 
-    Public Property CompanyGroupCode() As String
+    Public Property CompanyGroupCode As String
         Get
             If Row(DATA_COL_NAME_company_group_code) Is DBNull.Value Then
                 Return Nothing
@@ -108,13 +108,13 @@ Public Class GetManufacturers
                 Return (CType(Row(DATA_COL_NAME_company_group_code), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_company_group_code, Value)
         End Set
     End Property
 
-    Private ReadOnly Property CompanyGroupId() As Guid
+    Private ReadOnly Property CompanyGroupId As Guid
         Get
             Return _companyGroupId
         End Get

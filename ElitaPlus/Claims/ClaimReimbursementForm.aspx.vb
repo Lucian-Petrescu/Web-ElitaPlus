@@ -114,7 +114,7 @@ Partial Class ClaimReimbursementForm
             Dim filteredYearList As ListItem()
             Dim paymentList As ListItem() = CommonConfigManager.Current.ListManager.GetList("PMTHD", Thread.CurrentPrincipal.GetLanguageCode())
             filteredYearList = (From x In paymentList
-                                Where x.Code = "CTT" Or x.Code = "DGFT"
+                                Where x.Code = "CTT" OrElse x.Code = "DGFT"
                                 Select x).ToArray()
 
             ddlPaymentList.Populate(filteredYearList, New PopulateOptions() With

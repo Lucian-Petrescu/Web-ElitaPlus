@@ -60,7 +60,7 @@ Public Class UserControlServiceCenterSelection
         Dim parentControl = Parent
 
         Debug.WriteLine($"Loading UserControlQuestion ID: {ID}")
-        While (Not TypeOf parentControl Is ElitaPlusPage And parentControl IsNot Nothing)
+        While (Not TypeOf parentControl Is ElitaPlusPage AndAlso parentControl IsNot Nothing)
             parentControl = parentControl.Parent
         End While
         ElitaHostPage = DirectCast(parentControl, ElitaPlusPage)
@@ -227,14 +227,14 @@ Public Class UserControlServiceCenterSelection
     Sub PopulateCityAndPostalCode
 
 
-        if City <> "" And City IsNot Nothing Then
+        if City <> "" AndAlso City IsNot Nothing Then
             moCityTextbox.Text =City
             else 
                 moCityTextbox.Text = ""
         end if 
 
 
-        if PostalCode <> "" And PostalCode IsNot Nothing Then
+        if PostalCode <> "" AndAlso PostalCode IsNot Nothing Then
             moPostalCodeTextbox.Text = PostalCode
             else
                 moPostalCodeTextbox.Text  = ""
@@ -283,8 +283,8 @@ Public Class UserControlServiceCenterSelection
         ControlMgr.SetVisibleControl(ElitaHostPage, moPostalCodeLabel, showPostalCodeFields)
         ControlMgr.SetVisibleControl(ElitaHostPage, tdPostalCodeText, showPostalCodeFields)
         ' Buttons
-        ControlMgr.SetVisibleControl(ElitaHostPage, tdClearButton, showCityFields Or showPostalCodeFields)
-        ControlMgr.SetVisibleControl(ElitaHostPage, btnClearSearch, showCityFields Or showPostalCodeFields)
+        ControlMgr.SetVisibleControl(ElitaHostPage, tdClearButton, showCityFields OrElse showPostalCodeFields)
+        ControlMgr.SetVisibleControl(ElitaHostPage, btnClearSearch, showCityFields OrElse showPostalCodeFields)
 
         ' All
         ControlMgr.SetVisibleControl(ElitaHostPage, btnSearch, Not showAllFields)

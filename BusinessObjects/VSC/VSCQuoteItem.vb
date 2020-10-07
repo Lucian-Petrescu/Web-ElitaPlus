@@ -90,7 +90,7 @@ Public Class VSCQuoteItem
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(VscQuoteItemDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class VSCQuoteItem
     End Property
 
     <ValueMandatory("")> _
-    Public Property QuoteId() As Guid
+    Public Property QuoteId As Guid
         Get
             CheckDeleted()
             If Row(VscQuoteItemDAL.COL_NAME_QUOTE_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class VSCQuoteItem
                 Return New Guid(CType(Row(VscQuoteItemDAL.COL_NAME_QUOTE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VscQuoteItemDAL.COL_NAME_QUOTE_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class VSCQuoteItem
 
 
     <ValueMandatory("")> _
-    Public Property VscCoverageRateId() As Guid
+    Public Property VscCoverageRateId As Guid
         Get
             CheckDeleted()
             If Row(VscQuoteItemDAL.COL_NAME_VSC_COVERAGE_RATE_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class VSCQuoteItem
                 Return New Guid(CType(Row(VscQuoteItemDAL.COL_NAME_VSC_COVERAGE_RATE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VscQuoteItemDAL.COL_NAME_VSC_COVERAGE_RATE_ID, Value)
         End Set

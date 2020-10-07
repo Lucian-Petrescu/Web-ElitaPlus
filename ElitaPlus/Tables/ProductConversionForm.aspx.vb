@@ -196,7 +196,7 @@ Namespace Tables
                     PopulateDropdown()
 
                     If State.IsGridVisible Then
-                        If Not (State.PageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.PageSize = Grid.PageSize) Then
+                        If Not (State.PageSize = DEFAULT_NEW_UI_PAGE_SIZE) OrElse Not (State.PageSize = Grid.PageSize) Then
                             Grid.PageSize = State.PageSize
                         End If
                         PopulateProductConversionGrid()
@@ -384,8 +384,8 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
-                If dvRow IsNot Nothing And Not State.bnoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         btnEditItem = CType(e.Row.Cells(GRID_COL_EDIT_IDX).FindControl("SelectAction"), LinkButton)
                         btnEditItem.Text = dvRow(COL_DEALER_NAME).ToString
                         '    e.Row.Cells(Me.GRID_COL_DEALER_NAME).Text = dvRow(COL_DEALER_NAME).ToString

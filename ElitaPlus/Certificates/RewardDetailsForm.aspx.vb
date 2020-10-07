@@ -354,7 +354,7 @@ State.MyBO.RewardStatusXcd IsNot Nothing AndAlso State.MyBO.RewardStatusXcd = Co
 
                 EnableDisableFields(True)
 
-                If (.RewardStatusXcd = Codes.REWARD_STATUS__GIFT_CARD_SENT Or .RewardStatusXcd = Codes.REWARD_STATUS__SEPA_XFER_SENT) Then
+                If (.RewardStatusXcd = Codes.REWARD_STATUS__GIFT_CARD_SENT OrElse .RewardStatusXcd = Codes.REWARD_STATUS__SEPA_XFER_SENT) Then
                     ControlMgr.SetEnableControl(Me, moRewardStatusDD, False)
                     ControlMgr.SetEnableControl(Me, moRewardTypeDD, False)
                     ControlMgr.SetEnableControl(Me, moRibSignedDD, False)

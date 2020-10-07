@@ -271,7 +271,7 @@ Public Class CaseRecordingForm
                 objList = CaseBase.LoadExclSecFieldsConfig(Guid.Empty,State.DealerId)
                 If objList.count > 0 then
                     exclSecFieldsDt= ConvertToDataTable(of CaseBase.ExclSecFields) (objList)
-                    If ExclSecFieldsdt IsNot nothing and ExclSecFieldsDt.Rows.Count > 0 then
+                    If ExclSecFieldsdt IsNot nothing AndAlso ExclSecFieldsDt.Rows.Count > 0 then
                         State.ExclSecFieldsDt = ExclSecFieldsDt
                         'State.IsCallerAuthenticated = False
                     End If
@@ -485,7 +485,7 @@ Public Class CaseRecordingForm
         End If
 
         If (callerinfo.GetType() Is GetType(PhoneCaller)) Then
-            If (String.IsNullOrEmpty(callerinfo.PhoneNumber) And String.IsNullOrEmpty(callerinfo.EmailAddress)) Then
+            If (String.IsNullOrEmpty(callerinfo.PhoneNumber) AndAlso String.IsNullOrEmpty(callerinfo.EmailAddress)) Then
                 errMsg.Add(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR))
             End If
         End If
@@ -591,7 +591,7 @@ Public Class CaseRecordingForm
         Session("PrevCallerEmail") = callerinfo.EmailAddress
         
         If (callerinfo.GetType() Is GetType(PhoneCaller)) Then
-            If (String.IsNullOrEmpty(callerinfo.PhoneNumber) And String.IsNullOrEmpty(callerinfo.EmailAddress)) Then
+            If (String.IsNullOrEmpty(callerinfo.PhoneNumber) AndAlso String.IsNullOrEmpty(callerinfo.EmailAddress)) Then
                 errMsg.Add(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR))
             End If
         End If

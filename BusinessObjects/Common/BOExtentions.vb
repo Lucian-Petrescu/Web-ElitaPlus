@@ -2,7 +2,7 @@
 Imports System.Text
 
 Module BOExtentions
-    <Extension()> _
+    <Extension> _
     Public Function FindValidationErrors(Of TBusinessObject As IBusinessObjectBase)(ByVal objectToValidate As TBusinessObject) As ValidationError()
         Dim validator As New Validator
         validator.IsValid(objectToValidate)
@@ -10,7 +10,7 @@ Module BOExtentions
     End Function
 
 
-    <Extension()> _
+    <Extension> _
     Public Function Validate(Of TBusinessObject As IBusinessObjectBase)(ByVal objectToValidate As TBusinessObject) As ValidationError()
         Dim errors() As ValidationError = objectToValidate.FindValidationErrors()
 
@@ -19,7 +19,7 @@ Module BOExtentions
         End If
     End Function
 
-    <Extension()> _
+    <Extension> _
     Public Function ToDate(ByVal inputString As String, ByVal defaultValue As Nullable(Of DateTime)) As Nullable(Of DateTime)
         Dim returnValue As DateTime
         If (DateTime.TryParse(inputString, returnValue)) Then
@@ -29,7 +29,7 @@ Module BOExtentions
         End If
     End Function
 
-    <Extension()> _
+    <Extension> _
     Public Function ToDecimal(ByVal inputString As String, ByVal defaultValue As Nullable(Of Decimal)) As Nullable(Of Decimal)
         Dim returnValue As Decimal
         If (Decimal.TryParse(inputString, returnValue)) Then
@@ -39,7 +39,7 @@ Module BOExtentions
         End If
     End Function
 
-    <Extension()> _
+    <Extension> _
     Public Function ToGuid(ByVal inputString As String, ByVal defaultValue As Nullable(Of Guid)) As Nullable(Of Guid)
         If (inputString Is Nothing OrElse inputString.Trim.Length = 0) Then Return defaultValue
         Try
@@ -49,13 +49,13 @@ Module BOExtentions
         End Try
     End Function
 
-    <Extension()> _
+    <Extension> _
     Public Function ToString(ByVal inputGuid As Guid, Optional ByVal defaultValue As String = Nothing) As String
         If (inputGuid.Equals(Guid.Empty)) Then Return defaultValue
         Return GuidControl.GuidToHexString(inputGuid)
     End Function
 
-    <Extension()> _
+    <Extension> _
     Public Function ToRejectReason(ByVal ex As BOValidationException) As String
         Dim sb As New StringBuilder
         If (Not ex Is Nothing) Then

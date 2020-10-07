@@ -89,7 +89,7 @@ Public Class CompanyWorkQueueIssue
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CompanyWorkQueueIssueDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class CompanyWorkQueueIssue
     End Property
 
     <ValueMandatory("")> _
-    Public Property WorkqueueId() As Guid
+    Public Property WorkqueueId As Guid
         Get
             CheckDeleted()
             If Row(CompanyWorkQueueIssueDAL.COL_NAME_WORKQUEUE_ID) Is DBNull.Value Then
@@ -109,7 +109,7 @@ Public Class CompanyWorkQueueIssue
                 Return New Guid(CType(Row(CompanyWorkQueueIssueDAL.COL_NAME_WORKQUEUE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyWorkQueueIssueDAL.COL_NAME_WORKQUEUE_ID, Value)
         End Set
@@ -117,7 +117,7 @@ Public Class CompanyWorkQueueIssue
 
 
     <ValueMandatory(""), ValidateUniqueCompanyIssue("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(CompanyWorkQueueIssueDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -126,7 +126,7 @@ Public Class CompanyWorkQueueIssue
                 Return New Guid(CType(Row(CompanyWorkQueueIssueDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyWorkQueueIssueDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -134,7 +134,7 @@ Public Class CompanyWorkQueueIssue
 
 
     <ValueMandatory("")> _
-    Public Property IssueId() As Guid
+    Public Property IssueId As Guid
         Get
             CheckDeleted()
             If Row(CompanyWorkQueueIssueDAL.COL_NAME_ISSUE_ID) Is DBNull.Value Then
@@ -143,7 +143,7 @@ Public Class CompanyWorkQueueIssue
                 Return New Guid(CType(Row(CompanyWorkQueueIssueDAL.COL_NAME_ISSUE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyWorkQueueIssueDAL.COL_NAME_ISSUE_ID, Value)
         End Set

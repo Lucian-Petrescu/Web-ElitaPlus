@@ -245,7 +245,7 @@ Partial Class UserControlRiskTypeTolerance
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim strID As String
 
-            If dvRow IsNot Nothing And Not TheState.bnoRow Then
+            If dvRow IsNot Nothing AndAlso Not TheState.bnoRow Then
                 strID = ThePage.GetGuidStringFromByteArray(CType(dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_DLR_RK_TYP_TOLERANCE_ID), Byte()))
 
                 If (TheState.IsEditMode = True AndAlso TheState.DefaultRiskTypeToleranceID.ToString.Equals(strID)) Then

@@ -21,43 +21,43 @@ Public Class Authentication
 
 #Region "Logged In User Info Shortcuts"
 
-    Public Shared ReadOnly Property CurrentUser() As User
+    Public Shared ReadOnly Property CurrentUser As User
         Get
             Return ElitaPlusIdentity.Current.ActiveUser
         End Get
     End Property
 
-    Public Shared ReadOnly Property LangId() As Guid
+    Public Shared ReadOnly Property LangId As Guid
         Get
             Return ElitaPlusIdentity.Current.ActiveUser.LanguageId
         End Get
     End Property
 
-    Public Shared ReadOnly Property CompId() As Guid
+    Public Shared ReadOnly Property CompId As Guid
         Get
             Return ElitaPlusIdentity.Current.ActiveUser.CompanyId
         End Get
     End Property
 
-    Public Shared ReadOnly Property CompIds() As ArrayList
+    Public Shared ReadOnly Property CompIds As ArrayList
         Get
             Return ElitaPlusIdentity.Current.ActiveUser.Companies
         End Get
     End Property
 
-    Public Shared ReadOnly Property CountryIds() As ArrayList
+    Public Shared ReadOnly Property CountryIds As ArrayList
         Get
             Return ElitaPlusIdentity.Current.ActiveUser.Countries
         End Get
     End Property
 
-    Public Shared ReadOnly Property CompanyGroupId() As Guid
+    Public Shared ReadOnly Property CompanyGroupId As Guid
         Get
             Return ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
         End Get
     End Property
 
-    Public Shared ReadOnly Property CompanyGroupCode() As String
+    Public Shared ReadOnly Property CompanyGroupCode As String
         Get
             Return ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Code
         End Get
@@ -267,7 +267,7 @@ Public Class Authentication
     '    End Get
     'End Property
 
-    Public ReadOnly Property ApplicationHost() As String
+    Public ReadOnly Property ApplicationHost As String
         Get
             Dim oHost As String = String.Empty
             If Not System.Web.HttpContext.Current Is Nothing Then

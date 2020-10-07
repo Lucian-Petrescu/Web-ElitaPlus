@@ -98,7 +98,7 @@ Public Class ClaimStatusByUserRole
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimStatusByUserRoleDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -109,7 +109,7 @@ Public Class ClaimStatusByUserRole
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimStatusByGroupId() As Guid
+    Public Property ClaimStatusByGroupId As Guid
         Get
             CheckDeleted()
             If row(ClaimStatusByUserRoleDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID) Is DBNull.Value Then
@@ -118,7 +118,7 @@ Public Class ClaimStatusByUserRole
                 Return New Guid(CType(row(ClaimStatusByUserRoleDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusByUserRoleDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID, Value)
         End Set
@@ -126,7 +126,7 @@ Public Class ClaimStatusByUserRole
 
 
     <ValueMandatory("")> _
-    Public Property RoleId() As Guid
+    Public Property RoleId As Guid
         Get
             CheckDeleted()
             If row(ClaimStatusByUserRoleDAL.COL_NAME_ROLE_ID) Is DBNull.Value Then
@@ -135,7 +135,7 @@ Public Class ClaimStatusByUserRole
                 Return New Guid(CType(row(ClaimStatusByUserRoleDAL.COL_NAME_ROLE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusByUserRoleDAL.COL_NAME_ROLE_ID, Value)
         End Set
@@ -143,7 +143,7 @@ Public Class ClaimStatusByUserRole
 
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(ClaimStatusByUserRoleDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -152,7 +152,7 @@ Public Class ClaimStatusByUserRole
                 Return New Guid(CType(row(ClaimStatusByUserRoleDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusByUserRoleDAL.COL_NAME_COMPANY_ID, Value)
         End Set

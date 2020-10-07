@@ -421,7 +421,7 @@ Partial Class PriceGroupForm
         ' Me.BindListControlToDataView(ddlReplTaxType, oTaxTypeList)
         Dim replTaxTypeLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("TTYP", Thread.CurrentPrincipal.GetLanguageCode())
         Dim FilteredRecord As ListItem() = (From x In replTaxTypeLkl
-                                            Where x.Code = "7" Or x.Code = "8"
+                                            Where x.Code = "7" OrElse x.Code = "8"
                                             Select x).ToArray()
         ddlReplTaxType.Populate(FilteredRecord, New PopulateOptions() With
                                   {
@@ -515,7 +515,7 @@ Partial Class PriceGroupForm
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Item.Cells(GRID_COL_PG_DETAIL_ID).Text = New Guid(CType(dvRow(PriceGroup.PriceGroupDetailSelectionView.DETAIL_ID_COL_NAME), Byte())).ToString
                 e.Item.Cells(GRID_COL_RISK_TYPE).Text = dvRow(PriceGroup.PriceGroupDetailSelectionView.RISK_TYPE_COL_NAME).ToString
                 e.Item.Cells(GRID_COL_EFFECTIVE_DATE).Text = GetDateFormattedString(CType(dvRow(PriceGroup.PriceGroupDetailSelectionView.EFFECTIVE_DATE_COL_NAME), Date))

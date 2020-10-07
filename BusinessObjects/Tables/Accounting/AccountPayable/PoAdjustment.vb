@@ -102,110 +102,110 @@ Namespace Tables.Accounting.AccountPayable
 
 
         <ValueMandatory("")>
-        Public Property PoLineId() As Guid
+        Public Property PoLineId As Guid
             Get
                 If Row(PoAdjustmentDAL.PO_LINE_ID_COL) Is DBNull.Value Then Return Nothing
                 Return New Guid(CType(Row(PoAdjustmentDAL.PO_LINE_ID_COL), Byte()))
             End Get
-            Set(ByVal value As Guid)
+            Set
                SetValue(PoAdjustmentDAL.PO_LINE_ID_COL, value)
             End Set
         End Property
 
         <ValidStringLength("", Max:=250)>
-        Public Property Description() As String
+        Public Property Description As String
             Get
                 If Row(PoAdjustmentDAL.DESCRIPTION_COL) Is DBNull.Value Then Return Nothing
                 Return Row(PoAdjustmentDAL.DESCRIPTION_COL)
             End Get
-            Set(ByVal value As String)
+            Set
                 SetValue(PoAdjustmentDAL.DESCRIPTION_COL, value)
             End Set
         End Property
 
         <ValueMandatory(""), ValidStringLength("", Max:=10)>
-        Public Property Vendor() As String
+        Public Property Vendor As String
             Get
                 If Row(PoAdjustmentDAL.VENDOR_COL) Is DBNull.Value Then Return Nothing
                 Return Row(PoAdjustmentDAL.VENDOR_COL)
             End Get
-            Set(ByVal value As String)
+            Set
                 SetValue(PoAdjustmentDAL.VENDOR_COL, value)
             End Set
         End Property
         <ValueMandatory(""), ValidStringLength("", Max:=100)>
-        Public Property PoNumber() As String
+        Public Property PoNumber As String
             Get
                 If Row(PoAdjustmentDAL.PO_NUMBER_COL) Is DBNull.Value Then Return Nothing
                 Return Row(PoAdjustmentDAL.PO_NUMBER_COL)
             End Get
-            Set(ByVal value As String)
+            Set
                 SetValue(PoAdjustmentDAL.PO_NUMBER_COL, value)
             End Set
         End Property
         <ValueMandatory(""),ValidStringLength("", Max:=100)>
-        Public Property LineNumber() As String
+        Public Property LineNumber As String
             Get
                 If Row(PoAdjustmentDAL.LINE_NUMBER_COL) Is DBNull.Value Then Return Nothing
                 Return Row(PoAdjustmentDAL.LINE_NUMBER_COL)
             End Get
-            Set(ByVal value As String)
+            Set
                 SetValue(PoAdjustmentDAL.LINE_NUMBER_COL, value)
             End Set
         End Property
         <ValueMandatory(""),ValidStringLength("", Max:=100)>
-        Public Property ItemCode() As String
+        Public Property ItemCode As String
             Get
                 If Row(PoAdjustmentDAL.ITEM_CODE_COL) Is DBNull.Value Then Return Nothing
                 Return Row(PoAdjustmentDAL.ITEM_CODE_COL)
             End Get
-            Set(ByVal value As String)
+            Set
                 SetValue(PoAdjustmentDAL.ITEM_CODE_COL, value)
             End Set
         End Property
-      Public Property Quantity() As Decimal
+      Public Property Quantity As Decimal
             Get
                 If Row(PoAdjustmentDAL.QUANTITY_COL) Is DBNull.Value Then Return Nothing
                 Return Row(PoAdjustmentDAL.QUANTITY_COL)
             End Get
-            Set(ByVal value As Decimal)
+            Set
                 SetValue(PoAdjustmentDAL.QUANTITY_COL, value)
             End Set
         End Property
-        Public Property UnitPrice() As Decimal
+        Public Property UnitPrice As Decimal
             Get
                 If Row(PoAdjustmentDAL.UNIT_PRICE_COL) Is DBNull.Value Then Return Nothing
                 Return Row(PoAdjustmentDAL.UNIT_PRICE_COL)
             End Get
-            Set(ByVal value As Decimal)
+            Set
                 SetValue(PoAdjustmentDAL.UNIT_PRICE_COL, value)
             End Set
         End Property
-        Public Property ExtendedPrice() As Decimal
+        Public Property ExtendedPrice As Decimal
             Get
                 If Row(PoAdjustmentDAL.EXTENDED_PRICE_COL) Is DBNull.Value Then Return Nothing
                 Return Row(PoAdjustmentDAL.EXTENDED_PRICE_COL)
             End Get
-            Set(ByVal value As Decimal)
+            Set
                 SetValue(PoAdjustmentDAL.EXTENDED_PRICE_COL, value)
             End Set
         End Property
-        Public Property CompanyId() As Guid
+        Public Property CompanyId As Guid
             Get
                 If Row(PoAdjustmentDAL.COMPANY_ID_COL) Is DBNull.Value Then Return Nothing
                 Return New Guid(CType(Row(PoAdjustmentDAL.COMPANY_ID_COL), Byte()))
             End Get
-            Set(ByVal value As Guid)
+            Set
                 SetValue(PoAdjustmentDAL.COMPANY_ID_COL, value)
             End Set
         End Property
         <ValidStringLength("", Max:=30)>
-        Public Property ModifiedBy() As String
+        Public Property ModifiedBy As String
             Get
                 If Row(PoAdjustmentDAL.MODIFIED_BY_COL) Is DBNull.Value Then Return Nothing
                 Return Row(PoAdjustmentDAL.MODIFIED_BY_COL)
             End Get
-            Set(ByVal value As String)
+            Set
                 SetValue(PoAdjustmentDAL.MODIFIED_BY_COL, value)
             End Set
         End Property

@@ -163,12 +163,12 @@ Partial Class DelayFactorForm
         Try
             If CallingParameters IsNot Nothing Then
                 State.DealerId = CType(CType(CallingPar, ArrayList)(0), Guid)
-                If CType(CallingPar, ArrayList)(1) Is Nothing Or CType(CallingPar, ArrayList)(1).Equals(String.Empty) Then
+                If CType(CallingPar, ArrayList)(1) Is Nothing OrElse CType(CallingPar, ArrayList)(1).Equals(String.Empty) Then
                     State.effective = Date.MinValue
                 Else
                     State.effective = CType(CType(CallingPar, ArrayList)(1), Date)
                 End If
-                If CType(CallingPar, ArrayList)(2) Is Nothing Or CType(CallingPar, ArrayList)(2).Equals(String.Empty) Then
+                If CType(CallingPar, ArrayList)(2) Is Nothing OrElse CType(CallingPar, ArrayList)(2).Equals(String.Empty) Then
                     State.expiration = Date.MinValue
                 Else
                     State.expiration = CType(CType(CallingPar, ArrayList)(2), Date)
@@ -194,7 +194,7 @@ Partial Class DelayFactorForm
             ErrController.Clear_Hide()
             ErrorControllerDS.Clear_Hide()
             CopyDealerId.Value = Request.Params("CopyDealerId")
-            If CMD.Value Is Nothing Or CMD.Value = "" Then
+            If CMD.Value Is Nothing OrElse CMD.Value = "" Then
                 CMD.Value = Request.Params("CMD")
             End If
 
@@ -314,7 +314,7 @@ Partial Class DelayFactorForm
         TheDealerControl.NothingSelected = True
         TheDealerControl.BindData(oDataView)
         TheDealerControl.SelectedGuid = State.DealerId
-        If (CMD Is Nothing Or CMD.Value <> COPY_DELAY_FACTOR) Then
+        If (CMD Is Nothing OrElse CMD.Value <> COPY_DELAY_FACTOR) Then
             TheDealerControl.AutoPostBackDD = True
         End If
 
@@ -364,7 +364,7 @@ Partial Class DelayFactorForm
         For i = 0 To (grid.Rows.Count - 1)
             del = CType(grid.Rows(i).Cells(DELETE_COL).FindControl(DELETE_CONTROL_NAME), ImageButton)
             highDay = CType(grid.Rows(i).Cells(HIGH_DAY_COL).FindControl("moHighDayLabel"), Label)
-            If del IsNot Nothing And highDay IsNot Nothing Then
+            If del IsNot Nothing AndAlso highDay IsNot Nothing Then
                 If CType(highDay.Text, Long) <> maxHighDay Then
                     del.Enabled = False
                     del.Visible = False

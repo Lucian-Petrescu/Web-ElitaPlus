@@ -131,7 +131,7 @@ Public Class ClaimStatusByGroup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimStatusByGroupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -141,7 +141,7 @@ Public Class ClaimStatusByGroup
         End Get
     End Property
 
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStatusByGroupDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -150,14 +150,14 @@ Public Class ClaimStatusByGroup
                 Return New Guid(CType(Row(ClaimStatusByGroupDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusByGroupDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
     <ValidateDealer("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStatusByGroupDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -166,7 +166,7 @@ Public Class ClaimStatusByGroup
                 Return New Guid(CType(Row(ClaimStatusByGroupDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusByGroupDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -174,7 +174,7 @@ Public Class ClaimStatusByGroup
 
 
     <ValueMandatory("")> _
-    Public Property ListItemId() As Guid
+    Public Property ListItemId As Guid
         Get
             CheckDeleted()
             If row(ClaimStatusByGroupDAL.COL_NAME_LIST_ITEM_ID) Is DBNull.Value Then
@@ -183,7 +183,7 @@ Public Class ClaimStatusByGroup
                 Return New Guid(CType(row(ClaimStatusByGroupDAL.COL_NAME_LIST_ITEM_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusByGroupDAL.COL_NAME_LIST_ITEM_ID, Value)
         End Set
@@ -191,7 +191,7 @@ Public Class ClaimStatusByGroup
 
 
     <ValueMandatory(""), ValidNumericRange("StatusOrder", MIN:=MIN_ORDER, Max:=MAX_ORDER, Message:=ERR_INVALID_STATUS_ORDER), ValidStatusOrder("")> _
-    Public Property StatusOrder() As LongType
+    Public Property StatusOrder As LongType
         Get
             CheckDeleted()
             If Row(ClaimStatusByGroupDAL.COL_NAME_STATUS_ORDER) Is DBNull.Value Then
@@ -200,13 +200,13 @@ Public Class ClaimStatusByGroup
                 Return New LongType(CType(Row(ClaimStatusByGroupDAL.COL_NAME_STATUS_ORDER), Long))
             End If
         End Get
-        Set(Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusByGroupDAL.COL_NAME_STATUS_ORDER, Value)
         End Set
     End Property
 
-    Public Property OwnerId() As Guid
+    Public Property OwnerId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStatusByGroupDAL.COL_NAME_OWNER_ID) Is DBNull.Value Then
@@ -215,14 +215,14 @@ Public Class ClaimStatusByGroup
                 Return New Guid(CType(Row(ClaimStatusByGroupDAL.COL_NAME_OWNER_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusByGroupDAL.COL_NAME_OWNER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property SkippingAllowedId() As Guid
+    Public Property SkippingAllowedId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStatusByGroupDAL.COL_NAME_SKIPPING_ALLOWED_ID) Is DBNull.Value Then
@@ -231,14 +231,14 @@ Public Class ClaimStatusByGroup
                 Return New Guid(CType(Row(ClaimStatusByGroupDAL.COL_NAME_SKIPPING_ALLOWED_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusByGroupDAL.COL_NAME_SKIPPING_ALLOWED_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ActiveId() As Guid
+    Public Property ActiveId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStatusByGroupDAL.COL_NAME_ACTIVE_ID) Is DBNull.Value Then
@@ -247,13 +247,13 @@ Public Class ClaimStatusByGroup
                 Return New Guid(CType(Row(ClaimStatusByGroupDAL.COL_NAME_ACTIVE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusByGroupDAL.COL_NAME_ACTIVE_ID, Value)
         End Set
     End Property
 
-    Public Property GroupNumber() As LongType
+    Public Property GroupNumber As LongType
         Get
             CheckDeleted()
             If Row(ClaimStatusByGroupDAL.COL_NAME_GROUP_NUMBER) Is DBNull.Value Then
@@ -262,13 +262,13 @@ Public Class ClaimStatusByGroup
                 Return New LongType(CType(Row(ClaimStatusByGroupDAL.COL_NAME_GROUP_NUMBER), Long))
             End If
         End Get
-        Set(Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusByGroupDAL.COL_NAME_GROUP_NUMBER, Value)
         End Set
     End Property
 
-    Public Property TurnaroundDays() As DecimalType
+    Public Property TurnaroundDays As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimStatusByGroupDAL.COL_NAME_TURNAROUND_DAYS) Is DBNull.Value Then
@@ -277,12 +277,12 @@ Public Class ClaimStatusByGroup
                 Return New DecimalType(CType(Row(ClaimStatusByGroupDAL.COL_NAME_TURNAROUND_DAYS), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusByGroupDAL.COL_NAME_TURNAROUND_DAYS, Value)
         End Set
     End Property
-    Public Property TurnaroundTimeReminderHours() As DecimalType
+    Public Property TurnaroundTimeReminderHours As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimStatusByGroupDAL.COL_NAME_TAT_REMINDER_HOURS) Is DBNull.Value Then
@@ -291,7 +291,7 @@ Public Class ClaimStatusByGroup
                 Return New DecimalType(CType(Row(ClaimStatusByGroupDAL.COL_NAME_TAT_REMINDER_HOURS), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusByGroupDAL.COL_NAME_TAT_REMINDER_HOURS, Value)
         End Set

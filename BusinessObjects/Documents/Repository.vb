@@ -95,7 +95,7 @@ Namespace Documents
 #Region "Properties"
 
         'Key Property
-        Public ReadOnly Property Id() As Guid
+        Public ReadOnly Property Id As Guid
             Get
                 If Row(RepositoryDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                     Return Nothing
@@ -106,7 +106,7 @@ Namespace Documents
         End Property
 
         <ValueMandatory(""), ValidStringLength("", Max:=50), CheckDuplicateCode("")>
-        Public Property Code() As String
+        Public Property Code As String
             Get
                 CheckDeleted()
                 If Row(RepositoryDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -115,7 +115,7 @@ Namespace Documents
                     Return CType(Row(RepositoryDAL.COL_NAME_CODE), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
                 SetValue(RepositoryDAL.COL_NAME_CODE, Value)
             End Set
@@ -123,7 +123,7 @@ Namespace Documents
 
 
         <ValueMandatory(""), ValidStringLength("", Max:=500)>
-        Public Property Description() As String
+        Public Property Description As String
             Get
                 CheckDeleted()
                 If Row(RepositoryDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -132,7 +132,7 @@ Namespace Documents
                     Return CType(Row(RepositoryDAL.COL_NAME_DESCRIPTION), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
                 SetValue(RepositoryDAL.COL_NAME_DESCRIPTION, Value)
             End Set
@@ -141,7 +141,7 @@ Namespace Documents
 
         <ValueMandatory(""), ValidStringLength("", Max:=100), CheckDuplicateStoragePath(""),
             CheckReadWriteTest("")>
-        Public Property StoragePath() As String
+        Public Property StoragePath As String
             Get
                 CheckDeleted()
                 If Row(RepositoryDAL.COL_NAME_STORAGE_PATH) Is DBNull.Value Then
@@ -150,14 +150,14 @@ Namespace Documents
                     Return CType(Row(RepositoryDAL.COL_NAME_STORAGE_PATH), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
                 SetValue(RepositoryDAL.COL_NAME_STORAGE_PATH, Value)
             End Set
         End Property
 
         <ValidStringLength("", Max:=50)>
-        Public Property RepositoryTypeXcd() As String
+        Public Property RepositoryTypeXcd As String
             Get
                 CheckDeleted()
                 If Row(RepositoryDAL.COL_NAME_REPOSITORY_TYPE_XCD) Is DBNull.Value Then
@@ -166,7 +166,7 @@ Namespace Documents
                     Return CType(Row(RepositoryDAL.COL_NAME_REPOSITORY_TYPE_XCD), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
                 SetValue(RepositoryDAL.COL_NAME_REPOSITORY_TYPE_XCD, Value)
             End Set

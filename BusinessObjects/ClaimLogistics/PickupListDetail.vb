@@ -93,7 +93,7 @@ Public Class PickupListDetail
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(PickupListDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -104,7 +104,7 @@ Public Class PickupListDetail
     End Property
 
     <ValueMandatory("")> _
-    Public Property HeaderId() As Guid
+    Public Property HeaderId As Guid
         Get
             CheckDeleted()
             If row(PickupListDetailDAL.COL_NAME_HEADER_ID) Is DBNull.Value Then
@@ -113,7 +113,7 @@ Public Class PickupListDetail
                 Return New Guid(CType(row(PickupListDetailDAL.COL_NAME_HEADER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PickupListDetailDAL.COL_NAME_HEADER_ID, Value)
         End Set
@@ -138,7 +138,7 @@ Public Class PickupListDetail
 
 
     <ValueMandatory("")> _
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If row(PickupListDetailDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -147,7 +147,7 @@ Public Class PickupListDetail
                 Return New Guid(CType(row(PickupListDetailDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PickupListDetailDAL.COL_NAME_CLAIM_ID, Value)
         End Set
@@ -155,7 +155,7 @@ Public Class PickupListDetail
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=16)> _
-    Public Property IsException() As String
+    Public Property IsException As String
         Get
             CheckDeleted()
             If row(PickupListDetailDAL.COL_NAME_IS_EXCEPTION) Is DBNull.Value Then
@@ -164,7 +164,7 @@ Public Class PickupListDetail
                 Return CType(row(PickupListDetailDAL.COL_NAME_IS_EXCEPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PickupListDetailDAL.COL_NAME_IS_EXCEPTION, Value)
         End Set

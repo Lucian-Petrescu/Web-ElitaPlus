@@ -470,7 +470,7 @@ Partial Class CommPlanExtractForm
     End Sub
 
     Public Sub ValidateCommPerandAmt()
-        If (txtCommiPerct.Text.Equals(String.Empty) And txtCommiAmt.Text.Equals(String.Empty) AndAlso ddlCommRateXcd.SelectedValue.Equals("YESNO-N")) Then
+        If (txtCommiPerct.Text.Equals(String.Empty) AndAlso txtCommiAmt.Text.Equals(String.Empty) AndAlso ddlCommRateXcd.SelectedValue.Equals("YESNO-N")) Then
             ElitaPlusPage.SetLabelError(lblCommiPerct)
             ElitaPlusPage.SetLabelError(lblCommiAmt)
             Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COMM_PERC_AMT_ERR)
@@ -478,12 +478,12 @@ Partial Class CommPlanExtractForm
     End Sub
 
     Private Sub DisableCommPerAmtTxt()
-        If (txtCommiAmt.Text.Equals(String.Empty) And txtCommiPerct.Text.Equals(String.Empty)) Then
+        If (txtCommiAmt.Text.Equals(String.Empty) AndAlso txtCommiPerct.Text.Equals(String.Empty)) Then
             txtCommiAmt.Enabled = True
             txtCommiPerct.Enabled = True
-        ElseIf (txtCommiPerct.Text.Equals(String.Empty) And ddlCommRateXcd.SelectedValue.Equals("YESNO-N")) Then
+        ElseIf (txtCommiPerct.Text.Equals(String.Empty) AndAlso ddlCommRateXcd.SelectedValue.Equals("YESNO-N")) Then
             txtCommiPerct.Enabled = False
-        ElseIf (txtCommiAmt.Text.Equals(String.Empty) And ddlCommRateXcd.SelectedValue.Equals("YESNO-N")) Then
+        ElseIf (txtCommiAmt.Text.Equals(String.Empty) AndAlso ddlCommRateXcd.SelectedValue.Equals("YESNO-N")) Then
             txtCommiAmt.Enabled = False
         End If
     End Sub
@@ -542,7 +542,7 @@ Partial Class CommPlanExtractForm
 
     Public Sub ValidateDates()
 
-        If txtCommiExpDate.Text.Trim() <> String.Empty And txtCommiEffectDate.Text.Trim() <> String.Empty Then
+        If txtCommiExpDate.Text.Trim() <> String.Empty AndAlso txtCommiEffectDate.Text.Trim() <> String.Empty Then
             If CDate(txtCommiEffectDate.Text) >= CDate(txtCommiExpDate.Text) Then
                 ElitaPlusPage.SetLabelError(lblCommiEffectDate)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_EFFEC_DATE_ERR)

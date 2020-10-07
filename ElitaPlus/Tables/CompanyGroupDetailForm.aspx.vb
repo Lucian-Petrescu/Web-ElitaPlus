@@ -159,7 +159,7 @@ Partial Class CompanyGroupDetailForm
                 SetSelectedItem(ddlinactivenewvehiclesbasedon, .InactiveNewVehiclesBasedOn)
                 'req 5547
                 SetSelectedItem(ddlFastApproval, .ClaimFastApprovalId)
-                If .IsNew Or .ClaimFastApprovalId.Equals(Guid.Empty) Then
+                If .IsNew OrElse .ClaimFastApprovalId.Equals(Guid.Empty) Then
                     SetSelectedItem(ddlFastApproval, LookupListNew.GetIdFromCode(LookupListNew.LK_FAST_APPROVAL_TYPE, "N"))
                 End If
                 'REQ-5773
@@ -174,13 +174,13 @@ Partial Class CompanyGroupDetailForm
                 ' BindSelectItem(Me.State.MyBO.InteractionNumberingByXcd, Me.ddlInteractionNumbering)
 
                 'REQ - 6155
-                If .IsNew Or .CaseNumberingByXcd Is Nothing Then
+                If .IsNew OrElse .CaseNumberingByXcd Is Nothing Then
                     SetSelectedItem(ddlCaseNumbering, "CASENUM-CMP") '"CASENUM-CMP"
                 Else
                     SetSelectedItem(ddlCaseNumbering, .CaseNumberingByXcd)
                 End If
 
-                If .IsNew Or .InteractionNumberingByXcd Is Nothing Then
+                If .IsNew OrElse .InteractionNumberingByXcd Is Nothing Then
                     SetSelectedItem(ddlInteractionNumbering, "INTNUM-CMP")
                 Else
                     SetSelectedItem(ddlInteractionNumbering, .InteractionNumberingByXcd)

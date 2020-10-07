@@ -90,7 +90,7 @@ Public Class SplitReconWrk
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(SplitReconWrkDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class SplitReconWrk
     End Property
 
     <ValueMandatory("")> _
-    Public Property SplitfileProcessedId() As Guid
+    Public Property SplitfileProcessedId As Guid
         Get
             CheckDeleted()
             If row(SplitReconWrkDAL.COL_NAME_SPLITFILE_PROCESSED_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class SplitReconWrk
                 Return New Guid(CType(row(SplitReconWrkDAL.COL_NAME_SPLITFILE_PROCESSED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SplitReconWrkDAL.COL_NAME_SPLITFILE_PROCESSED_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class SplitReconWrk
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property RecordType() As String
+    Public Property RecordType As String
         Get
             CheckDeleted()
             If row(SplitReconWrkDAL.COL_NAME_RECORD_TYPE) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class SplitReconWrk
                 Return CType(row(SplitReconWrkDAL.COL_NAME_RECORD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SplitReconWrkDAL.COL_NAME_RECORD_TYPE, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class SplitReconWrk
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=2000)> _
-    Public Property Rest() As String
+    Public Property Rest As String
         Get
             CheckDeleted()
             If row(SplitReconWrkDAL.COL_NAME_REST) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class SplitReconWrk
                 Return CType(row(SplitReconWrkDAL.COL_NAME_REST), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SplitReconWrkDAL.COL_NAME_REST, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class SplitReconWrk
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property SplitProcessed() As String
+    Public Property SplitProcessed As String
         Get
             CheckDeleted()
             If row(SplitReconWrkDAL.COL_NAME_SPLIT_PROCESSED) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class SplitReconWrk
                 Return CType(row(SplitReconWrkDAL.COL_NAME_SPLIT_PROCESSED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SplitReconWrkDAL.COL_NAME_SPLIT_PROCESSED, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class SplitReconWrk
 
 
     <ValidStringLength("", Max:=20)> _
-    Public Property OutfileName() As String
+    Public Property OutfileName As String
         Get
             CheckDeleted()
             If row(SplitReconWrkDAL.COL_NAME_OUTFILE_NAME) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class SplitReconWrk
                 Return CType(row(SplitReconWrkDAL.COL_NAME_OUTFILE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SplitReconWrkDAL.COL_NAME_OUTFILE_NAME, Value)
         End Set

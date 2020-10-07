@@ -423,7 +423,7 @@ Partial Class ClaimSuspenseReconForm
     Protected Sub DataGridItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
 
         'Fill the grid with the claim information
-        If e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.Item Then
+        If e.Item.ItemType = ListItemType.AlternatingItem OrElse e.Item.ItemType = ListItemType.Item Then
             Dim ctl As Control
             Dim lbl As Label
             Dim txt As TextBox

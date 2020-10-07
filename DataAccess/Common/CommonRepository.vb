@@ -13,7 +13,7 @@ Public NotInheritable Class CommonRepository(Of TType As {BaseEntity, IRecordCre
         Dim QueryForListItems = (From li As ListItem In Context.ListItems
                                  Join l As List In Context.Lists On l.ListId Equals li.ListId
                                  Join dit As DictionaryItemTranslation In Context.DictionaryItemTranslations On dit.DictionaryItemId Equals li.DictionaryItemId
-                                 Where dit.Language.Code = languageCode And l.Code = listCode
+                                 Where dit.Language.Code = languageCode AndAlso l.Code = listCode
                                  Select li.Code, dit.Translation, li.ListItemId, li.ExtendedCode)
 
         Dim result = New List(Of ElitaListItem)
@@ -41,7 +41,7 @@ Public NotInheritable Class CommonRepository(Of TType As {BaseEntity, IRecordCre
         Return (From l As Label In Context.Labels
                 Join di As DictionaryItem In Context.DictionaryItems On l.DictionaryItemId Equals di.DictionaryItemId
                 Join dit As DictionaryItemTranslation In Context.DictionaryItemTranslations On dit.DictionaryItemId Equals l.DictionaryItemId
-                Where dit.Language.Code = languageCode And l.UiProgCode = uiProgCode
+                Where dit.Language.Code = languageCode AndAlso l.UiProgCode = uiProgCode
                 Select New LabelTranslation() With
                     {
                     .LabelId = l.LabelId,

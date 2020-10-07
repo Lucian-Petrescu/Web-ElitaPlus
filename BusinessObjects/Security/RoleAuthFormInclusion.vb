@@ -121,7 +121,7 @@ Public Class RoleAuthFormInclusion
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(RoleAuthFormInclusionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -132,7 +132,7 @@ Public Class RoleAuthFormInclusion
     End Property
 
     <ValueMandatory("")> _
-    Public Property RoleId() As Guid
+    Public Property RoleId As Guid
         Get
             CheckDeleted()
             If Row(RoleAuthFormInclusionDAL.COL_NAME_ROLE_ID) Is DBNull.Value Then
@@ -141,7 +141,7 @@ Public Class RoleAuthFormInclusion
                 Return New Guid(CType(Row(RoleAuthFormInclusionDAL.COL_NAME_ROLE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RoleAuthFormInclusionDAL.COL_NAME_ROLE_ID, Value)
         End Set
@@ -149,7 +149,7 @@ Public Class RoleAuthFormInclusion
 
 
     <ValueMandatory("")> _
-    Public Property FormId() As Guid
+    Public Property FormId As Guid
         Get
             CheckDeleted()
             If Row(RoleAuthFormInclusionDAL.COL_NAME_FORM_ID) Is DBNull.Value Then
@@ -158,7 +158,7 @@ Public Class RoleAuthFormInclusion
                 Return New Guid(CType(Row(RoleAuthFormInclusionDAL.COL_NAME_FORM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RoleAuthFormInclusionDAL.COL_NAME_FORM_ID, Value)
         End Set
@@ -166,7 +166,7 @@ Public Class RoleAuthFormInclusion
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property PermissionType() As String
+    Public Property PermissionType As String
         Get
             CheckDeleted()
             If Row(RoleAuthFormInclusionDAL.COL_NAME_PERMISSION_TYPE) Is DBNull.Value Then
@@ -175,7 +175,7 @@ Public Class RoleAuthFormInclusion
                 Return CType(Row(RoleAuthFormInclusionDAL.COL_NAME_PERMISSION_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RoleAuthFormInclusionDAL.COL_NAME_PERMISSION_TYPE, Value)
         End Set

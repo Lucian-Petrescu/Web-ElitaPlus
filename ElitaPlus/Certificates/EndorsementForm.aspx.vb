@@ -723,7 +723,7 @@ Namespace Certificates
                     End If
 
                     If CheckCertUseCustomer() Then
-                        If (.CustomerFirstName <> moCustomerFirstNameText.Text) Or (.CustomerMiddleName <> moCustomerMiddleNameText.Text) Or (.CustomerLastName <> moCustomerLastNameText.Text) Then
+                        If (.CustomerFirstName <> moCustomerFirstNameText.Text) OrElse (.CustomerMiddleName <> moCustomerMiddleNameText.Text) OrElse (.CustomerLastName <> moCustomerLastNameText.Text) Then
                             State.MyBO.NameisDirty = True
                         End If
                     Else
@@ -792,11 +792,7 @@ Namespace Certificates
                 End With
 
                 With State.MyBO
-                    If .TermisDirty Or .ProductSalesDatesisDirty Or .WarrantySalesDatesisDirty Or
-                        .SalesPriceisDirty Or .LanguageisDirty Or .AddressisDirty Or
-                        .EmailisDirty Or .HomePhoneisDirty Or .WorkPhoneisDirty Or
-                        .DocTypeisDirty Or .IDTypeisDirty Or .DocAgencyisDirty Or .DocNumberisDirty Or
-                        .RGNumberisDirty Or .DocIssueDateisDirty Then
+                    If .TermisDirty OrElse .ProductSalesDatesisDirty OrElse .WarrantySalesDatesisDirty OrElse .SalesPriceisDirty OrElse .LanguageisDirty OrElse .AddressisDirty OrElse .EmailisDirty OrElse .HomePhoneisDirty OrElse .WorkPhoneisDirty OrElse .DocTypeisDirty OrElse .IDTypeisDirty OrElse .DocAgencyisDirty OrElse .DocNumberisDirty OrElse .RGNumberisDirty OrElse .DocIssueDateisDirty Then
                         .PopulateWithDefaultValues(State.MyBO.Cert.Id, State.StatemanufaturerWarranty)
                         PopulateBOProperty(State.MyBO, "TermPos", TextboxManufacturerTerm)
                         PopulateBOProperty(State.MyBO, "ProductSalesDatePost", TextboxProductSaleDate)
@@ -822,7 +818,7 @@ Namespace Certificates
                         PopulateBOProperty(State.MyBO, "TaxIDNumbPost", moNewTaxIdText)
                         PopulateBOProperty(State.MyBO, "RgNumberPost", moRGNumberText)
                         PopulateBOProperty(State.MyBO, "DocumentIssueDatePost", moDocumentIssueDateText)
-                        If moCustomerFirstNameText.Visible = True And moCustomerMiddleNameText.Visible = True And moCustomerLastNameText.Visible = True Then
+                        If moCustomerFirstNameText.Visible = True AndAlso moCustomerMiddleNameText.Visible = True AndAlso moCustomerLastNameText.Visible = True Then
                             PopulateBOProperty(State.MyBO, "CustNamePost", moCustomerFirstNameText.Text + " " + moCustomerMiddleNameText.Text + " " + moCustomerLastNameText.Text)
                         ElseIf TextboxCustomerName.Visible = True Then
                             PopulateBOProperty(State.MyBO, "CustNamePost", TextboxCustomerName)
@@ -973,7 +969,7 @@ Namespace Certificates
                     NavController.Navigate(Me, "back", retObj)
                 Else
                     PopulateBOsFormFrom()
-                    If State.MyBO.IsDirty And State.MyBO.DealerEndorsementFlagValue <> "S" Then
+                    If State.MyBO.IsDirty AndAlso State.MyBO.DealerEndorsementFlagValue <> "S" Then
                         DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                         State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                     Else
@@ -1004,8 +1000,8 @@ Namespace Certificates
 
                 CreateNew()
                 PopulateBOsFormFrom()
-                If State.MyBO.IsDirty Or CheckCustomerInfoChanged() Then
-                    If strTranferOfOwnership = YES And (State.MyBO.NameisDirty Or State.MyBO.DocTypeisDirty Or State.MyBO.DocNumberisDirty) Then
+                If State.MyBO.IsDirty OrElse CheckCustomerInfoChanged() Then
+                    If strTranferOfOwnership = YES AndAlso (State.MyBO.NameisDirty OrElse State.MyBO.DocTypeisDirty OrElse State.MyBO.DocNumberisDirty) Then
                         If State.MyBO.CustNamePost Is Nothing Then
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.MISSING_CUSTOMER_NAME_ERR)
                         Else
@@ -1017,7 +1013,7 @@ Namespace Certificates
                             End If
                         End If
 
-                        If State.MyBO.CustNamePre = State.MyBO.CustNamePost Or State.MyBO.TaxIDNumbPost = State.MyBO.TaxIDNumbPre Then
+                        If State.MyBO.CustNamePre = State.MyBO.CustNamePost OrElse State.MyBO.TaxIDNumbPost = State.MyBO.TaxIDNumbPre Then
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.GUI_CUST_NAME_DOC_NUMBER_ERR)
                         End If
                     End If

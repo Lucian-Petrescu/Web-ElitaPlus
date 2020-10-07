@@ -234,19 +234,19 @@
                 rptType = RPT_TYPE_ALL
             End If
 
-            If chkPepReport.Checked And chkTerrReport.Checked Then
+            If chkPepReport.Checked AndAlso chkTerrReport.Checked Then
                 rptType = RPT_TYPE_PNT
             End If
 
-            If chkPepReport.Checked And Not chkTerrReport.Checked Then
+            If chkPepReport.Checked AndAlso Not chkTerrReport.Checked Then
                 rptType = RPT_TYPE_PEP
             End If
 
-            If Not chkPepReport.Checked And chkTerrReport.Checked Then
+            If Not chkPepReport.Checked AndAlso chkTerrReport.Checked Then
                 rptType = RPT_TYPE_TER
             End If
 
-            If Not chkAllCerts.Checked And Not chkPepReport.Checked And Not chkTerrReport.Checked Then
+            If Not chkAllCerts.Checked AndAlso Not chkPepReport.Checked AndAlso Not chkTerrReport.Checked Then
                 rptType = RPT_TYPE_ALL
             End If
 

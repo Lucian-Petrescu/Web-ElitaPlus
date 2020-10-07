@@ -142,7 +142,7 @@ Public Class ConsumerSearchRequest
 #End Region
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)>
-    Public Property ReportType() As String
+    Public Property ReportType As String
         Get
             CheckDeleted()
             If Row(ReportRequestsDAL.COL_NAME_REPORT_TYPE) Is DBNull.Value Then
@@ -151,14 +151,14 @@ Public Class ConsumerSearchRequest
                 Return CType(Row(ReportRequestsDAL.COL_NAME_REPORT_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportRequestsDAL.COL_NAME_REPORT_TYPE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=800)>
-    Public Property ReportProc() As String
+    Public Property ReportProc As String
         Get
             CheckDeleted()
             If Row(ReportRequestsDAL.COL_NAME_REPORT_PROC) Is DBNull.Value Then
@@ -167,7 +167,7 @@ Public Class ConsumerSearchRequest
                 Return CType(Row(ReportRequestsDAL.COL_NAME_REPORT_PROC), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportRequestsDAL.COL_NAME_REPORT_PROC, Value)
         End Set
@@ -175,7 +175,7 @@ Public Class ConsumerSearchRequest
 
 
     <ValidStringLength("", Max:=4000)>
-    Public Property ReportParameters() As String
+    Public Property ReportParameters As String
         Get
             CheckDeleted()
             If Row(ReportRequestsDAL.COL_NAME_REPORT_PARAMETERS) Is DBNull.Value Then
@@ -184,7 +184,7 @@ Public Class ConsumerSearchRequest
                 Return CType(Row(ReportRequestsDAL.COL_NAME_REPORT_PARAMETERS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportRequestsDAL.COL_NAME_REPORT_PARAMETERS, Value)
         End Set
@@ -198,7 +198,7 @@ Public Class ConsumerSearchRequest
 
 
     <ValidStringLength("", Max:=200)>
-    Public Property UserEmailAddress() As String
+    Public Property UserEmailAddress As String
         Get
             CheckDeleted()
             If Row(ReportRequestsDAL.COL_NAME_USER_EMAIL_ADDRESS) Is DBNull.Value Then
@@ -207,13 +207,13 @@ Public Class ConsumerSearchRequest
                 Return CType(Row(ReportRequestsDAL.COL_NAME_USER_EMAIL_ADDRESS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportRequestsDAL.COL_NAME_USER_EMAIL_ADDRESS, Value)
         End Set
     End Property
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ReportRequestsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing

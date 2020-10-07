@@ -174,7 +174,7 @@ Namespace Reports
 
             'Start and End claim numbers must be 8 digits long.
             Try
-                If moStartClaimText.Text.Length < 8 Or moEndClaimText.Text.Length < 8 Then
+                If moStartClaimText.Text.Length < 8 OrElse moEndClaimText.Text.Length < 8 Then
                     Throw New Exception
                 End If
             Catch ex As Exception

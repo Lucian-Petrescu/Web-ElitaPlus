@@ -244,12 +244,12 @@ Public Class EquipmentForm
                 isMasterEquipment = False
             End If
         End If
-        ControlMgr.SetEnableControl(Me, moManufacturerDrop, enableToggle And State.MyBO.IsNew)
-        ControlMgr.SetEnableControl(Me, moIsMasterModelDrop, enableToggle And State.MyBO.IsNew)
-        ControlMgr.SetEnableControl(Me, moModelText, enableToggle And ((Not isMasterEquipment And State.MyBO.IsNew) Or (IsMasterEquipment)))
-        ControlMgr.SetEnableControl(Me, moDescriptionText, enableToggle And ((State.MyBO.IsNew And isMasterEquipment) Or (Not isMasterEquipment)))
-        ControlMgr.SetEnableControl(Me, moMasterEquipmentDrop, enableToggle And Not isMasterEquipment)
-        ControlMgr.SetEnableControl(Me, moManufacturerWarrentyText, enableToggle And Not isMasterEquipment)
+        ControlMgr.SetEnableControl(Me, moManufacturerDrop, enableToggle AndAlso State.MyBO.IsNew)
+        ControlMgr.SetEnableControl(Me, moIsMasterModelDrop, enableToggle AndAlso State.MyBO.IsNew)
+        ControlMgr.SetEnableControl(Me, moModelText, enableToggle AndAlso ((Not isMasterEquipment AndAlso State.MyBO.IsNew) OrElse (IsMasterEquipment)))
+        ControlMgr.SetEnableControl(Me, moDescriptionText, enableToggle AndAlso ((State.MyBO.IsNew AndAlso isMasterEquipment) OrElse (Not isMasterEquipment)))
+        ControlMgr.SetEnableControl(Me, moMasterEquipmentDrop, enableToggle AndAlso Not isMasterEquipment)
+        ControlMgr.SetEnableControl(Me, moManufacturerWarrentyText, enableToggle AndAlso Not isMasterEquipment)
         ControlMgr.SetEnableControl(Me, moEquipmentClassDrop, enableToggle)
         ControlMgr.SetEnableControl(Me, moEquipmentTypeDrop, enableToggle)
         ControlMgr.SetEnableControl(Me, moRepairableDrop, enableToggle)
@@ -976,7 +976,7 @@ Public Class EquipmentForm
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Item.Cells(GRID_COL_EQUIPMENT_COMMENT_ID).Text = New Guid(CType(dvRow(Equipment.EquipmentCommentSelectionView.COL_NAME_EQUIPMENT_COMMENT_ID), Byte())).ToString
                 e.Item.Cells(GRID_COL_COMMENT).Text = dvRow(Equipment.EquipmentCommentSelectionView.COL_NAME_COMMENT).ToString
             End If

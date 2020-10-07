@@ -159,7 +159,7 @@ Namespace Translation
                     i += 1
                 Next
             Else
-                If elemType = ListItemType.AlternatingItem Or elemType = ListItemType.Item Then
+                If elemType = ListItemType.AlternatingItem OrElse elemType = ListItemType.Item Then
                     Dim objButton As Button
 
                     objButton = CType(e.Item.Cells(ITEMS_CIDX).FindControl("btnView"), Button)
@@ -204,9 +204,9 @@ Namespace Translation
 
                 'comparing to the original values saved in hidden columns
                 Dim isDirty As Boolean = False
-                isDirty = isDirty Or (strNewProgCodeValue.Trim.ToUpper <> DataGridDropdowns.Items(i).Cells(OLD_PROGCODE_CIDX).Text.Trim.ToUpper)
-                isDirty = isDirty Or (strnewEngTransValue.Trim <> DataGridDropdowns.Items(i).Cells(OLD_TRANS_VALUE_CIDX).Text.Trim)
-                isDirty = isDirty Or (strNewMaintByUserValue <> DataGridDropdowns.Items(i).Cells(OLD_MAINT_BY_USER_CIDX).Text.Trim)
+                isDirty = isDirty OrElse (strNewProgCodeValue.Trim.ToUpper <> DataGridDropdowns.Items(i).Cells(OLD_PROGCODE_CIDX).Text.Trim.ToUpper)
+                isDirty = isDirty OrElse (strnewEngTransValue.Trim <> DataGridDropdowns.Items(i).Cells(OLD_TRANS_VALUE_CIDX).Text.Trim)
+                isDirty = isDirty OrElse (strNewMaintByUserValue <> DataGridDropdowns.Items(i).Cells(OLD_MAINT_BY_USER_CIDX).Text.Trim)
                 If isDirty Then
                     Dim DropdownId As New Guid(CType(DataGridDropdowns.Items(i).Cells(DROPDOWN_ID_CIDX).FindControl("lblListId"), Label).Text)
                     Try

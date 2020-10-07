@@ -301,7 +301,7 @@ Namespace Reports
                 End If
 
                 'either of the three options should be selected
-                If (rdealer.Checked = False And dealerCode = String.Empty And ddlDealerCurrency.SelectedIndex = 0) Then
+                If (rdealer.Checked = False AndAlso dealerCode = String.Empty AndAlso ddlDealerCurrency.SelectedIndex = 0) Then
                     Throw New GUIException(Message.MSG_GUI_INVALID_SELECTION, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_REQUIRED)
                 End If
                 'currency should be selected for every run

@@ -97,7 +97,7 @@ Public Class ClaimImage
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimImageDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -108,7 +108,7 @@ Public Class ClaimImage
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If row(ClaimImageDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -117,7 +117,7 @@ Public Class ClaimImage
                 Return New Guid(CType(row(ClaimImageDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimImageDAL.COL_NAME_CLAIM_ID, Value)
         End Set
@@ -125,7 +125,7 @@ Public Class ClaimImage
 
 
     <ValueMandatory("")> _
-    Public Property ImageId() As Guid
+    Public Property ImageId As Guid
         Get
             CheckDeleted()
             If row(ClaimImageDAL.COL_NAME_IMAGE_ID) Is DBNull.Value Then
@@ -134,7 +134,7 @@ Public Class ClaimImage
                 Return New Guid(CType(row(ClaimImageDAL.COL_NAME_IMAGE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimImageDAL.COL_NAME_IMAGE_ID, Value)
         End Set
@@ -142,7 +142,7 @@ Public Class ClaimImage
 
 
     <ValueMandatory("")> _
-    Public Property DocumentTypeId() As Guid
+    Public Property DocumentTypeId As Guid
         Get
             CheckDeleted()
             If row(ClaimImageDAL.COL_NAME_DOCUMENT_TYPE_ID) Is DBNull.Value Then
@@ -151,7 +151,7 @@ Public Class ClaimImage
                 Return New Guid(CType(row(ClaimImageDAL.COL_NAME_DOCUMENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimImageDAL.COL_NAME_DOCUMENT_TYPE_ID, Value)
         End Set
@@ -159,7 +159,7 @@ Public Class ClaimImage
 
 
     <ValueMandatory("")> _
-    Public Property ImageStatusId() As Guid
+    Public Property ImageStatusId As Guid
         Get
             CheckDeleted()
             If Row(ClaimImageDAL.COL_NAME_IMAGE_STATUS_ID) Is DBNull.Value Then
@@ -168,14 +168,14 @@ Public Class ClaimImage
                 Return New Guid(CType(Row(ClaimImageDAL.COL_NAME_IMAGE_STATUS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimImageDAL.COL_NAME_IMAGE_STATUS_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property IsLocalRepository() As String
+    Public Property IsLocalRepository As String
         Get
             CheckDeleted()
             If Row(ClaimImageDAL.COL_NAME_IS_LOCAL_REPOSITORY) Is DBNull.Value Then
@@ -184,13 +184,13 @@ Public Class ClaimImage
                 Return CType(Row(ClaimImageDAL.COL_NAME_IS_LOCAL_REPOSITORY), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimImageDAL.COL_NAME_IS_LOCAL_REPOSITORY, Value)
         End Set
     End Property
 
-    Public Property ScanDate() As DateType
+    Public Property ScanDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimImageDAL.COL_NAME_SCAN_DATE) Is DBNull.Value Then
@@ -199,14 +199,14 @@ Public Class ClaimImage
                 Return New DateType(CType(Row(ClaimImageDAL.COL_NAME_SCAN_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimImageDAL.COL_NAME_SCAN_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200), ValidateDuplicateFileName("")> _
-    Public Property FileName() As String
+    Public Property FileName As String
         Get
             CheckDeleted()
             If Row(ClaimImageDAL.COL_NAME_FILE_NAME) Is DBNull.Value Then
@@ -215,13 +215,13 @@ Public Class ClaimImage
                 Return CType(Row(ClaimImageDAL.COL_NAME_FILE_NAME), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimImageDAL.COL_NAME_FILE_NAME, Value)
         End Set
     End Property
 
-    Public Property FileSizeBytes() As LongType
+    Public Property FileSizeBytes As LongType
         Get
             CheckDeleted()
             If Row(ClaimImageDAL.COL_NAME_FILE_SIZE_BYTES) Is DBNull.Value Then
@@ -230,14 +230,14 @@ Public Class ClaimImage
                 Return New LongType(CType(Row(ClaimImageDAL.COL_NAME_FILE_SIZE_BYTES), Long))
             End If
         End Get
-        Set(Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimImageDAL.COL_NAME_FILE_SIZE_BYTES, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=4000)> _
-    Public Property Comments() As String
+    Public Property Comments As String
         Get
             CheckDeleted()
             If Row(ClaimImageDAL.COL_NAME_COMMENTS) Is DBNull.Value Then
@@ -246,14 +246,14 @@ Public Class ClaimImage
                 Return CType(Row(ClaimImageDAL.COL_NAME_COMMENTS), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimImageDAL.COL_NAME_COMMENTS, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)> _
-    Public Property UserName() As String
+    Public Property UserName As String
         Get
             CheckDeleted()
             If Row(ClaimImageDAL.COL_NAME_USER_NAME) Is DBNull.Value Then
@@ -262,13 +262,13 @@ Public Class ClaimImage
                 Return CType(Row(ClaimImageDAL.COL_NAME_USER_NAME), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimImageDAL.COL_NAME_USER_NAME, Value)
         End Set
     End Property
 
-    Public Property DeleteFlag() As String
+    Public Property DeleteFlag As String
         Get
             CheckDeleted()
             If Row(ClaimImageDAL.COL_NAME_DELETE_FLAG) Is DBNull.Value Then
@@ -277,7 +277,7 @@ Public Class ClaimImage
                 Return CType(Row(ClaimImageDAL.COL_NAME_DELETE_FLAG), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimImageDAL.COL_NAME_DELETE_FLAG, Value)
         End Set

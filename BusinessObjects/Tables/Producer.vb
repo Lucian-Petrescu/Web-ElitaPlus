@@ -86,7 +86,7 @@ Public Class Producer
 #Region "Address"
 
     Private _address As Address = Nothing
-    Public ReadOnly Property Address() As Address
+    Public ReadOnly Property Address As Address
         Get
             If _address Is Nothing Then
                 If AddressId.Equals(Guid.Empty) Then
@@ -111,7 +111,7 @@ Public Class Producer
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ProducerDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -122,7 +122,7 @@ Public Class Producer
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=5)>
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(ProducerDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -131,7 +131,7 @@ Public Class Producer
                 Return CType(Row(ProducerDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProducerDAL.COL_NAME_CODE, Value)
         End Set
@@ -139,7 +139,7 @@ Public Class Producer
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ProducerDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -148,7 +148,7 @@ Public Class Producer
                 Return CType(Row(ProducerDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProducerDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -156,7 +156,7 @@ Public Class Producer
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)>
-    Public Property ProducerTypeXcd() As String
+    Public Property ProducerTypeXcd As String
         Get
             CheckDeleted()
             If Row(ProducerDAL.COL_NAME_PRODUCER_TYPE_XCD) Is DBNull.Value Then
@@ -165,7 +165,7 @@ Public Class Producer
                 Return CType(Row(ProducerDAL.COL_NAME_PRODUCER_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProducerDAL.COL_NAME_PRODUCER_TYPE_XCD, Value)
         End Set
@@ -173,7 +173,7 @@ Public Class Producer
 
 
     <ValueMandatory("")>
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(ProducerDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -182,7 +182,7 @@ Public Class Producer
                 Return New Guid(CType(Row(ProducerDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProducerDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -190,7 +190,7 @@ Public Class Producer
 
 
 
-    Public Property AddressId() As Guid
+    Public Property AddressId As Guid
         Get
             CheckDeleted()
             If Row(ProducerDAL.COL_NAME_ADDRESS_ID) Is DBNull.Value Then
@@ -199,7 +199,7 @@ Public Class Producer
                 Return New Guid(CType(Row(ProducerDAL.COL_NAME_ADDRESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProducerDAL.COL_NAME_ADDRESS_ID, Value)
         End Set
@@ -207,7 +207,7 @@ Public Class Producer
 
 
     <ValidStringLength("", Max:=50)>
-    Public Property TaxIdNumber() As String
+    Public Property TaxIdNumber As String
         Get
             CheckDeleted()
             If Row(ProducerDAL.COL_NAME_TAX_ID_NUMBER) Is DBNull.Value Then
@@ -216,7 +216,7 @@ Public Class Producer
                 Return CType(Row(ProducerDAL.COL_NAME_TAX_ID_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProducerDAL.COL_NAME_TAX_ID_NUMBER, Value)
         End Set
@@ -224,7 +224,7 @@ Public Class Producer
 
 
     <ValidStringLength("", Max:=50)>
-    Public Property RegulatorRegistrationId() As String
+    Public Property RegulatorRegistrationId As String
         Get
             CheckDeleted()
             If Row(ProducerDAL.COL_NAME_REGULATOR_REGISTRATION_ID) Is DBNull.Value Then
@@ -233,13 +233,13 @@ Public Class Producer
                 Return CType(Row(ProducerDAL.COL_NAME_REGULATOR_REGISTRATION_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProducerDAL.COL_NAME_REGULATOR_REGISTRATION_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property Company() As Company
+    Public ReadOnly Property Company As Company
         Get
             If _company Is Nothing Then
                 If Not (CompanyId.Equals(Guid.Empty)) Then
@@ -300,7 +300,7 @@ Public Class Producer
         Address.CopyFrom(original.Address)
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Dim blnIsDirty As Boolean = False
             If MyBase.IsDirty Then

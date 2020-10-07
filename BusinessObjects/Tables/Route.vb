@@ -89,7 +89,7 @@ Public Class Route
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(RouteDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class Route
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=2000)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(RouteDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -109,7 +109,7 @@ Public Class Route
                 Return CType(row(RouteDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RouteDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -117,7 +117,7 @@ Public Class Route
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(RouteDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -126,7 +126,7 @@ Public Class Route
                 Return CType(row(RouteDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RouteDAL.COL_NAME_CODE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class Route
 
 
     '<ValueMandatory("")> _
-    Public Property ServiceNetworkId() As Guid
+    Public Property ServiceNetworkId As Guid
         Get
             CheckDeleted()
             If Row(RouteDAL.COL_NAME_SERVICE_NETWORK_ID) Is DBNull.Value Then
@@ -161,13 +161,13 @@ Public Class Route
                 Return New Guid(CType(Row(RouteDAL.COL_NAME_SERVICE_NETWORK_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RouteDAL.COL_NAME_SERVICE_NETWORK_ID, Value)
         End Set
     End Property
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get

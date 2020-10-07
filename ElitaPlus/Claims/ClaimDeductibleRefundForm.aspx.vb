@@ -170,7 +170,7 @@ Public Class ClaimDeductibleRefundForm
         ddlRefundType.Populate(oRefundTypeDropDown, New PopulateOptions() With {.AddBlankItem = False, .ValueFunc = AddressOf PopulateOptions.GetExtendedCode})
         txtClmDedRefundAmount.Text = GetAmountFormattedString(State.MyBO.Deductible)
 
-        If (State.MyBO.StatusCode = Codes.CLAIM_STATUS__CLOSED Or State.MyBO.StatusCode = Codes.CLAIM_STATUS__DENIED) Then
+        If (State.MyBO.StatusCode = Codes.CLAIM_STATUS__CLOSED OrElse State.MyBO.StatusCode = Codes.CLAIM_STATUS__DENIED) Then
             MasterPage.MessageController.AddWarning(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_DEDUCTIBLE_REFUND_CLAIM_STATUS))
         End If
 
@@ -215,7 +215,7 @@ Public Class ClaimDeductibleRefundForm
         Dim decAmt As Decimal
 
         If Decimal.TryParse(deductibleRefundAmt, decAmt) Then
-            If (decAmt > 0 And decAmt <= claimDedutiable) Then
+            If (decAmt > 0 AndAlso decAmt <= claimDedutiable) Then
                 blnSuccess = True
             Else
                 blnSuccess = False

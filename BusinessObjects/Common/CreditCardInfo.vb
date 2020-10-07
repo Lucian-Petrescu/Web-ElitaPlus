@@ -92,7 +92,7 @@ Public Class CreditCardInfo
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CreditCardInfoDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -103,7 +103,7 @@ Public Class CreditCardInfo
     End Property
 
     <ValueMandatory("")> _
-    Public Property CreditCardFormatId() As Guid
+    Public Property CreditCardFormatId As Guid
         Get
             CheckDeleted()
             If Row(CreditCardInfoDAL.COL_NAME_CREDIT_CARD_FORMAT_ID) Is DBNull.Value Then
@@ -112,7 +112,7 @@ Public Class CreditCardInfo
                 Return New Guid(CType(Row(CreditCardInfoDAL.COL_NAME_CREDIT_CARD_FORMAT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CreditCardInfoDAL.COL_NAME_CREDIT_CARD_FORMAT_ID, Value)
         End Set
@@ -120,7 +120,7 @@ Public Class CreditCardInfo
 
 
     <PciProtect(PciDataType.CreditCardNumber)>
-    Public Property CreditCardNumber() As String
+    Public Property CreditCardNumber As String
         Get
             CheckDeleted()
             If Row(CreditCardInfoDAL.COL_NAME_CREDIT_CARD_NUMBER) Is DBNull.Value Then
@@ -129,7 +129,7 @@ Public Class CreditCardInfo
                 Return CType(Row(CreditCardInfoDAL.COL_NAME_CREDIT_CARD_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CreditCardInfoDAL.COL_NAME_CREDIT_CARD_NUMBER, Value)
         End Set
@@ -137,7 +137,7 @@ Public Class CreditCardInfo
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property NameOnCreditCard() As String
+    Public Property NameOnCreditCard As String
         Get
             CheckDeleted()
             If Row(CreditCardInfoDAL.COL_NAME_NAME_ON_CREDIT_CARD) Is DBNull.Value Then
@@ -146,7 +146,7 @@ Public Class CreditCardInfo
                 Return CType(Row(CreditCardInfoDAL.COL_NAME_NAME_ON_CREDIT_CARD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CreditCardInfoDAL.COL_NAME_NAME_ON_CREDIT_CARD, Value)
         End Set
@@ -154,7 +154,7 @@ Public Class CreditCardInfo
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=28)> _
-    Public Property ExpirationDate() As String
+    Public Property ExpirationDate As String
         Get
             CheckDeleted()
             If Row(CreditCardInfoDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -163,7 +163,7 @@ Public Class CreditCardInfo
                 Return CType(Row(CreditCardInfoDAL.COL_NAME_EXPIRATION_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CreditCardInfoDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
@@ -171,7 +171,7 @@ Public Class CreditCardInfo
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=16)> _
-    Public Property Last4Digits() As String
+    Public Property Last4Digits As String
         Get
             CheckDeleted()
             If Row(CreditCardInfoDAL.COL_NAME_LAST_4_DIGITS) Is DBNull.Value Then
@@ -180,7 +180,7 @@ Public Class CreditCardInfo
                 Return CType(Row(CreditCardInfoDAL.COL_NAME_LAST_4_DIGITS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CreditCardInfoDAL.COL_NAME_LAST_4_DIGITS, Value)
         End Set

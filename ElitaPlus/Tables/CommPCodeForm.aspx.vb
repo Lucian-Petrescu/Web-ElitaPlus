@@ -813,7 +813,7 @@ Namespace Tables
             Dim sCommAmount, sMarkupAmount, clawbackdays As String
             Dim payeeView As DataView
            
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     If dvRow(CommPCodeEntityDAL.COL_NAME_PAYEE_TYPE_ID) IsNot DBNull.Value Then
                         payeeDrop = CType(e.Row.FindControl("moPayeeTypeDrop"), DropDownList)

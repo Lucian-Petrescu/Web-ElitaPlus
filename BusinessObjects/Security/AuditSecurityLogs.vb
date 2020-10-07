@@ -90,7 +90,7 @@ Public Class AuditSecurityLogs
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(AuditSecurityLogsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class AuditSecurityLogs
     End Property
 
     <ValueMandatory("")>
-    Public Property AuditDate() As DateType
+    Public Property AuditDate As DateType
         Get
             CheckDeleted()
             If Row(AuditSecurityLogsDAL.COL_NAME_AUDIT_DATE) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class AuditSecurityLogs
                 Return New DateType(CType(Row(AuditSecurityLogsDAL.COL_NAME_AUDIT_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(AuditSecurityLogsDAL.COL_NAME_AUDIT_DATE, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class AuditSecurityLogs
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property LogSource() As String
+    Public Property LogSource As String
         Get
             CheckDeleted()
             If Row(AuditSecurityLogsDAL.COL_NAME_LOG_SOURCE) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class AuditSecurityLogs
                 Return CType(Row(AuditSecurityLogsDAL.COL_NAME_LOG_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AuditSecurityLogsDAL.COL_NAME_LOG_SOURCE, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class AuditSecurityLogs
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=2000)>
-    Public Property AuditSecurityTypeCode() As String
+    Public Property AuditSecurityTypeCode As String
         Get
             CheckDeleted()
             If Row(AuditSecurityLogsDAL.COL_NAME_AUDIT_SECURITY_TYPE_CODE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class AuditSecurityLogs
                 Return CType(Row(AuditSecurityLogsDAL.COL_NAME_AUDIT_SECURITY_TYPE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AuditSecurityLogsDAL.COL_NAME_AUDIT_SECURITY_TYPE_CODE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class AuditSecurityLogs
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property ClientIpAddress() As String
+    Public Property ClientIpAddress As String
         Get
             CheckDeleted()
             If Row(AuditSecurityLogsDAL.COL_NAME_CLIENT_IP_ADDRESS) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class AuditSecurityLogs
                 Return CType(Row(AuditSecurityLogsDAL.COL_NAME_CLIENT_IP_ADDRESS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AuditSecurityLogsDAL.COL_NAME_CLIENT_IP_ADDRESS, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class AuditSecurityLogs
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)>
-    Public Property IpAddressChain() As String
+    Public Property IpAddressChain As String
         Get
             CheckDeleted()
             If Row(AuditSecurityLogsDAL.COL_NAME_IP_ADDRESS_CHAIN) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class AuditSecurityLogs
                 Return CType(Row(AuditSecurityLogsDAL.COL_NAME_IP_ADDRESS_CHAIN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AuditSecurityLogsDAL.COL_NAME_IP_ADDRESS_CHAIN, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class AuditSecurityLogs
 
 
     <ValidStringLength("", Max:=4000)>
-    Public Property X509Certificate() As String
+    Public Property X509Certificate As String
         Get
             CheckDeleted()
             If Row(AuditSecurityLogsDAL.COL_NAME_X509_CERTIFICATE) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class AuditSecurityLogs
                 Return CType(Row(AuditSecurityLogsDAL.COL_NAME_X509_CERTIFICATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AuditSecurityLogsDAL.COL_NAME_X509_CERTIFICATE, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class AuditSecurityLogs
 
 
     <ValidStringLength("", Max:=120)>
-    Public Property UserName() As String
+    Public Property UserName As String
         Get
             CheckDeleted()
             If Row(AuditSecurityLogsDAL.COL_NAME_USER_NAME) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class AuditSecurityLogs
                 Return CType(Row(AuditSecurityLogsDAL.COL_NAME_USER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AuditSecurityLogsDAL.COL_NAME_USER_NAME, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class AuditSecurityLogs
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1000)>
-    Public Property RequestUrl() As String
+    Public Property RequestUrl As String
         Get
             CheckDeleted()
             If Row(AuditSecurityLogsDAL.COL_NAME_REQUEST_URL) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class AuditSecurityLogs
                 Return CType(Row(AuditSecurityLogsDAL.COL_NAME_REQUEST_URL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AuditSecurityLogsDAL.COL_NAME_REQUEST_URL, Value) 
         End Set
@@ -237,7 +237,7 @@ Public Class AuditSecurityLogs
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=400)>
-    Public Property ActionName() As String
+    Public Property ActionName As String
         Get
             CheckDeleted()
             If Row(AuditSecurityLogsDAL.COL_NAME_ACTION_NAME) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class AuditSecurityLogs
                 Return CType(Row(AuditSecurityLogsDAL.COL_NAME_ACTION_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AuditSecurityLogsDAL.COL_NAME_ACTION_NAME, Value)
         End Set

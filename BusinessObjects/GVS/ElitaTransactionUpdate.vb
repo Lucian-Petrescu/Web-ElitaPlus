@@ -124,38 +124,38 @@ Public Class ElitaTransactionUpdate
 
 #Region "Properties"
 
-    Public Property OriginalTransLogHdrID() As Guid
+    Public Property OriginalTransLogHdrID As Guid
         Get
             Return _originalTransLogHdrID
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _originalTransLogHdrID = Value
         End Set
     End Property
 
-    Public Property GVSoriginalTransNo() As String
+    Public Property GVSoriginalTransNo As String
         Get
             Return _GVSoriginalTransNo
         End Get
-        Set(ByVal Value As String)
+        Set
             _GVSoriginalTransNo = Value
         End Set
     End Property
 
-    Public Property FunctionTypeCode() As String
+    Public Property FunctionTypeCode As String
         Get
             Return _functionTypeCode
         End Get
-        Set(ByVal Value As String)
+        Set
             _functionTypeCode = Value
         End Set
     End Property
 
-    Public Property FunctionTypeId() As Guid
+    Public Property FunctionTypeId As Guid
         Get
             Return _functionTypeId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _functionTypeId = Value
         End Set
     End Property

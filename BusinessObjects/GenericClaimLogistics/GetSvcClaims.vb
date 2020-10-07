@@ -362,7 +362,7 @@ Public Class GetSvcClaims
 
     '<ValueMandatory(""), ValidStringLength("", Max:=50)> _
     <ValidStringLength("", Max:=50)> _
-    Public Property ServiceCenterCode() As String
+    Public Property ServiceCenterCode As String
         Get
             CheckDeleted()
             If Row(COL_SERVICE_CENTER_CODE) Is DBNull.Value Then
@@ -371,14 +371,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_SERVICE_CENTER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
     '<ValueMandatory("")> _
-    Public Property ClaimStatus() As String
+    Public Property ClaimStatus As String
         Get
             CheckDeleted()
             If Row(COL_CLAIM_STATUS) Is DBNull.Value Then
@@ -387,13 +387,13 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_CLAIM_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_CLAIM_STATUS, Value)
         End Set
     End Property
     '<ValueMandatory("")> _
-    Public Property ClaimType() As String
+    Public Property ClaimType As String
         Get
             CheckDeleted()
             If Row(COL_CLAIM_TYPE) Is DBNull.Value Then
@@ -402,13 +402,13 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_CLAIM_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_CLAIM_TYPE, Value)
         End Set
     End Property
     '<ValueMandatory("")> _
-    Public Property MethodOfRepair() As String
+    Public Property MethodOfRepair As String
         Get
             CheckDeleted()
             If Row(COL_METHOD_OF_REPAIR) Is DBNull.Value Then
@@ -417,13 +417,13 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_METHOD_OF_REPAIR), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_METHOD_OF_REPAIR, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-    Public Property SortBy() As Integer
+    Public Property SortBy As Integer
         Get
             CheckDeleted()
             If Row(COL_SORT_BY) Is DBNull.Value Then
@@ -432,14 +432,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_SORT_BY), String)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(COL_SORT_BY, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property SortOrder() As Integer
+    Public Property SortOrder As Integer
         Get
             CheckDeleted()
             If Row(COL_SORT_ORDER) Is DBNull.Value Then
@@ -448,14 +448,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_SORT_ORDER), String)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(COL_SORT_ORDER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property PageSize() As Integer
+    Public Property PageSize As Integer
         Get
             CheckDeleted()
             If Row(COL_PAGE_SIZE) Is DBNull.Value Then
@@ -464,14 +464,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_PAGE_SIZE), String)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(COL_PAGE_SIZE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property PageNumber() As Integer
+    Public Property PageNumber As Integer
         Get
             CheckDeleted()
             If Row(COL_PAGE_NUMBER) Is DBNull.Value Then
@@ -480,14 +480,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_PAGE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(COL_PAGE_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(COL_CLAIM_NUMBER) Is DBNull.Value Then
@@ -496,13 +496,13 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_CLAIM_NUMBER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)> _
-    Public Property AuthorizationNumber() As String
+    Public Property AuthorizationNumber As String
         Get
             CheckDeleted()
             If Row(COL_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -511,14 +511,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_AUTHORIZATION_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property CertificateNumber() As String
+    Public Property CertificateNumber As String
         Get
             CheckDeleted()
             If Row(COL_CERTIFICATE_NUMBER) Is DBNull.Value Then
@@ -527,14 +527,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_CERTIFICATE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_CERTIFICATE_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property CustomerName() As String
+    Public Property CustomerName As String
         Get
             CheckDeleted()
             If Row(COL_CUSTOMER_NAME) Is DBNull.Value Then
@@ -543,14 +543,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_CUSTOMER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_CUSTOMER_NAME, Value)
         End Set
     End Property
 
 
-    Public Property FromClaimCreatedDate() As DateType
+    Public Property FromClaimCreatedDate As DateType
         Get
             CheckDeleted()
             If Row(COL_FROM_CLAIM_CREATED_DATE) Is DBNull.Value Then
@@ -559,13 +559,13 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_FROM_CLAIM_CREATED_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(COL_FROM_CLAIM_CREATED_DATE, Value)
         End Set
     End Property
 
-    Public Property ToClaimCreatedDate() As DateType
+    Public Property ToClaimCreatedDate As DateType
         Get
             CheckDeleted()
             If Row(COL_TO_CLAIM_CREATED_DATE) Is DBNull.Value Then
@@ -574,13 +574,13 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_TO_CLAIM_CREATED_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(COL_TO_CLAIM_CREATED_DATE, Value)
         End Set
     End Property
 
-    Public Property FromVisitDate() As DateType
+    Public Property FromVisitDate As DateType
         Get
             CheckDeleted()
             If Row(COL_FROM_VISIT_DATE) Is DBNull.Value Then
@@ -589,13 +589,13 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_FROM_VISIT_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(COL_FROM_VISIT_DATE, Value)
         End Set
     End Property
 
-    Public Property ToVisitDate() As DateType
+    Public Property ToVisitDate As DateType
         Get
             CheckDeleted()
             If Row(COL_TO_VISIT_DATE) Is DBNull.Value Then
@@ -604,14 +604,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_TO_VISIT_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(COL_TO_VISIT_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=250)> _
-    Public Property ClaimExtendedStatusOwnerCode() As String
+    Public Property ClaimExtendedStatusOwnerCode As String
         Get
             CheckDeleted()
             If Row(COL_CLAIM_EXTENDED_STATUS_OWNER_CODE) Is DBNull.Value Then
@@ -620,14 +620,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_CLAIM_EXTENDED_STATUS_OWNER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_CLAIM_EXTENDED_STATUS_OWNER_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=250)> _
-    Public Property ClaimExtendedStatusCode() As String
+    Public Property ClaimExtendedStatusCode As String
         Get
             CheckDeleted()
             If Row(COL_CLAIM_EXTENDED_STATUS_CODE) Is DBNull.Value Then
@@ -636,14 +636,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_CLAIM_EXTENDED_STATUS_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_CLAIM_EXTENDED_STATUS_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)> _
-    Public Property TurnAroundTimeRangeCode() As String
+    Public Property TurnAroundTimeRangeCode As String
         Get
             CheckDeleted()
             If Row(COL_TURN_AROUND_TIME_RANGE_CODE) Is DBNull.Value Then
@@ -652,14 +652,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_TURN_AROUND_TIME_RANGE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_TURN_AROUND_TIME_RANGE_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)> _
-    Public Property BatchNumber() As String
+    Public Property BatchNumber As String
         Get
             CheckDeleted()
             If Row(COL_BATCH_NUMBER) Is DBNull.Value Then
@@ -668,14 +668,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_BATCH_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_BATCH_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)> _
-    Public Property SerialNumber() As String
+    Public Property SerialNumber As String
         Get
             CheckDeleted()
             If Row(COL_SERIAL_NUMBER) Is DBNull.Value Then
@@ -684,14 +684,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_SERIAL_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)> _
-    Public Property WorkPhone() As String
+    Public Property WorkPhone As String
         Get
             CheckDeleted()
             If Row(COL_WORK_PHONE) Is DBNull.Value Then
@@ -700,14 +700,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_WORK_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_WORK_PHONE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)> _
-    Public Property CompanyCode() As String
+    Public Property CompanyCode As String
         Get
             CheckDeleted()
             If Row(COL_COMPANY_CODE) Is DBNull.Value Then
@@ -716,14 +716,14 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_COMPANY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_COMPANY_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)> _
-    Public Property HomePhone() As String
+    Public Property HomePhone As String
         Get
             CheckDeleted()
             If Row(COL_HOME_PHONE) Is DBNull.Value Then
@@ -732,13 +732,13 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_HOME_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_HOME_PHONE, Value)
         End Set
     End Property
 
-    Public Property LossDate() As DateType
+    Public Property LossDate As DateType
         Get
             CheckDeleted()
             If Row(COL_LOSS_DATE) Is DBNull.Value Then
@@ -747,13 +747,13 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_LOSS_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(COL_LOSS_DATE, Value)
         End Set
     End Property
 
-    Public Property ClaimPaidAmount() As String
+    Public Property ClaimPaidAmount As String
         Get
             CheckDeleted()
             If Row(COL_CLAIM_PAID_AMOUNT) Is DBNull.Value Then
@@ -762,13 +762,13 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_CLAIM_PAID_AMOUNT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_CLAIM_PAID_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property BonusTotal() As String
+    Public Property BonusTotal As String
         Get
             CheckDeleted()
             If Row(COL_BONUS_TOTAL) Is DBNull.Value Then
@@ -777,7 +777,7 @@ Public Class GetSvcClaims
                 Return CType(Row(COL_BONUS_TOTAL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_BONUS_TOTAL, Value)
         End Set

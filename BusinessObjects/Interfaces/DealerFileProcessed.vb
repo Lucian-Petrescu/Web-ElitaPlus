@@ -136,7 +136,7 @@ Public Class DealerFileProcessed
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DealerFileProcessedDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -146,7 +146,7 @@ Public Class DealerFileProcessed
         End Get
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -155,14 +155,14 @@ Public Class DealerFileProcessed
                 Return New Guid(CType(Row(DealerFileProcessedDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerFileProcessedDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Filename() As String
+    Public Property Filename As String
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_FILENAME) Is DBNull.Value Then
@@ -171,7 +171,7 @@ Public Class DealerFileProcessed
                 Return CType(Row(DealerFileProcessedDAL.COL_NAME_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerFileProcessedDAL.COL_NAME_FILENAME, Value)
         End Set
@@ -179,7 +179,7 @@ Public Class DealerFileProcessed
 
 
 
-    Public Property Received() As LongType
+    Public Property Received As LongType
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_RECEIVED) Is DBNull.Value Then
@@ -188,7 +188,7 @@ Public Class DealerFileProcessed
                 Return New LongType(CType(Row(DealerFileProcessedDAL.COL_NAME_RECEIVED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(DealerFileProcessedDAL.COL_NAME_RECEIVED, Value)
         End Set
@@ -196,7 +196,7 @@ Public Class DealerFileProcessed
 
 
 
-    Public Property Counted() As LongType
+    Public Property Counted As LongType
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_COUNTED) Is DBNull.Value Then
@@ -205,13 +205,13 @@ Public Class DealerFileProcessed
                 Return New LongType(CType(Row(DealerFileProcessedDAL.COL_NAME_COUNTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(DealerFileProcessedDAL.COL_NAME_COUNTED, Value)
         End Set
     End Property
 
-    Public Property Bypassed() As LongType
+    Public Property Bypassed As LongType
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_BYPASSED) Is DBNull.Value Then
@@ -220,13 +220,13 @@ Public Class DealerFileProcessed
                 Return New LongType(CType(Row(DealerFileProcessedDAL.COL_NAME_BYPASSED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(DealerFileProcessedDAL.COL_NAME_BYPASSED, Value)
         End Set
     End Property
 
-    Public Property Rejected() As LongType
+    Public Property Rejected As LongType
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_REJECTED) Is DBNull.Value Then
@@ -235,13 +235,13 @@ Public Class DealerFileProcessed
                 Return New LongType(CType(Row(DealerFileProcessedDAL.COL_NAME_REJECTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(DealerFileProcessedDAL.COL_NAME_REJECTED, Value)
         End Set
     End Property
 
-    Public Property RemainingRejected() As LongType
+    Public Property RemainingRejected As LongType
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_REMAINING_REJECTED) Is DBNull.Value Then
@@ -250,13 +250,13 @@ Public Class DealerFileProcessed
                 Return New LongType(CType(Row(DealerFileProcessedDAL.COL_NAME_REMAINING_REJECTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(DealerFileProcessedDAL.COL_NAME_REMAINING_REJECTED, Value)
         End Set
     End Property
 
-    Public Property Validated() As LongType
+    Public Property Validated As LongType
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_VALIDATED) Is DBNull.Value Then
@@ -265,7 +265,7 @@ Public Class DealerFileProcessed
                 Return New LongType(CType(Row(DealerFileProcessedDAL.COL_NAME_VALIDATED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(DealerFileProcessedDAL.COL_NAME_VALIDATED, Value)
         End Set
@@ -273,7 +273,7 @@ Public Class DealerFileProcessed
 
 
 
-    Public Property Loaded() As LongType
+    Public Property Loaded As LongType
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_LOADED) Is DBNull.Value Then
@@ -282,7 +282,7 @@ Public Class DealerFileProcessed
                 Return New LongType(CType(Row(DealerFileProcessedDAL.COL_NAME_LOADED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(DealerFileProcessedDAL.COL_NAME_LOADED, Value)
         End Set
@@ -290,7 +290,7 @@ Public Class DealerFileProcessed
 
 
     <ValidStringLength("", Max:=20)> _
-    Public Property Layout() As String
+    Public Property Layout As String
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_LAYOUT) Is DBNull.Value Then
@@ -299,13 +299,13 @@ Public Class DealerFileProcessed
                 Return CType(Row(DealerFileProcessedDAL.COL_NAME_LAYOUT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerFileProcessedDAL.COL_NAME_LAYOUT, Value)
         End Set
     End Property
 
-    Public Property FileTypeCode() As String
+    Public Property FileTypeCode As String
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_FILE_TYPE_CODE) Is DBNull.Value Then
@@ -314,13 +314,13 @@ Public Class DealerFileProcessed
                 Return CType(Row(DealerFileProcessedDAL.COL_NAME_FILE_TYPE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerFileProcessedDAL.COL_NAME_FILE_TYPE_CODE, Value)
         End Set
     End Property
 
-    Public Property DealerGroupId() As Guid
+    Public Property DealerGroupId As Guid
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_DEALER_GROUP_ID) Is DBNull.Value Then
@@ -329,13 +329,13 @@ Public Class DealerFileProcessed
                 Return New Guid(CType(Row(DealerFileProcessedDAL.COL_NAME_DEALER_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerFileProcessedDAL.COL_NAME_DEALER_GROUP_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property Status() As String
+    Public ReadOnly Property Status As String
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -346,7 +346,7 @@ Public Class DealerFileProcessed
         End Get
     End Property
 
-    Public ReadOnly Property IsChildFile() As Boolean
+    Public ReadOnly Property IsChildFile As Boolean
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_Is_Child_File) Is DBNull.Value Then
@@ -358,7 +358,7 @@ Public Class DealerFileProcessed
         End Get
     End Property
 
-    Public ReadOnly Property StatusDescription() As String
+    Public ReadOnly Property StatusDescription As String
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_STATUS_DESC) Is DBNull.Value Then
@@ -371,14 +371,14 @@ Public Class DealerFileProcessed
 
 #Region "Properties External BOs"
 
-    Public ReadOnly Property DealerCode() As String
+    Public ReadOnly Property DealerCode As String
         Get
             If DealerId.Equals(Guid.Empty) Then Return Nothing
             Return LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, DealerId)
         End Get
     End Property
 
-    Public ReadOnly Property DealerNameLoad() As String
+    Public ReadOnly Property DealerNameLoad As String
         Get
             If DealerId.Equals(Guid.Empty) Then Return Nothing
             Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_DEALERS)
@@ -386,14 +386,14 @@ Public Class DealerFileProcessed
         End Get
     End Property
 
-    Public ReadOnly Property DealerGroupCode() As String
+    Public ReadOnly Property DealerGroupCode As String
         Get
             If DealerGroupId.Equals(Guid.Empty) Then Return Nothing
             Return LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_GROUPS, DealerGroupId)
         End Get
     End Property
 
-    Public ReadOnly Property DealerGroupNameLoad() As String
+    Public ReadOnly Property DealerGroupNameLoad As String
         Get
             If DealerGroupId.Equals(Guid.Empty) Then Return Nothing
             Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_DEALER_GROUPS)

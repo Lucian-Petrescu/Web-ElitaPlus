@@ -88,7 +88,7 @@
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(BillingPayDetailDAL.BILLPAYTBL_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -99,7 +99,7 @@
     End Property
 
     <ValueMandatory("")>
-    Public Property InstallmentNumber() As LongType
+    Public Property InstallmentNumber As LongType
         Get
             CheckDeleted()
             If Row(BillingPayDetailDAL.COL_NAME_INSTALLMENT_NUMBER) Is DBNull.Value Then
@@ -108,13 +108,13 @@
                 Return New LongType(CType(Row(BillingPayDetailDAL.COL_NAME_INSTALLMENT_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(BillingPayDetailDAL.COL_NAME_INSTALLMENT_NUMBER, Value)
         End Set
     End Property
 
-    Public Property BilledAmount() As DecimalType
+    Public Property BilledAmount As DecimalType
         Get
             CheckDeleted()
             If Row(BillingPayDetailDAL.COL_NAME_BILLED_AMOUNT) Is DBNull.Value Then
@@ -123,14 +123,14 @@
                 Return New DecimalType(CType(Row(BillingPayDetailDAL.COL_NAME_BILLED_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(BillingPayDetailDAL.COL_NAME_BILLED_AMOUNT, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property CertId() As Guid
+    Public Property CertId As Guid
         Get
             CheckDeleted()
             If Row(BillingPayDetailDAL.COL_NAME_CERT_ID) Is DBNull.Value Then
@@ -139,7 +139,7 @@
                 Return New Guid(CType(Row(BillingPayDetailDAL.COL_NAME_CERT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BillingPayDetailDAL.COL_NAME_CERT_ID, Value)
         End Set

@@ -126,7 +126,7 @@ Namespace Reports
 
             Catch ex As Exception
                 'if Report RDL file not found in another language forcing to look for English extension 
-                If ex.Message.Contains("rsItemNotFound") And Not strReportName.Contains("_EN") Then
+                If ex.Message.Contains("rsItemNotFound") AndAlso Not strReportName.Contains("_EN") Then
                     RunSSRSReport(strReportName.Substring(0, strReportName.Length - 2) & "EN")
                 Else
                     HandleErrors(ex, ErrorCtrl)

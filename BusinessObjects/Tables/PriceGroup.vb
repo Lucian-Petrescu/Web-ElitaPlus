@@ -87,7 +87,7 @@ Public Class PriceGroup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(PriceGroupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -98,7 +98,7 @@ Public Class PriceGroup
     End Property
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(PriceGroupDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -107,7 +107,7 @@ Public Class PriceGroup
                 Return New Guid(CType(Row(PriceGroupDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
@@ -115,7 +115,7 @@ Public Class PriceGroup
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)> _
-    Public Property ShortDesc() As String
+    Public Property ShortDesc As String
         Get
             CheckDeleted()
             If Row(PriceGroupDAL.COL_NAME_SHORT_DESC) Is DBNull.Value Then
@@ -124,7 +124,7 @@ Public Class PriceGroup
                 Return CType(Row(PriceGroupDAL.COL_NAME_SHORT_DESC), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDAL.COL_NAME_SHORT_DESC, Value)
         End Set
@@ -132,7 +132,7 @@ Public Class PriceGroup
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(PriceGroupDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -141,7 +141,7 @@ Public Class PriceGroup
                 Return CType(Row(PriceGroupDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -174,7 +174,7 @@ Public Class PriceGroup
     End Sub
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
@@ -259,7 +259,7 @@ Public Class PriceGroup
 #End Region
 
 #Region "Children Related"
-    Public ReadOnly Property PriceGroupDetailChildren() As PriceGroupDetailList
+    Public ReadOnly Property PriceGroupDetailChildren As PriceGroupDetailList
         Get
             Return New PriceGroupDetailList(Me)
         End Get

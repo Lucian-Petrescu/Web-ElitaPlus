@@ -51,7 +51,7 @@
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -59,14 +59,14 @@
                 Return CType(Row(DATA_COL_NAME_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CertificateNumber() As String
+    Public Property CertificateNumber As String
         Get
             If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -74,7 +74,7 @@
                 Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
@@ -89,7 +89,7 @@
                 Return CType(Row(DATA_COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CLAIM_NUMBER, Value)
         End Set
@@ -104,14 +104,14 @@
                 Return CType(Row(DATA_COL_NAME_CLAIM_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CLAIM_TYPE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property NewIMEIDate() As DateType
+    Public Property NewIMEIDate As DateType
         Get
             If Row(DATA_COL_NAME_NEW_IMEI_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -119,7 +119,7 @@
                 Return CType(Row(DATA_COL_NAME_NEW_IMEI_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_NEW_IMEI_DATE, Value)
         End Set
@@ -133,7 +133,7 @@
                 Return CType(Row(DATA_COL_NAME_MAKE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MAKE, Value)
         End Set
@@ -148,7 +148,7 @@
                 Return CType(Row(DATA_COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MODEL, Value)
         End Set
@@ -163,7 +163,7 @@
                 Return CType(Row(DATA_COL_NAME_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_SERIAL_NUMBER, Value)
         End Set
@@ -178,7 +178,7 @@
                 Return CType(Row(DATA_COL_NAME_SKU), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_SKU, Value)
         End Set

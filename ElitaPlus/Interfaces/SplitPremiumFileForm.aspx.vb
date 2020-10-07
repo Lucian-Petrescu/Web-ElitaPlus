@@ -209,7 +209,7 @@ Namespace Interfaces
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 With e.Item
                     PopulateControlFromBOProperty(.Cells(GRID_COL_CLAIMFILE_PROCESSED_ID_IDX), dvRow(SplitfileProcessedDAL.COL_NAME_SPLITFILE_PROCESSED_ID))
                     PopulateControlFromBOProperty(.Cells(GRID_COL_FILENAME_IDX), dvRow(SplitfileProcessedDAL.COL_NAME_FILENAME))

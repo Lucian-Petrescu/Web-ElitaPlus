@@ -93,7 +93,7 @@
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(StageEndStatusDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -104,7 +104,7 @@
     End Property
 
     <ValueMandatory("")> _
-    Public Property StageId() As Guid
+    Public Property StageId As Guid
         Get
             CheckDeleted()
             If Row(StageEndStatusDAL.COL_NAME_STAGE_ID) Is DBNull.Value Then
@@ -113,14 +113,14 @@
                 Return New Guid(CType(Row(StageEndStatusDAL.COL_NAME_STAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(StageEndStatusDAL.COL_NAME_STAGE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property EndStatusId() As Guid
+    Public Property EndStatusId As Guid
         Get
             CheckDeleted()
             If Row(StageEndStatusDAL.COL_NAME_END_STATUS_ID) Is DBNull.Value Then
@@ -129,7 +129,7 @@
                 Return New Guid(CType(Row(StageEndStatusDAL.COL_NAME_END_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(StageEndStatusDAL.COL_NAME_END_STATUS_ID, Value)
         End Set

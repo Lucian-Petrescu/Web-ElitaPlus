@@ -90,7 +90,7 @@ Public Class ApsPublishingLog
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ApsPublishingLogDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ApsPublishingLog
     End Property
 	
     <ValueMandatory(""),ValidStringLength("", Max:=1200)> _
-    Public Property Header() As String
+    Public Property Header As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_HEADER) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_HEADER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApsPublishingLogDAL.COL_NAME_HEADER, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ApsPublishingLog
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=200)> _
-    Public Property Type() As String
+    Public Property Type As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_TYPE) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApsPublishingLogDAL.COL_NAME_TYPE, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class ApsPublishingLog
 	
 	
     <ValidStringLength("", Max:=200)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApsPublishingLogDAL.COL_NAME_CODE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class ApsPublishingLog
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=800)> _
-    Public Property MachineName() As String
+    Public Property MachineName As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_MACHINE_NAME) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_MACHINE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApsPublishingLogDAL.COL_NAME_MACHINE_NAME, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class ApsPublishingLog
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=800)> _
-    Public Property ApplicationName() As String
+    Public Property ApplicationName As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_APPLICATION_NAME) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_APPLICATION_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApsPublishingLogDAL.COL_NAME_APPLICATION_NAME, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class ApsPublishingLog
 	
 	
     <ValidStringLength("", Max:=800)> _
-    Public Property UserName() As String
+    Public Property UserName As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_USER_NAME) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_USER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApsPublishingLogDAL.COL_NAME_USER_NAME, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class ApsPublishingLog
 	
 	
     <ValidStringLength("", Max:=4000)> _
-    Public Property ExtendedContent() As String
+    Public Property ExtendedContent As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class ApsPublishingLog
 	
 	
     <ValueMandatory(""), NotMoreThan10DaysGenerationDate("")> _
-    Public Property GenerationDateTime() As DateType
+    Public Property GenerationDateTime As DateType
         Get
             CheckDeleted()
             If Row(ApsPublishingLogDAL.COL_NAME_GENERATION_DATE_TIME) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class ApsPublishingLog
                 Return New DateType(CType(Row(ApsPublishingLogDAL.COL_NAME_GENERATION_DATE_TIME), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ApsPublishingLogDAL.COL_NAME_GENERATION_DATE_TIME, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class ApsPublishingLog
 	
 	
     <ValueMandatory("")> _
-    Public Property RecordedDateTime() As DateType
+    Public Property RecordedDateTime As DateType
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_RECORDED_DATE_TIME) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class ApsPublishingLog
                 Return New DateType(CType(row(ApsPublishingLogDAL.COL_NAME_RECORDED_DATE_TIME), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ApsPublishingLogDAL.COL_NAME_RECORDED_DATE_TIME, Value)
         End Set
@@ -254,7 +254,7 @@ Public Class ApsPublishingLog
 	
 	
     <ValidStringLength("", Max:=4000)> _
-    Public Property ExtendedContent2() As String
+    Public Property ExtendedContent2 As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT2) Is DBNull.Value Then
@@ -263,7 +263,7 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT2, Value)
         End Set

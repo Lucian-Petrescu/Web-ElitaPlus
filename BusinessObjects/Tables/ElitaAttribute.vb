@@ -106,7 +106,7 @@ Public Class ElitaAttribute
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AttributeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -117,7 +117,7 @@ Public Class ElitaAttribute
     End Property
 
     <ValueMandatory("")> _
-    Public Property DataTypeId() As Guid
+    Public Property DataTypeId As Guid
         Get
             CheckDeleted()
             If row(AttributeDAL.COL_NAME_DATA_TYPE_ID) Is DBNull.Value Then
@@ -126,7 +126,7 @@ Public Class ElitaAttribute
                 Return New Guid(CType(row(AttributeDAL.COL_NAME_DATA_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AttributeDAL.COL_NAME_DATA_TYPE_ID, Value)
         End Set
@@ -134,7 +134,7 @@ Public Class ElitaAttribute
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=255), CheckDuplicateAttribute("")> _
-    Public Property UiProgCode() As String
+    Public Property UiProgCode As String
         Get
             CheckDeleted()
             If Row(AttributeDAL.COL_NAME_UI_PROG_CODE) Is DBNull.Value Then
@@ -143,7 +143,7 @@ Public Class ElitaAttribute
                 Return CType(Row(AttributeDAL.COL_NAME_UI_PROG_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AttributeDAL.COL_NAME_UI_PROG_CODE, Value)
         End Set
@@ -151,7 +151,7 @@ Public Class ElitaAttribute
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=30)> _
-    Public Property TableName() As String
+    Public Property TableName As String
         Get
             CheckDeleted()
             If Row(AttributeDAL.COL_NAME_TABLE_NAME) Is DBNull.Value Then
@@ -160,7 +160,7 @@ Public Class ElitaAttribute
                 Return CType(Row(AttributeDAL.COL_NAME_TABLE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AttributeDAL.COL_NAME_TABLE_NAME, Value)
         End Set
@@ -168,7 +168,7 @@ Public Class ElitaAttribute
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property AllowDuplicates() As String
+    Public Property AllowDuplicates As String
         Get
             CheckDeleted()
             If Row(AttributeDAL.COL_NAME_ALLOW_DUPLICATES) Is DBNull.Value Then
@@ -177,7 +177,7 @@ Public Class ElitaAttribute
                 Return CType(Row(AttributeDAL.COL_NAME_ALLOW_DUPLICATES), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AttributeDAL.COL_NAME_ALLOW_DUPLICATES, Value)
         End Set
@@ -185,7 +185,7 @@ Public Class ElitaAttribute
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property UseEffectiveDate() As String
+    Public Property UseEffectiveDate As String
         Get
             CheckDeleted()
             If Row(AttributeDAL.COL_NAME_USE_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -194,7 +194,7 @@ Public Class ElitaAttribute
                 Return CType(Row(AttributeDAL.COL_NAME_USE_EFFECTIVE_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AttributeDAL.COL_NAME_USE_EFFECTIVE_DATE, Value)
         End Set

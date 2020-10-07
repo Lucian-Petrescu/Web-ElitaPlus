@@ -83,7 +83,7 @@ Public Class WorkQueueItemStatusReason
         Get
             Return ItemStatusReason.Id
         End Get
-        Set(ByVal value As Guid)
+        Set
             ItemStatusReason.Id = value
         End Set
     End Property
@@ -100,7 +100,7 @@ Public Class WorkQueueItemStatusReason
         Get
             Return _description
         End Get
-        Private Set(ByVal value As String)
+        Private Set
             _description = value
         End Set
     End Property
@@ -121,7 +121,7 @@ Public Class WorkQueueItemStatusReason
         Get
             Return _workQueueItemStatusReason
         End Get
-        Friend Set(ByVal value As WrkQueue.WorkQueueItemStatusReason)
+        Friend Set
             _workQueueItemStatusReason = value
         End Set
     End Property
@@ -138,7 +138,7 @@ Namespace WrkQueue
             Get
                 Return String.Empty
             End Get
-            Set(ByVal value As String)
+            Set
 
             End Set
         End Property
@@ -146,11 +146,11 @@ Namespace WrkQueue
 
     Public Class WorkQueueItemStatusReasonTypeDef
         <ValueMandatory("")> _
-        Public Property Reason() As Object
+        Public Property Reason As Object
             Get
                 Throw New NotImplementedException
             End Get
-            Set(ByVal value As Object)
+            Set
                 Throw New NotImplementedException
             End Set
         End Property

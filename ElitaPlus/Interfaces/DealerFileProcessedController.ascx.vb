@@ -237,7 +237,7 @@ Namespace Interfaces
         Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             If IsReturningFromChild Then
                 ValidateSelection()
-                If (DealerMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Or DealerGroupMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED) Then
+                If (DealerMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED OrElse DealerGroupMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED) Then
                     TheState.IsGridVisible = True
                     PopulateGrid(ThePage.POPULATE_ACTION_SAVE)
                     ControlMgr.SetVisibleForControlFamily(ThePage, moButtonPanel, True, True)
@@ -291,7 +291,7 @@ Namespace Interfaces
             Try
                 ClearAll()
                 ValidateSelection()
-                If DealerMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Or DealerGroupMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Then
+                If DealerMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED OrElse DealerGroupMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Then
                     TheState.IsGridVisible = True
                     PopulateGrid(ThePage.POPULATE_ACTION_NONE)
                     ControlMgr.SetVisibleForControlFamily(ThePage, moButtonPanel, True, True)
@@ -470,7 +470,7 @@ Namespace Interfaces
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 With e.Item
                     ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_DEALERFILE_PROCESSED_ID_IDX), dvRow(DealerFileProcessed.COL_NAME_DEALERFILE_PROCESSED_ID))
                     ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_FILENAME_IDX), dvRow(DealerFileProcessed.COL_NAME_FILENAME))
@@ -829,7 +829,7 @@ Namespace Interfaces
                         ControlMgr.SetEnableControl(ThePage, BtnValidate_WRITE, False)
                     End If
 
-                    If (.Loaded.Value = .Counted.Value) Or (.Loaded.Value = 0) Then
+                    If (.Loaded.Value = .Counted.Value) OrElse (.Loaded.Value = 0) Then
                         ControlMgr.SetEnableControl(ThePage, BtnDeleteDealerFile_WRITE, True)
                     End If
 

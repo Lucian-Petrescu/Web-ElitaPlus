@@ -93,7 +93,7 @@ Public Class EquipmentListDetail
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(EquipmentListDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -104,7 +104,7 @@ Public Class EquipmentListDetail
     End Property
 
     <ValueMandatory("")> _
-    Public Property EquipmentId() As Guid
+    Public Property EquipmentId As Guid
         Get
             CheckDeleted()
             If row(EquipmentListDetailDAL.COL_NAME_EQUIPMENT_ID) Is DBNull.Value Then
@@ -113,7 +113,7 @@ Public Class EquipmentListDetail
                 Return New Guid(CType(row(EquipmentListDetailDAL.COL_NAME_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EquipmentListDetailDAL.COL_NAME_EQUIPMENT_ID, Value)
         End Set
@@ -121,7 +121,7 @@ Public Class EquipmentListDetail
 
 
 
-    Public Property EquipmentListId() As Guid
+    Public Property EquipmentListId As Guid
         Get
             CheckDeleted()
             If row(EquipmentListDetailDAL.COL_NAME_EQUIPMENT_LIST_ID) Is DBNull.Value Then
@@ -130,7 +130,7 @@ Public Class EquipmentListDetail
                 Return New Guid(CType(row(EquipmentListDetailDAL.COL_NAME_EQUIPMENT_LIST_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EquipmentListDetailDAL.COL_NAME_EQUIPMENT_LIST_ID, Value)
         End Set
@@ -138,7 +138,7 @@ Public Class EquipmentListDetail
 
 
 
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If row(EquipmentListDetailDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -147,7 +147,7 @@ Public Class EquipmentListDetail
                 Return New DateType(DateHelper.GetDateValue(Row(EquipmentListDetailDAL.COL_NAME_EFFECTIVE).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(EquipmentListDetailDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -155,7 +155,7 @@ Public Class EquipmentListDetail
 
 
 
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If row(EquipmentListDetailDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -164,7 +164,7 @@ Public Class EquipmentListDetail
                 Return New DateType(DateHelper.GetDateValue(Row(EquipmentListDetailDAL.COL_NAME_EXPIRATION).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(EquipmentListDetailDAL.COL_NAME_EXPIRATION, Value)
         End Set

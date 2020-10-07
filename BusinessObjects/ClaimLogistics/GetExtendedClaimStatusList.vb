@@ -85,7 +85,7 @@ Public Class GetExtendedClaimStatusList
 
 #Region "Properties"
 
-    Public Property CompanyGroupCode() As String
+    Public Property CompanyGroupCode As String
         Get
             If Row(DATA_COL_NAME_COMPANY_GROUP_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -93,14 +93,14 @@ Public Class GetExtendedClaimStatusList
                 Return (CType(Row(DATA_COL_NAME_COMPANY_GROUP_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_COMPANY_GROUP_CODE, Value)
         End Set
     End Property
 
 
-    Private ReadOnly Property CompanyGroupID() As Guid
+    Private ReadOnly Property CompanyGroupID As Guid
         Get
             If _company_group_id.Equals(Guid.Empty) AndAlso Not CompanyGroupCode Is Nothing AndAlso CompanyGroupCode <> "" Then
 

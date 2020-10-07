@@ -95,7 +95,7 @@ Public Class CcBillingSchedule
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CcBillingScheduleDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -106,7 +106,7 @@ Public Class CcBillingSchedule
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyCreditCardId() As Guid
+    Public Property CompanyCreditCardId As Guid
         Get
             CheckDeleted()
             If row(CcBillingScheduleDAL.COL_NAME_COMPANY_CREDIT_CARD_ID) Is DBNull.Value Then
@@ -115,7 +115,7 @@ Public Class CcBillingSchedule
                 Return New Guid(CType(row(CcBillingScheduleDAL.COL_NAME_COMPANY_CREDIT_CARD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CcBillingScheduleDAL.COL_NAME_COMPANY_CREDIT_CARD_ID, Value)
         End Set
@@ -123,7 +123,7 @@ Public Class CcBillingSchedule
 
 
     <ValueMandatory("")> _
-    Public Property BillingDate() As DateType
+    Public Property BillingDate As DateType
         Get
             CheckDeleted()
             If row(CcBillingScheduleDAL.COL_NAME_BILLING_DATE) Is DBNull.Value Then
@@ -132,17 +132,17 @@ Public Class CcBillingSchedule
                 Return New DateType(CType(row(CcBillingScheduleDAL.COL_NAME_BILLING_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CcBillingScheduleDAL.COL_NAME_BILLING_DATE, Value)
         End Set
     End Property
 
-    Public Property isDateEnable() As Boolean
+    Public Property isDateEnable As Boolean
         Get
             Return mIsDateEnable
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             mIsDateEnable = Value
         End Set
     End Property

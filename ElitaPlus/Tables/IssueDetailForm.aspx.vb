@@ -494,7 +494,7 @@ Namespace Tables
         Sub IsBackdated()
 
             '#1 - Restrict to save backdated list in edit mode
-            If State.EffectiveDate IsNot Nothing And State.MyBO.IsNew = False Then
+            If State.EffectiveDate IsNot Nothing AndAlso State.MyBO.IsNew = False Then
                 If DateHelper.GetDateValue(State.MyBO.Effective.ToString) <> DateHelper.GetDateValue(moEffectiveDateText.Text.ToString) Then
                     If DateHelper.GetDateValue(moEffectiveDateText.Text.ToString) < EquipmentListDetail.GetCurrentDateTime() Then
                         Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_INVALID_EFFECIVE_DATE)
@@ -503,7 +503,7 @@ Namespace Tables
             End If
 
             '#2 - Restrict to save backdated list in edit mode
-            If State.ExpirationDate IsNot Nothing And State.MyBO.IsNew = False Then
+            If State.ExpirationDate IsNot Nothing AndAlso State.MyBO.IsNew = False Then
                 If DateHelper.GetDateValue(State.MyBO.Expiration.ToString) <> DateHelper.GetDateValue(moExpirationDateText.Text.ToString) Then
                     If (State.MyBO.CheckIfIssueIsAssignedToQuestionNoteOrRule(State.MyBO.Id)) Then
                         If DateHelper.GetDateValue(State.ExpirationDate.ToString) < EquipmentListDetail.GetCurrentDateTime() Then
@@ -518,7 +518,7 @@ Namespace Tables
         Sub IsDateValidated()
 
             '#3 - Effective date should be greater than Expiration Date
-            If State.EffectiveDate IsNot Nothing And State.ExpirationDate IsNot Nothing Then
+            If State.EffectiveDate IsNot Nothing AndAlso State.ExpirationDate IsNot Nothing Then
                 If DateHelper.GetDateValue(State.EffectiveDate.ToString) > DateHelper.GetDateValue(State.ExpirationDate.ToString) Then
                     Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_INVALID_EXPIRATION_DATE)
                 End If
@@ -529,7 +529,7 @@ Namespace Tables
         Sub EditModeValidation()
             '#4 - For new records, check for no backdated List code and no duplicate List code - Effective Date Combination
             If Not State.IsEditMode Then
-                If State.EffectiveDate IsNot Nothing And State.ExpirationDate IsNot Nothing Then
+                If State.EffectiveDate IsNot Nothing AndAlso State.ExpirationDate IsNot Nothing Then
                     If DateHelper.GetDateValue(State.EffectiveDate.ToString) < EquipmentListDetail.GetCurrentDateTime().Today Then
                         Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_INVALID_EFFECIVE_DATE)
                     End If
@@ -679,7 +679,7 @@ Namespace Tables
 
         End Sub
         Private Sub cboissueprocessor_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboIssueProcessor.SelectedIndexChanged
-            If (GetSelectedValue(cboIssueProcessor) = Codes.ISSUE_PROCESSOR__CUST Or GetSelectedValue(cboIssueProcessor) = String.Empty) Then
+            If (GetSelectedValue(cboIssueProcessor) = Codes.ISSUE_PROCESSOR__CUST OrElse GetSelectedValue(cboIssueProcessor) = String.Empty) Then
                 ControlMgr.SetVisibleControl(Me, moClaimTypeLabel, False)
                 ControlMgr.SetVisibleControl(Me, moClaimValueLabel, False)
                 ControlMgr.SetVisibleControl(Me, moClaimValueTextBox, False)
@@ -759,7 +759,7 @@ Namespace Tables
                 EnableDisableUserControlTab(plnQueue, False)
             End If
 
-            If (GetSelectedValue(cboIssueProcessor) = Codes.ISSUE_PROCESSOR__CUST Or GetSelectedValue(cboIssueProcessor) = String.Empty) Then
+            If (GetSelectedValue(cboIssueProcessor) = Codes.ISSUE_PROCESSOR__CUST OrElse GetSelectedValue(cboIssueProcessor) = String.Empty) Then
                 ControlMgr.SetVisibleControl(Me, moClaimTypeLabel, False)
                 ControlMgr.SetVisibleControl(Me, moClaimValueLabel, False)
                 ControlMgr.SetVisibleControl(Me, moClaimValueTextBox, False)
@@ -978,7 +978,7 @@ Namespace Tables
                 .IssueId = State.MyBO.Id
                 .SoftQuestionId = SoftQuestionId
                 ''#2
-                If Not SelectedQuestionExpiration = Nothing And SelectedQuestionExpiration < NewQuestionExpiration Then
+                If Not SelectedQuestionExpiration = Nothing AndAlso SelectedQuestionExpiration < NewQuestionExpiration Then
                     .Expiration = SelectedQuestionExpiration
                 Else
                     .Expiration = NewQuestionExpiration
@@ -1009,7 +1009,7 @@ Namespace Tables
                 .IssueId = State.MyBO.Id
                 .RuleId = RuleId
                 ''#2
-                If Not SelectedRuleExpiration = Nothing And SelectedRuleExpiration < NewRuleExpiration Then
+                If Not SelectedRuleExpiration = Nothing AndAlso SelectedRuleExpiration < NewRuleExpiration Then
                     .Expiration = SelectedRuleExpiration
                 Else
                     .Expiration = NewRuleExpiration
@@ -1384,7 +1384,7 @@ Namespace Tables
             Dim itemType As ListItemType = e.Item.ItemType
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) Then
                 Dim dRow As DataRow
                 e.Item.Cells(GRID_COL_NOTE_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(IssueComment.IssueCommentGridDV.COL_NAME_ISSUE_COMMENT_ID), Byte()))
                 e.Item.Cells(GRID_COL_CODE_IDX).Text = dvRow(IssueComment.IssueCommentGridDV.COL_NAME_CODE).ToString

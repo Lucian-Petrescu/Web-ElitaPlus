@@ -603,8 +603,8 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If dvRow IsNot Nothing And Not State.searchDV.Count > 0 Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.searchDV.Count > 0 Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         CType(e.Row.Cells(ID_COL_IDX).FindControl(ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(DealerGroup.DealerGroupSearchDV.COL_DEALER_GROUP_ID), Byte()))
                         If (State.IsEditMode = True AndAlso State.Id.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(DealerGroup.DealerGroupSearchDV.COL_DEALER_GROUP_ID), Byte())))) Then
                             CType(e.Row.Cells(DESCRIPTION_COL_IDX).FindControl(DESCRIPTION_CONTROL_NAME), TextBox).Text = dvRow(DealerGroup.DealerGroupSearchDV.COL_DESCRIPTION).ToString

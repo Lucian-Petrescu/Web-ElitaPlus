@@ -203,7 +203,7 @@
         Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 '#1 - Restrict to save backdated list in edit mode
-                If State.EffectiveDate IsNot Nothing And State.MyBO.IsNew = False Then
+                If State.EffectiveDate IsNot Nothing AndAlso State.MyBO.IsNew = False Then
                     If DateHelper.GetDateValue(State.MyBO.Effective.ToString) <> DateHelper.GetDateValue(moEffectiveDateText.Text.ToString) Then
                         If DateHelper.GetDateValue(moEffectiveDateText.Text.ToString) < IssueQuestionList.GetCurrentDateTime() Then
                             State.IsInvalidEffective = True
@@ -214,7 +214,7 @@
                 End If
 
                 '#2 - Restrict to save backdated list in edit mode
-                If State.ExpirationDate IsNot Nothing And State.MyBO.IsNew = False Then
+                If State.ExpirationDate IsNot Nothing AndAlso State.MyBO.IsNew = False Then
                     If DateHelper.GetDateValue(State.MyBO.Expiration.ToString) <> DateHelper.GetDateValue(moExpirationDateText.Text.ToString) Then
                         If (State.MyBO.CheckIfListIsAssignedToDealer(State.MyBO.Code, State.MyBO.Id)) Then
                             If DateHelper.GetDateValue(State.ExpirationDate.ToString) < IssueQuestionList.GetCurrentDateTime() Then
@@ -244,7 +244,7 @@
         Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
                 '#1 - Restrict to save backdated list in edit mode
-                If State.EffectiveDate IsNot Nothing And State.MyBO.IsNew = False Then
+                If State.EffectiveDate IsNot Nothing AndAlso State.MyBO.IsNew = False Then
                     If DateHelper.GetDateValue(State.MyBO.Effective.ToString) <> DateHelper.GetDateValue(moEffectiveDateText.Text.ToString) Then
                         If DateHelper.GetDateValue(moEffectiveDateText.Text.ToString) < IssueQuestionList.GetCurrentDateTime() Then
                             Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_INVALID_EFFECIVE_DATE)
@@ -253,7 +253,7 @@
                 End If
 
                 '#2 - Restrict to save backdated list in edit mode
-                If State.ExpirationDate IsNot Nothing And State.MyBO.IsNew = False Then
+                If State.ExpirationDate IsNot Nothing AndAlso State.MyBO.IsNew = False Then
                     If DateHelper.GetDateValue(State.MyBO.Expiration.ToString) <> DateHelper.GetDateValue(moExpirationDateText.Text.ToString) Then
                         If (State.MyBO.CheckIfListIsAssignedToDealer(State.MyBO.Code, State.MyBO.Id)) Then
                             If DateHelper.GetDateValue(State.ExpirationDate.ToString) < IssueQuestionList.GetCurrentDateTime() Then
@@ -266,7 +266,7 @@
                 PopulateBOsFormFrom()
 
                 '#3 - Effective date should be greater than Expiration Date
-                If State.EffectiveDate IsNot Nothing And State.ExpirationDate IsNot Nothing Then
+                If State.EffectiveDate IsNot Nothing AndAlso State.ExpirationDate IsNot Nothing Then
                     If DateHelper.GetDateValue(State.EffectiveDate.ToString) > DateHelper.GetDateValue(State.ExpirationDate.ToString) Then
                         Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_INVALID_EXPIRATION_DATE)
                     End If
@@ -274,7 +274,7 @@
 
                 '#4 - For new records, check for no backdated LIst code and no duplicate List code - Effective Date Combination
                 If Not State.IsEditMode Then
-                    If State.EffectiveDate IsNot Nothing And State.ExpirationDate IsNot Nothing Then
+                    If State.EffectiveDate IsNot Nothing AndAlso State.ExpirationDate IsNot Nothing Then
                         If DateHelper.GetDateValue(State.EffectiveDate.ToString) < IssueQuestionList.GetCurrentDateTime().Today Then
                             Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_INVALID_EFFECIVE_DATE)
                         End If
@@ -621,7 +621,7 @@
                     End If
 
                     '#3 - Effective date should be greater than Expiration Date
-                    If State.EffectiveDate IsNot Nothing And State.ExpirationDate IsNot Nothing Then
+                    If State.EffectiveDate IsNot Nothing AndAlso State.ExpirationDate IsNot Nothing Then
                         If DateHelper.GetDateValue(State.EffectiveDate.ToString) > DateHelper.GetDateValue(State.ExpirationDate.ToString) Then
                             Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_INVALID_EXPIRATION_DATE)
                         End If
@@ -629,7 +629,7 @@
 
                     '#4 - For new records, check for no backdated LIst code and no duplicate List code - Effective Date Combination
                     If Not State.IsEditMode Then
-                        If State.EffectiveDate IsNot Nothing And State.ExpirationDate IsNot Nothing Then
+                        If State.EffectiveDate IsNot Nothing AndAlso State.ExpirationDate IsNot Nothing Then
                             If DateHelper.GetDateValue(State.EffectiveDate.ToString) < IssueQuestionList.GetCurrentDateTime().Today Then
                                 Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_INVALID_EFFECIVE_DATE)
                             End If
@@ -805,7 +805,7 @@
                 .QuestionListId = State.MyBO.Id
                 .IssueQuestionId = IssueQuestionId
                 ''#2
-                If Not SelectedIssueQuestionExpiration = Nothing And SelectedIssueQuestionExpiration < NewIssueQuestionExpiration Then
+                If Not SelectedIssueQuestionExpiration = Nothing AndAlso SelectedIssueQuestionExpiration < NewIssueQuestionExpiration Then
                     .Expiration = SelectedIssueQuestionExpiration
                 Else
                     .Expiration = NewIssueQuestionExpiration

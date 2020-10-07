@@ -89,7 +89,7 @@ Public Class ReplacementPart
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ReplacementPartDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class ReplacementPart
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If Row(ReplacementPartDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -109,14 +109,14 @@ Public Class ReplacementPart
                 Return New Guid(CType(Row(ReplacementPartDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ReplacementPartDAL.COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)>
-    Public Property SkuNumber() As String
+    Public Property SkuNumber As String
         Get
             CheckDeleted()
             If Row(ReplacementPartDAL.COL_NAME_SKU_NUMBER) Is DBNull.Value Then
@@ -125,14 +125,14 @@ Public Class ReplacementPart
                 Return CType(Row(ReplacementPartDAL.COL_NAME_SKU_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ReplacementPartDAL.COL_NAME_SKU_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ReplacementPartDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -141,7 +141,7 @@ Public Class ReplacementPart
                 Return CType(Row(ReplacementPartDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ReplacementPartDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -188,7 +188,7 @@ Public Class ReplacementPart
             End If
             Return _claim
         End Get
-        Private Set(value As ClaimBase)
+        Private Set
             If (_claim Is Nothing OrElse value Is Nothing OrElse Not _claim.Equals(value)) Then
                 _claim = value
             End If

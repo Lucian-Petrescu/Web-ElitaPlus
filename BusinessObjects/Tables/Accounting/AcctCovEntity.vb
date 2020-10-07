@@ -90,7 +90,7 @@ Public Class AcctCovEntity
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AcctCovEntityDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class AcctCovEntity
     End Property
 
     <ValueMandatory("")> _
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If row(AcctCovEntityDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class AcctCovEntity
                 Return New Guid(CType(row(AcctCovEntityDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctCovEntityDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class AcctCovEntity
 
 
     <ValueMandatory("")> _
-    Public Property BusinessEntityId() As Guid
+    Public Property BusinessEntityId As Guid
         Get
             CheckDeleted()
             If row(AcctCovEntityDAL.COL_NAME_BUSINESS_ENTITY_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class AcctCovEntity
                 Return New Guid(CType(row(AcctCovEntityDAL.COL_NAME_BUSINESS_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctCovEntityDAL.COL_NAME_BUSINESS_ENTITY_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class AcctCovEntity
 
 
     <ValueMandatory("")> _
-    Public Property AcctBusinessUnitId() As Guid
+    Public Property AcctBusinessUnitId As Guid
         Get
             CheckDeleted()
             If row(AcctCovEntityDAL.COL_NAME_ACCT_BUSINESS_UNIT_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class AcctCovEntity
                 Return New Guid(CType(row(AcctCovEntityDAL.COL_NAME_ACCT_BUSINESS_UNIT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctCovEntityDAL.COL_NAME_ACCT_BUSINESS_UNIT_ID, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class AcctCovEntity
 
 
 
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If row(AcctCovEntityDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class AcctCovEntity
                 Return New Guid(CType(row(AcctCovEntityDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctCovEntityDAL.COL_NAME_REGION_ID, Value)
         End Set
@@ -177,7 +177,7 @@ Public Class AcctCovEntity
                 Return CType(Row(AcctCovEntityDAL.COL_NAME_ACCT_COVERAGE_TYPE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctCovEntityDAL.COL_NAME_ACCT_COVERAGE_TYPE_CODE, Value)
         End Set

@@ -90,7 +90,7 @@ Public Class OcTemplateGroupDealer
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(OcTemplateGroupDealerDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class OcTemplateGroupDealer
     End Property
 
     <ValueMandatory("")>
-    Public Property OcTemplateGroupId() As Guid
+    Public Property OcTemplateGroupId As Guid
         Get
             CheckDeleted()
             If row(OcTemplateGroupDealerDAL.COL_NAME_OC_TEMPLATE_GROUP_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class OcTemplateGroupDealer
                 Return New Guid(CType(row(OcTemplateGroupDealerDAL.COL_NAME_OC_TEMPLATE_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(OcTemplateGroupDealerDAL.COL_NAME_OC_TEMPLATE_GROUP_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class OcTemplateGroupDealer
 
 
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(OcTemplateGroupDealerDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class OcTemplateGroupDealer
                 Return New Guid(CType(row(OcTemplateGroupDealerDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(OcTemplateGroupDealerDAL.COL_NAME_DEALER_ID, Value)
         End Set

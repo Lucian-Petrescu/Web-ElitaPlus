@@ -90,7 +90,7 @@ Public Class VSCDealerAuthMake
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(VscDealerAuthMakeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class VSCDealerAuthMake
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(VscDealerAuthMakeDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class VSCDealerAuthMake
                 Return New Guid(CType(Row(VscDealerAuthMakeDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VscDealerAuthMakeDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class VSCDealerAuthMake
 
 
     <ValueMandatory("")> _
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(VscDealerAuthMakeDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class VSCDealerAuthMake
                 Return New Guid(CType(Row(VscDealerAuthMakeDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VscDealerAuthMakeDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set

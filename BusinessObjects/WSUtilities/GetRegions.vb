@@ -92,7 +92,7 @@ Public Class GetRegions
 
 #Region "Properties"
 
-    Public Property CountryCode() As String
+    Public Property CountryCode As String
         Get
             If Row(DATA_COL_NAME_COUNTRY_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class GetRegions
                 Return (CType(Row(DATA_COL_NAME_COUNTRY_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_COUNTRY_CODE, Value)
         End Set

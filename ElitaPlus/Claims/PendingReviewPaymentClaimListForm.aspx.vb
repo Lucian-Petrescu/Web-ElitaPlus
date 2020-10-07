@@ -338,7 +338,7 @@ Public Class PendingReviewPaymentClaimListForm
         Try
             PopulateStateFromSearchFields()
             Dim haserrors As Boolean = False
-            If (Not moClaimCreatedDate.IsEmpty) And Not moClaimCreatedDate.Validate() Then
+            If (Not moClaimCreatedDate.IsEmpty) AndAlso Not moClaimCreatedDate.Validate() Then
                 Exit Sub
             Else
                 State.claimcreateddate = DirectCast(moClaimCreatedDate.Value, SearchCriteriaStructType(Of Date))
@@ -483,7 +483,7 @@ Public Class PendingReviewPaymentClaimListForm
         checkValueArray = checkRecords.Value.Split(":"c)
 
         For i = 0 To checkValueArray.Length - 1
-            If (checkValueArray(i) IsNot Nothing And checkValueArray(i) <> "") Then
+            If (checkValueArray(i) IsNot Nothing AndAlso checkValueArray(i) <> "") Then
                 checkValues = checkValueArray(i).ToString & ":" & checkValues
             End If
         Next
@@ -555,7 +555,7 @@ Public Class PendingReviewPaymentClaimListForm
                 End If
             End If
             If dvRow IsNot Nothing Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                     If (e.Row.Cells(GRID_COL_CLAIM_NUMBER_IDX).FindControl(GRID_CLAIM_Number_CTRL) IsNot Nothing) Then
                         btnedit = CType(e.Row.Cells(GRID_COL_CLAIM_NUMBER_IDX).FindControl(GRID_CLAIM_Number_CTRL), LinkButton)

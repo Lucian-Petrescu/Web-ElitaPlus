@@ -87,7 +87,7 @@
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(OcMessageAttemptsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -97,7 +97,7 @@
         End Get
     End Property
 
-    Public Property OcMessageId() As Guid
+    Public Property OcMessageId As Guid
         Get
             CheckDeleted()
             If Row(OcMessageAttemptsDAL.COL_NAME_OC_MESSAGE_ID) Is DBNull.Value Then
@@ -106,7 +106,7 @@
                 Return New Guid(CType(Row(OcMessageAttemptsDAL.COL_NAME_OC_MESSAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(OcMessageAttemptsDAL.COL_NAME_OC_MESSAGE_ID, Value)
         End Set
@@ -114,7 +114,7 @@
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=600)>
-    Public Property RecipientAddress() As String
+    Public Property RecipientAddress As String
         Get
             CheckDeleted()
             If Row(OcMessageAttemptsDAL.COL_NAME_RECIPIENT_ADDRESS) Is DBNull.Value Then
@@ -123,13 +123,13 @@
                 Return CType(Row(OcMessageAttemptsDAL.COL_NAME_RECIPIENT_ADDRESS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageAttemptsDAL.COL_NAME_RECIPIENT_ADDRESS, Value)
         End Set
     End Property
 
-    Public Property ProcessStatusXCD() As String
+    Public Property ProcessStatusXCD As String
         Get
             CheckDeleted()
             If Row(OcMessageAttemptsDAL.COL_NAME_PROCESS_STATUS_XCD) Is DBNull.Value Then
@@ -138,13 +138,13 @@
                 Return CType(Row(OcMessageAttemptsDAL.COL_NAME_PROCESS_STATUS_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageAttemptsDAL.COL_NAME_PROCESS_STATUS_XCD, Value)
         End Set
     End Property
 
-    Public Property ProcessStatusDescription() As String
+    Public Property ProcessStatusDescription As String
         Get
             CheckDeleted()
             If Row(OcMessageAttemptsDAL.COL_NAME_PROCESS_STATUS_DESCRIPTION) Is DBNull.Value Then
@@ -153,13 +153,13 @@
                 Return CType(Row(OcMessageAttemptsDAL.COL_NAME_PROCESS_STATUS_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageAttemptsDAL.COL_NAME_PROCESS_STATUS_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property MessageAttemptedOn() As DateTime
+    Public Property MessageAttemptedOn As DateTime
         Get
             CheckDeleted()
             If Row(OcMessageAttemptsDAL.COL_NAME_CREATED_DATE) Is DBNull.Value Then
@@ -168,13 +168,13 @@
                 Return CType(Row(OcMessageAttemptsDAL.COL_NAME_CREATED_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateTime)
+        Set
             CheckDeleted()
             SetValue(OcMessageAttemptsDAL.COL_NAME_CREATED_DATE, Value)
         End Set
     End Property
 
-    Public Property MessageAttemptedBy() As String
+    Public Property MessageAttemptedBy As String
         Get
             CheckDeleted()
             If Row(OcMessageAttemptsDAL.COL_NAME_CREATED_BY) Is DBNull.Value Then
@@ -183,13 +183,13 @@
                 Return CType(Row(OcMessageAttemptsDAL.COL_NAME_CREATED_BY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageAttemptsDAL.COL_NAME_CREATED_BY, Value)
         End Set
     End Property
 
-    Public Property RecipientDescription() As String
+    Public Property RecipientDescription As String
         Get
             CheckDeleted()
             If Row(OcMessageAttemptsDAL.COL_NAME_RECIPIENT_DESCRIPTION) Is DBNull.Value Then
@@ -198,13 +198,13 @@
                 Return CType(Row(OcMessageAttemptsDAL.COL_NAME_RECIPIENT_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageAttemptsDAL.COL_NAME_RECIPIENT_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property MessageError() As String
+    Public Property MessageError As String
         Get
             CheckDeleted()
             If Row(OcMessageAttemptsDAL.COL_NAME_ERR_MESSAGE) Is DBNull.Value Then
@@ -213,7 +213,7 @@
                 Return CType(Row(OcMessageAttemptsDAL.COL_NAME_ERR_MESSAGE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageAttemptsDAL.COL_NAME_ERR_MESSAGE, Value)
         End Set

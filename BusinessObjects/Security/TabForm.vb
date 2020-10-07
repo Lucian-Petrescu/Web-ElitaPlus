@@ -9,38 +9,38 @@ Public Class TabForm
 
 #Region "Properties"
 
-    Public Property ReturnCode() As Integer
+    Public Property ReturnCode As Integer
         Get
             Return moTabFormData.outReturn_code
         End Get
-        Set(ByVal Value As Integer)
+        Set
             moTabFormData.outReturn_code = Value
         End Set
     End Property
 
-    Public Property Added() As Integer
+    Public Property Added As Integer
         Get
             Return moTabFormData.outAdded
         End Get
-        Set(ByVal Value As Integer)
+        Set
             moTabFormData.outAdded = Value
         End Set
     End Property
 
-    Public Property English() As String
+    Public Property English As String
         Get
             Return moTabFormData.outEnglish
         End Get
-        Set(ByVal Value As String)
+        Set
             moTabFormData.outEnglish = Value
         End Set
     End Property
 
-    Public Property outNew() As Integer
+    Public Property outNew As Integer
         Get
             Return moTabFormData.outNew
         End Get
-        Set(ByVal Value As Integer)
+        Set
             moTabFormData.outNew = Value
         End Set
     End Property

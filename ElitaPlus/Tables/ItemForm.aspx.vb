@@ -637,7 +637,7 @@ Namespace Tables
             With State.MyBO
                 bIsDirty = .IsDirty
                 Dim tempMaxReplacementCost As Double = CType(moMaxReplacementCostText.Text, Double)
-                If tempMaxReplacementCost < MIN_MAX_REPLACEMENT_COST Or tempMaxReplacementCost > MAX_MAX_REPLACEMENT_COST Then
+                If tempMaxReplacementCost < MIN_MAX_REPLACEMENT_COST OrElse tempMaxReplacementCost > MAX_MAX_REPLACEMENT_COST Then
                     moErrorController.AddError(ITEM_FORM003)
                     moErrorController.Show()
                     bIsOk = False

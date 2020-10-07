@@ -121,7 +121,7 @@ Public Class CompanyCreditCard
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CompanyCreditCardDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -132,7 +132,7 @@ Public Class CompanyCreditCard
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(CompanyCreditCardDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -141,7 +141,7 @@ Public Class CompanyCreditCard
                 Return New Guid(CType(row(CompanyCreditCardDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyCreditCardDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -149,7 +149,7 @@ Public Class CompanyCreditCard
 
 
     <ValueMandatory("")> _
-    Public Property CreditCardFormatId() As Guid
+    Public Property CreditCardFormatId As Guid
         Get
             CheckDeleted()
             If row(CompanyCreditCardDAL.COL_NAME_CREDIT_CARD_FORMAT_ID) Is DBNull.Value Then
@@ -158,14 +158,14 @@ Public Class CompanyCreditCard
                 Return New Guid(CType(row(CompanyCreditCardDAL.COL_NAME_CREDIT_CARD_FORMAT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyCreditCardDAL.COL_NAME_CREDIT_CARD_FORMAT_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=31), ValueMandatory("")> _
-    Public Property BillingDate() As LongType
+    Public Property BillingDate As LongType
         Get
             CheckDeleted()
             If Row(CompanyCreditCardDAL.COL_NAME_BILLING_DATE) Is DBNull.Value Then
@@ -174,7 +174,7 @@ Public Class CompanyCreditCard
                 Return New LongType(CType(Row(CompanyCreditCardDAL.COL_NAME_BILLING_DATE), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CompanyCreditCardDAL.COL_NAME_BILLING_DATE, Value)
         End Set

@@ -66,7 +66,7 @@ Partial Class UserControlBankInfo
         'Put user code to initialize the page here
         If State.myBankInfoBo IsNot Nothing Then
             BindBoPropertiesToLabels()
-            If (Not (State.myBankInfoBo.SourceCountryID.Equals(Guid.Empty))) And (Not (Page.GetSelectedItem(moCountryDrop_WRITE).Equals(Guid.Empty))) Then
+            If (Not (State.myBankInfoBo.SourceCountryID.Equals(Guid.Empty))) AndAlso (Not (Page.GetSelectedItem(moCountryDrop_WRITE).Equals(Guid.Empty))) Then
                 If State.myBankInfoBo.SourceCountryID.Equals(Page.GetSelectedItem(moCountryDrop_WRITE)) Then
                     'Domestic transfer
                     DomesticTransfer()
@@ -386,7 +386,7 @@ Partial Class UserControlBankInfo
     End Sub
 
     Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
-        If (Not (State.myBankInfoBo.SourceCountryID.Equals(Guid.Empty))) And (Not (Page.GetSelectedItem(moCountryDrop_WRITE).Equals(Guid.Empty))) Then
+        If (Not (State.myBankInfoBo.SourceCountryID.Equals(Guid.Empty))) AndAlso (Not (Page.GetSelectedItem(moCountryDrop_WRITE).Equals(Guid.Empty))) Then
             If State.myBankInfoBo.SourceCountryID.Equals(Page.GetSelectedItem(moCountryDrop_WRITE)) Then
                 'Domestic transfer
                 DomesticTransfer()

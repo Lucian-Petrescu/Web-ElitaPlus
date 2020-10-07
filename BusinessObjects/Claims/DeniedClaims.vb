@@ -147,7 +147,7 @@ Public Class DeniedClaims
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DeniedClaimsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -158,7 +158,7 @@ Public Class DeniedClaims
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -167,7 +167,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_CLAIM_ID, Value)
         End Set
@@ -175,7 +175,7 @@ Public Class DeniedClaims
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property CustomerName() As String
+    Public Property CustomerName As String
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
@@ -184,7 +184,7 @@ Public Class DeniedClaims
                 Return CType(Row(DeniedClaimsDAL.COL_NAME_CUSTOMER_NAME), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_CUSTOMER_NAME, Value)
         End Set
@@ -192,7 +192,7 @@ Public Class DeniedClaims
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_ADDRESS1) Is DBNull.Value Then
@@ -201,7 +201,7 @@ Public Class DeniedClaims
                 Return CType(Row(DeniedClaimsDAL.COL_NAME_ADDRESS1), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_ADDRESS1, Value)
         End Set
@@ -209,7 +209,7 @@ Public Class DeniedClaims
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_ADDRESS2) Is DBNull.Value Then
@@ -218,7 +218,7 @@ Public Class DeniedClaims
                 Return CType(Row(DeniedClaimsDAL.COL_NAME_ADDRESS2), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_ADDRESS2, Value)
         End Set
@@ -226,7 +226,7 @@ Public Class DeniedClaims
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_CITY) Is DBNull.Value Then
@@ -235,7 +235,7 @@ Public Class DeniedClaims
                 Return CType(Row(DeniedClaimsDAL.COL_NAME_CITY), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_CITY, Value)
         End Set
@@ -243,7 +243,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -252,7 +252,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_REGION_ID, Value)
         End Set
@@ -260,7 +260,7 @@ Public Class DeniedClaims
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property PostalCode() As String
+    Public Property PostalCode As String
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_POSTAL_CODE) Is DBNull.Value Then
@@ -269,7 +269,7 @@ Public Class DeniedClaims
                 Return CType(Row(DeniedClaimsDAL.COL_NAME_POSTAL_CODE), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_POSTAL_CODE, Value)
         End Set
@@ -277,7 +277,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -286,7 +286,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
@@ -294,7 +294,7 @@ Public Class DeniedClaims
 
 
     <ValidStringLength("", Max:=480)> _
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -303,7 +303,7 @@ Public Class DeniedClaims
                 Return CType(Row(DeniedClaimsDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_MODEL, Value)
         End Set
@@ -311,7 +311,7 @@ Public Class DeniedClaims
 
 
     <ValueMandatory("")> _
-    Public Property DeniedReason1Id() As Guid
+    Public Property DeniedReason1Id As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON1_ID) Is DBNull.Value Then
@@ -320,7 +320,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON1_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_DENIED_REASON1_ID, Value)
         End Set
@@ -328,7 +328,7 @@ Public Class DeniedClaims
 
 
     <ValidStringLength("", Max:=1000)> _
-    Public Property ConditionProblem1() As String
+    Public Property ConditionProblem1 As String
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_CONDITION_PROBLEM_1) Is DBNull.Value Then
@@ -337,7 +337,7 @@ Public Class DeniedClaims
                 Return CType(Row(DeniedClaimsDAL.COL_NAME_CONDITION_PROBLEM_1), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_CONDITION_PROBLEM_1, Value)
         End Set
@@ -345,7 +345,7 @@ Public Class DeniedClaims
 
 
     <ValidStringLength("", Max:=1000)> _
-    Public Property ConditionProblem2() As String
+    Public Property ConditionProblem2 As String
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_CONDITION_PROBLEM_2) Is DBNull.Value Then
@@ -354,7 +354,7 @@ Public Class DeniedClaims
                 Return CType(Row(DeniedClaimsDAL.COL_NAME_CONDITION_PROBLEM_2), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_CONDITION_PROBLEM_2, Value)
         End Set
@@ -362,7 +362,7 @@ Public Class DeniedClaims
 
 
     <ValidStringLength("", Max:=1000)> _
-    Public Property ConditionProblem3() As String
+    Public Property ConditionProblem3 As String
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_CONDITION_PROBLEM_3) Is DBNull.Value Then
@@ -371,7 +371,7 @@ Public Class DeniedClaims
                 Return CType(Row(DeniedClaimsDAL.COL_NAME_CONDITION_PROBLEM_3), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_CONDITION_PROBLEM_3, Value)
         End Set
@@ -379,7 +379,7 @@ Public Class DeniedClaims
 
 
     <ValueMandatory("")> _
-    Public Property ApproverId() As Guid
+    Public Property ApproverId As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_APPROVER_ID) Is DBNull.Value Then
@@ -388,7 +388,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_APPROVER_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_APPROVER_ID, Value)
         End Set
@@ -396,7 +396,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property DeniedReason2Id() As Guid
+    Public Property DeniedReason2Id As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON2_ID) Is DBNull.Value Then
@@ -405,7 +405,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON2_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_DENIED_REASON2_ID, Value)
         End Set
@@ -413,7 +413,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property DeniedReason3Id() As Guid
+    Public Property DeniedReason3Id As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON3_ID) Is DBNull.Value Then
@@ -422,7 +422,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON3_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_DENIED_REASON3_ID, Value)
         End Set
@@ -430,7 +430,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property DeniedReason4Id() As Guid
+    Public Property DeniedReason4Id As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON4_ID) Is DBNull.Value Then
@@ -439,7 +439,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON4_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_DENIED_REASON4_ID, Value)
         End Set
@@ -447,7 +447,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property DeniedReason5Id() As Guid
+    Public Property DeniedReason5Id As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON5_ID) Is DBNull.Value Then
@@ -456,7 +456,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON5_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_DENIED_REASON5_ID, Value)
         End Set
@@ -464,7 +464,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property DeniedReason6Id() As Guid
+    Public Property DeniedReason6Id As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON6_ID) Is DBNull.Value Then
@@ -473,7 +473,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON6_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_DENIED_REASON6_ID, Value)
         End Set
@@ -481,7 +481,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property DeniedReason7Id() As Guid
+    Public Property DeniedReason7Id As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON7_ID) Is DBNull.Value Then
@@ -490,7 +490,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON7_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_DENIED_REASON7_ID, Value)
         End Set
@@ -498,7 +498,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property DeniedReason8Id() As Guid
+    Public Property DeniedReason8Id As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON8_ID) Is DBNull.Value Then
@@ -507,7 +507,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON8_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_DENIED_REASON8_ID, Value)
         End Set
@@ -515,7 +515,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property DeniedReason9Id() As Guid
+    Public Property DeniedReason9Id As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON9_ID) Is DBNull.Value Then
@@ -524,7 +524,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON9_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_DENIED_REASON9_ID, Value)
         End Set
@@ -532,7 +532,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property DeniedReason10Id() As Guid
+    Public Property DeniedReason10Id As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON10_ID) Is DBNull.Value Then
@@ -541,7 +541,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON10_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_DENIED_REASON10_ID, Value)
         End Set
@@ -549,7 +549,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property DeniedReason11Id() As Guid
+    Public Property DeniedReason11Id As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON11_ID) Is DBNull.Value Then
@@ -558,7 +558,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON11_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_DENIED_REASON11_ID, Value)
         End Set
@@ -566,7 +566,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property DeniedReason12Id() As Guid
+    Public Property DeniedReason12Id As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON12_ID) Is DBNull.Value Then
@@ -575,7 +575,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON12_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_DENIED_REASON12_ID, Value)
         End Set
@@ -583,7 +583,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property DeniedReason13Id() As Guid
+    Public Property DeniedReason13Id As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON13_ID) Is DBNull.Value Then
@@ -592,7 +592,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON13_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_DENIED_REASON13_ID, Value)
         End Set
@@ -600,7 +600,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property DeniedReason14Id() As Guid
+    Public Property DeniedReason14Id As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON14_ID) Is DBNull.Value Then
@@ -609,7 +609,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON14_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_DENIED_REASON14_ID, Value)
         End Set
@@ -617,7 +617,7 @@ Public Class DeniedClaims
 
 
 
-    Public Property DeniedReason15Id() As Guid
+    Public Property DeniedReason15Id As Guid
         Get
             CheckDeleted()
             If Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON15_ID) Is DBNull.Value Then
@@ -626,7 +626,7 @@ Public Class DeniedClaims
                 Return New Guid(CType(Row(DeniedClaimsDAL.COL_NAME_DENIED_REASON15_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeniedClaimsDAL.COL_NAME_DENIED_REASON15_ID, Value)
         End Set

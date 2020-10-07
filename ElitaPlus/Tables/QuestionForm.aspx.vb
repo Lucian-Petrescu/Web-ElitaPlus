@@ -209,7 +209,7 @@ Partial Class Questionform
 
         If enableToggle Then        'if you are trying to enable we'll enable only those that need to
             With State.MyBO
-                If Not .IsNew And Not .QuestionTypeId.Equals(Guid.Empty) Then
+                If Not .IsNew AndAlso Not .QuestionTypeId.Equals(Guid.Empty) Then
                     ControlMgr.SetEnableControl(Me, ddlQuestionType, False)
                 Else
                     ControlMgr.SetEnableControl(Me, ddlQuestionType, True)
@@ -305,7 +305,7 @@ Partial Class Questionform
             PopulateControlFromBOProperty(ddlQuestionType, .QuestionTypeId)
 
             'Question type id -> don't allow to change for a saved/old record
-            If Not .IsNew And Not .QuestionTypeId.Equals(Guid.Empty) Then
+            If Not .IsNew AndAlso Not .QuestionTypeId.Equals(Guid.Empty) Then
                 ControlMgr.SetEnableControl(Me, ddlQuestionType, False)
             Else
                 ControlMgr.SetEnableControl(Me, ddlQuestionType, True)
@@ -709,7 +709,7 @@ Partial Class Questionform
 
                 'Hardcoding for now to remove dependency of running scripts everytime an answer is added.
                 'Needs to be fixed by creating a UI for it..
-                If (.AnswerValue.ToUpperInvariant.Contains("YES") Or .AnswerValue.ToUpperInvariant.Contains("SI")) Then
+                If (.AnswerValue.ToUpperInvariant.Contains("YES") OrElse .AnswerValue.ToUpperInvariant.Contains("SI")) Then
                     State.MyAnswerChildBO.ListItemId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
                 End If
 
@@ -1053,8 +1053,7 @@ Partial Class Questionform
 
             '#2 If changed then expire previous Answer
             If ds.Tables(ELP_ANSWER).Rows.Count > 0 Then
-                If Not CType(gRow.Cells(GRID_COL_ANSWER_VALUE).FindControl(GRID_CONTROL_ANSWER_VALUE), TextBox).Text = Nothing And
-                     Not CType(gRow.Cells(GRID_COL_ANSWER_VALUE).FindControl(GRID_CONTROL_ANSWER_VALUE), TextBox).Text.Equals(ds.Tables(ELP_ANSWER).Rows(0)(ANSWER_VALUE)) Then
+                If Not CType(gRow.Cells(GRID_COL_ANSWER_VALUE).FindControl(GRID_CONTROL_ANSWER_VALUE), TextBox).Text = Nothing AndAlso Not CType(gRow.Cells(GRID_COL_ANSWER_VALUE).FindControl(GRID_CONTROL_ANSWER_VALUE), TextBox).Text.Equals(ds.Tables(ELP_ANSWER).Rows(0)(ANSWER_VALUE)) Then
                     ExpireOldCreateNewAnswer()
                 ElseIf Not New Guid(DirectCast(gRow.Cells(GRID_COL_SUPPORTS_CLAIM).FindControl(GRID_CONTROL_SUPPORTS_CLAIM), DropDownList).Text) = New Guid(CType(ds.Tables(ELP_ANSWER).Rows(0)(SUPPORTS_CLAIM_ID), Byte())) Then
                     ExpireOldCreateNewAnswer()

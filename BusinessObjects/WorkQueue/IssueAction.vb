@@ -99,82 +99,82 @@ Public NotInheritable Class IssueAction
 #End Region
 
 #Region "View"
-    <Serializable()> _
+    <Serializable> _
     Class IssueActionView
 
         Private _insuredName As String
 
-        Public Property InsuredName() As String
+        Public Property InsuredName As String
             Get
                 Return _insuredName
             End Get
-            Set(ByVal value As String)
+            Set
                 _insuredName = value
             End Set
         End Property
 
         Private _claimNumber As String
 
-        Public Property ClaimNumber() As String
+        Public Property ClaimNumber As String
             Get
                 Return _claimNumber
             End Get
-            Set(ByVal value As String)
+            Set
                 _claimNumber = value
             End Set
         End Property
 
         Private _dateOfLoss As String
 
-        Public Property DateOfLoss() As String
+        Public Property DateOfLoss As String
             Get
                 Return _dateOfLoss
             End Get
-            Set(ByVal value As String)
+            Set
                 _dateOfLoss = value
             End Set
         End Property
 
         Private _typeOfLoss As String
 
-        Public Property TypeOfLoss() As String
+        Public Property TypeOfLoss As String
             Get
                 Return _typeOfLoss
             End Get
-            Set(ByVal value As String)
+            Set
                 _typeOfLoss = value
             End Set
         End Property
 
         Private _issueDate As String
 
-        Public Property IssueDate() As String
+        Public Property IssueDate As String
             Get
                 Return _issueDate
             End Get
-            Set(ByVal value As String)
+            Set
                 _issueDate = value
             End Set
         End Property
 
         Private _issueDescription As String
 
-        Public Property IssueDescription() As String
+        Public Property IssueDescription As String
             Get
                 Return _issueDescription
             End Get
-            Set(ByVal value As String)
+            Set
                 _issueDescription = value
             End Set
         End Property
 
         Private _otherClaimIssuesXML As Xml.XmlDocument
 
-        Public Property OtherClaimIssuesXML() As Xml.XmlDocument
+        Public Property OtherClaimIssuesXML As Xml.XmlDocument
             Get
                 Return _otherClaimIssuesXML
             End Get
-            Set(ByVal value As Xml.XmlDocument)
+            Set
                 _otherClaimIssuesXML = value
             End Set
         End Property

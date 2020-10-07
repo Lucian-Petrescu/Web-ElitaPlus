@@ -101,7 +101,7 @@ Public Class TransallMappingOut
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(TransallMappingOutDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -112,7 +112,7 @@ Public Class TransallMappingOut
     End Property
 
     <ValueMandatory("")> _
-    Public Property TransallMappingId() As Guid
+    Public Property TransallMappingId As Guid
         Get
             CheckDeleted()
             If row(TransallMappingOutDAL.COL_NAME_TRANSALL_MAPPING_ID) Is DBNull.Value Then
@@ -121,7 +121,7 @@ Public Class TransallMappingOut
                 Return New Guid(CType(row(TransallMappingOutDAL.COL_NAME_TRANSALL_MAPPING_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransallMappingOutDAL.COL_NAME_TRANSALL_MAPPING_ID, Value)
         End Set
@@ -129,7 +129,7 @@ Public Class TransallMappingOut
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=400)> _
-    Public Property OutputMask() As String
+    Public Property OutputMask As String
         Get
             CheckDeleted()
             If row(TransallMappingOutDAL.COL_NAME_OUTPUT_MASK) Is DBNull.Value Then
@@ -138,7 +138,7 @@ Public Class TransallMappingOut
                 Return CType(row(TransallMappingOutDAL.COL_NAME_OUTPUT_MASK), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransallMappingOutDAL.COL_NAME_OUTPUT_MASK, Value)
         End Set
@@ -146,7 +146,7 @@ Public Class TransallMappingOut
 
 
     <ValueMandatory("")> _
-    Public Property LayoutCodeId() As Guid
+    Public Property LayoutCodeId As Guid
         Get
             CheckDeleted()
             If row(TransallMappingOutDAL.COL_NAME_LAYOUT_CODE_ID) Is DBNull.Value Then
@@ -155,7 +155,7 @@ Public Class TransallMappingOut
                 Return New Guid(CType(row(TransallMappingOutDAL.COL_NAME_LAYOUT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransallMappingOutDAL.COL_NAME_LAYOUT_CODE_ID, Value)
         End Set

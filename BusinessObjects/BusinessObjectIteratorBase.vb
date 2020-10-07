@@ -15,19 +15,19 @@ Public Class BusinessObjectIteratorBase
 #End Region
 
 #Region "Properties"
-    Public ReadOnly Property Table() As DataTable
+    Public ReadOnly Property Table As DataTable
         Get
             Return _table
         End Get
     End Property
 
-    Public ReadOnly Property BOType() As Type
+    Public ReadOnly Property BOType As Type
         Get
             Return _boType
         End Get
     End Property
 
-    Public ReadOnly Property Count() As Integer
+    Public ReadOnly Property Count As Integer
         Get
             Dim countSum As Integer = 0
             Dim bo As BusinessObjectBase

@@ -236,7 +236,7 @@
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         If dvRow IsNot Nothing Then
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Row.Cells(GRD_IDX_ID_COL).Text = GetGuidStringFromByteArray(CType(dvRow(DALObjects.TransAllMappingDAL.COL_NAME_TRANSALL_MAPPING_ID), Byte()))
                 e.Row.Cells(GRD_IDX_DEALER_COL).Text = dvRow(DALObjects.TransAllMappingDAL.COL_NAME_DEALER_NAME).ToString
                 e.Row.Cells(GRD_IDX_PACKAGE_COL).Text = dvRow(DALObjects.TransAllMappingDAL.COL_NAME_TRANSALL_PACKAGE).ToString

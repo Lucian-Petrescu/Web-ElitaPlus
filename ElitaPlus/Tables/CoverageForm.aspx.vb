@@ -263,7 +263,7 @@ Namespace Tables
                     If (.DealerId <> Guid.Empty) Then
                         Dim oContract As Contract = New Contract
 
-                        If Not (.Effective Is Nothing And .Expiration Is Nothing) Then
+                        If Not (.Effective Is Nothing AndAlso .Expiration Is Nothing) Then
                             oContract = Contract.GetContract(.DealerId, .Effective.Value, .Expiration.Value)
                         End If
 
@@ -792,7 +792,7 @@ Namespace Tables
 
         Private Sub EnableDisableDeductible(pDeductibleBasedOnId As Guid, pClearValues As Boolean)
             Dim sCoverageDeductibleCode As String
-            If (TheDealerControl.SelectedIndex > NO_ITEM_SELECTED_INDEX) And (Len(moEffectiveText.Text) > 0) Then
+            If (TheDealerControl.SelectedIndex > NO_ITEM_SELECTED_INDEX) AndAlso (Len(moEffectiveText.Text) > 0) Then
                 Dim oDealerId As Guid = TheDealerControl.SelectedGuid
                 Dim oEffectiveDate As String
                 Dim tempDate As Date
@@ -890,8 +890,8 @@ Namespace Tables
                 Dim selectedTaxType As String = GetSelectedValue(moTaxTypeDrop)
                 sVal = LookupListNew.GetCodeFromDescription(yesNoLkL, moCovDeductibleText.Text)
                 If sVal = LookupYes Then
-                    If IsNumeric(moDeductiblePercentText.Text) And IsNumeric(moDeductibleText.Text) Then
-                        If CType(moDeductiblePercentText.Text, Decimal) > 0 And CType(moDeductibleText.Text, Decimal) > 0 Then
+                    If IsNumeric(moDeductiblePercentText.Text) AndAlso IsNumeric(moDeductibleText.Text) Then
+                        If CType(moDeductiblePercentText.Text, Decimal) > 0 AndAlso CType(moDeductibleText.Text, Decimal) > 0 Then
                             'display error
                             SetLabelError(moDeductiblePercentLabel)
                             SetLabelError(moDeductibleLabel)
@@ -900,13 +900,13 @@ Namespace Tables
                     End If
                 End If
 
-                If (moCoverageLiabilityLimitText.Enabled And moCoverageLiabilityLimitPercentText.Enabled _
-                    And moCoverageLiabilityLimitText.Visible And moCoverageLiabilityLimitPercentText.Visible) Then
-                    If String.IsNullOrEmpty(moCoverageLiabilityLimitText.Text) And String.IsNullOrEmpty(moCoverageLiabilityLimitPercentText.Text) Then
+                If (moCoverageLiabilityLimitText.Enabled AndAlso moCoverageLiabilityLimitPercentText.Enabled _
+                    AndAlso moCoverageLiabilityLimitText.Visible AndAlso moCoverageLiabilityLimitPercentText.Visible) Then
+                    If String.IsNullOrEmpty(moCoverageLiabilityLimitText.Text) AndAlso String.IsNullOrEmpty(moCoverageLiabilityLimitPercentText.Text) Then
                         SetLabelError(moCoverageLiabilityLimitLabel)
                         SetLabelError(moCoverageLiabilityLimitPercentLabel)
                         Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
-                    ElseIf Not String.IsNullOrEmpty(moCoverageLiabilityLimitText.Text) And String.IsNullOrEmpty(moCoverageLiabilityLimitPercentText.Text) Then
+                    ElseIf Not String.IsNullOrEmpty(moCoverageLiabilityLimitText.Text) AndAlso String.IsNullOrEmpty(moCoverageLiabilityLimitPercentText.Text) Then
                         If Not IsNumeric(moCoverageLiabilityLimitText.Text) Then
                             SetLabelError(moCoverageLiabilityLimitLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT)
@@ -914,33 +914,32 @@ Namespace Tables
                             SetLabelError(moCoverageLiabilityLimitLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT)
                         End If
-                    ElseIf String.IsNullOrEmpty(moCoverageLiabilityLimitText.Text) And Not String.IsNullOrEmpty(moCoverageLiabilityLimitPercentText.Text) Then
+                    ElseIf String.IsNullOrEmpty(moCoverageLiabilityLimitText.Text) AndAlso Not String.IsNullOrEmpty(moCoverageLiabilityLimitPercentText.Text) Then
                         If Not IsNumeric(moCoverageLiabilityLimitPercentText.Text) Then
                             SetLabelError(moCoverageLiabilityLimitPercentLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_PERCENT)
-                        ElseIf CType(moCoverageLiabilityLimitPercentText.Text, Decimal) = 0 Or CType(moCoverageLiabilityLimitPercentText.Text, Decimal) < 0 Or
-                                CType(moCoverageLiabilityLimitPercentText.Text, Decimal) > 100 Then
+                        ElseIf CType(moCoverageLiabilityLimitPercentText.Text, Decimal) = 0 OrElse CType(moCoverageLiabilityLimitPercentText.Text, Decimal) < 0 OrElse CType(moCoverageLiabilityLimitPercentText.Text, Decimal) > 100 Then
                             SetLabelError(moCoverageLiabilityLimitPercentLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_PERCENT)
                         End If
-                    ElseIf Not String.IsNullOrEmpty(moCoverageLiabilityLimitText.Text) And Not String.IsNullOrEmpty(moCoverageLiabilityLimitPercentText.Text) Then
-                        If Not IsNumeric(moCoverageLiabilityLimitText.Text) And Not IsNumeric(moCoverageLiabilityLimitPercentText.Text) Then
+                    ElseIf Not String.IsNullOrEmpty(moCoverageLiabilityLimitText.Text) AndAlso Not String.IsNullOrEmpty(moCoverageLiabilityLimitPercentText.Text) Then
+                        If Not IsNumeric(moCoverageLiabilityLimitText.Text) AndAlso Not IsNumeric(moCoverageLiabilityLimitPercentText.Text) Then
                             SetLabelError(moCoverageLiabilityLimitLabel)
                             SetLabelError(moCoverageLiabilityLimitPercentLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
-                        ElseIf IsNumeric(moCoverageLiabilityLimitText.Text) And Not IsNumeric(moCoverageLiabilityLimitPercentText.Text) Then
+                        ElseIf IsNumeric(moCoverageLiabilityLimitText.Text) AndAlso Not IsNumeric(moCoverageLiabilityLimitPercentText.Text) Then
                             SetLabelError(moCoverageLiabilityLimitLabel)
                             SetLabelError(moCoverageLiabilityLimitPercentLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
-                        ElseIf Not IsNumeric(moCoverageLiabilityLimitText.Text) And IsNumeric(moCoverageLiabilityLimitPercentText.Text) Then
+                        ElseIf Not IsNumeric(moCoverageLiabilityLimitText.Text) AndAlso IsNumeric(moCoverageLiabilityLimitPercentText.Text) Then
                             SetLabelError(moCoverageLiabilityLimitLabel)
                             SetLabelError(moCoverageLiabilityLimitPercentLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
-                        ElseIf (CType(moCoverageLiabilityLimitPercentText.Text, Decimal) = 0 Or CType(moCoverageLiabilityLimitPercentText.Text, Decimal) < 0 Or CType(moCoverageLiabilityLimitPercentText.Text, Decimal) > 100) Then
+                        ElseIf (CType(moCoverageLiabilityLimitPercentText.Text, Decimal) = 0 OrElse CType(moCoverageLiabilityLimitPercentText.Text, Decimal) < 0 OrElse CType(moCoverageLiabilityLimitPercentText.Text, Decimal) > 100) Then
                             SetLabelError(moCoverageLiabilityLimitLabel)
                             SetLabelError(moCoverageLiabilityLimitPercentLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
-                        ElseIf CType(moCoverageLiabilityLimitText.Text, Decimal) > 0 And CType(moCoverageLiabilityLimitPercentText.Text, Decimal) > 0 Then
+                        ElseIf CType(moCoverageLiabilityLimitText.Text, Decimal) > 0 AndAlso CType(moCoverageLiabilityLimitPercentText.Text, Decimal) > 0 Then
                             SetLabelError(moCoverageLiabilityLimitLabel)
                             SetLabelError(moCoverageLiabilityLimitPercentLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
@@ -993,7 +992,7 @@ Namespace Tables
                 End If
 
                 If Not IsNothing(TheCoverage.DealerMarkupId) AndAlso TheCoverage.DealerMarkupId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, LookupYes) Then
-                    If Not selectedTaxType.Equals(Guid.Empty.ToString) And Not selectedTaxType.Equals(PosTaxTypeXcd) Then
+                    If Not selectedTaxType.Equals(Guid.Empty.ToString) AndAlso Not selectedTaxType.Equals(PosTaxTypeXcd) Then
                         Throw New GUIException(Message.MSG_ERR_WHEN_DEALER_MARKUP_ALLOWED_TAX_TYPE_SHOULD_BE_EMPTY_OR_POS, ElitaPlus.Common.ErrorCodes.INVALID_TAX_TYPE_FOR_DEALER)
                     End If
 
@@ -1297,7 +1296,7 @@ Namespace Tables
         Public Function SaveCoverageRateList() As Boolean
             Dim i As Integer = 0
             Try
-                If State.IsNewWithCopy = True And State.CoverageRateList IsNot Nothing Then
+                If State.IsNewWithCopy = True AndAlso State.CoverageRateList IsNot Nothing Then
                     'Associate each detail record to the newly created coverage record
                     'and Save each detail (Coverage Rate) Record
                     For i = 0 To State.CoverageRateList.Length - 1
@@ -1321,7 +1320,7 @@ Namespace Tables
         Public Function SaveCoverageDeductibleList() As Boolean
             Dim i As Integer = 0
             Try
-                If State.IsNewWithCopy = True And State.CoverageDeductibleList IsNot Nothing Then
+                If State.IsNewWithCopy = True AndAlso State.CoverageDeductibleList IsNot Nothing Then
                     'Associate each detail record to the newly created coverage record
                     'and Save each detail (Coverage Rate) Record
                     For i = 0 To State.CoverageDeductibleList.Length - 1
@@ -1344,7 +1343,7 @@ Namespace Tables
         Public Function SaveCoverageConseqDamageList() As Boolean
             Dim i As Integer = 0
             Try
-                If State.IsNewWithCopy = True And State.CoverageConseqDamageList IsNot Nothing Then
+                If State.IsNewWithCopy = True AndAlso State.CoverageConseqDamageList IsNot Nothing Then
                     'Associate each detail record to the newly created coverage record
                     'and Save each detail (Coverage Rate) Record
                     For i = 0 To State.CoverageConseqDamageList.Length - 1
@@ -1928,7 +1927,7 @@ Namespace Tables
         Private Sub PopulateCoverageDeductibleList(Optional ByVal oAction As String = ActionNone)
             Dim oDataView As DataView
 
-            If State.IsCoverageNew = True And Not State.IsNewWithCopy Then Return ' We can not have CoverageRates if the coverage is new
+            If State.IsCoverageNew = True AndAlso Not State.IsNewWithCopy Then Return ' We can not have CoverageRates if the coverage is new
 
             Try
 
@@ -2401,14 +2400,14 @@ Namespace Tables
             Dim objDealer = New Dealer(TheDealerControl.SelectedGuid)
 
 
-            If objDealer IsNot Nothing And Not TheDepreciationSchedule.IsDeleted Then
+            If objDealer IsNot Nothing AndAlso Not TheDepreciationSchedule.IsDeleted Then
 
 
                 Dim oListContext As New ListContext
                 oListContext.CompanyId = objDealer.CompanyId
                 Dim depreciationScheduleListForCompany As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DepreciationScheduleByCompany", context:=oListContext, languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
                 Dim filteredDepreciationScheduleListForCompany As DataElements.ListItem() = (From lst In depreciationScheduleListForCompany
-                                                                                             Where lst.ExtendedCode = "YESNO-Y" Or lst.Code = TheDepreciationSchedule.DepreciationScheduleCode
+                                                                                             Where lst.ExtendedCode = "YESNO-Y" OrElse lst.Code = TheDepreciationSchedule.DepreciationScheduleCode
                                                                                              Select lst).ToArray()
                 ddlDepSchCashReimbursement.Populate(filteredDepreciationScheduleListForCompany, New PopulateOptions() With
                                                       {
@@ -2451,7 +2450,7 @@ Namespace Tables
 
                     BindSelectItem(TheCoverage.IsReInsuredId.ToString, moReInsuredDrop)
 
-                    If TheCoverage.IsReInsuredId.Equals(Guid.Empty) Or LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, LookupNo) = TheCoverage.IsReInsuredId Then
+                    If TheCoverage.IsReInsuredId.Equals(Guid.Empty) OrElse LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, LookupNo) = TheCoverage.IsReInsuredId Then
                         AttributeValues.Visible = True
                     End If
 
@@ -2499,8 +2498,7 @@ Namespace Tables
             Dim oProductLiabilityLimitBaseId As Guid = Coverage.GetProductLiabilityLimitBase(oProductId)
             Try
                 Dim notAppicableId = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, ProdLiabBasedOnNotApp)
-                If (oProductLiabilityLimitBaseId.Equals(Guid.Empty) Or
-                    oProductLiabilityLimitBaseId = notAppicableId) Then
+                If (oProductLiabilityLimitBaseId.Equals(Guid.Empty) OrElse oProductLiabilityLimitBaseId = notAppicableId) Then
                     ControlMgr.SetVisibleControl(Me, moCoverageLiabilityLimitLabel, False)
                     ControlMgr.SetVisibleControl(Me, moCoverageLiabilityLimitText, False)
                     ControlMgr.SetVisibleControl(Me, moCoverageLiabilityLimitPercentLabel, False)
@@ -2529,7 +2527,7 @@ Namespace Tables
                                                     .AddBlankItem = True
                                                   })
 
-                If IsPostBack And Not State.IsUndo Then
+                If IsPostBack AndAlso Not State.IsUndo Then
                     BindSelectItem(State.SelectedCoverageTypeId.ToString, moCoverageTypeDrop)
                     State.IsUndo = False
                 Else
@@ -2572,7 +2570,7 @@ Namespace Tables
                                                     .SortFunc = AddressOf PopulateOptions.GetCode
                                                   })
 
-                If IsPostBack And Not State.IsUndo Then
+                If IsPostBack AndAlso Not State.IsUndo Then
                     ' JLR - Restore Presviously Selected Values
                     BindSelectItem(State.SelectedEarningCodeId.ToString, moEarningCodeDrop)
                     State.IsUndo = False
@@ -2593,7 +2591,7 @@ Namespace Tables
                     .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                 })
 
-                If IsPostBack And Not State.IsUndo Then
+                If IsPostBack AndAlso Not State.IsUndo Then
                     ' JLR - Restore Previously Selected Values
                     BindSelectItem(State.SelectedTaxTypeXcd.ToString, moTaxTypeDrop)
                     State.IsUndo = False
@@ -2621,7 +2619,7 @@ Namespace Tables
                                                     .AddBlankItem = True
                                                    })
 
-                If IsPostBack And Not State.IsUndo Then
+                If IsPostBack AndAlso Not State.IsUndo Then
                     ' JLR - Restore Presviously Selected Values
                     BindSelectItem(State.SelectedProductItemId.ToString, moProductItemDrop)
                     State.IsUndo = False
@@ -2644,7 +2642,7 @@ Namespace Tables
                                                     .ValueFunc = AddressOf PopulateOptions.GetCode
                                                   })
 
-                If IsPostBack And Not State.IsUndo Then
+                If IsPostBack AndAlso Not State.IsUndo Then
                     'Def-26342: Added condition to check null value for selectedOffsetMethod
                     If State.SelectedOffsetMethod IsNot Nothing Then
                         BindSelectItem(State.SelectedOffsetMethod.ToString, moOffsetMethodDrop)
@@ -2668,7 +2666,7 @@ Namespace Tables
                                                    {
                                                     .AddBlankItem = True
                                                    })
-                If IsPostBack And Not State.IsUndo Then
+                If IsPostBack AndAlso Not State.IsUndo Then
                     ' JLR - Restore Presviously Selected Values
                     BindSelectItem(State.SelectedOptionalId.ToString, moOptionalDrop)
                     State.IsUndo = False
@@ -2696,7 +2694,7 @@ Namespace Tables
                                   Select lst.Translation).FirstOrDefault()
                     moIsClaimAllowedDrop.Items.FindByText(oYesString).Selected = True
                 Else
-                    If IsPostBack And Not State.IsUndo Then
+                    If IsPostBack AndAlso Not State.IsUndo Then
                         BindSelectItem(State.SelectedIsClaimAllowedId.ToString, moIsClaimAllowedDrop)
                         State.IsUndo = False
                     Else
@@ -2816,7 +2814,7 @@ Namespace Tables
 
         Private Sub PopulateTexts()
             Try
-                If IsPostBack And Not State.IsUndo Then
+                If IsPostBack AndAlso Not State.IsUndo Then
                     ' JLR - Restore Presviously Selected Values
                     moOffsetText.Text = State.SelectedOffset
                     txtMarkupDistPercent.Text = State.SelectedMarkupDistnPercent
@@ -2874,7 +2872,7 @@ Namespace Tables
                         PopulateControlFromBOProperty(moCoverageLiabilityLimitPercentText, TheCoverage.CoverageLiabilityLimitPercent)
                         Dim oProductLiabilityLimitBaseId As Guid = TheCoverage.ProdLiabilityLimitBaseId
 
-                        If (oProductLiabilityLimitBaseId.Equals(Guid.Empty) Or oProductLiabilityLimitBaseId = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, ProdLiabBasedOnNotApp)) Then
+                        If (oProductLiabilityLimitBaseId.Equals(Guid.Empty) OrElse oProductLiabilityLimitBaseId = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, ProdLiabBasedOnNotApp)) Then
                             ControlMgr.SetVisibleControl(Me, moCoverageLiabilityLimitLabel, False)
                             ControlMgr.SetVisibleControl(Me, moCoverageLiabilityLimitText, False)
                             ControlMgr.SetVisibleControl(Me, moCoverageLiabilityLimitPercentLabel, False)
@@ -2913,7 +2911,7 @@ Namespace Tables
             If Not State.IsCoverageNew Then
                 ControlMgr.SetEnableControl(Me, TextBoxCurrencyOfCoverage, False)
                 Dim currencyOfCoveragedv As DataView = Coverage.GetCurrencyOfCoverage(TheCoverage.Id)
-                If currencyOfCoveragedv.Count > 1 Or currencyOfCoveragedv.Count = 0 Then
+                If currencyOfCoveragedv.Count > 1 OrElse currencyOfCoveragedv.Count = 0 Then
                     Throw New GUIException("", ElitaPlus.Common.ErrorCodes.COVERAGE_NONE_OR_MORE_THAN_ONE_CONTRACT_IN_EFFECT_FOUND_ERR)
                 Else
                     PopulateControlFromBOProperty(TextBoxCurrencyOfCoverage, currencyOfCoveragedv.Table.Rows(0).Item(0))
@@ -2929,7 +2927,7 @@ Namespace Tables
             Dim oContract As Contract
             Try
                 oContract = Contract.GetMaxExpirationContract(TheCoverage.DealerId)
-                If oContract IsNot Nothing And oContract.AllowCoverageMarkupDistribution.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
+                If oContract IsNot Nothing AndAlso oContract.AllowCoverageMarkupDistribution.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
                     ControlMgr.SetVisibleControl(Me, lblMarkupDistPercent, True)
                     ControlMgr.SetVisibleControl(Me, txtMarkupDistPercent, True)
                 Else
@@ -3086,7 +3084,7 @@ Namespace Tables
             Dim isFamilyDirty As Boolean = False
 
             With TheCoverage
-                If UniqueFieldsChanged() And .IsLastCoverage() = False And .IsFirstCoverage = False Then
+                If UniqueFieldsChanged() AndAlso .IsLastCoverage() = False AndAlso .IsFirstCoverage = False Then
                     MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.COVERAGEBO_019, GetLanguageId()))
                     .cancelEdit()
                     bIsOk = False
@@ -3171,7 +3169,7 @@ Namespace Tables
                         MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.DELETE_COVERAGE_WITH_CERT_PRESENT, GetLanguageId()))
                         .cancelEdit()
                         bIsOk = False
-                    ElseIf .IsLastCoverage() = False And .IsFirstCoverage = False Then
+                    ElseIf .IsLastCoverage() = False AndAlso .IsFirstCoverage = False Then
                         MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.COVERAGEBO_017, GetLanguageId()))
                         .cancelEdit()
                         bIsOk = False
@@ -3207,10 +3205,10 @@ Namespace Tables
                     Return False
                 Else
                     If .CertificateDuration.ToString <> moCertificateDurationText.Text _
-                    Or .CoverageDuration.ToString <> moCoverageDurationText.Text _
-                    Or Not .CoverageTypeId.Equals(GetSelectedItem(moCoverageTypeDrop)) _
-                    Or CType(.Effective.ToString, Date) <> moEffectiveDate _
-                    Or CType(.Expiration.ToString, Date) <> moExpirationDate Then
+                    OrElse .CoverageDuration.ToString <> moCoverageDurationText.Text _
+                    OrElse Not .CoverageTypeId.Equals(GetSelectedItem(moCoverageTypeDrop)) _
+                    OrElse CType(.Effective.ToString, Date) <> moEffectiveDate _
+                    OrElse CType(.Expiration.ToString, Date) <> moExpirationDate Then
                         Return True
                     Else
                         Return False
@@ -3304,7 +3302,7 @@ Namespace Tables
         Private Sub PopulateCoverageRateList(Optional ByVal oAction As String = ActionNone)
             Dim oDataView As DataView
 
-            If State.IsCoverageNew = True And Not State.IsNewWithCopy Then Return ' We can not have CoverageRates if the coverage is new
+            If State.IsCoverageNew = True AndAlso Not State.IsNewWithCopy Then Return ' We can not have CoverageRates if the coverage is new
 
             Try
 
@@ -3593,7 +3591,7 @@ Namespace Tables
         Private Sub PopulateCoverageConseqDamageList(Optional ByVal oAction As String = ActionNone)
             Dim oDataView As DataView
 
-            If State.IsCoverageNew = True And Not State.IsNewWithCopy Then Return ' We can not have CoverageConseqDamages if the coverage is new
+            If State.IsCoverageNew = True AndAlso Not State.IsNewWithCopy Then Return ' We can not have CoverageConseqDamages if the coverage is new
 
             Try
 
@@ -4593,7 +4591,7 @@ Namespace Tables
 
                             If mollblCommPercentSourceXcd IsNot Nothing Then
                                 If mollblCommPercentSourceXcd.Visible Then
-                                    If (mollblCommPercentSourceXcd.Text IsNot Nothing And Not String.IsNullOrWhiteSpace(mollblCommPercentSourceXcd.Text)) Then
+                                    If (mollblCommPercentSourceXcd.Text IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(mollblCommPercentSourceXcd.Text)) Then
                                         mollblCommPercentSourceXcd.Text = GetCodeAmtSourceOption(mollblCommPercentSourceXcd.Text)
                                     End If
                                 End If
@@ -4601,7 +4599,7 @@ Namespace Tables
 
                             If mollblMarketingExpenseSourceXcd IsNot Nothing Then
                                 If mollblMarketingExpenseSourceXcd.Visible Then
-                                    If (mollblMarketingExpenseSourceXcd.Text IsNot Nothing And Not String.IsNullOrWhiteSpace(mollblMarketingExpenseSourceXcd.Text)) Then
+                                    If (mollblMarketingExpenseSourceXcd.Text IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(mollblMarketingExpenseSourceXcd.Text)) Then
                                         mollblMarketingExpenseSourceXcd.Text = GetCodeAmtSourceOption(mollblMarketingExpenseSourceXcd.Text)
                                     End If
                                 End If
@@ -4609,7 +4607,7 @@ Namespace Tables
 
                             If molblAdminExpenseSourceXcd IsNot Nothing Then
                                 If molblAdminExpenseSourceXcd.Visible Then
-                                    If (molblAdminExpenseSourceXcd.Text IsNot Nothing And Not String.IsNullOrWhiteSpace(molblAdminExpenseSourceXcd.Text)) Then
+                                    If (molblAdminExpenseSourceXcd.Text IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(molblAdminExpenseSourceXcd.Text)) Then
                                         molblAdminExpenseSourceXcd.Text = GetCodeAmtSourceOption(molblAdminExpenseSourceXcd.Text)
                                     End If
                                 End If
@@ -4617,7 +4615,7 @@ Namespace Tables
 
                             If molblProfitExpenseSourceXcd IsNot Nothing Then
                                 If molblProfitExpenseSourceXcd.Visible Then
-                                    If (molblProfitExpenseSourceXcd.Text IsNot Nothing And Not String.IsNullOrWhiteSpace(molblProfitExpenseSourceXcd.Text)) Then
+                                    If (molblProfitExpenseSourceXcd.Text IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(molblProfitExpenseSourceXcd.Text)) Then
                                         molblProfitExpenseSourceXcd.Text = GetCodeAmtSourceOption(molblProfitExpenseSourceXcd.Text)
                                     End If
                                 End If
@@ -4625,7 +4623,7 @@ Namespace Tables
 
                             If molblLossCostPercentSourceXcd IsNot Nothing Then
                                 If molblLossCostPercentSourceXcd.Visible Then
-                                    If (molblLossCostPercentSourceXcd.Text IsNot Nothing And Not String.IsNullOrWhiteSpace(molblLossCostPercentSourceXcd.Text)) Then
+                                    If (molblLossCostPercentSourceXcd.Text IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(molblLossCostPercentSourceXcd.Text)) Then
                                         molblLossCostPercentSourceXcd.Text = GetCodeAmtSourceOption(molblLossCostPercentSourceXcd.Text)
                                     End If
                                 End If
@@ -4657,7 +4655,7 @@ Namespace Tables
                     With TheCoverageRate
 
                         If cboLossCostPercentSourceXcd.Visible Then
-                            If .LossCostPercentSourceXcd IsNot Nothing And cboLossCostPercentSourceXcd.Items.Count > 0 Then
+                            If .LossCostPercentSourceXcd IsNot Nothing AndAlso cboLossCostPercentSourceXcd.Items.Count > 0 Then
                                 SetSelectedItem(cboLossCostPercentSourceXcd, .LossCostPercentSourceXcd)
 
                                 If cboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
@@ -4670,7 +4668,7 @@ Namespace Tables
                         End If
 
                         If cboProfitExpenseSourceXcd.Visible Then
-                            If .ProfitPercentSourceXcd IsNot Nothing And cboProfitExpenseSourceXcd.Items.Count > 0 Then
+                            If .ProfitPercentSourceXcd IsNot Nothing AndAlso cboProfitExpenseSourceXcd.Items.Count > 0 Then
                                 SetSelectedItem(cboProfitExpenseSourceXcd, .ProfitPercentSourceXcd)
 
                                 If cboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
@@ -4683,7 +4681,7 @@ Namespace Tables
                         End If
 
                         If cboMarketingExpenseSourceXcd.Visible Then
-                            If .MarketingPercentSourceXcd IsNot Nothing And cboMarketingExpenseSourceXcd.Items.Count > 0 Then
+                            If .MarketingPercentSourceXcd IsNot Nothing AndAlso cboMarketingExpenseSourceXcd.Items.Count > 0 Then
                                 SetSelectedItem(cboMarketingExpenseSourceXcd, .MarketingPercentSourceXcd)
 
                                 If cboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
@@ -4696,7 +4694,7 @@ Namespace Tables
                         End If
 
                         If cboAdminExpenseSourceXcd.Visible Then
-                            If .AdminExpenseSourceXcd IsNot Nothing And cboAdminExpenseSourceXcd.Items.Count > 0 Then
+                            If .AdminExpenseSourceXcd IsNot Nothing AndAlso cboAdminExpenseSourceXcd.Items.Count > 0 Then
                                 SetSelectedItem(cboAdminExpenseSourceXcd, .AdminExpenseSourceXcd)
 
                                 If cboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
@@ -4709,7 +4707,7 @@ Namespace Tables
                         End If
 
                         If cboCommPercentSourceXcd.Visible Then
-                            If .CommissionsPercentSourceXcd IsNot Nothing And cboCommPercentSourceXcd.Items.Count > 0 Then
+                            If .CommissionsPercentSourceXcd IsNot Nothing AndAlso cboCommPercentSourceXcd.Items.Count > 0 Then
                                 SetSelectedItem(cboCommPercentSourceXcd, .CommissionsPercentSourceXcd)
 
                                 If cboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
@@ -4747,7 +4745,7 @@ Namespace Tables
                     If State.IsNewWithCopy Then
                         With State.CoverageRateList(moGridView.SelectedIndex)
                             If cboLossCostPercentSourceXcd.Visible Then
-                                If .LossCostPercent IsNot Nothing And cboLossCostPercentSourceXcd.Items.Count > 0 Then
+                                If .LossCostPercent IsNot Nothing AndAlso cboLossCostPercentSourceXcd.Items.Count > 0 Then
                                     If cboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
                                         PopulateControlFromBOProperty(txtLossCostPercent, diffValue, PERCENT_FORMAT)
                                         txtLossCostPercent.Enabled = False
@@ -4758,7 +4756,7 @@ Namespace Tables
                             End If
 
                             If cboProfitExpenseSourceXcd.Visible Then
-                                If .ProfitExpense IsNot Nothing And cboProfitExpenseSourceXcd.Items.Count > 0 Then
+                                If .ProfitExpense IsNot Nothing AndAlso cboProfitExpenseSourceXcd.Items.Count > 0 Then
                                     If cboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
                                         PopulateControlFromBOProperty(txtProfitExpense, diffValue, PERCENT_FORMAT)
                                         txtProfitExpense.Enabled = False
@@ -4769,7 +4767,7 @@ Namespace Tables
                             End If
 
                             If cboMarketingExpenseSourceXcd.Visible Then
-                                If .MarketingPercent IsNot Nothing And cboMarketingExpenseSourceXcd.Items.Count > 0 Then
+                                If .MarketingPercent IsNot Nothing AndAlso cboMarketingExpenseSourceXcd.Items.Count > 0 Then
                                     If cboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
                                         PopulateControlFromBOProperty(txtMarketingPercent, diffValue, PERCENT_FORMAT)
                                         txtMarketingPercent.Enabled = False
@@ -4780,7 +4778,7 @@ Namespace Tables
                             End If
 
                             If cboAdminExpenseSourceXcd.Visible Then
-                                If .AdminExpense IsNot Nothing And cboAdminExpenseSourceXcd.Items.Count > 0 Then
+                                If .AdminExpense IsNot Nothing AndAlso cboAdminExpenseSourceXcd.Items.Count > 0 Then
                                     If cboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
                                         PopulateControlFromBOProperty(txtAdminExpense, diffValue, PERCENT_FORMAT)
                                         txtAdminExpense.Enabled = False
@@ -4791,7 +4789,7 @@ Namespace Tables
                             End If
 
                             If cboCommPercentSourceXcd.Visible Then
-                                If .CommissionsPercent IsNot Nothing And cboCommPercentSourceXcd.Items.Count > 0 Then
+                                If .CommissionsPercent IsNot Nothing AndAlso cboCommPercentSourceXcd.Items.Count > 0 Then
                                     If cboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
                                         PopulateControlFromBOProperty(txtCommissionPercent, diffValue, PERCENT_FORMAT)
                                         txtCommissionPercent.Enabled = False
@@ -4804,7 +4802,7 @@ Namespace Tables
                     Else
                         With TheCoverageRate
                             If cboLossCostPercentSourceXcd.Visible Then
-                                If .LossCostPercent IsNot Nothing And cboLossCostPercentSourceXcd.Items.Count > 0 Then
+                                If .LossCostPercent IsNot Nothing AndAlso cboLossCostPercentSourceXcd.Items.Count > 0 Then
                                     If cboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
                                         PopulateControlFromBOProperty(txtLossCostPercent, diffValue, PERCENT_FORMAT)
                                         txtLossCostPercent.Enabled = False
@@ -4815,7 +4813,7 @@ Namespace Tables
                             End If
 
                             If cboProfitExpenseSourceXcd.Visible Then
-                                If .ProfitExpense IsNot Nothing And cboProfitExpenseSourceXcd.Items.Count > 0 Then
+                                If .ProfitExpense IsNot Nothing AndAlso cboProfitExpenseSourceXcd.Items.Count > 0 Then
                                     If cboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
                                         PopulateControlFromBOProperty(txtProfitExpense, diffValue, PERCENT_FORMAT)
                                         txtProfitExpense.Enabled = False
@@ -4826,7 +4824,7 @@ Namespace Tables
                             End If
 
                             If cboMarketingExpenseSourceXcd.Visible Then
-                                If .MarketingPercent IsNot Nothing And cboMarketingExpenseSourceXcd.Items.Count > 0 Then
+                                If .MarketingPercent IsNot Nothing AndAlso cboMarketingExpenseSourceXcd.Items.Count > 0 Then
                                     If cboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
                                         PopulateControlFromBOProperty(txtMarketingPercent, diffValue, PERCENT_FORMAT)
                                         txtMarketingPercent.Enabled = False
@@ -4837,7 +4835,7 @@ Namespace Tables
                             End If
 
                             If cboAdminExpenseSourceXcd.Visible Then
-                                If .AdminExpense IsNot Nothing And cboAdminExpenseSourceXcd.Items.Count > 0 Then
+                                If .AdminExpense IsNot Nothing AndAlso cboAdminExpenseSourceXcd.Items.Count > 0 Then
                                     If cboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
                                         PopulateControlFromBOProperty(txtAdminExpense, diffValue, PERCENT_FORMAT)
                                         txtAdminExpense.Enabled = False
@@ -4848,7 +4846,7 @@ Namespace Tables
                             End If
 
                             If cboCommPercentSourceXcd.Visible Then
-                                If .CommissionsPercent IsNot Nothing And cboCommPercentSourceXcd.Items.Count > 0 Then
+                                If .CommissionsPercent IsNot Nothing AndAlso cboCommPercentSourceXcd.Items.Count > 0 Then
                                     If cboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
                                         PopulateControlFromBOProperty(txtCommissionPercent, diffValue, PERCENT_FORMAT)
                                         txtCommissionPercent.Enabled = False
@@ -4937,7 +4935,7 @@ Namespace Tables
             Dim sGetCodeSourceOptionDesc As String
             Try
                 sGetCodeSourceOptionDesc = String.Empty
-                If desc IsNot Nothing And Not String.IsNullOrWhiteSpace(desc) Then
+                If desc IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(desc) Then
                     sGetCodeSourceOptionDesc = LookupListNew.GetDescriptionFromExtCode("ACCTBUCKETSOURCE", GetLanguageId(), desc)
                 End If
                 Return sGetCodeSourceOptionDesc
@@ -5080,16 +5078,16 @@ Namespace Tables
 
                             If i <> 0 Then
                                 'If label and row is greater than 1
-                                If lblRenewalNo IsNot Nothing And lblLowPrice IsNot Nothing And lblHighPrice IsNot Nothing Then
-                                    If Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) And Not String.IsNullOrWhiteSpace(lblLowPrice.Text) And Not String.IsNullOrWhiteSpace(lblHighPrice.Text) Then
+                                If lblRenewalNo IsNot Nothing AndAlso lblLowPrice IsNot Nothing AndAlso lblHighPrice IsNot Nothing Then
+                                    If Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) AndAlso Not String.IsNullOrWhiteSpace(lblLowPrice.Text) AndAlso Not String.IsNullOrWhiteSpace(lblHighPrice.Text) Then
                                         Dim existingRenewalNo As Decimal = Convert.ToDecimal(lblRenewalNo.Text)
                                         Dim existingLowPrice As Decimal = Convert.ToDecimal(lblLowPrice.Text)
                                         Dim existingHighPrice As Decimal = Convert.ToDecimal(lblHighPrice.Text)
 
                                         If TheCoverageRate IsNot Nothing Then
-                                            If TheCoverageRate.LowPrice IsNot Nothing And TheCoverageRate.HighPrice IsNot Nothing And TheCoverageRate.RenewalNumber IsNot Nothing Then
-                                                If Not String.IsNullOrWhiteSpace(TheCoverageRate.LowPrice.ToString()) And Not String.IsNullOrWhiteSpace(TheCoverageRate.HighPrice.ToString()) And Not String.IsNullOrWhiteSpace(TheCoverageRate.RenewalNumber.ToString()) Then
-                                                    If TheCoverageRate.LowPrice = existingLowPrice And TheCoverageRate.HighPrice = existingHighPrice Then
+                                            If TheCoverageRate.LowPrice IsNot Nothing AndAlso TheCoverageRate.HighPrice IsNot Nothing AndAlso TheCoverageRate.RenewalNumber IsNot Nothing Then
+                                                If Not String.IsNullOrWhiteSpace(TheCoverageRate.LowPrice.ToString()) AndAlso Not String.IsNullOrWhiteSpace(TheCoverageRate.HighPrice.ToString()) AndAlso Not String.IsNullOrWhiteSpace(TheCoverageRate.RenewalNumber.ToString()) Then
+                                                    If TheCoverageRate.LowPrice = existingLowPrice AndAlso TheCoverageRate.HighPrice = existingHighPrice Then
                                                         isSameLowHighExist = True
 
                                                         enteredRenewalNo = TheCoverageRate.RenewalNumber
@@ -5108,13 +5106,13 @@ Namespace Tables
                                 End If
 
                                 'If textbox and row is greater than 1
-                                If textBoxRenewalNo IsNot Nothing And textBoxLowPrice IsNot Nothing And textBoxHighPrice IsNot Nothing Then
-                                    If Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) And Not String.IsNullOrWhiteSpace(textBoxLowPrice.Text) And Not String.IsNullOrWhiteSpace(textBoxHighPrice.Text) Then
+                                If textBoxRenewalNo IsNot Nothing AndAlso textBoxLowPrice IsNot Nothing AndAlso textBoxHighPrice IsNot Nothing Then
+                                    If Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) AndAlso Not String.IsNullOrWhiteSpace(textBoxLowPrice.Text) AndAlso Not String.IsNullOrWhiteSpace(textBoxHighPrice.Text) Then
                                         enteredRenewalNo = Convert.ToDecimal(textBoxRenewalNo.Text)
                                         enteredLowPrice = Convert.ToDecimal(textBoxLowPrice.Text)
                                         enteredHighPrice = Convert.ToDecimal(textBoxHighPrice.Text)
 
-                                        If TheCoverageRate.LowPrice = LastLowPrice And TheCoverageRate.HighPrice = LastHighPrice Then
+                                        If TheCoverageRate.LowPrice = LastLowPrice AndAlso TheCoverageRate.HighPrice = LastHighPrice Then
                                             isSameLowHighExist = True
 
                                             enteredRenewalNo = TheCoverageRate.RenewalNumber
@@ -5135,8 +5133,8 @@ Namespace Tables
                                 End If
                             Else
                                 'If lable and first row
-                                If lblRenewalNo IsNot Nothing And lblLowPrice IsNot Nothing And lblHighPrice IsNot Nothing Then
-                                    If Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) And Not String.IsNullOrWhiteSpace(lblLowPrice.Text) And Not String.IsNullOrWhiteSpace(lblHighPrice.Text) Then
+                                If lblRenewalNo IsNot Nothing AndAlso lblLowPrice IsNot Nothing AndAlso lblHighPrice IsNot Nothing Then
+                                    If Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) AndAlso Not String.IsNullOrWhiteSpace(lblLowPrice.Text) AndAlso Not String.IsNullOrWhiteSpace(lblHighPrice.Text) Then
 
                                         Dim existingRenewalNo As Decimal = Convert.ToDecimal(lblRenewalNo.Text)
                                         Dim existingLowPrice As Decimal = Convert.ToDecimal(lblLowPrice.Text)
@@ -5152,9 +5150,9 @@ Namespace Tables
                                         LastHighPrice = existingHighPrice
 
                                         If TheCoverageRate IsNot Nothing Then
-                                            If TheCoverageRate.LowPrice IsNot Nothing And TheCoverageRate.HighPrice IsNot Nothing And TheCoverageRate.RenewalNumber IsNot Nothing Then
-                                                If Not String.IsNullOrWhiteSpace(TheCoverageRate.LowPrice.ToString()) And Not String.IsNullOrWhiteSpace(TheCoverageRate.HighPrice.ToString()) And Not String.IsNullOrWhiteSpace(TheCoverageRate.RenewalNumber.ToString()) Then
-                                                    If TheCoverageRate.LowPrice = existingLowPrice And TheCoverageRate.HighPrice = existingHighPrice Then
+                                            If TheCoverageRate.LowPrice IsNot Nothing AndAlso TheCoverageRate.HighPrice IsNot Nothing AndAlso TheCoverageRate.RenewalNumber IsNot Nothing Then
+                                                If Not String.IsNullOrWhiteSpace(TheCoverageRate.LowPrice.ToString()) AndAlso Not String.IsNullOrWhiteSpace(TheCoverageRate.HighPrice.ToString()) AndAlso Not String.IsNullOrWhiteSpace(TheCoverageRate.RenewalNumber.ToString()) Then
+                                                    If TheCoverageRate.LowPrice = existingLowPrice AndAlso TheCoverageRate.HighPrice = existingHighPrice Then
                                                         isSameLowHighExist = True
 
                                                         enteredRenewalNo = TheCoverageRate.RenewalNumber
@@ -5173,8 +5171,8 @@ Namespace Tables
                                 End If
 
                                 'If textbox and first row
-                                If textBoxRenewalNo IsNot Nothing And textBoxLowPrice IsNot Nothing And textBoxHighPrice IsNot Nothing Then
-                                    If Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) And Not String.IsNullOrWhiteSpace(textBoxLowPrice.Text) And Not String.IsNullOrWhiteSpace(textBoxHighPrice.Text) Then
+                                If textBoxRenewalNo IsNot Nothing AndAlso textBoxLowPrice IsNot Nothing AndAlso textBoxHighPrice IsNot Nothing Then
+                                    If Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) AndAlso Not String.IsNullOrWhiteSpace(textBoxLowPrice.Text) AndAlso Not String.IsNullOrWhiteSpace(textBoxHighPrice.Text) Then
                                         isFirstRowForEdit = True
                                         enteredRenewalNo = Convert.ToDecimal(textBoxRenewalNo.Text)
                                         enteredLowPrice = Convert.ToDecimal(textBoxLowPrice.Text)
@@ -5252,7 +5250,7 @@ Namespace Tables
                             If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
                                 'Dim cPer As Decimal = Convert.ToDecimal(textBoxLimitPer.Text)
                                 'If cPer > 0 Then
-                                If textBoxRenewalNo IsNot Nothing And Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) Then
+                                If textBoxRenewalNo IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) Then
                                     If Convert.ToDecimal(textBoxRenewalNo.Text) > 0 Then
                                         countLimitPer = countLimitPer + 1
                                     End If
@@ -5264,7 +5262,7 @@ Namespace Tables
                         If lblLimitPer IsNot Nothing Then
                             If Not String.IsNullOrWhiteSpace(lblLimitPer.Text) Then
                                 'Dim cPer As Decimal = Convert.ToDecimal(lblLimitPer.Text)
-                                If lblRenewalNo IsNot Nothing And Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) Then
+                                If lblRenewalNo IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) Then
                                     If Convert.ToDecimal(lblRenewalNo.Text) > 0 Then
                                         countLimitPer = countLimitPer + 1
                                     End If
@@ -5276,7 +5274,7 @@ Namespace Tables
                             If Not String.IsNullOrWhiteSpace(textBoxLimit.Text) Then
                                 'Dim cAmt As Decimal = Convert.ToDecimal(textBoxLimit.Text)
                                 'If cAmt > 0 Then
-                                If textBoxRenewalNo IsNot Nothing And Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) Then
+                                If textBoxRenewalNo IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) Then
                                     If Convert.ToDecimal(textBoxRenewalNo.Text) > 0 Then
                                         countLimit = countLimit + 1
                                     End If
@@ -5289,7 +5287,7 @@ Namespace Tables
                             If Not String.IsNullOrWhiteSpace(lblLimit.Text) Then
                                 'Dim cAmt As Decimal = Convert.ToDecimal(lblLimit.Text)
                                 'If cAmt > 0 Then
-                                If lblRenewalNo IsNot Nothing And Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) Then
+                                If lblRenewalNo IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) Then
                                     If Convert.ToDecimal(lblRenewalNo.Text) > 0 Then
                                         countLimit = countLimit + 1
                                     End If
@@ -5302,7 +5300,7 @@ Namespace Tables
                 Next
             Next
 
-            If ((countLimitPer = 1 Or countLimitPer > 1) And (countLimit = 1 Or countLimit > 1)) Then
+            If ((countLimitPer = 1 OrElse countLimitPer > 1) AndAlso (countLimit = 1 OrElse countLimit > 1)) Then
                 State.IsRateLimitAndPercentBothPresent = True
             Else
                 State.IsRateLimitAndPercentBothPresent = False
@@ -5329,7 +5327,7 @@ Namespace Tables
                 Dim textBoxLimit As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
                 Dim textBoxRenewalNo As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moRenewal_NumberText"), TextBox)
 
-                If textBoxRenewalNo IsNot Nothing And textBoxLimit IsNot Nothing And textBoxLimitPer IsNot Nothing Then
+                If textBoxRenewalNo IsNot Nothing AndAlso textBoxLimit IsNot Nothing AndAlso textBoxLimitPer IsNot Nothing Then
                     If Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) Then
                         If Convert.ToDecimal(textBoxRenewalNo.Text) = 0 Then
                             textBoxLimit.Text = String.Empty

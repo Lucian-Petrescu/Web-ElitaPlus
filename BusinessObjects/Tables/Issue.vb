@@ -107,7 +107,7 @@ Public Class Issue
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(IssueDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -118,7 +118,7 @@ Public Class Issue
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)>
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -127,14 +127,14 @@ Public Class Issue
                 Return CType(Row(IssueDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(IssueDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=2000)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -145,14 +145,14 @@ Public Class Issue
                 Return desc
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(IssueDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property IssueTypeId() As Guid
+    Public Property IssueTypeId As Guid
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_ISSUE_TYPE_ID) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class Issue
                 Return New Guid(CType(Row(IssueDAL.COL_NAME_ISSUE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(IssueDAL.COL_NAME_ISSUE_TYPE_ID, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class Issue
 
 
     <ValueMandatory("")>
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class Issue
                 Return New DateType(DateHelper.GetDateValue(Row(IssueDAL.COL_NAME_EFFECTIVE).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(IssueDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class Issue
 
 
     <ValueMandatory("")>
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -195,12 +195,12 @@ Public Class Issue
                 Return New DateType(DateHelper.GetDateValue(Row(IssueDAL.COL_NAME_EXPIRATION).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(IssueDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
-    Public Property IssueProcessor() As String
+    Public Property IssueProcessor As String
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_ISSUE_PROCESSOR) Is DBNull.Value Then
@@ -209,13 +209,13 @@ Public Class Issue
                 Return CType(Row(IssueDAL.COL_NAME_ISSUE_PROCESSOR), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(IssueDAL.COL_NAME_ISSUE_PROCESSOR, Value)
         End Set
     End Property
 
-    Public Property DeniedReason() As String
+    Public Property DeniedReason As String
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_DENIED_REASON) Is DBNull.Value Then
@@ -224,12 +224,12 @@ Public Class Issue
                 Return CType(Row(IssueDAL.COL_NAME_DENIED_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(IssueDAL.COL_NAME_DENIED_REASON, Value)
         End Set
     End Property
-    Public Property SPClaimType() As String
+    Public Property SPClaimType As String
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_SP_CLAIM_TYPE) Is DBNull.Value Then
@@ -238,13 +238,13 @@ Public Class Issue
                 Return CType(Row(IssueDAL.COL_NAME_SP_CLAIM_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(IssueDAL.COL_NAME_SP_CLAIM_TYPE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=500)>
-    Public Property SPClaimValue() As String
+    Public Property SPClaimValue As String
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_SP_CLAIM_VALUE) Is DBNull.Value Then
@@ -253,14 +253,14 @@ Public Class Issue
                 Return CType(Row(IssueDAL.COL_NAME_SP_CLAIM_VALUE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(IssueDAL.COL_NAME_SP_CLAIM_VALUE, Value)
         End Set
     End Property
     '''TODO: Add RegEx Validations
     <ValidStringLength("", Max:=2000)>
-    Public Property PreConditions() As String
+    Public Property PreConditions As String
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_PRE_CONDITIONS) Is DBNull.Value Then
@@ -269,7 +269,7 @@ Public Class Issue
                 Return CType(Row(IssueDAL.COL_NAME_PRE_CONDITIONS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(IssueDAL.COL_NAME_PRE_CONDITIONS, Value)
         End Set
@@ -291,16 +291,16 @@ Public Class Issue
     End Property
 
 
-    Public Property ActiveOn() As DateType
+    Public Property ActiveOn As DateType
         Get
             Return _ActiveOn
         End Get
-        Set(ByVal Value As DateType)
+        Set
             _ActiveOn = Value
         End Set
     End Property
 
-    Public ReadOnly Property MyDataset() As DataSet
+    Public ReadOnly Property MyDataset As DataSet
         Get
             Return Dataset
         End Get
@@ -587,13 +587,13 @@ Public Class Issue
 #Region "Children Related"
 
     '' ---
-    Public ReadOnly Property IssueNotesChildren() As IssueNotesChildrenList
+    Public ReadOnly Property IssueNotesChildren As IssueNotesChildrenList
         Get
             Return New IssueNotesChildrenList(Me)
         End Get
     End Property
 
-    Public ReadOnly Property IssueQuestionsChildren() As IssueQuestionsChildrenList
+    Public ReadOnly Property IssueQuestionsChildren As IssueQuestionsChildrenList
         Get
             Return New IssueQuestionsChildrenList(Me)
         End Get
@@ -604,7 +604,7 @@ Public Class Issue
         End Get
     End Property
 
-    Public ReadOnly Property IssueRulesChildren() As IssueRulesChildrenList
+    Public ReadOnly Property IssueRulesChildren As IssueRulesChildrenList
         Get
             Return New IssueRulesChildrenList(Me)
         End Get
@@ -684,7 +684,7 @@ Public Class Issue
 
     '' -----------------
 
-    Public ReadOnly Property CompanyWorkQueueIssueChildren() As CompanyWorkQueueIssue.CompanyWorkqueueIssueList
+    Public ReadOnly Property CompanyWorkQueueIssueChildren As CompanyWorkQueueIssue.CompanyWorkqueueIssueList
         Get
             Return New CompanyWorkQueueIssue.CompanyWorkqueueIssueList(Me)
         End Get
@@ -817,7 +817,7 @@ Public Class Issue
 #Region "Custom Validations"
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get

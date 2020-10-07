@@ -203,7 +203,7 @@ Partial Class CommentListForm
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Item.Cells(GRID_COL_COMMENT_ID).Text = New Guid(CType(dvRow(Comment.CommentSearchDV.COL_COMMENT_ID), Byte())).ToString
                 e.Item.Cells(GRID_COL_ADDED_BY).Text = dvRow(Comment.CommentSearchDV.COL_ADDED_BY).ToString
                 e.Item.Cells(GRID_COL_CALLER_NAME).Text = dvRow(Comment.CommentSearchDV.COL_CALLER_NAME).ToString

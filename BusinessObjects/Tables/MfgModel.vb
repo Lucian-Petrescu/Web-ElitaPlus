@@ -84,7 +84,7 @@ Public Class MfgModel
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(MfgModelDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -95,7 +95,7 @@ Public Class MfgModel
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(MfgModelDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -104,7 +104,7 @@ Public Class MfgModel
                 Return New Guid(CType(row(MfgModelDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(MfgModelDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -112,7 +112,7 @@ Public Class MfgModel
 
 
     <ValueMandatory("")> _
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If row(MfgModelDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -121,7 +121,7 @@ Public Class MfgModel
                 Return New Guid(CType(row(MfgModelDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(MfgModelDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
@@ -129,7 +129,7 @@ Public Class MfgModel
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=30)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(MfgModelDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -138,7 +138,7 @@ Public Class MfgModel
                 Return CType(row(MfgModelDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(MfgModelDAL.COL_NAME_DESCRIPTION, Value)
         End Set

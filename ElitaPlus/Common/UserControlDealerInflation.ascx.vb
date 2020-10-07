@@ -250,7 +250,7 @@ Partial Class UserControlDealerInflation
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim strID As String
 
-            If dvRow IsNot Nothing And Not TheState.bnoRow Then
+            If dvRow IsNot Nothing AndAlso Not TheState.bnoRow Then
                 strID = ThePage.GetGuidStringFromByteArray(CType(dvRow(DealerInflation.DealerInflationDV.COL_dealer_inflation_id), Byte()))
 
                 If (TheState.IsEditMode = True AndAlso TheState.DefaultDealerInflationID.ToString.Equals(strID)) Then

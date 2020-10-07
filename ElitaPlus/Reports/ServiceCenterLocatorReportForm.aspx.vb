@@ -240,7 +240,7 @@ Namespace Reports
                 dpSvcNetwork.SelectedIndex = -1
 
                 FromMultipleDrop.NothingSelected = True
-                If cboCountry.Visible = True And cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
+                If cboCountry.Visible = True AndAlso cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
                     selectedCountryId = GetSelectedItem(cboCountry)
                     FromMultipleDrop.BindData(LookupListNew.GetServiceCenterLookupList(selectedCountryId))
                 Else
@@ -251,7 +251,7 @@ Namespace Reports
                 rSvcNetwork.Checked = False
 
                 FromMultipleDrop.NothingSelected = True
-                If cboCountry.Visible = True And cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
+                If cboCountry.Visible = True AndAlso cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
                     selectedCountryId = GetSelectedItem(cboCountry)
                     FromMultipleDrop.BindData(ServiceCenter.GetServiceCenterbyServiceNetwork(selectednetworkId, selectedCountryId))
                 Else
@@ -278,7 +278,7 @@ Namespace Reports
                 dpSvcNetwork.SelectedIndex = -1
 
                 ToMultipleDrop.NothingSelected = True
-                If cboCountry.Visible = True And cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
+                If cboCountry.Visible = True AndAlso cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
                     selectedCountryId = GetSelectedItem(cboCountry)
                     ToMultipleDrop.BindData(LookupListNew.GetServiceCenterLookupList(selectedCountryId))
                 Else
@@ -289,7 +289,7 @@ Namespace Reports
                 rSvcNetwork.Checked = False
 
                 ToMultipleDrop.NothingSelected = True
-                If cboCountry.Visible = True And cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
+                If cboCountry.Visible = True AndAlso cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
                     selectedCountryId = GetSelectedItem(cboCountry)
                     ToMultipleDrop.BindData(ServiceCenter.GetServiceCenterbyServiceNetwork(selectednetworkId, selectedCountryId))
                 Else
@@ -323,7 +323,7 @@ Namespace Reports
         End Sub
         Private Sub PopulateServiceGroup()
 
-            If cboCountry.Visible = True And cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
+            If cboCountry.Visible = True AndAlso cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
                 selectedCountryId = GetSelectedItem(cboCountry)
                 ' Me.BindListControlToDataView(moServiceGroupDrop,
                 'LookupListNew.GetServiceGroupLookupList(selectedCountryId)) 'ServiceGroupByCountry 
@@ -358,7 +358,7 @@ Namespace Reports
         'End Sub
 
         Private Sub PopulatePriceList()
-            If cboCountry.Visible = True And cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
+            If cboCountry.Visible = True AndAlso cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
                 selectedCountryId = GetSelectedItem(cboCountry)
                 'Me.BindListControlToDataView(moPriceListDrop,
                 ' LookupListNew.GetPriceListLookupList(selectedCountryId)) 'PriceListByCountry
@@ -387,7 +387,7 @@ Namespace Reports
             Dim methodLkl As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("METHR", Thread.CurrentPrincipal.GetLanguageCode())
 
             Dim filteredCountryList As DataElements.ListItem() = (From x In methodLkl
-                                                                  Where x.Code = "C" Or x.Code = "H" Or x.Code = "S" Or x.Code = "P" Or x.Code = "R"
+                                                                  Where x.Code = "C" OrElse x.Code = "H" OrElse x.Code = "S" OrElse x.Code = "P" OrElse x.Code = "R"
                                                                   Select x).ToArray()
 
             moMethodofRepairDrop.Populate(filteredCountryList, New PopulateOptions() With

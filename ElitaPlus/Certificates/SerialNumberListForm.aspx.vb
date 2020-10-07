@@ -207,7 +207,7 @@ Namespace Certificates
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
             Try
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Item.Cells(GRID_COL_CERTIFICATE_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(Certificate.SerialNumberSearchDV.COL_CERTIFICATE_ID), Byte()))
                     e.Item.Cells(GRID_COL_SERIAL_NUMBER_IDX).Text = dvRow(Certificate.SerialNumberSearchDV.COL_SERIAL_NUMBER).ToString
                     e.Item.Cells(GRID_COL_CERTIFICATE_IDX).Text = dvRow(Certificate.SerialNumberSearchDV.COL_CERTIFICATE_NUMBER).ToString

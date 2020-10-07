@@ -3,7 +3,7 @@ Imports Assurant.ElitaPlus.Common
 
 
 
-<Serializable()> Public NotInheritable Class BOValidationException
+<Serializable> Public NotInheritable Class BOValidationException
     Inherits ElitaPlusException
 
     Private errorList() As ValidationError
@@ -58,18 +58,18 @@ Imports Assurant.ElitaPlus.Common
 
 
 
-    Public ReadOnly Property BusinessObjectName() As String
+    Public ReadOnly Property BusinessObjectName As String
         Get
             Return boName
         End Get
     End Property
 
 
-    Public Property UniqueId() As String
+    Public Property UniqueId As String
         Get
             Return sUniqueId
         End Get
-        Set(ByVal Value As String)
+        Set
             sUniqueId = Value
         End Set
     End Property

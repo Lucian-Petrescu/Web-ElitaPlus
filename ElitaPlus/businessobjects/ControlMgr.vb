@@ -218,7 +218,7 @@ Public Class ControlMgr
     End Sub
 
     Public Overloads Shared Sub DisableAllGridControlsIfNotEditAuth(oPage As ElitaPlusPage, grid As GridView, disable As Boolean)
-        If oPage.CanUpdateForm = False Or disable = True Then
+        If oPage.CanUpdateForm = False OrElse disable = True Then
             EnableAllGridControls(grid, False)
         End If
 

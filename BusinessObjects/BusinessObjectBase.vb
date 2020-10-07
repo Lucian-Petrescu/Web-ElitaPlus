@@ -95,11 +95,11 @@ Public MustInherit Class BusinessObjectBase
 
 #Region "Protected Methods"
 
-    Friend Property Row() As DataRow
+    Friend Property Row As DataRow
         Get
             Return _row
         End Get
-        Set(ByVal Value As DataRow)
+        Set
             _row = Value
             'If Not _row Is Nothing Then
             '    AddSystemColumns()
@@ -107,11 +107,11 @@ Public MustInherit Class BusinessObjectBase
         End Set
     End Property
 
-    Friend Property Dataset() As DataSet
+    Friend Property Dataset As DataSet
         Get
             Return _ds
         End Get
-        Set(ByVal Value As DataSet)
+        Set
             _ds = Value
         End Set
     End Property
@@ -563,16 +563,16 @@ Public MustInherit Class BusinessObjectBase
 
 #Region "General Properties"
 
-    Public Property UniqueId() As String Implements IBusinessObjectBase.UniqueId
+    Public Property UniqueId As String Implements IBusinessObjectBase.UniqueId
         Get
             Return _uniqueId
         End Get
-        Set(ByVal Value As String)
+        Set
             _uniqueId = Value
         End Set
     End Property
 
-    Public Overridable ReadOnly Property IsNew() As Boolean
+    Public Overridable ReadOnly Property IsNew As Boolean
         Get
             'Me.CheckDeleted()
             Return (Row.RowState = DataRowState.Added)
@@ -587,7 +587,7 @@ Public MustInherit Class BusinessObjectBase
     End Property
 
 
-    Public Overridable ReadOnly Property IsDirty() As Boolean
+    Public Overridable ReadOnly Property IsDirty As Boolean
         Get
             'Me.CheckDeleted()
             'Return (Row.RowState = DataRowState.Modified) Or (Row.RowState = DataRowState.Added) Or (Row.RowState = DataRowState.Deleted)
@@ -621,7 +621,7 @@ Public MustInherit Class BusinessObjectBase
         End Get
     End Property
 
-    Public ReadOnly Property DirtyColumns() As Hashtable
+    Public ReadOnly Property DirtyColumns As Hashtable
         Get
             Dim ht As New Hashtable
             Dim col As DataColumn
@@ -639,7 +639,7 @@ Public MustInherit Class BusinessObjectBase
         End Get
     End Property
 
-    Public Overridable ReadOnly Property IsChildrenDirty() As Boolean
+    Public Overridable ReadOnly Property IsChildrenDirty As Boolean
         Get
             Dim chidrenCollections As ArrayList = GetChildrenCollections
             Dim coll As BusinessObjectListBase
@@ -650,13 +650,13 @@ Public MustInherit Class BusinessObjectBase
         End Get
     End Property
 
-    Public Overridable ReadOnly Property IsFamilyDirty() As Boolean
+    Public Overridable ReadOnly Property IsFamilyDirty As Boolean
         Get
             Return Dataset.HasChanges()
         End Get
     End Property
 
-    Public Overridable ReadOnly Property IsDeleted() As Boolean
+    Public Overridable ReadOnly Property IsDeleted As Boolean
         Get
             'Return Me._isDeleted
             Return Row.RowState = DataRowState.Deleted OrElse Row.RowState = DataRowState.Detached
@@ -670,7 +670,7 @@ Public MustInherit Class BusinessObjectBase
         End Get
     End Property
 
-    Public Overridable ReadOnly Property IsValid() As Boolean
+    Public Overridable ReadOnly Property IsValid As Boolean
         Get
             Dim errors() As ValidationError = FindValidationErrors()
             If Not errors Is Nothing AndAlso errors.Length > 0 Then
@@ -681,14 +681,14 @@ Public MustInherit Class BusinessObjectBase
         End Get
     End Property
 
-    Public ReadOnly Property ValidationErrors() As ValidationError()
+    Public ReadOnly Property ValidationErrors As ValidationError()
         Get
             Return FindValidationErrors
         End Get
     End Property
 
     'returns true if just one col has a value different from what was fetched from database
-    Public ReadOnly Property AnyColumnHasChanged() As Boolean
+    Public ReadOnly Property AnyColumnHasChanged As Boolean
         Get
             Dim col As DataColumn
 
@@ -706,13 +706,13 @@ Public MustInherit Class BusinessObjectBase
         End Get
     End Property
 
-    Public ReadOnly Property IsSaveNew() As Boolean
+    Public ReadOnly Property IsSaveNew As Boolean
         Get
             Return CreatedById Is Nothing
         End Get
     End Property
 
-    Public ReadOnly Property IsBeingEdited() As Boolean
+    Public ReadOnly Property IsBeingEdited As Boolean
         Get
             Return Row.HasVersion(DataRowVersion.Proposed)
         End Get
@@ -723,7 +723,7 @@ Public MustInherit Class BusinessObjectBase
 
 #Region "Audit Properties"
 
-    Public ReadOnly Property ModifiedDate() As DateType
+    Public ReadOnly Property ModifiedDate As DateType
         Get
             If Row(DALBase.COL_NAME_MODIFIED_DATE) Is DBNull.Value Then Return Nothing
             Return New DateType(CType(Row(DALBase.COL_NAME_MODIFIED_DATE), Date))
@@ -731,7 +731,7 @@ Public MustInherit Class BusinessObjectBase
     End Property
 
     '<ValueMandatory("")> _
-    Public ReadOnly Property ModifiedById() As String
+    Public ReadOnly Property ModifiedById As String
         Get
             If Row(DALBase.COL_NAME_MODIFIED_BY) Is DBNull.Value Then Return Nothing
             Return CType(Row(DALBase.COL_NAME_MODIFIED_BY), String)
@@ -739,14 +739,14 @@ Public MustInherit Class BusinessObjectBase
     End Property
 
 
-    Public ReadOnly Property CreatedDate() As DateType
+    Public ReadOnly Property CreatedDate As DateType
         Get
             If Row(DALBase.COL_NAME_CREATED_DATE) Is DBNull.Value Then Return Nothing
             Return New DateType(CType(Row(DALBase.COL_NAME_CREATED_DATE), Date))
         End Get
     End Property
 
-    Public ReadOnly Property CreatedDateTime() As DateTimeType
+    Public ReadOnly Property CreatedDateTime As DateTimeType
         Get
             If Row(DALBase.COL_NAME_CREATED_DATE) Is DBNull.Value Then Return Nothing
             Return CType(Row(DALBase.COL_NAME_CREATED_DATE), DateTime)
@@ -755,7 +755,7 @@ Public MustInherit Class BusinessObjectBase
 
 
     '<ValueMandatory("")> _
-    Public ReadOnly Property CreatedById() As String
+    Public ReadOnly Property CreatedById As String
         Get
             If Row(DALBase.COL_NAME_CREATED_BY) Is DBNull.Value Then Return Nothing
             Return CType(Row(DALBase.COL_NAME_CREATED_BY), String)

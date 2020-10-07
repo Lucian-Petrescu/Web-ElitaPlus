@@ -90,7 +90,7 @@ Public Class AcctFileType
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AcctFileTypeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class AcctFileType
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=400)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(AcctFileTypeDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class AcctFileType
                 Return CType(row(AcctFileTypeDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctFileTypeDAL.COL_NAME_CODE, Value)
         End Set

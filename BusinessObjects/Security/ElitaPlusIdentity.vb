@@ -2,7 +2,7 @@ Imports System.Collections.Generic
 Imports System.Collections.ObjectModel
 Imports Assurant.ElitaPlus.Security
 
-<Serializable()>
+<Serializable>
 Public Class ElitaPlusIdentity
     Inherits ElitaPlusParameters
     Implements IElitaClaimsIdentity
@@ -149,13 +149,13 @@ Public Class ElitaPlusIdentity
     End Function
 
     <Obsolete("Create/Use one of extension method from Assurant.Elita.Security.IdentityExtensions")>
-    Public ReadOnly Property ActiveUser() As User
+    Public ReadOnly Property ActiveUser As User
         Get
             Return _user
         End Get
     End Property
 
-    Public Overrides ReadOnly Property Name() As String
+    Public Overrides ReadOnly Property Name As String
         Get
             '  Dim sUserName As String = "DB Connection Problem Or the User is Invalid "
             Dim sUserName As String = Nothing
@@ -187,7 +187,7 @@ Public Class ElitaPlusIdentity
 
 #Region "Static Methods"
 
-    Public Shared ReadOnly Property Current() As ElitaPlusIdentity
+    Public Shared ReadOnly Property Current As ElitaPlusIdentity
         Get
             Return CType(ElitaPlusPrincipal.Current.Identity, ElitaPlusIdentity)
         End Get

@@ -114,7 +114,7 @@ Namespace Tables
                     SortDirection = State.SortExpression
                     PopulateDropdown()
                     If State.IsGridVisible Then
-                        If Not (State.selectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.selectedPageSize = Grid.PageSize) Then
+                        If Not (State.selectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) OrElse Not (State.selectedPageSize = Grid.PageSize) Then
                             Grid.PageSize = State.selectedPageSize
                         End If
                         cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
@@ -261,8 +261,8 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
-                If dvRow IsNot Nothing And Not State.bnoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         btnEditItem = CType(e.Row.Cells(GRID_COL_DEALER_CODE_IDX).FindControl("SelectAction"), LinkButton)
                         btnEditItem.Text = dvRow(Dealer.DealerSearchDV.COL_DEALER).ToString
                         e.Row.Cells(GRID_COL_COMPANY_CODE_IDX).Text = dvRow(Dealer.DealerSearchDV.COL_COMPANY).ToString

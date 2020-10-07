@@ -94,7 +94,7 @@
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DealerReinsReconWrkDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -105,7 +105,7 @@
     End Property
 
     <ValueMandatory("")>
-    Public Property DealerfileProcessedId() As Guid
+    Public Property DealerfileProcessedId As Guid
         Get
             CheckDeleted()
             If Row(DealerReinsReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID) Is DBNull.Value Then
@@ -114,7 +114,7 @@
                 Return New Guid(CType(Row(DealerReinsReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerReinsReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID, Value)
         End Set
@@ -122,7 +122,7 @@
 
 
     <ValidStringLength("", Max:=1)>
-    Public Property ReinsuranceLoaded() As String
+    Public Property ReinsuranceLoaded As String
         Get
             CheckDeleted()
             If Row(DealerReinsReconWrkDAL.COL_NAME_REINSURANCE_LOADED) Is DBNull.Value Then
@@ -131,7 +131,7 @@
                 Return CType(Row(DealerReinsReconWrkDAL.COL_NAME_REINSURANCE_LOADED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReinsReconWrkDAL.COL_NAME_REINSURANCE_LOADED, Value)
         End Set
@@ -139,7 +139,7 @@
 
 
     <ValidStringLength("", Max:=4)>
-    Public Property RecordType() As String
+    Public Property RecordType As String
         Get
             CheckDeleted()
             If Row(DealerReinsReconWrkDAL.COL_NAME_RECORD_TYPE) Is DBNull.Value Then
@@ -148,7 +148,7 @@
                 Return CType(Row(DealerReinsReconWrkDAL.COL_NAME_RECORD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReinsReconWrkDAL.COL_NAME_RECORD_TYPE, Value)
         End Set
@@ -156,7 +156,7 @@
 
 
     <ValidStringLength("", Max:=20)>
-    Public Property Certificate() As String
+    Public Property Certificate As String
         Get
             CheckDeleted()
             If Row(DealerReinsReconWrkDAL.COL_NAME_CERTIFICATE) Is DBNull.Value Then
@@ -165,7 +165,7 @@
                 Return CType(Row(DealerReinsReconWrkDAL.COL_NAME_CERTIFICATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReinsReconWrkDAL.COL_NAME_CERTIFICATE, Value)
         End Set
@@ -173,7 +173,7 @@
 
 
     <ValidStringLength("", Max:=100)>
-    Public Property RejectReason() As String
+    Public Property RejectReason As String
         Get
             CheckDeleted()
             If Row(DealerReinsReconWrkDAL.COL_NAME_REJECT_REASON) Is DBNull.Value Then
@@ -182,7 +182,7 @@
                 Return CType(Row(DealerReinsReconWrkDAL.COL_NAME_REJECT_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReinsReconWrkDAL.COL_NAME_REJECT_REASON, Value)
         End Set
@@ -190,7 +190,7 @@
 
 
     <ValidStringLength("", Max:=3)>
-    Public Property RejectCode() As String
+    Public Property RejectCode As String
         Get
             CheckDeleted()
             If Row(DealerReinsReconWrkDAL.COL_NAME_REJECT_CODE) Is DBNull.Value Then
@@ -199,7 +199,7 @@
                 Return CType(Row(DealerReinsReconWrkDAL.COL_NAME_REJECT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReinsReconWrkDAL.COL_NAME_REJECT_CODE, Value)
         End Set
@@ -207,7 +207,7 @@
 
 
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(DealerReinsReconWrkDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -216,7 +216,7 @@
                 Return New Guid(CType(Row(DealerReinsReconWrkDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerReinsReconWrkDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -224,7 +224,7 @@
 
 
     <ValidStringLength("", Max:=5)>
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             CheckDeleted()
             If Row(DealerReinsReconWrkDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
@@ -233,7 +233,7 @@
                 Return CType(Row(DealerReinsReconWrkDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReinsReconWrkDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
@@ -241,7 +241,7 @@
 
 
     <ValidStringLength("", Max:=60)>
-    Public Property RiskTypeEnglish() As String
+    Public Property RiskTypeEnglish As String
         Get
             CheckDeleted()
             If Row(DealerReinsReconWrkDAL.COL_NAME_RISK_TYPE_ENGLISH) Is DBNull.Value Then
@@ -250,7 +250,7 @@
                 Return CType(Row(DealerReinsReconWrkDAL.COL_NAME_RISK_TYPE_ENGLISH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReinsReconWrkDAL.COL_NAME_RISK_TYPE_ENGLISH, Value)
         End Set
@@ -258,7 +258,7 @@
 
 
     <ValidStringLength("", Max:=20)>
-    Public Property CoverageTypeCode() As String
+    Public Property CoverageTypeCode As String
         Get
             CheckDeleted()
             If Row(DealerReinsReconWrkDAL.COL_NAME_COVERAGE_TYPE_CODE) Is DBNull.Value Then
@@ -267,7 +267,7 @@
                 Return CType(Row(DealerReinsReconWrkDAL.COL_NAME_COVERAGE_TYPE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReinsReconWrkDAL.COL_NAME_COVERAGE_TYPE_CODE, Value)
         End Set
@@ -275,7 +275,7 @@
 
 
     <ValidStringLength("", Max:=250)>
-    Public Property ReinsuranceRejectReason() As String
+    Public Property ReinsuranceRejectReason As String
         Get
             CheckDeleted()
             If Row(DealerReinsReconWrkDAL.COL_NAME_REINSURANCE_REJECT_REASON) Is DBNull.Value Then
@@ -284,7 +284,7 @@
                 Return CType(Row(DealerReinsReconWrkDAL.COL_NAME_REINSURANCE_REJECT_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReinsReconWrkDAL.COL_NAME_REINSURANCE_REJECT_REASON, Value)
         End Set
@@ -292,7 +292,7 @@
 
 
     <ValidStringLength("", Max:=3000)>
-    Public Property EntireRecord() As String
+    Public Property EntireRecord As String
         Get
             CheckDeleted()
             If Row(DealerReinsReconWrkDAL.COL_NAME_ENTIRE_RECORD) Is DBNull.Value Then
@@ -301,7 +301,7 @@
                 Return CType(Row(DealerReinsReconWrkDAL.COL_NAME_ENTIRE_RECORD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DealerReinsReconWrkDAL.COL_NAME_ENTIRE_RECORD, Value)
         End Set

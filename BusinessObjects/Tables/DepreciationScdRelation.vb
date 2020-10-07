@@ -95,7 +95,7 @@ Public Class DepreciationScdRelation
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DepreciationScdRelationDal.TableKeyName) Is DBNull.Value Then
                 Return Nothing
@@ -106,7 +106,7 @@ Public Class DepreciationScdRelation
     End Property
 
     <ValueMandatory(""), OverlapExists("")>
-    Public Property DepreciationScheduleId() As Guid
+    Public Property DepreciationScheduleId As Guid
         Get
             CheckDeleted()
             If Row(DepreciationScdRelationDal.ColNameDepreciationScheduleId) Is DBNull.Value Then
@@ -115,7 +115,7 @@ Public Class DepreciationScdRelation
                 Return New Guid(CType(Row(DepreciationScdRelationDal.ColNameDepreciationScheduleId), Byte()))
             End If
         End Get
-        Set(value As Guid)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdRelationDal.ColNameDepreciationScheduleId, value)
         End Set
@@ -123,7 +123,7 @@ Public Class DepreciationScdRelation
 
 
     <ValidStringLength("", Max:=120)>
-    Public Property DepreciationScheduleCode() As String
+    Public Property DepreciationScheduleCode As String
         Get
             CheckDeleted()
             If Row(DepreciationScdRelationDal.ColNameDepreciationScheduleCode) Is DBNull.Value Then
@@ -132,13 +132,13 @@ Public Class DepreciationScdRelation
                 Return CType(Row(DepreciationScdRelationDal.ColNameDepreciationScheduleCode), String)
             End If
         End Get
-        Set(value As String)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdRelationDal.ColNameDepreciationScheduleCode, value)
         End Set
     End Property
     <ValueMandatory(""), ValidStringLength("", Max:=120)>
-    Public Property TableReference() As String
+    Public Property TableReference As String
         Get
             CheckDeleted()
             If Row(DepreciationScdRelationDal.ColNameTableReference) Is DBNull.Value Then
@@ -147,7 +147,7 @@ Public Class DepreciationScdRelation
                 Return CType(Row(DepreciationScdRelationDal.ColNameTableReference), String)
             End If
         End Get
-        Set(value As String)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdRelationDal.ColNameTableReference, value)
         End Set
@@ -155,7 +155,7 @@ Public Class DepreciationScdRelation
 
 
     <ValueMandatory("")>
-    Public Property TableReferenceId() As Guid
+    Public Property TableReferenceId As Guid
         Get
             CheckDeleted()
             If Row(DepreciationScdRelationDal.ColNameTableReferenceId) Is DBNull.Value Then
@@ -164,7 +164,7 @@ Public Class DepreciationScdRelation
                 Return New Guid(CType(Row(DepreciationScdRelationDal.ColNameTableReferenceId), Byte()))
             End If
         End Get
-        Set(value As Guid)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdRelationDal.ColNameTableReferenceId, value)
         End Set
@@ -178,7 +178,7 @@ Public Class DepreciationScdRelation
         DateCompareValidatorAttribute("", Common.ErrorCodes.GUI_INVALID_EFFECTIVE_DATE_SMALLER_EQUAL_THAN_SYSDATE,
             "", DateCompareValidatorAttribute.CompareType.GreaterThan, CheckWhenNew:=True, CompareToType:=DateCompareValidatorAttribute.CompareToPropertyType.Nothing, DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.Today)
            >
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(DepreciationScdRelationDal.ColNameEffectiveDate) Is DBNull.Value Then
@@ -187,7 +187,7 @@ Public Class DepreciationScdRelation
                 Return New DateType(CType(Row(DepreciationScdRelationDal.ColNameEffectiveDate), Date))
             End If
         End Get
-        Set(value As DateType)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdRelationDal.ColNameEffectiveDate, value)
         End Set
@@ -199,7 +199,7 @@ Public Class DepreciationScdRelation
             DefaultCompareValue:=DateCompareValidatorAttribute.DefaultType.MaxDate),
             DateCompareValidatorAttribute("", Common.ErrorCodes.GUI_INVALID_EXPIRATION_DATE_SMALLER_THAN_SYSDATE,
             "", DateCompareValidatorAttribute.CompareType.GreaterThanOrEqual, CompareToType:=DateCompareValidatorAttribute.CompareToPropertyType.Nothing, DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.Today)>
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(DepreciationScdRelationDal.ColNameExpirationDate) Is DBNull.Value Then
@@ -208,7 +208,7 @@ Public Class DepreciationScdRelation
                 Return New DateType(CType(Row(DepreciationScdRelationDal.ColNameExpirationDate), Date))
             End If
         End Get
-        Set(value As DateType)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdRelationDal.ColNameExpirationDate, value)
         End Set
@@ -216,7 +216,7 @@ Public Class DepreciationScdRelation
 
 
     <ValidStringLength("", Max:=120), ValueMandatory("")>
-    Public Property DepreciationScheduleUsageXcd() As String
+    Public Property DepreciationScheduleUsageXcd As String
         Get
             CheckDeleted()
             If Row(DepreciationScdRelationDal.ColNameDepreciationSchUsageXcd) Is DBNull.Value Then
@@ -225,13 +225,13 @@ Public Class DepreciationScdRelation
                 Return CType(Row(DepreciationScdRelationDal.ColNameDepreciationSchUsageXcd), String)
             End If
         End Get
-        Set(value As String)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdRelationDal.ColNameDepreciationSchUsageXcd, value)
         End Set
     End Property
     <ValidStringLength("", Max:=120)>
-    Public Property DepreciationScheduleUsage() As String
+    Public Property DepreciationScheduleUsage As String
         Get
             CheckDeleted()
             If Row(DepreciationScdRelationDal.ColNameDepreciationSchUsage) Is DBNull.Value Then
@@ -240,7 +240,7 @@ Public Class DepreciationScdRelation
                 Return CType(Row(DepreciationScdRelationDal.ColNameDepreciationSchUsage), String)
             End If
         End Get
-        Set(value As String)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdRelationDal.ColNameDepreciationSchUsage, value)
         End Set

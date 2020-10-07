@@ -167,7 +167,7 @@ Public Class ElitaPlusSearchPage
 
                 i += 1
             Next
-        ElseIf (elemType = ListItemType.AlternatingItem Or elemType = ListItemType.Item Or elemType = ListItemType.SelectedItem) Then
+        ElseIf (elemType = ListItemType.AlternatingItem OrElse elemType = ListItemType.Item OrElse elemType = ListItemType.SelectedItem) Then
             If (IsNewUI) Then
                 e.Item.Attributes.Add("onmouseover", "this.className='over'")
                 e.Item.Attributes.Add("onmouseout", "this.className='out'")
@@ -1090,7 +1090,7 @@ Public Class ElitaPlusSearchPage
         ' get the new current page index
         Dim i As Integer
         For i = 1 To intNewPageCount
-            If intFirstRecordIndex >= (i - 1) * intNewPageSize + 1 And intFirstRecordIndex <= i * intNewPageSize Then
+            If intFirstRecordIndex >= (i - 1) * intNewPageSize + 1 AndAlso intFirstRecordIndex <= i * intNewPageSize Then
                 intNewCurrentPageIndex = i - 1
                 Exit For
             End If
@@ -1124,7 +1124,7 @@ Public Class ElitaPlusSearchPage
         ' get the new current page index
         Dim i As Integer
         For i = 1 To intNewPageCount
-            If intFirstRecordIndex >= (i - 1) * intNewPageSize + 1 And intFirstRecordIndex <= i * intNewPageSize Then
+            If intFirstRecordIndex >= (i - 1) * intNewPageSize + 1 AndAlso intFirstRecordIndex <= i * intNewPageSize Then
                 intNewCurrentPageIndex = i - 1
                 Exit For
             End If

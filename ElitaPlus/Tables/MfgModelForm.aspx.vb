@@ -469,7 +469,7 @@ Namespace Tables
                     itemType = ListItemType.AlternatingItem OrElse
                     itemType = ListItemType.SelectedItem) Then
 
-                    If (State.AddingNewRow Or State.IsEditMode) Then
+                    If (State.AddingNewRow OrElse State.IsEditMode) Then
                         CType(e.Item.Cells(DELETE_BUTTON_IDX).FindControl(DELETE_IN_GRID_CONTROL_NAME), ImageButton).Visible = False
                         CType(e.Item.Cells(MODIFY_BUTTON_IDX).FindControl(MODIFY_IN_GRID_CONTROL_NAME), ImageButton).Visible = False
                     End If

@@ -173,7 +173,7 @@ Partial Class InterfaceBaseForm
                 errorMsg = String.Empty
             End If
 
-            If ((TheState Is Nothing) Or (TheState.moParams Is Nothing)) Then
+            If ((TheState Is Nothing) OrElse (TheState.moParams Is Nothing)) Then
                 SetStateProperties()
             End If
 

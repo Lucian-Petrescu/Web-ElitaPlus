@@ -2,7 +2,7 @@ Imports System.Runtime.Serialization
 
 
 
-<Serializable()> Public NotInheritable Class DataNotFoundException
+<Serializable> Public NotInheritable Class DataNotFoundException
     Inherits ElitaPlusException
 
     Public Sub New()

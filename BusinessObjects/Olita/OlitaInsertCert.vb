@@ -282,7 +282,7 @@ Public Class OlitaInsertCert
 
 #Region "Properties"
 
-    Public ReadOnly Property MyController() As CertAddController
+    Public ReadOnly Property MyController As CertAddController
         Get
             If _certAddController Is Nothing Then
                 _certAddController = New CertAddController
@@ -292,7 +292,7 @@ Public Class OlitaInsertCert
        
     End Property
 
-    Public ReadOnly Property AdditionalCertNums() As List(Of String)
+    Public ReadOnly Property AdditionalCertNums As List(Of String)
         Get
             If _AdditionalCertNums Is Nothing Then
                 _AdditionalCertNums = New List(Of String)
@@ -301,11 +301,11 @@ Public Class OlitaInsertCert
         End Get
     End Property
 
-    Public Property AdditionalCertQuantity() As Integer
+    Public Property AdditionalCertQuantity As Integer
         Get
             Return _AdditionalCertQuantity
         End Get
-        Set(ByVal value As Integer)
+        Set
             _AdditionalCertQuantity = value
         End Set
     End Property

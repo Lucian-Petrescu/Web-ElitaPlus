@@ -179,7 +179,7 @@ Partial Class ProductPriceRangeByRepairMethod
             ' BindListControlToDataView(DropdownlistMethodOfRepair, LookupListNew.GetMethodOfRepairForRepairsLookupList(oLanguageId), , , True) 'METHR
             Dim methodOfRepairLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("METHR", Thread.CurrentPrincipal.GetLanguageCode())
             Dim filteredRecordList As ListItem() = (From x In methodOfRepairLkl
-                                                    Where x.Code = "C" Or x.Code = "H" Or x.Code = "S" Or x.Code = "P" Or x.Code = "R"
+                                                    Where x.Code = "C" OrElse x.Code = "H" OrElse x.Code = "S" OrElse x.Code = "P" OrElse x.Code = "R"
                                                     Select x).ToArray()
             DropdownlistMethodOfRepair.Populate(filteredRecordList, New PopulateOptions() With
                     {
@@ -354,7 +354,7 @@ Partial Class ProductPriceRangeByRepairMethod
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Item.Cells(GRID_COL_PG_DETAIL_ID).Text = New Guid(CType(dvRow(ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PROD_REPAIR_PRICE_ID), Byte())).ToString
                 e.Item.Cells(GRID_COL_METHOD_OF_REPAIR).Text = dvRow(ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_METHOD_OF_REPAIR_DESC).ToString
                 e.Item.Cells(GRID_COL_PRICE_RANGE_FROM).Text = GetAmountFormattedDoubleString(dvRow(ProdRepairPrice.ProdRepairPriceSearchDV.COL_NAME_PRICE_RANGE_FROM).ToString)

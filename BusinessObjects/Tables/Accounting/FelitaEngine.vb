@@ -1919,7 +1919,7 @@ Public Class FelitaEngine
 
 #Region "Public Properties"
 
-    Public Property AccountingEventId() As String
+    Public Property AccountingEventId As String
         Get
             If Row(DATA_COL_NAME_ACCOUNTING_EVENT_ID) Is DBNull.Value Then
                 Return Nothing
@@ -1927,14 +1927,14 @@ Public Class FelitaEngine
                 Return (CType(Row(DATA_COL_NAME_ACCOUNTING_EVENT_ID), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_ACCOUNTING_EVENT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property CompanyId() As String
+    Public Property CompanyId As String
         Get
             If Row(DATA_COL_NAME_COMPANY_ID) Is DBNull.Value Then
                 Return Nothing
@@ -1942,13 +1942,13 @@ Public Class FelitaEngine
                 Return (CType(Row(DATA_COL_NAME_COMPANY_ID), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
-    Public Property VendorFiles() As Boolean
+    Public Property VendorFiles As Boolean
         Get
             If Row(DATA_COL_NAME_VENDOR_FILES) Is DBNull.Value Then
                 Return Nothing
@@ -1956,7 +1956,7 @@ Public Class FelitaEngine
                 Return (CType(Row(DATA_COL_NAME_VENDOR_FILES), Boolean))
             End If
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_VENDOR_FILES, Value)
         End Set

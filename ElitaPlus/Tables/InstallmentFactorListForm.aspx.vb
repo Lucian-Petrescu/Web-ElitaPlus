@@ -239,7 +239,7 @@ Partial Class InstallmentFactorListForm
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
         Try
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                 PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_DEALER_IDX), dvRow(InstallmentFactor.InstallmentFactorSearchDV.COL_DEALER_NAME))
                 PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_START_DATE_IDX), dvRow(InstallmentFactor.InstallmentFactorSearchDV.COL_EFFECTIVE_DATE))

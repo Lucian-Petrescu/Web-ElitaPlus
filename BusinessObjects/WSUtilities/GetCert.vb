@@ -99,7 +99,7 @@ Public Class GetCert
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
@@ -107,13 +107,13 @@ Public Class GetCert
                 Return CType(Row(DATA_COL_NAME_DEALER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
-    Public Property CertificateNumber() As String
+    Public Property CertificateNumber As String
         Get
             If Row(DATA_COL_NAME_CERTIFICATE_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -121,14 +121,14 @@ Public Class GetCert
                 Return CType(Row(DATA_COL_NAME_CERTIFICATE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERTIFICATE_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ForCancellation() As String
+    Public Property ForCancellation As String
         Get
             If Row(DATA_COL_NAME_FOR_CANCELLATION) Is DBNull.Value Then
                 Return Nothing
@@ -136,7 +136,7 @@ Public Class GetCert
                 Return (CType(Row(DATA_COL_NAME_FOR_CANCELLATION), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_FOR_CANCELLATION, Value)
         End Set
@@ -171,7 +171,7 @@ Public Class GetCert
 
 #Region "Extended Properties"
 
-    Private ReadOnly Property DealerId() As Guid
+    Private ReadOnly Property DealerId As Guid
         Get
             If _dealerId.Equals(Guid.Empty) Then
 

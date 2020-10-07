@@ -344,9 +344,9 @@ Namespace Interfaces
                         'REQ-391 Input GVS Chile claims without certificate
                         If State.dvTransData(0).Item(.COL_SERVICE_TYPE) IsNot Nothing OrElse State.dvTransData(0).Item(.COL_SERVICE_TYPE).Equals(String.Empty) Then
                             If State.ErrorCode IsNot Nothing AndAlso (State.ErrorCode.ToUpper.Equals(MSG_CERT_NOT_FOUND) _
-                                   Or State.ErrorCode.ToUpper.Equals(MSG_NO_CERT_FOUND) _
-                                   Or State.ErrorCode.ToUpper.Equals(MSG_NO_AVAILABLE_CERTIFICATE) _
-                                   Or State.ErrorCode.ToUpper.Equals(MSG_INVALID_SERVICE_TYPE)) Then
+                                   OrElse State.ErrorCode.ToUpper.Equals(MSG_NO_CERT_FOUND) _
+                                   OrElse State.ErrorCode.ToUpper.Equals(MSG_NO_AVAILABLE_CERTIFICATE) _
+                                   OrElse State.ErrorCode.ToUpper.Equals(MSG_INVALID_SERVICE_TYPE)) Then
                                 cboServiceType.Visible = True
                                 TextboxServiceType.Visible = False
 
@@ -380,7 +380,7 @@ Namespace Interfaces
                         ControlMgr.SetEnableControl(Me, TextboxADDRESS2, False)
                         PopulateControlFromBOProperty(TextboxPOSTAL_CODE, State.dvTransData(0).Item(.COL_POSTAL_CODE))
                         ControlMgr.SetEnableControl(Me, TextboxPOSTAL_CODE, False)
-                        ControlMgr.SetEnableControl(Me, moComunaDropdown, State.IsComunaEnabled And State.IsEditMode)
+                        ControlMgr.SetEnableControl(Me, moComunaDropdown, State.IsComunaEnabled AndAlso State.IsEditMode)
                         If State.IsComunaEnabled Then State.OldComunaValue = State.dvTransData(0).Item(.COL_POSTAL_CODE).ToString
                         PopulateControlFromBOProperty(TextboxSTATE, State.dvTransData(0).Item(.COL_STATE))
                         ControlMgr.SetEnableControl(Me, TextboxSTATE, False)
@@ -452,24 +452,19 @@ Namespace Interfaces
         Private Sub SetButtonsState()
             ControlMgr.SetEnableControl(Me, btnBack, True)
 
-            If (State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM Or _
-                State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_CANCEL_SVC_INTEGRATION Or _
-                State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_TRANSACTION_UPDATE Or _
-                State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM) AndAlso _
-                Not (State.hide = ALREADY_RESEND_OR_HIDE Or State.resend = ALREADY_RESEND_OR_HIDE) AndAlso _
+            If (State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM OrElse State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_CANCEL_SVC_INTEGRATION OrElse State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_TRANSACTION_UPDATE OrElse State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM) AndAlso _
+                Not (State.hide = ALREADY_RESEND_OR_HIDE OrElse State.resend = ALREADY_RESEND_OR_HIDE) AndAlso _
                 State.reprocess = "Y" Then
                 btnResend_WRITE.Text = TranslationBase.TranslateLabelOrMessage("REPROCESS", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 ControlMgr.SetEnableControl(Me, btnResend_WRITE, True)
-            ElseIf (State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_NEW_CLAIM Or _
-                State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_CLAIM Or _
-                State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_SVC) AndAlso _
-                Not (State.hide = ALREADY_RESEND_OR_HIDE Or State.resend = ALREADY_RESEND_OR_HIDE) Then
+            ElseIf (State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_NEW_CLAIM OrElse State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_CLAIM OrElse State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_SVC) AndAlso _
+                Not (State.hide = ALREADY_RESEND_OR_HIDE OrElse State.resend = ALREADY_RESEND_OR_HIDE) Then
                 ControlMgr.SetEnableControl(Me, btnResend_WRITE, True)
             Else
                 ControlMgr.SetVisibleControl(Me, btnResend_WRITE, False)
             End If
 
-            If Not (State.hide = ALREADY_RESEND_OR_HIDE Or State.resend = ALREADY_RESEND_OR_HIDE) Then
+            If Not (State.hide = ALREADY_RESEND_OR_HIDE OrElse State.resend = ALREADY_RESEND_OR_HIDE) Then
                 ControlMgr.SetEnableControl(Me, btnHide_Write, True)
             Else
                 ControlMgr.SetVisibleControl(Me, btnHide_Write, False)
@@ -612,10 +607,7 @@ Namespace Interfaces
         Private Sub btnResend_Click(sender As System.Object, e As System.EventArgs) Handles btnResend_WRITE.Click
             Try
                 'Resend confirmation
-                If (State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM Or _
-                    State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_CANCEL_SVC_INTEGRATION Or _
-                    State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_TRANSACTION_UPDATE Or _
-                    State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM) Then
+                If (State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM OrElse State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_CANCEL_SVC_INTEGRATION OrElse State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_TRANSACTION_UPDATE OrElse State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM) Then
                     DisplayMessage(Message.MSG_PROMPT_FOR_PROCESS_RECORDS, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 Else
                     DisplayMessage(Message.MSG_PROMPT_FOR_RESEND_TRANSACTION, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
@@ -682,7 +674,7 @@ Namespace Interfaces
         Protected Sub CheckIfComingFromSaveConfirm()
             Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
             Try
-                If confResponse IsNot Nothing AndAlso (confResponse = MSG_VALUE_YES Or confResponse = CONFIRM_MESSAGE_OK) Then
+                If confResponse IsNot Nothing AndAlso (confResponse = MSG_VALUE_YES OrElse confResponse = CONFIRM_MESSAGE_OK) Then
                     Select Case State.ActionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Accept
                             'Resend or Hide transaction
@@ -690,7 +682,7 @@ Namespace Interfaces
                         Case ElitaPlusPage.DetailPageCommand.Back
                             ResendOrHideTransaction()
                     End Select
-                ElseIf confResponse IsNot Nothing AndAlso (confResponse = MSG_VALUE_NO Or confResponse = CONFIRM_MESSAGE_CANCEL) Then
+                ElseIf confResponse IsNot Nothing AndAlso (confResponse = MSG_VALUE_NO OrElse confResponse = CONFIRM_MESSAGE_CANCEL) Then
                     Select Case State.ActionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Accept
                             ' Do nothing

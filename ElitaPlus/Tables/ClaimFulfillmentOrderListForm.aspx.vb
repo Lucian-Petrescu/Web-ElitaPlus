@@ -94,7 +94,7 @@ Namespace Tables
                     PopulateDropdown()
 
                     If State.IsGridVisible Then
-                        If Not (State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.SelectedPageSize = Grid.PageSize) Then
+                        If Not (State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) OrElse Not (State.SelectedPageSize = Grid.PageSize) Then
                             Grid.PageSize = State.SelectedPageSize
                         End If
                         cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
@@ -261,8 +261,8 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If dvRow IsNot Nothing And Not State.bNoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bNoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CF_ORDER_DETIAL_ID_IDX), dvRow(ClaimFulfillmentOrderDetail.CFOrderDetailSearchhDV.COL_NAME_CF_ORDER_DETAIL_ID))
                         PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CODE_IDX), dvRow(ClaimFulfillmentOrderDetail.CFOrderDetailSearchhDV.COL_NAME_CODE))
                         PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DESCRIPTION_IDX), dvRow(ClaimFulfillmentOrderDetail.CFOrderDetailSearchhDV.COL_NAME_DESCRIPTION))

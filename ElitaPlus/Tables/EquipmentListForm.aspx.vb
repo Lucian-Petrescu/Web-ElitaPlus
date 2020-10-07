@@ -328,7 +328,7 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Item.Cells(GRID_COL_EQUIPMENT_ID_IDX).Text = New Guid(CType(dvRow(Equipment.EquipmentSearchDV.COL_NAME_EQUIPMENT_ID), Byte())).ToString
                     e.Item.Cells(GRID_COL_MODEL_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_MODEL).ToString
                     'e.Item.Cells(Me.GRID_COL_DESCRIPTION_IDX).Text = dvRow(Equipment.EquipmentSearchDV.COL_NAME_DESCRIPTION).ToString

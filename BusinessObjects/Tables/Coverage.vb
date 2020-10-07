@@ -145,7 +145,7 @@ Public Class Coverage
         End Get
     End Property
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IAttributable.Id
+    Public ReadOnly Property Id As Guid Implements IAttributable.Id
         Get
             If Row(CoverageDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -156,7 +156,7 @@ Public Class Coverage
     End Property
 
     <ValueMandatory("")>
-    Public Property DeductibleBasedOnId() As Guid
+    Public Property DeductibleBasedOnId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID) Is DBNull.Value Then
@@ -165,13 +165,13 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID, value)
         End Set
     End Property
 
-    Public Property DeductibleExpressionId() As Guid
+    Public Property DeductibleExpressionId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID) Is DBNull.Value Then
@@ -180,12 +180,12 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID, value)
         End Set
     End Property
-    Public Property MethodOfRepairId() As Guid
+    Public Property MethodOfRepairId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_METHOD_OF_REPAIR_ID) Is DBNull.Value Then
@@ -194,13 +194,13 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_METHOD_OF_REPAIR_ID), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_METHOD_OF_REPAIR_ID, value)
         End Set
     End Property
 
-    Public Property FulfillmentProviderXcd() As string
+    Public Property FulfillmentProviderXcd As string
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_FULFILLMENT_PROVIDER_XCD) Is DBNull.Value Then
@@ -209,12 +209,12 @@ Public Class Coverage
                 Return CType(Row(CoverageDAL.COL_NAME_FULFILLMENT_PROVIDER_XCD), string)
             End If
         End Get
-        Set(ByVal value As string)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_FULFILLMENT_PROVIDER_XCD, value)
         End Set
     End Property
-    Public Property FulfillmentProfileCode() As string
+    Public Property FulfillmentProfileCode As string
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_FULFILLMENT_PROFILE_CODE) Is DBNull.Value Then
@@ -223,13 +223,13 @@ Public Class Coverage
                 Return CType(Row(CoverageDAL.COL_NAME_FULFILLMENT_PROFILE_CODE), string)
             End If
         End Get
-        Set(ByVal value As string)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_FULFILLMENT_PROFILE_CODE, value)
         End Set
     End Property
     '<ValueMandatory("")> _
-    Public Property ItemId() As Guid
+    Public Property ItemId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_ITEM_ID) Is DBNull.Value Then
@@ -238,14 +238,14 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_ITEM_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ProductItemId() As Guid
+    Public Property ProductItemId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_PRODUCT_ITEM_ID) Is DBNull.Value Then
@@ -254,7 +254,7 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_PRODUCT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_PRODUCT_ITEM_ID, Value)
         End Set
@@ -262,7 +262,7 @@ Public Class Coverage
 
 
     <ValueMandatory("")>
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -271,7 +271,7 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
@@ -279,7 +279,7 @@ Public Class Coverage
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DURATION, Max:=999, Message:=Common.ErrorCodes.COVERAGEBO_001), ValidCertificateDuration(""), ValidCertDurationForPerodicRenewable("")>
-    Public Property CertificateDuration() As LongType
+    Public Property CertificateDuration As LongType
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_CERTIFICATE_DURATION) Is DBNull.Value Then
@@ -288,7 +288,7 @@ Public Class Coverage
                 Return New LongType(CType(Row(CoverageDAL.COL_NAME_CERTIFICATE_DURATION), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_CERTIFICATE_DURATION, Value)
         End Set
@@ -296,7 +296,7 @@ Public Class Coverage
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DURATION, Max:=999, Message:=Common.ErrorCodes.COVERAGEBO_002), ValidCoverageDurationForPerodicRenewable("")>
-    Public Property CoverageDuration() As LongType
+    Public Property CoverageDuration As LongType
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_COVERAGE_DURATION) Is DBNull.Value Then
@@ -305,7 +305,7 @@ Public Class Coverage
                 Return New LongType(CType(Row(CoverageDAL.COL_NAME_COVERAGE_DURATION), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_COVERAGE_DURATION, Value)
         End Set
@@ -313,7 +313,7 @@ Public Class Coverage
 
 
     <ValueMandatory(""), ValidCoverageDates(""), ValidContract(""), ValidCoveragePeriod("")>
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -322,7 +322,7 @@ Public Class Coverage
                 Return New DateType(CType(Row(CoverageDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -330,7 +330,7 @@ Public Class Coverage
 
 
     <ValueMandatory("")>
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -339,14 +339,14 @@ Public Class Coverage
                 Return New DateType(CType(Row(CoverageDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property OffsetMethodId() As Guid
+    Public Property OffsetMethodId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_OFFSET_METHOD_ID) Is DBNull.Value Then
@@ -355,13 +355,13 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_OFFSET_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_OFFSET_METHOD_ID, Value)
         End Set
     End Property
 
-    Public Property OffsetMethod() As String
+    Public Property OffsetMethod As String
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_OFFSET_METHOD) Is DBNull.Value Then
@@ -370,14 +370,14 @@ Public Class Coverage
                 Return CType(Row(CoverageDAL.COL_NAME_OFFSET_METHOD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_OFFSET_METHOD, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=MIN_OFFSET, Max:=MAX_PERCENT, MaxExclusive:=False)>
-    Public Property MarkupDistributionPercent() As LongType
+    Public Property MarkupDistributionPercent As LongType
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_MARKUP_DISTRIBUTION_PERCENT) Is DBNull.Value Then
@@ -386,14 +386,14 @@ Public Class Coverage
                 Return New LongType(CType(Row(CoverageDAL.COL_NAME_MARKUP_DISTRIBUTION_PERCENT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_MARKUP_DISTRIBUTION_PERCENT, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MIN_OFFSET, Max:=MAX_DURATION, Message:=Common.ErrorCodes.COVERAGEBO_003), ValidOffsetForPerodicRenewable("")>
-    Public Property OffsetToStart() As LongType
+    Public Property OffsetToStart As LongType
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_OFFSET_TO_START) Is DBNull.Value Then
@@ -402,14 +402,14 @@ Public Class Coverage
                 Return New LongType(CType(Row(CoverageDAL.COL_NAME_OFFSET_TO_START), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_OFFSET_TO_START, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=9999), ValidOffsetDaysNotForPerodicRenewable("")>
-    Public Property OffsetToStartDays() As LongType
+    Public Property OffsetToStartDays As LongType
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_OFFSET_TO_START_DAYS) Is DBNull.Value Then
@@ -418,14 +418,14 @@ Public Class Coverage
                 Return New LongType(CType(Row(CoverageDAL.COL_NAME_OFFSET_TO_START_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_OFFSET_TO_START_DAYS, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property OptionalId() As Guid
+    Public Property OptionalId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_OPTIONAL_ID) Is DBNull.Value Then
@@ -434,14 +434,14 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_OPTIONAL_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_OPTIONAL_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property IsClaimAllowedId() As Guid
+    Public Property IsClaimAllowedId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_IS_CLAIM_ALLOWED_ID) Is DBNull.Value Then
@@ -450,14 +450,14 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_IS_CLAIM_ALLOWED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_IS_CLAIM_ALLOWED_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MIN_OFFSET, Max:=NEW_MAX_LONG, Message:=Common.ErrorCodes.COVERAGEBO_006)>
-    Public Property LiabilityLimit() As LongType
+    Public Property LiabilityLimit As LongType
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_LIABILITY_LIMIT) Is DBNull.Value Then
@@ -466,7 +466,7 @@ Public Class Coverage
                 Return New LongType(CType(Row(CoverageDAL.COL_NAME_LIABILITY_LIMIT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_LIABILITY_LIMIT, Value)
         End Set
@@ -474,7 +474,7 @@ Public Class Coverage
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MIN_OFFSET, Max:=NEW_MAX_LONG, Message:=Common.ErrorCodes.COVERAGEBO_006)>
-    Public Property Deductible() As DecimalType
+    Public Property Deductible As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_DEDUCTIBLE) Is DBNull.Value Then
@@ -483,7 +483,7 @@ Public Class Coverage
                 Return New DecimalType(CType(Row(CoverageDAL.COL_NAME_DEDUCTIBLE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_DEDUCTIBLE, Value)
         End Set
@@ -492,7 +492,7 @@ Public Class Coverage
     'Additional Properties
 
     <ValueMandatory("")>
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -501,14 +501,14 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -517,14 +517,14 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_RISK_TYPE_ID) Is DBNull.Value Then
@@ -533,22 +533,22 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_RISK_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property PercentOfRetail() As DecimalType
+    Public Property PercentOfRetail As DecimalType
         Get
             Return mPercentOfRetail
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             mPercentOfRetail = Value
         End Set
     End Property
 
-    Public Property EarningCodeId() As Guid
+    Public Property EarningCodeId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_EARNING_CODE_ID) Is DBNull.Value Then
@@ -557,13 +557,13 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_EARNING_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_EARNING_CODE_ID, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=MIN_OFFSET, Max:=MAX_PERCENT, MaxExclusive:=False)>
-    Public Property DeductiblePercent() As DecimalType
+    Public Property DeductiblePercent As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_DEDUCTIBLE_PERCENT) Is DBNull.Value Then
@@ -572,14 +572,14 @@ Public Class Coverage
                 Return New DecimalType(CType(Row(CoverageDAL.COL_NAME_DEDUCTIBLE_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_DEDUCTIBLE_PERCENT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=MIN_OFFSET_LIABLIMIT_PERCENT, Max:=MAX_PERCENT, MaxExclusive:=False)>
-    Public Property LiabilityLimitPercent() As LongType
+    Public Property LiabilityLimitPercent As LongType
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_LIABILITY_LIMIT_PERCENT) Is DBNull.Value Then
@@ -588,14 +588,14 @@ Public Class Coverage
                 Return New LongType(CType(Row(CoverageDAL.COL_NAME_LIABILITY_LIMIT_PERCENT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_LIABILITY_LIMIT_PERCENT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=9999)>
-    Public Property RepairDiscountPct() As LongType
+    Public Property RepairDiscountPct As LongType
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_REPAIR_DISCOUNT_PCT) Is DBNull.Value Then
@@ -604,14 +604,14 @@ Public Class Coverage
                 Return New LongType(CType(Row(CoverageDAL.COL_NAME_REPAIR_DISCOUNT_PCT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_REPAIR_DISCOUNT_PCT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=9999)>
-    Public Property ReplacementDiscountPct() As LongType
+    Public Property ReplacementDiscountPct As LongType
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_REPLACEMENT_DISCOUNT_PCT) Is DBNull.Value Then
@@ -620,14 +620,14 @@ Public Class Coverage
                 Return New LongType(CType(Row(CoverageDAL.COL_NAME_REPLACEMENT_DISCOUNT_PCT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_REPLACEMENT_DISCOUNT_PCT, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property UseCoverageStartDateId() As Guid
+    Public Property UseCoverageStartDateId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_USE_COVERAGE_START_DATE_ID) Is DBNull.Value Then
@@ -636,13 +636,13 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_USE_COVERAGE_START_DATE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_USE_COVERAGE_START_DATE_ID, Value)
         End Set
     End Property
     <ValidateCoverageClaimLimit("")>
-    Public Property CoverageClaimLimit() As LongType
+    Public Property CoverageClaimLimit As LongType
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_COVERAGE_CLAIM_LIMIT) Is DBNull.Value Then
@@ -651,12 +651,12 @@ Public Class Coverage
                 Return New LongType(CType(Row(CoverageDAL.COL_NAME_COVERAGE_CLAIM_LIMIT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_COVERAGE_CLAIM_LIMIT, Value)
         End Set
     End Property
-    Public Property PerIncidentLiabilityLimitCap() As Decimal
+    Public Property PerIncidentLiabilityLimitCap As Decimal
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_PER_INCIDENT_LIABILITY_LIMIT_CAP) Is DBNull.Value Then
@@ -665,12 +665,12 @@ Public Class Coverage
                 Return New DecimalType(CType(Row(CoverageDAL.COL_NAME_PER_INCIDENT_LIABILITY_LIMIT_CAP), Decimal))
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_PER_INCIDENT_LIABILITY_LIMIT_CAP, Value)
         End Set
     End Property
-    Public Property CoverageLiabilityLimit() As Decimal
+    Public Property CoverageLiabilityLimit As Decimal
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_COVERAGE_LIABILITY_LIMIT) Is DBNull.Value Then
@@ -679,14 +679,14 @@ Public Class Coverage
                 Return New LongType(CType(Row(CoverageDAL.COL_NAME_COVERAGE_LIABILITY_LIMIT), Long))
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_COVERAGE_LIABILITY_LIMIT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=MAX_PERCENT, MaxExclusive:=False)>
-    Public Property CoverageLiabilityLimitPercent() As LongType
+    Public Property CoverageLiabilityLimitPercent As LongType
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_COVERAGE_LIABILITY_LIMIT_PERCENT) Is DBNull.Value Then
@@ -695,13 +695,13 @@ Public Class Coverage
                 Return New LongType(CType(Row(CoverageDAL.COL_NAME_COVERAGE_LIABILITY_LIMIT_PERCENT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_COVERAGE_LIABILITY_LIMIT_PERCENT, Value)
         End Set
     End Property
 
-    Public Property ProdLiabilityLimitBaseId() As Guid
+    Public Property ProdLiabilityLimitBaseId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_PROD_LIABILITY_LIMIT_BASE_ID) Is DBNull.Value Then
@@ -710,24 +710,24 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_PROD_LIABILITY_LIMIT_BASE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_PROD_LIABILITY_LIMIT_BASE_ID, Value)
         End Set
     End Property
 
-    Public Property UniqueFieldsChanged() As Boolean
+    Public Property UniqueFieldsChanged As Boolean
         Get
             Return mbUniqueFieldsChanged
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             mbUniqueFieldsChanged = Value
         End Set
     End Property
 
     'REQ-1295: Added validation ValidateAgentCodeMandetory
     <ValidStringLengthAttribute("", Max:=15), ValidateAgentCodeMandetory("")>
-    Public Property AgentCode() As String
+    Public Property AgentCode As String
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_AGENT_CODE) Is DBNull.Value Then
@@ -736,14 +736,14 @@ Public Class Coverage
                 Return CType(Row(CoverageDAL.COL_NAME_AGENT_CODE), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_AGENT_CODE, value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property RecoverDeviceId() As Guid
+    Public Property RecoverDeviceId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_RECOVER_DEVICE_ID) Is DBNull.Value Then
@@ -752,12 +752,12 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_RECOVER_DEVICE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_RECOVER_DEVICE_ID, Value)
         End Set
     End Property
-    Public Property IsReInsuredId() As Guid
+    Public Property IsReInsuredId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_IS_REINSURED_ID) Is DBNull.Value Then
@@ -766,14 +766,14 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_IS_REINSURED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_IS_REINSURED_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)>
-    Public Property Inuseflag() As String
+    Public Property Inuseflag As String
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_INUSEFLAG) Is DBNull.Value Then
@@ -782,13 +782,13 @@ Public Class Coverage
                 Return CType(Row(CoverageDAL.COL_NAME_INUSEFLAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_INUSEFLAG, Value)
         End Set
     End Property
 
-    Public Property TaxTypeXCD() As String
+    Public Property TaxTypeXCD As String
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_TAX_TYPE_XCD) Is DBNull.Value Then
@@ -797,13 +797,13 @@ Public Class Coverage
                 Return CType(Row(CoverageDAL.COL_NAME_TAX_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_TAX_TYPE_XCD, Value)
         End Set
     End Property
 
-    Public Property DealerMarkupId() As Guid
+    Public Property DealerMarkupId As Guid
         Get
             CheckDeleted()
             If Row(CoverageDAL.COL_NAME_DEALER_MARKUP) Is DBNull.Value Then
@@ -812,7 +812,7 @@ Public Class Coverage
                 Return New Guid(CType(Row(CoverageDAL.COL_NAME_DEALER_MARKUP), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageDAL.COL_NAME_DEALER_MARKUP, Value)
         End Set
@@ -1431,7 +1431,7 @@ Public Class Coverage
 
     #Region "Depreciation Schedule"
 
-    Public ReadOnly Property CoverageDepreciationScdChildren() As DepreciationScdRelation.CoverageDepreciationScdList
+    Public ReadOnly Property CoverageDepreciationScdChildren As DepreciationScdRelation.CoverageDepreciationScdList
         Get
             Return New DepreciationScdRelation.CoverageDepreciationScdList(Me)
         End Get

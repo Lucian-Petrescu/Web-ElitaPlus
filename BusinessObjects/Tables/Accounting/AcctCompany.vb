@@ -90,7 +90,7 @@ Public Class AcctCompany
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AcctCompanyDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class AcctCompany
     End Property
 
     <ValueMandatory(""), ValidStringLength(Nothing, max:=100)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -110,14 +110,14 @@ Public Class AcctCompany
                 Return CType(Row(AcctCompanyDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctCompanyDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidStringLength(Nothing, max:=100)> _
-   Public Property FTPDirectory() As String
+   Public Property FTPDirectory As String
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_FTP_DIRECTORY) Is DBNull.Value Then
@@ -126,14 +126,14 @@ Public Class AcctCompany
                 Return CType(Row(AcctCompanyDAL.COL_NAME_FTP_DIRECTORY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctCompanyDAL.COL_NAME_FTP_DIRECTORY, Value)
         End Set
     End Property
 
     <ValidStringLength(Nothing, max:=100)> _
-    Public Property BalanceDirectory() As String
+    Public Property BalanceDirectory As String
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_BALANCE_DIRECTORY) Is DBNull.Value Then
@@ -142,14 +142,14 @@ Public Class AcctCompany
                 Return CType(Row(AcctCompanyDAL.COL_NAME_BALANCE_DIRECTORY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctCompanyDAL.COL_NAME_BALANCE_DIRECTORY, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength(Nothing, max:=1, min:=1)> _
-  Public Property UseAccounting() As String
+  Public Property UseAccounting As String
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_USE_ACCOUNTING) Is DBNull.Value Then
@@ -158,14 +158,14 @@ Public Class AcctCompany
                 Return CType(Row(AcctCompanyDAL.COL_NAME_USE_ACCOUNTING), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctCompanyDAL.COL_NAME_USE_ACCOUNTING, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property UseElitaBankInfoId() As Guid
+    Public Property UseElitaBankInfoId As Guid
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_USE_ELITA_BANK_INFO_ID) Is DBNull.Value Then
@@ -174,14 +174,14 @@ Public Class AcctCompany
                 Return New Guid(CType(Row(AcctCompanyDAL.COL_NAME_USE_ELITA_BANK_INFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctCompanyDAL.COL_NAME_USE_ELITA_BANK_INFO_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-   Public Property AcctSystemId() As Guid
+   Public Property AcctSystemId As Guid
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_ACCT_SYSTEM_ID) Is DBNull.Value Then
@@ -190,14 +190,14 @@ Public Class AcctCompany
                 Return New Guid(CType(Row(AcctCompanyDAL.COL_NAME_ACCT_SYSTEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctCompanyDAL.COL_NAME_ACCT_SYSTEM_ID, Value)
         End Set
     End Property
 
     <ValidStringLength(Nothing, max:=15)> _
-   Public Property Code() As String
+   Public Property Code As String
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -206,14 +206,14 @@ Public Class AcctCompany
                 Return CType(Row(AcctCompanyDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctCompanyDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength(Nothing, max:=1, min:=1)> _
-    Public Property ReportCommissionBreakdown() As String
+    Public Property ReportCommissionBreakdown As String
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_RPT_COMMISSION_BREAKDOWN) Is DBNull.Value Then
@@ -222,14 +222,14 @@ Public Class AcctCompany
                 Return CType(Row(AcctCompanyDAL.COL_NAME_RPT_COMMISSION_BREAKDOWN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctCompanyDAL.COL_NAME_RPT_COMMISSION_BREAKDOWN, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-   Public Property ProcessMethodId() As Guid
+   Public Property ProcessMethodId As Guid
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_PROCESS_METHOD_ID) Is DBNull.Value Then
@@ -238,14 +238,14 @@ Public Class AcctCompany
                 Return New Guid(CType(Row(AcctCompanyDAL.COL_NAME_PROCESS_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctCompanyDAL.COL_NAME_PROCESS_METHOD_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CoverageEntityByRegion() As Guid
+    Public Property CoverageEntityByRegion As Guid
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_COV_ENTITY_BY_REGION) Is DBNull.Value Then
@@ -254,14 +254,14 @@ Public Class AcctCompany
                 Return New Guid(CType(Row(AcctCompanyDAL.COL_NAME_COV_ENTITY_BY_REGION), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctCompanyDAL.COL_NAME_COV_ENTITY_BY_REGION, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property UseCoverageEntityId() As Guid
+    Public Property UseCoverageEntityId As Guid
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_USE_COVERAGE_ENTITY) Is DBNull.Value Then
@@ -270,14 +270,14 @@ Public Class AcctCompany
                 Return New Guid(CType(Row(AcctCompanyDAL.COL_NAME_USE_COVERAGE_ENTITY), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctCompanyDAL.COL_NAME_USE_COVERAGE_ENTITY, Value)
         End Set
     End Property
 
     <ValidStringLength(Nothing, max:=200)> _
-    Public Property NotifyEmail() As String
+    Public Property NotifyEmail As String
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_NOTIFY_EMAIL) Is DBNull.Value Then
@@ -286,7 +286,7 @@ Public Class AcctCompany
                 Return CType(Row(AcctCompanyDAL.COL_NAME_NOTIFY_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctCompanyDAL.COL_NAME_NOTIFY_EMAIL, Value)
         End Set

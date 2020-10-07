@@ -431,11 +431,9 @@ Partial Class TestServiceCenterForm
             If State.stIsComingFromDealerform Then
                 SetSelectedItem(cboOriginalDealer, State.stdealerid)
             Else
-                If LookupListNew.GetCodeFromId(LookupListNew.GetCompanyLookupList, ElitaPlusIdentity.Current.ActiveUser.CompanyId) = Codes.COMPANY__VBR And _
-                    State.MyBO.OriginalDealerId.Equals(Guid.Empty) Then
+                If LookupListNew.GetCodeFromId(LookupListNew.GetCompanyLookupList, ElitaPlusIdentity.Current.ActiveUser.CompanyId) = Codes.COMPANY__VBR AndAlso State.MyBO.OriginalDealerId.Equals(Guid.Empty) Then
                     cboOriginalDealer.SelectedIndex = NOTHING_SELECTED
-                ElseIf LookupListNew.GetCodeFromId(LookupListNew.GetCompanyLookupList, ElitaPlusIdentity.Current.ActiveUser.CompanyId) = Codes.COMPANY__VBR And _
-                    Not State.MyBO.OriginalDealerId.Equals(Guid.Empty) Then
+                ElseIf LookupListNew.GetCodeFromId(LookupListNew.GetCompanyLookupList, ElitaPlusIdentity.Current.ActiveUser.CompanyId) = Codes.COMPANY__VBR AndAlso Not State.MyBO.OriginalDealerId.Equals(Guid.Empty) Then
                     If State.MyBO.IsNew Then
                         cboOriginalDealer.SelectedIndex = NOTHING_SELECTED
                     Else
@@ -506,8 +504,7 @@ Partial Class TestServiceCenterForm
             '*
 
 
-            If LookupListNew.GetCodeFromId(LookupListNew.GetCompanyLookupList, ElitaPlusIdentity.Current.ActiveUser.CompanyId) = Codes.COMPANY__VBR And _
-                cboOriginalDealer.SelectedValue.Trim.Length > 0 Then
+            If LookupListNew.GetCodeFromId(LookupListNew.GetCompanyLookupList, ElitaPlusIdentity.Current.ActiveUser.CompanyId) = Codes.COMPANY__VBR AndAlso cboOriginalDealer.SelectedValue.Trim.Length > 0 Then
                 PopulateBOProperty(State.MyBO, "OriginalDealerId", cboOriginalDealer)
             End If
 

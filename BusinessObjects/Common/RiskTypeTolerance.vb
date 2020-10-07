@@ -8,7 +8,7 @@
 #End Region
 
 #Region "Properties"
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(RiskTypeToleranceDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -18,7 +18,7 @@
         End Get
     End Property
 
-    Public Property RiskTypeToleranceId() As Guid
+    Public Property RiskTypeToleranceId As Guid
         Get
             CheckDeleted()
             If Row(RiskTypeToleranceDAL.COL_NAME_DLR_RK_TYP_TOLERANCE_ID) Is DBNull.Value Then
@@ -27,13 +27,13 @@
                 Return New Guid(CType(Row(RiskTypeToleranceDAL.COL_NAME_DLR_RK_TYP_TOLERANCE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RiskTypeToleranceDAL.COL_NAME_DLR_RK_TYP_TOLERANCE_ID, Value)
         End Set
     End Property
 
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             CheckDeleted()
             If Row(RiskTypeToleranceDAL.COL_NAME_RISK_TYPE_ID) Is DBNull.Value Then
@@ -42,13 +42,13 @@
                 Return New Guid(CType(Row(RiskTypeToleranceDAL.COL_NAME_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RiskTypeToleranceDAL.COL_NAME_RISK_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(RiskTypeToleranceDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -57,13 +57,13 @@
                 Return New Guid(CType(Row(RiskTypeToleranceDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RiskTypeToleranceDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public Property Dealer() As String
+    Public Property Dealer As String
         Get
             CheckDeleted()
             If Row(RiskTypeToleranceDAL.COL_NAME_DEALER) Is DBNull.Value Then
@@ -72,14 +72,14 @@
                 Return CType(Row(RiskTypeToleranceDAL.COL_NAME_DEALER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RiskTypeToleranceDAL.COL_NAME_DEALER, Value)
         End Set
     End Property
     
     <ValueMandatory("")>
-    Public Property RiskType() As String
+    Public Property RiskType As String
         Get
             CheckDeleted()
             If Row(RiskTypeToleranceDAL.COL_NAME_RISK_TYPE) Is DBNull.Value Then
@@ -88,14 +88,14 @@
                 Return CType(Row(RiskTypeToleranceDAL.COL_NAME_RISK_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RiskTypeToleranceDAL.COL_NAME_RISK_TYPE, Value)
         End Set
     End Property
 
   <ValueMandatoryRiskTypeTolerance(""),ValidNumericRange("", Min:=0, Max:=9999.99)>
-    Public Property TolerancePct() As DecimalType
+    Public Property TolerancePct As DecimalType
         Get
             CheckDeleted()
             If Row(RiskTypeToleranceDAL.COL_NAME_TOLERANCE_PCT) Is DBNull.Value Then
@@ -104,7 +104,7 @@
                 Return New DecimalType(CType(Row(RiskTypeToleranceDAL.COL_NAME_TOLERANCE_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(RiskTypeToleranceDAL.COL_NAME_TOLERANCE_PCT, Value)
         End Set

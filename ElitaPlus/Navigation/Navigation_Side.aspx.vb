@@ -84,7 +84,7 @@ Partial Class Navigation_Side
         Else
             Session("ScrollPos") = scrollPos.Value
         End If
-        If sCODE = Assurant.ElitaPlus.BusinessObjectsNew.Codes.TAB_HOME_PAGE Or sCODE Is Nothing Then
+        If sCODE = Assurant.ElitaPlus.BusinessObjectsNew.Codes.TAB_HOME_PAGE OrElse sCODE Is Nothing Then
             isHomeTab.Value = "true"
         Else
             isHomeTab.Value = "false"

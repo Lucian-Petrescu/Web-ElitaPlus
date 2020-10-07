@@ -90,7 +90,7 @@ Public Class SplitSystem
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(SplitSystemDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class SplitSystem
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(SplitSystemDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class SplitSystem
                 Return New Guid(CType(row(SplitSystemDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SplitSystemDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class SplitSystem
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=5)> _
-    Public Property SystemCode() As String
+    Public Property SystemCode As String
         Get
             CheckDeleted()
             If row(SplitSystemDAL.COL_NAME_SYSTEM_CODE) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class SplitSystem
                 Return CType(row(SplitSystemDAL.COL_NAME_SYSTEM_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SplitSystemDAL.COL_NAME_SYSTEM_CODE, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class SplitSystem
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(SplitSystemDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class SplitSystem
                 Return CType(row(SplitSystemDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SplitSystemDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class SplitSystem
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)> _
-    Public Property Layout() As String
+    Public Property Layout As String
         Get
             CheckDeleted()
             If row(SplitSystemDAL.COL_NAME_LAYOUT) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class SplitSystem
                 Return CType(row(SplitSystemDAL.COL_NAME_LAYOUT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SplitSystemDAL.COL_NAME_LAYOUT, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class SplitSystem
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=3)> _
-    Public Property InterfaceCode() As String
+    Public Property InterfaceCode As String
         Get
             CheckDeleted()
             If row(SplitSystemDAL.COL_NAME_INTERFACE_CODE) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class SplitSystem
                 Return CType(row(SplitSystemDAL.COL_NAME_INTERFACE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SplitSystemDAL.COL_NAME_INTERFACE_CODE, Value)
         End Set

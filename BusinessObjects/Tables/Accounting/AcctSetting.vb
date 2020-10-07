@@ -140,7 +140,7 @@ Public Class AcctSetting
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(AcctSettingDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -151,7 +151,7 @@ Public Class AcctSetting
     End Property
 
     <ValueMandatory("")> _
-    Public Property AcctCompanyId() As Guid
+    Public Property AcctCompanyId As Guid
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCT_COMPANY_ID) Is DBNull.Value Then
@@ -160,13 +160,13 @@ Public Class AcctSetting
                 Return New Guid(CType(Row(AcctSettingDAL.COL_NAME_ACCT_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCT_COMPANY_ID, Value)
         End Set
     End Property
 
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -175,13 +175,13 @@ Public Class AcctSetting
                 Return New Guid(CType(Row(AcctSettingDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
     End Property
 
-    Public Property DealerGroupId() As Guid
+    Public Property DealerGroupId As Guid
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_DEALER_GROUP_ID) Is DBNull.Value Then
@@ -190,13 +190,13 @@ Public Class AcctSetting
                 Return New Guid(CType(Row(AcctSettingDAL.COL_NAME_DEALER_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_DEALER_GROUP_ID, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -205,13 +205,13 @@ Public Class AcctSetting
                 Return New Guid(CType(Row(AcctSettingDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public Property BranchId() As Guid
+    Public Property BranchId As Guid
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_BRANCH_ID) Is DBNull.Value Then
@@ -220,13 +220,13 @@ Public Class AcctSetting
                 Return New Guid(CType(Row(AcctSettingDAL.COL_NAME_BRANCH_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_BRANCH_ID, Value)
         End Set
     End Property
 
-    Public Property CommissionEntityId() As Guid
+    Public Property CommissionEntityId As Guid
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_COMMISSION_ENTITY_ID) Is DBNull.Value Then
@@ -235,14 +235,14 @@ Public Class AcctSetting
                 Return New Guid(CType(Row(AcctSettingDAL.COL_NAME_COMMISSION_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_COMMISSION_ENTITY_ID, Value)
         End Set
     End Property
 
     <ValidAccountNumber(""), ValueMandatory(""), ValidStringLength("", Max:=15)> _
-    Public Property AccountCode() As String
+    Public Property AccountCode As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_CODE) Is DBNull.Value Then
@@ -251,7 +251,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             If Not Value Is Nothing Then Value = Value.Trim
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_CODE, Value)
@@ -260,7 +260,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=15)> _
-    Public Property AddressLookupCode() As String
+    Public Property AddressLookupCode As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ADDRESS_LOOKUP_CODE) Is DBNull.Value Then
@@ -269,7 +269,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ADDRESS_LOOKUP_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ADDRESS_LOOKUP_CODE, Value)
         End Set
@@ -277,7 +277,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=3)> _
-    Public Property AddressSequenceNumber() As String
+    Public Property AddressSequenceNumber As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ADDRESS_SEQUENCE_NUMBER) Is DBNull.Value Then
@@ -286,7 +286,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ADDRESS_SEQUENCE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ADDRESS_SEQUENCE_NUMBER, Value)
         End Set
@@ -294,7 +294,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(" "), ValidStringLength("", Max:=1)> _
-    Public Property AddressStatus() As String
+    Public Property AddressStatus As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ADDRESS_STATUS) Is DBNull.Value Then
@@ -303,7 +303,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ADDRESS_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ADDRESS_STATUS, Value)
         End Set
@@ -311,7 +311,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property AccountType() As String
+    Public Property AccountType As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_TYPE) Is DBNull.Value Then
@@ -320,7 +320,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_TYPE, Value)
         End Set
@@ -328,7 +328,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property BalanceType() As String
+    Public Property BalanceType As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_BALANCE_TYPE) Is DBNull.Value Then
@@ -337,7 +337,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_BALANCE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_BALANCE_TYPE, Value)
         End Set
@@ -345,7 +345,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property ConversionCodeControl() As String
+    Public Property ConversionCodeControl As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_CONVERSION_CODE_CONTROL) Is DBNull.Value Then
@@ -354,14 +354,14 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_CONVERSION_CODE_CONTROL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_CONVERSION_CODE_CONTROL, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property AccountAnalysis1() As String
+    Public Property AccountAnalysis1 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_1) Is DBNull.Value Then
@@ -370,7 +370,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_1, Value)
         End Set
@@ -378,7 +378,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property AccountAnalysis2() As String
+    Public Property AccountAnalysis2 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_2) Is DBNull.Value Then
@@ -387,7 +387,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_2, Value)
         End Set
@@ -395,7 +395,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property AccountAnalysis3() As String
+    Public Property AccountAnalysis3 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_3) Is DBNull.Value Then
@@ -404,7 +404,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_3, Value)
         End Set
@@ -412,7 +412,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property AccountAnalysis4() As String
+    Public Property AccountAnalysis4 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_4) Is DBNull.Value Then
@@ -421,7 +421,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_4), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_4, Value)
         End Set
@@ -429,7 +429,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property AccountAnalysis5() As String
+    Public Property AccountAnalysis5 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_5) Is DBNull.Value Then
@@ -438,7 +438,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_5), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_5, Value)
         End Set
@@ -446,7 +446,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property AccountAnalysis6() As String
+    Public Property AccountAnalysis6 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_6) Is DBNull.Value Then
@@ -455,7 +455,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_6), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_6, Value)
         End Set
@@ -463,7 +463,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property AccountAnalysis7() As String
+    Public Property AccountAnalysis7 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_7) Is DBNull.Value Then
@@ -472,7 +472,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_7), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_7, Value)
         End Set
@@ -480,7 +480,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property AccountAnalysis8() As String
+    Public Property AccountAnalysis8 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_8) Is DBNull.Value Then
@@ -489,7 +489,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_8), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_8, Value)
         End Set
@@ -497,7 +497,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property AccountAnalysis9() As String
+    Public Property AccountAnalysis9 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_9) Is DBNull.Value Then
@@ -506,7 +506,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_9), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_9, Value)
         End Set
@@ -514,7 +514,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property AccountAnalysis10() As String
+    Public Property AccountAnalysis10 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_10) Is DBNull.Value Then
@@ -523,7 +523,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_10), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_10, Value)
         End Set
@@ -531,7 +531,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisCode1() As String
+    Public Property AccountAnalysisCode1 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_1) Is DBNull.Value Then
@@ -540,7 +540,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_1, Value)
         End Set
@@ -548,7 +548,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisCode2() As String
+    Public Property AccountAnalysisCode2 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_2) Is DBNull.Value Then
@@ -557,7 +557,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_2, Value)
         End Set
@@ -565,7 +565,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisCode3() As String
+    Public Property AccountAnalysisCode3 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_3) Is DBNull.Value Then
@@ -574,7 +574,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_3, Value)
         End Set
@@ -582,7 +582,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisCode4() As String
+    Public Property AccountAnalysisCode4 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_4) Is DBNull.Value Then
@@ -591,7 +591,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_4), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_4, Value)
         End Set
@@ -599,7 +599,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisCode5() As String
+    Public Property AccountAnalysisCode5 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_5) Is DBNull.Value Then
@@ -608,7 +608,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_5), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_5, Value)
         End Set
@@ -616,7 +616,7 @@ Public Class AcctSetting
 
 
     <ValidSSVendorId(""), ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisCode6() As String
+    Public Property AccountAnalysisCode6 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_6) Is DBNull.Value Then
@@ -625,7 +625,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_6), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_6, Value)
         End Set
@@ -633,7 +633,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisCode7() As String
+    Public Property AccountAnalysisCode7 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_7) Is DBNull.Value Then
@@ -642,7 +642,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_7), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_7, Value)
         End Set
@@ -650,7 +650,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisCode8() As String
+    Public Property AccountAnalysisCode8 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_8) Is DBNull.Value Then
@@ -659,7 +659,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_8), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_8, Value)
         End Set
@@ -667,7 +667,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisCode9() As String
+    Public Property AccountAnalysisCode9 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_9) Is DBNull.Value Then
@@ -676,7 +676,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_9), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_9, Value)
         End Set
@@ -684,7 +684,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisCode10() As String
+    Public Property AccountAnalysisCode10 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_10) Is DBNull.Value Then
@@ -693,14 +693,14 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_10), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_10, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisACode1() As String
+    Public Property AccountAnalysisACode1 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_1) Is DBNull.Value Then
@@ -709,7 +709,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_1, Value)
         End Set
@@ -717,7 +717,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisACode2() As String
+    Public Property AccountAnalysisACode2 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_2) Is DBNull.Value Then
@@ -726,7 +726,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_2, Value)
         End Set
@@ -734,7 +734,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisACode3() As String
+    Public Property AccountAnalysisACode3 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_3) Is DBNull.Value Then
@@ -743,7 +743,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_3, Value)
         End Set
@@ -751,7 +751,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisACode4() As String
+    Public Property AccountAnalysisACode4 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_4) Is DBNull.Value Then
@@ -760,7 +760,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_4), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_4, Value)
         End Set
@@ -768,7 +768,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisACode5() As String
+    Public Property AccountAnalysisACode5 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_5) Is DBNull.Value Then
@@ -777,7 +777,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_5), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_5, Value)
         End Set
@@ -785,7 +785,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisACode6() As String
+    Public Property AccountAnalysisACode6 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_6) Is DBNull.Value Then
@@ -794,7 +794,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_6), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_6, Value)
         End Set
@@ -802,7 +802,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisACode7() As String
+    Public Property AccountAnalysisACode7 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_7) Is DBNull.Value Then
@@ -811,7 +811,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_7), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_7, Value)
         End Set
@@ -819,7 +819,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisACode8() As String
+    Public Property AccountAnalysisACode8 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_8) Is DBNull.Value Then
@@ -828,7 +828,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_8), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_8, Value)
         End Set
@@ -836,7 +836,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisACode9() As String
+    Public Property AccountAnalysisACode9 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_9) Is DBNull.Value Then
@@ -845,7 +845,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_9), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_9, Value)
         End Set
@@ -853,7 +853,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AccountAnalysisACode10() As String
+    Public Property AccountAnalysisACode10 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_10) Is DBNull.Value Then
@@ -862,14 +862,14 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_10), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_10, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property ReportConversionControl() As String
+    Public Property ReportConversionControl As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_REPORT_CONVERSION_CONTROL) Is DBNull.Value Then
@@ -878,7 +878,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_REPORT_CONVERSION_CONTROL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_REPORT_CONVERSION_CONTROL, Value)
         End Set
@@ -886,7 +886,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property DataAccessGroupCode() As String
+    Public Property DataAccessGroupCode As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_DATA_ACCESS_GROUP_CODE) Is DBNull.Value Then
@@ -895,14 +895,14 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_DATA_ACCESS_GROUP_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_DATA_ACCESS_GROUP_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)> _
-    Public Property UserArea() As String
+    Public Property UserArea As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_USER_AREA) Is DBNull.Value Then
@@ -911,7 +911,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_USER_AREA), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_USER_AREA, Value)
         End Set
@@ -919,7 +919,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=3)> _
-    Public Property DefaultCurrencyCode() As String
+    Public Property DefaultCurrencyCode As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_DEFAULT_CURRENCY_CODE) Is DBNull.Value Then
@@ -928,7 +928,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_DEFAULT_CURRENCY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_DEFAULT_CURRENCY_CODE, Value)
         End Set
@@ -936,7 +936,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property AccountStatus() As String
+    Public Property AccountStatus As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_ACCOUNT_STATUS) Is DBNull.Value Then
@@ -945,7 +945,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_ACCOUNT_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_STATUS, Value)
         End Set
@@ -953,7 +953,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property SuppressRevaluation() As String
+    Public Property SuppressRevaluation As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_SUPPRESS_REVALUATION) Is DBNull.Value Then
@@ -962,7 +962,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_SUPPRESS_REVALUATION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_SUPPRESS_REVALUATION, Value)
         End Set
@@ -970,7 +970,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property PayAsPaidAccountType() As String
+    Public Property PayAsPaidAccountType As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_PAY_AS_PAID_ACCOUNT_TYPE) Is DBNull.Value Then
@@ -979,7 +979,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_PAY_AS_PAID_ACCOUNT_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_PAY_AS_PAID_ACCOUNT_TYPE, Value)
         End Set
@@ -987,7 +987,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=15)> _
-    Public Property SupplierLookupCode() As String
+    Public Property SupplierLookupCode As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_SUPPLIER_LOOKUP_CODE) Is DBNull.Value Then
@@ -996,7 +996,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_SUPPLIER_LOOKUP_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_LOOKUP_CODE, Value)
         End Set
@@ -1004,7 +1004,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=20)> _
-    Public Property PaymentMethod() As String
+    Public Property PaymentMethod As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_PAYMENT_METHOD) Is DBNull.Value Then
@@ -1013,7 +1013,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_PAYMENT_METHOD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_PAYMENT_METHOD, Value)
         End Set
@@ -1021,7 +1021,7 @@ Public Class AcctSetting
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=8)> _
-    Public Property SupplierStatus() As String
+    Public Property SupplierStatus As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_SUPPLIER_STATUS) Is DBNull.Value Then
@@ -1030,14 +1030,14 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_SUPPLIER_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_STATUS, Value)
         End Set
     End Property
 
     <ValidSupplierAnalysisCode1(""), ValidStringLength("", Max:=15)> _
-    Public Property SupplierAnalysisCode1() As String
+    Public Property SupplierAnalysisCode1 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_1) Is DBNull.Value Then
@@ -1046,7 +1046,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_1, Value)
         End Set
@@ -1054,7 +1054,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property SupplierAnalysisCode2() As String
+    Public Property SupplierAnalysisCode2 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_2) Is DBNull.Value Then
@@ -1063,7 +1063,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_2, Value)
         End Set
@@ -1071,7 +1071,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property SupplierAnalysisCode3() As String
+    Public Property SupplierAnalysisCode3 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_3) Is DBNull.Value Then
@@ -1080,7 +1080,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_3, Value)
         End Set
@@ -1088,7 +1088,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property SupplierAnalysisCode4() As String
+    Public Property SupplierAnalysisCode4 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_4) Is DBNull.Value Then
@@ -1097,7 +1097,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_4), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_4, Value)
         End Set
@@ -1105,7 +1105,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property SupplierAnalysisCode5() As String
+    Public Property SupplierAnalysisCode5 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_5) Is DBNull.Value Then
@@ -1114,7 +1114,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_5), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_5, Value)
         End Set
@@ -1122,7 +1122,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property SupplierAnalysisCode6() As String
+    Public Property SupplierAnalysisCode6 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_6) Is DBNull.Value Then
@@ -1131,7 +1131,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_6), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_6, Value)
         End Set
@@ -1139,7 +1139,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property SupplierAnalysisCode7() As String
+    Public Property SupplierAnalysisCode7 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_7) Is DBNull.Value Then
@@ -1148,7 +1148,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_7), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_7, Value)
         End Set
@@ -1156,7 +1156,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property SupplierAnalysisCode8() As String
+    Public Property SupplierAnalysisCode8 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_8) Is DBNull.Value Then
@@ -1165,7 +1165,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_8), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_8, Value)
         End Set
@@ -1173,7 +1173,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property SupplierAnalysisCode9() As String
+    Public Property SupplierAnalysisCode9 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_9) Is DBNull.Value Then
@@ -1182,7 +1182,7 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_9), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_9, Value)
         End Set
@@ -1190,7 +1190,7 @@ Public Class AcctSetting
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property SupplierAnalysisCode10() As String
+    Public Property SupplierAnalysisCode10 As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_10) Is DBNull.Value Then
@@ -1199,14 +1199,14 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_10), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_10, Value)
         End Set
     End Property
 
     <ValidPaymentTerms("")> _
-    Public Property PaymentTermsId() As Guid
+    Public Property PaymentTermsId As Guid
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_PAYMENT_TERMS_ID) Is DBNull.Value Then
@@ -1215,14 +1215,14 @@ Public Class AcctSetting
                 Return New Guid(CType(Row(AcctSettingDAL.COL_NAME_PAYMENT_TERMS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_PAYMENT_TERMS_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -1231,14 +1231,14 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)> _
-    Public Property DefaultBankSubCode() As String
+    Public Property DefaultBankSubCode As String
         Get
             CheckDeleted()
             If Row(AcctSettingDAL.COL_NAME_DEFAULT_BANK_SUB_CODE) Is DBNull.Value Then
@@ -1247,18 +1247,18 @@ Public Class AcctSetting
                 Return CType(Row(AcctSettingDAL.COL_NAME_DEFAULT_BANK_SUB_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctSettingDAL.COL_NAME_DEFAULT_BANK_SUB_CODE, Value)
         End Set
     End Property
 
     'Local property - not attached to the record
-    Public Property AcctSettingType() As String
+    Public Property AcctSettingType As String
         Get
             Return _AcctSettingType
         End Get
-        Set(ByVal Value As String)
+        Set
             _AcctSettingType = Value
         End Set
     End Property

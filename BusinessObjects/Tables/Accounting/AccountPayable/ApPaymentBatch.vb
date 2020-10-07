@@ -90,7 +90,7 @@ Public Class ApPaymentBatch
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ApPaymentBatchDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ApPaymentBatch
     End Property
 	
     <ValueMandatory(""),ValidStringLength("", Max:=400)> _
-    Public Property BatchNumber() As String
+    Public Property BatchNumber As String
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_BATCH_NUMBER) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ApPaymentBatch
                 Return CType(row(ApPaymentBatchDAL.COL_NAME_BATCH_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApPaymentBatchDAL.COL_NAME_BATCH_NUMBER, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ApPaymentBatch
 	
 	
     <ValueMandatory("")> _
-    Public Property VendorId() As Guid
+    Public Property VendorId As Guid
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_VENDOR_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ApPaymentBatch
                 Return New Guid(CType(row(ApPaymentBatchDAL.COL_NAME_VENDOR_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ApPaymentBatchDAL.COL_NAME_VENDOR_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class ApPaymentBatch
 	
 	
     
-    Public Property VendorAddressId() As Guid
+    Public Property VendorAddressId As Guid
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_VENDOR_ADDRESS_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class ApPaymentBatch
                 Return New Guid(CType(row(ApPaymentBatchDAL.COL_NAME_VENDOR_ADDRESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ApPaymentBatchDAL.COL_NAME_VENDOR_ADDRESS_ID, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class ApPaymentBatch
 	
 	
     <ValueMandatory("")> _
-    Public Property Amount() As DecimalType
+    Public Property Amount As DecimalType
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_AMOUNT) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class ApPaymentBatch
                 Return New DecimalType(CType(row(ApPaymentBatchDAL.COL_NAME_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ApPaymentBatchDAL.COL_NAME_AMOUNT, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class ApPaymentBatch
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=200)> _
-    Public Property AccountingPeriod() As String
+    Public Property AccountingPeriod As String
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_ACCOUNTING_PERIOD) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class ApPaymentBatch
                 Return CType(row(ApPaymentBatchDAL.COL_NAME_ACCOUNTING_PERIOD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApPaymentBatchDAL.COL_NAME_ACCOUNTING_PERIOD, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class ApPaymentBatch
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=400)> _
-    Public Property PaymentStatusXcd() As String
+    Public Property PaymentStatusXcd As String
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_PAYMENT_STATUS_XCD) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class ApPaymentBatch
                 Return CType(row(ApPaymentBatchDAL.COL_NAME_PAYMENT_STATUS_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApPaymentBatchDAL.COL_NAME_PAYMENT_STATUS_XCD, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class ApPaymentBatch
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=4)> _
-    Public Property Distributed() As String
+    Public Property Distributed As String
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_DISTRIBUTED) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class ApPaymentBatch
                 Return CType(row(ApPaymentBatchDAL.COL_NAME_DISTRIBUTED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApPaymentBatchDAL.COL_NAME_DISTRIBUTED, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class ApPaymentBatch
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=4)> _
-    Public Property Posted() As String
+    Public Property Posted As String
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_POSTED) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class ApPaymentBatch
                 Return CType(row(ApPaymentBatchDAL.COL_NAME_POSTED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApPaymentBatchDAL.COL_NAME_POSTED, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class ApPaymentBatch
 	
 	
     <ValidStringLength("", Max:=400)> _
-    Public Property Paymentsource() As String
+    Public Property Paymentsource As String
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_PAYMENTSOURCE) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class ApPaymentBatch
                 Return CType(row(ApPaymentBatchDAL.COL_NAME_PAYMENTSOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApPaymentBatchDAL.COL_NAME_PAYMENTSOURCE, Value)
         End Set

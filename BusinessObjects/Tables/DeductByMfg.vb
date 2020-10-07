@@ -90,7 +90,7 @@ Public Class DeductByMfg
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DeductByMfgDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class DeductByMfg
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(DeductByMfgDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class DeductByMfg
                 Return New Guid(CType(Row(DeductByMfgDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeductByMfgDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class DeductByMfg
 
 
     <ValueMandatory("")> _
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(DeductByMfgDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class DeductByMfg
                 Return New Guid(CType(Row(DeductByMfgDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DeductByMfgDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class DeductByMfg
 
 
     <ValidStringLength("", Max:=100)>
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(DeductByMfgDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -144,14 +144,14 @@ Public Class DeductByMfg
                 Return CType(Row(DeductByMfgDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DeductByMfgDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Max:=NEW_MAX_DOUBLE)> _
-    Public Property Deductible() As DecimalType
+    Public Property Deductible As DecimalType
         Get
             CheckDeleted()
             Dim deduct As Decimal = 0D
@@ -161,7 +161,7 @@ Public Class DeductByMfg
                 Return New DecimalType(CType(Row(DeductByMfgDAL.COL_DEDUCTIBLE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DeductByMfgDAL.COL_DEDUCTIBLE, Value)
         End Set

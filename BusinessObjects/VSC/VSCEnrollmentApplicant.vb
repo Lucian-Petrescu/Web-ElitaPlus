@@ -90,7 +90,7 @@ Public Class VscEnrollmentApplicant
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(VscEnrollmentApplicantDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class VscEnrollmentApplicant
     End Property
 
     <ValueMandatory("")> _
-    Public Property EnrollmentId() As Guid
+    Public Property EnrollmentId As Guid
         Get
             CheckDeleted()
             If row(VscEnrollmentApplicantDAL.COL_NAME_ENROLLMENT_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class VscEnrollmentApplicant
                 Return New Guid(CType(row(VscEnrollmentApplicantDAL.COL_NAME_ENROLLMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VscEnrollmentApplicantDAL.COL_NAME_ENROLLMENT_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class VscEnrollmentApplicant
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property ApplicantName() As String
+    Public Property ApplicantName As String
         Get
             CheckDeleted()
             If row(VscEnrollmentApplicantDAL.COL_NAME_APPLICANT_NAME) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class VscEnrollmentApplicant
                 Return CType(row(VscEnrollmentApplicantDAL.COL_NAME_APPLICANT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VscEnrollmentApplicantDAL.COL_NAME_APPLICANT_NAME, Value)
         End Set

@@ -90,7 +90,7 @@ Public NotInheritable Class InvoiceReconciliation
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(InvoiceReconciliationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public NotInheritable Class InvoiceReconciliation
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimAuthItemId() As Guid
+    Public Property ClaimAuthItemId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceReconciliationDAL.COL_NAME_CLAIM_AUTH_ITEM_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public NotInheritable Class InvoiceReconciliation
                 Return New Guid(CType(Row(InvoiceReconciliationDAL.COL_NAME_CLAIM_AUTH_ITEM_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceReconciliationDAL.COL_NAME_CLAIM_AUTH_ITEM_ID, Value)
             ClaimAuthorizationItem = Nothing
@@ -119,7 +119,7 @@ Public NotInheritable Class InvoiceReconciliation
 
 
     <ValueMandatory("")> _
-    Public Property InvoiceItemId() As Guid
+    Public Property InvoiceItemId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceReconciliationDAL.COL_NAME_INVOICE_ITEM_ID) Is DBNull.Value Then
@@ -128,7 +128,7 @@ Public NotInheritable Class InvoiceReconciliation
                 Return New Guid(CType(Row(InvoiceReconciliationDAL.COL_NAME_INVOICE_ITEM_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceReconciliationDAL.COL_NAME_INVOICE_ITEM_ID, Value)
             InvoiceItem = Nothing
@@ -137,7 +137,7 @@ Public NotInheritable Class InvoiceReconciliation
 
 
     <ValueMandatory("")> _
-    Public Property ReconciliationStatusId() As Guid
+    Public Property ReconciliationStatusId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceReconciliationDAL.COL_NAME_RECONCILIATION_STATUS_ID) Is DBNull.Value Then
@@ -146,7 +146,7 @@ Public NotInheritable Class InvoiceReconciliation
                 Return New Guid(CType(Row(InvoiceReconciliationDAL.COL_NAME_RECONCILIATION_STATUS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceReconciliationDAL.COL_NAME_RECONCILIATION_STATUS_ID, Value)
         End Set
@@ -154,7 +154,7 @@ Public NotInheritable Class InvoiceReconciliation
 
 
     <ValueMandatory("")> _
-    Public Property ReconciledAmount() As DecimalType
+    Public Property ReconciledAmount As DecimalType
         Get
             CheckDeleted()
             If Row(InvoiceReconciliationDAL.COL_NAME_RECONCILED_AMOUNT) Is DBNull.Value Then
@@ -163,7 +163,7 @@ Public NotInheritable Class InvoiceReconciliation
                 Return New DecimalType(CType(Row(InvoiceReconciliationDAL.COL_NAME_RECONCILED_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(InvoiceReconciliationDAL.COL_NAME_RECONCILED_AMOUNT, Value)
         End Set
@@ -210,7 +210,7 @@ Public NotInheritable Class InvoiceReconciliation
             End If
             Return _claimAuthItem
         End Get
-        Private Set(value As ClaimAuthItem)
+        Private Set
             If (value Is Nothing OrElse _claimAuthItem Is Nothing OrElse Not _claimAuthItem.Equals(value)) Then
                 _claimAuthItem = value
             End If
@@ -226,7 +226,7 @@ Public NotInheritable Class InvoiceReconciliation
             End If
             Return _invoiceItem
         End Get
-        Private Set(value As InvoiceItem)
+        Private Set
             If (value Is Nothing OrElse _invoiceItem Is Nothing OrElse Not _invoiceItem.Equals(value)) Then
                 _invoiceItem = value
             End If

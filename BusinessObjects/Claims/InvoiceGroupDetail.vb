@@ -90,7 +90,7 @@ Public Class InvoiceGroupDetail
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(InvoiceGroupDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class InvoiceGroupDetail
     End Property
 
 
-    Public Property InvoiceGroupId() As Guid
+    Public Property InvoiceGroupId As Guid
         Get
             CheckDeleted()
             If row(InvoiceGroupDetailDAL.COL_NAME_INVOICE_GROUP_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class InvoiceGroupDetail
                 Return New Guid(CType(row(InvoiceGroupDetailDAL.COL_NAME_INVOICE_GROUP_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceGroupDetailDAL.COL_NAME_INVOICE_GROUP_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class InvoiceGroupDetail
 
 
 
-    Public Property InvoiceReconciliationId() As Guid
+    Public Property InvoiceReconciliationId As Guid
         Get
             CheckDeleted()
             If row(InvoiceGroupDetailDAL.COL_NAME_INVOICE_RECONCILIATION_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class InvoiceGroupDetail
                 Return New Guid(CType(row(InvoiceGroupDetailDAL.COL_NAME_INVOICE_RECONCILIATION_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceGroupDetailDAL.COL_NAME_INVOICE_RECONCILIATION_ID, Value)
         End Set

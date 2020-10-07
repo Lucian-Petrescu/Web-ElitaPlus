@@ -91,7 +91,7 @@ Public Class ClaimCloseRules
 
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimCloseRulesDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@ Public Class ClaimCloseRules
     End Property
 
     <ValueMandatory("")>
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(ClaimCloseRulesDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -111,13 +111,13 @@ Public Class ClaimCloseRules
                 Return New Guid(CType(row(ClaimCloseRulesDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimCloseRulesDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(ClaimCloseRulesDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -126,14 +126,14 @@ Public Class ClaimCloseRules
                 Return New Guid(CType(Row(ClaimCloseRulesDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimCloseRulesDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property CloseRuleBasedOnId() As Guid
+    Public Property CloseRuleBasedOnId As Guid
         Get
             CheckDeleted()
             If Row(ClaimCloseRulesDAL.COL_NAME_CLOSE_RULE_BASED_ON_ID) Is DBNull.Value Then
@@ -142,14 +142,14 @@ Public Class ClaimCloseRules
                 Return New Guid(CType(Row(ClaimCloseRulesDAL.COL_NAME_CLOSE_RULE_BASED_ON_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimCloseRulesDAL.COL_NAME_CLOSE_RULE_BASED_ON_ID, Value)
         End Set
     End Property
 
     <ValidClaimStatusByGroup("")>
-    Public Property ClaimStatusByGroupId() As Guid
+    Public Property ClaimStatusByGroupId As Guid
         Get
             CheckDeleted()
             If Row(ClaimCloseRulesDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID) Is DBNull.Value Then
@@ -158,14 +158,14 @@ Public Class ClaimCloseRules
                 Return New Guid(CType(Row(ClaimCloseRulesDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimCloseRulesDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID, Value)
         End Set
     End Property
 
     <ValidClaimIssue("")>
-    Public Property ClaimIssueId() As Guid
+    Public Property ClaimIssueId As Guid
         Get
             CheckDeleted()
             If Row(ClaimCloseRulesDAL.COL_NAME_CLAIM_ISSUE_ID) Is DBNull.Value Then
@@ -174,14 +174,14 @@ Public Class ClaimCloseRules
                 Return New Guid(CType(Row(ClaimCloseRulesDAL.COL_NAME_CLAIM_ISSUE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimCloseRulesDAL.COL_NAME_CLAIM_ISSUE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property TimePeriod() As LongType
+    Public Property TimePeriod As LongType
         Get
             CheckDeleted()
             If Row(ClaimCloseRulesDAL.COL_NAME_TIME_PERIOD) Is DBNull.Value Then
@@ -190,14 +190,14 @@ Public Class ClaimCloseRules
                 Return New LongType(CType(Row(ClaimCloseRulesDAL.COL_NAME_TIME_PERIOD), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimCloseRulesDAL.COL_NAME_TIME_PERIOD, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ReasonClosedId() As Guid
+    Public Property ReasonClosedId As Guid
         Get
             CheckDeleted()
             If row(ClaimCloseRulesDAL.COL_NAME_REASON_CLOSED_ID) Is DBNull.Value Then
@@ -206,13 +206,13 @@ Public Class ClaimCloseRules
                 Return New Guid(CType(row(ClaimCloseRulesDAL.COL_NAME_REASON_CLOSED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimCloseRulesDAL.COL_NAME_REASON_CLOSED_ID, Value)
         End Set
     End Property
 
-    Public Property ParentClaimCloseRuleId() As Guid
+    Public Property ParentClaimCloseRuleId As Guid
         Get
             CheckDeleted()
             If Row(ClaimCloseRulesDAL.COL_NAME_PARENT_CLAIM_CLOSE_RULE_ID) Is DBNull.Value Then
@@ -221,14 +221,14 @@ Public Class ClaimCloseRules
                 Return New Guid(CType(Row(ClaimCloseRulesDAL.COL_NAME_PARENT_CLAIM_CLOSE_RULE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimCloseRulesDAL.COL_NAME_PARENT_CLAIM_CLOSE_RULE_ID, Value)
         End Set
     End Property
 
 
-    Public Property ActiveFlag() As String
+    Public Property ActiveFlag As String
         Get
             CheckDeleted()
             If Row(ClaimCloseRulesDAL.COL_NAME_ACTIVE_FLAG) Is DBNull.Value Then
@@ -237,7 +237,7 @@ Public Class ClaimCloseRules
                 Return CType(Row(ClaimCloseRulesDAL.COL_NAME_ACTIVE_FLAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimCloseRulesDAL.COL_NAME_ACTIVE_FLAG, Value)
         End Set

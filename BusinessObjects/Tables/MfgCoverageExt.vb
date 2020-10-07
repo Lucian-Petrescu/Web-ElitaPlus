@@ -90,7 +90,7 @@ Public Class MfgCoverageExt
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(MfgCoverageExtDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class MfgCoverageExt
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(MfgCoverageExtDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class MfgCoverageExt
                 Return New Guid(CType(row(MfgCoverageExtDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(MfgCoverageExtDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class MfgCoverageExt
 
 
     <ValueMandatory("")> _
-    Public Property MfgCoverageId() As Guid
+    Public Property MfgCoverageId As Guid
         Get
             CheckDeleted()
             If row(MfgCoverageExtDAL.COL_NAME_MFG_COVERAGE_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class MfgCoverageExt
                 Return New Guid(CType(row(MfgCoverageExtDAL.COL_NAME_MFG_COVERAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(MfgCoverageExtDAL.COL_NAME_MFG_COVERAGE_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class MfgCoverageExt
 
 
     <ValueMandatory("")> _
-    Public Property ExtWarranty() As LongType
+    Public Property ExtWarranty As LongType
         Get
             CheckDeleted()
             If row(MfgCoverageExtDAL.COL_NAME_EXT_WARRANTY) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class MfgCoverageExt
                 Return New LongType(CType(row(MfgCoverageExtDAL.COL_NAME_EXT_WARRANTY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(MfgCoverageExtDAL.COL_NAME_EXT_WARRANTY, Value)
         End Set

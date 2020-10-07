@@ -4,7 +4,7 @@ Public Class Address
     Inherits BusinessObjectBase
 
     Public Interface IAddressUser
-        Property AddressId() As Guid
+        Property AddressId As Guid
     End Interface
 
 #Region "Private Attributes"
@@ -132,7 +132,7 @@ Public Class Address
     Private _countryBO As Country
     Private _inforceFieldValidation As Boolean = False
 
-    Public ReadOnly Property countryBO() As Country
+    Public ReadOnly Property countryBO As Country
         Get
             If _countryBO Is Nothing Then
                 If Not CountryId.Equals(Guid.Empty) Then
@@ -185,17 +185,17 @@ Public Class Address
 
 
 
-    Public Property ProfileCode() As String
+    Public Property ProfileCode As String
         Get
             Return _profile_code
         End Get
 
-        Set(value As String)
+        Set
             _profile_code = value
         End Set
     End Property
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(AddressDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -206,7 +206,7 @@ Public Class Address
     End Property
 
     <ValidStringLength("", Max:=100), MandatoryForVscAttribute(""), MandatoryForServCenterAttribute(""), MandatoryForDartyGiftCardAttribute("Address1"), RequiredFieldBySetting("", Nothing, "[ADR1]")>
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_ADDRESS1) Is DBNull.Value Then
@@ -215,7 +215,7 @@ Public Class Address
                 Return CType(Row(AddressDAL.COL_NAME_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_ADDRESS1, Value)
         End Set
@@ -223,7 +223,7 @@ Public Class Address
 
 
     <ValidStringLength("", Max:=100), RequiredFieldBySetting("", Nothing, "[ADR2]")> _
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_ADDRESS2) Is DBNull.Value Then
@@ -232,14 +232,14 @@ Public Class Address
                 Return CType(Row(AddressDAL.COL_NAME_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_ADDRESS2, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100), RequiredFieldBySetting("", Nothing, "[ADR3]")> _
-    Public Property Address3() As String
+    Public Property Address3 As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_ADDRESS3) Is DBNull.Value Then
@@ -248,7 +248,7 @@ Public Class Address
                 Return CType(Row(AddressDAL.COL_NAME_ADDRESS3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_ADDRESS3, Value)
         End Set
@@ -256,7 +256,7 @@ Public Class Address
 
 
     <ValidStringLength("", Max:=50), MandatoryForVscAttribute(""), MandatoryForServCenterAttribute(""), MandatoryForDartyGiftCardAttribute("City"), RequiredFieldBySetting("", Nothing, "[CITY]")>
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_CITY) Is DBNull.Value Then
@@ -265,13 +265,13 @@ Public Class Address
                 Return CType(Row(AddressDAL.COL_NAME_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_CITY, Value)
         End Set
     End Property
     <MandatoryForVscAttribute(""), MandatoryCountryAddressFormatAttribute("RegionId"), RequiredFieldBySetting("", Nothing, "[REGION]")> _
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -280,7 +280,7 @@ Public Class Address
                 Return New Guid(CType(Row(AddressDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_REGION_ID, Value)
         End Set
@@ -288,7 +288,7 @@ Public Class Address
 
 
     <ValidStringLength("", Max:=25), MandatoryForVscAttribute(""), MandatoryCountryAddressFormatAttribute("PostalCode"), MandatoryForDartyGiftCardAttribute("PostalCode"), RequiredFieldBySetting("", Nothing, "[ZIP]")>
-    Public Property PostalCode() As String
+    Public Property PostalCode As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_POSTAL_CODE) Is DBNull.Value Then
@@ -297,14 +297,14 @@ Public Class Address
                 Return CType(Row(AddressDAL.COL_NAME_POSTAL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_POSTAL_CODE, MiscUtil.ConvertToUpper(Value))
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -313,7 +313,7 @@ Public Class Address
                 Return New Guid(CType(Row(AddressDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
@@ -321,7 +321,7 @@ Public Class Address
 
 
     <ValidStringLength("", Max:=25)> _
-    Public Property ZipLocator() As String
+    Public Property ZipLocator As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_ZIP_LOCATOR) Is DBNull.Value Then
@@ -330,14 +330,14 @@ Public Class Address
                 Return CType(Row(AddressDAL.COL_NAME_ZIP_LOCATOR), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_ZIP_LOCATOR, Value)
         End Set
     End Property
 
 
-    Public ReadOnly Property MailingAddressLabel() As String
+    Public ReadOnly Property MailingAddressLabel As String
         Get
             Return GetMailingAddressLabel()
         End Get
@@ -349,53 +349,53 @@ Public Class Address
     Private _PaymentMethodId As Guid
     Private _PayeeId As Guid
 
-    Public Property AddressIsRequire() As Boolean
+    Public Property AddressIsRequire As Boolean
         Get
             Return _AddressIsRequire
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _AddressIsRequire = Value
         End Set
     End Property
-    Public Property AddressRequiredServCenter() As Boolean
+    Public Property AddressRequiredServCenter As Boolean
         Get
             Return _AddressRequiredServCenter
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _AddressRequiredServCenter = Value
         End Set
     End Property
 
 
-    Public Property InforceFieldValidation() As Boolean
+    Public Property InforceFieldValidation As Boolean
         Get
             Return _inforceFieldValidation
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _inforceFieldValidation = Value
         End Set
     End Property
 
-    Public Property PaymentMethodId() As Guid
+    Public Property PaymentMethodId As Guid
         Get
             Return _PaymentMethodId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _PaymentMethodId = Value
         End Set
     End Property
 
-    Public Property PayeeId() As Guid
+    Public Property PayeeId As Guid
         Get
             Return _payeeId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _payeeId = Value
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property Source() As String
+    Public Property Source As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_SOURCE) Is DBNull.Value Then
@@ -404,13 +404,13 @@ Public Class Address
                 Return CType(Row(AddressDAL.COL_NAME_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_SOURCE, Value)
         End Set
     End Property
 
-    Public Property SourceId() As Guid
+    Public Property SourceId As Guid
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_SOURCE_ID) Is DBNull.Value Then
@@ -419,7 +419,7 @@ Public Class Address
                 Return New Guid(CType(Row(AddressDAL.COL_NAME_SOURCE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_SOURCE_ID, Value)
         End Set
@@ -474,7 +474,7 @@ Public Class Address
     '    End If
     'End Sub
 
-    Public ReadOnly Property IsEmpty() As Boolean
+    Public ReadOnly Property IsEmpty As Boolean
         Get
             If (Not IsEmptyString(Address1)) OrElse (Not IsEmptyString(Address2)) OrElse (Not IsEmptyString(Address3)) OrElse _
             (Not IsEmptyString(City)) OrElse (Not IsEmptyString(PostalCode)) OrElse _
@@ -643,11 +643,11 @@ Public NotInheritable Class MandatoryForServCenterAttribute
         End Sub
 
         Private _propertyShortName As String = Nothing
-        Private Property propertyShortName() As String
+        Private Property propertyShortName As String
             Get
                 Return _propertyShortName
             End Get
-            Set(ByVal Value As String)
+            Set
                 _propertyShortName = Value
             End Set
         End Property
@@ -717,19 +717,19 @@ Public NotInheritable Class MandatoryForServCenterAttribute
             _ItemName = ItemName
             _Required = Required
         End Sub
-        Public Property ItemName() As String
+        Public Property ItemName As String
             Get
                 Return _ItemName
             End Get
-            Set(ByVal Value As String)
+            Set
                 _ItemName = Value
             End Set
         End Property
-        Public Property Required() As Boolean
+        Public Property Required As Boolean
             Get
                 Return _Required
             End Get
-            Set(ByVal Value As Boolean)
+            Set
                 Required = Value
             End Set
         End Property

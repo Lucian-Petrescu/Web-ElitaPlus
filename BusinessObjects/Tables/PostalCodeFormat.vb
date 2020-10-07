@@ -98,7 +98,7 @@ Public Class PostalCodeFormat
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(PostalCodeFormatDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -109,7 +109,7 @@ Public Class PostalCodeFormat
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(PostalCodeFormatDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -118,7 +118,7 @@ Public Class PostalCodeFormat
                 Return CType(row(PostalCodeFormatDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PostalCodeFormatDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -126,7 +126,7 @@ Public Class PostalCodeFormat
 
 
     <ValueMandatory(""), ValidLocatorStart("")> _
-    Public Property LocatorStartPosition() As LongType
+    Public Property LocatorStartPosition As LongType
         Get
             CheckDeleted()
             If row(PostalCodeFormatDAL.COL_NAME_LOCATOR_START_POSITION) Is DBNull.Value Then
@@ -135,7 +135,7 @@ Public Class PostalCodeFormat
                 Return New LongType(CType(row(PostalCodeFormatDAL.COL_NAME_LOCATOR_START_POSITION), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(PostalCodeFormatDAL.COL_NAME_LOCATOR_START_POSITION, Value)
         End Set
@@ -143,7 +143,7 @@ Public Class PostalCodeFormat
 
 
     <ValueMandatory(""), ValidLocatorLength("")> _
-    Public Property LocatorLength() As LongType
+    Public Property LocatorLength As LongType
         Get
             CheckDeleted()
             If row(PostalCodeFormatDAL.COL_NAME_LOCATOR_LENGTH) Is DBNull.Value Then
@@ -152,7 +152,7 @@ Public Class PostalCodeFormat
                 Return New LongType(CType(row(PostalCodeFormatDAL.COL_NAME_LOCATOR_LENGTH), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(PostalCodeFormatDAL.COL_NAME_LOCATOR_LENGTH, Value)
         End Set
@@ -160,7 +160,7 @@ Public Class PostalCodeFormat
 
 
     <ValueMandatory("")> _
-    Public Property ReformatFileInputFlag() As Boolean
+    Public Property ReformatFileInputFlag As Boolean
         Get
             CheckDeleted()
             If row(PostalCodeFormatDAL.COL_NAME_REFORMAT_FILE_INPUT_FLAG) Is DBNull.Value Then
@@ -169,7 +169,7 @@ Public Class PostalCodeFormat
                 Return CType(row(PostalCodeFormatDAL.COL_NAME_REFORMAT_FILE_INPUT_FLAG), String) = "Y"
             End If
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             CheckDeleted()
             If Value Then
                 SetValue(PostalCodeFormatDAL.COL_NAME_REFORMAT_FILE_INPUT_FLAG, "Y")
@@ -178,7 +178,7 @@ Public Class PostalCodeFormat
             End If
         End Set
     End Property
-    Public Property ComunaEnabled() As Boolean
+    Public Property ComunaEnabled As Boolean
         Get
             CheckDeleted()
             If Row(PostalCodeFormatDAL.COL_NAME_COMUNA_ENABLED) Is DBNull.Value Then
@@ -187,7 +187,7 @@ Public Class PostalCodeFormat
                 Return CType(Row(PostalCodeFormatDAL.COL_NAME_COMUNA_ENABLED), String) = "Y"
             End If
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             CheckDeleted()
             If Value Then
                 SetValue(PostalCodeFormatDAL.COL_NAME_COMUNA_ENABLED, "Y")
@@ -198,7 +198,7 @@ Public Class PostalCodeFormat
     End Property
 
     <ValueMandatory("")> _
-    Public Property RegularExpressionId() As Guid
+    Public Property RegularExpressionId As Guid
         Get
             CheckDeleted()
             If Row(PostalCodeFormatDAL.COL_NAME_REGULAR_EXPRESSION_ID) Is DBNull.Value Then
@@ -207,7 +207,7 @@ Public Class PostalCodeFormat
                 Return New Guid(CType(Row(PostalCodeFormatDAL.COL_NAME_REGULAR_EXPRESSION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PostalCodeFormatDAL.COL_NAME_REGULAR_EXPRESSION_ID, Value)
         End Set

@@ -52,7 +52,7 @@ Public MustInherit Class BasedSpecializedClaimContext
 
             Dim error_code As OracleString = dbCommand.Parameters("po_error_code").Value
 
-            If (error_code.IsNull Or error_code.ToString = String.Empty) Then
+            If (error_code.IsNull OrElse error_code.ToString = String.Empty) Then
 
                 dsCertList.Tables(0).TableName = "CertificateInfo"
                 dsCertList.Tables(1).TableName = "ClaimInfo"

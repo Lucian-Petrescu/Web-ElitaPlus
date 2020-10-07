@@ -90,7 +90,7 @@ Public Class ServiceLevelDetail
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ServiceLevelDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ServiceLevelDetail
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServiceLevelGroupId() As Guid
+    Public Property ServiceLevelGroupId As Guid
         Get
             CheckDeleted()
             If row(ServiceLevelDetailDAL.COL_NAME_SERVICE_LEVEL_GROUP_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ServiceLevelDetail
                 Return New Guid(CType(row(ServiceLevelDetailDAL.COL_NAME_SERVICE_LEVEL_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceLevelDetailDAL.COL_NAME_SERVICE_LEVEL_GROUP_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ServiceLevelDetail
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(ServiceLevelDetailDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ServiceLevelDetail
                 Return CType(row(ServiceLevelDetailDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceLevelDetailDAL.COL_NAME_CODE, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class ServiceLevelDetail
 
 
     <ValidStringLength("", Max:=400)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(ServiceLevelDetailDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class ServiceLevelDetail
                 Return CType(row(ServiceLevelDetailDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceLevelDetailDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class ServiceLevelDetail
 
 
 
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             CheckDeleted()
             If row(ServiceLevelDetailDAL.COL_NAME_RISK_TYPE_ID) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class ServiceLevelDetail
                 Return New Guid(CType(row(ServiceLevelDetailDAL.COL_NAME_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceLevelDetailDAL.COL_NAME_RISK_TYPE_ID, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class ServiceLevelDetail
 
 
 
-    Public Property CostTypeId() As Guid
+    Public Property CostTypeId As Guid
         Get
             CheckDeleted()
             If row(ServiceLevelDetailDAL.COL_NAME_COST_TYPE_ID) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class ServiceLevelDetail
                 Return New Guid(CType(row(ServiceLevelDetailDAL.COL_NAME_COST_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceLevelDetailDAL.COL_NAME_COST_TYPE_ID, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class ServiceLevelDetail
 
 
 
-    Public Property ServiceLevelCost() As DecimalType
+    Public Property ServiceLevelCost As DecimalType
         Get
             CheckDeleted()
             If row(ServiceLevelDetailDAL.COL_NAME_SERVICE_LEVEL_COST) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class ServiceLevelDetail
                 Return New DecimalType(CType(row(ServiceLevelDetailDAL.COL_NAME_SERVICE_LEVEL_COST), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ServiceLevelDetailDAL.COL_NAME_SERVICE_LEVEL_COST, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class ServiceLevelDetail
 
 
 
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If row(ServiceLevelDetailDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class ServiceLevelDetail
                 Return New DateType(DateHelper.GetDateValue(Row(ServiceLevelDetailDAL.COL_NAME_EFFECTIVE_DATE).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ServiceLevelDetailDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class ServiceLevelDetail
 
 
 
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If row(ServiceLevelDetailDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class ServiceLevelDetail
                 Return New DateType(DateHelper.GetDateValue(Row(ServiceLevelDetailDAL.COL_NAME_EXPIRATION_DATE).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ServiceLevelDetailDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set

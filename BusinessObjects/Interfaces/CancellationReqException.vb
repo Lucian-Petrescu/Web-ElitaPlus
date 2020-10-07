@@ -113,7 +113,7 @@ Public Class CancellationReqException
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(TransactionLogHeaderDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -124,7 +124,7 @@ Public Class CancellationReqException
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -133,14 +133,14 @@ Public Class CancellationReqException
                 Return New Guid(CType(Row(TransactionLogHeaderDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransactionLogHeaderDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property FunctionTypeID() As Guid
+    Public Property FunctionTypeID As Guid
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_FUNCTION_TYPE_ID) Is DBNull.Value Then
@@ -149,7 +149,7 @@ Public Class CancellationReqException
                 Return New Guid(CType(Row(TransactionLogHeaderDAL.COL_NAME_FUNCTION_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransactionLogHeaderDAL.COL_NAME_FUNCTION_TYPE_ID, Value)
         End Set
@@ -157,7 +157,7 @@ Public Class CancellationReqException
 
 
     <ValueMandatory("")> _
-    Public Property TransactionXml() As Object
+    Public Property TransactionXml As Object
         Get
             CheckDeleted()
             If row(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_XML) Is DBNull.Value Then
@@ -166,13 +166,13 @@ Public Class CancellationReqException
                 Return CType(Row(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_XML), Object)
             End If
         End Get
-        Set(ByVal Value As Object)
+        Set
             CheckDeleted()
             SetValue(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_XML, Value)
         End Set
     End Property
 
-    Public Property TransactionProcessedDate() As DateType
+    Public Property TransactionProcessedDate As DateType
         Get
             CheckDeleted()
             If row(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_PROCESSED_DATE) Is DBNull.Value Then
@@ -181,14 +181,14 @@ Public Class CancellationReqException
                 Return New DateType(CType(row(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_PROCESSED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_PROCESSED_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property TransactionStatusID() As Guid
+    Public Property TransactionStatusID As Guid
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_ID) Is DBNull.Value Then
@@ -197,7 +197,7 @@ Public Class CancellationReqException
                 Return New Guid(CType(Row(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_ID, Value)
         End Set
@@ -205,7 +205,7 @@ Public Class CancellationReqException
 
 
     <ValidStringLength("", Max:=100)> _
-    Public Property GVSoriginalTransNo() As String
+    Public Property GVSoriginalTransNo As String
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_GVS_ORIGINAL_TRANS_NO) Is DBNull.Value Then
@@ -214,13 +214,13 @@ Public Class CancellationReqException
                 Return CType(Row(TransactionLogHeaderDAL.COL_NAME_GVS_ORIGINAL_TRANS_NO), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransactionLogHeaderDAL.COL_NAME_GVS_ORIGINAL_TRANS_NO, Value)
         End Set
     End Property
 
-    Public Property OriginalTransLogHdrID() As Guid
+    Public Property OriginalTransLogHdrID As Guid
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID) Is DBNull.Value Then
@@ -229,20 +229,20 @@ Public Class CancellationReqException
                 Return New Guid(CType(Row(TransactionLogHeaderDAL.COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransactionLogHeaderDAL.COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID, Value)
         End Set
     End Property
 
 
-    Public ReadOnly Property MyDataSet() As DataSet
+    Public ReadOnly Property MyDataSet As DataSet
         Get
             Return Dataset
         End Get
     End Property
 
-    Public Property KeyID() As Guid
+    Public Property KeyID As Guid
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_KEY_ID) Is DBNull.Value Then
@@ -251,14 +251,14 @@ Public Class CancellationReqException
                 Return New Guid(CType(Row(TransactionLogHeaderDAL.COL_NAME_KEY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransactionLogHeaderDAL.COL_NAME_KEY_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)> _
-    Public Property Hide() As String
+    Public Property Hide As String
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_HIDE) Is DBNull.Value Then
@@ -267,14 +267,14 @@ Public Class CancellationReqException
                 Return CType(Row(TransactionLogHeaderDAL.COL_NAME_HIDE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransactionLogHeaderDAL.COL_NAME_HIDE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)> _
-    Public Property Resend() As String
+    Public Property Resend As String
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_RESEND) Is DBNull.Value Then
@@ -283,7 +283,7 @@ Public Class CancellationReqException
                 Return CType(Row(TransactionLogHeaderDAL.COL_NAME_RESEND), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransactionLogHeaderDAL.COL_NAME_RESEND, Value)
         End Set

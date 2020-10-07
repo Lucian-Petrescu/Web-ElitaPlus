@@ -91,7 +91,7 @@ Public Class ServiceSchedule
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IExpirable.ID
+    Public ReadOnly Property Id As Guid Implements IExpirable.ID
         Get
             If Row(ServiceScheduleDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@ Public Class ServiceSchedule
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServiceClassId() As Guid
+    Public Property ServiceClassId As Guid
         Get
             CheckDeleted()
             If row(ServiceScheduleDAL.COL_NAME_SERVICE_CLASS_ID) Is DBNull.Value Then
@@ -111,7 +111,7 @@ Public Class ServiceSchedule
                 Return New Guid(CType(row(ServiceScheduleDAL.COL_NAME_SERVICE_CLASS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceScheduleDAL.COL_NAME_SERVICE_CLASS_ID, Value)
         End Set
@@ -119,7 +119,7 @@ Public Class ServiceSchedule
 
 
 
-    Public Property ServiceTypeId() As Guid
+    Public Property ServiceTypeId As Guid
         Get
             CheckDeleted()
             If row(ServiceScheduleDAL.COL_NAME_SERVICE_TYPE_ID) Is DBNull.Value Then
@@ -128,7 +128,7 @@ Public Class ServiceSchedule
                 Return New Guid(CType(row(ServiceScheduleDAL.COL_NAME_SERVICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceScheduleDAL.COL_NAME_SERVICE_TYPE_ID, Value)
         End Set
@@ -136,7 +136,7 @@ Public Class ServiceSchedule
 
 
     <ValueMandatory("")> _
-    Public Property ScheduleId() As Guid
+    Public Property ScheduleId As Guid
         Get
             CheckDeleted()
             If row(ServiceScheduleDAL.COL_NAME_SCHEDULE_ID) Is DBNull.Value Then
@@ -145,7 +145,7 @@ Public Class ServiceSchedule
                 Return New Guid(CType(row(ServiceScheduleDAL.COL_NAME_SCHEDULE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceScheduleDAL.COL_NAME_SCHEDULE_ID, Value)
         End Set
@@ -153,7 +153,7 @@ Public Class ServiceSchedule
 
 
     <ValueMandatory("")> _
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If row(ServiceScheduleDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -162,7 +162,7 @@ Public Class ServiceSchedule
                 Return New Guid(CType(row(ServiceScheduleDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceScheduleDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
@@ -170,7 +170,7 @@ Public Class ServiceSchedule
 
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EFFECTIVE)> _
-    Public Property Effective() As DateTimeType Implements IExpirable.Effective
+    Public Property Effective As DateTimeType Implements IExpirable.Effective
         Get
             CheckDeleted()
             If Row(ServiceScheduleDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -179,7 +179,7 @@ Public Class ServiceSchedule
                 Return New DateTimeType(CType(Row(ServiceScheduleDAL.COL_NAME_EFFECTIVE), DateTime))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(ServiceScheduleDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -187,7 +187,7 @@ Public Class ServiceSchedule
 
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EXPIRATION), EffectiveExpirationDateValidation(Codes.EXPIRATION)> _
-    Public Property Expiration() As DateTimeType Implements IExpirable.Expiration
+    Public Property Expiration As DateTimeType Implements IExpirable.Expiration
         Get
             CheckDeleted()
             If Row(ServiceScheduleDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -196,13 +196,13 @@ Public Class ServiceSchedule
                 Return New DateTimeType(CType(Row(ServiceScheduleDAL.COL_NAME_EXPIRATION), DateTime))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(ServiceScheduleDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
-    Public Property DayOfWeekId() As Guid
+    Public Property DayOfWeekId As Guid
         Get
             CheckDeleted()
             If Row(ServiceScheduleDAL.COL_NAME_DAY_OF_WEEK_ID) Is DBNull.Value Then
@@ -211,13 +211,13 @@ Public Class ServiceSchedule
                 Return New Guid(CType(Row(ServiceScheduleDAL.COL_NAME_DAY_OF_WEEK_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceScheduleDAL.COL_NAME_DAY_OF_WEEK_ID, Value)
         End Set
     End Property
 
-    Public Property FromTime() As DateType
+    Public Property FromTime As DateType
         Get
             CheckDeleted()
             If Row(ServiceScheduleDAL.COL_NAME_FROM_TIME) Is DBNull.Value Then
@@ -226,13 +226,13 @@ Public Class ServiceSchedule
                 Return New DateType(CType(Row(ServiceScheduleDAL.COL_NAME_FROM_TIME), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ServiceScheduleDAL.COL_NAME_FROM_TIME, Value)
         End Set
     End Property
 
-    Public Property ToTime() As DateType
+    Public Property ToTime As DateType
         Get
             CheckDeleted()
             If Row(ServiceScheduleDAL.COL_NAME_TO_TIME) Is DBNull.Value Then
@@ -241,7 +241,7 @@ Public Class ServiceSchedule
                 Return New DateType(CType(Row(ServiceScheduleDAL.COL_NAME_TO_TIME), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ServiceScheduleDAL.COL_NAME_TO_TIME, Value)
         End Set
@@ -289,7 +289,7 @@ Public Class ServiceSchedule
         Get
 
         End Get
-        Set(ByVal value As String)
+        Set
 
         End Set
     End Property
@@ -298,7 +298,7 @@ Public Class ServiceSchedule
         Get
 
         End Get
-        Set(ByVal value As System.Guid)
+        Set
 
         End Set
     End Property

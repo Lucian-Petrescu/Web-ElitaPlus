@@ -109,7 +109,7 @@ Public Class RegionTax
 
 #Region "Properties"
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(RegionTaxDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -120,7 +120,7 @@ Public Class RegionTax
     End Property
 
     <ValueMandatory("")> _
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(RegionTaxDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -129,14 +129,14 @@ Public Class RegionTax
                 Return New Guid(CType(Row(RegionTaxDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RegionTaxDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property TaxTypeId() As Guid
+    Public Property TaxTypeId As Guid
         Get
             CheckDeleted()
             If Row(RegionTaxDAL.COL_NAME_TAX_TYPE_ID) Is DBNull.Value Then
@@ -145,13 +145,13 @@ Public Class RegionTax
                 Return New Guid(CType(Row(RegionTaxDAL.COL_NAME_TAX_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RegionTaxDAL.COL_NAME_TAX_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -160,14 +160,14 @@ Public Class RegionTax
                 Return New Guid(CType(Row(CountryTaxDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidEffectiveDate(""), ValidNewEffectiveDate("")> _
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(RegionTaxDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -176,14 +176,14 @@ Public Class RegionTax
                 Return New DateType(CType(Row(RegionTaxDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(RegionTaxDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidLastEntryForDelete("")> _
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(RegionTaxDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -192,14 +192,14 @@ Public Class RegionTax
                 Return New DateType(CType(Row(RegionTaxDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(RegionTaxDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=120)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(RegionTaxDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -208,14 +208,14 @@ Public Class RegionTax
                 Return CType(Row(RegionTaxDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RegionTaxDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ProductTaxTypeId() As Guid
+    Public Property ProductTaxTypeId As Guid
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_PRODUCT_TAX_TYPE_ID) Is DBNull.Value Then
@@ -224,7 +224,7 @@ Public Class RegionTax
                 Return New Guid(CType(Row(CountryTaxDAL.COL_NAME_PRODUCT_TAX_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_PRODUCT_TAX_TYPE_ID, Value)
         End Set
@@ -243,7 +243,7 @@ Public Class RegionTax
             Return Nothing
         End Get
 
-        Set(ByVal value As RegionTaxDetail)
+        Set
             CheckDeleted()
 
             Dim oRGD As RegionTaxDetail, blnExisting As Boolean = False
@@ -270,12 +270,12 @@ Public Class RegionTax
         End Set
     End Property
 
-    Public ReadOnly Property RegionTaxDetailList() As List(Of RegionTaxDetail)
+    Public ReadOnly Property RegionTaxDetailList As List(Of RegionTaxDetail)
         Get
             Return _detailRecords
         End Get
     End Property
-    Public Property CompanyTypeXCD() As String
+    Public Property CompanyTypeXCD As String
         Get
             CheckDeleted()
             If Row(RegionTaxDAL.COL_NAME_COMPANY_TYPE_XCD) Is DBNull.Value Then
@@ -284,7 +284,7 @@ Public Class RegionTax
                 Return CType(Row(RegionTaxDAL.COL_NAME_COMPANY_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RegionTaxDAL.COL_NAME_COMPANY_TYPE_XCD, Value)
         End Set
@@ -294,7 +294,7 @@ Public Class RegionTax
 
 #Region "Public Members"
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsFamilyDirty()
         End Get

@@ -109,7 +109,7 @@ Public Class ClaimDeviceInformationController
         Try
             Dim sEquipTypeClaimed As String = LookupListNew.GetDescriptionFromExtCode(DATA_TEXT_CLAIM_EQUIP_TYPE, Authentication.LangId, DATA_TEXT_CLAIM_EQUIP_TYPE_CLAIMED)
             'im dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-            If e.Row.DataItem IsNot Nothing And e.Row.RowType = DataControlRowType.DataRow Then
+            If e.Row.DataItem IsNot Nothing AndAlso e.Row.RowType = DataControlRowType.DataRow Then
                 If CType(e.Row.FindControl(GRID_CTRL_NAME_LBL_EQUIPMENT_TYPE), Label).Text = sEquipTypeClaimed Then
                     If e.Row.FindControl(GRID_CTRL_NAME_IMG_EDIT) IsNot Nothing Then
                         CType(e.Row.FindControl(GRID_CTRL_NAME_IMG_EDIT), ImageButton).Visible = ShowDeviceEditImg

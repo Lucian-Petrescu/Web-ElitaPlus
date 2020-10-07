@@ -1,9 +1,7 @@
-﻿Imports System.Globalization
-Imports Assurant.ElitaPlus.DALObjects
+﻿Imports System.Collections.Generic
+Imports System.Globalization
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
-Imports System.Threading
-Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 
 
@@ -30,7 +28,7 @@ Partial Class DealerInvoiceManualDataForm
         Delete = 3
     End Enum
 
-    Private listAmountsToSave As Collections.Generic.List(Of AfaInvoiceManaulData)
+    Private listAmountsToSave As List(Of AfaInvoiceManaulData)
     Private savedAccountingMonth As String
 #End Region
 
@@ -67,7 +65,7 @@ Partial Class DealerInvoiceManualDataForm
         MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
     End Sub
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         MasterPage.MessageController.Clear()
         UpdateBreadCrum()
         If Not IsPostBack Then
@@ -100,7 +98,7 @@ Partial Class DealerInvoiceManualDataForm
     Private Sub PopulateDropdowns()
         'Me.BindCodeNameToListControl(ddlDealer, LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, True, "Code"), , , , False)
         Dim oDealerList = GetDealerListByCompanyForUser()
-        Dim dealerTextFunc As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
+        Dim dealerTextFunc As Func(Of ListItem, String) = Function(li As ListItem)
                                                                            Return li.ExtendedCode + " - " + li.Translation + " " + "(" + li.Code + ")"
                                                                        End Function
         ddlDealer.Populate(oDealerList, New PopulateOptions() With
@@ -110,33 +108,33 @@ Partial Class DealerInvoiceManualDataForm
         Dim intYear As Integer = DateTime.Today.Year
         'ddlAcctPeriodYear.Items.Add(New ListItem("", "0000"))
         For i As Integer = (intYear - 7) To intYear
-            ddlAcctPeriodYear.Items.Add(New System.Web.UI.WebControls.ListItem(i.ToString, i.ToString))
+            ddlAcctPeriodYear.Items.Add(New WebControls.ListItem(i.ToString, i.ToString))
         Next
         ddlAcctPeriodYear.SelectedValue = intYear.ToString
 
         Dim monthName As String
-        ddlAcctPeriodMonth.Items.Add(New System.Web.UI.WebControls.ListItem("", ""))
+        ddlAcctPeriodMonth.Items.Add(New WebControls.ListItem("", ""))
         For month As Integer = 1 To 12
             monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month)
-            ddlAcctPeriodMonth.Items.Add(New System.Web.UI.WebControls.ListItem(monthName, month.ToString().PadLeft(2, CChar("0"))))
+            ddlAcctPeriodMonth.Items.Add(New WebControls.ListItem(monthName, month.ToString().PadLeft(2, CChar("0"))))
         Next
 
         'Dim strMonth As String = "0" & DateTime.Today.Month.ToString
         'strMonth = strMonth.Substring(strMonth.Length - 2)
         ddlAcctPeriodMonth.SelectedValue = ""
     End Sub
-    Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
+    Private Function GetDealerListByCompanyForUser() As ListItem()
         Dim Index As Integer
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
 
         Dim UserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
 
-        Dim oDealerList As New Collections.Generic.List(Of Assurant.Elita.CommonConfiguration.DataElements.ListItem)
+        Dim oDealerList As New List(Of ListItem)
 
         For Index = 0 To UserCompanies.Count - 1
             'UserCompanyList &= ",'" & GuidControl.GuidToHexString(UserCompanyies(Index))
             oListContext.CompanyId = UserCompanies(Index)
-            Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
+            Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
                 If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
@@ -247,7 +245,7 @@ Partial Class DealerInvoiceManualDataForm
 
         If blnSuccess Then
             If State.gridAction = PageAction.AddNew Then 'add new
-                listAmountsToSave = New Collections.Generic.List(Of AfaInvoiceManaulData)
+                listAmountsToSave = New List(Of AfaInvoiceManaulData)
                 Dim obj As AfaInvoiceManaulData
                 'save the MDF Amount
                 obj = New AfaInvoiceManaulData
@@ -357,7 +355,7 @@ Partial Class DealerInvoiceManualDataForm
         End Try
     End Sub
 
-    Private Sub btnNew_Click(sender As Object, e As System.EventArgs) Handles btnNew.Click
+    Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
         Try           
             State.gridAction = PageAction.AddNew
             AddNew()
@@ -406,7 +404,7 @@ Partial Class DealerInvoiceManualDataForm
 
 
 #Region "Handle grid"
-    Private Sub grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub grid_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             Select Case e.CommandName.ToString()
                 Case "EditAction"
@@ -470,7 +468,7 @@ Partial Class DealerInvoiceManualDataForm
         End Try
     End Sub
 
-    Private Sub grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub grid_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -479,13 +477,13 @@ Partial Class DealerInvoiceManualDataForm
 
     End Sub
 
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim objDDL As DropDownList, strTemp As String
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     If .RowIndex = Grid.EditIndex Then
                         'OrElse (State.gridAction = PageAction.EditExisting AndAlso State.myBO.InvoiceMonth = dvRow("invoice_month").ToString) Then
@@ -493,7 +491,7 @@ Partial Class DealerInvoiceManualDataForm
                         If objDDL IsNot Nothing Then
                             ' Me.BindCodeNameToListControl(objDDL, LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, True, "Code"), , , , False)
                             Dim oDealerList = GetDealerListByCompanyForUser()
-                            Dim dealerTextFunc As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
+                            Dim dealerTextFunc As Func(Of ListItem, String) = Function(li As ListItem)
                                                                                                Return li.ExtendedCode + " " + "(" + li.Code + ")"
                                                                                            End Function
                             objDDL.Populate(oDealerList, New PopulateOptions() With
@@ -509,7 +507,7 @@ Partial Class DealerInvoiceManualDataForm
                         If objDDL IsNot Nothing Then
                             Dim intYear As Integer = DateTime.Today.Year
                             For i As Integer = (intYear - 7) To intYear
-                                objDDL.Items.Add(New System.Web.UI.WebControls.ListItem(i.ToString, i.ToString))
+                                objDDL.Items.Add(New WebControls.ListItem(i.ToString, i.ToString))
                             Next
                             SetSelectedItem(objDDL, dvRow("invoice_month").ToString.Substring(0, 4))
                             If State.gridAction = PageAction.EditExisting Then
@@ -523,7 +521,7 @@ Partial Class DealerInvoiceManualDataForm
                             Dim monthName As String
                             For month As Integer = 1 To 12
                                 monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month)
-                                objDDL.Items.Add(New System.Web.UI.WebControls.ListItem(monthName, month.ToString().PadLeft(2, CChar("0"))))
+                                objDDL.Items.Add(New WebControls.ListItem(monthName, month.ToString().PadLeft(2, CChar("0"))))
                             Next
                             SetSelectedItem(objDDL, dvRow("invoice_month").ToString.Substring(4))
                             If State.gridAction = PageAction.EditExisting Then

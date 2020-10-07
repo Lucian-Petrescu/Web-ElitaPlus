@@ -94,7 +94,7 @@ Public Class WsFunctions
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(WsFunctionsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -105,7 +105,7 @@ Public Class WsFunctions
     End Property
 
     <ValueMandatory("")> _
-    Public Property WebserviceId() As Guid
+    Public Property WebserviceId As Guid
         Get
             CheckDeleted()
             If row(WsFunctionsDAL.COL_NAME_WEBSERVICE_ID) Is DBNull.Value Then
@@ -114,7 +114,7 @@ Public Class WsFunctions
                 Return New Guid(CType(row(WsFunctionsDAL.COL_NAME_WEBSERVICE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(WsFunctionsDAL.COL_NAME_WEBSERVICE_ID, Value)
         End Set
@@ -122,7 +122,7 @@ Public Class WsFunctions
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=120)> _
-    Public Property FunctionName() As String
+    Public Property FunctionName As String
         Get
             CheckDeleted()
             If row(WsFunctionsDAL.COL_NAME_FUNCTION_NAME) Is DBNull.Value Then
@@ -131,7 +131,7 @@ Public Class WsFunctions
                 Return CType(row(WsFunctionsDAL.COL_NAME_FUNCTION_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WsFunctionsDAL.COL_NAME_FUNCTION_NAME, Value)
         End Set
@@ -139,7 +139,7 @@ Public Class WsFunctions
 
 
     <ValueMandatory("")> _
-    Public Property OnLineId() As Guid
+    Public Property OnLineId As Guid
         Get
             CheckDeleted()
             If row(WsFunctionsDAL.COL_NAME_ON_LINE_ID) Is DBNull.Value Then
@@ -148,7 +148,7 @@ Public Class WsFunctions
                 Return New Guid(CType(row(WsFunctionsDAL.COL_NAME_ON_LINE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(WsFunctionsDAL.COL_NAME_ON_LINE_ID, Value)
         End Set
@@ -156,7 +156,7 @@ Public Class WsFunctions
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property OffLineMessage() As String
+    Public Property OffLineMessage As String
         Get
             CheckDeleted()
             If row(WsFunctionsDAL.COL_NAME_OFF_LINE_MESSAGE) Is DBNull.Value Then
@@ -165,13 +165,13 @@ Public Class WsFunctions
                 Return CType(row(WsFunctionsDAL.COL_NAME_OFF_LINE_MESSAGE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WsFunctionsDAL.COL_NAME_OFF_LINE_MESSAGE, Value)
         End Set
     End Property
 
-    Public Property LastOperationDate() As DateType
+    Public Property LastOperationDate As DateType
         Get
             CheckDeleted()
             If Row(WsFunctionsDAL.COL_NAME_LAST_OPERATION_DATE) Is DBNull.Value Then
@@ -180,7 +180,7 @@ Public Class WsFunctions
                 Return New DateType(CType(Row(WsFunctionsDAL.COL_NAME_LAST_OPERATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(WsFunctionsDAL.COL_NAME_LAST_OPERATION_DATE, Value)
         End Set

@@ -459,7 +459,7 @@ Namespace Tables
                         State.oDealer = New Dealer(State.moProductCode.DealerId)
                         If State.dealerInstallmentDefCode.Equals(String.Empty) Then State.dealerInstallmentDefCode = LookupListNew.GetCodeFromId(LookupListNew.LK_INSTALLMENT_DEFINITION, State.oDealer.UseInstallmentDefnId)
                         If State.dealerInstallmentDefCode.Equals(Codes.INSTALLMENT_DEFINITION__PRODUCT_CODE) _
-                            Or State.dealerInstallmentDefCode.Equals(Codes.INSTALLMENT_DEFINITION__PRODUCT_CODE_OR_CONTRACT) Then
+                            OrElse State.dealerInstallmentDefCode.Equals(Codes.INSTALLMENT_DEFINITION__PRODUCT_CODE_OR_CONTRACT) Then
                             ControlMgr.SetVisibleControl(Me, pnlInstallment, True)
                             State.isInstallmentOn = True
                         End If
@@ -716,7 +716,7 @@ Namespace Tables
         End Sub
 
         Private Sub PopulateProductParentGrid()
-            If State.IsProductCodeNew = False And State.moProductCode.IsParentProduct Then
+            If State.IsProductCodeNew = False AndAlso State.moProductCode.IsParentProduct Then
                 mo_ParentsGrid.DataSource = State.parentsearchDV
                 If Not State.ExtendedAttributesGridTranslated Then
                     TranslateGridHeader(mo_ParentsGrid)
@@ -1341,7 +1341,7 @@ Namespace Tables
                 oListContext.CompanyId = State.oDealer.CompanyId
                 Dim depreciationScheduleListForCompany As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DepreciationScheduleByCompany", context:=oListContext, languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
                 Dim filteredDepreciationScheduleListForCompany As DataElements.ListItem() = (From lst In depreciationScheduleListForCompany
-                                                                                             Where lst.ExtendedCode = "YESNO-Y" Or lst.Code = TheDepreciationSchedule.DepreciationScheduleCode
+                                                                                             Where lst.ExtendedCode = "YESNO-Y" OrElse lst.Code = TheDepreciationSchedule.DepreciationScheduleCode
                                                                                              Select lst).ToArray()
                 ddlDepSchCashReimbursement.Populate(filteredDepreciationScheduleListForCompany, New PopulateOptions() With
                                                       {
@@ -1492,7 +1492,7 @@ Namespace Tables
                         BindSelectItem(.CnlLumpsumBillingId.ToString, moCnlLumpsumBillingDrop)
 
                         Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-                        If .UpgradeProgramId.Equals(Guid.Empty) Or .UpgradeProgramId.Equals(noId) Then
+                        If .UpgradeProgramId.Equals(Guid.Empty) OrElse .UpgradeProgramId.Equals(noId) Then
                             ControlMgr.SetVisibleControl(Me, moUpgradeTermFromLabel, False)
                             ControlMgr.SetVisibleControl(Me, moUpgradeTermFROMText, False)
                             ControlMgr.SetVisibleControl(Me, moUpgradeTermToLabel, False)
@@ -1512,7 +1512,7 @@ Namespace Tables
                             BindSelectItem(.UpgFinanceInfoRequireId.ToString, moupgFinanceInfoRequireDrop)
                             If Not .UpgradeTermUomId.Equals(Guid.Empty) Then
                                 Dim strUpgradeTermUomCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_UPGRADE_TERM_UNIT_OF_MEASURE, .UpgradeTermUomId)
-                                If strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_DAYS) Or strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_MONTHS) Then
+                                If strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_DAYS) OrElse strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_MONTHS) Then
                                     ControlMgr.SetVisibleControl(Me, moUpgradeTermFromLabel, False)
                                     ControlMgr.SetVisibleControl(Me, moUpgradeTermFROMText, False)
                                     ControlMgr.SetVisibleControl(Me, moUpgradeTermToLabel, False)
@@ -1520,7 +1520,7 @@ Namespace Tables
                                     ControlMgr.SetVisibleControl(Me, moUpgradeTermLabel, True)
                                     ControlMgr.SetVisibleControl(Me, moUpgradeTermText, True)
                                     PopulateControlFromBOProperty(moUpgradeTermText, .UpgradeFixedTerm)
-                                ElseIf strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_DAYS) Or strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_MONTHS) Then
+                                ElseIf strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_DAYS) OrElse strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_MONTHS) Then
                                     ControlMgr.SetVisibleControl(Me, moUpgradeTermLabel, False)
                                     ControlMgr.SetVisibleControl(Me, moUpgradeTermText, False)
                                     ControlMgr.SetVisibleControl(Me, moUpgradeTermFromLabel, True)
@@ -1564,8 +1564,7 @@ Namespace Tables
 
                         PopulateControlFromBOProperty(moProdLiabilityLimitPercentText, .ProdLiabilityLimitPercent)
 
-                        If (GetSelectedItem(moProdLiabilityLimitBasedOnDrop).Equals(Guid.Empty) Or
-                    GetSelectedItem(moProdLiabilityLimitBasedOnDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, PROD_LIAB_BASED_ON_NOT_APP)) Then
+                        If (GetSelectedItem(moProdLiabilityLimitBasedOnDrop).Equals(Guid.Empty) OrElse GetSelectedItem(moProdLiabilityLimitBasedOnDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, PROD_LIAB_BASED_ON_NOT_APP)) Then
                             ControlMgr.SetVisibleControl(Me, moProdLiabilityLimitPolicyLabel, False)
                             ControlMgr.SetVisibleControl(Me, moProdLiabilityLimitPolicyDrop, False)
                             ControlMgr.SetVisibleControl(Me, moProdLiabilityLimitLabel, False)
@@ -1703,7 +1702,7 @@ Namespace Tables
                 If moPercentOfRetailText.Text = String.Empty Then
                     moPercentOfRetailText.Text = GetAmountFormattedDoubleString("0")
                 End If
-                If Not (.PercentOfRetail Is Nothing And (CType(moPercentOfRetailText.Text, Decimal) = 0)) Then
+                If Not (.PercentOfRetail Is Nothing AndAlso (CType(moPercentOfRetailText.Text, Decimal) = 0)) Then
                     PopulateBOProperty(TheProductCode, "PercentOfRetail", moPercentOfRetailText)
                 End If
                 If State.DealerTypeID.Equals(State.dealerTypeVSC) Then
@@ -1799,7 +1798,7 @@ Namespace Tables
             State.oDealer = New Dealer(TheDealerControl.SelectedGuid) 'As Guid = Me.GroupCompanyMultipleDrop.SelectedGuid
             State.dealerInstallmentDefCode = LookupListNew.GetCodeFromId(LookupListNew.LK_INSTALLMENT_DEFINITION, State.oDealer.UseInstallmentDefnId)
             If State.dealerInstallmentDefCode.Equals(Codes.INSTALLMENT_DEFINITION__PRODUCT_CODE) _
-                Or State.dealerInstallmentDefCode.Equals(Codes.INSTALLMENT_DEFINITION__PRODUCT_CODE_OR_CONTRACT) Then
+                OrElse State.dealerInstallmentDefCode.Equals(Codes.INSTALLMENT_DEFINITION__PRODUCT_CODE_OR_CONTRACT) Then
                 ControlMgr.SetVisibleControl(Me, pnlInstallment, True)
                 State.isInstallmentOn = True
                 Dim billFreq As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_BILLING_FREQUENCY, Codes.MONTHLY)
@@ -1889,7 +1888,7 @@ Namespace Tables
                     ElitaPlusPage.SetLabelError(moPercentOfRetailLabel)
                     Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PERCENT_OF_RETAIL_ENTERED_ERR)
                 Else
-                    If CType(moPercentOfRetailText.Text, Decimal) < 0 Or CType(moPercentOfRetailText.Text, Decimal) > 100 Then
+                    If CType(moPercentOfRetailText.Text, Decimal) < 0 OrElse CType(moPercentOfRetailText.Text, Decimal) > 100 Then
                         ElitaPlusPage.SetLabelError(moPercentOfRetailLabel)
                         Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PERCENT_OF_RETAIL_ENTERED_ERR)
                     Else
@@ -1903,11 +1902,11 @@ Namespace Tables
                 If (Not GetSelectedItem(moProdLiabilityLimitBasedOnDrop).Equals(Guid.Empty) AndAlso
                     Not GetSelectedItem(moProdLiabilityLimitBasedOnDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, PROD_LIAB_BASED_ON_NOT_APP)) Then
 
-                    If String.IsNullOrEmpty(moProdLiabilityLimitText.Text) And String.IsNullOrEmpty(moProdLiabilityLimitPercentText.Text) Then
+                    If String.IsNullOrEmpty(moProdLiabilityLimitText.Text) AndAlso String.IsNullOrEmpty(moProdLiabilityLimitPercentText.Text) Then
                         ElitaPlusPage.SetLabelError(moProdLiabilityLimitLabel)
                         ElitaPlusPage.SetLabelError(moProdLiabilityLimitPercentLabel)
                         Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PROD_LIABILITY_LIMIT_AND_PERCENT)
-                    ElseIf Not String.IsNullOrEmpty(moProdLiabilityLimitText.Text) And String.IsNullOrEmpty(moProdLiabilityLimitPercentText.Text) Then
+                    ElseIf Not String.IsNullOrEmpty(moProdLiabilityLimitText.Text) AndAlso String.IsNullOrEmpty(moProdLiabilityLimitPercentText.Text) Then
                         If Not IsNumeric(moProdLiabilityLimitText.Text) Then
                             ElitaPlusPage.SetLabelError(moProdLiabilityLimitLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PROD_LIABILITY_LIMIT)
@@ -1915,32 +1914,32 @@ Namespace Tables
                             ElitaPlusPage.SetLabelError(moProdLiabilityLimitLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PROD_LIABILITY_LIMIT)
                         End If
-                    ElseIf String.IsNullOrEmpty(moProdLiabilityLimitText.Text) And Not String.IsNullOrEmpty(moProdLiabilityLimitPercentText.Text) Then
+                    ElseIf String.IsNullOrEmpty(moProdLiabilityLimitText.Text) AndAlso Not String.IsNullOrEmpty(moProdLiabilityLimitPercentText.Text) Then
                         If Not IsNumeric(moProdLiabilityLimitPercentText.Text) Then
                             ElitaPlusPage.SetLabelError(moProdLiabilityLimitPercentLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PROD_LIABILITY_LIMIT_PERCENT)
-                        ElseIf CType(moProdLiabilityLimitPercentText.Text, Decimal) <= 0 Or CType(moProdLiabilityLimitPercentText.Text, Decimal) > 100 Then
+                        ElseIf CType(moProdLiabilityLimitPercentText.Text, Decimal) <= 0 OrElse CType(moProdLiabilityLimitPercentText.Text, Decimal) > 100 Then
                             ElitaPlusPage.SetLabelError(moProdLiabilityLimitPercentLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PROD_LIABILITY_LIMIT_PERCENT)
                         End If
-                    ElseIf Not String.IsNullOrEmpty(moProdLiabilityLimitText.Text) And Not String.IsNullOrEmpty(moProdLiabilityLimitPercentText.Text) Then
-                        If Not IsNumeric(moProdLiabilityLimitText.Text) And Not IsNumeric(moProdLiabilityLimitPercentText.Text) Then
+                    ElseIf Not String.IsNullOrEmpty(moProdLiabilityLimitText.Text) AndAlso Not String.IsNullOrEmpty(moProdLiabilityLimitPercentText.Text) Then
+                        If Not IsNumeric(moProdLiabilityLimitText.Text) AndAlso Not IsNumeric(moProdLiabilityLimitPercentText.Text) Then
                             ElitaPlusPage.SetLabelError(moProdLiabilityLimitLabel)
                             ElitaPlusPage.SetLabelError(moProdLiabilityLimitPercentLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PROD_LIABILITY_LIMIT_AND_PERCENT)
-                        ElseIf IsNumeric(moProdLiabilityLimitText.Text) And Not IsNumeric(moProdLiabilityLimitPercentText.Text) Then
+                        ElseIf IsNumeric(moProdLiabilityLimitText.Text) AndAlso Not IsNumeric(moProdLiabilityLimitPercentText.Text) Then
                             ElitaPlusPage.SetLabelError(moProdLiabilityLimitLabel)
                             ElitaPlusPage.SetLabelError(moProdLiabilityLimitPercentLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PROD_LIABILITY_LIMIT_AND_PERCENT)
-                        ElseIf Not IsNumeric(moProdLiabilityLimitText.Text) And IsNumeric(moProdLiabilityLimitPercentText.Text) Then
+                        ElseIf Not IsNumeric(moProdLiabilityLimitText.Text) AndAlso IsNumeric(moProdLiabilityLimitPercentText.Text) Then
                             ElitaPlusPage.SetLabelError(moProdLiabilityLimitLabel)
                             ElitaPlusPage.SetLabelError(moProdLiabilityLimitPercentLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PROD_LIABILITY_LIMIT_AND_PERCENT)
-                        ElseIf (CType(moProdLiabilityLimitPercentText.Text, Decimal) <= 0 Or CType(moProdLiabilityLimitPercentText.Text, Decimal) > 100) Then
+                        ElseIf (CType(moProdLiabilityLimitPercentText.Text, Decimal) <= 0 OrElse CType(moProdLiabilityLimitPercentText.Text, Decimal) > 100) Then
                             ElitaPlusPage.SetLabelError(moProdLiabilityLimitLabel)
                             ElitaPlusPage.SetLabelError(moProdLiabilityLimitPercentLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PROD_LIABILITY_LIMIT_AND_PERCENT)
-                        ElseIf CType(moProdLiabilityLimitText.Text, Decimal) > 0 And CType(moProdLiabilityLimitPercentText.Text, Decimal) > 0 Then
+                        ElseIf CType(moProdLiabilityLimitText.Text, Decimal) > 0 AndAlso CType(moProdLiabilityLimitPercentText.Text, Decimal) > 0 Then
                             ElitaPlusPage.SetLabelError(moProdLiabilityLimitLabel)
                             ElitaPlusPage.SetLabelError(moProdLiabilityLimitPercentLabel)
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PROD_LIABILITY_LIMIT_AND_PERCENT)
@@ -1950,8 +1949,7 @@ Namespace Tables
                 'REQ-5586 End
 
                 'Per Incident Liability Limit
-                If Not (GetSelectedItem(moProdLiabilityLimitBasedOnDrop).Equals(Guid.Empty) Or
-                            GetSelectedItem(moProdLiabilityLimitBasedOnDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, PROD_LIAB_BASED_ON_NOT_APP)) Then
+                If Not (GetSelectedItem(moProdLiabilityLimitBasedOnDrop).Equals(Guid.Empty) OrElse GetSelectedItem(moProdLiabilityLimitBasedOnDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, PROD_LIAB_BASED_ON_NOT_APP)) Then
 
                     If String.IsNullOrEmpty(moPerIncidentLiabilityLimitCapText.Text) Then
                         ElitaPlusPage.SetLabelError(moPerIncidentLiabilityLimitCapLabel)
@@ -1976,7 +1974,7 @@ Namespace Tables
                 If moMethodOfRepairByPriceDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                     sMORPriceFlgBefore = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, TheProductCode.MethodOfRepairByPriceId)
                     sMORPriceFlgAfter = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, GetSelectedItem(moMethodOfRepairByPriceDrop))
-                    If sMORPriceFlgBefore = YES And sMORPriceFlgAfter = NO Then
+                    If sMORPriceFlgBefore = YES AndAlso sMORPriceFlgAfter = NO Then
                         Dim PrdCode As ProductCode
                         oPriceRecordsExist = PrdCode.MethodOfRepairByPriceRecords(TheProductCode.Id)
                         If oPriceRecordsExist = True Then
@@ -1998,7 +1996,7 @@ Namespace Tables
                                 ElitaPlusPage.SetLabelError(lblAutoApprovePSP)
                                 Throw New GUIException(Message.MSG_INVALID_AUTO_APPROVE_PSP, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_AUTO_APPROVE_PSP_ERR)
                             Else
-                                If CType(txtAutoApprovePSP.Text, Decimal) <= 0 Or CType(txtAutoApprovePSP.Text, Decimal) > 100 Then
+                                If CType(txtAutoApprovePSP.Text, Decimal) <= 0 OrElse CType(txtAutoApprovePSP.Text, Decimal) > 100 Then
                                     ElitaPlusPage.SetLabelError(lblAutoApprovePSP)
                                     Throw New GUIException(Message.MSG_INVALID_AUTO_APPROVE_PSP, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_AUTO_APPROVE_PSP_ERR)
                                 Else
@@ -2024,7 +2022,7 @@ Namespace Tables
                         State.ModeOperation = "I"
                     End If
 
-                ElseIf State.IsProductCodeNew = False And GetSelectedItem(moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, YES) Then
+                ElseIf State.IsProductCodeNew = False AndAlso GetSelectedItem(moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, YES) Then
                     State.ModeOperation = "I"
                 End If
 
@@ -2037,18 +2035,16 @@ Namespace Tables
                 PopulateBOsFromForm()
 
                 If (Not GetSelectedItem(moUpgTermUOMDrop).Equals(Guid.Empty) AndAlso (
-                    GetSelectedItem(moUpgTermUOMDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_DAYS) Or
-                GetSelectedItem(moUpgTermUOMDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_MONTHS))) Then
+                    GetSelectedItem(moUpgTermUOMDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_DAYS) OrElse GetSelectedItem(moUpgTermUOMDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_MONTHS))) Then
 
-                    If (String.IsNullOrEmpty(moUpgradeTermFROMText.Text) And Not String.IsNullOrEmpty(moUpgradeTermToText.Text)) Or
-                         (Not String.IsNullOrEmpty(moUpgradeTermFROMText.Text) And String.IsNullOrEmpty(moUpgradeTermToText.Text)) Then
+                    If (String.IsNullOrEmpty(moUpgradeTermFROMText.Text) AndAlso Not String.IsNullOrEmpty(moUpgradeTermToText.Text)) OrElse (Not String.IsNullOrEmpty(moUpgradeTermFROMText.Text) AndAlso String.IsNullOrEmpty(moUpgradeTermToText.Text)) Then
 
 
                         ElitaPlusPage.SetLabelError(moUpgradeTermFromLabel)
                         ElitaPlusPage.SetLabelError(moUpgradeTermToLabel)
                         Throw New GUIException(Message.ERR_SAVING_DATA, Assurant.ElitaPlus.Common.ErrorCodes.SET_UPG_TERM_FROM_AND_UPG_TERM_TO_FIELDS)
 
-                    ElseIf Not String.IsNullOrEmpty(moUpgradeTermFROMText.Text) And Not String.IsNullOrEmpty(moUpgradeTermToText.Text) AndAlso
+                    ElseIf Not String.IsNullOrEmpty(moUpgradeTermFROMText.Text) AndAlso Not String.IsNullOrEmpty(moUpgradeTermToText.Text) AndAlso
                            CType(moUpgradeTermToText.Text, Decimal) < CType(moUpgradeTermFROMText.Text, Decimal) Then
 
                         ElitaPlusPage.SetLabelError(moUpgradeTermFromLabel)
@@ -2074,14 +2070,14 @@ Namespace Tables
                     'REQ-5888-START
                     If GetSelectedItem(moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, NO) Then
                         'AttributeValues.Visible = False
-                        If TheProductCode.AttributeValues.Count > 0 And Not (TheProductCode.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS) Is Nothing) Then
+                        If TheProductCode.AttributeValues.Count > 0 AndAlso Not (TheProductCode.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS) Is Nothing) Then
                             Throw New GUIException(Message.INVALID_ATTRIBUTE, Assurant.ElitaPlus.Common.ErrorCodes.ATTRIBUTE_VALUE_CANNOT_BE_SET_WHEN_REINSURED_IS_SET_TO_NO_ERR)
                         End If
                     End If
                     'REQ-5888-END
                 Else
                     'REQ-5888-START
-                    If TheProductCode.AttributeValues.Count > 0 And Not (TheProductCode.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS) Is Nothing) Then
+                    If TheProductCode.AttributeValues.Count > 0 AndAlso Not (TheProductCode.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS) Is Nothing) Then
                         Throw New GUIException(Message.INVALID_ATTRIBUTE, Assurant.ElitaPlus.Common.ErrorCodes.CANNOT_SET_ATTRIBUTE_WITHOUT_REINSURED_FLAG)
                     End If
                     'REQ-5888-END
@@ -2097,8 +2093,7 @@ Namespace Tables
                     _moDepreciationScdRelation = Nothing
 
 
-                    If State.IsProductCodeNew = False And (GetSelectedItem(moProdLiabilityLimitBasedOnDrop).Equals(Guid.Empty) Or
-                     GetSelectedItem(moProdLiabilityLimitBasedOnDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, PROD_LIAB_BASED_ON_NOT_APP)) AndAlso UpdCovLiablity Then
+                    If State.IsProductCodeNew = False AndAlso (GetSelectedItem(moProdLiabilityLimitBasedOnDrop).Equals(Guid.Empty) OrElse GetSelectedItem(moProdLiabilityLimitBasedOnDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, PROD_LIAB_BASED_ON_NOT_APP)) AndAlso UpdCovLiablity Then
                         TheProductCode.UpdateCoverageLiability(State.moProductCodeId)
                     End If
                     If State.IsProductCodeNew = False AndAlso Not TheProductCode.IsReInsuredId.Equals(Guid.Empty) Then
@@ -2631,8 +2626,8 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If dvRow IsNot Nothing And State.ProductPolicySearchDV.Count > 0 Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then
+                If dvRow IsNot Nothing AndAlso State.ProductPolicySearchDV.Count > 0 Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem OrElse itemType = ListItemType.EditItem Then
                         CType(e.Row.Cells(PRODUCT_POLICY_ID).FindControl(ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(ProductPolicy.ProductPolicySearchDV.COL_PRODUCT_POLICY_ID), Byte()))
 
                         If (State.IsProductPolicyEditMode = True AndAlso State.ProductPolicyId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(ProductPolicy.ProductPolicySearchDV.COL_PRODUCT_POLICY_ID), Byte())))) Then
@@ -3153,8 +3148,8 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If dvRow IsNot Nothing And State.ProductRewardsSearchDV.Count > 0 Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then
+                If dvRow IsNot Nothing AndAlso State.ProductRewardsSearchDV.Count > 0 Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem OrElse itemType = ListItemType.EditItem Then
                         CType(e.Row.Cells(PRODUCT_REWARDS_ID).FindControl(ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(ProductRewards.ProductRewardsSearchDV.COL_PRODUCT_REWARD_ID), Byte()))
 
                         If (State.IsProductRewardsEditMode = True AndAlso State.ProductRewardsId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(ProductRewards.ProductRewardsSearchDV.COL_PRODUCT_REWARD_ID), Byte())))) Then
@@ -3812,8 +3807,7 @@ Namespace Tables
         'REQ-5586 
         Private Sub moProdLiabilityLimitBasedOnDrop_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles moProdLiabilityLimitBasedOnDrop.SelectedIndexChanged
             Try
-                If (GetSelectedItem(moProdLiabilityLimitBasedOnDrop).Equals(Guid.Empty) Or
-                    GetSelectedItem(moProdLiabilityLimitBasedOnDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, PROD_LIAB_BASED_ON_NOT_APP)) Then
+                If (GetSelectedItem(moProdLiabilityLimitBasedOnDrop).Equals(Guid.Empty) OrElse GetSelectedItem(moProdLiabilityLimitBasedOnDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, PROD_LIAB_BASED_ON_NOT_APP)) Then
                     ControlMgr.SetVisibleControl(Me, moProdLiabilityLimitPolicyLabel, False)
                     ControlMgr.SetVisibleControl(Me, moProdLiabilityLimitPolicyDrop, False)
                     ControlMgr.SetVisibleControl(Me, moProdLiabilityLimitLabel, False)
@@ -3911,8 +3905,7 @@ Namespace Tables
                 moUpgradeTermToText.Text = Nothing
                 moUpgradeTermText.Text = Nothing
 
-            ElseIf GetSelectedItem(moUpgTermUOMDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_DAYS) Or
-                GetSelectedItem(moUpgTermUOMDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_MONTHS) Then
+            ElseIf GetSelectedItem(moUpgTermUOMDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_DAYS) OrElse GetSelectedItem(moUpgTermUOMDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_MONTHS) Then
                 moUpgradeTermFROMText.Text = Nothing
                 moUpgradeTermToText.Text = Nothing
                 ControlMgr.SetVisibleControl(Me, moUpgradeTermLabel, True)
@@ -3921,8 +3914,7 @@ Namespace Tables
                 ControlMgr.SetVisibleControl(Me, moUpgradeTermFROMText, False)
                 ControlMgr.SetVisibleControl(Me, moUpgradeTermToLabel, False)
                 ControlMgr.SetVisibleControl(Me, moUpgradeTermToText, False)
-            ElseIf GetSelectedItem(moUpgTermUOMDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_DAYS) Or
-                GetSelectedItem(moUpgTermUOMDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_MONTHS) Then
+            ElseIf GetSelectedItem(moUpgTermUOMDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_DAYS) OrElse GetSelectedItem(moUpgTermUOMDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_MONTHS) Then
                 moUpgradeTermText.Text = Nothing
                 ControlMgr.SetVisibleControl(Me, moUpgradeTermFromLabel, True)
                 ControlMgr.SetVisibleControl(Me, moUpgradeTermFROMText, True)
@@ -3934,7 +3926,7 @@ Namespace Tables
         End Sub
 
         Private Sub moUpgradeProgramDrop_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moUpgradeProgramDrop.SelectedIndexChanged
-            If (GetSelectedItem(moUpgradeProgramDrop).Equals(Guid.Empty) Or GetSelectedItem(moUpgradeProgramDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)) Then
+            If (GetSelectedItem(moUpgradeProgramDrop).Equals(Guid.Empty) OrElse GetSelectedItem(moUpgradeProgramDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)) Then
                 ControlMgr.SetVisibleControl(Me, moUpgradeTermFromLabel, False)
                 ControlMgr.SetVisibleControl(Me, moUpgradeTermFROMText, False)
                 ControlMgr.SetVisibleControl(Me, moUpgradeTermToLabel, False)
@@ -3974,7 +3966,7 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dv As New DataView
                 If e.Row.RowType = DataControlRowType.DataRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         Dim gvChilds As GridView = TryCast(e.Row.FindControl("gvChilds"), GridView)
                         dv = State.childsearchDV
 
@@ -4574,8 +4566,8 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If dvRow IsNot Nothing And State.ProductBenefitsSearchDV.Count > 0 Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then
+                If dvRow IsNot Nothing AndAlso State.ProductBenefitsSearchDV.Count > 0 Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem OrElse itemType = ListItemType.EditItem Then
 
                         CType(e.Row.Cells(BENEFIT_CELL_ID).FindControl(PROD_BENEFITS_ID_LABEL), Label).Text = GetGuidStringFromByteArray(CType(dvRow(ProductEquipment.ProductBenefitsSearchDV.COL_NAME_PROD_ITEM_MANUF_EQUIP_ID), Byte()))
 

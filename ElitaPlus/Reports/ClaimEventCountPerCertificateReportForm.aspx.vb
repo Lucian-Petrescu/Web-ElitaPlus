@@ -212,7 +212,7 @@ Namespace Reports
                     End Try
                 End If
             End If
-            If String.IsNullOrWhiteSpace(moRepairedClaimsText.Text) And String.IsNullOrWhiteSpace(moReplacedClaimsText.Text) Then
+            If String.IsNullOrWhiteSpace(moRepairedClaimsText.Text) AndAlso String.IsNullOrWhiteSpace(moReplacedClaimsText.Text) Then
                 'Both (Number of Replaced Claims and Number of Replacement Claims) are Null
                 SetLabelError(lblRepairedClaims)
                 SetLabelError(lblReplacedClaims)

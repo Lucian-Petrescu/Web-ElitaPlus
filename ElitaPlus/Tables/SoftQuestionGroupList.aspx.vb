@@ -164,7 +164,7 @@ Partial Class SoftQuestionGroupList
         Try
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Item.Cells(GRID_COL_DESCRIPTION_IDX).Text = dvRow(SoftQuestionGroup.SoftQuestionGroupDV.COL_DESCRIPTION).ToString
                 e.Item.Cells(GRID_COL_SOFTQUESTION_GROUP_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(SoftQuestionGroup.SoftQuestionGroupDV.COL_SOFT_QUESTION_GROUP_ID), Byte()))
             End If

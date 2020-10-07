@@ -14,7 +14,7 @@ Public MustInherit Class BusinessCommandBase(Of TType)
         Get
             Return _businessObject
         End Get
-        Set(ByVal value As TType)
+        Set
             _businessObject = value
         End Set
     End Property

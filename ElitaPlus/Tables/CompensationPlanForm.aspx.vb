@@ -734,14 +734,14 @@ Namespace Tables
 
         Public Sub ValidateDates()
 
-            If moExpirationText_WRITE.Text = Nothing And moEffectiveText_WRITE.Text <> String.Empty Then
+            If moExpirationText_WRITE.Text = Nothing AndAlso moEffectiveText_WRITE.Text <> String.Empty Then
                 ElitaPlusPage.SetLabelError(moExpirationLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.EXPERITAION_DATE_ERR1)
 
-            ElseIf moExpirationText_WRITE.Text <> String.Empty And moEffectiveText_WRITE.Text = Nothing Then
+            ElseIf moExpirationText_WRITE.Text <> String.Empty AndAlso moEffectiveText_WRITE.Text = Nothing Then
                 ElitaPlusPage.SetLabelError(moEffectiveLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.EFFECTIVE_DATE_ERR1)
-            ElseIf moExpirationText_WRITE.Text = Nothing And moEffectiveText_WRITE.Text = Nothing Then
+            ElseIf moExpirationText_WRITE.Text = Nothing AndAlso moEffectiveText_WRITE.Text = Nothing Then
                 ElitaPlusPage.SetLabelError(moEffectiveLabel)
                 ElitaPlusPage.SetLabelError(moExpirationLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.EXPERITAION_DATE_ERR1)

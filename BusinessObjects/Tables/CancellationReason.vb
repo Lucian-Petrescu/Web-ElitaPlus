@@ -74,7 +74,7 @@ Public Class CancellationReason
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CancellationReasonDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -85,7 +85,7 @@ Public Class CancellationReason
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(CancellationReasonDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -99,7 +99,7 @@ Public Class CancellationReason
                 End If
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             Dim tempValue As String = Value
             If Not tempValue Is Nothing Then
@@ -111,7 +111,7 @@ Public Class CancellationReason
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=5)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(CancellationReasonDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -125,7 +125,7 @@ Public Class CancellationReason
                 End If
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             Dim tempValue As String = Value
             If Not tempValue Is Nothing Then
@@ -137,7 +137,7 @@ Public Class CancellationReason
 
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(CancellationReasonDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -146,7 +146,7 @@ Public Class CancellationReason
                 Return New Guid(CType(Row(CancellationReasonDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CancellationReasonDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -154,7 +154,7 @@ Public Class CancellationReason
 
 
     <ValueMandatory("")> _
-    Public Property RefundComputeMethodId() As Guid
+    Public Property RefundComputeMethodId As Guid
         Get
             CheckDeleted()
             If Row(CancellationReasonDAL.COL_NAME_REFUND_COMPUTE_METHOD_ID) Is DBNull.Value Then
@@ -163,7 +163,7 @@ Public Class CancellationReason
                 Return New Guid(CType(Row(CancellationReasonDAL.COL_NAME_REFUND_COMPUTE_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CancellationReasonDAL.COL_NAME_REFUND_COMPUTE_METHOD_ID, Value)
         End Set
@@ -171,7 +171,7 @@ Public Class CancellationReason
 
 
     <ValueMandatory("")> _
-    Public Property RefundDestinationId() As Guid
+    Public Property RefundDestinationId As Guid
         Get
             CheckDeleted()
             If Row(CancellationReasonDAL.COL_NAME_REFUND_DESTINATION_ID) Is DBNull.Value Then
@@ -180,7 +180,7 @@ Public Class CancellationReason
                 Return New Guid(CType(Row(CancellationReasonDAL.COL_NAME_REFUND_DESTINATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CancellationReasonDAL.COL_NAME_REFUND_DESTINATION_ID, Value)
         End Set
@@ -188,7 +188,7 @@ Public Class CancellationReason
 
 
     <ValueMandatory("")> _
-    Public Property InputAmtReqId() As Guid
+    Public Property InputAmtReqId As Guid
         Get
             CheckDeleted()
             If Row(CancellationReasonDAL.COL_NAME_INPUT_AMT_REQ_ID) Is DBNull.Value Then
@@ -197,14 +197,14 @@ Public Class CancellationReason
                 Return New Guid(CType(Row(CancellationReasonDAL.COL_NAME_INPUT_AMT_REQ_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CancellationReasonDAL.COL_NAME_INPUT_AMT_REQ_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property DisplayCodeId() As Guid
+    Public Property DisplayCodeId As Guid
         Get
             CheckDeleted()
             If Row(CancellationReasonDAL.COL_DISPLAY_CODE) Is DBNull.Value Then
@@ -213,13 +213,13 @@ Public Class CancellationReason
                 Return New Guid(CType(Row(CancellationReasonDAL.COL_DISPLAY_CODE), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CancellationReasonDAL.COL_DISPLAY_CODE, Value)
         End Set
     End Property
 
-    Public Property DefRefundPaymentMethodId() As Guid
+    Public Property DefRefundPaymentMethodId As Guid
         Get
             CheckDeleted()
             If Row(CancellationReasonDAL.COL_DEF_REFUND_PAYMENT_METHOD_ID) Is DBNull.Value Then
@@ -228,14 +228,14 @@ Public Class CancellationReason
                 Return New Guid(CType(Row(CancellationReasonDAL.COL_DEF_REFUND_PAYMENT_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CancellationReasonDAL.COL_DEF_REFUND_PAYMENT_METHOD_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property IsLawful() As String
+    Public Property IsLawful As String
         Get
             CheckDeleted()
             If Row(CancellationReasonDAL.COL_NAME_IS_LAWFUL) Is DBNull.Value Then
@@ -244,14 +244,14 @@ Public Class CancellationReason
                 Return CType(Row(CancellationReasonDAL.COL_NAME_IS_LAWFUL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CancellationReasonDAL.COL_NAME_IS_LAWFUL, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)> _
-    Public Property BenefitCancelReasonCode() As String
+    Public Property BenefitCancelReasonCode As String
         Get
             CheckDeleted()
             If row(CancellationReasonDAL.COL_NAME_BENEFIT_CANCEL_REASON_CODE) Is DBNull.Value Then
@@ -260,7 +260,7 @@ Public Class CancellationReason
                 Return CType(row(CancellationReasonDAL.COL_NAME_BENEFIT_CANCEL_REASON_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CancellationReasonDAL.COL_NAME_BENEFIT_CANCEL_REASON_CODE, Value)
         End Set
@@ -292,7 +292,7 @@ Public Class CancellationReason
 
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Dim bDirty As Boolean
 
@@ -403,7 +403,7 @@ Public Class CancellationReason
 #Region "ExcludeCancReasonByRoles"
 
 
-    Public ReadOnly Property ExclCancelReasonByRoleChildren() As ExcludeCancReasonByRole.ExcludeCancReasonByRoleList
+    Public ReadOnly Property ExclCancelReasonByRoleChildren As ExcludeCancReasonByRole.ExcludeCancReasonByRoleList
         Get
             Return New ExcludeCancReasonByRole.ExcludeCancReasonByRoleList(Me)
         End Get

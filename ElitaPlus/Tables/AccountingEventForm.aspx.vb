@@ -684,7 +684,7 @@ Partial Class AccountingEventForm
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-        If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+        If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
             e.Item.Cells(GRIDCOL_EVENTDETAIL_ID).Text = GetGuidStringFromByteArray(CType(dvRow(AcctEventDetail.AcctEventDetailSearchDV.COL_ACCT_EVENT_DETAIL_ID), Byte()))
             e.Item.Cells(GRIDCOL_BUSINESS_UNIT).Text = dvRow(AcctEventDetail.AcctEventDetailSearchDV.COL_BUSINESS_UNIT).ToString
             e.Item.Cells(GRIDCOL_DEBITCREDIT).Text = dvRow(AcctEventDetail.AcctEventDetailSearchDV.COL_DEBIT_CREDIT).ToString

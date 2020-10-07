@@ -93,7 +93,7 @@ Public Class UpdatePickupException
 
 #Region "Properties"
 
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             If Row(DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -101,13 +101,13 @@ Public Class UpdatePickupException
                 Return (CType(Row(DATA_COL_NAME_CLAIM_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
-    Public Property UpdatedByName() As String
+    Public Property UpdatedByName As String
         Get
             If Row(DATA_COL_NAME_UPDATED_BY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -115,13 +115,13 @@ Public Class UpdatePickupException
                 Return (CType(Row(DATA_COL_NAME_UPDATED_BY_NAME), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_UPDATED_BY_NAME, Value)
         End Set
     End Property
 
-    Public Property ResolutionClaimStatusCode() As String
+    Public Property ResolutionClaimStatusCode As String
         Get
             If Row(DATA_COL_NAME_URESOLUTION_CLAIM_STATUS_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -129,13 +129,13 @@ Public Class UpdatePickupException
                 Return (CType(Row(DATA_COL_NAME_URESOLUTION_CLAIM_STATUS_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_URESOLUTION_CLAIM_STATUS_CODE, Value)
         End Set
     End Property
 
-    Public Property StatusComments() As String
+    Public Property StatusComments As String
         Get
             If Row(DATA_COL_NAME_STATUS_COMMENTS) Is DBNull.Value Then
                 Return Nothing
@@ -143,14 +143,14 @@ Public Class UpdatePickupException
                 Return (CType(Row(DATA_COL_NAME_STATUS_COMMENTS), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_STATUS_COMMENTS, Value)
         End Set
     End Property
 
 
-    Public ReadOnly Property ExceptionDataSet() As DataSet
+    Public ReadOnly Property ExceptionDataSet As DataSet
         Get
             Return _dsExceptions
         End Get

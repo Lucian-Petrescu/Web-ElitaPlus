@@ -312,7 +312,7 @@ Namespace Certificates
 
             Catch ex As Exception
                 Dim GetExceptionType As String = ex.GetBaseException.GetType().Name
-                If ((Not GetExceptionType.Equals(String.Empty)) And GetExceptionType.Equals("BOValidationException")) Then
+                If ((Not GetExceptionType.Equals(String.Empty)) AndAlso GetExceptionType.Equals("BOValidationException")) Then
                     ControlMgr.SetVisibleControl(Me, Grid, False)
                     lblPageSize.Visible = False
                     lblRecordCount.Visible = False
@@ -359,8 +359,8 @@ Namespace Certificates
 
         Private Sub GetStateProperties()
             Try
-                If State.CompanyId <> Guid.Empty And ddlCompanyName.Items.Count > 0 Then Me.SetSelectedItem(ddlCompanyName, State.CompanyId)
-                If State.DealerId <> Guid.Empty And ddlDealerName.Items.Count > 0 Then Me.SetSelectedItem(ddlDealerName, State.DealerId)
+                If State.CompanyId <> Guid.Empty AndAlso ddlCompanyName.Items.Count > 0 Then Me.SetSelectedItem(ddlCompanyName, State.CompanyId)
+                If State.DealerId <> Guid.Empty AndAlso ddlDealerName.Items.Count > 0 Then Me.SetSelectedItem(ddlDealerName, State.DealerId)
 
 
                 If State.RewardStatus <> String.Empty And ddlRewardStatus.Items.Count > 0 Then Me.SetSelectedItem(ddlRewardStatus, State.RewardStatus)

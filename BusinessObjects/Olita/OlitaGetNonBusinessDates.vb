@@ -78,7 +78,7 @@ Public Class OlitaGetNonBusinessDates
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupCode() As String
+    Public Property CompanyGroupCode As String
         Get
             If Row(DATA_COL_NAME_COMP_GROUP_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -86,14 +86,14 @@ Public Class OlitaGetNonBusinessDates
                 Return (CType(Row(DATA_COL_NAME_COMP_GROUP_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_COMP_GROUP_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property StartDate() As DateType
+    Public Property StartDate As DateType
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_START_DATE) Is DBNull.Value Then
@@ -102,14 +102,14 @@ Public Class OlitaGetNonBusinessDates
                 Return New DateType(CType(Row(DATA_COL_NAME_START_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_START_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property EndDate() As DateType
+    Public Property EndDate As DateType
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_END_DATE) Is DBNull.Value Then
@@ -118,7 +118,7 @@ Public Class OlitaGetNonBusinessDates
                 Return New DateType(CType(Row(DATA_COL_NAME_END_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_END_DATE, Value)
         End Set

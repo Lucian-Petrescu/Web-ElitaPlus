@@ -113,7 +113,7 @@
 
     'Key Property
     <ValidUniqueCombination(""), ValidateOverlapping("")>
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ProductRewardsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -124,7 +124,7 @@
     End Property
 
     <ValueMandatory("")>
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -133,7 +133,7 @@
                 Return New Guid(CType(Row(ProductRewardsDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductRewardsDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
@@ -141,7 +141,7 @@
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property RewardName() As String
+    Public Property RewardName As String
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_REWARD_NAME) Is DBNull.Value Then
@@ -150,7 +150,7 @@
                 Return CType(Row(ProductRewardsDAL.COL_NAME_REWARD_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductRewardsDAL.COL_NAME_REWARD_NAME, Value)
         End Set
@@ -158,7 +158,7 @@
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property RewardType() As String
+    Public Property RewardType As String
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_REWARD_TYPE) Is DBNull.Value Then
@@ -167,13 +167,13 @@
                 Return CType(Row(ProductRewardsDAL.COL_NAME_REWARD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductRewardsDAL.COL_NAME_REWARD_TYPE, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property RewardAmount() As DecimalType
+    Public Property RewardAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_REWARD_AMOUNT) Is DBNull.Value Then
@@ -182,14 +182,14 @@
                 Return New DecimalType(CType(Row(ProductRewardsDAL.COL_NAME_REWARD_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ProductRewardsDAL.COL_NAME_REWARD_AMOUNT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property MinPurchasePrice() As DecimalType
+    Public Property MinPurchasePrice As DecimalType
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_MIN_PURCHASE_PRICE) Is DBNull.Value Then
@@ -198,14 +198,14 @@
                 Return New DecimalType(CType(Row(ProductRewardsDAL.COL_NAME_MIN_PURCHASE_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ProductRewardsDAL.COL_NAME_MIN_PURCHASE_PRICE, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=9999, MaxExclusive:=False)>
-    Public Property DaysToRedeem() As LongType
+    Public Property DaysToRedeem As LongType
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_DAYS_TO_REDEEM) Is DBNull.Value Then
@@ -214,14 +214,14 @@
                 Return New LongType(CType(Row(ProductRewardsDAL.COL_NAME_DAYS_TO_REDEEM), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductRewardsDAL.COL_NAME_DAYS_TO_REDEEM, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidEffectiveDate("")>
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -230,13 +230,13 @@
                 Return New DateType(CType(Row(ProductRewardsDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ProductRewardsDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidExpirationDate("")>
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -245,14 +245,14 @@
                 Return New DateType(CType(Row(ProductRewardsDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ProductRewardsDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=99), ValidateFromRenewal("")>
-    Public Property FromRenewal() As LongType
+    Public Property FromRenewal As LongType
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_FROM_RENEWAL) Is DBNull.Value Then
@@ -261,14 +261,14 @@
                 Return CType(Row(ProductRewardsDAL.COL_NAME_FROM_RENEWAL), Long)
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductRewardsDAL.COL_NAME_FROM_RENEWAL, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=99), ValidateToRenewal("")>
-    Public Property ToRenewal() As LongType
+    Public Property ToRenewal As LongType
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_TO_RENEWAL) Is DBNull.Value Then
@@ -277,7 +277,7 @@
                 Return CType(Row(ProductRewardsDAL.COL_NAME_TO_RENEWAL), Long)
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductRewardsDAL.COL_NAME_TO_RENEWAL, Value)
         End Set

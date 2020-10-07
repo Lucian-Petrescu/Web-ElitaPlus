@@ -418,7 +418,7 @@ Partial Class RepairAndLogisticsListForm
                     e.Row.Cells(GRID_COL_CLAIM_STATUS_IDX).CssClass = "StatInactive"
                 End If
 
-                If ((e.Row.Cells(GRID_COL_AUTHORIZATION_ID_IDX).FindControl(GRID_COL_AUTHORIZATION_NUMBER_CTRL) IsNot Nothing) And isClaimAuthorization) Then
+                If ((e.Row.Cells(GRID_COL_AUTHORIZATION_ID_IDX).FindControl(GRID_COL_AUTHORIZATION_NUMBER_CTRL) IsNot Nothing) AndAlso isClaimAuthorization) Then
                     btnEditAuthorizationItem = CType(e.Row.Cells(GRID_COL_AUTHORIZATION_ID_IDX).FindControl(GRID_COL_AUTHORIZATION_NUMBER_CTRL), LinkButton)
                     btnEditAuthorizationItem.CommandArgument = e.Row.RowIndex.ToString
                     btnEditAuthorizationItem.CommandName = SELECT_ACTION_AUTHORIZATION_COMMAND
@@ -466,7 +466,7 @@ Partial Class RepairAndLogisticsListForm
         Dim claimid As String = String.Empty
         Dim Authorizationid As String = String.Empty
         Try
-            If (Not e.CommandArgument.ToString().Equals(String.Empty)) And (e.CommandName = SELECT_ACTION_CLAIM_COMMAND Or e.CommandName = SELECT_ACTION_AUTHORIZATION_COMMAND) Then
+            If (Not e.CommandArgument.ToString().Equals(String.Empty)) AndAlso (e.CommandName = SELECT_ACTION_CLAIM_COMMAND OrElse e.CommandName = SELECT_ACTION_AUTHORIZATION_COMMAND) Then
                 rowIndex = CInt(e.CommandArgument)
                 claimid = Grid.Rows(rowIndex).Cells(GRID_COL_HIDDEN_CLAIM_ID_IDX).Text
                 State.selectedClaimId = New Guid(claimid)

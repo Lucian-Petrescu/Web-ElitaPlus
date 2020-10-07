@@ -26,7 +26,7 @@ Partial Public Class WorkQueue
 #End Region
 
 #Region "Static Components"
-    Private Shared ReadOnly Property WorkQueueClientProxy() As WrkQueue.WorkQueueServiceClient
+    Private Shared ReadOnly Property WorkQueueClientProxy As WrkQueue.WorkQueueServiceClient
         Get
             Dim wrkQueClient As WrkQueue.WorkQueueServiceClient
             If (oWorkQueueServiceClient Is Nothing OrElse oWorkQueueServiceClient.State <> ServiceModel.CommunicationState.Opened) Then
@@ -40,7 +40,7 @@ Partial Public Class WorkQueue
         End Get
     End Property
 
-    Private Shared ReadOnly Property AuthorizationClientProxy() As Auth.AuthorizationClient
+    Private Shared ReadOnly Property AuthorizationClientProxy As Auth.AuthorizationClient
         Get
             Dim authClient As Auth.AuthorizationClient
             If (oAuthorizationServiceClient Is Nothing OrElse oAuthorizationServiceClient.State <> ServiceModel.CommunicationState.Opened) Then
@@ -340,7 +340,7 @@ Partial Public Class WorkQueue
         Get
             Return New DateTimeType(WorkQueue.Effective)
         End Get
-        Set(ByVal value As DateTimeType)
+        Set
             If (Not value Is Nothing) Then
                 WorkQueue.ActiveOn = value.Value.AddMilliseconds(-1 * value.Value.Millisecond)
             End If
@@ -355,7 +355,7 @@ Partial Public Class WorkQueue
                 Return Nothing
             End If
         End Get
-        Set(ByVal value As DateTimeType)
+        Set
             If (value Is Nothing) Then
                 WorkQueue.InActiveOn = Nothing
             Else
@@ -368,7 +368,7 @@ Partial Public Class WorkQueue
         Get
             Return _statusReasons
         End Get
-        Private Set(ByVal value As WorkQueueItemStatusReason())
+        Private Set
             _statusReasons = value
         End Set
     End Property
@@ -416,7 +416,7 @@ Partial Public Class WorkQueue
                 Return _workQueue.Id
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             If (Not WorkQueue.IsNew) Then
                 _workQueue.Id = value
             End If
@@ -793,7 +793,7 @@ Partial Public Class WorkQueue
 #End Region
 
 #Region "Schedule"
-    Public ReadOnly Property ScheduleChildren() As EntityScheduleList
+    Public ReadOnly Property ScheduleChildren As EntityScheduleList
         Get
             Return New EntityScheduleList(Me)
         End Get
@@ -833,7 +833,7 @@ Namespace WrkQueue
             Get
                 Return String.Empty
             End Get
-            Set(ByVal value As String)
+            Set
 
             End Set
         End Property
@@ -847,7 +847,7 @@ Namespace WrkQueue
                     Return String.Empty
                 End If
             End Get
-            Set(ByVal value As String)
+            Set
                 Dim oWorkQueueMetadata As WorkQueueMetadata = Nothing
                 Dim length As Integer
                 If (MetadataList Is Nothing) Then
@@ -874,7 +874,7 @@ Namespace WrkQueue
             Get
                 Return Me(ServiceHelper.WQ_MD_COMPANY_CODE)
             End Get
-            Set(ByVal value As String)
+            Set
                 Me(ServiceHelper.WQ_MD_COMPANY_CODE) = value
                 RaisePropertyChanged("CompanyCode")
             End Set
@@ -885,7 +885,7 @@ Namespace WrkQueue
             Get
                 Return Me(ServiceHelper.WQ_MD_ACTION_CODE)
             End Get
-            Set(ByVal value As String)
+            Set
                 Me(ServiceHelper.WQ_MD_ACTION_CODE) = value
                 RaisePropertyChanged("ActionCode")
             End Set
@@ -896,7 +896,7 @@ Namespace WrkQueue
             Get
                 Return Me(ServiceHelper.WQ_MD_ADMIN_ROLE)
             End Get
-            Set(ByVal value As String)
+            Set
                 Me(ServiceHelper.WQ_MD_ADMIN_ROLE) = value
                 RaisePropertyChanged("AdminRole")
             End Set
@@ -907,7 +907,7 @@ Namespace WrkQueue
             Get
                 Return Me(ServiceHelper.WQ_MD_TRANSFORMATION_FILE)
             End Get
-            Set(ByVal value As String)
+            Set
                 Me(ServiceHelper.WQ_MD_TRANSFORMATION_FILE) = value
                 RaisePropertyChanged("TransformationFile")
             End Set
@@ -926,7 +926,7 @@ Namespace WrkQueue
             Get
                 Return ConvertTimeFromUtc(ActiveOn, TimeZoneCode)
             End Get
-            Set(ByVal value As Date)
+            Set
                 ActiveOn = ConvertTimeToUtc(value, TimeZoneCode)
             End Set
         End Property
@@ -938,7 +938,7 @@ Namespace WrkQueue
             Get
                 Return ConvertTimeFromUtc(InActiveOn, TimeZoneCode)
             End Get
-            Set(ByVal value As Nullable(Of Date))
+            Set
                 InActiveOn = ConvertTimeToUtc(value, TimeZoneCode)
             End Set
         End Property
@@ -1008,62 +1008,62 @@ Namespace WrkQueue
 
     Public Class WorkQueueTypeDef
         <ValueMandatory(""), ValidStringLength("", Max:=250, Min:=3)> _
-        Public Property Name() As Object
+        Public Property Name As Object
             Get
                 Throw New InvalidOperationException()
             End Get
-            Set(ByVal value As Object)
+            Set
                 Throw New InvalidOperationException()
             End Set
         End Property
 
         <ValueMandatory(""), ValidStringLength("", Max:=50, Min:=3)> _
-        Public Property TimeZoneCode() As Object
+        Public Property TimeZoneCode As Object
             Get
                 Throw New InvalidOperationException()
             End Get
-            Set(ByVal value As Object)
+            Set
                 Throw New InvalidOperationException()
             End Set
         End Property
 
         <ValueMandatory("")> _
-        Public Property WorkQueueTypeId() As Object
+        Public Property WorkQueueTypeId As Object
             Get
                 Throw New InvalidOperationException()
             End Get
-            Set(ByVal value As Object)
+            Set
                 Throw New InvalidOperationException()
             End Set
         End Property
 
         <ValueMandatory("")> _
-        Public Property StartItemDelayMinutes() As Object
+        Public Property StartItemDelayMinutes As Object
             Get
                 Throw New InvalidOperationException()
             End Get
-            Set(ByVal value As Object)
+            Set
                 Throw New InvalidOperationException()
             End Set
         End Property
         'DEF-3035
         <ValueMandatory("")> _
-        Public Property RequeueItemDelayMinutes() As Object
+        Public Property RequeueItemDelayMinutes As Object
             Get
                 Throw New InvalidOperationException()
             End Get
-            Set(ByVal value As Object)
+            Set
                 Throw New InvalidOperationException()
             End Set
         End Property
         'DEF-3035 End
 
         <ValueMandatory(""), ValidNumericRange("", Min:=15, MinExclusive:=False, Message:=Assurant.ElitaPlus.Common.ErrorCodes.GUI_TIME_TO_COMPLETE_MIN_VALUE)> _
-        Public Property TimeToCompleteMinutes() As Object
+        Public Property TimeToCompleteMinutes As Object
             Get
                 Throw New InvalidOperationException()
             End Get
-            Set(ByVal value As Object)
+            Set
                 Throw New InvalidOperationException()
             End Set
         End Property
@@ -1071,11 +1071,11 @@ Namespace WrkQueue
         <DateCompareValidator("", Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, "", _
             DateCompareValidatorAttribute.CompareType.GreaterThan, CheckWhenNew:=True, CompareToType:=DateCompareValidatorAttribute.CompareToPropertyType.Nothing, _
             DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.UtcToday)> _
-        Public Property ActiveOn() As DateTime
+        Public Property ActiveOn As DateTime
             Get
                 Throw New InvalidOperationException()
             End Get
-            Set(ByVal value As DateTime)
+            Set
                 Throw New InvalidOperationException()
             End Set
         End Property

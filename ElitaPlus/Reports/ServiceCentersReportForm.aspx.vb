@@ -191,7 +191,7 @@ Namespace Reports
             '''End If
 
             Dim dv As DataView
-            If cboCountry.Visible = True And cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
+            If cboCountry.Visible = True AndAlso cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
                 dv = LookupListNew.GetServiceCenterLookupList(selectedCountryId)
             Else
                 dv = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID).Id)

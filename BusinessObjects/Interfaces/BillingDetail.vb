@@ -94,7 +94,7 @@ Public Class BillingDetail
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(BillingDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -105,7 +105,7 @@ Public Class BillingDetail
     End Property
 
     <ValueMandatory("")> _
-    Public Property BillingHeaderId() As Guid
+    Public Property BillingHeaderId As Guid
         Get
             CheckDeleted()
             If row(BillingDetailDAL.COL_NAME_BILLING_HEADER_ID) Is DBNull.Value Then
@@ -114,13 +114,13 @@ Public Class BillingDetail
                 Return New Guid(CType(row(BillingDetailDAL.COL_NAME_BILLING_HEADER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_BILLING_HEADER_ID, Value)
         End Set
     End Property
 
-    Public Property BillingStatusId() As Guid
+    Public Property BillingStatusId As Guid
         Get
             CheckDeleted()
             If Row(BillingDetailDAL.COL_NAME_BILLING_STATUS_ID) Is DBNull.Value Then
@@ -129,14 +129,14 @@ Public Class BillingDetail
                 Return New Guid(CType(Row(BillingDetailDAL.COL_NAME_BILLING_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_BILLING_STATUS_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property InstallmentNumber() As LongType
+    Public Property InstallmentNumber As LongType
         Get
             CheckDeleted()
             If Row(BillingDetailDAL.COL_NAME_INSTALLMENT_NUMBER) Is DBNull.Value Then
@@ -145,7 +145,7 @@ Public Class BillingDetail
                 Return New LongType(CType(Row(BillingDetailDAL.COL_NAME_INSTALLMENT_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_INSTALLMENT_NUMBER, Value)
         End Set
@@ -153,7 +153,7 @@ Public Class BillingDetail
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property BankOwnerName() As String
+    Public Property BankOwnerName As String
         Get
             CheckDeleted()
             If Row(BillingDetailDAL.COL_NAME_BANK_OWNER_NAME) Is DBNull.Value Then
@@ -162,7 +162,7 @@ Public Class BillingDetail
                 Return CType(Row(BillingDetailDAL.COL_NAME_BANK_OWNER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_BANK_OWNER_NAME, Value)
         End Set
@@ -170,7 +170,7 @@ Public Class BillingDetail
 
 
 
-    Public Property BankAcctNumber() As String
+    Public Property BankAcctNumber As String
         Get
             CheckDeleted()
             If Row(BillingDetailDAL.COL_NAME_BANK_ACCT_NUMBER) Is DBNull.Value Then
@@ -179,7 +179,7 @@ Public Class BillingDetail
                 Return CType(Row(BillingDetailDAL.COL_NAME_BANK_ACCT_NUMBER), Decimal)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_BANK_ACCT_NUMBER, Value)
         End Set
@@ -187,7 +187,7 @@ Public Class BillingDetail
 
 
 
-    Public Property BankRtnNumber() As String
+    Public Property BankRtnNumber As String
         Get
             CheckDeleted()
             If Row(BillingDetailDAL.COL_NAME_BANK_RTN_NUMBER) Is DBNull.Value Then
@@ -196,14 +196,14 @@ Public Class BillingDetail
                 Return CType(Row(BillingDetailDAL.COL_NAME_BANK_RTN_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_BANK_RTN_NUMBER, Value)
         End Set
     End Property
 
 
-    Public Property BilledAmount() As DecimalType
+    Public Property BilledAmount As DecimalType
         Get
             CheckDeleted()
             If row(BillingDetailDAL.COL_NAME_BILLED_AMOUNT) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class BillingDetail
                 Return New DecimalType(CType(row(BillingDetailDAL.COL_NAME_BILLED_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_BILLED_AMOUNT, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class BillingDetail
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property Reason() As String
+    Public Property Reason As String
         Get
             CheckDeleted()
             If Row(BillingDetailDAL.COL_NAME_REASON) Is DBNull.Value Then
@@ -229,14 +229,14 @@ Public Class BillingDetail
                 Return CType(Row(BillingDetailDAL.COL_NAME_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_REASON, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-        Public Property CertId() As Guid
+        Public Property CertId As Guid
         Get
             CheckDeleted()
             If Row(BillingDetailDAL.COL_NAME_CERT_ID) Is DBNull.Value Then
@@ -245,14 +245,14 @@ Public Class BillingDetail
                 Return New Guid(CType(Row(BillingDetailDAL.COL_NAME_CERT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_CERT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-        Public Property PaymentRunDate() As DateType
+        Public Property PaymentRunDate As DateType
         Get
             CheckDeleted()
             If Row(BillingDetailDAL.COL_NAME_PAYMENT_RUN_DATE) Is DBNull.Value Then
@@ -261,13 +261,13 @@ Public Class BillingDetail
                 Return New DateType(CType(Row(BillingDetailDAL.COL_NAME_PAYMENT_RUN_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_CERT_ID, Value)
         End Set
     End Property
 
-    Public Property NightlyPaymentRunDate() As DateType
+    Public Property NightlyPaymentRunDate As DateType
         Get
             CheckDeleted()
             If row(BillingDetailDAL.COL_NAME_NIGHTLY_PAYMENT_RUN_DATE) Is DBNull.Value Then
@@ -276,7 +276,7 @@ Public Class BillingDetail
                 Return New DateType(CType(row(BillingDetailDAL.COL_NAME_NIGHTLY_PAYMENT_RUN_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_NIGHTLY_PAYMENT_RUN_DATE, Value)
         End Set
@@ -284,7 +284,7 @@ Public Class BillingDetail
 
 
 
-    Public Property ReAttemptCount() As Integer
+    Public Property ReAttemptCount As Integer
         Get
             CheckDeleted()
             If Row(BillingDetailDAL.COL_NAME_RE_ATTEMPT_COUNT) Is DBNull.Value Then
@@ -293,7 +293,7 @@ Public Class BillingDetail
                 Return CType(Row(BillingDetailDAL.COL_NAME_RE_ATTEMPT_COUNT), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_RE_ATTEMPT_COUNT, Value)
         End Set
@@ -301,7 +301,7 @@ Public Class BillingDetail
 
 
 
-    Public Property CreditCardInfoId() As Guid
+    Public Property CreditCardInfoId As Guid
         Get
             CheckDeleted()
             If row(BillingDetailDAL.COL_NAME_CREDIT_CARD_INFO_ID) Is DBNull.Value Then
@@ -310,7 +310,7 @@ Public Class BillingDetail
                 Return New Guid(CType(row(BillingDetailDAL.COL_NAME_CREDIT_CARD_INFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_CREDIT_CARD_INFO_ID, Value)
         End Set
@@ -318,7 +318,7 @@ Public Class BillingDetail
 
 
     <ValidStringLength("", Max:=80)> _
-    Public Property AuthorizationNumber() As String
+    Public Property AuthorizationNumber As String
         Get
             CheckDeleted()
             If row(BillingDetailDAL.COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -327,7 +327,7 @@ Public Class BillingDetail
                 Return CType(row(BillingDetailDAL.COL_NAME_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
@@ -335,7 +335,7 @@ Public Class BillingDetail
 
 
     <ValidStringLength("", Max:=60)> _
-    Public Property MerchantCode() As String
+    Public Property MerchantCode As String
         Get
             CheckDeleted()
             If row(BillingDetailDAL.COL_NAME_MERCHANT_CODE) Is DBNull.Value Then
@@ -344,7 +344,7 @@ Public Class BillingDetail
                 Return CType(row(BillingDetailDAL.COL_NAME_MERCHANT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_MERCHANT_CODE, Value)
         End Set
@@ -352,7 +352,7 @@ Public Class BillingDetail
 
 
 
-    Public Property InstallmentDueDate() As DateType
+    Public Property InstallmentDueDate As DateType
         Get
             CheckDeleted()
             If row(BillingDetailDAL.COL_NAME_INSTALLMENT_DUE_DATE) Is DBNull.Value Then
@@ -361,7 +361,7 @@ Public Class BillingDetail
                 Return New DateType(CType(row(BillingDetailDAL.COL_NAME_INSTALLMENT_DUE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(BillingDetailDAL.COL_NAME_INSTALLMENT_DUE_DATE, Value)
         End Set

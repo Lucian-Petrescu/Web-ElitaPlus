@@ -104,7 +104,7 @@ Public Class PremiumAdjustmentDetails
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(PremiumAdjustmentDetailsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -115,7 +115,7 @@ Public Class PremiumAdjustmentDetails
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentDetailsDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -124,14 +124,14 @@ Public Class PremiumAdjustmentDetails
                 Return New Guid(CType(Row(PremiumAdjustmentDetailsDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PremiumAdjustmentDetailsDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentDetailsDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -140,7 +140,7 @@ Public Class PremiumAdjustmentDetails
                 Return New Guid(CType(Row(PremiumAdjustmentDetailsDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PremiumAdjustmentDetailsDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -148,7 +148,7 @@ Public Class PremiumAdjustmentDetails
 
 
     <ValueMandatory("")> _
-    Public Property ProcessDate() As DateType
+    Public Property ProcessDate As DateType
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentDetailsDAL.COL_NAME_PROCESS_DATE) Is DBNull.Value Then
@@ -157,7 +157,7 @@ Public Class PremiumAdjustmentDetails
                 Return New DateType(CType(Row(PremiumAdjustmentDetailsDAL.COL_NAME_PROCESS_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(PremiumAdjustmentDetailsDAL.COL_NAME_PROCESS_DATE, Value)
         End Set
@@ -165,7 +165,7 @@ Public Class PremiumAdjustmentDetails
 
 
     <ValidNumericRange("", Max:=NEW_MAX_DOUBLE)> _
-    Public Property AdjustedGrossAmtReceived() As DecimalType
+    Public Property AdjustedGrossAmtReceived As DecimalType
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_GROSS_AMT_RECEIVED) Is DBNull.Value Then
@@ -174,7 +174,7 @@ Public Class PremiumAdjustmentDetails
                 Return New DecimalType(CType(Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_GROSS_AMT_RECEIVED), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_GROSS_AMT_RECEIVED, Value)
         End Set
@@ -182,7 +182,7 @@ Public Class PremiumAdjustmentDetails
    
 
     <ValidNumericRange("", Max:=NEW_MAX_DOUBLE)> _
-    Public Property AdjustedPremium() As DecimalType
+    Public Property AdjustedPremium As DecimalType
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREMIUM) Is DBNull.Value Then
@@ -191,14 +191,14 @@ Public Class PremiumAdjustmentDetails
                 Return New DecimalType(CType(Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREMIUM), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREMIUM, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=NEW_MAX_DOUBLE)> _
-    Public Property AdjustedCommission() As DecimalType
+    Public Property AdjustedCommission As DecimalType
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_COMMISSION) Is DBNull.Value Then
@@ -207,14 +207,14 @@ Public Class PremiumAdjustmentDetails
                 Return New DecimalType(CType(Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_COMMISSION), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_COMMISSION, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=NEW_MAX_DOUBLE)> _
-    Public Property AdjustedPremiumTax1() As DecimalType
+    Public Property AdjustedPremiumTax1 As DecimalType
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX1) Is DBNull.Value Then
@@ -223,14 +223,14 @@ Public Class PremiumAdjustmentDetails
                 Return New DecimalType(CType(Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX1), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX1, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=NEW_MAX_DOUBLE)> _
-    Public Property AdjustedPremiumTax2() As DecimalType
+    Public Property AdjustedPremiumTax2 As DecimalType
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX2) Is DBNull.Value Then
@@ -239,14 +239,14 @@ Public Class PremiumAdjustmentDetails
                 Return New DecimalType(CType(Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX2), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX2, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=NEW_MAX_DOUBLE)> _
-    Public Property AdjustedPremiumTax3() As DecimalType
+    Public Property AdjustedPremiumTax3 As DecimalType
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX3) Is DBNull.Value Then
@@ -255,14 +255,14 @@ Public Class PremiumAdjustmentDetails
                 Return New DecimalType(CType(Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX3), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX3, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=NEW_MAX_DOUBLE)> _
-    Public Property AdjustedPremiumTax4() As DecimalType
+    Public Property AdjustedPremiumTax4 As DecimalType
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX4) Is DBNull.Value Then
@@ -271,14 +271,14 @@ Public Class PremiumAdjustmentDetails
                 Return New DecimalType(CType(Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX4), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX4, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=NEW_MAX_DOUBLE)> _
-    Public Property AdjustedPremiumTax5() As DecimalType
+    Public Property AdjustedPremiumTax5 As DecimalType
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX5) Is DBNull.Value Then
@@ -287,14 +287,14 @@ Public Class PremiumAdjustmentDetails
                 Return New DecimalType(CType(Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX5), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX5, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=NEW_MAX_DOUBLE)> _
-    Public Property AdjustedPremiumTax6() As DecimalType
+    Public Property AdjustedPremiumTax6 As DecimalType
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX6) Is DBNull.Value Then
@@ -303,7 +303,7 @@ Public Class PremiumAdjustmentDetails
                 Return New DecimalType(CType(Row(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX6), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PremiumAdjustmentDetailsDAL.COL_NAME_ADJUSTED_PREM_TAX6, Value)
         End Set

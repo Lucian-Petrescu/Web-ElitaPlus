@@ -91,8 +91,7 @@ Public Module IdentityExtensions
         Else
             pPermissionCode = pPermissionCode.ToUpperInvariant()
             Dim permissionCode As String = (From c As Claim In identity.Claims
-                                            Where c.ClaimType = ClaimTypes.PermissionCode And
-                                           DirectCast(c.Resource, String) = pPermissionCode
+                                            Where c.ClaimType = ClaimTypes.PermissionCode AndAlso DirectCast(c.Resource, String) = pPermissionCode
                                             Select DirectCast(c.Resource, String)).FirstOrDefault()
             If (permissionCode Is Nothing) Then
                 Return False
@@ -112,8 +111,7 @@ Public Module IdentityExtensions
         Else
             pCompanyCode = pCompanyCode.ToUpperInvariant()
             Dim permissionCode As String = (From c As Claim In identity.Claims
-                                            Where c.ClaimType = ClaimTypes.CompanyCode And
-                                           DirectCast(c.Resource, String) = pCompanyCode
+                                            Where c.ClaimType = ClaimTypes.CompanyCode AndAlso DirectCast(c.Resource, String) = pCompanyCode
                                             Select DirectCast(c.Resource, String)).FirstOrDefault()
             If (permissionCode Is Nothing) Then
                 Return False
@@ -132,8 +130,7 @@ Public Module IdentityExtensions
             Return False
         Else
             Dim permissionCode As String = (From c As Claim In identity.Claims
-                                            Where c.ClaimType = ClaimTypes.CompanyId And
-                                           DirectCast(c.Resource, String) = pCompanyId.ToString()
+                                            Where c.ClaimType = ClaimTypes.CompanyId AndAlso DirectCast(c.Resource, String) = pCompanyId.ToString()
                                             Select DirectCast(c.Resource, String)).FirstOrDefault()
             If (permissionCode Is Nothing) Then
                 Return False
@@ -156,8 +153,7 @@ Public Module IdentityExtensions
         Else
 
             Dim x509Claim As String = (From c As Claim In identity.Claims
-                                       Where c.ClaimType = ClaimTypes.X509Thumbprint And
-                                           DirectCast(c.Resource, String) = Thumbprint
+                                       Where c.ClaimType = ClaimTypes.X509Thumbprint AndAlso DirectCast(c.Resource, String) = Thumbprint
                                        Select DirectCast(c.Resource, String)).FirstOrDefault()
 
             ''(From c In identity.Claims Where c.Type == Security.ClaimTypes.X509Thumbprint && (c.Properties.Count! = 0 && c.Properties(ClaimPropertyNames.Code) == Thumbprint) Select c).FirstOrDefault()
@@ -176,8 +172,7 @@ Public Module IdentityExtensions
         identity = TryCast(pPrincipal.Identity, IElitaClaimsIdentity)
 
         Dim x509ExpDateClaim As String = (From c As Claim In identity.Claims
-                                          Where c.ClaimType = ClaimTypes.X509ExpirationDate And
-                                              DirectCast(c.Resource, String) = Thumbprint
+                                          Where c.ClaimType = ClaimTypes.X509ExpirationDate AndAlso DirectCast(c.Resource, String) = Thumbprint
                                           Select DirectCast(c.Right, String)).FirstOrDefault()
 
         ''(From c In identity.Claims Where c.Type == Security.ClaimTypes.X509Thumbprint && (c.Properties.Count! = 0 && c.Properties(ClaimPropertyNames.Code) == Thumbprint) Select c).FirstOrDefault()
@@ -203,8 +198,7 @@ Public Module IdentityExtensions
         Else
 
             Dim clientIPClaim As String = (From c As Claim In identity.Claims
-                                           Where c.ClaimType = ClaimTypes.ClientIP And
-                                           DirectCast(c.Resource, String) = ClientIp
+                                           Where c.ClaimType = ClaimTypes.ClientIP AndAlso DirectCast(c.Resource, String) = ClientIp
                                            Select DirectCast(c.Resource, String)).FirstOrDefault()
 
             ''(From c In identity.Claims Where c.Type == Security.ClaimTypes.X509Thumbprint && (c.Properties.Count! = 0 && c.Properties(ClaimPropertyNames.Code) == Thumbprint) Select c).FirstOrDefault()
@@ -223,8 +217,7 @@ Public Module IdentityExtensions
         identity = TryCast(pPrincipal.Identity, IElitaClaimsIdentity)
 
         Dim clientIPExpDateClaim As String = (From c As Claim In identity.Claims
-                                              Where c.ClaimType = ClaimTypes.ClientIPExpirationDate And
-                                              DirectCast(c.Resource, String) = ClientIp
+                                              Where c.ClaimType = ClaimTypes.ClientIPExpirationDate AndAlso DirectCast(c.Resource, String) = ClientIp
                                               Select DirectCast(c.Right, String)).FirstOrDefault()
 
         ''(From c In identity.Claims Where c.Type == Security.ClaimTypes.X509Thumbprint && (c.Properties.Count! = 0 && c.Properties(ClaimPropertyNames.Code) == Thumbprint) Select c).FirstOrDefault()

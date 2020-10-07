@@ -106,7 +106,7 @@ Public Class OlitaSerialNumberUpdate
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
@@ -114,14 +114,14 @@ Public Class OlitaSerialNumberUpdate
                 Return (CType(Row(DATA_COL_NAME_DEALER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
             If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -129,14 +129,14 @@ Public Class OlitaSerialNumberUpdate
                 Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property SerialNumber() As String
+    Public Property SerialNumber As String
         Get
             If Row(DATA_COL_NAME_PRODUCT_SERIAL_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -144,7 +144,7 @@ Public Class OlitaSerialNumberUpdate
                 Return CType(Row(DATA_COL_NAME_PRODUCT_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_PRODUCT_SERIAL_NUMBER, Value)
         End Set

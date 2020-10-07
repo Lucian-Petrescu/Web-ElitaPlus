@@ -102,7 +102,7 @@ Public Class EarningPattern
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(EarningPatternDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -113,7 +113,7 @@ Public Class EarningPattern
     End Property
 
     '***** JLR ****
-    Public ReadOnly Property Description() As String
+    Public ReadOnly Property Description As String
         Get
             CheckDeleted()
             If Row(EarningPatternDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -124,7 +124,7 @@ Public Class EarningPattern
         End Get
     End Property
 
-    Public ReadOnly Property Code() As String
+    Public ReadOnly Property Code As String
         Get
             CheckDeleted()
             If Row(EarningPatternDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -137,7 +137,7 @@ Public Class EarningPattern
     '***** JLR ****
 
     <ValueMandatory(""), ValidPatternDates(""), ValidPatternPeriod("")> _
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If Row(EarningPatternDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -146,7 +146,7 @@ Public Class EarningPattern
                 Return New DateType(CType(Row(EarningPatternDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(EarningPatternDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -154,7 +154,7 @@ Public Class EarningPattern
 
 
     <ValueMandatory("")> _
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If Row(EarningPatternDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -163,7 +163,7 @@ Public Class EarningPattern
                 Return New DateType(CType(Row(EarningPatternDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(EarningPatternDAL.COL_NAME_EXPIRATION, Value)
         End Set
@@ -171,7 +171,7 @@ Public Class EarningPattern
 
 
     <ValueMandatory("")> _
-    Public Property EarningCodeId() As Guid
+    Public Property EarningCodeId As Guid
         Get
             CheckDeleted()
             If Row(EarningPatternDAL.COL_NAME_EARNING_CODE_ID) Is DBNull.Value Then
@@ -180,14 +180,14 @@ Public Class EarningPattern
                 Return New Guid(CType(Row(EarningPatternDAL.COL_NAME_EARNING_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EarningPatternDAL.COL_NAME_EARNING_CODE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property EarningPatternStartsOnId() As Guid
+    Public Property EarningPatternStartsOnId As Guid
         Get
             CheckDeleted()
             If Row(EarningPatternDAL.COL_NAME_EARNING_PATTERN_STARTS_ON_ID) Is DBNull.Value Then
@@ -196,7 +196,7 @@ Public Class EarningPattern
                 Return New Guid(CType(Row(EarningPatternDAL.COL_NAME_EARNING_PATTERN_STARTS_ON_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EarningPatternDAL.COL_NAME_EARNING_PATTERN_STARTS_ON_ID, Value)
         End Set

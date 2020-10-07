@@ -103,7 +103,7 @@ Public Class CustRegistration
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CustRegistrationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -114,7 +114,7 @@ Public Class CustRegistration
     End Property
 
     <ValidStringLength("", Max:=80)> _
-    Public Property TaxId() As String
+    Public Property TaxId As String
         Get
             CheckDeleted()
             If Row(CustRegistrationDAL.COL_NAME_TAX_ID) Is DBNull.Value Then
@@ -123,13 +123,13 @@ Public Class CustRegistration
                 Return CType(Row(CustRegistrationDAL.COL_NAME_TAX_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustRegistrationDAL.COL_NAME_TAX_ID, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(CustRegistrationDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -138,13 +138,13 @@ Public Class CustRegistration
                 Return New Guid(CType(Row(CustRegistrationDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CustRegistrationDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public Property ContactInfoId() As Guid Implements IContactInfoUser.ContactInfoId
+    Public Property ContactInfoId As Guid Implements IContactInfoUser.ContactInfoId
         Get
             CheckDeleted()
             If Row(CustRegistrationDAL.COL_NAME_CONTACT_INFO_ID) Is DBNull.Value Then
@@ -153,14 +153,14 @@ Public Class CustRegistration
                 Return New Guid(CType(Row(CustRegistrationDAL.COL_NAME_CONTACT_INFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CustRegistrationDAL.COL_NAME_CONTACT_INFO_ID, Value)
         End Set
     End Property
 
     Private _contactInfo As ContactInfo = Nothing
-    Public ReadOnly Property ContactInfo() As ContactInfo
+    Public ReadOnly Property ContactInfo As ContactInfo
         Get
             If _contactInfo Is Nothing Then
                 If ContactInfoId.Equals(Guid.Empty) Then
@@ -384,7 +384,7 @@ Public Class CustRegistration
     End Sub
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsFamilyDirty
         End Get

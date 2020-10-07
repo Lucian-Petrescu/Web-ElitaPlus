@@ -722,7 +722,7 @@ Namespace Tables
 
         Protected Sub moPriceListSourceDrop_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moPriceListSourceDrop.SelectedIndexChanged
 
-            If moPriceListSourceDrop.SelectedItem IsNot Nothing And moPriceListSourceDrop.SelectedValue = "PRICE_LIST_SOURCE-PRICE_LIST" Then
+            If moPriceListSourceDrop.SelectedItem IsNot Nothing AndAlso moPriceListSourceDrop.SelectedValue = "PRICE_LIST_SOURCE-PRICE_LIST" Then
                 EnablePriceFields()
             Else
                 DisablePriceFields()

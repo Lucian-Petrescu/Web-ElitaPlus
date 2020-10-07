@@ -514,7 +514,7 @@ Namespace Tables
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
             If dvRow IsNot Nothing Then 'And Not Me.State.bnoRow Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Row.Cells(GRID_COL_DESCRIPTION_IDX).Text = dvRow(GRID_COL_DESCRIPTION_PROPERTY).ToString
                     e.Row.Cells(GRID_COL_CODE_IDX).Text = "{" & dvRow(GRID_COL_CODE_PROPERTY).ToString & "}"
                     e.Row.Cells(GRID_COL_COPY_TO_CLIPBOARD_IDX).Attributes.Add("onclick", "return CopyToClipboard('{" & dvRow(GRID_COL_CODE_PROPERTY).ToString & "}');")

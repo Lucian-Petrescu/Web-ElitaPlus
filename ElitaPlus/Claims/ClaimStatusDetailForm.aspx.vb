@@ -144,7 +144,7 @@ Partial Class ClaimStatusDetailForm
         Try
             MasterPage.MessageController.Clear_Hide()
 
-            If CMD.Value Is Nothing Or CMD.Value = "" Then
+            If CMD.Value Is Nothing OrElse CMD.Value = "" Then
                 CMD.Value = Request.Params("CMD")
             End If
 
@@ -256,7 +256,7 @@ Partial Class ClaimStatusDetailForm
         Try
             BaseItemBound(source, e)
 
-            If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.EditItem Then
+            If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem OrElse e.Item.ItemType = ListItemType.EditItem Then
 
                 Dim drv As DataRowView = CType(e.Item.DataItem, DataRowView)
                 Dim i As Integer
@@ -285,10 +285,10 @@ Partial Class ClaimStatusDetailForm
                         dropdownOwner.SelectedValue = GuidControl.ByteArrayToGuid(CType(drv(DALObjects.ClaimStatusByGroupDAL.COL_NAME_OWNER_ID), Byte())).ToString()
                     End If
 
-                    If disableRow Or (State.IsDisabled AndAlso clmStat <> Codes.CLAIM_EXTENDED_STATUS__PAYMENT_REVIEW_APPROVED) Then
+                    If disableRow OrElse (State.IsDisabled AndAlso clmStat <> Codes.CLAIM_EXTENDED_STATUS__PAYMENT_REVIEW_APPROVED) Then
                         EnableDisableControl(dropdownOwner, True)
                     Else
-                        If drv("Enabled").ToString() = "Y" Or drv("Enabled").ToString() = "" Then
+                        If drv("Enabled").ToString() = "Y" OrElse drv("Enabled").ToString() = "" Then
                             EnableDisableControl(dropdownOwner)
                         End If
                         dropdownOwner.Attributes.Add("onchange", "setDirty()")
@@ -317,10 +317,10 @@ Partial Class ClaimStatusDetailForm
                     If State.IsEditMode Then
                         EnableDisableControl(checkboxSelect, True)
                     Else
-                        If disableRow Or (State.IsDisabled AndAlso clmStat <> Codes.CLAIM_EXTENDED_STATUS__PAYMENT_REVIEW_APPROVED) Then
+                        If disableRow OrElse (State.IsDisabled AndAlso clmStat <> Codes.CLAIM_EXTENDED_STATUS__PAYMENT_REVIEW_APPROVED) Then
                             EnableDisableControl(checkboxSelect, True)
                         Else
-                            If drv("Enabled").ToString() = "Y" Or drv("Enabled").ToString() = "" Then
+                            If drv("Enabled").ToString() = "Y" OrElse drv("Enabled").ToString() = "" Then
                                 EnableDisableControl(checkboxSelect)
                             End If
                             checkboxSelect.Attributes.Add("onchange", "setDirty()")
@@ -331,10 +331,10 @@ Partial Class ClaimStatusDetailForm
                 If (e.Item.Cells(GRID_COL_STATUS_DATE_IDX).FindControl(GRID_CTL_STATUS_DATE) IsNot Nothing) Then
                     Dim statusDateTextBox As TextBox
                     statusDateTextBox = CType(e.Item.Cells(GRID_COL_STATUS_DATE_IDX).FindControl(GRID_CTL_STATUS_DATE), TextBox)
-                    If disableRow Or (State.IsDisabled AndAlso clmStat <> Codes.CLAIM_EXTENDED_STATUS__PAYMENT_REVIEW_APPROVED) Then
+                    If disableRow OrElse (State.IsDisabled AndAlso clmStat <> Codes.CLAIM_EXTENDED_STATUS__PAYMENT_REVIEW_APPROVED) Then
                         EnableDisableControl(statusDateTextBox, True)
                     Else
-                        If drv("Enabled").ToString() = "Y" Or drv("Enabled").ToString() = "" Then
+                        If drv("Enabled").ToString() = "Y" OrElse drv("Enabled").ToString() = "" Then
                             EnableDisableControl(statusDateTextBox)
                         End If
                         statusDateTextBox.Attributes.Add("onchange", "setDirty()")
@@ -344,10 +344,10 @@ Partial Class ClaimStatusDetailForm
                 Dim commentTextBox As TextBox
                 commentTextBox = CType(e.Item.Cells(GRID_COL_COMMENT_IDX).FindControl(GRID_CTL_STATUS_COMMENT), TextBox)
                 If (commentTextBox IsNot Nothing) Then
-                    If disableRow Or (State.IsDisabled AndAlso clmStat <> Codes.CLAIM_EXTENDED_STATUS__PAYMENT_REVIEW_APPROVED) Then
+                    If disableRow OrElse (State.IsDisabled AndAlso clmStat <> Codes.CLAIM_EXTENDED_STATUS__PAYMENT_REVIEW_APPROVED) Then
                         EnableDisableControl(commentTextBox, True)
                     Else
-                        If drv("Enabled").ToString() = "Y" Or drv("Enabled").ToString() = "" Then
+                        If drv("Enabled").ToString() = "Y" OrElse drv("Enabled").ToString() = "" Then
                             EnableDisableControl(e.Item.Cells(GRID_COL_COMMENT_IDX).FindControl(GRID_CTL_STATUS_COMMENT))
                         End If
                         commentTextBox.Attributes.Add("onchange", "setDirty()")
@@ -362,7 +362,7 @@ Partial Class ClaimStatusDetailForm
     End Sub
 
     Protected Sub EnableDisableControl(ctl As System.Web.UI.Control, Optional ByVal disabled As Boolean = False)
-        If Not (permType = FormAuthorization.enumPermissionType.EDIT) Or disabled Then
+        If Not (permType = FormAuthorization.enumPermissionType.EDIT) OrElse disabled Then
             ControlMgr.SetEnableControl(Me, CType(ctl, System.Web.UI.WebControls.WebControl), False)
         Else
             ControlMgr.SetEnableControl(Me, CType(ctl, System.Web.UI.WebControls.WebControl), True)
@@ -573,20 +573,19 @@ Partial Class ClaimStatusDetailForm
                             Dim isDirty As Boolean = False
 
                             If dr(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_COMMENTS) IsNot DBNull.Value Then
-                                isDirty = isDirty Or (CType(dr(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_COMMENTS), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_COMMENT_IDX).FindControl(GRID_CTL_STATUS_COMMENT), TextBox).Text, String)))
+                                isDirty = isDirty OrElse (CType(dr(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_COMMENTS), String) <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_COMMENT_IDX).FindControl(GRID_CTL_STATUS_COMMENT), TextBox).Text, String)))
                             Else
-                                isDirty = isDirty Or ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_COMMENT_IDX).FindControl(GRID_CTL_STATUS_COMMENT), TextBox).Text, String)))
+                                isDirty = isDirty OrElse ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_COMMENT_IDX).FindControl(GRID_CTL_STATUS_COMMENT), TextBox).Text, String)))
                             End If
 
                             If dr(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_DATE_1) IsNot DBNull.Value Then
 
-                                isDirty = isDirty Or
-                                          (
+                                isDirty = isDirty OrElse (
                                             DateHelper.GetDateValue(CType(dr(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_DATE_1), String)) <>
                                             DateHelper.GetDateValue((CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_STATUS_DATE_IDX).FindControl(GRID_CTL_STATUS_DATE), TextBox).Text, String)))
                                           )
                             Else
-                                isDirty = isDirty Or ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_STATUS_DATE_IDX).FindControl(GRID_CTL_STATUS_DATE), TextBox).Text, String)))
+                                isDirty = isDirty OrElse ("" <> (CType(CType(DataGridDropdowns.Items(i).Cells(GRID_COL_STATUS_DATE_IDX).FindControl(GRID_CTL_STATUS_DATE), TextBox).Text, String)))
                             End If
 
                             If isDirty Then
@@ -644,7 +643,7 @@ Partial Class ClaimStatusDetailForm
                         Dim curBO, tempBO As ClaimStatus
                         Dim curStatus As String = String.Empty
 
-                        If claimStatusId Is Nothing Or claimStatusId = "" Then
+                        If claimStatusId Is Nothing OrElse claimStatusId = "" Then
                             curBO = GetClaimStatusBO(isFirstBO, Guid.Empty)
                         Else
                             curBO = GetClaimStatusBO(isFirstBO, New Guid(claimStatusId))
@@ -804,7 +803,7 @@ Partial Class ClaimStatusDetailForm
 
     Protected Sub PopulateGrid(Optional ByVal _refresh As Boolean = False)
         Dim oClaimStatusBO As ClaimStatus = Nothing
-        If State.searchDV Is Nothing Or _refresh Then
+        If State.searchDV Is Nothing OrElse _refresh Then
             If State.ClaimBO IsNot Nothing AndAlso State.ExtStatusEntry IsNot Nothing AndAlso State.ExtStatusEntry.Equals(Codes.CLAIM_EXTENDED_STATUS_ENTREY__PREDEFINED) Then
                 State.searchDV = ClaimStatus.GetClaimStatusByUserRole(State.claimId)
             Else

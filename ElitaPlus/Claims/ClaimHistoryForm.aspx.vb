@@ -252,7 +252,7 @@ Partial Public Class ClaimHistoryForm
             btnEditItem.Text = GetLongDate12FormattedString(date1)
         End If
 
-        If (e.Item.ItemType <> ListItemType.Header And e.Item.ItemType <> ListItemType.Footer) Then
+        If (e.Item.ItemType <> ListItemType.Header AndAlso e.Item.ItemType <> ListItemType.Footer) Then
             Dim d As Decimal = CType(dvRow("AUTHORIZED_AMOUNT_NEW"), Decimal)
 
             e.Item.Cells(GRID_COL_AUTHORIZED_AMOUNT_NEW).Text = GetAmountFormattedString(d)

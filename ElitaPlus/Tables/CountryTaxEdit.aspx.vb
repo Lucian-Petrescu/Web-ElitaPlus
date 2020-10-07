@@ -676,7 +676,7 @@ Partial Class CountryTaxEdit
                 blnSaveErr = True
             End Try
 
-            If intTaxGroup = 1 And oUserControl.ComputeMethodDescription = TAX_ON_GROSS_COMPUTE_METHOD Then
+            If intTaxGroup = 1 AndAlso oUserControl.ComputeMethodDescription = TAX_ON_GROSS_COMPUTE_METHOD Then
                 errMsg(intErrNum) = Message.MSG_TAX_METHOD_COMPUTE_ON_GROSS_NOT_ALLOWED_ON_1ST_BRACKET
                 intErrNum += 1
                 blnSaveErr = True

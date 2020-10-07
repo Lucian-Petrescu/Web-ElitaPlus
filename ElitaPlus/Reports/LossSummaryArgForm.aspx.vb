@@ -183,7 +183,7 @@ Namespace Reports
                                                                 })
 
             Dim filteredYearList As DataElements.ListItem() = (From x In YearList
-                                                               Where x.Description = currentAccountingYear.ToString() Or x.Description = (currentAccountingYear - 1).ToString()
+                                                               Where x.Description = currentAccountingYear.ToString() OrElse x.Description = (currentAccountingYear - 1).ToString()
                                                                Select x).ToArray()
 
             YearDropDownList.Populate(filteredYearList,
@@ -247,7 +247,7 @@ Namespace Reports
             If selectedMonthID.Equals(Guid.Empty) OrElse selectedYear.Equals(String.Empty) Then
                 ElitaPlusPage.SetLabelError(MonthYearLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_YEARMONTH_MUST_BE_SELECTED_ERR)
-            ElseIf CType(selectedMonth, Integer) > currentAccountingMonth And CType(selectedYear, Integer) >= currentAccountingYear Then
+            ElseIf CType(selectedMonth, Integer) > currentAccountingMonth AndAlso CType(selectedYear, Integer) >= currentAccountingYear Then
                 ElitaPlusPage.SetLabelError(MonthYearLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ACCOUNTING_MONTH_NOT_YET_COMPLETED_IS_NOT_ALLOWED)
             End If

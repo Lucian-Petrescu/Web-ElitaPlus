@@ -410,7 +410,7 @@ Namespace business
             Try
                 PopulateBOsFormFrom()
 
-                If State.MyBO.IsFamilyDirty And IsDataChanged() And btnSave_WRITE.Enabled = True Then
+                If State.MyBO.IsFamilyDirty AndAlso IsDataChanged() AndAlso btnSave_WRITE.Enabled = True Then
                     DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                     State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
@@ -517,7 +517,7 @@ Namespace business
         Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
                 PopulateBOsFormFrom()
-                If State.MyBO.IsFamilyDirty And IsDataChanged() Then
+                If State.MyBO.IsFamilyDirty AndAlso IsDataChanged() Then
                     DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                     State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
@@ -579,7 +579,7 @@ Namespace business
         Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
                 PopulateBOsFormFrom()
-                If State.MyBO.IsFamilyDirty And IsDataChanged() Then
+                If State.MyBO.IsFamilyDirty AndAlso IsDataChanged() Then
                     DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                     State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
@@ -864,8 +864,8 @@ Namespace business
         End Sub
 
         Private Sub SetButtons(enable As Boolean)
-            Dim actionEnabled As Boolean = enable And Not State.ViewOnly
-            Dim actionNotEnabled As Boolean = Not enable And Not State.ViewOnly
+            Dim actionEnabled As Boolean = enable AndAlso Not State.ViewOnly
+            Dim actionNotEnabled As Boolean = Not enable AndAlso Not State.ViewOnly
             ControlMgr.SetEnableControl(Me, btnSave_WRITE, actionEnabled)
             ControlMgr.SetEnableControl(Me, btnApply_WRITE, True)
             ControlMgr.SetEnableControl(Me, btnBack, enable)
@@ -922,7 +922,7 @@ Namespace business
         End Sub
 
         Private Function IsDataChanged() As Boolean
-            If State.MyBO.IsDirty Or State.DataChanged = True Or State.UserSecurityDataChanged = True Then
+            If State.MyBO.IsDirty OrElse State.DataChanged = True OrElse State.UserSecurityDataChanged = True Then
                 Return True
             Else
                 Return False
@@ -1410,7 +1410,7 @@ Namespace business
             'If there is not a single assigned company add the first one of Usr Assigned Companies
             If Not flag Then
                 'Added condition to check If UserCompanyAssigned has no value then skip adding User Assigned Companies. Def-24047.
-                If (State.UserCompanyAssigned.Table IsNot Nothing And State.UserCompanyAssigned.Table.Rows.Count > 0) Then
+                If (State.UserCompanyAssigned.Table IsNot Nothing AndAlso State.UserCompanyAssigned.Table.Rows.Count > 0) Then
                     State.MyUserCompanyChildBO = State.MyBO.AddUserCompanyGrpChild(New Guid(CType(State.UserCompanyAssigned.Table.Rows(0)(Assurant.ElitaPlus.DALObjects.UserDAL.COL_NAME_COMPANY_ID), Byte())))
                     EndUserCompanyChildEdit(ElitaPlusPage.DetailPageCommand.OK)
                 End If
@@ -1443,7 +1443,7 @@ Namespace business
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 If dvRow IsNot Nothing Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         If State.IsEditing OrElse State.ViewOnly Then
                             e.Row.Cells(GRID_COL_EDIT_BUTTON_IDX).FindControl(EDIT_COMPANY_BUTTON).Visible = False
                             e.Row.Cells(GRID_COL_EDIT_BUTTON_IDX).FindControl(DELETE_COMPANY_BUTTON).Visible = False
@@ -1524,7 +1524,7 @@ Namespace business
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 If dvRow IsNot Nothing Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         If State.IsEditing Then
                             e.Row.Cells(USER_SECURITY_GRID_COL_EDIT_BUTTON_IDX).FindControl(EDIT_SP_CLAIM_BUTTON).Visible = False
                         End If
@@ -1797,8 +1797,8 @@ Namespace business
         Private Sub SetUserSecurityButtons(enable As Boolean)
             SetButtons(enable)
 
-            Dim actionEnabled As Boolean = enable And Not State.ViewOnly
-            Dim actionNotEnabled As Boolean = Not enable And Not State.ViewOnly
+            Dim actionEnabled As Boolean = enable AndAlso Not State.ViewOnly
+            Dim actionNotEnabled As Boolean = Not enable AndAlso Not State.ViewOnly
 
             ControlMgr.SetEnableControl(Me, ClearButton, actionEnabled)
             ControlMgr.SetEnableControl(Me, AddSpClaimButton, True)

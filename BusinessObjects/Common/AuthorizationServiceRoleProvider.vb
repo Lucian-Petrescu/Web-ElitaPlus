@@ -7,7 +7,7 @@ Public Class AuthorizationServiceRoleProvider
     Private Shared oAuthorizationServiceClient As Auth.AuthorizationClient
     Private Shared syncRoot As New Object
 
-    Private Shared ReadOnly Property AuthorizationClientProxy() As Auth.AuthorizationClient
+    Private Shared ReadOnly Property AuthorizationClientProxy As Auth.AuthorizationClient
         Get
             Dim authClient As Auth.AuthorizationClient
             If (oAuthorizationServiceClient Is Nothing OrElse oAuthorizationServiceClient.State <> ServiceModel.CommunicationState.Opened) Then

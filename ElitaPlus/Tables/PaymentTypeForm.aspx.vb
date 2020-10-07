@@ -457,7 +457,7 @@ Namespace Tables
 
                 If dvRow IsNot Nothing Then
                     strID = GetGuidStringFromByteArray(CType(dvRow(PaymentType.PaymentTypeSearchDV.COL_PAYMENT_TYPE_ID), Byte()))
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         CType(e.Row.Cells(GRID_COL_PAYMENT_TYPE_IDX).FindControl(GRID_CTRL_NAME_LABLE_PAYMENT_TYPE_ID), Label).Text = strID
 
                         If (State.IsEditMode = True AndAlso State.Id.ToString.Equals(strID)) Then

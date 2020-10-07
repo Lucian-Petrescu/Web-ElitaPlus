@@ -426,7 +426,7 @@ Namespace Reports
                 If selectedSvcCtrId.Equals(Guid.Empty) Then
                     ElitaPlusPage.SetLabelError(SvcCtrLabel)
                     Throw New GUIException(Message.MSG_INVALID_SERVICE_CENTER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_SERVICE_CENTER_MUST_BE_SELECTED_ERR)
-                ElseIf cboCountry.Visible = True And selectedCountryId.Equals(Guid.Empty) Then
+                ElseIf cboCountry.Visible = True AndAlso selectedCountryId.Equals(Guid.Empty) Then
                     'ElitaPlusPage.SetLabelError(moCountryLabel)
                     Throw New GUIException(Message.MSG_INVALID_COUNTRY, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COUNTRY_MUST_BE_SELECTED_ERR)
                 End If

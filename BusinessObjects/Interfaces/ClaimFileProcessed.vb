@@ -106,7 +106,7 @@ Public Class ClaimFileProcessed
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IFileLoadHeaderWork.Id
+    Public ReadOnly Property Id As Guid Implements IFileLoadHeaderWork.Id
         Get
             If Row(ClaimFileProcessedDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -117,7 +117,7 @@ Public Class ClaimFileProcessed
     End Property
 
     <ValueMandatory("")> _
-  Public Property SplitSystemId() As Guid
+  Public Property SplitSystemId As Guid
         Get
             CheckDeleted()
             If row(ClaimfileProcessedDAL.COL_NAME_SPLIT_SYSTEM_ID) Is DBNull.Value Then
@@ -126,14 +126,14 @@ Public Class ClaimFileProcessed
                 Return New Guid(CType(row(ClaimfileProcessedDAL.COL_NAME_SPLIT_SYSTEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimfileProcessedDAL.COL_NAME_SPLIT_SYSTEM_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=15)> _
-    Public Property Filename() As String Implements IFileLoadHeaderWork.FileName
+    Public Property Filename As String Implements IFileLoadHeaderWork.FileName
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_FILENAME) Is DBNull.Value Then
@@ -142,13 +142,13 @@ Public Class ClaimFileProcessed
                 Return CType(Row(ClaimFileProcessedDAL.COL_NAME_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimFileProcessedDAL.COL_NAME_FILENAME, Value)
         End Set
     End Property
 
-    Public Property Received() As LongType Implements IFileLoadHeaderWork.Received
+    Public Property Received As LongType Implements IFileLoadHeaderWork.Received
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_RECEIVED) Is DBNull.Value Then
@@ -157,13 +157,13 @@ Public Class ClaimFileProcessed
                 Return New LongType(CType(Row(ClaimFileProcessedDAL.COL_NAME_RECEIVED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimFileProcessedDAL.COL_NAME_RECEIVED, Value)
         End Set
     End Property
 
-    Public Property Bypassed() As LongType Implements IFileLoadHeaderWork.Bypassed
+    Public Property Bypassed As LongType Implements IFileLoadHeaderWork.Bypassed
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_BYPASSED) Is DBNull.Value Then
@@ -172,14 +172,14 @@ Public Class ClaimFileProcessed
                 Return New LongType(CType(Row(ClaimFileProcessedDAL.COL_NAME_BYPASSED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimFileProcessedDAL.COL_NAME_BYPASSED, Value)
         End Set
     End Property
 
 
-    Public Property Counted() As LongType Implements IFileLoadHeaderWork.Counted
+    Public Property Counted As LongType Implements IFileLoadHeaderWork.Counted
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_COUNTED) Is DBNull.Value Then
@@ -188,7 +188,7 @@ Public Class ClaimFileProcessed
                 Return New LongType(CType(Row(ClaimFileProcessedDAL.COL_NAME_COUNTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimFileProcessedDAL.COL_NAME_COUNTED, Value)
         End Set
@@ -196,7 +196,7 @@ Public Class ClaimFileProcessed
 
 
 
-    Public Property Rejected() As LongType Implements IFileLoadHeaderWork.Rejected
+    Public Property Rejected As LongType Implements IFileLoadHeaderWork.Rejected
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_REJECTED) Is DBNull.Value Then
@@ -205,7 +205,7 @@ Public Class ClaimFileProcessed
                 Return New LongType(CType(Row(ClaimFileProcessedDAL.COL_NAME_REJECTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimFileProcessedDAL.COL_NAME_REJECTED, Value)
         End Set
@@ -213,7 +213,7 @@ Public Class ClaimFileProcessed
 
 
 
-    Public Property Validated() As LongType Implements IFileLoadHeaderWork.Validated
+    Public Property Validated As LongType Implements IFileLoadHeaderWork.Validated
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_VALIDATED) Is DBNull.Value Then
@@ -222,7 +222,7 @@ Public Class ClaimFileProcessed
                 Return New LongType(CType(Row(ClaimFileProcessedDAL.COL_NAME_VALIDATED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimFileProcessedDAL.COL_NAME_VALIDATED, Value)
         End Set
@@ -230,7 +230,7 @@ Public Class ClaimFileProcessed
 
 
 
-    Public Property Loaded() As LongType Implements IFileLoadHeaderWork.Loaded
+    Public Property Loaded As LongType Implements IFileLoadHeaderWork.Loaded
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_LOADED) Is DBNull.Value Then
@@ -239,13 +239,13 @@ Public Class ClaimFileProcessed
                 Return New LongType(CType(Row(ClaimFileProcessedDAL.COL_NAME_LOADED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimFileProcessedDAL.COL_NAME_LOADED, Value)
         End Set
     End Property
 
-    Public Property ProcessedAmount() As DecimalType
+    Public Property ProcessedAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_PROCESSED_AMOUNT) Is DBNull.Value Then
@@ -254,7 +254,7 @@ Public Class ClaimFileProcessed
                 Return New DecimalType(CType(Row(ClaimFileProcessedDAL.COL_NAME_PROCESSED_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimFileProcessedDAL.COL_NAME_PROCESSED_AMOUNT, Value)
         End Set
@@ -283,7 +283,7 @@ Public Class ClaimFileProcessed
     '    End Get
     'End Property
 
-    Public ReadOnly Property ClaimNameLoad() As String
+    Public ReadOnly Property ClaimNameLoad As String
         Get
             If SplitSystemId.Equals(Guid.Empty) Then Return Nothing
             Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_SPLIT_SYSTEM)
@@ -476,7 +476,7 @@ Public Class ClaimFileProcessed
 #End Region
 
 #Region "Invoice Item Recon Work"
-    Public ReadOnly Property InvoiceReconWrkChildren() As InvoiceReconWrkList
+    Public ReadOnly Property InvoiceReconWrkChildren As InvoiceReconWrkList
         Get
             Return New InvoiceReconWrkList(Me)
         End Get

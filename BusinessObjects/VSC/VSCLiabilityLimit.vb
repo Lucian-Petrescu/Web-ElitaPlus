@@ -90,7 +90,7 @@ Public Class VSCLiabilityLimit
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(VSCLiabilityLimitDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class VSCLiabilityLimit
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(VSCLiabilityLimitDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class VSCLiabilityLimit
                 Return New Guid(CType(Row(VSCLiabilityLimitDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCLiabilityLimitDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class VSCLiabilityLimit
 
 
     <ValueMandatory("")> _
-    Public Property LiabilityLimit() As DecimalType
+    Public Property LiabilityLimit As DecimalType
         Get
             CheckDeleted()
             If Row(VSCLiabilityLimitDAL.COL_NAME_LIABILITY_LIMIT) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class VSCLiabilityLimit
                 Return New DecimalType(CType(Row(VSCLiabilityLimitDAL.COL_NAME_LIABILITY_LIMIT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(VSCLiabilityLimitDAL.COL_NAME_LIABILITY_LIMIT, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class VSCLiabilityLimit
 
 
     <ValueMandatory("")> _
-    Public Property TermKmMi() As LongType
+    Public Property TermKmMi As LongType
         Get
             CheckDeleted()
             If Row(VSCLiabilityLimitDAL.COL_NAME_TERM_KM_MI) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class VSCLiabilityLimit
                 Return New LongType(CType(Row(VSCLiabilityLimitDAL.COL_NAME_TERM_KM_MI), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VSCLiabilityLimitDAL.COL_NAME_TERM_KM_MI, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class VSCLiabilityLimit
 
 
     <ValueMandatory("")> _
-    Public Property TermMonths() As LongType
+    Public Property TermMonths As LongType
         Get
             CheckDeleted()
             If Row(VSCLiabilityLimitDAL.COL_NAME_TERM_MONTHS) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class VSCLiabilityLimit
                 Return New LongType(CType(Row(VSCLiabilityLimitDAL.COL_NAME_TERM_MONTHS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VSCLiabilityLimitDAL.COL_NAME_TERM_MONTHS, Value)
         End Set

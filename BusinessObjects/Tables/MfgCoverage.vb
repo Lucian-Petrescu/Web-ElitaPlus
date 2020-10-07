@@ -121,7 +121,7 @@ Public Class MfgCoverage
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(MfgCoverageDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -131,7 +131,7 @@ Public Class MfgCoverage
         End Get
     End Property
 
-    Public Property EquipmentTypeId() As Guid
+    Public Property EquipmentTypeId As Guid
         Get
             If Row(MfgCoverageDAL.COL_EQUIPMENT_TYPE_ID) Is DBNull.Value Then
                 Return Nothing
@@ -139,13 +139,13 @@ Public Class MfgCoverage
                 Return New Guid(CType(Row(MfgCoverageDAL.COL_EQUIPMENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(MfgCoverageDAL.COL_EQUIPMENT_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property EquipmentId() As Guid
+    Public Property EquipmentId As Guid
         Get
             If Row(MfgCoverageDAL.COL_EQUIPMENT_ID) Is DBNull.Value Then
                 Return Nothing
@@ -153,14 +153,14 @@ Public Class MfgCoverage
                 Return New Guid(CType(Row(MfgCoverageDAL.COL_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(MfgCoverageDAL.COL_EQUIPMENT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(MfgCoverageDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -169,13 +169,13 @@ Public Class MfgCoverage
                 Return New Guid(CType(Row(MfgCoverageDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(MfgCoverageDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
     <RiskTypeOrMfgRequired("")>
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(MfgCoverageDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -184,7 +184,7 @@ Public Class MfgCoverage
                 Return New Guid(CType(Row(MfgCoverageDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(MfgCoverageDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
@@ -192,7 +192,7 @@ Public Class MfgCoverage
 
 
     <ValidStringLength("", Max:=100)>
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(MfgCoverageDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -201,14 +201,14 @@ Public Class MfgCoverage
                 Return CType(Row(MfgCoverageDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(MfgCoverageDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
 
     <ValidConditionally(""), RiskTypeOrMfgRequired("")>
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             CheckDeleted()
             If Row(MfgCoverageDAL.COL_NAME_RISK_TYPE_ID) Is DBNull.Value Then
@@ -217,14 +217,14 @@ Public Class MfgCoverage
                 Return New Guid(CType(Row(MfgCoverageDAL.COL_NAME_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(MfgCoverageDAL.COL_NAME_RISK_TYPE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Max:=99, Min:=0)>
-    Public Property MfgWarranty() As Integer
+    Public Property MfgWarranty As Integer
         Get
             CheckDeleted()
             If Row(MfgCoverageDAL.COL_NAME_MFG_WARRANTY) Is DBNull.Value Then
@@ -233,13 +233,13 @@ Public Class MfgCoverage
                 Return CType(Row(MfgCoverageDAL.COL_NAME_MFG_WARRANTY), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(MfgCoverageDAL.COL_NAME_MFG_WARRANTY, Value)
         End Set
     End Property
     <ValidNumericRange("", Max:=99, Min:=1)>
-    Public Property MfgMainPartsWarranty() As LongType
+    Public Property MfgMainPartsWarranty As LongType
         Get
             CheckDeleted()
             If Row(MfgCoverageDAL.COL_NAME_MFG_MAIN_PARTS_WARRANTY) Is DBNull.Value Then
@@ -248,7 +248,7 @@ Public Class MfgCoverage
                 Return New LongType(CType(Row(MfgCoverageDAL.COL_NAME_MFG_MAIN_PARTS_WARRANTY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(MfgCoverageDAL.COL_NAME_MFG_MAIN_PARTS_WARRANTY, Value)
         End Set

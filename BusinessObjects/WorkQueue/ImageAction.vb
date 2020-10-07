@@ -71,27 +71,27 @@ Public NotInheritable Class ImageAction
 
 #Region "View"
 
-    <Serializable()> _
+    <Serializable> _
     Class ImageActionView
 
         Private _imageId As Guid
 
-        Public Property ImageId() As Guid
+        Public Property ImageId As Guid
             Get
                 Return _imageId
             End Get
-            Set(ByVal value As Guid)
+            Set
                 _imageId = value
             End Set
         End Property
 
         Private _scanDate As String
 
-        Public Property ScanDate() As String
+        Public Property ScanDate As String
             Get
                 Return _scanDate
             End Get
-            Set(ByVal value As String)
+            Set
                 _scanDate = value
             End Set
         End Property

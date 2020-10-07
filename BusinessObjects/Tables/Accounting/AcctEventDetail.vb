@@ -107,7 +107,7 @@ Public Class AcctEventDetail
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AcctEventDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -118,7 +118,7 @@ Public Class AcctEventDetail
     End Property
 
     <ValueMandatory("")> _
-    Public Property AcctEventId() As Guid
+    Public Property AcctEventId As Guid
         Get
             CheckDeleted()
             If row(AcctEventDetailDAL.COL_NAME_ACCT_EVENT_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class AcctEventDetail
                 Return New Guid(CType(row(AcctEventDetailDAL.COL_NAME_ACCT_EVENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ACCT_EVENT_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class AcctEventDetail
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property DebitCredit() As String
+    Public Property DebitCredit As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_DEBIT_CREDIT) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_DEBIT_CREDIT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_DEBIT_CREDIT, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class AcctEventDetail
 
 
     <ValidAccountNumber(""), ValidStringLength("", Max:=15)> _
-    Public Property AccountCode() As String
+    Public Property AccountCode As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ACCOUNT_CODE) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_ACCOUNT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             If Not Value Is Nothing Then Value = Value.Trim
             SetValue(AcctEventDetailDAL.COL_NAME_ACCOUNT_CODE, Value)
@@ -170,7 +170,7 @@ Public Class AcctEventDetail
 
 
     <ValidPayeeSettings(""), ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property UsePayeeSettings() As String
+    Public Property UsePayeeSettings As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_USE_PAYEE_SETTINGS) Is DBNull.Value Then
@@ -179,7 +179,7 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_USE_PAYEE_SETTINGS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_USE_PAYEE_SETTINGS, Value)
         End Set
@@ -187,7 +187,7 @@ Public Class AcctEventDetail
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AnalysisCode1() As String
+    Public Property AnalysisCode1 As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_1) Is DBNull.Value Then
@@ -196,7 +196,7 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_1, Value)
         End Set
@@ -204,7 +204,7 @@ Public Class AcctEventDetail
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AnalysisCode2() As String
+    Public Property AnalysisCode2 As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_2) Is DBNull.Value Then
@@ -213,7 +213,7 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_2, Value)
         End Set
@@ -221,7 +221,7 @@ Public Class AcctEventDetail
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AnalysisCode3() As String
+    Public Property AnalysisCode3 As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_3) Is DBNull.Value Then
@@ -230,7 +230,7 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_3, Value)
         End Set
@@ -238,7 +238,7 @@ Public Class AcctEventDetail
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AnalysisCode4() As String
+    Public Property AnalysisCode4 As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_4) Is DBNull.Value Then
@@ -247,7 +247,7 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_4), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_4, Value)
         End Set
@@ -255,7 +255,7 @@ Public Class AcctEventDetail
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AnalysisCode5() As String
+    Public Property AnalysisCode5 As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_5) Is DBNull.Value Then
@@ -264,7 +264,7 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_5), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_5, Value)
         End Set
@@ -272,7 +272,7 @@ Public Class AcctEventDetail
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AnalysisCode6() As String
+    Public Property AnalysisCode6 As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_6) Is DBNull.Value Then
@@ -281,7 +281,7 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_6), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_6, Value)
         End Set
@@ -289,7 +289,7 @@ Public Class AcctEventDetail
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AnalysisCode7() As String
+    Public Property AnalysisCode7 As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_7) Is DBNull.Value Then
@@ -298,7 +298,7 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_7), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_7, Value)
         End Set
@@ -306,7 +306,7 @@ Public Class AcctEventDetail
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AnalysisCode8() As String
+    Public Property AnalysisCode8 As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_8) Is DBNull.Value Then
@@ -315,14 +315,14 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_8), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_8, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AnalysisCode9() As String
+    Public Property AnalysisCode9 As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_9) Is DBNull.Value Then
@@ -331,14 +331,14 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_9), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_9, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)> _
-    Public Property AnalysisCode10() As String
+    Public Property AnalysisCode10 As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_10) Is DBNull.Value Then
@@ -347,14 +347,14 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_10), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_CODE_10, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property FieldTypeId() As Guid
+    Public Property FieldTypeId As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_FIELD_TYPE_ID) Is DBNull.Value Then
@@ -363,14 +363,14 @@ Public Class AcctEventDetail
                 Return New Guid(CType(Row(AcctEventDetailDAL.COL_NAME_FIELD_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_FIELD_TYPE_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=100.0, Min:=0.0)> _
-    Public Property Calculation() As DecimalType
+    Public Property Calculation As DecimalType
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_CALCULATION) Is DBNull.Value Then
@@ -379,14 +379,14 @@ Public Class AcctEventDetail
                 Return New DecimalType(CType(Row(AcctEventDetailDAL.COL_NAME_CALCULATION), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_CALCULATION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)> _
-    Public Property AllocationMarker() As String
+    Public Property AllocationMarker As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ALLOCATION_MARKER) Is DBNull.Value Then
@@ -395,14 +395,14 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_ALLOCATION_MARKER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ALLOCATION_MARKER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)> _
-    Public Property JournalType() As String
+    Public Property JournalType As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_JOURNAL_TYPE) Is DBNull.Value Then
@@ -411,7 +411,7 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_JOURNAL_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             If Not Value Is Nothing Then Value = Value.Trim
             SetValue(AcctEventDetailDAL.COL_NAME_JOURNAL_TYPE, Value)
@@ -419,7 +419,7 @@ Public Class AcctEventDetail
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property JournalIDSuffix() As String
+    Public Property JournalIDSuffix As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_JOURNAL_ID_SUFFIX) Is DBNull.Value Then
@@ -428,7 +428,7 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_JOURNAL_ID_SUFFIX), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             If Not Value Is Nothing Then Value = Value.Trim
             SetValue(AcctEventDetailDAL.COL_NAME_JOURNAL_ID_SUFFIX, Value)
@@ -437,7 +437,7 @@ Public Class AcctEventDetail
 
 
     <ValueMandatory("")> _
-    Public Property AcctBusinessUnitId() As Guid
+    Public Property AcctBusinessUnitId As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ACCT_BUSINESS_UNIT_ID) Is DBNull.Value Then
@@ -446,14 +446,14 @@ Public Class AcctEventDetail
                 Return New Guid(CType(Row(AcctEventDetailDAL.COL_NAME_ACCT_BUSINESS_UNIT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ACCT_BUSINESS_UNIT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property AccountType() As String
+    Public Property AccountType As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ACCOUNT_TYPE) Is DBNull.Value Then
@@ -462,14 +462,14 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_ACCOUNT_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ACCOUNT_TYPE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -478,13 +478,13 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property BusinessEntityId() As Guid
+    Public Property BusinessEntityId As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_BUSINESS_ENTITY_ID) Is DBNull.Value Then
@@ -493,14 +493,14 @@ Public Class AcctEventDetail
                 Return New Guid(CType(Row(AcctEventDetailDAL.COL_NAME_BUSINESS_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_BUSINESS_ENTITY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AnalysisSource1Id() As Guid
+    Public Property AnalysisSource1Id As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_1_ID) Is DBNull.Value Then
@@ -509,14 +509,14 @@ Public Class AcctEventDetail
                 Return New Guid(CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_1_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_1_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AnalysisSource2Id() As Guid
+    Public Property AnalysisSource2Id As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_2_ID) Is DBNull.Value Then
@@ -525,14 +525,14 @@ Public Class AcctEventDetail
                 Return New Guid(CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_2_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_2_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AnalysisSource3Id() As Guid
+    Public Property AnalysisSource3Id As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_3_ID) Is DBNull.Value Then
@@ -541,14 +541,14 @@ Public Class AcctEventDetail
                 Return New Guid(CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_3_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_3_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AnalysisSource4Id() As Guid
+    Public Property AnalysisSource4Id As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_4_ID) Is DBNull.Value Then
@@ -557,14 +557,14 @@ Public Class AcctEventDetail
                 Return New Guid(CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_4_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_4_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AnalysisSource5Id() As Guid
+    Public Property AnalysisSource5Id As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_5_ID) Is DBNull.Value Then
@@ -573,14 +573,14 @@ Public Class AcctEventDetail
                 Return New Guid(CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_5_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_5_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AnalysisSource6Id() As Guid
+    Public Property AnalysisSource6Id As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_6_ID) Is DBNull.Value Then
@@ -589,14 +589,14 @@ Public Class AcctEventDetail
                 Return New Guid(CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_6_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_6_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AnalysisSource7Id() As Guid
+    Public Property AnalysisSource7Id As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_7_ID) Is DBNull.Value Then
@@ -605,14 +605,14 @@ Public Class AcctEventDetail
                 Return New Guid(CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_7_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_7_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AnalysisSource8Id() As Guid
+    Public Property AnalysisSource8Id As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_8_ID) Is DBNull.Value Then
@@ -621,14 +621,14 @@ Public Class AcctEventDetail
                 Return New Guid(CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_8_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_8_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AnalysisSource9Id() As Guid
+    Public Property AnalysisSource9Id As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_9_ID) Is DBNull.Value Then
@@ -637,14 +637,14 @@ Public Class AcctEventDetail
                 Return New Guid(CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_9_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_9_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AnalysisSource10Id() As Guid
+    Public Property AnalysisSource10Id As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_10_ID) Is DBNull.Value Then
@@ -653,14 +653,14 @@ Public Class AcctEventDetail
                 Return New Guid(CType(Row(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_10_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_ANALYSIS_SRC_10_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DescriptionSourceId() As Guid
+    Public Property DescriptionSourceId As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_DESCRIPTION_SRC_ID) Is DBNull.Value Then
@@ -669,14 +669,14 @@ Public Class AcctEventDetail
                 Return New Guid(CType(Row(AcctEventDetailDAL.COL_NAME_DESCRIPTION_SRC_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_DESCRIPTION_SRC_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1), ValidInclusionExclusionConfig("")> _
-    Public Property IncludeExcludeInd() As String
+    Public Property IncludeExcludeInd As String
         Get
             CheckDeleted()
             If Row(AcctEventDetailDAL.COL_NAME_INCLUDE_EXCLUDE_IND) Is DBNull.Value Then
@@ -685,7 +685,7 @@ Public Class AcctEventDetail
                 Return CType(Row(AcctEventDetailDAL.COL_NAME_INCLUDE_EXCLUDE_IND), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDetailDAL.COL_NAME_INCLUDE_EXCLUDE_IND, Value)
         End Set

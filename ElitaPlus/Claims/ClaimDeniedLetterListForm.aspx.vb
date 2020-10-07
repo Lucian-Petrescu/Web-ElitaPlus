@@ -228,8 +228,8 @@
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
             Try
-                If dvRow IsNot Nothing And Not State.bnoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DATE_IDX), dvRow(2))
                         PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DENIAL_RESON_CODE_IDX), dvRow(1))
                         PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DENIAL_RESON_IDX), dvRow(3))

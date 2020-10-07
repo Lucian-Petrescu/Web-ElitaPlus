@@ -62,7 +62,7 @@ Public Class AcselXToElitaClaimFileLoad
         Get
             Return _claimloadFileProcessed
         End Get
-        Set(ByVal value As ClaimloadFileProcessed)
+        Set
             _claimloadFileProcessed = value
         End Set
     End Property
@@ -71,7 +71,7 @@ Public Class AcselXToElitaClaimFileLoad
         Get
             Return _claim
         End Get
-        Set(ByVal value As Claim)
+        Set
             _claim = value
         End Set
     End Property

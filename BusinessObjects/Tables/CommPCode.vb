@@ -97,7 +97,7 @@ Public Class CommPCode
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CommPCodeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -108,7 +108,7 @@ Public Class CommPCode
     End Property
 
     <ValueMandatory("")> _
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If row(CommPCodeDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -117,7 +117,7 @@ Public Class CommPCode
                 Return New Guid(CType(row(CommPCodeDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommPCodeDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
@@ -125,7 +125,7 @@ Public Class CommPCode
 
 
     <ValueMandatory("")> _
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If row(CommPCodeDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -134,7 +134,7 @@ Public Class CommPCode
                 Return New DateType(CType(row(CommPCodeDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CommPCodeDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
@@ -142,7 +142,7 @@ Public Class CommPCode
 
 
     <ValueMandatory("")> _
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If row(CommPCodeDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -151,7 +151,7 @@ Public Class CommPCode
                 Return New DateType(CType(row(CommPCodeDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CommPCodeDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set

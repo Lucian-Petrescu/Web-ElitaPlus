@@ -86,16 +86,10 @@ Public Class ClaimIssueStatus
     End Sub
 #End Region
 
-#Region "Variables"
-
-    ' Dim moStatus As CEHelper.RptStatus
-    Private _ProcessedBy As String
-
-#End Region
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimIssueStatusDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -116,13 +110,13 @@ Public Class ClaimIssueStatus
             End If
             Return _claimIssue
         End Get
-        Private Set(value As ClaimIssue)
+        Private Set
             _claimIssue = value
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimIssueId() As Guid
+    Public Property ClaimIssueId As Guid
         Get
             CheckDeleted()
             If row(ClaimIssueStatusDAL.COL_NAME_CLAIM_ISSUE_ID) Is DBNull.Value Then
@@ -131,7 +125,7 @@ Public Class ClaimIssueStatus
                 Return New Guid(CType(row(ClaimIssueStatusDAL.COL_NAME_CLAIM_ISSUE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimIssueStatusDAL.COL_NAME_CLAIM_ISSUE_ID, Value)
             ClaimIssue = Nothing
@@ -140,7 +134,7 @@ Public Class ClaimIssueStatus
 
 
     <ValueMandatory("")> _
-    Public Property ClaimIssueStatusCId() As Guid
+    Public Property ClaimIssueStatusCId As Guid
         Get
             CheckDeleted()
             If row(ClaimIssueStatusDAL.COL_NAME_CLAIM_ISSUE_STATUS_C_ID) Is DBNull.Value Then
@@ -149,14 +143,14 @@ Public Class ClaimIssueStatus
                 Return New Guid(CType(row(ClaimIssueStatusDAL.COL_NAME_CLAIM_ISSUE_STATUS_C_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimIssueStatusDAL.COL_NAME_CLAIM_ISSUE_STATUS_C_ID, Value)
         End Set
     End Property
 
 
-    Public Property Comments() As String
+    Public Property Comments As String
 
         Get
             CheckDeleted()
@@ -166,13 +160,13 @@ Public Class ClaimIssueStatus
                 Return CType(Row(ClaimIssueStatusDAL.COL_NAME_COMMENTS), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimIssueStatusDAL.COL_NAME_COMMENTS, Value)
         End Set
     End Property
 
-    Public Property ProcessedDate() As DateType
+    Public Property ProcessedDate As DateType
         Get
             CheckDeleted()            
             If Row(ClaimIssueStatusDAL.COL_NAME_CREATED_DATE) Is DBNull.Value Then
@@ -181,12 +175,12 @@ Public Class ClaimIssueStatus
                 Return New DateType(CType(Row(ClaimIssueStatusDAL.COL_NAME_CREATED_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimIssueStatusDAL.COL_NAME_CREATED_DATE, Value)
         End Set
     End Property
-    Public Property IssueProcessReasonId() As Guid
+    Public Property IssueProcessReasonId As Guid
         Get
             CheckDeleted()
             If Row(ClaimIssueStatusDAL.COL_NAME_ISSUE_PROCESS_REASON_ID) Is DBNull.Value Then
@@ -195,38 +189,38 @@ Public Class ClaimIssueStatus
                 Return New Guid(CType(Row(ClaimIssueStatusDAL.COL_NAME_ISSUE_PROCESS_REASON_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimIssueStatusDAL.COL_NAME_ISSUE_PROCESS_REASON_ID, Value)
         End Set
     End Property
 
 
-    Public Property ProcessedBy() As String
+    Public Property ProcessedBy As String
         Get
             CheckDeleted()
             If Row(ClaimIssueStatusDAL.COL_NAME_PROCESSED_BY) Is DBNull.Value Then
-                Return _ProcessedBy
+                Return Nothing
             Else
                 Return CType(Row(ClaimIssueStatusDAL.COL_NAME_PROCESSED_BY), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimIssueStatusDAL.COL_NAME_PROCESSED_BY, Value)
         End Set        
     End Property
 
-    Public Property CreatedBy() As String
+    Public Property CreatedBy As String
         Get
             CheckDeleted()
             If Row(ClaimIssueStatusDAL.COL_NAME_CREATED_BY) Is DBNull.Value Then
-                Return _ProcessedBy
+                Return Nothing
             Else
                 Return CType(Row(ClaimIssueStatusDAL.COL_NAME_CREATED_BY), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimIssueStatusDAL.COL_NAME_CREATED_BY, Value)
         End Set

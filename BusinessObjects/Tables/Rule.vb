@@ -97,7 +97,7 @@ Public Class Rule
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IExpirable.ID
+    Public ReadOnly Property Id As Guid Implements IExpirable.ID
         Get
             If Row(RuleDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -109,7 +109,7 @@ Public Class Rule
 
     ', ValidateDuplicateCode("")
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Code() As String Implements IExpirable.Code
+    Public Property Code As String Implements IExpirable.Code
         Get
             CheckDeleted()
             If Row(RuleDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -118,7 +118,7 @@ Public Class Rule
                 Return CType(Row(RuleDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RuleDAL.COL_NAME_CODE, Value)
         End Set
@@ -126,7 +126,7 @@ Public Class Rule
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4000)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(RuleDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -135,7 +135,7 @@ Public Class Rule
                 Return CType(Row(RuleDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RuleDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -143,7 +143,7 @@ Public Class Rule
 
 
 
-    Public Property RuleTypeId() As Guid
+    Public Property RuleTypeId As Guid
         Get
             CheckDeleted()
             If Row(RuleDAL.COL_NAME_RULE_TYPE_ID) Is DBNull.Value Then
@@ -152,7 +152,7 @@ Public Class Rule
                 Return New Guid(CType(Row(RuleDAL.COL_NAME_RULE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RuleDAL.COL_NAME_RULE_TYPE_ID, Value)
         End Set
@@ -160,7 +160,7 @@ Public Class Rule
 
 
 
-    Public Property RuleCategoryId() As Guid
+    Public Property RuleCategoryId As Guid
         Get
             CheckDeleted()
             If Row(RuleDAL.COL_NAME_RULE_CATEGORY_ID) Is DBNull.Value Then
@@ -169,7 +169,7 @@ Public Class Rule
                 Return New Guid(CType(Row(RuleDAL.COL_NAME_RULE_CATEGORY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RuleDAL.COL_NAME_RULE_CATEGORY_ID, Value)
         End Set
@@ -177,7 +177,7 @@ Public Class Rule
 
 
     <ValidStringLength("", Max:=1020)> _
-    Public Property RuleExecutionPoint() As String
+    Public Property RuleExecutionPoint As String
         Get
             CheckDeleted()
             If Row(RuleDAL.COL_NAME_RULE_EXECUTION_POINT) Is DBNull.Value Then
@@ -186,7 +186,7 @@ Public Class Rule
                 Return CType(Row(RuleDAL.COL_NAME_RULE_EXECUTION_POINT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RuleDAL.COL_NAME_RULE_EXECUTION_POINT, Value)
         End Set
@@ -194,7 +194,7 @@ Public Class Rule
 
 
     <ValidStringLength("", Max:=4000)> _
-    Public Property RuleDataSet() As String
+    Public Property RuleDataSet As String
         Get
             CheckDeleted()
             If Row(RuleDAL.COL_NAME_RULE_DATA_SET) Is DBNull.Value Then
@@ -203,7 +203,7 @@ Public Class Rule
                 Return CType(Row(RuleDAL.COL_NAME_RULE_DATA_SET), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RuleDAL.COL_NAME_RULE_DATA_SET, Value)
         End Set
@@ -211,7 +211,7 @@ Public Class Rule
 
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EFFECTIVE)> _
-    Public Property Effective() As DateTimeType Implements IExpirable.Effective
+    Public Property Effective As DateTimeType Implements IExpirable.Effective
         Get
             CheckDeleted()
             If Row(RuleDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -220,7 +220,7 @@ Public Class Rule
                 Return New DateTimeType(DateHelper.GetDateValue(Row(RuleDAL.COL_NAME_EFFECTIVE).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(RuleDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -228,7 +228,7 @@ Public Class Rule
 
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EXPIRATION), EffectiveExpirationDateValidation(Codes.EXPIRATION)> _
-    Public Property Expiration() As DateTimeType Implements IExpirable.Expiration
+    Public Property Expiration As DateTimeType Implements IExpirable.Expiration
         Get
             CheckDeleted()
             If Row(RuleDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -237,7 +237,7 @@ Public Class Rule
                 Return New DateTimeType(DateHelper.GetDateValue(Row(RuleDAL.COL_NAME_EXPIRATION).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(RuleDAL.COL_NAME_EXPIRATION, Value)
         End Set
@@ -269,7 +269,7 @@ Public Class Rule
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
@@ -308,7 +308,7 @@ Public Class Rule
         Next
     End Sub
 
-    Public Overrides ReadOnly Property IsNew() As Boolean Implements IExpirable.IsNew
+    Public Overrides ReadOnly Property IsNew As Boolean Implements IExpirable.IsNew
         Get
             Return MyBase.IsNew
         End Get
@@ -401,7 +401,7 @@ Public Class Rule
         Get
             Return Guid.Empty
         End Get
-        Set(ByVal value As Guid)
+        Set
             'do nothing
         End Set
     End Property
@@ -495,7 +495,7 @@ Public Class Rule
 #End Region
 
 #Region "Rule Issue View"
-    Public ReadOnly Property IssueRuleChildren() As RuleIssue.IssueRuleDetailView
+    Public ReadOnly Property IssueRuleChildren As RuleIssue.IssueRuleDetailView
         Get
             Return New RuleIssue.IssueRuleDetailView(Me)
         End Get
@@ -611,7 +611,7 @@ Public Class Rule
 
 
 #Region "Rule Process View"
-    Public ReadOnly Property ProcessRuleChildren() As RuleProcess.ProcessRuleDetailView
+    Public ReadOnly Property ProcessRuleChildren As RuleProcess.ProcessRuleDetailView
         Get
             Return New RuleProcess.ProcessRuleDetailView(Me)
         End Get

@@ -317,7 +317,7 @@ Namespace Reports
             Dim dealercode, rejectionType As String
 
             If Not UserCompanyMultipleDrop.SelectedGuid.Equals(Guid.Empty) AndAlso Not DealerMultipleDrop.SelectedGuid.Equals(Guid.Empty) _
-                AndAlso (txtBeginDate.Text.Trim.ToString <> String.Empty And txtEndDate.Text.Trim.ToString <> String.Empty) _
+                AndAlso (txtBeginDate.Text.Trim.ToString <> String.Empty AndAlso txtEndDate.Text.Trim.ToString <> String.Empty) _
                 AndAlso Not ddlFileType.SelectedValue.Equals(Guid.Empty) Then
 
                 dealercode = DealerMultipleDrop.SelectedCode
@@ -376,7 +376,7 @@ Namespace Reports
             Dim FileNames, ReportType, DealerType As String
 
             'Validating the month and year
-            If ((Not txtBeginDate.Text.Equals(String.Empty) And txtEndDate.Text.Equals(String.Empty)) Or (txtBeginDate.Text.Equals(String.Empty) And Not txtEndDate.Text.Equals(String.Empty))) Then
+            If ((Not txtBeginDate.Text.Equals(String.Empty) AndAlso txtEndDate.Text.Equals(String.Empty)) OrElse (txtBeginDate.Text.Equals(String.Empty) AndAlso Not txtEndDate.Text.Equals(String.Empty))) Then
                 ElitaPlusPage.SetLabelError(lblBeginDate)
                 ElitaPlusPage.SetLabelError(lblEndDate)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_AND_END_DATES_MUST_BE_SELECTED_ERR)

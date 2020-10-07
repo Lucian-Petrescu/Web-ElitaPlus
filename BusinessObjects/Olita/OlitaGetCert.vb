@@ -97,7 +97,7 @@ Public Class OlitaGetCert
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property Dealer() As String
+    Public Property Dealer As String
         Get
             If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
@@ -105,13 +105,13 @@ Public Class OlitaGetCert
                 Return (CType(Row(DATA_COL_NAME_DEALER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
             If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -119,13 +119,13 @@ Public Class OlitaGetCert
                 Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
-    Public Property InvoiceNumber() As String
+    Public Property InvoiceNumber As String
         Get
             If Row(DATA_COL_NAME_INVOICE_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -133,7 +133,7 @@ Public Class OlitaGetCert
                 Return CType(Row(DATA_COL_NAME_INVOICE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_INVOICE_NUMBER, Value)
         End Set
@@ -141,7 +141,7 @@ Public Class OlitaGetCert
 #End Region
 #Region "Extended Properties"
 
-    Private ReadOnly Property DealerId() As Guid
+    Private ReadOnly Property DealerId As Guid
         Get
             If _dealerId.Equals(Guid.Empty) Then
 

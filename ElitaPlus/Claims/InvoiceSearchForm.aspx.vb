@@ -150,13 +150,13 @@ Public Class InvoiceSearchForm
             End If
             Dim hasErrors As Boolean = False
             ' Validate each Search Criteria Supplied
-            If (Not moInvoiceNumber.IsEmpty) Then hasErrors = hasErrors Or Not moInvoiceNumber.Validate()
-            If (Not moInvoiceAmount.IsEmpty) Then hasErrors = hasErrors Or Not moInvoiceAmount.Validate()
-            If (Not moInvoiceDate.IsEmpty) Then hasErrors = hasErrors Or Not moInvoiceDate.Validate()
-            If (Not moBatchNumber.IsEmpty) Then hasErrors = hasErrors Or Not moBatchNumber.Validate()
-            If (Not moClaimNumber.IsEmpty) Then hasErrors = hasErrors Or Not moClaimNumber.Validate()
-            If (Not moDateCreated.IsEmpty) Then hasErrors = hasErrors Or Not moDateCreated.Validate()
-            If (Not moAuthorizationNumber.IsEmpty) Then hasErrors = hasErrors Or Not moAuthorizationNumber.Validate()
+            If (Not moInvoiceNumber.IsEmpty) Then hasErrors = hasErrors OrElse Not moInvoiceNumber.Validate()
+            If (Not moInvoiceAmount.IsEmpty) Then hasErrors = hasErrors OrElse Not moInvoiceAmount.Validate()
+            If (Not moInvoiceDate.IsEmpty) Then hasErrors = hasErrors OrElse Not moInvoiceDate.Validate()
+            If (Not moBatchNumber.IsEmpty) Then hasErrors = hasErrors OrElse Not moBatchNumber.Validate()
+            If (Not moClaimNumber.IsEmpty) Then hasErrors = hasErrors OrElse Not moClaimNumber.Validate()
+            If (Not moDateCreated.IsEmpty) Then hasErrors = hasErrors OrElse Not moDateCreated.Validate()
+            If (Not moAuthorizationNumber.IsEmpty) Then hasErrors = hasErrors OrElse Not moAuthorizationNumber.Validate()
             If (hasErrors) Then Exit Sub
 
             ' Reset the Caching on Search Results

@@ -128,7 +128,7 @@ Public Class DealerClmAproveCovtype
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(DealerClmAproveCovtypeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -139,7 +139,7 @@ Public Class DealerClmAproveCovtype
     End Property
 
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(DealerClmAproveCovtypeDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -148,7 +148,7 @@ Public Class DealerClmAproveCovtype
                 Return New Guid(CType(row(DealerClmAproveCovtypeDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerClmAproveCovtypeDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -156,7 +156,7 @@ Public Class DealerClmAproveCovtype
 
 
 
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If row(DealerClmAproveCovtypeDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -165,7 +165,7 @@ Public Class DealerClmAproveCovtype
                 Return New Guid(CType(row(DealerClmAproveCovtypeDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerClmAproveCovtypeDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set

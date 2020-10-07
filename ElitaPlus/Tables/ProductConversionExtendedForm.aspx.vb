@@ -589,7 +589,7 @@ Namespace Tables
                     'PopulateBOProperty(TheProductConv, "DealerId", Me.moDealerDrop)
                     .DealerId = DealerDropControl.SelectedGuid
                     PopulateBOProperty(TheProductConv, "ProductCodeId", moProductCode)
-                    If Not (GetSelectedDescription(moManufacturer) = String.Empty And TheProductConv.Manufacturer = Nothing) Then
+                    If Not (GetSelectedDescription(moManufacturer) = String.Empty AndAlso TheProductConv.Manufacturer = Nothing) Then
                         PopulateBOProperty(TheProductConv, "Manufacturer", moManufacturer, False)
                     End If
                     ' Texts
@@ -645,14 +645,14 @@ Namespace Tables
                 bIsOk = False
             End If
 
-            If State.ProductCodeConversionType = "P" Or State.ProductCodeConversionType = "EXT" Then
+            If State.ProductCodeConversionType = "P" OrElse State.ProductCodeConversionType = "EXT" Then
 
-                If (Not Microsoft.VisualBasic.IsNumeric(txtCertDuration.Text)) Or txtCertDuration.Text.Trim.Equals("") Then
+                If (Not Microsoft.VisualBasic.IsNumeric(txtCertDuration.Text)) OrElse txtCertDuration.Text.Trim.Equals("") Then
                     err = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_FIELD_NUMBER_REQUIRED)
                     MasterPage.MessageController.AddError(lblCertduration.Text + ": " + err, False)
                     bIsOk = False
                 End If
-                If (Not Microsoft.VisualBasic.IsNumeric(txtMfgwarranty.Text)) Or txtMfgwarranty.Text.Trim.Equals("") Then
+                If (Not Microsoft.VisualBasic.IsNumeric(txtMfgwarranty.Text)) OrElse txtMfgwarranty.Text.Trim.Equals("") Then
                     err = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_INVALID_MANUFACTURER_TERM)
                     MasterPage.MessageController.AddError(lblMfgwarranty.Text + ": " + err, False)
                     bIsOk = False
@@ -661,7 +661,7 @@ Namespace Tables
             End If
 
             If State.ProductCodeConversionType = "EXT" Then
-                If (Not Microsoft.VisualBasic.IsNumeric(txtGrossAmt.Text)) Or txtGrossAmt.Text.Trim.Equals("") Then
+                If (Not Microsoft.VisualBasic.IsNumeric(txtGrossAmt.Text)) OrElse txtGrossAmt.Text.Trim.Equals("") Then
                     err = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)
                     MasterPage.MessageController.AddError(lblGrossAmt.Text + ": " + err, False)
                     bIsOk = False
@@ -726,12 +726,12 @@ Namespace Tables
         Protected Sub EnableDisableFields()
 
             Dim odealer As Dealer
-            If State.IsProductCodeConvNew = True And Not DealerDropControl.SelectedGuid = Guid.Empty Then
+            If State.IsProductCodeConvNew = True AndAlso Not DealerDropControl.SelectedGuid = Guid.Empty Then
                 odealer = New Dealer(DealerDropControl.SelectedGuid)
                 State.ProductCodeConversionType = LookupListNew.GetCodeFromId(LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_PROD_CONV_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), odealer.ConvertProductCodeId)
             End If
 
-            If State.ProductCodeConversionType = "EXT" Or State.ProductCodeConversionType = WITH_MNF_PRODUCT_CODE Then
+            If State.ProductCodeConversionType = "EXT" OrElse State.ProductCodeConversionType = WITH_MNF_PRODUCT_CODE Then
                 ControlMgr.SetVisibleControl(Me, trAmountRow, True)
                 ControlMgr.SetVisibleControl(Me, trManufacturerRow, True)
                 ControlMgr.SetVisibleControl(Me, trModelRow, True)

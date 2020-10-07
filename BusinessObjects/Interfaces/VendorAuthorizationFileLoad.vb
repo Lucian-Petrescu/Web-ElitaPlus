@@ -43,7 +43,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
         Get
             Return _claimloadFileProcessed
         End Get
-        Set(ByVal value As ClaimloadFileProcessed)
+        Set
             _claimloadFileProcessed = value
         End Set
     End Property
@@ -70,7 +70,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
         Get
             Return _claim
         End Get
-        Set(ByVal value As MultiAuthClaim)
+        Set
             _claim = value
         End Set
     End Property

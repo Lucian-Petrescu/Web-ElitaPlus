@@ -1289,7 +1289,7 @@ Partial Class ClaimIssueActionAnswerForm
             Dim paymentMethod As ListItem() = CommonConfigManager.Current.ListManager.GetList("PMTHD", ElitaPlusIdentity.Current.ActiveUser.LanguageCode, listcontextForMgList)
 
             Dim filterpaymentMethod As DataElements.ListItem() = (From lst In paymentMethod
-                                                                  Where lst.Code = "CTT" Or lst.Code = "DGFT"
+                                                                  Where lst.Code = "CTT" OrElse lst.Code = "DGFT"
                                                                   Select lst).ToArray()
 
             ddlPaymentList.Populate(filterpaymentMethod, New PopulateOptions() With

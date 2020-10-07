@@ -2,7 +2,7 @@
 
 Public Class QuoteEngineData1
 
-    Public ReadOnly Property QEData() As QuoteEngineData
+    Public ReadOnly Property QEData As QuoteEngineData
         Get
             If _QEData Is Nothing Then
                 _QEData = New QuoteEngineData
@@ -104,7 +104,7 @@ Public Class VSCQuote
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(VSCQuoteDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -115,7 +115,7 @@ Public Class VSCQuote
     End Property
 
     <ValueMandatory("")> _
-    Public Property QuoteNumber() As LongType
+    Public Property QuoteNumber As LongType
         Get
             CheckDeleted()
             If Row(VSCQuoteDAL.COL_NAME_QUOTE_NUMBER) Is DBNull.Value Then
@@ -124,14 +124,14 @@ Public Class VSCQuote
                 Return New LongType(CType(Row(VSCQuoteDAL.COL_NAME_QUOTE_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VSCQuoteDAL.COL_NAME_QUOTE_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(VSCQuoteDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -140,14 +140,14 @@ Public Class VSCQuote
                 Return New Guid(CType(Row(VSCQuoteDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCQuoteDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property VscModelId() As Guid
+    Public Property VscModelId As Guid
         Get
             CheckDeleted()
             If Row(VSCQuoteDAL.COL_NAME_VSC_MODEL_ID) Is DBNull.Value Then
@@ -156,14 +156,14 @@ Public Class VSCQuote
                 Return New Guid(CType(Row(VSCQuoteDAL.COL_NAME_VSC_MODEL_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCQuoteDAL.COL_NAME_VSC_MODEL_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(VSCQuoteDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -172,14 +172,14 @@ Public Class VSCQuote
                 Return New Guid(CType(Row(VSCQuoteDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCQuoteDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ModelYear() As LongType
+    Public Property ModelYear As LongType
         Get
             CheckDeleted()
             If Row(VSCQuoteDAL.COL_NAME_MODEL_YEAR) Is DBNull.Value Then
@@ -188,14 +188,14 @@ Public Class VSCQuote
                 Return New LongType(CType(Row(VSCQuoteDAL.COL_NAME_MODEL_YEAR), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VSCQuoteDAL.COL_NAME_MODEL_YEAR, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property VscClassCodeId() As Guid
+    Public Property VscClassCodeId As Guid
         Get
             CheckDeleted()
             If Row(VSCQuoteDAL.COL_NAME_VSC_CLASS_CODE_ID) Is DBNull.Value Then
@@ -204,14 +204,14 @@ Public Class VSCQuote
                 Return New Guid(CType(Row(VSCQuoteDAL.COL_NAME_VSC_CLASS_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCQuoteDAL.COL_NAME_VSC_CLASS_CODE_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property Vin() As String
+    Public Property Vin As String
         Get
             CheckDeleted()
             If Row(VSCQuoteDAL.COL_NAME_VIN) Is DBNull.Value Then
@@ -220,14 +220,14 @@ Public Class VSCQuote
                 Return CType(Row(VSCQuoteDAL.COL_NAME_VIN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VSCQuoteDAL.COL_NAME_VIN, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Odometer() As LongType
+    Public Property Odometer As LongType
         Get
             CheckDeleted()
             If Row(VSCQuoteDAL.COL_NAME_ODOMETER) Is DBNull.Value Then
@@ -236,14 +236,14 @@ Public Class VSCQuote
                 Return New LongType(CType(Row(VSCQuoteDAL.COL_NAME_ODOMETER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VSCQuoteDAL.COL_NAME_ODOMETER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=480)> _
-    Public Property VehicleLicenseTag() As String
+    Public Property VehicleLicenseTag As String
         Get
             CheckDeleted()
             If Row(VSCQuoteDAL.COL_NAME_VEHICLE_LICENSE_TAG) Is DBNull.Value Then
@@ -252,14 +252,14 @@ Public Class VSCQuote
                 Return CType(Row(VSCQuoteDAL.COL_NAME_VEHICLE_LICENSE_TAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VSCQuoteDAL.COL_NAME_VEHICLE_LICENSE_TAG, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property EngineVersion() As String
+    Public Property EngineVersion As String
         Get
             CheckDeleted()
             If Row(VSCQuoteDAL.COL_NAME_ENGINE_VERSION) Is DBNull.Value Then
@@ -268,14 +268,14 @@ Public Class VSCQuote
                 Return CType(Row(VSCQuoteDAL.COL_NAME_ENGINE_VERSION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VSCQuoteDAL.COL_NAME_ENGINE_VERSION, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property InServiceDate() As DateType
+    Public Property InServiceDate As DateType
         Get
             CheckDeleted()
             If Row(VSCQuoteDAL.COL_NAME_IN_SERVICE_DATE) Is DBNull.Value Then
@@ -284,14 +284,14 @@ Public Class VSCQuote
                 Return New DateType(CType(Row(VSCQuoteDAL.COL_NAME_IN_SERVICE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(VSCQuoteDAL.COL_NAME_IN_SERVICE_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=32)> _
-    Public Property NewUsed() As String
+    Public Property NewUsed As String
         Get
             CheckDeleted()
             If Row(VSCQuoteDAL.COL_NAME_NEW_USED) Is DBNull.Value Then
@@ -300,7 +300,7 @@ Public Class VSCQuote
                 Return CType(Row(VSCQuoteDAL.COL_NAME_NEW_USED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VSCQuoteDAL.COL_NAME_NEW_USED, Value)
         End Set

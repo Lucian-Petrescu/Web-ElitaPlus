@@ -190,7 +190,7 @@
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Item.Cells(GRID_COL_EXDN_ID).Text = New Guid(CType(dvRow(Route.RouteSearchDV.COL_NAME_ROUTE_ID), Byte())).ToString
                 e.Item.Cells(GRID_COL_CODE).Text = dvRow(Route.RouteSearchDV.COL_NAME_SHORT_DESC).ToString
                 e.Item.Cells(GRID_COL_DESCRIPTION).Text = dvRow(Route.RouteSearchDV.COL_NAME_DESCRIPTION).ToString

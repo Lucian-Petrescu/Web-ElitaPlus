@@ -91,7 +91,7 @@
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(SVCPLReconDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@
     End Property
 
     <ValueMandatory("")>
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(SVCPLReconDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -111,13 +111,13 @@
                 Return New Guid(CType(Row(SVCPLReconDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SVCPLReconDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
     End Property
 
-    Public Property PriceListId() As Guid
+    Public Property PriceListId As Guid
         Get
             CheckDeleted()
             If Row(SVCPLReconDAL.COL_NAME_PRICE_LIST_ID) Is DBNull.Value Then
@@ -126,7 +126,7 @@
                 Return New Guid(CType(Row(SVCPLReconDAL.COL_NAME_PRICE_LIST_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SVCPLReconDAL.COL_NAME_PRICE_LIST_ID, Value)
         End Set
@@ -134,7 +134,7 @@
 
 
     <ValueMandatory("")>
-    Public Property Status_xcd() As String
+    Public Property Status_xcd As String
         Get
             CheckDeleted()
             If Row(SVCPLReconDAL.COL_NAME_STATUS_XCD) Is DBNull.Value Then
@@ -143,7 +143,7 @@
                 Return CType(Row(SVCPLReconDAL.COL_NAME_STATUS_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SVCPLReconDAL.COL_NAME_STATUS_XCD, Value)
         End Set
@@ -151,7 +151,7 @@
 
 
     <ValueMandatory("")>
-    Public Property RequestedBy() As String
+    Public Property RequestedBy As String
         Get
             CheckDeleted()
             If Row(SVCPLReconDAL.COL_NAME_REQUESTED_BY) Is DBNull.Value Then
@@ -160,14 +160,14 @@
                 Return CType(Row(SVCPLReconDAL.COL_NAME_REQUESTED_BY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SVCPLReconDAL.COL_NAME_REQUESTED_BY, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ReqestedDate() As DateType
+    Public Property ReqestedDate As DateType
         Get
             CheckDeleted()
             If Row(SVCPLReconDAL.COL_NAME_REQUESTED_DATE) Is DBNull.Value Then
@@ -176,14 +176,14 @@
                 Return New DateType(DateHelper.GetDateValue(Row(SVCPLReconDAL.COL_NAME_REQUESTED_DATE).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SVCPLReconDAL.COL_NAME_REQUESTED_DATE, Value)
         End Set
 
     End Property
     <ValueMandatory("")>
-    Public Property StatusDate() As DateType
+    Public Property StatusDate As DateType
         Get
             CheckDeleted()
             If Row(SVCPLReconDAL.COL_NAME_STATUS_DATE) Is DBNull.Value Then
@@ -192,14 +192,14 @@
                 Return New DateType(DateHelper.GetDateValue(Row(SVCPLReconDAL.COL_NAME_STATUS_DATE).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SVCPLReconDAL.COL_NAME_STATUS_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property StatusChangedBy() As String
+    Public Property StatusChangedBy As String
         Get
             CheckDeleted()
             If Row(SVCPLReconDAL.COL_NAME_STATUS_BY) Is DBNull.Value Then
@@ -208,7 +208,7 @@
                 Return CType(Row(SVCPLReconDAL.COL_NAME_STATUS_BY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SVCPLReconDAL.COL_NAME_STATUS_BY, Value)
         End Set

@@ -313,7 +313,7 @@
             Dim oTextBox As TextBox
             Dim oLabel As Label
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 With e.Item
                     PopulateControlFromBOProperty(.Cells(GRID_COL_DICT_ITEM_ID), dvRow(Label_Extended.LabelSearchDV.DICT_ITEM_ID))
 

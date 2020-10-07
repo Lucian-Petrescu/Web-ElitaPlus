@@ -327,7 +327,7 @@ Partial Class ClaimPaymentAdjustmentsListForm
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
         Try
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                 PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_CLAIM_ID_IDX), dvRow(Claim.ClaimSearchDV.COL_CLAIM_ID))
                 PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_CLAIM_NUMBER_IDX), dvRow(Claim.ClaimSearchDV.COL_CLAIM_NUMBER))

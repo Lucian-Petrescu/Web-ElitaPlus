@@ -90,7 +90,7 @@ Public Class VendorQuantity
 #Region "Properties"
 
     'Key Property
-    Public Property Id() As Guid
+    Public Property Id As Guid
         Get
             If Row(VendorQuantityDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -98,13 +98,13 @@ Public Class VendorQuantity
                 Return New Guid(CType(Row(VendorQuantityDAL.COL_NAME_VENDOR_QUANTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             Row(VendorQuantityDAL.TABLE_KEY_NAME) = value.ToByteArray()
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ReferenceId() As Guid
+    Public Property ReferenceId As Guid
         Get
             CheckDeleted()
             If row(VendorQuantityDAL.COL_NAME_REFERENCE_ID) Is DBNull.Value Then
@@ -113,7 +113,7 @@ Public Class VendorQuantity
                 Return New Guid(CType(row(VendorQuantityDAL.COL_NAME_REFERENCE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VendorQuantityDAL.COL_NAME_REFERENCE_ID, Value)
         End Set
@@ -121,7 +121,7 @@ Public Class VendorQuantity
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=30)> _
-    Public Property TableName() As String
+    Public Property TableName As String
         Get
             CheckDeleted()
             If Row(VendorQuantityDAL.COL_NAME_TABLE_NAME) Is DBNull.Value Then
@@ -130,7 +130,7 @@ Public Class VendorQuantity
                 Return CType(Row(VendorQuantityDAL.COL_NAME_TABLE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VendorQuantityDAL.COL_NAME_TABLE_NAME, Value)
         End Set
@@ -138,7 +138,7 @@ Public Class VendorQuantity
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)>
-    Public Property Sku() As String
+    Public Property Sku As String
         Get
             CheckDeleted()
             If Row(VendorQuantityDAL.COL_NAME_VENDOR_SKU) Is DBNull.Value Then
@@ -147,7 +147,7 @@ Public Class VendorQuantity
                 Return CType(Row(VendorQuantityDAL.COL_NAME_VENDOR_SKU), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VendorQuantityDAL.COL_NAME_VENDOR_SKU, Value)
         End Set
@@ -155,7 +155,7 @@ Public Class VendorQuantity
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property SkuDescription() As String
+    Public Property SkuDescription As String
         Get
             CheckDeleted()
             If Row(VendorQuantityDAL.COL_NAME_VENDOR_SKU_DESCRIPTION) Is DBNull.Value Then
@@ -164,7 +164,7 @@ Public Class VendorQuantity
                 Return CType(Row(VendorQuantityDAL.COL_NAME_VENDOR_SKU_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VendorQuantityDAL.COL_NAME_VENDOR_SKU_DESCRIPTION, Value)
         End Set
@@ -187,7 +187,7 @@ Public Class VendorQuantity
     'End Property
 
     <ValueMandatory("")> _
-    Public Property Quantity() As LongType
+    Public Property Quantity As LongType
         Get
             CheckDeleted()
             If row(VendorQuantityDAL.COL_NAME_QUANTITY) Is DBNull.Value Then
@@ -196,13 +196,13 @@ Public Class VendorQuantity
                 Return New LongType(CType(row(VendorQuantityDAL.COL_NAME_QUANTITY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VendorQuantityDAL.COL_NAME_QUANTITY, Value)
         End Set
     End Property
 
-    Public Property EquipmentTypeId() As Guid
+    Public Property EquipmentTypeId As Guid
         Get
             CheckDeleted()
             If Row(VendorQuantityDAL.COL_NAME_EQUIPMENT_TYPE_ID) Is DBNull.Value Then
@@ -211,13 +211,13 @@ Public Class VendorQuantity
                 Return New Guid(CType(Row(VendorQuantityDAL.COL_NAME_EQUIPMENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VendorQuantityDAL.COL_NAME_EQUIPMENT_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(VendorQuantityDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -226,13 +226,13 @@ Public Class VendorQuantity
                 Return New Guid(CType(Row(VendorQuantityDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VendorQuantityDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
     End Property
 
-    Public Property JobModel() As String
+    Public Property JobModel As String
         Get
             CheckDeleted()
             If Row(VendorQuantityDAL.COL_NAME_JOB_MODEL) Is DBNull.Value Then
@@ -241,13 +241,13 @@ Public Class VendorQuantity
                 Return New String(CType(Row(VendorQuantityDAL.COL_NAME_JOB_MODEL), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VendorQuantityDAL.COL_NAME_JOB_MODEL, Value)
         End Set
     End Property
 
-    Public Property Price() As DecimalType
+    Public Property Price As DecimalType
         Get
             CheckDeleted()
             If Row(VendorQuantityDAL.COL_NAME_PRICE) Is DBNull.Value Then
@@ -256,13 +256,13 @@ Public Class VendorQuantity
                 Return New DecimalType(CType(Row(VendorQuantityDAL.COL_NAME_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(VendorQuantityDAL.COL_NAME_PRICE, Value)
         End Set
     End Property
 
-    Public Property ConditionId() As Guid
+    Public Property ConditionId As Guid
         Get
             CheckDeleted()
             If Row(VendorQuantityDAL.COL_NAME_CONDITION_ID) Is DBNull.Value Then
@@ -271,13 +271,13 @@ Public Class VendorQuantity
                 Return New Guid(CType(Row(VendorQuantityDAL.COL_NAME_CONDITION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VendorQuantityDAL.COL_NAME_CONDITION_ID, Value)
         End Set
     End Property
 
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If Row(VendorQuantityDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -286,13 +286,13 @@ Public Class VendorQuantity
                 Return New DateType(CType(Row(VendorQuantityDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(VendorQuantityDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If Row(VendorQuantityDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -301,14 +301,14 @@ Public Class VendorQuantity
                 Return New DateType(CType(Row(VendorQuantityDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(VendorQuantityDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
     'Property to get/set the manufacturer name
-    Public Property ManufacturerName() As String
+    Public Property ManufacturerName As String
         Get
             CheckDeleted()
             If Row(VendorQuantityDAL.COL_NAME_MANUFACTURER_NAME) Is DBNull.Value Then
@@ -317,14 +317,14 @@ Public Class VendorQuantity
                 Return New String(CType(Row(VendorQuantityDAL.COL_NAME_MANUFACTURER_NAME), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VendorQuantityDAL.COL_NAME_MANUFACTURER_NAME, Value)
         End Set
     End Property
 
     'property to get/set the PriceListID
-    Public Property PriceListDetailID() As Guid
+    Public Property PriceListDetailID As Guid
         Get
             CheckDeleted()
             If Row(VendorQuantityDAL.COL_NAME_PRICE_LIST_DETAIL_ID) Is DBNull.Value Then
@@ -333,14 +333,14 @@ Public Class VendorQuantity
                 Return New Guid(CType(Row(VendorQuantityDAL.COL_NAME_PRICE_LIST_DETAIL_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VendorQuantityDAL.COL_NAME_PRICE_LIST_DETAIL_ID, Value)
         End Set
     End Property
 
     'property to get/set the flag to check if the records are available in the vendor quantity table
-    Public Property VendorQuantityRecordAvaliable() As Boolean
+    Public Property VendorQuantityRecordAvaliable As Boolean
         Get
             CheckDeleted()
             If Row(VendorQuantityDAL.COL_NAME_VENDOR_QUANTITY_AVALIABLE) Is DBNull.Value Then
@@ -349,7 +349,7 @@ Public Class VendorQuantity
                 Return CType(Row(VendorQuantityDAL.COL_NAME_VENDOR_QUANTITY_AVALIABLE), Boolean)
             End If
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             CheckDeleted()
             SetValue(VendorQuantityDAL.COL_NAME_VENDOR_QUANTITY_AVALIABLE, Value)
         End Set
@@ -360,7 +360,7 @@ Public Class VendorQuantity
 #Region "Public Members"
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty OrElse AnyColumnHasChanged
         End Get

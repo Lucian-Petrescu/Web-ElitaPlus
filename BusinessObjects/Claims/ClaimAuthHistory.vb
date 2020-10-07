@@ -92,7 +92,7 @@ Public Class ClaimAuthHistory
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimAuthHistoryDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -103,7 +103,7 @@ Public Class ClaimAuthHistory
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimAuthorizationId() As Guid
+    Public Property ClaimAuthorizationId As Guid
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_CLAIM_AUTHORIZATION_ID) Is DBNull.Value Then
@@ -112,7 +112,7 @@ Public Class ClaimAuthHistory
                 Return New Guid(CType(row(ClaimAuthHistoryDAL.COL_NAME_CLAIM_AUTHORIZATION_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
         End Set
@@ -120,7 +120,7 @@ Public Class ClaimAuthHistory
 
 
     <ValueMandatory("")> _
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -129,7 +129,7 @@ Public Class ClaimAuthHistory
                 Return New Guid(CType(row(ClaimAuthHistoryDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_CLAIM_ID, Value)
         End Set
@@ -137,7 +137,7 @@ Public Class ClaimAuthHistory
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property AuthorizationNumber() As String
+    Public Property AuthorizationNumber As String
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -146,7 +146,7 @@ Public Class ClaimAuthHistory
                 Return CType(row(ClaimAuthHistoryDAL.COL_NAME_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
@@ -154,7 +154,7 @@ Public Class ClaimAuthHistory
 
 
     <ValueMandatory("")> _
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -163,7 +163,7 @@ Public Class ClaimAuthHistory
                 Return New Guid(CType(row(ClaimAuthHistoryDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
@@ -171,7 +171,7 @@ Public Class ClaimAuthHistory
 
 
 
-    Public Property ServiceLevelId() As Guid
+    Public Property ServiceLevelId As Guid
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_SERVICE_LEVEL_ID) Is DBNull.Value Then
@@ -180,7 +180,7 @@ Public Class ClaimAuthHistory
                 Return New Guid(CType(row(ClaimAuthHistoryDAL.COL_NAME_SERVICE_LEVEL_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_SERVICE_LEVEL_ID, Value)
         End Set
@@ -188,7 +188,7 @@ Public Class ClaimAuthHistory
 
 
     <ValueMandatory("")> _
-    Public Property ClaimAuthorizationStatusId() As Guid
+    Public Property ClaimAuthorizationStatusId As Guid
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_CLAIM_AUTHORIZATION_STATUS_ID) Is DBNull.Value Then
@@ -197,7 +197,7 @@ Public Class ClaimAuthHistory
                 Return New Guid(CType(row(ClaimAuthHistoryDAL.COL_NAME_CLAIM_AUTHORIZATION_STATUS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_CLAIM_AUTHORIZATION_STATUS_ID, Value)
         End Set
@@ -205,7 +205,7 @@ Public Class ClaimAuthHistory
 
 
     <ValidStringLength("", Max:=2000)> _
-    Public Property SpecialInstruction() As String
+    Public Property SpecialInstruction As String
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_SPECIAL_INSTRUCTION) Is DBNull.Value Then
@@ -214,7 +214,7 @@ Public Class ClaimAuthHistory
                 Return CType(row(ClaimAuthHistoryDAL.COL_NAME_SPECIAL_INSTRUCTION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_SPECIAL_INSTRUCTION, Value)
         End Set
@@ -222,7 +222,7 @@ Public Class ClaimAuthHistory
 
 
 
-    Public Property VisitDate() As DateType
+    Public Property VisitDate As DateType
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_VISIT_DATE) Is DBNull.Value Then
@@ -231,7 +231,7 @@ Public Class ClaimAuthHistory
                 Return New DateType(CType(row(ClaimAuthHistoryDAL.COL_NAME_VISIT_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_VISIT_DATE, Value)
         End Set
@@ -239,7 +239,7 @@ Public Class ClaimAuthHistory
 
 
 
-    Public Property DeviceReceptionDate() As DateType
+    Public Property DeviceReceptionDate As DateType
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_DEVICE_RECEPTION_DATE) Is DBNull.Value Then
@@ -248,7 +248,7 @@ Public Class ClaimAuthHistory
                 Return New DateType(CType(row(ClaimAuthHistoryDAL.COL_NAME_DEVICE_RECEPTION_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_DEVICE_RECEPTION_DATE, Value)
         End Set
@@ -256,7 +256,7 @@ Public Class ClaimAuthHistory
 
 
 
-    Public Property ExpectedRepairDate() As DateType
+    Public Property ExpectedRepairDate As DateType
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_EXPECTED_REPAIR_DATE) Is DBNull.Value Then
@@ -265,7 +265,7 @@ Public Class ClaimAuthHistory
                 Return New DateType(CType(row(ClaimAuthHistoryDAL.COL_NAME_EXPECTED_REPAIR_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_EXPECTED_REPAIR_DATE, Value)
         End Set
@@ -273,7 +273,7 @@ Public Class ClaimAuthHistory
 
 
 
-    Public Property RepairDate() As DateType
+    Public Property RepairDate As DateType
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_REPAIR_DATE) Is DBNull.Value Then
@@ -282,7 +282,7 @@ Public Class ClaimAuthHistory
                 Return New DateType(CType(row(ClaimAuthHistoryDAL.COL_NAME_REPAIR_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_REPAIR_DATE, Value)
         End Set
@@ -290,7 +290,7 @@ Public Class ClaimAuthHistory
 
 
 
-    Public Property PickUpDate() As DateType
+    Public Property PickUpDate As DateType
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_PICK_UP_DATE) Is DBNull.Value Then
@@ -299,7 +299,7 @@ Public Class ClaimAuthHistory
                 Return New DateType(CType(row(ClaimAuthHistoryDAL.COL_NAME_PICK_UP_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_PICK_UP_DATE, Value)
         End Set
@@ -307,7 +307,7 @@ Public Class ClaimAuthHistory
 
 
 
-    Public Property DeliveryDate() As DateType
+    Public Property DeliveryDate As DateType
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_DELIVERY_DATE) Is DBNull.Value Then
@@ -316,7 +316,7 @@ Public Class ClaimAuthHistory
                 Return New DateType(CType(row(ClaimAuthHistoryDAL.COL_NAME_DELIVERY_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_DELIVERY_DATE, Value)
         End Set
@@ -324,7 +324,7 @@ Public Class ClaimAuthHistory
 
 
     <ValueMandatory("")> _
-    Public Property WhoPaysId() As Guid
+    Public Property WhoPaysId As Guid
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_WHO_PAYS_ID) Is DBNull.Value Then
@@ -333,7 +333,7 @@ Public Class ClaimAuthHistory
                 Return New Guid(CType(row(ClaimAuthHistoryDAL.COL_NAME_WHO_PAYS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_WHO_PAYS_ID, Value)
         End Set
@@ -341,7 +341,7 @@ Public Class ClaimAuthHistory
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property DefectReason() As String
+    Public Property DefectReason As String
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_DEFECT_REASON) Is DBNull.Value Then
@@ -350,7 +350,7 @@ Public Class ClaimAuthHistory
                 Return CType(row(ClaimAuthHistoryDAL.COL_NAME_DEFECT_REASON), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_DEFECT_REASON, Value)
         End Set
@@ -358,7 +358,7 @@ Public Class ClaimAuthHistory
 
 
     <ValidStringLength("", Max:=500)>
-    Public Property TechnicalReport() As String
+    Public Property TechnicalReport As String
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_TECHNICAL_REPORT) Is DBNull.Value Then
@@ -367,7 +367,7 @@ Public Class ClaimAuthHistory
                 Return CType(row(ClaimAuthHistoryDAL.COL_NAME_TECHNICAL_REPORT), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_TECHNICAL_REPORT, Value)
         End Set
@@ -375,7 +375,7 @@ Public Class ClaimAuthHistory
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property BatchNumber() As String
+    Public Property BatchNumber As String
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_BATCH_NUMBER) Is DBNull.Value Then
@@ -384,7 +384,7 @@ Public Class ClaimAuthHistory
                 Return CType(row(ClaimAuthHistoryDAL.COL_NAME_BATCH_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_BATCH_NUMBER, Value)
         End Set
@@ -392,7 +392,7 @@ Public Class ClaimAuthHistory
 
 
     <ValidStringLength("", Max:=60)> _
-    Public Property ServiceCenterReferenceNumber() As String
+    Public Property ServiceCenterReferenceNumber As String
         Get
             CheckDeleted()
             If Row(ClaimAuthHistoryDAL.COL_NAME_SVC_REFERENCE_NUMBER) Is DBNull.Value Then
@@ -401,14 +401,14 @@ Public Class ClaimAuthHistory
                 Return CType(Row(ClaimAuthHistoryDAL.COL_NAME_SVC_REFERENCE_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_SVC_REFERENCE_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)> _
-    Public Property VerificationNumber() As String
+    Public Property VerificationNumber As String
         Get
             CheckDeleted()
             If Row(ClaimAuthHistoryDAL.COL_NAME_VERIFICATION_NUMBER) Is DBNull.Value Then
@@ -417,13 +417,13 @@ Public Class ClaimAuthHistory
                 Return CType(Row(ClaimAuthHistoryDAL.COL_NAME_VERIFICATION_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_VERIFICATION_NUMBER, Value)
         End Set
     End Property
 
-    Public Property ExternalCreatedDate() As DateType
+    Public Property ExternalCreatedDate As DateType
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_EXTERNAL_CREATED_DATE) Is DBNull.Value Then
@@ -432,7 +432,7 @@ Public Class ClaimAuthHistory
                 Return New DateType(CType(row(ClaimAuthHistoryDAL.COL_NAME_EXTERNAL_CREATED_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_EXTERNAL_CREATED_DATE, Value)
         End Set
@@ -440,7 +440,7 @@ Public Class ClaimAuthHistory
 
 
     <ValueMandatory("")> _
-    Public Property IsSpecialServiceId() As Guid
+    Public Property IsSpecialServiceId As Guid
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_IS_SPECIAL_SERVICE_ID) Is DBNull.Value Then
@@ -449,7 +449,7 @@ Public Class ClaimAuthHistory
                 Return New Guid(CType(row(ClaimAuthHistoryDAL.COL_NAME_IS_SPECIAL_SERVICE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_IS_SPECIAL_SERVICE_ID, Value)
         End Set
@@ -457,7 +457,7 @@ Public Class ClaimAuthHistory
 
 
 
-    Public Property ReverseLogisticsId() As Guid
+    Public Property ReverseLogisticsId As Guid
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_REVERSE_LOGISTICS_ID) Is DBNull.Value Then
@@ -466,7 +466,7 @@ Public Class ClaimAuthHistory
                 Return New Guid(CType(row(ClaimAuthHistoryDAL.COL_NAME_REVERSE_LOGISTICS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_REVERSE_LOGISTICS_ID, Value)
         End Set
@@ -474,7 +474,7 @@ Public Class ClaimAuthHistory
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property ProblemFound() As String
+    Public Property ProblemFound As String
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_PROBLEM_FOUND) Is DBNull.Value Then
@@ -483,7 +483,7 @@ Public Class ClaimAuthHistory
                 Return CType(row(ClaimAuthHistoryDAL.COL_NAME_PROBLEM_FOUND), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_PROBLEM_FOUND, Value)
         End Set
@@ -491,7 +491,7 @@ Public Class ClaimAuthHistory
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property Source() As String
+    Public Property Source As String
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_SOURCE) Is DBNull.Value Then
@@ -500,7 +500,7 @@ Public Class ClaimAuthHistory
                 Return CType(row(ClaimAuthHistoryDAL.COL_NAME_SOURCE), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_SOURCE, Value)
         End Set
@@ -508,7 +508,7 @@ Public Class ClaimAuthHistory
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=120)> _
-    Public Property HistCreatedBy() As String
+    Public Property HistCreatedBy As String
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_HIST_CREATED_BY) Is DBNull.Value Then
@@ -517,13 +517,13 @@ Public Class ClaimAuthHistory
                 Return CType(row(ClaimAuthHistoryDAL.COL_NAME_HIST_CREATED_BY), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_HIST_CREATED_BY, Value)
         End Set
     End Property
 
-    Public ReadOnly Property HistoryCreatedByName() As String
+    Public ReadOnly Property HistoryCreatedByName As String
         Get
             Try
                 Return New User(HistCreatedBy).UserName
@@ -534,7 +534,7 @@ Public Class ClaimAuthHistory
     End Property
 
     <ValueMandatory("")> _
-    Public Property HistCreatedDate() As DateType
+    Public Property HistCreatedDate As DateType
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_HIST_CREATED_DATE) Is DBNull.Value Then
@@ -543,7 +543,7 @@ Public Class ClaimAuthHistory
                 Return New DateType(CType(row(ClaimAuthHistoryDAL.COL_NAME_HIST_CREATED_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_HIST_CREATED_DATE, Value)
         End Set
@@ -551,7 +551,7 @@ Public Class ClaimAuthHistory
 
 
     <ValidStringLength("", Max:=120)> _
-    Public Property HistModifiedBy() As String
+    Public Property HistModifiedBy As String
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_HIST_MODIFIED_BY) Is DBNull.Value Then
@@ -560,7 +560,7 @@ Public Class ClaimAuthHistory
                 Return CType(row(ClaimAuthHistoryDAL.COL_NAME_HIST_MODIFIED_BY), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_HIST_MODIFIED_BY, Value)
         End Set
@@ -568,7 +568,7 @@ Public Class ClaimAuthHistory
 
 
 
-    Public Property HistModifiedDate() As DateType
+    Public Property HistModifiedDate As DateType
         Get
             CheckDeleted()
             If row(ClaimAuthHistoryDAL.COL_NAME_HIST_MODIFIED_DATE) Is DBNull.Value Then
@@ -577,13 +577,13 @@ Public Class ClaimAuthHistory
                 Return New DateType(CType(row(ClaimAuthHistoryDAL.COL_NAME_HIST_MODIFIED_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthHistoryDAL.COL_NAME_HIST_MODIFIED_DATE, Value)
         End Set
     End Property
 
-    Public ReadOnly Property ServiceCenterName() As String
+    Public ReadOnly Property ServiceCenterName As String
         Get
             Return ServiceCenter.Description
         End Get
@@ -607,13 +607,13 @@ Public Class ClaimAuthHistory
         End Get
     End Property
 
-    Public ReadOnly Property ClaimAuthorizationItemChildren() As ClaimAuthorizationItemList
+    Public ReadOnly Property ClaimAuthorizationItemChildren As ClaimAuthorizationItemList
         Get
             Return New ClaimAuthorizationItemList(AsClaimAuthorization)
         End Get
     End Property
 
-    Public ReadOnly Property ClaimAuthStatus() As ClaimAuthorizationStatus
+    Public ReadOnly Property ClaimAuthStatus As ClaimAuthorizationStatus
         Get
             Select Case ClaimAuthorizationStatusCode
                 Case Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED
@@ -640,7 +640,7 @@ Public Class ClaimAuthHistory
         End Get
     End Property
 
-    Public ReadOnly Property ClaimAuthorizationStatusCode() As String
+    Public ReadOnly Property ClaimAuthorizationStatusCode As String
         Get
             If (Not ClaimAuthorizationStatusId.Equals(Guid.Empty)) Then
                 Return LookupListNew.GetCodeFromId(Codes.CLAIM_AUTHORIZATION_STATUS, ClaimAuthorizationStatusId)

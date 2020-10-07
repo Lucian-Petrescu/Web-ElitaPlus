@@ -146,7 +146,7 @@ Namespace DataProtection
                     errors = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(SearchConsumerForm), Nothing, String.Empty, Nothing)}
                     Throw New BOValidationException(errors, GetType(SearchConsumerForm).FullName)
 
-                ElseIf (Not txtZip.Text.Trim().Equals(String.Empty)) And (txtPhoneNumber.Text.Trim().Trim().Equals(String.Empty) _
+                ElseIf (Not txtZip.Text.Trim().Equals(String.Empty)) AndAlso (txtPhoneNumber.Text.Trim().Trim().Equals(String.Empty) _
                         AndAlso txtCustomerName.Text.Trim().Equals(String.Empty) _
                     AndAlso txtTaxIDNumber.Text.Trim().Equals(String.Empty) AndAlso txtEmail.Text.Trim().Equals(String.Empty) _
                      AndAlso txtCertificate.Text.Trim().Equals(String.Empty) _
@@ -154,7 +154,7 @@ Namespace DataProtection
                     errors = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_ERR_ADDITIONAL_SEARCH_CRITERION, GetType(SearchConsumerForm), Nothing, String.Empty, Nothing)}
                     Throw New BOValidationException(errors, GetType(SearchConsumerForm).FullName)
 
-                ElseIf (Not txtAddress.Text.Trim().Equals(String.Empty)) And (txtPhoneNumber.Text.Trim().Equals(String.Empty) _
+                ElseIf (Not txtAddress.Text.Trim().Equals(String.Empty)) AndAlso (txtPhoneNumber.Text.Trim().Equals(String.Empty) _
                    AndAlso txtCustomerName.Text.Trim().Equals(String.Empty) AndAlso
                      txtTaxIDNumber.Text.Trim().Equals(String.Empty) AndAlso txtEmail.Text.Trim().Equals(String.Empty) _
               AndAlso txtCertificate.Text.Trim().Equals(String.Empty) _
@@ -162,7 +162,7 @@ Namespace DataProtection
                     errors = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_ERR_ADDITIONAL_SEARCH_CRITERION, GetType(SearchConsumerForm), Nothing, String.Empty, Nothing)}
                     Throw New BOValidationException(errors, GetType(SearchConsumerForm).FullName)
 
-                ElseIf (Not ddlGender.SelectedItem.Text.Trim().Equals(String.Empty)) And (txtPhoneNumber.Text.Trim().Equals(String.Empty) _
+                ElseIf (Not ddlGender.SelectedItem.Text.Trim().Equals(String.Empty)) AndAlso (txtPhoneNumber.Text.Trim().Equals(String.Empty) _
                         AndAlso txtCustomerName.Text.Trim().Equals(String.Empty) AndAlso
                      txtTaxIDNumber.Text.Trim().Equals(String.Empty) AndAlso txtEmail.Text.Trim().Equals(String.Empty) _
                    AndAlso txtCertificate.Text.Trim().Equals(String.Empty) _
@@ -170,7 +170,7 @@ Namespace DataProtection
                     errors = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_ERR_ADDITIONAL_SEARCH_CRITERION, GetType(SearchConsumerForm), Nothing, String.Empty, Nothing)}
                     Throw New BOValidationException(errors, GetType(SearchConsumerForm).FullName)
 
-                ElseIf (Not txtBirthDate.Text.Trim().Equals(String.Empty)) And (txtPhoneNumber.Text.Trim().Equals(String.Empty) _
+                ElseIf (Not txtBirthDate.Text.Trim().Equals(String.Empty)) AndAlso (txtPhoneNumber.Text.Trim().Equals(String.Empty) _
                    AndAlso txtCustomerName.Text.Trim().Equals(String.Empty) _
                AndAlso txtTaxIDNumber.Text.Trim().Equals(String.Empty) AndAlso txtEmail.Text.Trim().Equals(String.Empty) _
                AndAlso txtCertificate.Text.Trim().Equals(String.Empty) _
@@ -178,7 +178,7 @@ Namespace DataProtection
                     errors = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_ERR_ADDITIONAL_SEARCH_CRITERION, GetType(SearchConsumerForm), Nothing, String.Empty, Nothing)}
                     Throw New BOValidationException(errors, GetType(SearchConsumerForm).FullName)
 
-                ElseIf (Not ddlDealer.SelectedItem.Text.Trim().Equals(String.Empty)) And (txtPhoneNumber.Text.Trim().Equals(String.Empty) _
+                ElseIf (Not ddlDealer.SelectedItem.Text.Trim().Equals(String.Empty)) AndAlso (txtPhoneNumber.Text.Trim().Equals(String.Empty) _
                    AndAlso txtCustomerName.Text.Trim().Equals(String.Empty) _
                AndAlso txtTaxIDNumber.Text.Trim().Equals(String.Empty) AndAlso txtEmail.Text.Trim().Equals(String.Empty) _
                AndAlso txtCertificate.Text.Trim().Equals(String.Empty) _

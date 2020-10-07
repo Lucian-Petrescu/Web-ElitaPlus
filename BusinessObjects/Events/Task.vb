@@ -94,7 +94,7 @@ Public Class Task
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(TaskDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -105,7 +105,7 @@ Public Class Task
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(TaskDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -114,7 +114,7 @@ Public Class Task
                 Return CType(row(TaskDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TaskDAL.COL_NAME_CODE, Value)
         End Set
@@ -122,7 +122,7 @@ Public Class Task
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(TaskDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -131,7 +131,7 @@ Public Class Task
                 Return CType(row(TaskDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TaskDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -139,7 +139,7 @@ Public Class Task
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, MinExclusive:=False, Max:=99, MaxExclusive:=False, Message:=Assurant.ElitaPlus.Common.ErrorCodes.GUI_TASK_RETRY_COUNT_RANGE)> _
-    Public Property RetryCount() As LongType
+    Public Property RetryCount As LongType
         Get
             CheckDeleted()
             If row(TaskDAL.COL_NAME_RETRY_COUNT) Is DBNull.Value Then
@@ -148,7 +148,7 @@ Public Class Task
                 Return New LongType(CType(row(TaskDAL.COL_NAME_RETRY_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(TaskDAL.COL_NAME_RETRY_COUNT, Value)
         End Set
@@ -156,7 +156,7 @@ Public Class Task
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, MinExclusive:=False, Max:=999999, MaxExclusive:=False, Message:=Assurant.ElitaPlus.Common.ErrorCodes.GUI_TASK_RETRY_DELAY_RANGE)> _
-    Public Property RetryDelaySeconds() As LongType
+    Public Property RetryDelaySeconds As LongType
         Get
             CheckDeleted()
             If row(TaskDAL.COL_NAME_RETRY_DELAY_SECONDS) Is DBNull.Value Then
@@ -165,7 +165,7 @@ Public Class Task
                 Return New LongType(CType(row(TaskDAL.COL_NAME_RETRY_DELAY_SECONDS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(TaskDAL.COL_NAME_RETRY_DELAY_SECONDS, Value)
         End Set
@@ -173,7 +173,7 @@ Public Class Task
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, MinExclusive:=False, Max:=999999, MaxExclusive:=False, Message:=Assurant.ElitaPlus.Common.ErrorCodes.GUI_TASK_TIMEOUT_RANGE)> _
-    Public Property TimeoutSeconds() As LongType
+    Public Property TimeoutSeconds As LongType
         Get
             CheckDeleted()
             If row(TaskDAL.COL_NAME_TIMEOUT_SECONDS) Is DBNull.Value Then
@@ -182,7 +182,7 @@ Public Class Task
                 Return New LongType(CType(row(TaskDAL.COL_NAME_TIMEOUT_SECONDS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(TaskDAL.COL_NAME_TIMEOUT_SECONDS, Value)
         End Set
@@ -206,7 +206,7 @@ Public Class Task
     End Property
 
     <ValidStringLength("", Max:=4000)> _
-    Public Property TaskParameters() As String
+    Public Property TaskParameters As String
         Get
             CheckDeleted()
             If row(TaskDAL.COL_NAME_TASK_PARAMETERS) Is DBNull.Value Then
@@ -215,7 +215,7 @@ Public Class Task
                 Return CType(row(TaskDAL.COL_NAME_TASK_PARAMETERS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TaskDAL.COL_NAME_TASK_PARAMETERS, Value)
         End Set

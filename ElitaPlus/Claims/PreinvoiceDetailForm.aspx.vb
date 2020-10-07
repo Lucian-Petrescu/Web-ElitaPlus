@@ -661,7 +661,7 @@ Partial Class PreinvoiceDetailForm
         checkValueArray = checkRecords.Value.Split(":"c)
 
         For i = 0 To checkValueArray.Length - 1
-            If (checkValueArray(i) IsNot Nothing And checkValueArray(i) <> "") Then
+            If (checkValueArray(i) IsNot Nothing AndAlso checkValueArray(i) <> "") Then
                 checkValues = checkValueArray(i).ToString & ":" & checkValues
             End If
         Next

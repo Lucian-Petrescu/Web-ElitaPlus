@@ -93,7 +93,7 @@ Public Class ClaimStatus
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimStatusDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -104,7 +104,7 @@ Public Class ClaimStatus
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If row(ClaimStatusDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -113,7 +113,7 @@ Public Class ClaimStatus
                 Return New Guid(CType(row(ClaimStatusDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusDAL.COL_NAME_CLAIM_ID, Value)
         End Set
@@ -121,7 +121,7 @@ Public Class ClaimStatus
 
 
     <ValueMandatory("")> _
-    Public Property ClaimStatusByGroupId() As Guid
+    Public Property ClaimStatusByGroupId As Guid
         Get
             CheckDeleted()
             If row(ClaimStatusDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID) Is DBNull.Value Then
@@ -130,7 +130,7 @@ Public Class ClaimStatus
                 Return New Guid(CType(row(ClaimStatusDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID, Value)
         End Set
@@ -138,7 +138,7 @@ Public Class ClaimStatus
 
 
     <ValidStringLength("", Max:=1200)> _
-    Public Property Comments() As String
+    Public Property Comments As String
         Get
             CheckDeleted()
             If row(ClaimStatusDAL.COL_NAME_COMMENTS) Is DBNull.Value Then
@@ -147,14 +147,14 @@ Public Class ClaimStatus
                 Return CType(row(ClaimStatusDAL.COL_NAME_COMMENTS), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusDAL.COL_NAME_COMMENTS, Value)
         End Set
     End Property
 
 
-    Public ReadOnly Property StatusOrder() As LongType
+    Public ReadOnly Property StatusOrder As LongType
         Get
             If Row(ClaimStatusDAL.COL_NAME_STATUS_ORDER) Is DBNull.Value Then
                 Return Nothing
@@ -164,7 +164,7 @@ Public Class ClaimStatus
         End Get
     End Property
 
-    Public ReadOnly Property StatusCode() As String
+    Public ReadOnly Property StatusCode As String
         Get
             If Row(ClaimStatusDAL.COL_NAME_STATUS_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -174,7 +174,7 @@ Public Class ClaimStatus
         End Get
     End Property
 
-    Public ReadOnly Property StatusDescription() As String
+    Public ReadOnly Property StatusDescription As String
         Get
             If Row(ClaimStatusDAL.COL_NAME_STATUS_DESCRIPTION) Is DBNull.Value Then
                 Return Nothing
@@ -184,7 +184,7 @@ Public Class ClaimStatus
         End Get
     End Property
 
-    Public ReadOnly Property Owner() As String
+    Public ReadOnly Property Owner As String
         Get
             If Row(ClaimStatusDAL.COL_NAME_OWNER) Is DBNull.Value Then
                 Return Nothing
@@ -195,7 +195,7 @@ Public Class ClaimStatus
     End Property
 
     <ValueMandatory("")> _
-    Public Property StatusDate() As DateTimeType
+    Public Property StatusDate As DateTimeType
         Get
             CheckDeleted()
             If Row(ClaimStatusDAL.COL_NAME_STATUS_DATE_1) Is DBNull.Value Then
@@ -204,14 +204,14 @@ Public Class ClaimStatus
                 Return CType(Row(ClaimStatusDAL.COL_NAME_STATUS_DATE_1), DateTime)
             End If
         End Get
-        Set(Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusDAL.COL_NAME_STATUS_DATE_1, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)> _
-    Public Property ExternalUserName() As String
+    Public Property ExternalUserName As String
         Get
             CheckDeleted()
             If Row(ClaimStatusDAL.COL_NAME_EXTERNAL_USER_NAME) Is DBNull.Value Then
@@ -220,17 +220,17 @@ Public Class ClaimStatus
                 Return CType(Row(ClaimStatusDAL.COL_NAME_EXTERNAL_USER_NAME), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimStatusDAL.COL_NAME_EXTERNAL_USER_NAME, Value)
         End Set
     End Property
 
-    Public Property IsTimeZoneForClaimExtStatusDateDone() As Boolean
+    Public Property IsTimeZoneForClaimExtStatusDateDone As Boolean
         Get
             Return _isTimeZoneForClaimExtStatusDateDone
         End Get
-        Set(value As Boolean)
+        Set
             _isTimeZoneForClaimExtStatusDateDone = value
         End Set
     End Property

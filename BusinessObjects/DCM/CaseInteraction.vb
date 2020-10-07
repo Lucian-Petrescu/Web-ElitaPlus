@@ -90,7 +90,7 @@ Public Class CaseInteraction
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CaseInteractionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class CaseInteraction
     End Property
 	
     <ValueMandatory("")> _
-    Public Property CaseId() As Guid
+    Public Property CaseId As Guid
         Get
             CheckDeleted()
             If row(CaseInteractionDAL.COL_NAME_CASE_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class CaseInteraction
                 Return New Guid(CType(row(CaseInteractionDAL.COL_NAME_CASE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseInteractionDAL.COL_NAME_CASE_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class CaseInteraction
 	
 	
     <ValueMandatory("")> _
-    Public Property InteractionNumber() As DecimalType
+    Public Property InteractionNumber As DecimalType
         Get
             CheckDeleted()
             If row(CaseInteractionDAL.COL_NAME_INTERACTION_NUMBER) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class CaseInteraction
                 Return New DecimalType(CType(row(CaseInteractionDAL.COL_NAME_INTERACTION_NUMBER), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CaseInteractionDAL.COL_NAME_INTERACTION_NUMBER, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class CaseInteraction
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=200)> _
-    Public Property InteractionPurposeXcd() As String
+    Public Property InteractionPurposeXcd As String
         Get
             CheckDeleted()
             If row(CaseInteractionDAL.COL_NAME_INTERACTION_PURPOSE_XCD) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class CaseInteraction
                 Return CType(row(CaseInteractionDAL.COL_NAME_INTERACTION_PURPOSE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CaseInteractionDAL.COL_NAME_INTERACTION_PURPOSE_XCD, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class CaseInteraction
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=200)> _
-    Public Property ChannelXcd() As String
+    Public Property ChannelXcd As String
         Get
             CheckDeleted()
             If row(CaseInteractionDAL.COL_NAME_CHANNEL_XCD) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class CaseInteraction
                 Return CType(row(CaseInteractionDAL.COL_NAME_CHANNEL_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CaseInteractionDAL.COL_NAME_CHANNEL_XCD, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class CaseInteraction
 	
 	
     <ValueMandatory("")> _
-    Public Property CallerId() As Guid
+    Public Property CallerId As Guid
         Get
             CheckDeleted()
             If row(CaseInteractionDAL.COL_NAME_CALLER_ID) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class CaseInteraction
                 Return New Guid(CType(row(CaseInteractionDAL.COL_NAME_CALLER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseInteractionDAL.COL_NAME_CALLER_ID, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class CaseInteraction
 	
 	
     <ValueMandatory("")> _
-    Public Property InteractionDate() As DateType
+    Public Property InteractionDate As DateType
         Get
             CheckDeleted()
             If row(CaseInteractionDAL.COL_NAME_INTERACTION_DATE) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class CaseInteraction
                 Return New DateType(CType(row(CaseInteractionDAL.COL_NAME_INTERACTION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CaseInteractionDAL.COL_NAME_INTERACTION_DATE, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class CaseInteraction
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=200)> _
-    Public Property IsCallerAuthenticatedXcd() As String
+    Public Property IsCallerAuthenticatedXcd As String
         Get
             CheckDeleted()
             If row(CaseInteractionDAL.COL_NAME_IS_CALLER_AUTHENTICATED_XCD) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class CaseInteraction
                 Return CType(row(CaseInteractionDAL.COL_NAME_IS_CALLER_AUTHENTICATED_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CaseInteractionDAL.COL_NAME_IS_CALLER_AUTHENTICATED_XCD, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class CaseInteraction
 	
 	
     <ValidStringLength("", Max:=200)> _
-    Public Property CallerAuthenctionMethodXcd() As String
+    Public Property CallerAuthenctionMethodXcd As String
         Get
             CheckDeleted()
             If row(CaseInteractionDAL.COL_NAME_CALLER_AUTHENCTION_METHOD_XCD) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class CaseInteraction
                 Return CType(row(CaseInteractionDAL.COL_NAME_CALLER_AUTHENCTION_METHOD_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CaseInteractionDAL.COL_NAME_CALLER_AUTHENCTION_METHOD_XCD, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class CaseInteraction
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=40)> _
-    Public Property CultureCode() As String
+    Public Property CultureCode As String
         Get
             CheckDeleted()
             If row(CaseInteractionDAL.COL_NAME_CULTURE_CODE) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class CaseInteraction
                 Return CType(row(CaseInteractionDAL.COL_NAME_CULTURE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CaseInteractionDAL.COL_NAME_CULTURE_CODE, Value)
         End Set

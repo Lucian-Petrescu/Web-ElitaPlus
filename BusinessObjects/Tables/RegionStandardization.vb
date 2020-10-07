@@ -101,7 +101,7 @@ Public Class RegionStandardization
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(RegionStandardizationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -112,7 +112,7 @@ Public Class RegionStandardization
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=255), ValidUniqueness("")> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(RegionStandardizationDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -121,7 +121,7 @@ Public Class RegionStandardization
                 Return CType(Row(RegionStandardizationDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RegionStandardizationDAL.COL_NAME_DESCRIPTION, Value.Trim)
         End Set
@@ -129,7 +129,7 @@ Public Class RegionStandardization
 
 
     <ValueMandatory("")> _
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If row(RegionStandardizationDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -138,7 +138,7 @@ Public Class RegionStandardization
                 Return New Guid(CType(row(RegionStandardizationDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RegionStandardizationDAL.COL_NAME_REGION_ID, Value)
         End Set
@@ -146,7 +146,7 @@ Public Class RegionStandardization
 
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If row(RegionStandardizationDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -155,7 +155,7 @@ Public Class RegionStandardization
                 Return New Guid(CType(row(RegionStandardizationDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RegionStandardizationDAL.COL_NAME_COUNTRY_ID, Value)
         End Set

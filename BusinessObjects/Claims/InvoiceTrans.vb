@@ -105,7 +105,7 @@ Public Class InvoiceTrans
     Public UserId As Guid
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(InvoiceTransDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -115,7 +115,7 @@ Public Class InvoiceTrans
         End Get
     End Property
     <ValueMandatory("")> _
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -124,13 +124,13 @@ Public Class InvoiceTrans
                 Return New Guid(CType(Row(InvoiceTransDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceTransDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
     End Property
 
-    Public Property ServiceCenterName() As String
+    Public Property ServiceCenterName As String
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_SERVICE_CENTER_NAME) Is DBNull.Value Then
@@ -139,14 +139,14 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_SERVICE_CENTER_NAME), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceTransDAL.COL_NAME_SERVICE_CENTER_NAME, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property InvoiceTypeId() As Guid
+    Public Property InvoiceTypeId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_TYPE_ID) Is DBNull.Value Then
@@ -155,14 +155,14 @@ Public Class InvoiceTrans
                 Return New Guid(CType(Row(InvoiceTransDAL.COL_NAME_INVOICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceTransDAL.COL_NAME_INVOICE_TYPE_ID, Value)
         End Set
     End Property
 
 
-    Public Property InvoiceTypeName() As String
+    Public Property InvoiceTypeName As String
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_TYPE_NAME) Is DBNull.Value Then
@@ -171,13 +171,13 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_INVOICE_TYPE_NAME), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceTransDAL.COL_NAME_INVOICE_TYPE_NAME, Value)
         End Set
     End Property
 
-    Public Property InvoiceStatusId() As Guid
+    Public Property InvoiceStatusId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_STATUS_ID) Is DBNull.Value Then
@@ -186,13 +186,13 @@ Public Class InvoiceTrans
                 Return New Guid(CType(Row(InvoiceTransDAL.COL_NAME_INVOICE_STATUS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceTransDAL.COL_NAME_INVOICE_STATUS_ID, Value)
         End Set
     End Property
 
-    Public Property InvoiceStatusName() As String
+    Public Property InvoiceStatusName As String
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_STATUS_NAME) Is DBNull.Value Then
@@ -201,14 +201,14 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_INVOICE_STATUS_NAME), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceTransDAL.COL_NAME_INVOICE_STATUS_NAME, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)> _
-    Public Property SvcControlNumber() As String
+    Public Property SvcControlNumber As String
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_SVC_CONTROL_NUMBER) Is DBNull.Value Then
@@ -217,14 +217,14 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_SVC_CONTROL_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceTransDAL.COL_NAME_SVC_CONTROL_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property SvcControlAmount() As Double
+    Public Property SvcControlAmount As Double
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_SVC_CONTROL_AMOUNT) Is DBNull.Value Then
@@ -233,13 +233,13 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_SVC_CONTROL_AMOUNT), Double)
             End If
         End Get
-        Set(Value As Double)
+        Set
             CheckDeleted()
             SetValue(InvoiceTransDAL.COL_NAME_SVC_CONTROL_AMOUNT, Math.Round(Value, 2))
         End Set
     End Property
 
-    Public ReadOnly Property BatchStatus() As String
+    Public ReadOnly Property BatchStatus As String
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_BATCH_STATUS) Is DBNull.Value Then
@@ -250,7 +250,7 @@ Public Class InvoiceTrans
         End Get
     End Property
 
-    Public ReadOnly Property BatchStartTime() As Date
+    Public ReadOnly Property BatchStartTime As Date
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_BATCH_START_TIME) Is DBNull.Value Then
@@ -261,7 +261,7 @@ Public Class InvoiceTrans
         End Get
     End Property
 
-    Public ReadOnly Property BatchProcessTime() As Double
+    Public ReadOnly Property BatchProcessTime As Double
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_BATCH_PROCESS_TIME) Is DBNull.Value Then
@@ -272,7 +272,7 @@ Public Class InvoiceTrans
         End Get
     End Property
     <ValidStringLength("", Max:=15)>
-    Public Property BatchNumber() As String
+    Public Property BatchNumber As String
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_BATCH_NUMBER) Is DBNull.Value Then
@@ -281,13 +281,13 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_BATCH_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceTransDAL.COL_NAME_BATCH_NUMBER, Value)
         End Set
     End Property
 
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -296,14 +296,14 @@ Public Class InvoiceTrans
                 Return New Guid(CType(Row(InvoiceTransDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceTransDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
 
 
-    Public Property Tax1Amount() As Double
+    Public Property Tax1Amount As Double
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_TAX1_AMOUNT) Is DBNull.Value Then
@@ -312,13 +312,13 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_TAX1_AMOUNT), Double)
             End If
         End Get
-        Set(Value As Double)
+        Set
             CheckDeleted()
             SetValue(InvoiceTransDAL.COL_NAME_TAX1_AMOUNT, Math.Round(Value, 2))
         End Set
     End Property
 
-    Public Property Tax2Amount() As Double
+    Public Property Tax2Amount As Double
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_TAX2_AMOUNT) Is DBNull.Value Then
@@ -327,13 +327,13 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_TAX2_AMOUNT), Double)
             End If
         End Get
-        Set(Value As Double)
+        Set
             CheckDeleted()
             SetValue(InvoiceTransDAL.COL_NAME_TAX2_AMOUNT, Math.Round(Value, 2))
         End Set
     End Property
     <ValueMandatoryConditionallyForInvDate(""), ValidInvoiceDate("")> _
-    Public Property InvoiceDate() As DateType
+    Public Property InvoiceDate As DateType
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_DATE) Is DBNull.Value Then
@@ -342,13 +342,13 @@ Public Class InvoiceTrans
                 Return New DateType(DateHelper.GetDateValue(Row(InvoiceTransDAL.COL_NAME_INVOICE_DATE).ToString()))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(InvoiceTransDAL.COL_NAME_INVOICE_DATE, Value)
         End Set
     End Property
     <ValidInvoiceDate("")> _
-    Public Property InvoiceReceivedDate() As DateType
+    Public Property InvoiceReceivedDate As DateType
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_RECEIVED_DATE) Is DBNull.Value Then
@@ -357,14 +357,14 @@ Public Class InvoiceTrans
                 Return New DateType(DateHelper.GetDateValue(Row(InvoiceTransDAL.COL_NAME_INVOICE_RECEIVED_DATE).ToString()))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(InvoiceTransDAL.COL_NAME_INVOICE_RECEIVED_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)> _
-    Public Property InvoiceComments() As String
+    Public Property InvoiceComments As String
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_COMMENTS) Is DBNull.Value Then
@@ -373,13 +373,13 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_INVOICE_COMMENTS), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceTransDAL.COL_NAME_INVOICE_COMMENTS, Value)
         End Set
     End Property
 
-    Public ReadOnly Property InvoiceCreatedDate() As Date
+    Public ReadOnly Property InvoiceCreatedDate As Date
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_CREATED_DATE) Is DBNull.Value Then

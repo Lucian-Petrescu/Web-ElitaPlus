@@ -86,7 +86,7 @@
 
 #Region "Properties"
 
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ConfigQuestionSetDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -96,7 +96,7 @@
         End Get
     End Property
 
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(ConfigQuestionSetDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -105,13 +105,13 @@
                 Return New Guid(CType(Row(ConfigQuestionSetDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ConfigQuestionSetDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(ConfigQuestionSetDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -120,13 +120,13 @@
                 Return New Guid(CType(Row(ConfigQuestionSetDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ConfigQuestionSetDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
-    Public Property DealerGroupId() As Guid
+    Public Property DealerGroupId As Guid
         Get
             CheckDeleted()
             If Row(ConfigQuestionSetDAL.COL_NAME_DEALER_GROUP_ID) Is DBNull.Value Then
@@ -135,14 +135,14 @@
                 Return New Guid(CType(Row(ConfigQuestionSetDAL.COL_NAME_DEALER_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ConfigQuestionSetDAL.COL_NAME_DEALER_GROUP_ID, Value)
         End Set
     End Property
 
     <ValidProductCodeDealer("Dealer")>
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(ConfigQuestionSetDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -151,14 +151,14 @@
                 Return New Guid(CType(Row(ConfigQuestionSetDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ConfigQuestionSetDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValidProductCodeDealer("Product Code")>
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If Row(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -167,13 +167,13 @@
                 Return New Guid(CType(Row(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
     End Property
 
-    Public Property DeviceTypeId() As Guid
+    Public Property DeviceTypeId As Guid
         Get
             CheckDeleted()
             If Row(ConfigQuestionSetDAL.COL_NAME_DEVICE_TYPE_ID) Is DBNull.Value Then
@@ -182,13 +182,13 @@
                 Return New Guid(CType(Row(ConfigQuestionSetDAL.COL_NAME_DEVICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ConfigQuestionSetDAL.COL_NAME_DEVICE_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(ConfigQuestionSetDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -197,13 +197,13 @@
                 Return New Guid(CType(Row(ConfigQuestionSetDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ConfigQuestionSetDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             CheckDeleted()
             If Row(ConfigQuestionSetDAL.COL_NAME_RISK_TYPE_ID) Is DBNull.Value Then
@@ -212,14 +212,14 @@
                 Return New Guid(CType(Row(ConfigQuestionSetDAL.COL_NAME_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ConfigQuestionSetDAL.COL_NAME_RISK_TYPE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("Purpose")>
-    Public Property PurposeXCD() As String
+    Public Property PurposeXCD As String
         Get
             CheckDeleted()
             If Row(ConfigQuestionSetDAL.COL_NAME_PURPOSE_XCD) Is DBNull.Value Then
@@ -228,14 +228,14 @@
                 Return CType(Row(ConfigQuestionSetDAL.COL_NAME_PURPOSE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ConfigQuestionSetDAL.COL_NAME_PURPOSE_XCD, Value)
         End Set
     End Property
 
     <ValueMandatory("Question Set Code")>
-    Public Property QuestionSetCode() As String
+    Public Property QuestionSetCode As String
         Get
             CheckDeleted()
             If Row(ConfigQuestionSetDAL.COL_NAME_QUESTION_SET_CODE) Is DBNull.Value Then
@@ -244,7 +244,7 @@
                 Return CType(Row(ConfigQuestionSetDAL.COL_NAME_QUESTION_SET_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ConfigQuestionSetDAL.COL_NAME_QUESTION_SET_CODE, Value)
         End Set

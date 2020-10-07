@@ -89,7 +89,7 @@ Public Class SendCancelRequestTMX
 #End Region
 
 #Region "Properties"
-    Public Property MobileNum() As String
+    Public Property MobileNum As String
         Get
             If Row(DATA_COL_NAME_MOBILE_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -97,12 +97,12 @@ Public Class SendCancelRequestTMX
                 Return CType(Row(DATA_COL_NAME_MOBILE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_MOBILE_NUMBER, Value)
         End Set
     End Property
 
-    Public Property SupplementaryServiceCode() As String
+    Public Property SupplementaryServiceCode As String
         Get
             If Row(DATA_COL_NAME_SUPL_SERVICE_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -110,12 +110,12 @@ Public Class SendCancelRequestTMX
                 Return CType(Row(DATA_COL_NAME_SUPL_SERVICE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_SUPL_SERVICE_CODE, Value)
         End Set
     End Property
 
-    Public Property CommercialServiceCode() As String
+    Public Property CommercialServiceCode As String
         Get
             If Row(DATA_COL_NAME_COMM_SERVICE_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -123,12 +123,12 @@ Public Class SendCancelRequestTMX
                 Return CType(Row(DATA_COL_NAME_COMM_SERVICE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_COMM_SERVICE_CODE, Value)
         End Set
     End Property
 
-    Public Property UserName() As String
+    Public Property UserName As String
         Get
             If Row(DATA_COL_NAME_USER_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -136,7 +136,7 @@ Public Class SendCancelRequestTMX
                 Return CType(Row(DATA_COL_NAME_USER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_USER_NAME, Value)
         End Set
     End Property

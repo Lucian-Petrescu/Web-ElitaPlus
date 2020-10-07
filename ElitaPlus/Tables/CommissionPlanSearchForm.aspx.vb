@@ -301,8 +301,8 @@ Namespace Tables
         Protected Sub GridCommPlan_ItemDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridCommPlan.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-            If dvRow IsNot Nothing And Not State.bnoRow Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Row.Cells(GRIDCOMMPLAN_COL_COMM_PLAN_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(CommPlan.CommPlanSearchDV.COL_COMMISSION_PERIOD_ID), Byte()))
                     e.Row.Cells(GRIDCOMMPLAN_COL_COMPANY_CODE_IDX).Text = dvRow(CommPlan.CommPlanSearchDV.COL_COMPANY_CODE).ToString
                     e.Row.Cells(GRIDCOMMPLAN_COL_DEALER_IDX).Text = dvRow(CommPlan.CommPlanSearchDV.COL_DEALER_NAME).ToString

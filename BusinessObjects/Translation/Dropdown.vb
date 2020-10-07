@@ -90,7 +90,7 @@ Public Class Dropdown
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DropdownDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class Dropdown
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property MaintainableByUser() As String
+    Public Property MaintainableByUser As String
         Get
             CheckDeleted()
             If Row(DropdownDAL.COL_NAME_MAINTAINABLE_BY_USER) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class Dropdown
                 Return CType(Row(DropdownDAL.COL_NAME_MAINTAINABLE_BY_USER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DropdownDAL.COL_NAME_MAINTAINABLE_BY_USER, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class Dropdown
 
 
     <ValueMandatory("")> _
-    Public Property DictItemId() As Guid
+    Public Property DictItemId As Guid
         Get
             CheckDeleted()
             If Row(DropdownDAL.COL_NAME_DICT_ITEM_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class Dropdown
                 Return New Guid(CType(Row(DropdownDAL.COL_NAME_DICT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DropdownDAL.COL_NAME_DICT_ITEM_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class Dropdown
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=255)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(DropdownDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class Dropdown
                 Return CType(Row(DropdownDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DropdownDAL.COL_NAME_CODE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class Dropdown
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property ActiveFlag() As String
+    Public Property ActiveFlag As String
         Get
             CheckDeleted()
             If Row(DropdownDAL.COL_NAME_ACTIVE_FLAG) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class Dropdown
                 Return CType(Row(DropdownDAL.COL_NAME_ACTIVE_FLAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DropdownDAL.COL_NAME_ACTIVE_FLAG, Value)
         End Set

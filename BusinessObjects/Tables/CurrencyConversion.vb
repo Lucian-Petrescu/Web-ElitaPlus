@@ -99,7 +99,7 @@ Public Class CurrencyConversion
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CurrencyConversionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -110,7 +110,7 @@ Public Class CurrencyConversion
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(CurrencyConversionDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -119,7 +119,7 @@ Public Class CurrencyConversion
                 Return New Guid(CType(Row(CurrencyConversionDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CurrencyConversionDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -127,7 +127,7 @@ Public Class CurrencyConversion
 
 
     <ValueMandatory(""), ValidCurrencies("")> _
-    Public Property Currency1Id() As Guid
+    Public Property Currency1Id As Guid
         Get
             CheckDeleted()
             If Row(CurrencyConversionDAL.COL_NAME_CURRENCY1_ID) Is DBNull.Value Then
@@ -136,7 +136,7 @@ Public Class CurrencyConversion
                 Return New Guid(CType(Row(CurrencyConversionDAL.COL_NAME_CURRENCY1_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CurrencyConversionDAL.COL_NAME_CURRENCY1_ID, Value)
         End Set
@@ -144,7 +144,7 @@ Public Class CurrencyConversion
 
 
     <ValueMandatory("")> _
-    Public Property Currency2Id() As Guid
+    Public Property Currency2Id As Guid
         Get
             CheckDeleted()
             If Row(CurrencyConversionDAL.COL_NAME_CURRENCY2_ID) Is DBNull.Value Then
@@ -153,7 +153,7 @@ Public Class CurrencyConversion
                 Return New Guid(CType(Row(CurrencyConversionDAL.COL_NAME_CURRENCY2_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CurrencyConversionDAL.COL_NAME_CURRENCY2_ID, Value)
         End Set
@@ -161,7 +161,7 @@ Public Class CurrencyConversion
 
 
     <ValueMandatory(""), ValidEffectiveAndExpirationDate(""), ValidEffectiveDate("")> _
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(CurrencyConversionDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -170,7 +170,7 @@ Public Class CurrencyConversion
                 Return New DateType(CType(Row(CurrencyConversionDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CurrencyConversionDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
@@ -178,18 +178,18 @@ Public Class CurrencyConversion
 
     Dim _ExpirationDate As DateType
     <ValueMandatory("")> _
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             Return _ExpirationDate
         End Get
-        Set(ByVal Value As DateType)
+        Set
             _ExpirationDate = Value
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Currency1Rate() As DoubleType
+    Public Property Currency1Rate As DoubleType
         Get
             CheckDeleted()
             If Row(CurrencyConversionDAL.COL_NAME_CURRENCY1_RATE) Is DBNull.Value Then
@@ -198,7 +198,7 @@ Public Class CurrencyConversion
                 Return New DoubleType(CType(Row(CurrencyConversionDAL.COL_NAME_CURRENCY1_RATE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DoubleType)
+        Set
             CheckDeleted()
             SetValue(CurrencyConversionDAL.COL_NAME_CURRENCY1_RATE, Value)
             Currency2Rate = New DoubleType(Math.Round(1 / Currency1Rate.Value, 9))
@@ -207,7 +207,7 @@ Public Class CurrencyConversion
 
 
     <ValueMandatory("")> _
-    Public Property Currency2Rate() As DoubleType
+    Public Property Currency2Rate As DoubleType
         Get
             CheckDeleted()
             If Row(CurrencyConversionDAL.COL_NAME_CURRENCY2_RATE) Is DBNull.Value Then
@@ -216,7 +216,7 @@ Public Class CurrencyConversion
                 Return New DoubleType(CType(Row(CurrencyConversionDAL.COL_NAME_CURRENCY2_RATE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DoubleType)
+        Set
             CheckDeleted()
             SetValue(CurrencyConversionDAL.COL_NAME_CURRENCY2_RATE, Value)
         End Set

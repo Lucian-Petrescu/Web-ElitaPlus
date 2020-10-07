@@ -657,7 +657,7 @@ Public Class AcctAmtSrcMappingDetailForm
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim objDDL As DropDownList, dv As DataView
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
 
                     If .RowIndex = gridMapping.EditIndex Then

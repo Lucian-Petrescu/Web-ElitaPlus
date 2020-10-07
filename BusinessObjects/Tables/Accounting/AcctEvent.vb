@@ -90,7 +90,7 @@ Public Class AcctEvent
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(AcctEventDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class AcctEvent
     End Property
 
     <ValueMandatory("")>
-    Public Property AcctCompanyId() As Guid
+    Public Property AcctCompanyId As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_ACCT_COMPANY_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class AcctEvent
                 Return New Guid(CType(Row(AcctEventDAL.COL_NAME_ACCT_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_ACCT_COMPANY_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class AcctEvent
 
 
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class AcctEvent
                 Return New Guid(CType(Row(AcctEventDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class AcctEvent
 
 
 
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class AcctEvent
                 Return New Guid(CType(Row(AcctEventDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class AcctEvent
 
 
     <ValueMandatory("")>
-    Public Property AcctEventTypeId() As Guid
+    Public Property AcctEventTypeId As Guid
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_ACCT_EVENT_TYPE_ID) Is DBNull.Value Then
@@ -161,13 +161,13 @@ Public Class AcctEvent
                 Return New Guid(CType(Row(AcctEventDAL.COL_NAME_ACCT_EVENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_ACCT_EVENT_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property EventCondition() As Object
+    Public Property EventCondition As Object
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_EVENT_CONDITION) Is DBNull.Value Then
@@ -176,13 +176,13 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_EVENT_CONDITION), Object)
             End If
         End Get
-        Set(ByVal Value As Object)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_EVENT_CONDITION, Value)
         End Set
     End Property
 
-    Public Property LastRunDate() As DateType
+    Public Property LastRunDate As DateType
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_LAST_RUN_DATE) Is DBNull.Value Then
@@ -191,7 +191,7 @@ Public Class AcctEvent
                 Return New DateType(CType(Row(AcctEventDAL.COL_NAME_LAST_RUN_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_LAST_RUN_DATE, Value)
         End Set
@@ -199,7 +199,7 @@ Public Class AcctEvent
 
 
 
-    Public Property LastCompleteDate() As DateType
+    Public Property LastCompleteDate As DateType
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_LAST_COMPLETE_DATE) Is DBNull.Value Then
@@ -208,7 +208,7 @@ Public Class AcctEvent
                 Return New DateType(CType(Row(AcctEventDAL.COL_NAME_LAST_COMPLETE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_LAST_COMPLETE_DATE, Value)
         End Set
@@ -216,7 +216,7 @@ Public Class AcctEvent
 
 
 
-    Public Property DynSql() As Object
+    Public Property DynSql As Object
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_DYN_SQL) Is DBNull.Value Then
@@ -225,14 +225,14 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_DYN_SQL), Object)
             End If
         End Get
-        Set(ByVal Value As Object)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_DYN_SQL, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)>
-    Public Property AllowBalTran() As String
+    Public Property AllowBalTran As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_ALLOW_BAL_TRAN) Is DBNull.Value Then
@@ -241,7 +241,7 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_ALLOW_BAL_TRAN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_ALLOW_BAL_TRAN, Value)
         End Set
@@ -249,7 +249,7 @@ Public Class AcctEvent
 
 
     <ValidStringLength("", Max:=1)>
-    Public Property AllowOverBudget() As String
+    Public Property AllowOverBudget As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_ALLOW_OVER_BUDGET) Is DBNull.Value Then
@@ -258,7 +258,7 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_ALLOW_OVER_BUDGET), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_ALLOW_OVER_BUDGET, Value)
         End Set
@@ -266,7 +266,7 @@ Public Class AcctEvent
 
 
     <ValidStringLength("", Max:=1)>
-    Public Property AllowPostToSuspended() As String
+    Public Property AllowPostToSuspended As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_ALLOW_POST_TO_SUSPENDED) Is DBNull.Value Then
@@ -275,7 +275,7 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_ALLOW_POST_TO_SUSPENDED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_ALLOW_POST_TO_SUSPENDED, Value)
         End Set
@@ -283,7 +283,7 @@ Public Class AcctEvent
 
 
     <ValidStringLength("", Max:=2)>
-    Public Property BalancingOptions() As String
+    Public Property BalancingOptions As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_BALANCING_OPTIONS) Is DBNull.Value Then
@@ -292,7 +292,7 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_BALANCING_OPTIONS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_BALANCING_OPTIONS, Value)
         End Set
@@ -300,7 +300,7 @@ Public Class AcctEvent
 
 
     <ValidStringLength("", Max:=5)>
-    Public Property JournalType() As String
+    Public Property JournalType As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_JOURNAL_TYPE) Is DBNull.Value Then
@@ -309,7 +309,7 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_JOURNAL_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_JOURNAL_TYPE, Value)
         End Set
@@ -317,7 +317,7 @@ Public Class AcctEvent
 
 
     <ValidStringLength("", Max:=1)>
-    Public Property LoadOnly() As String
+    Public Property LoadOnly As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_LOAD_ONLY) Is DBNull.Value Then
@@ -326,7 +326,7 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_LOAD_ONLY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_LOAD_ONLY, Value)
         End Set
@@ -334,7 +334,7 @@ Public Class AcctEvent
 
 
     <ValidStringLength("", Max:=1)>
-    Public Property PostingType() As String
+    Public Property PostingType As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_POSTING_TYPE) Is DBNull.Value Then
@@ -343,7 +343,7 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_POSTING_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_POSTING_TYPE, Value)
         End Set
@@ -351,7 +351,7 @@ Public Class AcctEvent
 
 
     <ValidStringLength("", Max:=1)>
-    Public Property PostProvisional() As String
+    Public Property PostProvisional As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_POST_PROVISIONAL) Is DBNull.Value Then
@@ -360,7 +360,7 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_POST_PROVISIONAL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_POST_PROVISIONAL, Value)
         End Set
@@ -368,7 +368,7 @@ Public Class AcctEvent
 
 
     <ValidStringLength("", Max:=1)>
-    Public Property PostToHold() As String
+    Public Property PostToHold As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_POST_TO_HOLD) Is DBNull.Value Then
@@ -377,7 +377,7 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_POST_TO_HOLD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_POST_TO_HOLD, Value)
         End Set
@@ -385,7 +385,7 @@ Public Class AcctEvent
 
 
     <ValidStringLength("", Max:=15)>
-    Public Property ReportingAccount() As String
+    Public Property ReportingAccount As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_REPORTING_ACCOUNT) Is DBNull.Value Then
@@ -394,7 +394,7 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_REPORTING_ACCOUNT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_REPORTING_ACCOUNT, Value)
         End Set
@@ -402,7 +402,7 @@ Public Class AcctEvent
 
 
     <ValidStringLength("", Max:=1)>
-    Public Property SuppressSubstitutedMessages() As String
+    Public Property SuppressSubstitutedMessages As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_SUPPRESS_SUBSTITUTED_MESSAGES) Is DBNull.Value Then
@@ -411,7 +411,7 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_SUPPRESS_SUBSTITUTED_MESSAGES), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_SUPPRESS_SUBSTITUTED_MESSAGES, Value)
         End Set
@@ -419,7 +419,7 @@ Public Class AcctEvent
 
 
     <ValidStringLength("", Max:=15)>
-    Public Property SuspenseAccount() As String
+    Public Property SuspenseAccount As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_SUSPENSE_ACCOUNT) Is DBNull.Value Then
@@ -428,7 +428,7 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_SUSPENSE_ACCOUNT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_SUSPENSE_ACCOUNT, Value)
         End Set
@@ -436,7 +436,7 @@ Public Class AcctEvent
 
 
     <ValidStringLength("", Max:=15)>
-    Public Property TransactionAmountAccount() As String
+    Public Property TransactionAmountAccount As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_TRANSACTION_AMOUNT_ACCOUNT) Is DBNull.Value Then
@@ -445,14 +445,14 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_TRANSACTION_AMOUNT_ACCOUNT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_TRANSACTION_AMOUNT_ACCOUNT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)>
-    Public Property LayoutCode() As String
+    Public Property LayoutCode As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_LAYOUT_CODE) Is DBNull.Value Then
@@ -461,14 +461,14 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_LAYOUT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_LAYOUT_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)>
-    Public Property EventName() As String
+    Public Property EventName As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_EVENT_NAME) Is DBNull.Value Then
@@ -477,14 +477,14 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_EVENT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_EVENT_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property EventDescription() As String
+    Public Property EventDescription As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_EVENT_DESCRIPTION) Is DBNull.Value Then
@@ -493,13 +493,13 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_EVENT_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_EVENT_DESCRIPTION, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=100)>
-    Public Property JournalLevel() As String
+    Public Property JournalLevel As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_JOURNAL_LEVEL) Is DBNull.Value Then
@@ -508,7 +508,7 @@ Public Class AcctEvent
                 Return CType(Row(AcctEventDAL.COL_NAME_JOURNAL_LEVEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctEventDAL.COL_NAME_JOURNAL_LEVEL, Value)
         End Set

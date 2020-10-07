@@ -90,7 +90,7 @@ Public Class ApInvoiceMatching
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ApInvoiceMatchingDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ApInvoiceMatching
     End Property
 	
     
-    Public Property PoLineId() As Guid
+    Public Property PoLineId As Guid
         Get
             CheckDeleted()
             If row(ApInvoiceMatchingDAL.COL_NAME_PO_LINE_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ApInvoiceMatching
                 Return New Guid(CType(row(ApInvoiceMatchingDAL.COL_NAME_PO_LINE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceMatchingDAL.COL_NAME_PO_LINE_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ApInvoiceMatching
 	
 	
     <ValueMandatory("")> _
-    Public Property InvoiceLineId() As Guid
+    Public Property InvoiceLineId As Guid
         Get
             CheckDeleted()
             If row(ApInvoiceMatchingDAL.COL_NAME_INVOICE_LINE_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ApInvoiceMatching
                 Return New Guid(CType(row(ApInvoiceMatchingDAL.COL_NAME_INVOICE_LINE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceMatchingDAL.COL_NAME_INVOICE_LINE_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class ApInvoiceMatching
 	
 	
     <ValueMandatory("")> _
-    Public Property Qty() As DecimalType
+    Public Property Qty As DecimalType
         Get
             CheckDeleted()
             If row(ApInvoiceMatchingDAL.COL_NAME_QTY) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class ApInvoiceMatching
                 Return New DecimalType(CType(row(ApInvoiceMatchingDAL.COL_NAME_QTY), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceMatchingDAL.COL_NAME_QTY, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class ApInvoiceMatching
 	
 	
     <ValueMandatory("")> _
-    Public Property Amount() As DecimalType
+    Public Property Amount As DecimalType
         Get
             CheckDeleted()
             If row(ApInvoiceMatchingDAL.COL_NAME_AMOUNT) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class ApInvoiceMatching
                 Return New DecimalType(CType(row(ApInvoiceMatchingDAL.COL_NAME_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceMatchingDAL.COL_NAME_AMOUNT, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class ApInvoiceMatching
 	
 	
     
-    Public Property ExtendedQty() As DecimalType
+    Public Property ExtendedQty As DecimalType
         Get
             CheckDeleted()
             If row(ApInvoiceMatchingDAL.COL_NAME_EXTENDED_QTY) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class ApInvoiceMatching
                 Return New DecimalType(CType(row(ApInvoiceMatchingDAL.COL_NAME_EXTENDED_QTY), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceMatchingDAL.COL_NAME_EXTENDED_QTY, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class ApInvoiceMatching
 	
 	
     <ValidStringLength("", Max:=120)> _
-    Public Property ExtendedUom() As String
+    Public Property ExtendedUom As String
         Get
             CheckDeleted()
             If row(ApInvoiceMatchingDAL.COL_NAME_EXTENDED_UOM) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class ApInvoiceMatching
                 Return CType(row(ApInvoiceMatchingDAL.COL_NAME_EXTENDED_UOM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceMatchingDAL.COL_NAME_EXTENDED_UOM, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class ApInvoiceMatching
 	
 	
     
-    Public Property ExtendedUnitPrice() As DecimalType
+    Public Property ExtendedUnitPrice As DecimalType
         Get
             CheckDeleted()
             If row(ApInvoiceMatchingDAL.COL_NAME_EXTENDED_UNIT_PRICE) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class ApInvoiceMatching
                 Return New DecimalType(CType(row(ApInvoiceMatchingDAL.COL_NAME_EXTENDED_UNIT_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceMatchingDAL.COL_NAME_EXTENDED_UNIT_PRICE, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class ApInvoiceMatching
 	
 	
     
-    Public Property ApPaymentBatchId() As Guid
+    Public Property ApPaymentBatchId As Guid
         Get
             CheckDeleted()
             If row(ApInvoiceMatchingDAL.COL_NAME_AP_PAYMENT_BATCH_ID) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class ApInvoiceMatching
                 Return New Guid(CType(row(ApInvoiceMatchingDAL.COL_NAME_AP_PAYMENT_BATCH_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceMatchingDAL.COL_NAME_AP_PAYMENT_BATCH_ID, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class ApInvoiceMatching
 	
 	
     <ValidStringLength("", Max:=400)> _
-    Public Property MatchTypeXcd() As String
+    Public Property MatchTypeXcd As String
         Get
             CheckDeleted()
             If row(ApInvoiceMatchingDAL.COL_NAME_MATCH_TYPE_XCD) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class ApInvoiceMatching
                 Return CType(row(ApInvoiceMatchingDAL.COL_NAME_MATCH_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceMatchingDAL.COL_NAME_MATCH_TYPE_XCD, Value)
         End Set

@@ -396,7 +396,7 @@ Namespace Reports
                     Dim oParams As ReportCeBase.Params
                     oParams = CType(Session(ReportCeBase.SESSION_PARAMETERS_KEY), ReportCeBase.Params)
                     strReportName = oParams.msRptName
-                    If oParams.msRptName.ToUpper.IndexOf("_EXP") > 0 Or oParams.msRptName.ToUpper.IndexOf("-EXP") > 0 Then
+                    If oParams.msRptName.ToUpper.IndexOf("_EXP") > 0 OrElse oParams.msRptName.ToUpper.IndexOf("-EXP") > 0 Then
                         If moSchedCheck.Checked = True Then
                             ObtainSchedDate(oParams)
                         End If
@@ -948,7 +948,7 @@ Namespace Reports
                 ObtainSchedDate(oParams)
 
                 If oParams.moRptFormat = Assurant.ElitaPlus.ElitaPlusWebApp.Reports.ReportCeBase.RptFormat.JAVA _
-                    And (oParams.moDest = ceDestination.FTP Or oParams.moDest = ceDestination.EMAIL) Then
+                    AndAlso (oParams.moDest = ceDestination.FTP OrElse oParams.moDest = ceDestination.EMAIL) Then
                     DisplayErrorMsg(TranslationBase.TranslateLabelOrMessage("DEST_FTP_NOT_AVAILBLE_FOR_VIEW_REPORT"))
                     Dim ex As New Exception("VIEW")
                     Throw ex
@@ -962,7 +962,7 @@ Namespace Reports
                     ObtainUDiskParams(oParams)
                 End If
             Catch ex As Exception
-                If ex.Message <> "FTP" And ex.Message <> "VIEW" Then
+                If ex.Message <> "FTP" AndAlso ex.Message <> "VIEW" Then
                     DisplayErrorMsg(TranslationBase.TranslateLabelOrMessage("CE_UNKNOWN_PROBLEM"))
                 End If
                 Throw ex

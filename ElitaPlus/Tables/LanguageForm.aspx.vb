@@ -182,9 +182,9 @@
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If dvRow IsNot Nothing And Not State.searchDV.Count > 0 Then
+                If dvRow IsNot Nothing AndAlso Not State.searchDV.Count > 0 Then
 
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         CType(e.Row.Cells(GRID_COL_LANGUAGE_ID_IDX).FindControl(GRID_CTRL_NAME_LANGUAGE_CODE_ID), Label).Text = GetGuidStringFromByteArray(CType(dvRow(Language.LanguageSearchDV.COL_NAME_LANGUAGE_ID), Byte()))
 
                         If (State.IsEditMode = True _

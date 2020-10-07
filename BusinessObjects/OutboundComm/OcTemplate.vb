@@ -108,7 +108,7 @@ Public Class OcTemplate
 
 #Region "Properties"
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(OcTemplateDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -119,7 +119,7 @@ Public Class OcTemplate
     End Property
 
     <ValueMandatory("")>
-    Public Property OcTemplateGroupId() As Guid
+    Public Property OcTemplateGroupId As Guid
         Get
             CheckDeleted()
             If Row(OcTemplateDAL.COL_NAME_OC_TEMPLATE_GROUP_ID) Is DBNull.Value Then
@@ -128,14 +128,14 @@ Public Class OcTemplate
                 Return New Guid(CType(Row(OcTemplateDAL.COL_NAME_OC_TEMPLATE_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(OcTemplateDAL.COL_NAME_OC_TEMPLATE_GROUP_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1000), CheckDuplicate("")>
-    Public Property TemplateCode() As String
+    Public Property TemplateCode As String
         Get
             CheckDeleted()
             If Row(OcTemplateDAL.COL_NAME_TEMPLATE_CODE) Is DBNull.Value Then
@@ -144,14 +144,14 @@ Public Class OcTemplate
                 Return CType(Row(OcTemplateDAL.COL_NAME_TEMPLATE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateDAL.COL_NAME_TEMPLATE_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1000)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(OcTemplateDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -160,14 +160,14 @@ Public Class OcTemplate
                 Return CType(Row(OcTemplateDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=400)>
-    Public Property HasCustomizedParamsXcd() As String
+    Public Property HasCustomizedParamsXcd As String
         Get
             CheckDeleted()
             If Row(OcTemplateDAL.COL_NAME_HAS_CUSTOMIZED_PARAMS_XCD) Is DBNull.Value Then
@@ -176,14 +176,14 @@ Public Class OcTemplate
                 Return CType(Row(OcTemplateDAL.COL_NAME_HAS_CUSTOMIZED_PARAMS_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateDAL.COL_NAME_HAS_CUSTOMIZED_PARAMS_XCD, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=400)>
-    Public Property AllowManualUseXcd() As String
+    Public Property AllowManualUseXcd As String
         Get
             CheckDeleted()
             If Row(OcTemplateDAL.COL_NAME_ALLOW_MANUAL_USE_XCD) Is DBNull.Value Then
@@ -192,14 +192,14 @@ Public Class OcTemplate
                 Return CType(Row(OcTemplateDAL.COL_NAME_ALLOW_MANUAL_USE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateDAL.COL_NAME_ALLOW_MANUAL_USE_XCD, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=400)>
-    Public Property AllowManualResendXcd() As String
+    Public Property AllowManualResendXcd As String
         Get
             CheckDeleted()
             If Row(OcTemplateDAL.COL_NAME_ALLOW_MANUAL_RESEND_XCD) Is DBNull.Value Then
@@ -208,14 +208,14 @@ Public Class OcTemplate
                 Return CType(Row(OcTemplateDAL.COL_NAME_ALLOW_MANUAL_RESEND_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateDAL.COL_NAME_ALLOW_MANUAL_RESEND_XCD, Value)
         End Set
     End Property
 
     <ValidEffectiveDate("")>
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(OcTemplateDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -224,13 +224,13 @@ Public Class OcTemplate
                 Return New DateType(CType(Row(OcTemplateDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(OcTemplateDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(OcTemplateDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -239,26 +239,26 @@ Public Class OcTemplate
                 Return New DateType(CType(Row(OcTemplateDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(OcTemplateDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
-    Public ReadOnly Property ParametersList() As OcTemplateParamsList
+    Public ReadOnly Property ParametersList As OcTemplateParamsList
         Get
             Return New OcTemplateParamsList(Me)
         End Get
     End Property
 
-    Public ReadOnly Property RecipientsList() As OcTemplateRecipientList
+    Public ReadOnly Property RecipientsList As OcTemplateRecipientList
         Get
             Return New OcTemplateRecipientList(Me)
         End Get
     End Property
 
     <ValueMandatory(""),ValidStringLength("", Max:=100)> _
-    Public Property TemplateTypeXcd() As String
+    Public Property TemplateTypeXcd As String
         Get
             CheckDeleted()
             If row(OcTemplateDAL.COL_NAME_TEMPLATE_TYPE_XCD) Is DBNull.Value Then
@@ -267,7 +267,7 @@ Public Class OcTemplate
                 Return CType(row(OcTemplateDAL.COL_NAME_TEMPLATE_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateDAL.COL_NAME_TEMPLATE_TYPE_XCD, Value)
         End Set
@@ -275,7 +275,7 @@ Public Class OcTemplate
 	
 	
     <ValidStringLength("", Max:=100), SMSREQUIRED("SmsAppKey", "SmsAppKey")> _
-    Public Property SmsAppKey() As String
+    Public Property SmsAppKey As String
         Get
             CheckDeleted()
             If row(OcTemplateDAL.COL_NAME_SMS_APP_KEY) Is DBNull.Value Then
@@ -284,7 +284,7 @@ Public Class OcTemplate
                 Return CType(row(OcTemplateDAL.COL_NAME_SMS_APP_KEY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateDAL.COL_NAME_SMS_APP_KEY, Value)
         End Set
@@ -292,7 +292,7 @@ Public Class OcTemplate
 	
 	
     <ValidStringLength("", Max:=100), SMSREQUIRED("SmsShortCode", "SmsShortCode")> _
-    Public Property SmsShortCode() As String
+    Public Property SmsShortCode As String
         Get
             CheckDeleted()
             If row(OcTemplateDAL.COL_NAME_SMS_SHORT_CODE) Is DBNull.Value Then
@@ -301,7 +301,7 @@ Public Class OcTemplate
                 Return CType(row(OcTemplateDAL.COL_NAME_SMS_SHORT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateDAL.COL_NAME_SMS_SHORT_CODE, Value)
         End Set
@@ -309,7 +309,7 @@ Public Class OcTemplate
 	
 	
     <ValidStringLength("", Max:=100), SMSREQUIRED("SmsTriggerId", "SmsTriggerId")> _
-    Public Property SmsTriggerId() As String
+    Public Property SmsTriggerId As String
         Get
             CheckDeleted()
             If row(OcTemplateDAL.COL_NAME_SMS_TRIGGER_ID) Is DBNull.Value Then
@@ -318,7 +318,7 @@ Public Class OcTemplate
                 Return CType(row(OcTemplateDAL.COL_NAME_SMS_TRIGGER_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateDAL.COL_NAME_SMS_TRIGGER_ID, Value)
         End Set

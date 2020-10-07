@@ -113,7 +113,7 @@ Public Class PoliceStation
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(PoliceStationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -124,7 +124,7 @@ Public Class PoliceStation
     End Property
 
     <ValueMandatory("")>
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -133,7 +133,7 @@ Public Class PoliceStation
                 Return New Guid(CType(Row(PoliceStationDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PoliceStationDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
@@ -141,7 +141,7 @@ Public Class PoliceStation
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=15)>
-    Public Property PoliceStationCode() As String
+    Public Property PoliceStationCode As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_POLICE_STATION_CODE) Is DBNull.Value Then
@@ -150,7 +150,7 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_POLICE_STATION_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PoliceStationDAL.COL_NAME_POLICE_STATION_CODE, Value)
         End Set
@@ -158,7 +158,7 @@ Public Class PoliceStation
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property PoliceStationName() As String
+    Public Property PoliceStationName As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_POLICE_STATION_NAME) Is DBNull.Value Then
@@ -167,14 +167,14 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_POLICE_STATION_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PoliceStationDAL.COL_NAME_POLICE_STATION_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15), DistrictCodeValidation("")>
-    Public Property PoliceStationDistrictCode() As String
+    Public Property PoliceStationDistrictCode As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_CODE) Is DBNull.Value Then
@@ -183,7 +183,7 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_CODE, Value)
         End Set
@@ -191,7 +191,7 @@ Public Class PoliceStation
 
 
     <ValidStringLength("", Max:=200), DistrictNameValidation("")>
-    Public Property PoliceStationDistrictName() As String
+    Public Property PoliceStationDistrictName As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_NAME) Is DBNull.Value Then
@@ -200,14 +200,14 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_ADDRESS1) Is DBNull.Value Then
@@ -216,7 +216,7 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PoliceStationDAL.COL_NAME_ADDRESS1, Value)
         End Set
@@ -224,7 +224,7 @@ Public Class PoliceStation
 
 
     <ValidStringLength("", Max:=200)>
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_ADDRESS2) Is DBNull.Value Then
@@ -233,7 +233,7 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PoliceStationDAL.COL_NAME_ADDRESS2, Value)
         End Set
@@ -241,7 +241,7 @@ Public Class PoliceStation
 
     'Added for Def-1598
     <ValidStringLength("", Max:=200)>
-    Public Property Address3() As String
+    Public Property Address3 As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_ADDRESS3) Is DBNull.Value Then
@@ -250,14 +250,14 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_ADDRESS3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PoliceStationDAL.COL_NAME_ADDRESS3, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_CITY) Is DBNull.Value Then
@@ -266,13 +266,13 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PoliceStationDAL.COL_NAME_CITY, Value)
         End Set
     End Property
 
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -281,7 +281,7 @@ Public Class PoliceStation
                 Return New Guid(CType(Row(PoliceStationDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PoliceStationDAL.COL_NAME_REGION_ID, Value)
         End Set
@@ -289,7 +289,7 @@ Public Class PoliceStation
 
 
     <ValidStringLength("", Max:=40)>
-    Public Property PostalCode() As String
+    Public Property PostalCode As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_POSTAL_CODE) Is DBNull.Value Then
@@ -298,7 +298,7 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_POSTAL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PoliceStationDAL.COL_NAME_POSTAL_CODE, Value)
         End Set
@@ -329,7 +329,7 @@ Public Class PoliceStation
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty
         End Get

@@ -465,8 +465,8 @@ Partial Class ClaimListByCommentType
         Dim commentDetail As TextBox = CType(e.Item.FindControl("moCommentDetail"), TextBox)
 
         Try
-            If dvRow IsNot Nothing And Not State.bnoRow Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem OrElse itemType = ListItemType.EditItem Then
                     If (State.IsEditMode = True AndAlso
                         State.selectedClaimId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimSearchDV.COL_CLAIM_ID), Byte())))) Then
 

@@ -90,7 +90,7 @@ Public Class InvoiceLoadWrk
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(InvoiceLoadWrkDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class InvoiceLoadWrk
     End Property
 
     <ValidStringLength("", Max:=8)> _
-    Public Property RecordType() As String
+    Public Property RecordType As String
         Get
             CheckDeleted()
             If row(InvoiceLoadWrkDAL.COL_NAME_RECORD_TYPE) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class InvoiceLoadWrk
                 Return CType(row(InvoiceLoadWrkDAL.COL_NAME_RECORD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceLoadWrkDAL.COL_NAME_RECORD_TYPE, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class InvoiceLoadWrk
 
 
     <ValidStringLength("", Max:=20)> _
-    Public Property Company() As String
+    Public Property Company As String
         Get
             CheckDeleted()
             If row(InvoiceLoadWrkDAL.COL_NAME_COMPANY) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class InvoiceLoadWrk
                 Return CType(row(InvoiceLoadWrkDAL.COL_NAME_COMPANY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceLoadWrkDAL.COL_NAME_COMPANY, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class InvoiceLoadWrk
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property InvoiceNumber() As String
+    Public Property InvoiceNumber As String
         Get
             CheckDeleted()
             If row(InvoiceLoadWrkDAL.COL_NAME_INVOICE_NUMBER) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class InvoiceLoadWrk
                 Return CType(row(InvoiceLoadWrkDAL.COL_NAME_INVOICE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceLoadWrkDAL.COL_NAME_INVOICE_NUMBER, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class InvoiceLoadWrk
 
 
 
-    Public Property InvoiceDate() As DateType
+    Public Property InvoiceDate As DateType
         Get
             CheckDeleted()
             If row(InvoiceLoadWrkDAL.COL_NAME_INVOICE_DATE) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class InvoiceLoadWrk
                 Return New DateType(CType(row(InvoiceLoadWrkDAL.COL_NAME_INVOICE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(InvoiceLoadWrkDAL.COL_NAME_INVOICE_DATE, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class InvoiceLoadWrk
 
 
     <ValidStringLength("", Max:=4000)> _
-    Public Property Attributes() As String
+    Public Property Attributes As String
         Get
             CheckDeleted()
             If row(InvoiceLoadWrkDAL.COL_NAME_ATTRIBUTES) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class InvoiceLoadWrk
                 Return CType(row(InvoiceLoadWrkDAL.COL_NAME_ATTRIBUTES), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceLoadWrkDAL.COL_NAME_ATTRIBUTES, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class InvoiceLoadWrk
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If row(InvoiceLoadWrkDAL.COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class InvoiceLoadWrk
                 Return CType(row(InvoiceLoadWrkDAL.COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceLoadWrkDAL.COL_NAME_CLAIM_NUMBER, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class InvoiceLoadWrk
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property AuthorizationNumber() As String
+    Public Property AuthorizationNumber As String
         Get
             CheckDeleted()
             If row(InvoiceLoadWrkDAL.COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class InvoiceLoadWrk
                 Return CType(row(InvoiceLoadWrkDAL.COL_NAME_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceLoadWrkDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class InvoiceLoadWrk
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property LineItemNumber() As String
+    Public Property LineItemNumber As String
         Get
             CheckDeleted()
             If row(InvoiceLoadWrkDAL.COL_NAME_LINE_ITEM_NUMBER) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class InvoiceLoadWrk
                 Return CType(row(InvoiceLoadWrkDAL.COL_NAME_LINE_ITEM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceLoadWrkDAL.COL_NAME_LINE_ITEM_NUMBER, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class InvoiceLoadWrk
 
 
     <ValidStringLength("", Max:=1020)> _
-    Public Property LineItemCode() As String
+    Public Property LineItemCode As String
         Get
             CheckDeleted()
             If row(InvoiceLoadWrkDAL.COL_NAME_LINE_ITEM_CODE) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class InvoiceLoadWrk
                 Return CType(row(InvoiceLoadWrkDAL.COL_NAME_LINE_ITEM_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceLoadWrkDAL.COL_NAME_LINE_ITEM_CODE, Value)
         End Set
@@ -254,7 +254,7 @@ Public Class InvoiceLoadWrk
 
 
     <ValidStringLength("", Max:=1020)> _
-    Public Property LineItemDescription() As String
+    Public Property LineItemDescription As String
         Get
             CheckDeleted()
             If row(InvoiceLoadWrkDAL.COL_NAME_LINE_ITEM_DESCRIPTION) Is DBNull.Value Then
@@ -263,7 +263,7 @@ Public Class InvoiceLoadWrk
                 Return CType(row(InvoiceLoadWrkDAL.COL_NAME_LINE_ITEM_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceLoadWrkDAL.COL_NAME_LINE_ITEM_DESCRIPTION, Value)
         End Set
@@ -271,7 +271,7 @@ Public Class InvoiceLoadWrk
 
 
 
-    Public Property Amount() As DecimalType
+    Public Property Amount As DecimalType
         Get
             CheckDeleted()
             If row(InvoiceLoadWrkDAL.COL_NAME_AMOUNT) Is DBNull.Value Then
@@ -280,7 +280,7 @@ Public Class InvoiceLoadWrk
                 Return New DecimalType(CType(row(InvoiceLoadWrkDAL.COL_NAME_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(InvoiceLoadWrkDAL.COL_NAME_AMOUNT, Value)
         End Set
@@ -288,7 +288,7 @@ Public Class InvoiceLoadWrk
 
 
     <ValidStringLength("", Max:=4000)> _
-    Public Property EntireRecord() As String
+    Public Property EntireRecord As String
         Get
             CheckDeleted()
             If row(InvoiceLoadWrkDAL.COL_NAME_ENTIRE_RECORD) Is DBNull.Value Then
@@ -297,7 +297,7 @@ Public Class InvoiceLoadWrk
                 Return CType(row(InvoiceLoadWrkDAL.COL_NAME_ENTIRE_RECORD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceLoadWrkDAL.COL_NAME_ENTIRE_RECORD, Value)
         End Set

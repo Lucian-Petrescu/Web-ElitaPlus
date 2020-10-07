@@ -395,7 +395,7 @@ Namespace Certificates
                 Paydate = CType(NavController.ParametersPassed, Parameters).PaymentDate.ToString
                 Rejectdate = DateHelper.GetDateValue(txtCheckRejectedOn.Text)
 
-                If CDate(Paydate) >= CDate(Rejectdate) Or CDate(Rejectdate) > DateTime.Today Then
+                If CDate(Paydate) >= CDate(Rejectdate) OrElse CDate(Rejectdate) > DateTime.Today Then
                     ElitaPlusPage.SetLabelError(lblCheckRejectedOn)
                     Throw New GUIException(Message.MSG_REJECT_DATE, Assurant.ElitaPlus.Common.ErrorCodes.REJECT_DATE_ERR)
                 End If

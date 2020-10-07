@@ -230,7 +230,7 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Item.Cells(GRID_COL_ISSUE_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(Issue.IssueSearchDV.COL_NAME_ISSUE_ID), Byte()))
                     e.Item.Cells(GRID_COL_CODE_IDX).Text = dvRow(Issue.IssueSearchDV.COL_NAME_CODE).ToString
                     e.Item.Cells(GRID_COL_DESCRIPTION_IDX).Text = dvRow(Issue.IssueSearchDV.COL_NAME_DESCRIPTION).ToString

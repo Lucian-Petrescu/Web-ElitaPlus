@@ -128,7 +128,7 @@ Public NotInheritable Class ClaimAuthItem
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ClaimAuthItemDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -139,7 +139,7 @@ Public NotInheritable Class ClaimAuthItem
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimAuthorizationId() As Guid
+    Public Property ClaimAuthorizationId As Guid
         Get
             CheckDeleted()
             If Row(ClaimAuthItemDAL.COL_NAME_CLAIM_AUTHORIZATION_ID) Is DBNull.Value Then
@@ -148,7 +148,7 @@ Public NotInheritable Class ClaimAuthItem
                 Return New Guid(CType(Row(ClaimAuthItemDAL.COL_NAME_CLAIM_AUTHORIZATION_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             CheckIsOld()
             SetValue(ClaimAuthItemDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
@@ -157,7 +157,7 @@ Public NotInheritable Class ClaimAuthItem
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServiceClassId() As Guid
+    Public Property ServiceClassId As Guid
         Get
             CheckDeleted()
             If Row(ClaimAuthItemDAL.COL_NAME_SERVICE_CLASS_ID) Is DBNull.Value Then
@@ -166,14 +166,14 @@ Public NotInheritable Class ClaimAuthItem
                 Return New Guid(CType(Row(ClaimAuthItemDAL.COL_NAME_SERVICE_CLASS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             CheckIsOld()
             SetValue(ClaimAuthItemDAL.COL_NAME_SERVICE_CLASS_ID, Value)
         End Set
     End Property
 
-    Public Property ServiceTypeId() As Guid
+    Public Property ServiceTypeId As Guid
         Get
             CheckDeleted()
             If Row(ClaimAuthItemDAL.COL_NAME_SERVICE_TYPE_ID) Is DBNull.Value Then
@@ -182,7 +182,7 @@ Public NotInheritable Class ClaimAuthItem
                 Return New Guid(CType(Row(ClaimAuthItemDAL.COL_NAME_SERVICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             CheckIsOld()
             SetValue(ClaimAuthItemDAL.COL_NAME_SERVICE_TYPE_ID, Value)
@@ -190,7 +190,7 @@ Public NotInheritable Class ClaimAuthItem
     End Property
 
     <ValueMandatory("")> _
-    Public Property LineItemNumber() As LongType
+    Public Property LineItemNumber As LongType
         Get
             CheckDeleted()
             If Row(ClaimAuthItemDAL.COL_NAME_LINE_ITEM_NUMBER) Is DBNull.Value Then
@@ -199,7 +199,7 @@ Public NotInheritable Class ClaimAuthItem
                 Return New LongType(CType(Row(ClaimAuthItemDAL.COL_NAME_LINE_ITEM_NUMBER), Long))
             End If
         End Get
-        Set(Value As LongType)
+        Set
             CheckDeleted()
             CheckIsOld()
             SetValue(ClaimAuthItemDAL.COL_NAME_LINE_ITEM_NUMBER, Value)
@@ -207,7 +207,7 @@ Public NotInheritable Class ClaimAuthItem
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property VendorSku() As String
+    Public Property VendorSku As String
         Get
             CheckDeleted()
             If Row(ClaimAuthItemDAL.COL_NAME_VENDOR_SKU) Is DBNull.Value Then
@@ -216,7 +216,7 @@ Public NotInheritable Class ClaimAuthItem
                 Return CType(Row(ClaimAuthItemDAL.COL_NAME_VENDOR_SKU), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             CheckIsOld()
             SetValue(ClaimAuthItemDAL.COL_NAME_VENDOR_SKU, Value)
@@ -224,7 +224,7 @@ Public NotInheritable Class ClaimAuthItem
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property VendorSkuDescription() As String
+    Public Property VendorSkuDescription As String
         Get
             CheckDeleted()
             If Row(ClaimAuthItemDAL.COL_NAME_VENDOR_SKU_DESCRIPTION) Is DBNull.Value Then
@@ -233,7 +233,7 @@ Public NotInheritable Class ClaimAuthItem
                 Return CType(Row(ClaimAuthItemDAL.COL_NAME_VENDOR_SKU_DESCRIPTION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             CheckIsOld()
             SetValue(ClaimAuthItemDAL.COL_NAME_VENDOR_SKU_DESCRIPTION, Value)
@@ -241,7 +241,7 @@ Public NotInheritable Class ClaimAuthItem
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", MIN:=MAX_DOUBLE * -1, Max:=MAX_DOUBLE, Message:=AMOUNT_9_DIGITS_ALLOWED_BEFORE_DECIMAL_POINT)> _
-    Public Property Amount() As DecimalType
+    Public Property Amount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimAuthItemDAL.COL_NAME_AMOUNT) Is DBNull.Value Then
@@ -250,13 +250,13 @@ Public NotInheritable Class ClaimAuthItem
                 Return New DecimalType(CType(Row(ClaimAuthItemDAL.COL_NAME_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthItemDAL.COL_NAME_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property AdjustmentReasonId() As Guid
+    Public Property AdjustmentReasonId As Guid
         Get
             CheckDeleted()
             If Row(ClaimAuthItemDAL.COL_NAME_ADJUSTMENT_REASON_ID) Is DBNull.Value Then
@@ -265,12 +265,12 @@ Public NotInheritable Class ClaimAuthItem
                 Return New Guid(CType(Row(ClaimAuthItemDAL.COL_NAME_ADJUSTMENT_REASON_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthItemDAL.COL_NAME_ADJUSTMENT_REASON_ID, Value)
         End Set
     End Property
-    Public Property RevAdjustmentReasonId() As Guid
+    Public Property RevAdjustmentReasonId As Guid
         Get
             CheckDeleted()
             If Row(ClaimAuthItemDAL.COL_NAME_ADJUSTMENT_REASON_ID) Is DBNull.Value Then
@@ -279,43 +279,43 @@ Public NotInheritable Class ClaimAuthItem
                 Return New Guid(CType(Row(ClaimAuthItemDAL.COL_NAME_ADJUSTMENT_REASON_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthItemDAL.COL_NAME_ADJUSTMENT_REASON_ID, Value)
         End Set
     End Property
 
 
-    Friend ReadOnly Property OrginalAmount() As Decimal
+    Friend ReadOnly Property OrginalAmount As Decimal
         Get
             Return _originalAmount
         End Get
     End Property
 
-    Public ReadOnly Property ServiceClassCode() As String
+    Public ReadOnly Property ServiceClassCode As String
         Get
             Return LookupListNew.GetCodeFromId(Codes.SERVICE_CLASS, ServiceClassId)
         End Get
     End Property
 
-    Public ReadOnly Property ServiceTypeCode() As String
+    Public ReadOnly Property ServiceTypeCode As String
         Get
             Return LookupListNew.GetCodeFromId(Codes.SERVICE_CLASS_TYPE, ServiceTypeId)
         End Get
     End Property
 
-    Public Property IsDeleted() As Boolean
+    Public Property IsDeleted As Boolean
         Get
             CheckDeleted()
             Return Convert.ToBoolean(CType(Row(ClaimAuthItemDAL.COL_NAME_IS_DELETED), Integer))
         End Get
-        Set(Value As Boolean)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthItemDAL.COL_NAME_IS_DELETED, Convert.ToInt16(Value))
         End Set
     End Property
 
-    Public Property PoAdjustmentReasonId() As Guid
+    Public Property PoAdjustmentReasonId As Guid
         Get
             CheckDeleted()
             If row(ClaimAuthItemDAL.COL_NAME_PO_ADJUSTMENT_REASON_ID) Is DBNull.Value Then
@@ -324,14 +324,14 @@ Public NotInheritable Class ClaimAuthItem
                 Return New Guid(CType(row(ClaimAuthItemDAL.COL_NAME_PO_ADJUSTMENT_REASON_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthItemDAL.COL_NAME_PO_ADJUSTMENT_REASON_ID, Value)
         End Set
     End Property
                 
     
-    Public Property AdjLineItemNumber() As LongType
+    Public Property AdjLineItemNumber As LongType
         Get
             CheckDeleted()
             If row(ClaimAuthItemDAL.COL_NAME_ADJ_LINE_ITEM_NUMBER) Is DBNull.Value Then
@@ -340,7 +340,7 @@ Public NotInheritable Class ClaimAuthItem
                 Return New LongType(CType(row(ClaimAuthItemDAL.COL_NAME_ADJ_LINE_ITEM_NUMBER), Long))
             End If
         End Get
-        Set(Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthItemDAL.COL_NAME_ADJ_LINE_ITEM_NUMBER, Value)
         End Set
@@ -413,7 +413,7 @@ Public NotInheritable Class ClaimAuthItem
             End If
             Return _claimAuthorization
         End Get
-        Private Set(value As ClaimAuthorization)
+        Private Set
             _claimAuthorization = value
         End Set
     End Property
@@ -446,7 +446,7 @@ Public Class ClaimAuthorizationItemList
         End Try
     End Function
 
-    Public ReadOnly Property HasCollectionChanged() As Boolean
+    Public ReadOnly Property HasCollectionChanged As Boolean
         Get
             If Where(Function(item) item.IsDeleted Or (item.IsNew And item.AdjustmentReasonId.Equals(Guid.Empty))).Count > 0 Then Return True Else Return False
         End Get

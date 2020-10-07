@@ -116,7 +116,7 @@ Public Class AcctTransmission
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AcctTransmissionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -127,7 +127,7 @@ Public Class AcctTransmission
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1000)> _
-    Public Property FileName() As String
+    Public Property FileName As String
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_FILE_NAME) Is DBNull.Value Then
@@ -136,13 +136,13 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_FILE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_FILE_NAME, Value)
         End Set
     End Property
 
-    Public Property FileText() As String
+    Public Property FileText As String
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_FILE_TEXT) Is DBNull.Value Then
@@ -151,14 +151,14 @@ Public Class AcctTransmission
                 Return Row(AcctTransmissionDAL.COL_NAME_FILE_TEXT).ToString()
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_FILE_TEXT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)> _
-    Public Property JournalType() As String
+    Public Property JournalType As String
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_JOURNAL_TYPE) Is DBNull.Value Then
@@ -167,14 +167,14 @@ Public Class AcctTransmission
                 Return (CType(Row(AcctTransmissionDAL.COL_NAME_JOURNAL_TYPE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_JOURNAL_TYPE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property TransmissionDate() As DateType
+    Public Property TransmissionDate As DateType
         Get
             CheckDeleted()
             If row(AcctTransmissionDAL.COL_NAME_TRANSMISSION_DATE) Is DBNull.Value Then
@@ -183,13 +183,13 @@ Public Class AcctTransmission
                 Return New DateType(CType(row(AcctTransmissionDAL.COL_NAME_TRANSMISSION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_TRANSMISSION_DATE, Value)
         End Set
     End Property
 
-    Public Property TransmissionReceived() As DateType
+    Public Property TransmissionReceived As DateType
         Get
             CheckDeleted()
             If row(AcctTransmissionDAL.COL_NAME_TRANSMISSION_RECEIVED) Is DBNull.Value Then
@@ -198,14 +198,14 @@ Public Class AcctTransmission
                 Return New DateType(CType(row(AcctTransmissionDAL.COL_NAME_TRANSMISSION_RECEIVED), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_TRANSMISSION_RECEIVED, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property TransmissionCount() As LongType
+    Public Property TransmissionCount As LongType
         Get
             CheckDeleted()
             If row(AcctTransmissionDAL.COL_NAME_TRANSMISSION_COUNT) Is DBNull.Value Then
@@ -214,14 +214,14 @@ Public Class AcctTransmission
                 Return New LongType(CType(row(AcctTransmissionDAL.COL_NAME_TRANSMISSION_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_TRANSMISSION_COUNT, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-      Public Property CompanyId() As Guid
+      Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -230,14 +230,14 @@ Public Class AcctTransmission
                 Return New Guid(CType(Row(AcctTransmissionDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DebitAmount() As Decimal
+    Public Property DebitAmount As Decimal
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_DEBIT_AMOUNT) Is DBNull.Value Then
@@ -246,14 +246,14 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_DEBIT_AMOUNT), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_DEBIT_AMOUNT, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CreditAmount() As Decimal
+    Public Property CreditAmount As Decimal
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_CREDIT_AMOUNT) Is DBNull.Value Then
@@ -262,14 +262,14 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_CREDIT_AMOUNT), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_CREDIT_AMOUNT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=250)> _
-    Public Property RejectReason() As String
+    Public Property RejectReason As String
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_REJECT_REASON) Is DBNull.Value Then
@@ -278,13 +278,13 @@ Public Class AcctTransmission
                 Return (CType(Row(AcctTransmissionDAL.COL_NAME_REJECT_REASON), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_REJECT_REASON, Value)
         End Set
     End Property
 
-    Public Property FileTypeFlag() As Integer
+    Public Property FileTypeFlag As Integer
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_FILE_TYPE_FLAG) Is DBNull.Value Then
@@ -293,13 +293,13 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_FILE_TYPE_FLAG), Integer)
             End If
         End Get
-        Set(ByVal value As Integer)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_FILE_TYPE_FLAG, value)
         End Set
     End Property
 
-    Public Property FileSubTypeFlag() As Integer
+    Public Property FileSubTypeFlag As Integer
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_FILE_SUB_TYPE_FLAG) Is DBNull.Value Then
@@ -308,13 +308,13 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_FILE_SUB_TYPE_FLAG), Integer)
             End If
         End Get
-        Set(ByVal value As Integer)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_FILE_SUB_TYPE_FLAG, value)
         End Set
     End Property
 
-    Public Property NumTransactionsSent() As Integer
+    Public Property NumTransactionsSent As Integer
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_NUM_TRANSACTIONS_SENT) Is DBNull.Value Then
@@ -323,13 +323,13 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_NUM_TRANSACTIONS_SENT), Integer)
             End If
         End Get
-        Set(ByVal value As Integer)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_NUM_TRANSACTIONS_SENT, value)
         End Set
     End Property
 
-    Public Property NumTransactionsReceived() As Integer
+    Public Property NumTransactionsReceived As Integer
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_NUM_TRANSACTIONS_RECEIVED) Is DBNull.Value Then
@@ -338,13 +338,13 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_NUM_TRANSACTIONS_RECEIVED), Integer)
             End If
         End Get
-        Set(ByVal value As Integer)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_NUM_TRANSACTIONS_RECEIVED, value)
         End Set
     End Property
 
-    Public Property DebitAmountReceived() As Decimal
+    Public Property DebitAmountReceived As Decimal
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_DEBIT_AMOUNT_RECEIVED) Is DBNull.Value Then
@@ -353,13 +353,13 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_DEBIT_AMOUNT_RECEIVED), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_DEBIT_AMOUNT_RECEIVED, Value)
         End Set
     End Property
 
-    Public Property CreditAmountReceived() As Decimal
+    Public Property CreditAmountReceived As Decimal
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_CREDIT_AMOUNT_RECEIVED) Is DBNull.Value Then
@@ -368,13 +368,13 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_CREDIT_AMOUNT_RECEIVED), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_CREDIT_AMOUNT_RECEIVED, Value)
         End Set
     End Property
 
-    Public Property DateReceived() As DateType
+    Public Property DateReceived As DateType
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_DATE_RECEIVED) Is DBNull.Value Then
@@ -383,13 +383,13 @@ Public Class AcctTransmission
                 Return New DateType(CType(Row(AcctTransmissionDAL.COL_NAME_DATE_RECEIVED), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_DATE_RECEIVED, Value)
         End Set
     End Property
 
-    Public Property BatchNumber() As String
+    Public Property BatchNumber As String
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_BATCH_NUMBER) Is DBNull.Value Then
@@ -398,13 +398,13 @@ Public Class AcctTransmission
                 Return (CType(Row(AcctTransmissionDAL.COL_NAME_BATCH_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_BATCH_NUMBER, Value)
         End Set
     End Property
 
-    Public Property RejectReasonDetail() As String
+    Public Property RejectReasonDetail As String
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_REJECT_REASON_DETAIL) Is DBNull.Value Then
@@ -413,14 +413,14 @@ Public Class AcctTransmission
                 Return (CType(Row(AcctTransmissionDAL.COL_NAME_REJECT_REASON_DETAIL), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_REJECT_REASON_DETAIL, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-      Public Property StatusId() As Guid
+      Public Property StatusId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_STATUS_ID) Is DBNull.Value Then
@@ -429,7 +429,7 @@ Public Class AcctTransmission
                 Return New Guid(CType(Row(AcctTransmissionDAL.COL_NAME_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctTransmissionDAL.COL_NAME_STATUS_ID, Value)
         End Set

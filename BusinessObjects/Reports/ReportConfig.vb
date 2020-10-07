@@ -90,7 +90,7 @@ Public Class ReportConfig
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ReportConfigDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ReportConfig
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(ReportConfigDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ReportConfig
                 Return New Guid(CType(row(ReportConfigDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ReportConfigDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ReportConfig
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property ReportCeName() As String
+    Public Property ReportCeName As String
         Get
             CheckDeleted()
             If row(ReportConfigDAL.COL_NAME_REPORT_CE_NAME) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ReportConfig
                 Return CType(row(ReportConfigDAL.COL_NAME_REPORT_CE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportConfigDAL.COL_NAME_REPORT_CE_NAME, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class ReportConfig
 
 
     <ValueMandatory("")> _
-    Public Property FormId() As Guid
+    Public Property FormId As Guid
         Get
             CheckDeleted()
             If row(ReportConfigDAL.COL_NAME_FORM_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class ReportConfig
                 Return New Guid(CType(row(ReportConfigDAL.COL_NAME_FORM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ReportConfigDAL.COL_NAME_FORM_ID, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class ReportConfig
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property LargeReport() As String
+    Public Property LargeReport As String
         Get
             CheckDeleted()
             If row(ReportConfigDAL.COL_NAME_LARGE_REPORT) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class ReportConfig
                 Return CType(row(ReportConfigDAL.COL_NAME_LARGE_REPORT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportConfigDAL.COL_NAME_LARGE_REPORT, Value)
         End Set

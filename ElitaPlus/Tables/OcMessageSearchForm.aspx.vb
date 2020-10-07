@@ -449,8 +449,8 @@ Namespace Tables
                 Dim btnEditItem As LinkButton
                 Dim btnSelect As ImageButton
 
-                If dvRow IsNot Nothing And Not State.bNoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bNoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         btnSelect = CType(e.Row.Cells(GRID_COL_SELECT_IDX).FindControl("btnSelect"), ImageButton)
                         btnSelect.Visible = True
 

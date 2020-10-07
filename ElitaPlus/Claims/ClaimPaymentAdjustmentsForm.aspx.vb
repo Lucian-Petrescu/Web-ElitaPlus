@@ -227,7 +227,7 @@ Partial Class ClaimPaymentAdjustmentsForm
         ControlMgr.SetVisibleControl(Me, tblPaymentDetails, False)
         ControlMgr.SetVisibleControl(Me, tblHR, False)
 
-        If State.IsGridVisible And Not (State.PageSize = 10) Then
+        If State.IsGridVisible AndAlso Not (State.PageSize = 10) Then
             cboPageSize.SelectedValue = CType(State.PageSize, String)
             Grid.PageSize = State.PageSize
         End If
@@ -325,13 +325,13 @@ Partial Class ClaimPaymentAdjustmentsForm
                 Dim oClmSystem As New ClaimSystem(oDealer.ClaimSystemId)
                 Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
                 If oClmSystem.PayClaimId.Equals(noId) Then
-                    If btnNEW_PAYMENT.Visible And btnNEW_PAYMENT.Enabled Then
+                    If btnNEW_PAYMENT.Visible AndAlso btnNEW_PAYMENT.Enabled Then
                         ControlMgr.SetEnableControl(Me, btnNEW_PAYMENT, False)
                     End If
-                    If btnREVERSE_PAYMENT.Visible And btnREVERSE_PAYMENT.Enabled Then
+                    If btnREVERSE_PAYMENT.Visible AndAlso btnREVERSE_PAYMENT.Enabled Then
                         ControlMgr.SetEnableControl(Me, btnREVERSE_PAYMENT, False)
                     End If
-                    If btnADJUST_PAYMENT.Visible And btnADJUST_PAYMENT.Enabled Then
+                    If btnADJUST_PAYMENT.Visible AndAlso btnADJUST_PAYMENT.Enabled Then
                         ControlMgr.SetEnableControl(Me, btnADJUST_PAYMENT, False)
                     End If
                 End If
@@ -413,7 +413,7 @@ Partial Class ClaimPaymentAdjustmentsForm
         Dim blnReverseInvoiceTax As Boolean = False
 
         With State.OldDisbursementBO
-            If blnReversal And .PaymentAmount.Value > 0 Then
+            If blnReversal AndAlso .PaymentAmount.Value > 0 Then
                 If State.OldClaimInvoiceBO.isTaxTypeInvoice Then 'Also Reverse the invoice tax if the whole invoice is reversed
                     Disbursement.GetRemainingInvoicePaymentAfterReversal(.SvcControlNumber, .Id, .ClaimId, RemainingPymt, InvoiceIVA, InvoiceIIBB)
                     If RemainingPymt = 0 AndAlso (InvoiceIVA <> 0 OrElse InvoiceIIBB <> 0) Then
@@ -475,7 +475,7 @@ Partial Class ClaimPaymentAdjustmentsForm
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-        If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+        If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
             PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_CLAIM_INVOICE_ID_IDX), dvRow(ClaimInvoice.ClaimInvoicesDV.COL_CLAIM_INVOICE_ID))
             PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_INVOICE_NUMBER_IDX), dvRow(ClaimInvoice.ClaimInvoicesDV.COL_INVOICE_NUMBER))
             PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_PAYEE_IDX), dvRow(ClaimInvoice.ClaimInvoicesDV.COL_PAYEE))

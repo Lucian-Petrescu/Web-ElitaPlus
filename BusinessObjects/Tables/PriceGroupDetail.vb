@@ -115,7 +115,7 @@ Public Class PriceGroupDetail
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(PriceGroupDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -126,7 +126,7 @@ Public Class PriceGroupDetail
     End Property
 
     <ValueMandatory("")> _
-    Public Property PriceGroupId() As Guid
+    Public Property PriceGroupId As Guid
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_PRICE_GROUP_ID) Is DBNull.Value Then
@@ -135,7 +135,7 @@ Public Class PriceGroupDetail
                 Return New Guid(CType(Row(PriceGroupDetailDAL.COL_NAME_PRICE_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_PRICE_GROUP_ID, Value)
         End Set
@@ -143,7 +143,7 @@ Public Class PriceGroupDetail
 
 
     <ValueMandatory("")> _
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_RISK_TYPE_ID) Is DBNull.Value Then
@@ -152,7 +152,7 @@ Public Class PriceGroupDetail
                 Return New Guid(CType(Row(PriceGroupDetailDAL.COL_NAME_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_RISK_TYPE_ID, Value)
             'Set RiskType Description
@@ -164,7 +164,7 @@ Public Class PriceGroupDetail
 
 
     <ValueMandatory("")> _
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -173,7 +173,7 @@ Public Class PriceGroupDetail
                 Return New DateType(CType(Row(PriceGroupDetailDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
@@ -181,7 +181,7 @@ Public Class PriceGroupDetail
 
 
     <ValueMandatory("")> _
-    Public Property HomePrice() As DecimalType
+    Public Property HomePrice As DecimalType
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_HOME_PRICE) Is DBNull.Value Then
@@ -190,7 +190,7 @@ Public Class PriceGroupDetail
                 Return New DecimalType(CType(Row(PriceGroupDetailDAL.COL_NAME_HOME_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_HOME_PRICE, Value)
         End Set
@@ -198,7 +198,7 @@ Public Class PriceGroupDetail
 
 
     <ValueMandatory("")> _
-    Public Property CarryInPrice() As DecimalType
+    Public Property CarryInPrice As DecimalType
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_CARRY_IN_PRICE) Is DBNull.Value Then
@@ -207,7 +207,7 @@ Public Class PriceGroupDetail
                 Return New DecimalType(CType(Row(PriceGroupDetailDAL.COL_NAME_CARRY_IN_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_CARRY_IN_PRICE, Value)
         End Set
@@ -215,7 +215,7 @@ Public Class PriceGroupDetail
 
 
     <ValueMandatory("")> _
-    Public Property SendInPrice() As DecimalType
+    Public Property SendInPrice As DecimalType
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_SEND_IN_PRICE) Is DBNull.Value Then
@@ -224,7 +224,7 @@ Public Class PriceGroupDetail
                 Return New DecimalType(CType(Row(PriceGroupDetailDAL.COL_NAME_SEND_IN_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_SEND_IN_PRICE, Value)
         End Set
@@ -232,7 +232,7 @@ Public Class PriceGroupDetail
 
 
     <ValueMandatory("")> _
-    Public Property PickUpPrice() As DecimalType
+    Public Property PickUpPrice As DecimalType
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_PICK_UP_PRICE) Is DBNull.Value Then
@@ -241,14 +241,14 @@ Public Class PriceGroupDetail
                 Return New DecimalType(CType(Row(PriceGroupDetailDAL.COL_NAME_PICK_UP_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_PICK_UP_PRICE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CleaningPrice() As DecimalType
+    Public Property CleaningPrice As DecimalType
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_CLEANING_PRICE) Is DBNull.Value Then
@@ -257,7 +257,7 @@ Public Class PriceGroupDetail
                 Return New DecimalType(CType(Row(PriceGroupDetailDAL.COL_NAME_CLEANING_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_CLEANING_PRICE, Value)
         End Set
@@ -265,7 +265,7 @@ Public Class PriceGroupDetail
 
 
     <ValueMandatory("")> _
-    Public Property HourlyRate() As DecimalType
+    Public Property HourlyRate As DecimalType
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_HOURLY_RATE) Is DBNull.Value Then
@@ -274,7 +274,7 @@ Public Class PriceGroupDetail
                 Return New DecimalType(CType(Row(PriceGroupDetailDAL.COL_NAME_HOURLY_RATE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_HOURLY_RATE, Value)
         End Set
@@ -282,7 +282,7 @@ Public Class PriceGroupDetail
 
 
     <ValueMandatory("")> _
-    Public Property EstimatePrice() As DecimalType
+    Public Property EstimatePrice As DecimalType
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_ESTIMATE_PRICE) Is DBNull.Value Then
@@ -291,13 +291,13 @@ Public Class PriceGroupDetail
                 Return New DecimalType(CType(Row(PriceGroupDetailDAL.COL_NAME_ESTIMATE_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_ESTIMATE_PRICE, Value)
         End Set
     End Property
 
-    Public ReadOnly Property RiskTypeDescription() As String
+    Public ReadOnly Property RiskTypeDescription As String
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_RISK_TYPE_DESC) Is DBNull.Value Then
@@ -309,7 +309,7 @@ Public Class PriceGroupDetail
     End Property
 
     <ValueMandatory("")> _
-    Public Property ReplacementPrice() As DecimalType
+    Public Property ReplacementPrice As DecimalType
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_REPLACEMENT_PRICE) Is DBNull.Value Then
@@ -318,13 +318,13 @@ Public Class PriceGroupDetail
                 Return New DecimalType(CType(Row(PriceGroupDetailDAL.COL_NAME_REPLACEMENT_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_REPLACEMENT_PRICE, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidNumericRange("LowPrice", MIN:=MIN_DOUBLE, Max:=NEW_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM001), ValidPriceBandRange("")> _
-    Public Property PriceBandRangeFrom() As DecimalType
+    Public Property PriceBandRangeFrom As DecimalType
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_FROM) Is DBNull.Value Then
@@ -333,14 +333,14 @@ Public Class PriceGroupDetail
                 Return New DecimalType(CType(Row(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_FROM), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_FROM, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", MIN:=MIN_DOUBLE, Max:=NEW_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM002)> _
-    Public Property PriceBandRangeTo() As DecimalType
+    Public Property PriceBandRangeTo As DecimalType
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_TO) Is DBNull.Value Then
@@ -349,13 +349,13 @@ Public Class PriceGroupDetail
                 Return New DecimalType(CType(Row(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_TO), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_TO, Value)
         End Set
     End Property
 
-    Public Property ReplacementTaxType() As Guid
+    Public Property ReplacementTaxType As Guid
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_REPLACEMENT_TAX_TYPE) Is DBNull.Value Then
@@ -364,14 +364,14 @@ Public Class PriceGroupDetail
                 Return New Guid(CType(Row(PriceGroupDetailDAL.COL_NAME_REPLACEMENT_TAX_TYPE), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_REPLACEMENT_TAX_TYPE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DiscountedPrice() As DecimalType
+    Public Property DiscountedPrice As DecimalType
         Get
             CheckDeleted()
             If Row(PriceGroupDetailDAL.COL_NAME_DISCOUNTED_PRICE) Is DBNull.Value Then
@@ -380,7 +380,7 @@ Public Class PriceGroupDetail
                 Return New DecimalType(CType(Row(PriceGroupDetailDAL.COL_NAME_DISCOUNTED_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PriceGroupDetailDAL.COL_NAME_DISCOUNTED_PRICE, Value)
         End Set

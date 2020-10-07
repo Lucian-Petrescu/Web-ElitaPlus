@@ -101,7 +101,7 @@ Public Class MfgStandardization
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(MfgStandardizationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -112,7 +112,7 @@ Public Class MfgStandardization
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=255)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(MfgStandardizationDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -121,7 +121,7 @@ Public Class MfgStandardization
                 Return CType(Row(MfgStandardizationDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(MfgStandardizationDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -129,7 +129,7 @@ Public Class MfgStandardization
 
 
     <ValueMandatory("")> _
-    Public Property MfgId() As Guid
+    Public Property MfgId As Guid
         Get
             CheckDeleted()
             If Row(MfgStandardizationDAL.COL_NAME_Mfg_ID) Is DBNull.Value Then
@@ -138,7 +138,7 @@ Public Class MfgStandardization
                 Return New Guid(CType(Row(MfgStandardizationDAL.COL_NAME_Mfg_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(MfgStandardizationDAL.COL_NAME_Mfg_ID, Value)
         End Set
@@ -146,7 +146,7 @@ Public Class MfgStandardization
 
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(MfgStandardizationDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -155,7 +155,7 @@ Public Class MfgStandardization
                 Return New Guid(CType(Row(MfgStandardizationDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(MfgStandardizationDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set

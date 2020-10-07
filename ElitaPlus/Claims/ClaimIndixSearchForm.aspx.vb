@@ -195,7 +195,7 @@ Public Class ClaimIndixSearchForm
         Try
             Dim products() As ProductDetail = GetIndixProducts().ToArray()
 
-            If (products IsNot Nothing And products.Length > 0) Then
+            If (products IsNot Nothing AndAlso products.Length > 0) Then
 
                 If (State.PageIndex = 0) Then
                     Grid.PageIndex = 0
@@ -251,7 +251,7 @@ Public Class ClaimIndixSearchForm
 
 #Region "Setting Controls"
     Private Sub SetMoreButtonEnabled()
-        btnMore.Enabled = (State.NumberOfRecords < INDIX_MAX_NUMBER_OF_RECORDS And State.NumberOfRecords < State.TotalNumberOfRecordsAvailable)
+        btnMore.Enabled = (State.NumberOfRecords < INDIX_MAX_NUMBER_OF_RECORDS AndAlso State.NumberOfRecords < State.TotalNumberOfRecordsAvailable)
     End Sub
     Private Sub SetDataSectionVisibility(visible As Boolean)
         ControlMgr.SetVisibleControl(Me, dataSectionContainer, visible)
@@ -312,7 +312,7 @@ Public Class ClaimIndixSearchForm
 
             Dim remainingItems As IEnumerable(Of ProductDetail) = manager.GetProducts(r, State.TotalNumberOfRecordsAvailable)
 
-            If (output.Count > 0 And remainingItems IsNot Nothing And remainingItems.Count > 0) Then
+            If (output.Count > 0 AndAlso remainingItems IsNot Nothing AndAlso remainingItems.Count > 0) Then
                 'Delete Item with Me.State.IndixID is downloaded
                 remainingItems = PrepareList(remainingItems)
             End If

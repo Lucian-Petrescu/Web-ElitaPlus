@@ -90,7 +90,7 @@ Public Class ProductGroup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ProductGroupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ProductGroup
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(ProductGroupDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,14 +110,14 @@ Public Class ProductGroup
                 Return New Guid(CType(Row(ProductGroupDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductGroupDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ProductGroupDAL.COL_NAME_PRODUCT_GROUP_NAME) Is DBNull.Value Then
@@ -126,14 +126,14 @@ Public Class ProductGroup
                 Return CType(Row(ProductGroupDAL.COL_NAME_PRODUCT_GROUP_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ProductGroupDAL.COL_NAME_PRODUCT_GROUP_NAME, Value)
         End Set
     End Property
 
     Dim _Route As Route
-    Public ReadOnly Property moRoute() As Route
+    Public ReadOnly Property moRoute As Route
         Get
             If (_Route Is Nothing) Then
                 _Route = New Route(Id, Nothing)
@@ -166,7 +166,7 @@ Public Class ProductGroup
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsFamilyDirty
         End Get

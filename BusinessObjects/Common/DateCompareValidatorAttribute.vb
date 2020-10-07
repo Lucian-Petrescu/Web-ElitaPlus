@@ -51,11 +51,11 @@ Public Class DateCompareValidatorAttribute
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property DefaultCompareToValue() As DefaultType
+    Public Property DefaultCompareToValue As DefaultType
         Get
             Return _defaultCompareToValue
         End Get
-        Set(ByVal value As DefaultType)
+        Set
             _defaultCompareToValue = value
         End Set
     End Property
@@ -66,11 +66,11 @@ Public Class DateCompareValidatorAttribute
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property DefaultCompareValue() As DefaultType
+    Public Property DefaultCompareValue As DefaultType
         Get
             Return _defaultCompareValue
         End Get
-        Set(ByVal value As DefaultType)
+        Set
             _defaultCompareValue = value
         End Set
     End Property
@@ -81,11 +81,11 @@ Public Class DateCompareValidatorAttribute
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property ComparisionType() As CompareType
+    Public Property ComparisionType As CompareType
         Get
             Return _comparisionType
         End Get
-        Set(ByVal value As CompareType)
+        Set
             _comparisionType = value
         End Set
     End Property
@@ -96,11 +96,11 @@ Public Class DateCompareValidatorAttribute
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks>Default Value = CompareToPropertyType.Property. When CompareToType = CompareToPropertyType.Property then this field is Mandatory.</remarks>
-    Public Property CompareToPropertyName() As String
+    Public Property CompareToPropertyName As String
         Get
             Return _compareToPropertyName
         End Get
-        Set(ByVal value As String)
+        Set
             _compareToPropertyName = value
         End Set
     End Property
@@ -111,11 +111,11 @@ Public Class DateCompareValidatorAttribute
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks>Default Value = False. When set to True, the object should have IsNew Property returning <see cref="Boolean" /> Value. </remarks>
-    Public Property CheckWhenNew() As Boolean
+    Public Property CheckWhenNew As Boolean
         Get
             Return _checkWhenNew
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _checkWhenNew = value
         End Set
     End Property
@@ -127,11 +127,11 @@ Public Class DateCompareValidatorAttribute
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property CompareToType() As CompareToPropertyType
+    Public Property CompareToType As CompareToPropertyType
         Get
             Return _compareToType
         End Get
-        Set(ByVal value As CompareToPropertyType)
+        Set
             _compareToType = value
         End Set
     End Property

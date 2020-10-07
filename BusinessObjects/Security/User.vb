@@ -164,7 +164,7 @@ Public Class User
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IPermissionParent.Id
+    Public ReadOnly Property Id As Guid Implements IPermissionParent.Id
         Get
             If Row(UserDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -175,7 +175,7 @@ Public Class User
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)>
-    Public Property NetworkId() As String
+    Public Property NetworkId As String
         Get
             CheckDeleted()
             If Row(UserDAL.COL_NAME_NETWORK_ID) Is DBNull.Value Then
@@ -184,14 +184,14 @@ Public Class User
                 Return CType(Row(UserDAL.COL_NAME_NETWORK_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(UserDAL.COL_NAME_NETWORK_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=70)> _
-    Public Property UserName() As String
+    Public Property UserName As String
         Get
             CheckDeleted()
             If Row(UserDAL.COL_NAME_USER_NAME) Is DBNull.Value Then
@@ -200,7 +200,7 @@ Public Class User
                 Return CType(Row(UserDAL.COL_NAME_USER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(UserDAL.COL_NAME_USER_NAME, Value)
         End Set
@@ -280,14 +280,14 @@ Public Class User
         '_authorizationLimits.Add(oCompanyId, oAuthorizationLimit)
         '_paymentLimits.Add(oCompanyId, oPaymentLimit)
     End Sub
-    Public ReadOnly Property CompanyId() As Guid
+    Public ReadOnly Property CompanyId As Guid
         Get
             Return FirstCompanyID
         End Get
     End Property
 
     <ValueMandatory("")> _
-    Public Property LanguageId() As Guid
+    Public Property LanguageId As Guid
         Get
             CheckDeleted()
             If Row(UserDAL.COL_NAME_LANGUAGE_ID) Is DBNull.Value Then
@@ -296,13 +296,13 @@ Public Class User
                 Return New Guid(CType(Row(UserDAL.COL_NAME_LANGUAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(UserDAL.COL_NAME_LANGUAGE_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property LanguageCode() As String
+    Public ReadOnly Property LanguageCode As String
         Get
             If LanguageId = Nothing Then
                 Return String.Empty
@@ -313,7 +313,7 @@ Public Class User
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property Id1() As String
+    Public Property Id1 As String
         Get
             CheckDeleted()
             If Row(UserDAL.COL_NAME_ID1) Is DBNull.Value Then
@@ -322,14 +322,14 @@ Public Class User
                 Return CType(Row(UserDAL.COL_NAME_ID1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(UserDAL.COL_NAME_ID1, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property Id2() As String
+    Public Property Id2 As String
         Get
             CheckDeleted()
             If Row(UserDAL.COL_NAME_ID2) Is DBNull.Value Then
@@ -338,14 +338,14 @@ Public Class User
                 Return CType(Row(UserDAL.COL_NAME_ID2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(UserDAL.COL_NAME_ID2, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property Active() As String
+    Public Property Active As String
         Get
             CheckDeleted()
             If Row(UserDAL.COL_NAME_ACTIVE) Is DBNull.Value Then
@@ -354,14 +354,14 @@ Public Class User
                 Return CType(Row(UserDAL.COL_NAME_ACTIVE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(UserDAL.COL_NAME_ACTIVE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property External() As String
+    Public Property External As String
         Get
             CheckDeleted()
             If Row(UserDAL.COL_NAME_EXTERNAL) Is DBNull.Value Then
@@ -370,14 +370,14 @@ Public Class User
                 Return CType(Row(UserDAL.COL_NAME_EXTERNAL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(UserDAL.COL_NAME_EXTERNAL, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property Password() As String
+    Public Property Password As String
         Get
             CheckDeleted()
             If Row(UserDAL.COL_NAME_PASSWORD) Is DBNull.Value Then
@@ -386,7 +386,7 @@ Public Class User
                 Return CType(Row(UserDAL.COL_NAME_PASSWORD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(UserDAL.COL_NAME_PASSWORD, Value)
         End Set
@@ -399,7 +399,7 @@ Public Class User
 #Region "External Properties"
 
 
-    Public Property ExternalTypeId() As Guid
+    Public Property ExternalTypeId As Guid
         Get
             CheckDeleted()
             If Row(UserDAL.COL_NAME_EXTERNAL_TYPE_ID) Is DBNull.Value Then
@@ -408,13 +408,13 @@ Public Class User
                 Return New Guid(CType(Row(UserDAL.COL_NAME_EXTERNAL_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(UserDAL.COL_NAME_EXTERNAL_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property ScDealerId() As Guid
+    Public Property ScDealerId As Guid
         Get
             CheckDeleted()
             If Row(UserDAL.COL_NAME_SC_DEALER_ID) Is DBNull.Value Then
@@ -423,7 +423,7 @@ Public Class User
                 Return New Guid(CType(Row(UserDAL.COL_NAME_SC_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(UserDAL.COL_NAME_SC_DEALER_ID, Value)
         End Set
@@ -431,7 +431,7 @@ Public Class User
 
 
     ' First Company
-    Public ReadOnly Property Company() As Company
+    Public ReadOnly Property Company As Company
         Get
             Dim oCompany = Company(FirstCompanyID)
             Return oCompany
@@ -457,7 +457,7 @@ Public Class User
         End Get
     End Property
 
-    Public ReadOnly Property CompanyGroup() As CompanyGroup
+    Public ReadOnly Property CompanyGroup As CompanyGroup
         Get
             Dim oCompanyGroup = New CompanyGroup(Company.CompanyGroupId)
 
@@ -465,7 +465,7 @@ Public Class User
         End Get
     End Property
 
-    Public ReadOnly Property FirstCompanyID() As Guid
+    Public ReadOnly Property FirstCompanyID As Guid
         Get
             Dim oFirstId As Guid = Guid.Empty
 
@@ -504,7 +504,7 @@ Public Class User
     End Sub
 
 
-    Public ReadOnly Property CompaniesCountryFlagImage() As String
+    Public ReadOnly Property CompaniesCountryFlagImage As String
         Get
             Dim sCompanyCountry As String = Country(FirstCompanyID).Description
 
@@ -513,7 +513,7 @@ Public Class User
 
     End Property
 
-    Public ReadOnly Property CompaniesCountrySplashImage() As String
+    Public ReadOnly Property CompaniesCountrySplashImage As String
         Get
             Dim sCompanyCountry As String = Country(FirstCompanyID).Description
 
@@ -525,7 +525,7 @@ Public Class User
 
 #Region "Properties: External User"
 
-    Public ReadOnly Property IsExternal() As Boolean
+    Public ReadOnly Property IsExternal As Boolean
         Get
             Dim bExternal As Boolean = False
             If External = "Y" Then
@@ -535,7 +535,7 @@ Public Class User
         End Get
     End Property
 
-    Public ReadOnly Property IsDealerGroup() As Boolean
+    Public ReadOnly Property IsDealerGroup As Boolean
         Get
             Dim bDealerGroup As Boolean = False
             If IsExternal AndAlso _
@@ -545,7 +545,7 @@ Public Class User
             Return bDealerGroup
         End Get
     End Property
-    Public ReadOnly Property IsDealer() As Boolean
+    Public ReadOnly Property IsDealer As Boolean
         Get
             Dim bDealer As Boolean = False
             If IsExternal AndAlso _
@@ -556,7 +556,7 @@ Public Class User
         End Get
     End Property
 
-    Public ReadOnly Property IsServiceCenter() As Boolean
+    Public ReadOnly Property IsServiceCenter As Boolean
         Get
             Dim bServiceCenter As Boolean = False
             If IsExternal AndAlso _
@@ -567,7 +567,7 @@ Public Class User
         End Get
     End Property
 
-    Public ReadOnly Property IsIHQRole() As Boolean
+    Public ReadOnly Property IsIHQRole As Boolean
         Get
             If moIsIHQRole = 0 Then
                 Dim dal As New UserDAL
@@ -1266,7 +1266,7 @@ Public Class User
 #End Region
 
 #Region "Work Queue User integration"
-    Public ReadOnly Property WorkQueueAssignChildren() As WorkQueueAssign.WorkQueueAssignList
+    Public ReadOnly Property WorkQueueAssignChildren As WorkQueueAssign.WorkQueueAssignList
         Get
             Return New WorkQueueAssign.WorkQueueAssignList(Me)
         End Get

@@ -91,7 +91,7 @@
 
 #Region "Properties"
 
-    Public Property LanguageCode() As String
+    Public Property LanguageCode As String
         Get
             If Row(DATA_COL_NAME_LANGUAGE_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -99,7 +99,7 @@
                 Return (CType(Row(DATA_COL_NAME_LANGUAGE_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_LANGUAGE_CODE, Value)
         End Set

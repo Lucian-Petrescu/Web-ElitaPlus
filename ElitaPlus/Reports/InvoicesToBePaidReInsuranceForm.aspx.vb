@@ -204,7 +204,7 @@ Namespace Reports
             Protected Sub OnFromDealerDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
             Handles multipleDealerDropControl.SelectedDropChanged
                 Try
-                    If multipleDealerDropControl.SelectedCode <> "" Or multipleDealerDropControl.SelectedDesc <> "" Then
+                    If multipleDealerDropControl.SelectedCode <> "" OrElse multipleDealerDropControl.SelectedDesc <> "" Then
                         rbnSelectAllComp.Checked = False
                     End If
                 Catch ex As Exception
@@ -545,7 +545,7 @@ Namespace Reports
                     If Not rbnSelectAllComp.Checked Then
 
                         'either of the three options should be selected
-                        If (rdealer.Checked = False And selectedDealerId.Equals(Guid.Empty) And ddlDealerCurrency.SelectedIndex = 0) Then
+                        If (rdealer.Checked = False AndAlso selectedDealerId.Equals(Guid.Empty) AndAlso ddlDealerCurrency.SelectedIndex = 0) Then
                             Throw New GUIException(Message.MSG_GUI_INVALID_SELECTION, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_REQUIRED)
                         End If
 
@@ -555,7 +555,7 @@ Namespace Reports
                     End If
 
                     'currency should be selected for every run
-                    If ddlCurrency.SelectedIndex <= 0 Or ddlCurrency.SelectedItem Is Nothing Then
+                    If ddlCurrency.SelectedIndex <= 0 OrElse ddlCurrency.SelectedItem Is Nothing Then
                         ElitaPlusPage.SetLabelError(lblCurrency)
                         Throw New GUIException(Message.MSG_GUI_INVALID_SELECTION, Assurant.ElitaPlus.Common.ErrorCodes.GUI_CURRENCY_MUST_BE_SELECTED_ERR)
                     Else

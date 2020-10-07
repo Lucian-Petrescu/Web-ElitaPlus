@@ -93,7 +93,7 @@ Public Class VSCClassCode
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(VSCClassCodeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -104,7 +104,7 @@ Public Class VSCClassCode
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)>
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(VSCClassCodeDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -113,14 +113,14 @@ Public Class VSCClassCode
                 Return CType(Row(VSCClassCodeDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VSCClassCodeDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-      Public Property Active() As Guid
+      Public Property Active As Guid
         Get
             CheckDeleted()
             If Row(VSCClassCodeDAL.COL_NAME_ACTIVE) Is DBNull.Value Then
@@ -129,14 +129,14 @@ Public Class VSCClassCode
                 Return New Guid(CType(Row(VSCClassCodeDAL.COL_NAME_ACTIVE), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCClassCodeDAL.COL_NAME_ACTIVE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-        Public Property CompanyGroup() As Guid
+        Public Property CompanyGroup As Guid
         Get
             CheckDeleted()
             If Row(VSCClassCodeDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -145,7 +145,7 @@ Public Class VSCClassCode
                 Return New Guid(CType(Row(VSCClassCodeDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCClassCodeDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set

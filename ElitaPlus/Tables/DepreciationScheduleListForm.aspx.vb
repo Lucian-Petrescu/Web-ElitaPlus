@@ -159,7 +159,7 @@ Namespace Tables
                 Dim btnEditItem As LinkButton
 
                 If dvRow IsNot Nothing Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         btnEditItem = CType(e.Row.Cells(GridColDepreciationScheduleCode).FindControl("SelectAction"), LinkButton)
                         btnEditItem.CommandArgument = e.Row.RowIndex.ToString
                         btnEditItem.CommandName = "SelectRecord"

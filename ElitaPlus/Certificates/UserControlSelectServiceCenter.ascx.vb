@@ -144,9 +144,7 @@ Public Class UserControlSelectServiceCenter
             DealerType = LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, State.claimBO.Dealer.DealerTypeId)  '= Codes.DEALER_TYPES__VSC
 
 
-            If State.claimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Or _
-              State.claimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__GENERAL Or _
-               State.claimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__LEGAL Then
+            If State.claimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY OrElse State.claimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__GENERAL OrElse State.claimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__LEGAL Then
                 FlagMethodOfRepairRecovery = True
             End If
 

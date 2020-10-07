@@ -228,7 +228,7 @@ Namespace Interfaces
             Dim oExtWarrSaleDateText As TextBox
             Dim oTextBox As TextBox
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 oTextBox = CType(e.Row.FindControl("moRejectReasonTextGrid"), TextBox)
                 oTextBox.Attributes.Add("onchange", "setDirty()")
                 ControlMgr.SetEnableControl(Me, oTextBox, False)

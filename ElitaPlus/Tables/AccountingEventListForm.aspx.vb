@@ -316,8 +316,8 @@ Partial Class AccountingEventListForm
     Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-        If dvRow IsNot Nothing And Not State.bnoRow Then
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+        If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Row.Cells(GRID_COL_ACCT_EVENT_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(AcctEvent.AcctEventSearchDV.COL_EVENT_ID), Byte()))
                 e.Row.Cells(GRID_COL_ACCT_EVENT_TYPE_IDX).Text = dvRow(AcctEvent.AcctEventSearchDV.COL_EVENT_TYPE).ToString
             End If

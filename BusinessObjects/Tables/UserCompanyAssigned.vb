@@ -132,7 +132,7 @@ Public Class UserCompanyAssigned
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(UserCompanyAssignedDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -143,7 +143,7 @@ Public Class UserCompanyAssigned
     End Property
 
     <ValueMandatory("")> _
-    Public Property UserId() As Guid
+    Public Property UserId As Guid
         Get
             CheckDeleted()
             If row(UserCompanyAssignedDAL.COL_NAME_USER_ID) Is DBNull.Value Then
@@ -152,14 +152,14 @@ Public Class UserCompanyAssigned
                 Return New Guid(CType(row(UserCompanyAssignedDAL.COL_NAME_USER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(UserCompanyAssignedDAL.COL_NAME_USER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", MIN:=0, Max:=Decimal.MaxValue, Message:=Common.ErrorCodes.INVALID_AUTHORIZED_AMOUNT_ERR)> _
-    Public Property PaymentLimit() As DecimalType
+    Public Property PaymentLimit As DecimalType
         Get
             CheckDeleted()
             If Row(UserCompanyAssignedDAL.COL_NAME_PAYMENT_LIMIT) Is DBNull.Value Then
@@ -168,14 +168,14 @@ Public Class UserCompanyAssigned
                 Return New DecimalType(CType(Row(UserCompanyAssignedDAL.COL_NAME_PAYMENT_LIMIT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(UserCompanyAssignedDAL.COL_NAME_PAYMENT_LIMIT, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", MIN:=0, Max:=Decimal.MaxValue, Message:=Common.ErrorCodes.INVALID_PAYMENT_AMOUNT_ERR)> _
-    Public Property AuthorizationLimit() As DecimalType
+    Public Property AuthorizationLimit As DecimalType
         Get
             CheckDeleted()
             If Row(UserCompanyAssignedDAL.COL_NAME_AUTHORIZATION_LIMIT) Is DBNull.Value Then
@@ -184,14 +184,14 @@ Public Class UserCompanyAssigned
                 Return New DecimalType(CType(Row(UserCompanyAssignedDAL.COL_NAME_AUTHORIZATION_LIMIT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(UserCompanyAssignedDAL.COL_NAME_AUTHORIZATION_LIMIT, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", MIN:=0, Max:=Decimal.MaxValue, Message:=Common.ErrorCodes.INVALID_LIABILITY_OVERRIDE_AMOUNT_ERR)> _
-    Public Property LiabilityOverrideLimit() As DecimalType
+    Public Property LiabilityOverrideLimit As DecimalType
         Get
             CheckDeleted()
             If Row(UserCompanyAssignedDAL.COL_NAME_LIABILITY_OVERRIDE_LIMIT) Is DBNull.Value Then
@@ -200,14 +200,14 @@ Public Class UserCompanyAssigned
                 Return New DecimalType(CType(Row(UserCompanyAssignedDAL.COL_NAME_LIABILITY_OVERRIDE_LIMIT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(UserCompanyAssignedDAL.COL_NAME_LIABILITY_OVERRIDE_LIMIT, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(UserCompanyAssignedDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -216,7 +216,7 @@ Public Class UserCompanyAssigned
                 Return New Guid(CType(row(UserCompanyAssignedDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(UserCompanyAssignedDAL.COL_NAME_COMPANY_ID, Value)
         End Set

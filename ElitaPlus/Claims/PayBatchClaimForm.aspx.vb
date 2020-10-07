@@ -463,7 +463,7 @@ Partial Class PayBatchClaimForm
         ' Me.inpCurrentAmt.Value = IIf(total = 0, "0.00", total.ToString("0.00")).ToString
         ' Me.inpDifference.Value = IIf(dif = 0, "0.00", dif.ToString("0.00")).ToString
 
-        If Math.Round(total, 2) <> 0 And Math.Round(dif, 2) = 0 Then
+        If Math.Round(total, 2) <> 0 AndAlso Math.Round(dif, 2) = 0 Then
             'REQ-5565
             If (State.isBatchInPreInvoiceAndPending) Then
                 ' If PreInvoice is in Pending Status
@@ -551,7 +551,7 @@ Partial Class PayBatchClaimForm
 
                 If CType(TextBoxPerceptionIIBB.Text, Decimal) > CType(0, Decimal) Then
                     'Region
-                    If (DropDownState.SelectedIndex = -1 Or DropDownState.SelectedIndex = 0) Then
+                    If (DropDownState.SelectedIndex = -1 OrElse DropDownState.SelectedIndex = 0) Then
                         MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REGION_CODE, True)
                         If Not inpCurrentAmt.Value.Trim.ToString = String.Empty Then
                             TextBoxCurrentAmount.Text = inpCurrentAmt.Value
@@ -634,7 +634,7 @@ Partial Class PayBatchClaimForm
                     If DateHelper.IsDate(txtRepair.Text) Then
                         dr.REPAIR_DATE = DateHelper.GetDateValue(txtRepair.Text)
                         drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_REPAIR_DATE) = dr.REPAIR_DATE
-                        If dr.REPAIR_DATE < lossDate Or dr.REPAIR_DATE > Today Then
+                        If dr.REPAIR_DATE < lossDate OrElse dr.REPAIR_DATE > Today Then
                             If drCurrRow IsNot Nothing Then
                                 BOOL_VALID_DATES = False
                                 bool_RepairValid = False
@@ -655,7 +655,7 @@ Partial Class PayBatchClaimForm
                 If DateHelper.IsDate(txtPickup.Text) Then
                     dr.PICKUP_DATE = DateHelper.GetDateValue(txtPickup.Text)
                     drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_PICKUP_DATE) = dr.PICKUP_DATE
-                    If (Not DateHelper.IsDate(txtRepair.Text)) OrElse (dr.PICKUP_DATE < dr.REPAIR_DATE Or dr.PICKUP_DATE > Today) Then
+                    If (Not DateHelper.IsDate(txtRepair.Text)) OrElse (dr.PICKUP_DATE < dr.REPAIR_DATE OrElse dr.PICKUP_DATE > Today) Then
                         If drCurrRow IsNot Nothing Then
                             BOOL_VALID_DATES = False
                             bool_PickUpValid = False
@@ -842,8 +842,8 @@ Partial Class PayBatchClaimForm
         Dim dscBonusTotal As Decimal
 
         Try
-            If dvRow IsNot Nothing And Not State.bnoRow And State.searchInvoiceTransDetailDV.Count > 0 Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow AndAlso State.searchInvoiceTransDetailDV.Count > 0 Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_CLAIM_ID_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_CLAIM_ID))
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_CLAIM_NUMBER_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_CLAIM_NUMBER))
@@ -896,7 +896,7 @@ Partial Class PayBatchClaimForm
                             'txtAmount.Attributes("onfocus") = "setCur('" + txtAmount.ClientID + "');"
                             txtAmount.Attributes("onchange") = "chkamt('" + txtAmount.ClientID + "'," + ((decReserve + dscBonusTotal) * 100).ToString + ");"
                             txtAmount.Attributes("onfocus") = "setCur('" + txtAmount.ClientID + "');"
-                            If Not IsPostBack And Not decAmount >= 0 Then
+                            If Not IsPostBack AndAlso Not decAmount >= 0 Then
                                 If excludeDeductible = "Y" Then
                                     txtAmount.Text = CType((decReserve + dscBonusTotal - decSalvage - decDeductible), Double).ToString("0.00")
                                 Else

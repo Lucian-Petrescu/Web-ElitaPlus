@@ -298,8 +298,8 @@ Public Class UserControlAuthorizationInfo
         Try
             If CAItem IsNot Nothing Then
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then
-                    If State.isEditMode And AuthorizationGrid.EditIndex = e.Row.RowIndex Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem OrElse itemType = ListItemType.EditItem Then
+                    If State.isEditMode AndAlso AuthorizationGrid.EditIndex = e.Row.RowIndex Then
 
                         e.Row.Cells(GRID_COL_AUTHORIZATION_ITEM_ID_IDX).Text = Page.GetGuidStringFromByteArray(CAItem.Id.ToByteArray)
                         e.Row.Cells(GRID_COL_LINE_ITEM_NUMBER_IDX).Text = CAItem.LineItemNumber.ToString

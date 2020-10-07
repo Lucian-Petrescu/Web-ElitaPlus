@@ -99,7 +99,7 @@ Public Class VendorloadInvReconWrk
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(VendorloadInvReconWrkDal.TableKeyName) Is DBNull.Value Then
                 Return Nothing
@@ -110,7 +110,7 @@ Public Class VendorloadInvReconWrk
     End Property
 
     <ValueMandatory("")>
-    Public Property FileProcessedId() As Guid
+    Public Property FileProcessedId As Guid
         Get
             CheckDeleted()
             If Row(VendorloadInvReconWrkDal.ColNameFileProcessedId) Is DBNull.Value Then
@@ -119,7 +119,7 @@ Public Class VendorloadInvReconWrk
                 Return New Guid(CType(Row(VendorloadInvReconWrkDal.ColNameFileProcessedId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(VendorloadInvReconWrkDal.ColNameFileProcessedId, value)
         End Set
@@ -127,7 +127,7 @@ Public Class VendorloadInvReconWrk
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=8)>
-    Public Property RecordType() As String
+    Public Property RecordType As String
         Get
             CheckDeleted()
             If Row(VendorloadInvReconWrkDal.ColNameRecordType) Is DBNull.Value Then
@@ -136,7 +136,7 @@ Public Class VendorloadInvReconWrk
                 Return CType(Row(VendorloadInvReconWrkDal.ColNameRecordType), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(VendorloadInvReconWrkDal.ColNameRecordType, value)
         End Set
@@ -144,7 +144,7 @@ Public Class VendorloadInvReconWrk
 
 
     <ValidStringLength("", Max:=20)>
-    Public Property RejectCode() As String
+    Public Property RejectCode As String
         Get
             CheckDeleted()
             If Row(VendorloadInvReconWrkDal.ColNameRejectCode) Is DBNull.Value Then
@@ -153,7 +153,7 @@ Public Class VendorloadInvReconWrk
                 Return CType(Row(VendorloadInvReconWrkDal.ColNameRejectCode), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(VendorloadInvReconWrkDal.ColNameRejectCode, value)
         End Set
@@ -161,7 +161,7 @@ Public Class VendorloadInvReconWrk
 
 
     <ValidStringLength("", Max:=240)>
-    Public Property RejectReason() As String
+    Public Property RejectReason As String
         Get
             CheckDeleted()
             If Row(VendorloadInvReconWrkDal.ColNameRejectReason) Is DBNull.Value Then
@@ -170,7 +170,7 @@ Public Class VendorloadInvReconWrk
                 Return CType(Row(VendorloadInvReconWrkDal.ColNameRejectReason), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(VendorloadInvReconWrkDal.ColNameRejectReason, value)
         End Set
@@ -178,7 +178,7 @@ Public Class VendorloadInvReconWrk
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)>
-    Public Property RecordLoaded() As String
+    Public Property RecordLoaded As String
         Get
             CheckDeleted()
             If Row(VendorloadInvReconWrkDal.ColNameRecordLoaded) Is DBNull.Value Then
@@ -187,7 +187,7 @@ Public Class VendorloadInvReconWrk
                 Return CType(Row(VendorloadInvReconWrkDal.ColNameRecordLoaded), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(VendorloadInvReconWrkDal.ColNameRecordLoaded, value)
         End Set
@@ -195,7 +195,7 @@ Public Class VendorloadInvReconWrk
 
 
 
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(VendorloadInvReconWrkDal.ColNameServiceCenterId) Is DBNull.Value Then
@@ -204,7 +204,7 @@ Public Class VendorloadInvReconWrk
                 Return New Guid(CType(Row(VendorloadInvReconWrkDal.ColNameServiceCenterId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(VendorloadInvReconWrkDal.ColNameServiceCenterId, value)
         End Set
@@ -212,7 +212,7 @@ Public Class VendorloadInvReconWrk
 
 
     <ValidStringLength("", Max:=400)>
-    Public Property VendorSku() As String
+    Public Property VendorSku As String
         Get
             CheckDeleted()
             If Row(VendorloadInvReconWrkDal.ColNameVendorSku) Is DBNull.Value Then
@@ -221,7 +221,7 @@ Public Class VendorloadInvReconWrk
                 Return CType(Row(VendorloadInvReconWrkDal.ColNameVendorSku), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(VendorloadInvReconWrkDal.ColNameVendorSku, value)
         End Set
@@ -229,7 +229,7 @@ Public Class VendorloadInvReconWrk
 
 
 
-    Public Property InventoryQuantity() As LongType
+    Public Property InventoryQuantity As LongType
         Get
             CheckDeleted()
             If Row(VendorloadInvReconWrkDal.ColNameInventoryQuantity) Is DBNull.Value Then
@@ -238,7 +238,7 @@ Public Class VendorloadInvReconWrk
                 Return New LongType(CType(Row(VendorloadInvReconWrkDal.ColNameInventoryQuantity), Long))
             End If
         End Get
-        Set(ByVal value As LongType)
+        Set
             CheckDeleted()
             SetValue(VendorloadInvReconWrkDal.ColNameInventoryQuantity, value)
         End Set
@@ -246,7 +246,7 @@ Public Class VendorloadInvReconWrk
 
 
 
-    Public Property PriceListDetailId() As Guid
+    Public Property PriceListDetailId As Guid
         Get
             CheckDeleted()
             If Row(VendorloadInvReconWrkDal.ColNamePriceListDetailId) Is DBNull.Value Then
@@ -255,7 +255,7 @@ Public Class VendorloadInvReconWrk
                 Return New Guid(CType(Row(VendorloadInvReconWrkDal.ColNamePriceListDetailId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(VendorloadInvReconWrkDal.ColNamePriceListDetailId, value)
         End Set
@@ -263,7 +263,7 @@ Public Class VendorloadInvReconWrk
 
 
     <ValidStringLength("", Max:=4000)>
-    Public Property EntireRecord() As String
+    Public Property EntireRecord As String
         Get
             CheckDeleted()
             If Row(VendorloadInvReconWrkDal.ColNameEntireRecord) Is DBNull.Value Then
@@ -272,7 +272,7 @@ Public Class VendorloadInvReconWrk
                 Return CType(Row(VendorloadInvReconWrkDal.ColNameEntireRecord), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(VendorloadInvReconWrkDal.ColNameEntireRecord, value)
         End Set

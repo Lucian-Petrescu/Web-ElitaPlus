@@ -92,7 +92,7 @@ Public Class CountryPostalCodeFormat
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CountryPostalCodeFormatDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -103,7 +103,7 @@ Public Class CountryPostalCodeFormat
     End Property
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(CountryPostalCodeFormatDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -112,7 +112,7 @@ Public Class CountryPostalCodeFormat
                 Return New Guid(CType(Row(CountryPostalCodeFormatDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryPostalCodeFormatDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
@@ -120,7 +120,7 @@ Public Class CountryPostalCodeFormat
 
 
     <ValueMandatory("")> _
-    Public Property PostalCodeFormatId() As Guid
+    Public Property PostalCodeFormatId As Guid
         Get
             CheckDeleted()
             If Row(CountryPostalCodeFormatDAL.COL_NAME_POSTAL_CODE_FORMAT_ID) Is DBNull.Value Then
@@ -129,7 +129,7 @@ Public Class CountryPostalCodeFormat
                 Return New Guid(CType(Row(CountryPostalCodeFormatDAL.COL_NAME_POSTAL_CODE_FORMAT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryPostalCodeFormatDAL.COL_NAME_POSTAL_CODE_FORMAT_ID, Value)
         End Set

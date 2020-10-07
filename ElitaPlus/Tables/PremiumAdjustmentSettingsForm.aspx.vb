@@ -260,7 +260,7 @@ Public Class PremiumAdjustmentSettingsForm
             PopulateBOProperty(State.MyBO, "AdjustmentAmount", TextBoxAdjustmentAmount)
             PopulateBOProperty(State.MyBO, "EffectiveDate", TextBoxEffectiveDate)
             PopulateBOProperty(State.MyBO, "ExpirationDate", TextBoxExpirationDate)
-            If State.MyBO.IsNew And ElitaPlusIdentity.Current.ActiveUser.Companies.Count > 1 Then
+            If State.MyBO.IsNew AndAlso ElitaPlusIdentity.Current.ActiveUser.Companies.Count > 1 Then
                 State.MyBO.DealerId = DealerMultipleDrop.SelectedGuid
             End If
         End With
@@ -351,7 +351,7 @@ Public Class PremiumAdjustmentSettingsForm
         Try
             Dim errors() As ValidationError = {New ValidationError("Adjustment Based On is required", GetType(PremiumAdjustmentSettings), Nothing, "AdjustmentBasedOn", Nothing)}
             PopulateBOsFormFrom()
-            If ((State.MyBO.AdjustmentBasedOn.ToString = Guid.Empty.ToString) And (State.MyBO.AdjustmentBy.ToString = LookupListNew.GetIdFromCode("FIN_ADJ_BY", FIN_ADJ_BY_AMOUNT).ToString)) Then
+            If ((State.MyBO.AdjustmentBasedOn.ToString = Guid.Empty.ToString) AndAlso (State.MyBO.AdjustmentBy.ToString = LookupListNew.GetIdFromCode("FIN_ADJ_BY", FIN_ADJ_BY_AMOUNT).ToString)) Then
                 Throw New BOValidationException(errors, GetType(PremiumAdjustmentSettings).FullName)
             End If
 

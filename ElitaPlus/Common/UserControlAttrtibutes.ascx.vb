@@ -154,7 +154,7 @@ Public Class UserControlAttrtibutes
         Get
             If (ReInsStatusDataView Is Nothing) Then
                 ReInsStatusDataView = (From ris In (CommonConfigManager.Current.ListManager.GetList("REINSURANCE_STATUSES", Thread.CurrentPrincipal.GetLanguageCode()))
-                                       Where ris.Code <> "PARTIALLY_REINSURED" And ris.Code <> "PARTIALLY_REJECTED"
+                                       Where ris.Code <> "PARTIALLY_REINSURED" AndAlso ris.Code <> "PARTIALLY_REJECTED"
                                        Select ris).ToList()
             End If
             Return ReInsStatusDataView

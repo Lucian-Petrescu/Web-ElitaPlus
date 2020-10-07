@@ -89,7 +89,7 @@ Public Class PartsInfo
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(PartsInfoDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class PartsInfo
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If row(PartsInfoDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -109,7 +109,7 @@ Public Class PartsInfo
                 Return New Guid(CType(row(PartsInfoDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PartsInfoDAL.COL_NAME_CLAIM_ID, Value)
         End Set
@@ -117,7 +117,7 @@ Public Class PartsInfo
 
 
     <ValueMandatory("")> _
-    Public Property PartsDescriptionId() As Guid
+    Public Property PartsDescriptionId As Guid
         Get
             CheckDeleted()
             If row(PartsInfoDAL.COL_NAME_PARTS_DESCRIPTION_ID) Is DBNull.Value Then
@@ -126,7 +126,7 @@ Public Class PartsInfo
                 Return New Guid(CType(row(PartsInfoDAL.COL_NAME_PARTS_DESCRIPTION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PartsInfoDAL.COL_NAME_PARTS_DESCRIPTION_ID, Value)
         End Set
@@ -134,7 +134,7 @@ Public Class PartsInfo
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=NEW_MAX_LONG, Min:=0)> _
-    Public Property Cost() As DecimalType
+    Public Property Cost As DecimalType
         Get
             CheckDeleted()
             If Row(PartsInfoDAL.COL_NAME_COST) Is DBNull.Value Then
@@ -143,14 +143,14 @@ Public Class PartsInfo
                 Return New DecimalType(CType(Row(PartsInfoDAL.COL_NAME_COST), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PartsInfoDAL.COL_NAME_COST, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property InStockID() As Guid
+    Public Property InStockID As Guid
         Get
             CheckDeleted()
             If Row(PartsInfoDAL.COL_NAME_IN_STOCK_ID) Is DBNull.Value Then
@@ -159,7 +159,7 @@ Public Class PartsInfo
                 Return New Guid(CType(Row(PartsInfoDAL.COL_NAME_IN_STOCK_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PartsInfoDAL.COL_NAME_IN_STOCK_ID, Value)
         End Set

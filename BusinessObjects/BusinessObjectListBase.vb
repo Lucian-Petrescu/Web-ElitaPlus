@@ -24,25 +24,25 @@ Public MustInherit Class BusinessObjectListBase
 #End Region
 
 #Region "Properties"
-    Public ReadOnly Property Table() As DataTable
+    Public ReadOnly Property Table As DataTable
         Get
             Return _table
         End Get
     End Property
 
-    Public ReadOnly Property BOType() As Type
+    Public ReadOnly Property BOType As Type
         Get
             Return _boType
         End Get
     End Property
 
-    Public ReadOnly Property Parent() As BusinessObjectBase
+    Public ReadOnly Property Parent As BusinessObjectBase
         Get
             Return _parent
         End Get
     End Property
 
-    Public Overridable ReadOnly Property IsDirty() As Boolean
+    Public Overridable ReadOnly Property IsDirty As Boolean
         Get
             Dim bo As BusinessObjectBase
             Dim deletions As DataTable = Table.GetChanges(DataRowState.Added Or DataRowState.Deleted)
@@ -122,7 +122,7 @@ Public MustInherit Class BusinessObjectListBase
         Return bo
     End Function
 
-    Public ReadOnly Property Count() As Integer
+    Public ReadOnly Property Count As Integer
         Get
             Dim countSum As Integer = 0
             Dim bo As BusinessObjectBase

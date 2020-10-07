@@ -278,7 +278,7 @@ Public NotInheritable Class Invoice
 
     'Key Property
     <ValidateAtLeastOneItem(""), ValidateAuthorizationRepairDate(""), ValidateDuplicateServiceClassType("")> _
-    Public ReadOnly Property Id() As Guid Implements IAttributable.Id
+    Public ReadOnly Property Id As Guid Implements IAttributable.Id
         Get
             If Row(InvoiceDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -289,7 +289,7 @@ Public NotInheritable Class Invoice
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -298,7 +298,7 @@ Public NotInheritable Class Invoice
                 Return New Guid(CType(Row(InvoiceDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceDAL.COL_NAME_SERVICE_CENTER_ID, Value)
             ServiceCenter = Nothing
@@ -307,7 +307,7 @@ Public NotInheritable Class Invoice
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=120), ValidateUniqueInvoiceNumber("")> _
-    Public Property InvoiceNumber() As String
+    Public Property InvoiceNumber As String
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_INVOICE_NUMBER) Is DBNull.Value Then
@@ -316,14 +316,14 @@ Public NotInheritable Class Invoice
                 Return CType(Row(InvoiceDAL.COL_NAME_INVOICE_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceDAL.COL_NAME_INVOICE_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidateInvoiceDate("")> _
-    Public Property InvoiceDate() As DateType
+    Public Property InvoiceDate As DateType
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_INVOICE_DATE) Is DBNull.Value Then
@@ -332,14 +332,14 @@ Public NotInheritable Class Invoice
                 Return New DateType(CType(Row(InvoiceDAL.COL_NAME_INVOICE_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(InvoiceDAL.COL_NAME_INVOICE_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Message:=INVOICE_FORM002, Min:=0D, MinExclusive:=True)> _
-    Public Property InvoiceAmount() As DecimalType
+    Public Property InvoiceAmount As DecimalType
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_INVOICE_AMOUNT) Is DBNull.Value Then
@@ -348,14 +348,14 @@ Public NotInheritable Class Invoice
                 Return New DecimalType(CType(Row(InvoiceDAL.COL_NAME_INVOICE_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(InvoiceDAL.COL_NAME_INVOICE_AMOUNT, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property InvoiceStatusId() As Guid
+    Public Property InvoiceStatusId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_INVOICE_STATUS_ID) Is DBNull.Value Then
@@ -364,14 +364,14 @@ Public NotInheritable Class Invoice
                 Return New Guid(CType(Row(InvoiceDAL.COL_NAME_INVOICE_STATUS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceDAL.COL_NAME_INVOICE_STATUS_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property Source() As String
+    Public Property Source As String
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_SOURCE) Is DBNull.Value Then
@@ -380,14 +380,14 @@ Public NotInheritable Class Invoice
                 Return CType(Row(InvoiceDAL.COL_NAME_SOURCE), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceDAL.COL_NAME_SOURCE, Value)
         End Set
     End Property
 
     <ValidateDueDateAfterInvoiceDate("")> _
-    Public Property DueDate() As DateType
+    Public Property DueDate As DateType
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_DUE_DATE) Is DBNull.Value Then
@@ -396,14 +396,14 @@ Public NotInheritable Class Invoice
                 Return New DateType(CType(Row(InvoiceDAL.COL_NAME_DUE_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(InvoiceDAL.COL_NAME_DUE_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property IsCompleteId() As Guid
+    Public Property IsCompleteId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_IS_COMPLETE_ID) Is DBNull.Value Then
@@ -412,7 +412,7 @@ Public NotInheritable Class Invoice
                 Return New Guid(CType(Row(InvoiceDAL.COL_NAME_IS_COMPLETE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceDAL.COL_NAME_IS_COMPLETE_ID, Value)
         End Set
@@ -431,7 +431,7 @@ Public NotInheritable Class Invoice
         Get
             Return AttributeValues.Value(Codes.ATTRIBUTE__BATCH_NUMBER)
         End Get
-        Set(value As String)
+        Set
             If (value Is Nothing OrElse value.Trim.Length = 0) Then
                 AttributeValues.Value(Codes.ATTRIBUTE__BATCH_NUMBER) = Nothing
             Else
@@ -445,7 +445,7 @@ Public NotInheritable Class Invoice
         Get
             Return AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IVA).ToDecimal(0D)
         End Get
-        Set(value As DecimalType)
+        Set
             If (value Is Nothing) Then
                 AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IVA) = Nothing
             Else
@@ -458,7 +458,7 @@ Public NotInheritable Class Invoice
         Get
             Return AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB).ToDecimal(0D)
         End Get
-        Set(value As DecimalType)
+        Set
             If (value Is Nothing) Then
                 AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB) = Nothing
             Else
@@ -471,7 +471,7 @@ Public NotInheritable Class Invoice
         Get
             Return AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB_REGION_ID).ToGuid(Guid.Empty)
         End Get
-        Set(value As Guid)
+        Set
             If (value.Equals(Guid.Empty)) Then
                 AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB_REGION_ID) = Nothing
             Else
@@ -487,7 +487,7 @@ Public NotInheritable Class Invoice
         Get
             Return IsCompleteId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y))
         End Get
-        Set(value As Boolean)
+        Set
             If value Then
                 IsCompleteId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
             Else
@@ -1208,7 +1208,7 @@ Public NotInheritable Class Invoice
 #End Region
 
 #Region "Lazy Initialize Properties"
-    Public Property ServiceCenter() As ServiceCenter
+    Public Property ServiceCenter As ServiceCenter
         Get
             If (_serviceCenter Is Nothing) Then
                 If Not ServiceCenterId.Equals(Guid.Empty) Then
@@ -1217,7 +1217,7 @@ Public NotInheritable Class Invoice
             End If
             Return _serviceCenter
         End Get
-        Private Set(value As ServiceCenter)
+        Private Set
             If (value Is Nothing OrElse _serviceCenter Is Nothing OrElse Not _serviceCenter.Equals(value)) Then
                 _serviceCenter = value
             End If
@@ -1226,7 +1226,7 @@ Public NotInheritable Class Invoice
 #End Region
 
 #Region "Claim Authorization"
-    Public ReadOnly Property ClaimAuthorizations() As List(Of ClaimAuthorization)
+    Public ReadOnly Property ClaimAuthorizations As List(Of ClaimAuthorization)
         Get
             Return (From claimAuthId As Guid In _
                     (From item As InvoiceItem In InvoiceItemChildren Select item.ClaimAuthorizationId).Distinct() _
@@ -1251,7 +1251,7 @@ Public NotInheritable Class Invoice
 #End Region
 
 #Region "Invoice Item"
-    Public ReadOnly Property InvoiceItemChildren() As InvoiceItemList
+    Public ReadOnly Property InvoiceItemChildren As InvoiceItemList
         Get
             Return New InvoiceItemList(Me)
         End Get

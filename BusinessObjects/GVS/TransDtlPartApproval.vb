@@ -90,7 +90,7 @@ Public Class TransDtlPartApproval
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(TransDtlPartApprovalDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class TransDtlPartApproval
     End Property
 
     <ValueMandatory("")> _
-    Public Property TransDtlClaimUpdate2gvsId() As Guid
+    Public Property TransDtlClaimUpdate2gvsId As Guid
         Get
             CheckDeleted()
             If row(TransDtlPartApprovalDAL.COL_NAME_TRANS_DTL_CLAIM_UPDATE_2GVS_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class TransDtlPartApproval
                 Return New Guid(CType(row(TransDtlPartApprovalDAL.COL_NAME_TRANS_DTL_CLAIM_UPDATE_2GVS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransDtlPartApprovalDAL.COL_NAME_TRANS_DTL_CLAIM_UPDATE_2GVS_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class TransDtlPartApproval
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property XmlPartDescriptionCode() As String
+    Public Property XmlPartDescriptionCode As String
         Get
             CheckDeleted()
             If row(TransDtlPartApprovalDAL.COL_NAME_XML_PART_DESCRIPTION_CODE) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class TransDtlPartApproval
                 Return CType(row(TransDtlPartApprovalDAL.COL_NAME_XML_PART_DESCRIPTION_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlPartApprovalDAL.COL_NAME_XML_PART_DESCRIPTION_CODE, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class TransDtlPartApproval
 
 
     <ValueMandatory("")> _
-    Public Property XmlPartCost() As DecimalType
+    Public Property XmlPartCost As DecimalType
         Get
             CheckDeleted()
             If row(TransDtlPartApprovalDAL.COL_NAME_XML_PART_COST) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class TransDtlPartApproval
                 Return New DecimalType(CType(row(TransDtlPartApprovalDAL.COL_NAME_XML_PART_COST), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(TransDtlPartApprovalDAL.COL_NAME_XML_PART_COST, Value)
         End Set

@@ -418,8 +418,8 @@ Partial Class RegionForm
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-            If dvRow IsNot Nothing And State.searchDV.Count > 0 Then
-                If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) And CType(e.Row.RowState, Int16) < 4 Then
+            If dvRow IsNot Nothing AndAlso State.searchDV.Count > 0 Then
+                If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso CType(e.Row.RowState, Int16) < 4 Then
                     CType(e.Row.Cells(REGION_ID).FindControl(REGION_ID_LABEL), Label).Text = GetGuidStringFromByteArray(CType(dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_REGION_ID), Byte()))
                     CType(e.Row.Cells(DESCRIPTION).FindControl(LABEL_DESCRIPTION), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_DESCRIPTION).ToString
                     CType(e.Row.Cells(REGION_CODE).FindControl(LABEL_SHORTDESCRIPTION), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_CODE).ToString

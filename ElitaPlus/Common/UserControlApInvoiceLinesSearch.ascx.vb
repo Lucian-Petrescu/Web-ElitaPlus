@@ -231,7 +231,7 @@ Namespace Common
         End sub
         Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
             Dim parentControl = Parent
-            While (Not TypeOf parentControl Is ElitaPlusPage And parentControl IsNot Nothing)
+            While (Not TypeOf parentControl Is ElitaPlusPage AndAlso parentControl IsNot Nothing)
                 parentControl = parentControl.Parent
             End While
             ElitaHostPage = DirectCast(parentControl, ElitaPlusPage)

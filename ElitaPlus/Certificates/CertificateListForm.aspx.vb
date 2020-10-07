@@ -530,10 +530,10 @@ Namespace Certificates
                 If State.ActivePanel.Equals(State.searchTypes.Item(0)) Then ' certificate panel
 
                     moCertificateText.Text = State.certificateNumber
-                    If State.selectedSortById <> Guid.Empty And cboSortBy.Items.Count > 0 Then SetSelectedItem(cboSortBy, State.selectedSortById)
+                    If State.selectedSortById <> Guid.Empty AndAlso cboSortBy.Items.Count > 0 Then SetSelectedItem(cboSortBy, State.selectedSortById)
 
                     'Me.State.dealerId = Me.GetSelectedItem(Me.moDealerDrop)
-                    If State.dealerId <> Guid.Empty And moDealerDrop.Items.Count > 0 Then SetSelectedItem(moDealerDrop, State.dealerId)
+                    If State.dealerId <> Guid.Empty AndAlso moDealerDrop.Items.Count > 0 Then SetSelectedItem(moDealerDrop, State.dealerId)
 
                     moCustomerNameText.Text = State.customerName
                     moZipText.Text = State.zip
@@ -548,11 +548,11 @@ Namespace Certificates
                 ElseIf State.ActivePanel.Equals(State.searchTypes.Item(1)) Then 'phone number
 
                     State.certificateNumber = txtCertNum.Text.ToUpper.Trim
-                    If State.selectedSortById <> Guid.Empty And ddlSortBy.Items.Count > 0 Then
+                    If State.selectedSortById <> Guid.Empty AndAlso ddlSortBy.Items.Count > 0 Then
                         SetSelectedItem(ddlSortBy, State.selectedSortById)
                     End If
 
-                    If State.dealerId <> Guid.Empty And ddlDealer.Items.Count > 0 Then SetSelectedItem(ddlDealer, State.dealerId)
+                    If State.dealerId <> Guid.Empty AndAlso ddlDealer.Items.Count > 0 Then SetSelectedItem(ddlDealer, State.dealerId)
 
                     txtCustName.Text = State.customerName
                     txtZip.Text = State.zip
@@ -560,7 +560,7 @@ Namespace Certificates
 
                     txtPhone.Text = State.PhoneNum
                     'Added for Req-610
-                    If State.PhoneTypeId <> Guid.Empty And ddlPhoneType.Items.Count > 0 Then SetSelectedItem(ddlPhoneType, State.PhoneTypeId)
+                    If State.PhoneTypeId <> Guid.Empty AndAlso ddlPhoneType.Items.Count > 0 Then SetSelectedItem(ddlPhoneType, State.PhoneTypeId)
 
                     txtPhoneNumSrchInforceCert.Text = State.InforceDate
                     ddlPhoneNumSrchByStatus.SelectedValue = State.selectedCertificateStatusId.ToString
@@ -575,8 +575,8 @@ Namespace Certificates
                     moVehicleLicenceTagText.Text = State.VehicleLicenceTag
                     txtLicTagSrchInforceCert.Text = State.InforceDate
                 ElseIf State.ActivePanel.Equals(State.searchTypes.Item(4)) Then 'Service Line Number
-                    If State.selectedSortById <> Guid.Empty And cboSortBy_SLN.Items.Count > 0 Then SetSelectedItem(cboSortBy_SLN, State.selectedSortById)
-                    If State.dealerId <> Guid.Empty And moDealerDrop_SLN.Items.Count > 0 Then SetSelectedItem(moDealerDrop_SLN, State.dealerId)
+                    If State.selectedSortById <> Guid.Empty AndAlso cboSortBy_SLN.Items.Count > 0 Then SetSelectedItem(cboSortBy_SLN, State.selectedSortById)
+                    If State.dealerId <> Guid.Empty AndAlso moDealerDrop_SLN.Items.Count > 0 Then SetSelectedItem(moDealerDrop_SLN, State.dealerId)
                     moStatusDrop_SLN.SelectedValue = State.selectedCertificateStatusId
                     txtInforceDate_SLN.Text = State.InforceDate
                     moSerialNumberText.Text = State.Service_line_number
@@ -800,7 +800,7 @@ Namespace Certificates
 
             Catch ex As Exception
                 Dim GetExceptionType As String = ex.GetBaseException.GetType().Name
-                If ((Not GetExceptionType.Equals(String.Empty)) And GetExceptionType.Equals("BOValidationException")) Then
+                If ((Not GetExceptionType.Equals(String.Empty)) AndAlso GetExceptionType.Equals("BOValidationException")) Then
                     ControlMgr.SetVisibleControl(Me, Grid, False)
                     lblPageSize.Visible = False
                     cboPageSize.Visible = False

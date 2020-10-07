@@ -90,7 +90,7 @@ Public Class AnswerType
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AnswerTypeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class AnswerType
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(AnswerTypeDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class AnswerType
                 Return CType(row(AnswerTypeDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AnswerTypeDAL.COL_NAME_CODE, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class AnswerType
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4000)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(AnswerTypeDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class AnswerType
                 Return CType(row(AnswerTypeDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AnswerTypeDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class AnswerType
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4000)> _
-    Public Property ValidationRegex() As String
+    Public Property ValidationRegex As String
         Get
             CheckDeleted()
             If row(AnswerTypeDAL.COL_NAME_VALIDATION_REGEX) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class AnswerType
                 Return CType(row(AnswerTypeDAL.COL_NAME_VALIDATION_REGEX), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AnswerTypeDAL.COL_NAME_VALIDATION_REGEX, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class AnswerType
 
 
     <ValueMandatory("")> _
-    Public Property AnswerTypeItemId() As Guid
+    Public Property AnswerTypeItemId As Guid
         Get
             CheckDeleted()
             If row(AnswerTypeDAL.COL_NAME_ANSWER_TYPE_ITEM_ID) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class AnswerType
                 Return New Guid(CType(row(AnswerTypeDAL.COL_NAME_ANSWER_TYPE_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AnswerTypeDAL.COL_NAME_ANSWER_TYPE_ITEM_ID, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class AnswerType
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property LookUpListCode() As String
+    Public Property LookUpListCode As String
         Get
             CheckDeleted()
             If row(AnswerTypeDAL.COL_NAME_LOOK_UP_LIST_CODE) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class AnswerType
                 Return CType(row(AnswerTypeDAL.COL_NAME_LOOK_UP_LIST_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AnswerTypeDAL.COL_NAME_LOOK_UP_LIST_CODE, Value)
         End Set

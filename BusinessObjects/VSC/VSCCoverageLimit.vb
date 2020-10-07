@@ -96,7 +96,7 @@ Public Class VSCCoverageLimit
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(VSCCoverageLimitDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -107,7 +107,7 @@ Public Class VSCCoverageLimit
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", MIN:=MIN_LONG), ValidateZeros("")> _
-    Public Property CoverageKmMi() As LongType
+    Public Property CoverageKmMi As LongType
         Get
             CheckDeleted()
             If Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_KM_MI) Is DBNull.Value Then
@@ -116,7 +116,7 @@ Public Class VSCCoverageLimit
                 Return New LongType(CType(Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_KM_MI), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VSCCoverageLimitDAL.COL_NAME_COVERAGE_KM_MI, Value)
         End Set
@@ -124,7 +124,7 @@ Public Class VSCCoverageLimit
 
 
     <ValueMandatory(""), ValidNumericRange("", MIN:=MIN_LONG), ValidateZeros("")> _
-    Public Property CoverageMonths() As LongType
+    Public Property CoverageMonths As LongType
         Get
             CheckDeleted()
             If Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_MONTHS) Is DBNull.Value Then
@@ -133,7 +133,7 @@ Public Class VSCCoverageLimit
                 Return New LongType(CType(Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_MONTHS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VSCCoverageLimitDAL.COL_NAME_COVERAGE_MONTHS, Value)
         End Set
@@ -141,7 +141,7 @@ Public Class VSCCoverageLimit
 
 
     <ValueMandatory("")> _
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -150,7 +150,7 @@ Public Class VSCCoverageLimit
                 Return New Guid(CType(Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCCoverageLimitDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
@@ -158,7 +158,7 @@ Public Class VSCCoverageLimit
 
 
     <ValueMandatory("")> _
-    Public Property CoverageLimitCode() As LongType
+    Public Property CoverageLimitCode As LongType
         Get
             CheckDeleted()
             If Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_LIMIT_CODE) Is DBNull.Value Then
@@ -167,14 +167,14 @@ Public Class VSCCoverageLimit
                 Return New LongType(CType(Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_LIMIT_CODE), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VSCCoverageLimitDAL.COL_NAME_COVERAGE_LIMIT_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(VSCCoverageLimitDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -183,7 +183,7 @@ Public Class VSCCoverageLimit
                 Return New Guid(CType(Row(VSCCoverageLimitDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCCoverageLimitDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set

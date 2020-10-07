@@ -91,7 +91,7 @@
 #Region "Properties"
 
         'Key Property
-        Public ReadOnly Property Id() As Guid
+        Public ReadOnly Property Id As Guid
             Get
                 If row(ClaimHistoryDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                     Return Nothing
@@ -102,7 +102,7 @@
         End Property
 
         <ValueMandatory("")> _
-        Public Property ClaimId() As Guid
+        Public Property ClaimId As Guid
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -111,7 +111,7 @@
                     Return New Guid(CType(row(ClaimHistoryDAL.COL_NAME_CLAIM_ID), Byte()))
                 End If
             End Get
-            Set(Value As Guid)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_CLAIM_ID, Value)
             End Set
@@ -119,7 +119,7 @@
 
 
         <ValidStringLength("", Max:=4)> _
-        Public Property StatusCodeOld() As String
+        Public Property StatusCodeOld As String
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_STATUS_CODE_OLD) Is DBNull.Value Then
@@ -128,7 +128,7 @@
                     Return CType(row(ClaimHistoryDAL.COL_NAME_STATUS_CODE_OLD), String)
                 End If
             End Get
-            Set(Value As String)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_STATUS_CODE_OLD, Value)
             End Set
@@ -136,7 +136,7 @@
 
 
         <ValidStringLength("", Max:=4)> _
-        Public Property StatusCodeNew() As String
+        Public Property StatusCodeNew As String
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_STATUS_CODE_NEW) Is DBNull.Value Then
@@ -145,7 +145,7 @@
                     Return CType(row(ClaimHistoryDAL.COL_NAME_STATUS_CODE_NEW), String)
                 End If
             End Get
-            Set(Value As String)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_STATUS_CODE_NEW, Value)
             End Set
@@ -153,7 +153,7 @@
 
 
 
-        Public Property AuthorizedAmountOld() As DecimalType
+        Public Property AuthorizedAmountOld As DecimalType
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_AUTHORIZED_AMOUNT_OLD) Is DBNull.Value Then
@@ -162,7 +162,7 @@
                     Return New DecimalType(CType(row(ClaimHistoryDAL.COL_NAME_AUTHORIZED_AMOUNT_OLD), Decimal))
                 End If
             End Get
-            Set(Value As DecimalType)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_AUTHORIZED_AMOUNT_OLD, Value)
             End Set
@@ -170,7 +170,7 @@
 
 
 
-        Public Property AuthorizedAmountNew() As DecimalType
+        Public Property AuthorizedAmountNew As DecimalType
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_AUTHORIZED_AMOUNT_NEW) Is DBNull.Value Then
@@ -179,7 +179,7 @@
                     Return New DecimalType(CType(row(ClaimHistoryDAL.COL_NAME_AUTHORIZED_AMOUNT_NEW), Decimal))
                 End If
             End Get
-            Set(Value As DecimalType)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_AUTHORIZED_AMOUNT_NEW, Value)
             End Set
@@ -187,7 +187,7 @@
 
 
 
-        Public Property ClaimClosedDateOld() As DateType
+        Public Property ClaimClosedDateOld As DateType
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_CLAIM_CLOSED_DATE_OLD) Is DBNull.Value Then
@@ -196,7 +196,7 @@
                     Return New DateType(CType(row(ClaimHistoryDAL.COL_NAME_CLAIM_CLOSED_DATE_OLD), Date))
                 End If
             End Get
-            Set(Value As DateType)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_CLAIM_CLOSED_DATE_OLD, Value)
             End Set
@@ -204,7 +204,7 @@
 
 
 
-        Public Property ClaimClosedDateNew() As DateType
+        Public Property ClaimClosedDateNew As DateType
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_CLAIM_CLOSED_DATE_NEW) Is DBNull.Value Then
@@ -213,7 +213,7 @@
                     Return New DateType(CType(row(ClaimHistoryDAL.COL_NAME_CLAIM_CLOSED_DATE_NEW), Date))
                 End If
             End Get
-            Set(Value As DateType)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_CLAIM_CLOSED_DATE_NEW, Value)
             End Set
@@ -221,7 +221,7 @@
 
 
 
-        Public Property RepairDateOld() As DateType
+        Public Property RepairDateOld As DateType
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_REPAIR_DATE_OLD) Is DBNull.Value Then
@@ -230,7 +230,7 @@
                     Return New DateType(CType(row(ClaimHistoryDAL.COL_NAME_REPAIR_DATE_OLD), Date))
                 End If
             End Get
-            Set(Value As DateType)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_REPAIR_DATE_OLD, Value)
             End Set
@@ -238,7 +238,7 @@
 
 
 
-        Public Property RepairDateNew() As DateType
+        Public Property RepairDateNew As DateType
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_REPAIR_DATE_NEW) Is DBNull.Value Then
@@ -247,7 +247,7 @@
                     Return New DateType(CType(row(ClaimHistoryDAL.COL_NAME_REPAIR_DATE_NEW), Date))
                 End If
             End Get
-            Set(Value As DateType)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_REPAIR_DATE_NEW, Value)
             End Set
@@ -255,7 +255,7 @@
 
 
         <ValueMandatory("")> _
-        Public Property ClaimModifiedDateNew() As DateType
+        Public Property ClaimModifiedDateNew As DateType
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_CLAIM_MODIFIED_DATE_NEW) Is DBNull.Value Then
@@ -264,7 +264,7 @@
                     Return New DateType(CType(row(ClaimHistoryDAL.COL_NAME_CLAIM_MODIFIED_DATE_NEW), Date))
                 End If
             End Get
-            Set(Value As DateType)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_CLAIM_MODIFIED_DATE_NEW, Value)
             End Set
@@ -272,7 +272,7 @@
 
 
         <ValueMandatory(""), ValidStringLength("", Max:=120)> _
-        Public Property ClaimModifiedByNew() As String
+        Public Property ClaimModifiedByNew As String
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_CLAIM_MODIFIED_BY_NEW) Is DBNull.Value Then
@@ -281,7 +281,7 @@
                     Return CType(row(ClaimHistoryDAL.COL_NAME_CLAIM_MODIFIED_BY_NEW), String)
                 End If
             End Get
-            Set(Value As String)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_CLAIM_MODIFIED_BY_NEW, Value)
             End Set
@@ -289,7 +289,7 @@
 
 
 
-        Public Property ClaimModifiedDateOld() As DateType
+        Public Property ClaimModifiedDateOld As DateType
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_CLAIM_MODIFIED_DATE_OLD) Is DBNull.Value Then
@@ -298,7 +298,7 @@
                     Return New DateType(CType(row(ClaimHistoryDAL.COL_NAME_CLAIM_MODIFIED_DATE_OLD), Date))
                 End If
             End Get
-            Set(Value As DateType)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_CLAIM_MODIFIED_DATE_OLD, Value)
             End Set
@@ -306,7 +306,7 @@
 
 
         <ValidStringLength("", Max:=120)> _
-        Public Property ClaimModifiedByOld() As String
+        Public Property ClaimModifiedByOld As String
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_CLAIM_MODIFIED_BY_OLD) Is DBNull.Value Then
@@ -315,7 +315,7 @@
                     Return CType(row(ClaimHistoryDAL.COL_NAME_CLAIM_MODIFIED_BY_OLD), String)
                 End If
             End Get
-            Set(Value As String)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_CLAIM_MODIFIED_BY_OLD, Value)
             End Set
@@ -323,7 +323,7 @@
 
 
 
-        Public Property LiabilityLimitOld() As DecimalType
+        Public Property LiabilityLimitOld As DecimalType
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_LIABILITY_LIMIT_OLD) Is DBNull.Value Then
@@ -332,7 +332,7 @@
                     Return New DecimalType(CType(row(ClaimHistoryDAL.COL_NAME_LIABILITY_LIMIT_OLD), Decimal))
                 End If
             End Get
-            Set(Value As DecimalType)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_LIABILITY_LIMIT_OLD, Value)
             End Set
@@ -340,7 +340,7 @@
 
 
 
-        Public Property LiabilityLimitNew() As DecimalType
+        Public Property LiabilityLimitNew As DecimalType
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_LIABILITY_LIMIT_NEW) Is DBNull.Value Then
@@ -349,7 +349,7 @@
                     Return New DecimalType(CType(row(ClaimHistoryDAL.COL_NAME_LIABILITY_LIMIT_NEW), Decimal))
                 End If
             End Get
-            Set(Value As DecimalType)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_LIABILITY_LIMIT_NEW, Value)
             End Set
@@ -357,7 +357,7 @@
 
 
 
-        Public Property CertItemCoverageIdOld() As Guid
+        Public Property CertItemCoverageIdOld As Guid
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_CERT_ITEM_COVERAGE_ID_OLD) Is DBNull.Value Then
@@ -366,7 +366,7 @@
                     Return New Guid(CType(row(ClaimHistoryDAL.COL_NAME_CERT_ITEM_COVERAGE_ID_OLD), Byte()))
                 End If
             End Get
-            Set(Value As Guid)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_CERT_ITEM_COVERAGE_ID_OLD, Value)
             End Set
@@ -374,7 +374,7 @@
 
 
 
-        Public Property CertItemCoverageIdNew() As Guid
+        Public Property CertItemCoverageIdNew As Guid
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_CERT_ITEM_COVERAGE_ID_NEW) Is DBNull.Value Then
@@ -383,7 +383,7 @@
                     Return New Guid(CType(row(ClaimHistoryDAL.COL_NAME_CERT_ITEM_COVERAGE_ID_NEW), Byte()))
                 End If
             End Get
-            Set(Value As Guid)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_CERT_ITEM_COVERAGE_ID_NEW, Value)
             End Set
@@ -391,7 +391,7 @@
 
 
 
-        Public Property DeductibleNew() As DecimalType
+        Public Property DeductibleNew As DecimalType
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_DEDUCTIBLE_NEW) Is DBNull.Value Then
@@ -400,7 +400,7 @@
                     Return New DecimalType(CType(row(ClaimHistoryDAL.COL_NAME_DEDUCTIBLE_NEW), Decimal))
                 End If
             End Get
-            Set(Value As DecimalType)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_DEDUCTIBLE_NEW, Value)
             End Set
@@ -408,7 +408,7 @@
 
 
 
-        Public Property DeductibleOld() As DecimalType
+        Public Property DeductibleOld As DecimalType
             Get
                 CheckDeleted()
                 If row(ClaimHistoryDAL.COL_NAME_DEDUCTIBLE_OLD) Is DBNull.Value Then
@@ -417,14 +417,14 @@
                     Return New DecimalType(CType(row(ClaimHistoryDAL.COL_NAME_DEDUCTIBLE_OLD), Decimal))
                 End If
             End Get
-            Set(Value As DecimalType)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_DEDUCTIBLE_OLD, Value)
             End Set
         End Property
 
 
-        Public Property ServiceCenterNew() As String
+        Public Property ServiceCenterNew As String
             Get
                 CheckDeleted()
                 If Row(ClaimHistoryDAL.COL_NAME_SERVICE_CENTER_NEW) Is DBNull.Value Then
@@ -433,13 +433,13 @@
                     Return CType(Row(ClaimHistoryDAL.COL_NAME_SERVICE_CENTER_NEW), String)
                 End If
             End Get
-            Set(Value As String)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_SERVICE_CENTER_NEW, Value)
             End Set
         End Property
 
-        Public Property ServiceCenterOld() As String
+        Public Property ServiceCenterOld As String
             Get
                 CheckDeleted()
                 If Row(ClaimHistoryDAL.COL_NAME_SERVICE_CENTER_OLD) Is DBNull.Value Then
@@ -448,14 +448,14 @@
                     Return CType(Row(ClaimHistoryDAL.COL_NAME_SERVICE_CENTER_OLD), String)
                 End If
             End Get
-            Set(Value As String)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_SERVICE_CENTER_OLD, Value)
             End Set
         End Property
 
         <ValidStringLength("", Max:=15)>
-        Public Property BatchNumberNew() As String
+        Public Property BatchNumberNew As String
             Get
                 CheckDeleted()
                 If Row(ClaimHistoryDAL.COL_NAME_BATCH_NUMBER_NEW) Is DBNull.Value Then
@@ -464,14 +464,14 @@
                     Return CType(Row(ClaimHistoryDAL.COL_NAME_BATCH_NUMBER_NEW), String)
                 End If
             End Get
-            Set(Value As String)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_BATCH_NUMBER_NEW, Value)
             End Set
         End Property
 
         <ValidStringLength("", Max:=10)> _
-        Public Property BatchNumberOld() As String
+        Public Property BatchNumberOld As String
             Get
                 CheckDeleted()
                 If Row(ClaimHistoryDAL.COL_NAME_BATCH_NUMBER_OLD) Is DBNull.Value Then
@@ -480,13 +480,13 @@
                     Return CType(Row(ClaimHistoryDAL.COL_NAME_BATCH_NUMBER_OLD), String)
                 End If
             End Get
-            Set(Value As String)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_BATCH_NUMBER_OLD, Value)
             End Set
         End Property
 
-        Public Property IsLawsuitIdOld() As Guid
+        Public Property IsLawsuitIdOld As Guid
             Get
                 CheckDeleted()
                 If Row(ClaimHistoryDAL.COL_NAME_IS_LAWSUIT_ID_OLD) Is DBNull.Value Then
@@ -495,13 +495,13 @@
                     Return New Guid(CType(Row(ClaimHistoryDAL.COL_NAME_IS_LAWSUIT_ID_OLD), Byte()))
                 End If
             End Get
-            Set(Value As Guid)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_IS_LAWSUIT_ID_OLD, Value)
             End Set
         End Property
 
-        Public Property IsLawsuitIdNew() As Guid
+        Public Property IsLawsuitIdNew As Guid
             Get
                 CheckDeleted()
                 If Row(ClaimHistoryDAL.COL_NAME_IS_LAWSUIT_ID_NEW) Is DBNull.Value Then
@@ -510,7 +510,7 @@
                     Return New Guid(CType(Row(ClaimHistoryDAL.COL_NAME_IS_LAWSUIT_ID_NEW), Byte()))
                 End If
             End Get
-            Set(Value As Guid)
+            Set
                 CheckDeleted()
                 SetValue(ClaimHistoryDAL.COL_NAME_IS_LAWSUIT_ID_NEW, Value)
             End Set

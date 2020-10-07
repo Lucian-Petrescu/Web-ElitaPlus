@@ -90,7 +90,7 @@ Public Class TransDtlFollowup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(TransDtlFollowupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class TransDtlFollowup
     End Property
 
     <ValueMandatory("")> _
-    Public Property TransDtlClmUpdte2elitaId() As Guid
+    Public Property TransDtlClmUpdte2elitaId As Guid
         Get
             CheckDeleted()
             If row(TransDtlFollowupDAL.COL_NAME_TRANS_DTL_CLM_UPDTE_2ELITA_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class TransDtlFollowup
                 Return New Guid(CType(row(TransDtlFollowupDAL.COL_NAME_TRANS_DTL_CLM_UPDTE_2ELITA_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransDtlFollowupDAL.COL_NAME_TRANS_DTL_CLM_UPDTE_2ELITA_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class TransDtlFollowup
 
 
     <ValueMandatory("")> _
-    Public Property XmlCreateDate() As DateType
+    Public Property XmlCreateDate As DateType
         Get
             CheckDeleted()
             If row(TransDtlFollowupDAL.COL_NAME_XML_CREATE_DATE) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class TransDtlFollowup
                 Return New DateType(CType(row(TransDtlFollowupDAL.COL_NAME_XML_CREATE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(TransDtlFollowupDAL.COL_NAME_XML_CREATE_DATE, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class TransDtlFollowup
 
 
     <ValueMandatory("")> _
-    Public Property XmlCommentTypeCode() As Guid
+    Public Property XmlCommentTypeCode As Guid
         Get
             CheckDeleted()
             If row(TransDtlFollowupDAL.COL_NAME_XML_COMMENT_TYPE_CODE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class TransDtlFollowup
                 Return New Guid(CType(row(TransDtlFollowupDAL.COL_NAME_XML_COMMENT_TYPE_CODE), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransDtlFollowupDAL.COL_NAME_XML_COMMENT_TYPE_CODE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class TransDtlFollowup
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4000)> _
-    Public Property XmlComments() As String
+    Public Property XmlComments As String
         Get
             CheckDeleted()
             If row(TransDtlFollowupDAL.COL_NAME_XML_COMMENTS) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class TransDtlFollowup
                 Return CType(row(TransDtlFollowupDAL.COL_NAME_XML_COMMENTS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlFollowupDAL.COL_NAME_XML_COMMENTS, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class TransDtlFollowup
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property XmlCallerName() As String
+    Public Property XmlCallerName As String
         Get
             CheckDeleted()
             If row(TransDtlFollowupDAL.COL_NAME_XML_CALLER_NAME) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class TransDtlFollowup
                 Return CType(row(TransDtlFollowupDAL.COL_NAME_XML_CALLER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlFollowupDAL.COL_NAME_XML_CALLER_NAME, Value)
         End Set

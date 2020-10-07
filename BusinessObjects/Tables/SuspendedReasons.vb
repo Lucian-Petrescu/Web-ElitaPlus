@@ -165,7 +165,7 @@ Public Class SuspendedReasons
 #Region "Properties"
 
     'Key Property
-    Public Property Suspended_Reasons_Id() As Guid
+    Public Property Suspended_Reasons_Id As Guid
         Get
             If Row(SuspendedReasonsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -173,14 +173,14 @@ Public Class SuspendedReasons
                 Return New Guid(CType(Row(SuspendedReasonsDAL.COL_NAME_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SuspendedReasonsDAL.COL_NAME_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(SuspendedReasonsDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -189,12 +189,12 @@ Public Class SuspendedReasons
                 Return New Guid(CType(row(SuspendedReasonsDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SuspendedReasonsDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
-    Public Property Dealer_Name() As String
+    Public Property Dealer_Name As String
         Get
             CheckDeleted()
             If Row(SuspendedReasonsDAL.COL_NAME_DEALER_NAME) Is DBNull.Value Then
@@ -203,13 +203,13 @@ Public Class SuspendedReasons
                 Return CType(Row(SuspendedReasonsDAL.COL_NAME_DEALER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SuspendedReasonsDAL.COL_NAME_DEALER_NAME, Value)
         End Set
     End Property
 
-    Public Property Claim_Allowed_Str() As String
+    Public Property Claim_Allowed_Str As String
         Get
             CheckDeleted()
             If Row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED_STR) Is DBNull.Value Then
@@ -218,14 +218,14 @@ Public Class SuspendedReasons
                 Return CType(Row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED_STR), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED_STR, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Claim_Allowed() As String
+    Public Property Claim_Allowed As String
         Get
             CheckDeleted()
             If Row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED) Is DBNull.Value Then
@@ -234,7 +234,7 @@ Public Class SuspendedReasons
                 Return CType(Row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
 
             SetValue(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED, Value.Replace("0", ""))
@@ -242,7 +242,7 @@ Public Class SuspendedReasons
 
     End Property
 
-    Public ReadOnly Property Claim_Allowed_True() As Boolean
+    Public ReadOnly Property Claim_Allowed_True As Boolean
         Get
             CheckDeleted()
             If Not (Row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED) Is DBNull.Value) Then
@@ -256,7 +256,7 @@ Public Class SuspendedReasons
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(SuspendedReasonsDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -265,7 +265,7 @@ Public Class SuspendedReasons
                 Return CType(Row(SuspendedReasonsDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SuspendedReasonsDAL.COL_NAME_CODE, Value)
         End Set
@@ -273,7 +273,7 @@ Public Class SuspendedReasons
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=250)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(SuspendedReasonsDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -282,7 +282,7 @@ Public Class SuspendedReasons
                 Return CType(Row(SuspendedReasonsDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SuspendedReasonsDAL.COL_NAME_DESCRIPTION, Value)
         End Set

@@ -107,7 +107,7 @@ Public Class ClaimloadFileProcessed
 
 #Region "Properties"
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IFileLoadHeaderWork.Id
+    Public ReadOnly Property Id As Guid Implements IFileLoadHeaderWork.Id
         Get
             If Row(ClaimloadFileProcessedDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -118,7 +118,7 @@ Public Class ClaimloadFileProcessed
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(ClaimloadFileProcessedDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -127,14 +127,14 @@ Public Class ClaimloadFileProcessed
                 Return New Guid(CType(Row(ClaimloadFileProcessedDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimloadFileProcessedDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)> _
-    Public Property Filename() As String Implements IFileLoadHeaderWork.FileName
+    Public Property Filename As String Implements IFileLoadHeaderWork.FileName
         Get
             CheckDeleted()
             If Row(ClaimloadFileProcessedDAL.COL_NAME_FILENAME) Is DBNull.Value Then
@@ -143,13 +143,13 @@ Public Class ClaimloadFileProcessed
                 Return CType(Row(ClaimloadFileProcessedDAL.COL_NAME_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimloadFileProcessedDAL.COL_NAME_FILENAME, Value)
         End Set
     End Property
 
-    Public Property Received() As LongType Implements IFileLoadHeaderWork.Received
+    Public Property Received As LongType Implements IFileLoadHeaderWork.Received
         Get
             CheckDeleted()
             If Row(ClaimloadFileProcessedDAL.COL_NAME_RECEIVED) Is DBNull.Value Then
@@ -158,13 +158,13 @@ Public Class ClaimloadFileProcessed
                 Return New LongType(CType(Row(ClaimloadFileProcessedDAL.COL_NAME_RECEIVED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimloadFileProcessedDAL.COL_NAME_RECEIVED, Value)
         End Set
     End Property
 
-    Public Property Counted() As LongType Implements IFileLoadHeaderWork.Counted
+    Public Property Counted As LongType Implements IFileLoadHeaderWork.Counted
         Get
             CheckDeleted()
             If Row(ClaimloadFileProcessedDAL.COL_NAME_COUNTED) Is DBNull.Value Then
@@ -173,13 +173,13 @@ Public Class ClaimloadFileProcessed
                 Return New LongType(CType(Row(ClaimloadFileProcessedDAL.COL_NAME_COUNTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimloadFileProcessedDAL.COL_NAME_COUNTED, Value)
         End Set
     End Property
 
-    Public Property Rejected() As LongType Implements IFileLoadHeaderWork.Rejected
+    Public Property Rejected As LongType Implements IFileLoadHeaderWork.Rejected
         Get
             CheckDeleted()
             If Row(ClaimloadFileProcessedDAL.COL_NAME_REJECTED) Is DBNull.Value Then
@@ -188,13 +188,13 @@ Public Class ClaimloadFileProcessed
                 Return New LongType(CType(Row(ClaimloadFileProcessedDAL.COL_NAME_REJECTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimloadFileProcessedDAL.COL_NAME_REJECTED, Value)
         End Set
     End Property
 
-    Public Property Validated() As LongType Implements IFileLoadHeaderWork.Validated
+    Public Property Validated As LongType Implements IFileLoadHeaderWork.Validated
         Get
             CheckDeleted()
             If Row(ClaimloadFileProcessedDAL.COL_NAME_VALIDATED) Is DBNull.Value Then
@@ -203,22 +203,22 @@ Public Class ClaimloadFileProcessed
                 Return New LongType(CType(Row(ClaimloadFileProcessedDAL.COL_NAME_VALIDATED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimloadFileProcessedDAL.COL_NAME_VALIDATED, Value)
         End Set
     End Property
 
-    Public Property Bypassed() As LongType Implements IFileLoadHeaderWork.Bypassed
+    Public Property Bypassed As LongType Implements IFileLoadHeaderWork.Bypassed
         Get
             Return 0
         End Get
-        Set(ByVal value As LongType)
+        Set
             ' Do Nothing
         End Set
     End Property
 
-    Public Property Loaded() As LongType Implements IFileLoadHeaderWork.Loaded
+    Public Property Loaded As LongType Implements IFileLoadHeaderWork.Loaded
         Get
             CheckDeleted()
             If Row(ClaimloadFileProcessedDAL.COL_NAME_LOADED) Is DBNull.Value Then
@@ -227,14 +227,14 @@ Public Class ClaimloadFileProcessed
                 Return New LongType(CType(Row(ClaimloadFileProcessedDAL.COL_NAME_LOADED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimloadFileProcessedDAL.COL_NAME_LOADED, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)> _
-    Public Property AccountIdentifier() As String
+    Public Property AccountIdentifier As String
         Get
             CheckDeleted()
             If Row(ClaimloadFileProcessedDAL.COL_NAME_ACCOUNT_IDENTIFIER) Is DBNull.Value Then
@@ -243,14 +243,14 @@ Public Class ClaimloadFileProcessed
                 Return CType(Row(ClaimloadFileProcessedDAL.COL_NAME_ACCOUNT_IDENTIFIER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimloadFileProcessedDAL.COL_NAME_ACCOUNT_IDENTIFIER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=2)> _
-    Public Property ServiceCenterCountryCode() As String
+    Public Property ServiceCenterCountryCode As String
         Get
             CheckDeleted()
             If Row(ClaimloadFileProcessedDAL.COL_NAME_SC_COUNTRY_CODE) Is DBNull.Value Then
@@ -259,14 +259,14 @@ Public Class ClaimloadFileProcessed
                 Return CType(Row(ClaimloadFileProcessedDAL.COL_NAME_SC_COUNTRY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimloadFileProcessedDAL.COL_NAME_SC_COUNTRY_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=3)> _
-    Public Property FileType() As String
+    Public Property FileType As String
         Get
             CheckDeleted()
             If Row(ClaimloadFileProcessedDAL.COL_NAME_FILE_TYPE) Is DBNull.Value Then
@@ -275,7 +275,7 @@ Public Class ClaimloadFileProcessed
                 Return CType(Row(ClaimloadFileProcessedDAL.COL_NAME_FILE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimloadFileProcessedDAL.COL_NAME_FILE_TYPE, Value)
         End Set

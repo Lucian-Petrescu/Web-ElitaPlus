@@ -495,9 +495,9 @@ Namespace Tables
 
             'Set focus on the Description TextBox for the EditItemIndex row
             If moCountryDrop.Items.Count < 3 Then   'Only one country.
-                SetFocusOnEditableFieldInGrid(moRegionGrid, GRID_COL_REGION_ALIAS, moRegionGrid.EditItemIndex, State.AddingNewRow And True)
+                SetFocusOnEditableFieldInGrid(moRegionGrid, GRID_COL_REGION_ALIAS, moRegionGrid.EditItemIndex, State.AddingNewRow AndAlso True)
             Else
-                SetFocusOnEditableFieldInGrid(moRegionGrid, GRID_COL_COUNTRY_ID, moRegionGrid.EditItemIndex, State.AddingNewRow And False)
+                SetFocusOnEditableFieldInGrid(moRegionGrid, GRID_COL_COUNTRY_ID, moRegionGrid.EditItemIndex, State.AddingNewRow AndAlso False)
             End If
 
             Dim regionList As DropDownList = CType(moRegionGrid.Items(moRegionGrid.EditItemIndex).Cells(GRID_COL_REGION).FindControl(REGION_LIST_IN_GRID_CONTROL_NAME), DropDownList)
@@ -746,9 +746,9 @@ Namespace Tables
 
                     'Set focus on the Description TextBox for the EditItemIndex row
                     If moCountryDrop.Items.Count < 3 Then
-                        SetFocusOnEditableFieldInGrid(moRegionGrid, GRID_COL_REGION_ALIAS, index, State.AddingNewRow And True)
+                        SetFocusOnEditableFieldInGrid(moRegionGrid, GRID_COL_REGION_ALIAS, index, State.AddingNewRow AndAlso True)
                     Else
-                        SetFocusOnEditableFieldInGrid(moRegionGrid, GRID_COL_COUNTRY_ID, index, State.AddingNewRow And False)
+                        SetFocusOnEditableFieldInGrid(moRegionGrid, GRID_COL_COUNTRY_ID, index, State.AddingNewRow AndAlso False)
                     End If
 
                     SetButtonsState()

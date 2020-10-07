@@ -138,12 +138,12 @@ Public Class RiskType
 
 
     <ValueMandatory("")> _
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             If Row(RiskTypeDAL.RISK_TYPE_ID_COL) Is DBNull.Value Then Return Nothing
             Return New Guid(CType(row(RiskTypeDAL.RISK_TYPE_ID_COL), Byte()))
         End Get
-        Set(ByVal value As Guid)
+        Set
             If Not IsNew Then
                 Throw New BOInvalidOperationException("A new Risk Type Id can only be assigned to a new RiskType")
             End If
@@ -152,23 +152,23 @@ Public Class RiskType
     End Property
 
     <ValueMandatory(""), ValidStringLength("", max:=60)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             If Row(RiskTypeDAL.DESCRIPTION_COL) Is DBNull.Value Then Return Nothing
             Return Row(RiskTypeDAL.DESCRIPTION_COL)
         End Get
-        Set(ByVal value As String)
+        Set
             SetValue(RiskTypeDAL.DESCRIPTION_COL, value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", max:=60)> _
-    Public Property RiskTypeEnglish() As String
+    Public Property RiskTypeEnglish As String
         Get
             If Row(RiskTypeDAL.RISK_TYPE_ENGLISH_COL) Is DBNull.Value Then Return Nothing
             Return Row(RiskTypeDAL.RISK_TYPE_ENGLISH_COL)
         End Get
-        Set(ByVal value As String)
+        Set
             SetValue(RiskTypeDAL.RISK_TYPE_ENGLISH_COL, value)
         End Set
     End Property
@@ -184,12 +184,12 @@ Public Class RiskType
     '    End Set
     'End Property
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             If Row(RiskTypeDAL.COMPANY_GROUP_ID_COL) Is DBNull.Value Then Return Nothing
             Return New Guid(CType(Row(RiskTypeDAL.COMPANY_GROUP_ID_COL), Byte()))
         End Get
-        Set(ByVal value As Guid)
+        Set
             SetValue(RiskTypeDAL.COMPANY_GROUP_ID_COL, value)
         End Set
     End Property
@@ -197,18 +197,18 @@ Public Class RiskType
 
 
     <ValueMandatory("")> _
-    Public Property ProductTaxTypeId() As Guid
+    Public Property ProductTaxTypeId As Guid
         Get
             If Row(RiskTypeDAL.COL_NAME_PRODUCT_TAX_TYPE_ID) Is DBNull.Value Then Return Nothing
             Return New Guid(CType(Row(RiskTypeDAL.COL_NAME_PRODUCT_TAX_TYPE_ID), Byte()))
         End Get
-        Set(ByVal value As Guid)
+        Set
             SetValue(RiskTypeDAL.COL_NAME_PRODUCT_TAX_TYPE_ID, value)
         End Set
 
     End Property
 
-    Public Property SoftQuestionGroupId() As Guid
+    Public Property SoftQuestionGroupId As Guid
         Get
             If Row(RiskTypeDAL.COL_NAME_SOFT_QUESTION_GROUP_ID) Is DBNull.Value Then
                 Return Nothing
@@ -216,18 +216,18 @@ Public Class RiskType
                 Return New Guid(CType(Row(RiskTypeDAL.COL_NAME_SOFT_QUESTION_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             SetValue(RiskTypeDAL.COL_NAME_SOFT_QUESTION_GROUP_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property RiskGroupId() As Guid
+    Public Property RiskGroupId As Guid
         Get
             If Row(RiskTypeDAL.RISK_GROUP_ID_COL) Is DBNull.Value Then Return Nothing
             Return New Guid(CType(Row(RiskTypeDAL.RISK_GROUP_ID_COL), Byte()))
         End Get
-        Set(ByVal value As Guid)
+        Set
             SetValue(RiskTypeDAL.RISK_GROUP_ID_COL, value)
         End Set
 

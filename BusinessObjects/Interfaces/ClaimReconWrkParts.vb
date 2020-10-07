@@ -57,7 +57,7 @@
 #Region "Properties"
 
     <ValidStringLength("", Max:=2)> _
-    Public Property PartNumber() As String
+    Public Property PartNumber As String
         Get
             CheckDeleted()
             If Row(COL_PART_NUMBER) Is DBNull.Value Then
@@ -66,14 +66,14 @@
                 Return CType(Row(COL_PART_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_PART_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=18)> _
-    Public Property PartSKU() As String
+    Public Property PartSKU As String
         Get
             CheckDeleted()
             If Row(COL_PART_SKU) Is DBNull.Value Then
@@ -82,14 +82,14 @@
                 Return CType(Row(COL_PART_SKU), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_PART_SKU, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property PartDescription() As String
+    Public Property PartDescription As String
         Get
             CheckDeleted()
             If Row(COL_PART_DESCRIPTION) Is DBNull.Value Then
@@ -98,7 +98,7 @@
                 Return CType(Row(COL_PART_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_PART_DESCRIPTION, Value)
         End Set

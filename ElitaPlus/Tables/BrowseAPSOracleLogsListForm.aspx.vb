@@ -178,7 +178,7 @@
                 MasterPage.MessageController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.MSG_SELECT_FROM_AND_TO_DATE, True)
                 Exit Sub
             End If
-            If (Not moGenerationDate.IsEmpty) And Not moGenerationDate.Validate() Then
+            If (Not moGenerationDate.IsEmpty) AndAlso Not moGenerationDate.Validate() Then
                 Exit Sub
             End If
 

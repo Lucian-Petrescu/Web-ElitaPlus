@@ -643,7 +643,7 @@ Namespace Certificates
                 Dim NoId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
                 If (Not moCertItemCoverage.IsClaimAllowed.Equals(NoId)) Then 'Or Me.moCertItemCoverage.IsClaimAllowed.Equals(Guid.Empty) Then
                     Dim todayDate As Date
-                    If todayDate.Today < moCertItemCoverage.BeginDate.Value And moCertificate.StatusCode <> CLOSED Then
+                    If todayDate.Today < moCertItemCoverage.BeginDate.Value AndAlso moCertificate.StatusCode <> CLOSED Then
                         'If Not Me.State.coverageInEffect And Me.moCertificate.StatusCode <> CLOSED Then
                         ControlMgr.SetEnableControl(Me, btnDenyClaim, True)
                         'Else
@@ -1080,7 +1080,7 @@ Namespace Certificates
             Try
                 NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE) = State._moCertItemCoverage
                 NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ITEM) = State.MyBO
-                If (moCertificate.getMasterclaimProcFlag = Codes.MasterClmProc_ANYMC Or moCertificate.getMasterclaimProcFlag = Codes.MasterClmProc_BYDOL) AndAlso GetClaims() Then
+                If (moCertificate.getMasterclaimProcFlag = Codes.MasterClmProc_ANYMC OrElse moCertificate.getMasterclaimProcFlag = Codes.MasterClmProc_BYDOL) AndAlso GetClaims() Then
                     NavController.Navigate(Me, "locate_master_claim", BuildMasterClaimParameters)
                 Else
                     NavController.Navigate(Me, "locate_service_center", BuildServiceCenterParameters)
@@ -1412,7 +1412,7 @@ Namespace Certificates
                 If moCertItemCoverage IsNot Nothing Then
                     Dim errMsg As List(Of String)
                     Dim warningMsg As List(Of String)
-                    flag = flag And moCertItemCoverage.IsCoverageValidToOpenClaim(errMsg, warningMsg)
+                    flag = flag AndAlso moCertItemCoverage.IsCoverageValidToOpenClaim(errMsg, warningMsg)
                     MasterPage.MessageController.AddWarning(warningMsg.ToArray, True)
                     MasterPage.MessageController.AddError(errMsg.ToArray, True)
                 End If
@@ -1541,7 +1541,7 @@ Namespace Certificates
                 'ElseIf Not oContract Is Nothing AndAlso _
                 '    oContract.MonthlyBillingId.Equals(yesId) Then
             ElseIf oContract IsNot Nothing AndAlso
-                    ((Not oContract.RecurringPremiumId.Equals(emptyGuid)) And (Not oContract.RecurringPremiumId.Equals(singlePremiumId))) Then
+                    ((Not oContract.RecurringPremiumId.Equals(emptyGuid)) AndAlso (Not oContract.RecurringPremiumId.Equals(singlePremiumId))) Then
                 'Req-1016 - end
                 showAcceptButton = True
             ElseIf Not State.coverageInEffect Then
@@ -1649,8 +1649,7 @@ Namespace Certificates
                         End If
                     End If
 
-                    If (((moCertificate.getMasterclaimProcFlag = Codes.MasterClmProc_ANYMC Or moCertificate.getMasterclaimProcFlag = Codes.MasterClmProc_BYDOL) AndAlso GetClaims()) Or _
-                         (moCertificate.getMasterclaimProcFlag = Codes.MasterClmProc_ANYMC Or moCertificate.getMasterclaimProcFlag = Codes.MasterClmProc_BYDOL) AndAlso State.allowdifferentcoverage _
+                    If (((moCertificate.getMasterclaimProcFlag = Codes.MasterClmProc_ANYMC OrElse moCertificate.getMasterclaimProcFlag = Codes.MasterClmProc_BYDOL) AndAlso GetClaims()) OrElse (moCertificate.getMasterclaimProcFlag = Codes.MasterClmProc_ANYMC OrElse moCertificate.getMasterclaimProcFlag = Codes.MasterClmProc_BYDOL) AndAlso State.allowdifferentcoverage _
                              AndAlso GetCertClaims()) Then
                         NavController.Navigate(Me, "locate_master_claim", BuildMasterClaimParameters)
                     Else

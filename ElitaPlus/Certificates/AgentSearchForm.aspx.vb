@@ -344,16 +344,16 @@ navCtrl.PrevNavState IsNot Nothing Then
         End Sub
         Protected Sub SetCompanyDealerDropdown(setCompanyDealerValue As Boolean)
             If Authentication.CurrentUser.IsDealer OrElse setCompanyDealerValue = True Then
-                If Not State.CompanyId.Equals(Guid.Empty) And ddlCompany.Items.Count > 0 Then SetSelectedItem(ddlCompany, State.CompanyId)
-                If Not State.DealerId.Equals(Guid.Empty) And ddlDealer.Items.Count > 0 Then SetSelectedItem(ddlDealer, State.DealerId)
+                If Not State.CompanyId.Equals(Guid.Empty) AndAlso ddlCompany.Items.Count > 0 Then SetSelectedItem(ddlCompany, State.CompanyId)
+                If Not State.DealerId.Equals(Guid.Empty) AndAlso ddlDealer.Items.Count > 0 Then SetSelectedItem(ddlDealer, State.DealerId)
             Else
                 ddlCompany.SelectedIndex = DefaultItem
                 ddlDealer.SelectedIndex = DefaultItem
             End If
         End Sub
         Private Sub GetStateFieldsValueIntoControl()
-            If State.CompanyId <> Guid.Empty And ddlCompany.Items.Count > 0 Then SetSelectedItem(ddlCompany, State.CompanyId)
-            If State.DealerId <> Guid.Empty And ddlDealer.Items.Count > 0 Then SetSelectedItem(ddlDealer, State.DealerId)
+            If State.CompanyId <> Guid.Empty AndAlso ddlCompany.Items.Count > 0 Then SetSelectedItem(ddlCompany, State.CompanyId)
+            If State.DealerId <> Guid.Empty AndAlso ddlDealer.Items.Count > 0 Then SetSelectedItem(ddlDealer, State.DealerId)
 
             ' Dynamic controls - Text Box
             SetSearchTextBox(CodeSearchFieldCertificateNumber, State.CertificateNumber)
@@ -399,7 +399,7 @@ navCtrl.PrevNavState IsNot Nothing Then
             End If
         End Function
         Private Sub GetDynamicSearchCriteria()
-            If Not (State.CompanyId.Equals(State.PreviousCompanyId) And State.DealerId.Equals(State.PreviousDealerId)) Then
+            If Not (State.CompanyId.Equals(State.PreviousCompanyId) AndAlso State.DealerId.Equals(State.PreviousDealerId)) Then
                 'Get all Search Criteria for the company and dealer
                 Dim dv As DataView = SearchConfigAssignment.GetDynamicSearchCriteriaFields(State.CompanyId, State.DealerId, Authentication.CurrentUser.LanguageCode, "AGENT_SEARCH")
                 State.SearchCriteriaDt = dv.Table
@@ -559,7 +559,7 @@ navCtrl.PrevNavState IsNot Nothing Then
         Private Sub PopulateExclSecFields()
             Try
 
-                If Not (State.CompanyId.Equals(State.PreviousCompanyId) And State.DealerId.Equals(State.PreviousDealerId)) Then
+                If Not (State.CompanyId.Equals(State.PreviousCompanyId) AndAlso State.DealerId.Equals(State.PreviousDealerId)) Then
                     Dim exclSecFieldsDt As DataTable
                     Dim objList As List(Of CaseBase.ExclSecFields)
 
@@ -579,7 +579,7 @@ navCtrl.PrevNavState IsNot Nothing Then
         End Sub
 
         Private Sub PopulateSearchConfigList()
-            If Not (State.CompanyId.Equals(State.PreviousCompanyId) And State.DealerId.Equals(State.PreviousDealerId)) Then
+            If Not (State.CompanyId.Equals(State.PreviousCompanyId) AndAlso State.DealerId.Equals(State.PreviousDealerId)) Then
                 Dim dsResults As DataSet
                 dsResults = CaseBase.GetAgentSearchConfigList(State.CompanyId, State.DealerId, SearchTypeXCD)
                 If dsResults.Tables(0).Rows.Count > 0 Then
@@ -722,7 +722,7 @@ navCtrl.PrevNavState IsNot Nothing Then
         Private Sub ActivateCalendarClick()
             Dim txtCtl As TextBox = TryCast(PanelHolderDynamicSearchCriteria.FindControl(CodeSearchFieldDob), TextBox)
             Dim btnImg As ImageButton = TryCast(PanelHolderDynamicSearchCriteria.FindControl(CodeSearchFieldDob + "BTN"), ImageButton)
-            If (txtCtl IsNot Nothing And btnImg IsNot Nothing) Then
+            If (txtCtl IsNot Nothing AndAlso btnImg IsNot Nothing) Then
                 AddCalendar_New(btnImg, txtCtl)
             End If
         End Sub
@@ -786,13 +786,9 @@ navCtrl.PrevNavState IsNot Nothing Then
                 ''and invoice Number
                 MasterPage.MessageController.Clear()
 
-                if NOT string.IsNullOrEmpty(State.BranchCode) Or
-                   NOT string.IsNullOrEmpty(State.BranchName)  Then
+                if NOT string.IsNullOrEmpty(State.BranchCode) OrElse NOT string.IsNullOrEmpty(State.BranchName)  Then
 
-                    if NOT string.IsNullOrEmpty(State.CertificateStatus) AND
-                           string.IsNullOrEmpty(State.CustomerFirstName) AND 
-                           string.IsNullOrEmpty(State.CustomerLastName) AND
-                           string.IsNullOrEmpty(State.InvoiceNumber)
+                    if NOT string.IsNullOrEmpty(State.CertificateStatus) AndAlso string.IsNullOrEmpty(State.CustomerFirstName) AndAlso string.IsNullOrEmpty(State.CustomerLastName) AndAlso string.IsNullOrEmpty(State.InvoiceNumber)
 
                         ResetSearchResult()
                         MasterPage.MessageController.AddError(Message.MSG_BRANCH_CERTFICATE_STATUS_FIELD_SELECT)
@@ -800,10 +796,7 @@ navCtrl.PrevNavState IsNot Nothing Then
                     End If
 
 
-                    if string.IsNullOrEmpty(State.CustomerFirstName) AND 
-                       string.IsNullOrEmpty(State.CustomerLastName) AND
-                       string.IsNullOrEmpty(State.InvoiceNumber) AND
-                       string.IsNullOrEmpty(State.CertificateStatus) Then
+                    if string.IsNullOrEmpty(State.CustomerFirstName) AndAlso string.IsNullOrEmpty(State.CustomerLastName) AndAlso string.IsNullOrEmpty(State.InvoiceNumber) AndAlso string.IsNullOrEmpty(State.CertificateStatus) Then
 
                         ResetSearchResult()
                         MasterPage.MessageController.AddError(Message.MSG_BRANCH_FIELD_SELECT)
@@ -892,7 +885,7 @@ navCtrl.PrevNavState IsNot Nothing Then
 
             Catch ex As Exception
                 Dim exceptionType As String = ex.GetBaseException.GetType().Name
-                If ((Not exceptionType.Equals(String.Empty)) And exceptionType.Equals("BOValidationException")) Then
+                If ((Not exceptionType.Equals(String.Empty)) AndAlso exceptionType.Equals("BOValidationException")) Then
                     ControlMgr.SetVisibleControl(Me, repeaterSearchResult, False)
                     lblRecordCount.Text = ""
                 End If
@@ -901,7 +894,7 @@ navCtrl.PrevNavState IsNot Nothing Then
         End Sub
 
         Protected Sub repeaterSearchResult_OnItemDataBound(sender As Object, e As RepeaterItemEventArgs)
-            If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem Then
+            If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
                 Dim isRestricted As String = String.Empty
                 Dim lblStatus As WebControls.Label = DirectCast(e.Item.FindControl("lblStatus"), WebControls.Label)
                 Dim xmlSource As Xml = DirectCast(e.Item.FindControl("Xmlsource"), Xml)
@@ -1039,7 +1032,7 @@ navCtrl.PrevNavState IsNot Nothing Then
             Try
                 If Not e.CommandArgument.ToString().Equals(String.Empty) Then
                     Dim selectedId As Guid = New Guid(e.CommandArgument.ToString())
-                    If e.CommandName = SelectActionCommand Or e.CommandName = SelectActionCancelCert Then
+                    If e.CommandName = SelectActionCommand OrElse e.CommandName = SelectActionCancelCert Then
 
                         Dim itemtype As HiddenField = DirectCast(e.Item.FindControl("hfItemType"), HiddenField)
                         If Not itemtype.Value.ToString().Equals(String.Empty) Then
@@ -1055,7 +1048,7 @@ navCtrl.PrevNavState IsNot Nothing Then
                                         NavController = Nothing
                                         callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step3, Nothing, claimId, Nothing))
                                     Else
-                                        If State.ExclSecFieldsDt IsNot Nothing And State.ExclSecFieldsDt.Rows.Count > 0 Then
+                                        If State.ExclSecFieldsDt IsNot Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 Then
                                             NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = claimBo
                                             NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_SELECTED)
                                         Else

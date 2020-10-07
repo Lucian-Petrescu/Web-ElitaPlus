@@ -89,7 +89,7 @@ Public Class DropdownItem
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DropdownItemDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class DropdownItem
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(DropdownItemDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -109,7 +109,7 @@ Public Class DropdownItem
                 Return CType(Row(DropdownItemDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DropdownItemDAL.COL_NAME_CODE, Value)
         End Set
@@ -117,7 +117,7 @@ Public Class DropdownItem
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property MaintainableByUser() As String
+    Public Property MaintainableByUser As String
         Get
             CheckDeleted()
             If Row(DropdownItemDAL.COL_NAME_MAINTAINABLE_BY_USER) Is DBNull.Value Then
@@ -126,7 +126,7 @@ Public Class DropdownItem
                 Return CType(Row(DropdownItemDAL.COL_NAME_MAINTAINABLE_BY_USER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DropdownItemDAL.COL_NAME_MAINTAINABLE_BY_USER, Value)
         End Set
@@ -134,7 +134,7 @@ Public Class DropdownItem
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property DisplayToUser() As String
+    Public Property DisplayToUser As String
         Get
             CheckDeleted()
             If Row(DropdownItemDAL.COL_NAME_DISPLAY_TO_USER) Is DBNull.Value Then
@@ -143,7 +143,7 @@ Public Class DropdownItem
                 Return CType(Row(DropdownItemDAL.COL_NAME_DISPLAY_TO_USER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DropdownItemDAL.COL_NAME_DISPLAY_TO_USER, Value)
         End Set
@@ -151,7 +151,7 @@ Public Class DropdownItem
 
 
     <ValueMandatory("")> _
-    Public Property ListId() As Guid
+    Public Property ListId As Guid
         Get
             CheckDeleted()
             If Row(DropdownItemDAL.COL_NAME_LIST_ID) Is DBNull.Value Then
@@ -160,7 +160,7 @@ Public Class DropdownItem
                 Return New Guid(CType(Row(DropdownItemDAL.COL_NAME_LIST_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DropdownItemDAL.COL_NAME_LIST_ID, Value)
         End Set
@@ -168,7 +168,7 @@ Public Class DropdownItem
 
 
     <ValueMandatory("")> _
-    Public Property DictItemId() As Guid
+    Public Property DictItemId As Guid
         Get
             CheckDeleted()
             If Row(DropdownItemDAL.COL_NAME_DICT_ITEM_ID) Is DBNull.Value Then
@@ -177,7 +177,7 @@ Public Class DropdownItem
                 Return New Guid(CType(Row(DropdownItemDAL.COL_NAME_DICT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DropdownItemDAL.COL_NAME_DICT_ITEM_ID, Value)
         End Set
@@ -185,7 +185,7 @@ Public Class DropdownItem
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property ActiveFlag() As String
+    Public Property ActiveFlag As String
         Get
             CheckDeleted()
             If Row(DropdownItemDAL.COL_NAME_ACTIVE_FLAG) Is DBNull.Value Then
@@ -194,7 +194,7 @@ Public Class DropdownItem
                 Return CType(Row(DropdownItemDAL.COL_NAME_ACTIVE_FLAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DropdownItemDAL.COL_NAME_ACTIVE_FLAG, Value)
         End Set

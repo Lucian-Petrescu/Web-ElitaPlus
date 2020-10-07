@@ -805,7 +805,7 @@ Namespace Interfaces
             Dim oTextBox As TextBox = CType(Row.FindControl(TextBoxName), TextBox)
             Dim Value As String = Nothing
 
-            If (oTextBox IsNot Nothing And Not String.IsNullOrWhiteSpace(oTextBox.Text)) Then
+            If (oTextBox IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(oTextBox.Text)) Then
                 Value = oTextBox.Text
             End If
 
@@ -815,10 +815,10 @@ Namespace Interfaces
 
         Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
-                If (e.Row.DataItem IsNot Nothing And (e.Row.RowType = DataControlRowType.DataRow) OrElse (e.Row.RowType = DataControlRowType.Separator)) Then
+                If (e.Row.DataItem IsNot Nothing AndAlso (e.Row.RowType = DataControlRowType.DataRow) OrElse (e.Row.RowType = DataControlRowType.Separator)) Then
                     Dim DetailRecord As FileDetailsRecordDto = CType(e.Row.DataItem, FileDetailsRecordDto)
 
-                    If (DetailRecord IsNot Nothing And DetailRecord.RecordContents IsNot Nothing) Then
+                    If (DetailRecord IsNot Nothing AndAlso DetailRecord.RecordContents IsNot Nothing) Then
                         Dim ClaimInfo As ReportClaim = CType(DetailRecord.RecordContents, ReportClaim)
 
                         With e.Row
@@ -1044,7 +1044,7 @@ Namespace Interfaces
             Try
                 Dim AdditionalInfoGrid As GridView = TryCast(sender, GridView)
 
-                If (AdditionalInfoGrid IsNot Nothing And e.Row.DataItem IsNot Nothing) Then
+                If (AdditionalInfoGrid IsNot Nothing AndAlso e.Row.DataItem IsNot Nothing) Then
                     Dim oTextBox As TextBox = Nothing
                     Dim AdditionalInfoItem As AdditionalInfo = TryCast(e.Row.DataItem, AdditionalInfo)
 
@@ -1106,7 +1106,7 @@ Namespace Interfaces
             Try
                 Dim FinancialInfoGrid As GridView = TryCast(sender, GridView)
 
-                If (FinancialInfoGrid IsNot Nothing And e.Row.DataItem IsNot Nothing) Then
+                If (FinancialInfoGrid IsNot Nothing AndAlso e.Row.DataItem IsNot Nothing) Then
                     Dim oTextBox As TextBox = Nothing
                     Dim FinancialInfoItem As FinancialInfo = TryCast(e.Row.DataItem, FinancialInfo)
 
@@ -1260,9 +1260,7 @@ Namespace Interfaces
             Try
                 Dim SearchInfo As SearchCriteria = Nothing
 
-                If (State.CallingPageParams IsNot Nothing And
-                    State.CallingPageParams.FileInfoParams IsNot Nothing And
-                    State.PagingInfo IsNot Nothing) Then
+                If (State.CallingPageParams IsNot Nothing AndAlso State.CallingPageParams.FileInfoParams IsNot Nothing AndAlso State.PagingInfo IsNot Nothing) Then
 
                     SearchInfo = New SearchCriteria With
                     {

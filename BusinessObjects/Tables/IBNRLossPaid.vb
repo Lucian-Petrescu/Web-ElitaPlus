@@ -90,7 +90,7 @@ Public Class IbnrLossPaid
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(IbnrLossPaidDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class IbnrLossPaid
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(IbnrLossPaidDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class IbnrLossPaid
                 Return New Guid(CType(row(IbnrLossPaidDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(IbnrLossPaidDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class IbnrLossPaid
 
 
     <ValueMandatory("")> _
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If row(IbnrLossPaidDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class IbnrLossPaid
                 Return New Guid(CType(row(IbnrLossPaidDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(IbnrLossPaidDAL.COL_NAME_CLAIM_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class IbnrLossPaid
 
 
 
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If row(IbnrLossPaidDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class IbnrLossPaid
                 Return New Guid(CType(row(IbnrLossPaidDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(IbnrLossPaidDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class IbnrLossPaid
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=3)> _
-    Public Property CompanyKey() As String
+    Public Property CompanyKey As String
         Get
             CheckDeleted()
             If row(IbnrLossPaidDAL.COL_NAME_COMPANY_KEY) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class IbnrLossPaid
                 Return CType(row(IbnrLossPaidDAL.COL_NAME_COMPANY_KEY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(IbnrLossPaidDAL.COL_NAME_COMPANY_KEY, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class IbnrLossPaid
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)>
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If row(IbnrLossPaidDAL.COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class IbnrLossPaid
                 Return CType(row(IbnrLossPaidDAL.COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(IbnrLossPaidDAL.COL_NAME_CLAIM_NUMBER, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class IbnrLossPaid
 
 
     <ValueMandatory("")> _
-    Public Property AmountOfLoss() As DecimalType
+    Public Property AmountOfLoss As DecimalType
         Get
             CheckDeleted()
             If row(IbnrLossPaidDAL.COL_NAME_AMOUNT_OF_LOSS) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class IbnrLossPaid
                 Return New DecimalType(CType(row(IbnrLossPaidDAL.COL_NAME_AMOUNT_OF_LOSS), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(IbnrLossPaidDAL.COL_NAME_AMOUNT_OF_LOSS, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class IbnrLossPaid
 
 
     <ValueMandatory("")> _
-    Public Property DateOfLoss() As DateType
+    Public Property DateOfLoss As DateType
         Get
             CheckDeleted()
             If row(IbnrLossPaidDAL.COL_NAME_DATE_OF_LOSS) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class IbnrLossPaid
                 Return New DateType(CType(row(IbnrLossPaidDAL.COL_NAME_DATE_OF_LOSS), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(IbnrLossPaidDAL.COL_NAME_DATE_OF_LOSS, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class IbnrLossPaid
 
 
     <ValueMandatory("")> _
-    Public Property DateInvoicePaid() As DateType
+    Public Property DateInvoicePaid As DateType
         Get
             CheckDeleted()
             If row(IbnrLossPaidDAL.COL_NAME_DATE_INVOICE_PAID) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class IbnrLossPaid
                 Return New DateType(CType(row(IbnrLossPaidDAL.COL_NAME_DATE_INVOICE_PAID), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(IbnrLossPaidDAL.COL_NAME_DATE_INVOICE_PAID, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class IbnrLossPaid
 
 
 
-    Public Property PeriodInMonths() As LongType
+    Public Property PeriodInMonths As LongType
         Get
             CheckDeleted()
             If row(IbnrLossPaidDAL.COL_NAME_PERIOD_IN_MONTHS) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class IbnrLossPaid
                 Return New LongType(CType(row(IbnrLossPaidDAL.COL_NAME_PERIOD_IN_MONTHS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(IbnrLossPaidDAL.COL_NAME_PERIOD_IN_MONTHS, Value)
         End Set
@@ -254,7 +254,7 @@ Public Class IbnrLossPaid
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property CoverageType() As String
+    Public Property CoverageType As String
         Get
             CheckDeleted()
             If row(IbnrLossPaidDAL.COL_NAME_COVERAGE_TYPE) Is DBNull.Value Then
@@ -263,7 +263,7 @@ Public Class IbnrLossPaid
                 Return CType(row(IbnrLossPaidDAL.COL_NAME_COVERAGE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(IbnrLossPaidDAL.COL_NAME_COVERAGE_TYPE, Value)
         End Set
@@ -271,7 +271,7 @@ Public Class IbnrLossPaid
 
 
 
-    Public Property AccountingDate() As DateType
+    Public Property AccountingDate As DateType
         Get
             CheckDeleted()
             If row(IbnrLossPaidDAL.COL_NAME_ACCOUNTING_DATE) Is DBNull.Value Then
@@ -280,7 +280,7 @@ Public Class IbnrLossPaid
                 Return New DateType(CType(row(IbnrLossPaidDAL.COL_NAME_ACCOUNTING_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(IbnrLossPaidDAL.COL_NAME_ACCOUNTING_DATE, Value)
         End Set
@@ -288,7 +288,7 @@ Public Class IbnrLossPaid
 
 
     <ValidStringLength("", Max:=7)> _
-    Public Property AccountingMmyyyy() As String
+    Public Property AccountingMmyyyy As String
         Get
             CheckDeleted()
             If row(IbnrLossPaidDAL.COL_NAME_ACCOUNTING_MMYYYY) Is DBNull.Value Then
@@ -297,7 +297,7 @@ Public Class IbnrLossPaid
                 Return CType(row(IbnrLossPaidDAL.COL_NAME_ACCOUNTING_MMYYYY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(IbnrLossPaidDAL.COL_NAME_ACCOUNTING_MMYYYY, Value)
         End Set
@@ -305,7 +305,7 @@ Public Class IbnrLossPaid
 
 
     <ValidStringLength("", Max:=7)> _
-    Public Property AccountingMmyyyyPaid() As String
+    Public Property AccountingMmyyyyPaid As String
         Get
             CheckDeleted()
             If row(IbnrLossPaidDAL.COL_NAME_ACCOUNTING_MMYYYY_PAID) Is DBNull.Value Then
@@ -314,7 +314,7 @@ Public Class IbnrLossPaid
                 Return CType(row(IbnrLossPaidDAL.COL_NAME_ACCOUNTING_MMYYYY_PAID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(IbnrLossPaidDAL.COL_NAME_ACCOUNTING_MMYYYY_PAID, Value)
         End Set

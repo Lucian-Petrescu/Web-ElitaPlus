@@ -97,7 +97,7 @@ Public Class SpecialService
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(SpecialServiceDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -108,7 +108,7 @@ Public Class SpecialService
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -117,7 +117,7 @@ Public Class SpecialService
                 Return CType(Row(SpecialServiceDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SpecialServiceDAL.COL_NAME_CODE, Value)
         End Set
@@ -125,7 +125,7 @@ Public Class SpecialService
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -134,7 +134,7 @@ Public Class SpecialService
                 Return CType(Row(SpecialServiceDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SpecialServiceDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -142,7 +142,7 @@ Public Class SpecialService
 
 
     <ValueMandatoryCovergeLoss(""), ValidCovergeLoss("")> _
-    Public Property CoverageLossId() As Guid
+    Public Property CoverageLossId As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_COVERAGE_LOSS_ID) Is DBNull.Value Then
@@ -151,7 +151,7 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_COVERAGE_LOSS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SpecialServiceDAL.COL_NAME_COVERAGE_LOSS_ID, Value)
         End Set
@@ -159,7 +159,7 @@ Public Class SpecialService
 
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -168,7 +168,7 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SpecialServiceDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -176,7 +176,7 @@ Public Class SpecialService
 
 
     <ValueMandatory(""), ValidateAvailableSvcCenter("")> _
-    Public Property AvailableForServCenterId() As Guid
+    Public Property AvailableForServCenterId As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_AVAILABLE_FOR_SERV_CENTER_ID) Is DBNull.Value Then
@@ -185,7 +185,7 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_AVAILABLE_FOR_SERV_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SpecialServiceDAL.COL_NAME_AVAILABLE_FOR_SERV_CENTER_ID, Value)
         End Set
@@ -193,7 +193,7 @@ Public Class SpecialService
 
 
     <ValueMandatory("")> _
-    Public Property AddItemAllowed() As Guid
+    Public Property AddItemAllowed As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_ADD_ITEM_ALLOWED) Is DBNull.Value Then
@@ -202,7 +202,7 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_ADD_ITEM_ALLOWED), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SpecialServiceDAL.COL_NAME_ADD_ITEM_ALLOWED, Value)
         End Set
@@ -210,7 +210,7 @@ Public Class SpecialService
 
 
     <ValueMandatory("")> _
-    Public Property AddItemAfterExpired() As Guid
+    Public Property AddItemAfterExpired As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_ADD_ITEM_AFTER_EXPIRED) Is DBNull.Value Then
@@ -219,7 +219,7 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_ADD_ITEM_AFTER_EXPIRED), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SpecialServiceDAL.COL_NAME_ADD_ITEM_AFTER_EXPIRED, Value)
         End Set
@@ -227,7 +227,7 @@ Public Class SpecialService
 
 
     <ValueMandatory(""), ValidateAuthorizedAmountFrom("")> _
-    Public Property PriceGroupFieldId() As Guid
+    Public Property PriceGroupFieldId As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_PRICE_GROUP_FIELD_ID) Is DBNull.Value Then
@@ -236,7 +236,7 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_PRICE_GROUP_FIELD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SpecialServiceDAL.COL_NAME_PRICE_GROUP_FIELD_ID, Value)
         End Set
@@ -244,7 +244,7 @@ Public Class SpecialService
 
 
     <ValueMandatory("")> _
-    Public Property AllowedOccurrencesId() As Guid
+    Public Property AllowedOccurrencesId As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_ALLOWED_OCCURRENCES_ID) Is DBNull.Value Then
@@ -253,7 +253,7 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_ALLOWED_OCCURRENCES_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SpecialServiceDAL.COL_NAME_ALLOWED_OCCURRENCES_ID, Value)
         End Set
@@ -261,7 +261,7 @@ Public Class SpecialService
 
 
     <ValueMandatory("")> _
-    Public Property CombinedWithRepair() As Guid
+    Public Property CombinedWithRepair As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_COMBINED_WITH_REPAIR) Is DBNull.Value Then
@@ -270,14 +270,14 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_COMBINED_WITH_REPAIR), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SpecialServiceDAL.COL_NAME_COMBINED_WITH_REPAIR, Value)
         End Set
     End Property
 
     '<ValueMandatory("")> _
-    Public Property ServiceClassId() As Guid
+    Public Property ServiceClassId As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.DB_COL_NAME_SERVICE_CLASS_ID) Is DBNull.Value Then
@@ -286,14 +286,14 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.DB_COL_NAME_SERVICE_CLASS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SpecialServiceDAL.DB_COL_NAME_SERVICE_CLASS_ID, Value)
         End Set
     End Property
 
     '<ValueMandatory("")> _
-    Public Property ServiceTypeId() As Guid
+    Public Property ServiceTypeId As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.DB_COL_NAME_SERVICE_TYPE_ID) Is DBNull.Value Then
@@ -302,7 +302,7 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.DB_COL_NAME_SERVICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SpecialServiceDAL.DB_COL_NAME_SERVICE_TYPE_ID, Value)
         End Set
@@ -331,7 +331,7 @@ Public Class SpecialService
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Dim bDirty As Boolean
 
@@ -462,7 +462,7 @@ Public Class SpecialService
 #Region "ProductCodes"
 
 
-    Public ReadOnly Property ProductSpecialServiceChildren() As ProductSpecialServiceList
+    Public ReadOnly Property ProductSpecialServiceChildren As ProductSpecialServiceList
         Get
             Return New ProductSpecialServiceList(Me)
         End Get

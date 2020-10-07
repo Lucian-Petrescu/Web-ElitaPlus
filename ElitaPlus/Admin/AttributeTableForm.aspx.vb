@@ -140,7 +140,7 @@
             Const SELECT_ACTION_COMMAND As String = "AttributesCMD"
 
             If dvRow IsNot Nothing Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     If (e.Row.Cells(GRID_COL_TABLE_NAME_IDX).FindControl("btnEditClaim") IsNot Nothing) Then
                         btnEditClaim = CType(e.Row.Cells(GRID_COL_TABLE_NAME_IDX).FindControl("btnEditClaim"), LinkButton)
                         btnEditClaim.Text = dvRow(ElitaAttribute.COL_NAME_TABLE_NAME).ToString()

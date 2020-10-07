@@ -45,7 +45,7 @@ Public Class ScrollPage
     End Sub
 
     Protected Overrides Sub Render(writer As HtmlTextWriter)
-        If UseScrollPersistence And (BodyID = Nothing) Then
+        If UseScrollPersistence AndAlso (BodyID = Nothing) Then
             Dim tempWriter As TextWriter = New StringWriter
             MyBase.Render(New HtmlTextWriter(tempWriter))
             writer.Write(Regex.Replace(tempWriter.ToString(), "<body", "<body id=""thebody"" ", RegexOptions.IgnoreCase))

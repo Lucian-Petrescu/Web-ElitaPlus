@@ -484,7 +484,7 @@ Partial Class UserControlBankInfo_New
             txtBankSubcode.Text = oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SUB_CODE)
         End If
 
-        If (Not String.IsNullOrEmpty(certTaxIdNumber) And oCompany.AttributeValues.Contains(Codes.AUTO_POPULATE_CERT_TAX_ID)) Then
+        If (Not String.IsNullOrEmpty(certTaxIdNumber) AndAlso oCompany.AttributeValues.Contains(Codes.AUTO_POPULATE_CERT_TAX_ID)) Then
             If oCompany.AttributeValues.Value(Codes.AUTO_POPULATE_CERT_TAX_ID) = Codes.YESNO_Y Then
                 txtTaxId.Text = certTaxIdNumber
             End If
@@ -794,7 +794,7 @@ Partial Class UserControlBankInfo_New
     End Sub
 
     Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
-        If (Not (State.myBankInfoBo.SourceCountryID.Equals(Guid.Empty))) And (Not (Page.GetSelectedItem(moCountryDrop_WRITE).Equals(Guid.Empty))) Then
+        If (Not (State.myBankInfoBo.SourceCountryID.Equals(Guid.Empty))) AndAlso (Not (Page.GetSelectedItem(moCountryDrop_WRITE).Equals(Guid.Empty))) Then
             If State.myBankInfoBo.SourceCountryID.Equals(Page.GetSelectedItem(moCountryDrop_WRITE)) Then
                 'Domestic transfer
                 DomesticTransfer()
@@ -1047,7 +1047,7 @@ Partial Class UserControlBankInfo_New
                 Dim Payee As String
                 If (CType(Parent.FindControl("cboPayeeSelector"), DropDownList) IsNot Nothing) Then
 
-                    If (CType(Parent.FindControl("cboPayeeSelector"), DropDownList).Items.Count > 0 And CType(Parent.FindControl("cboPayeeSelector"), DropDownList).SelectedItem IsNot Nothing) Then
+                    If (CType(Parent.FindControl("cboPayeeSelector"), DropDownList).Items.Count > 0 AndAlso CType(Parent.FindControl("cboPayeeSelector"), DropDownList).SelectedItem IsNot Nothing) Then
                         Payee = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, ElitaPlusPage.GetSelectedItem(CType(Parent.FindControl("cboPayeeSelector"), DropDownList)))
                     End If
 

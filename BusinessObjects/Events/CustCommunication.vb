@@ -90,7 +90,7 @@ Public Class CustCommunication
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CustCommunicationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class CustCommunication
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property EntityName() As String
+    Public Property EntityName As String
         Get
             CheckDeleted()
             If Row(CustCommunicationDAL.COL_NAME_ENTITY_NAME) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class CustCommunication
                 Return CType(Row(CustCommunicationDAL.COL_NAME_ENTITY_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustCommunicationDAL.COL_NAME_ENTITY_NAME, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class CustCommunication
 
 
 
-    Public Property EntityId() As Guid
+    Public Property EntityId As Guid
         Get
             CheckDeleted()
             If Row(CustCommunicationDAL.COL_NAME_ENTITY_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class CustCommunication
                 Return New Guid(CType(Row(CustCommunicationDAL.COL_NAME_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CustCommunicationDAL.COL_NAME_ENTITY_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class CustCommunication
 
 
     <ValidStringLength("", Max:=200)>
-    Public Property Direction() As String
+    Public Property Direction As String
         Get
             CheckDeleted()
             If Row(CustCommunicationDAL.COL_NAME_DIRECTION) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class CustCommunication
                 Return CType(Row(CustCommunicationDAL.COL_NAME_DIRECTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustCommunicationDAL.COL_NAME_DIRECTION, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class CustCommunication
 
 
     <ValidStringLength("", Max:=200)>
-    Public Property CommunicationChannel() As String
+    Public Property CommunicationChannel As String
         Get
             CheckDeleted()
             If Row(CustCommunicationDAL.COL_NAME_COMMUNICATION_CHANNEL) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class CustCommunication
                 Return CType(Row(CustCommunicationDAL.COL_NAME_COMMUNICATION_CHANNEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustCommunicationDAL.COL_NAME_COMMUNICATION_CHANNEL, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class CustCommunication
 
 
     <ValidStringLength("", Max:=200)>
-    Public Property CommunicationFormat() As String
+    Public Property CommunicationFormat As String
         Get
             CheckDeleted()
             If Row(CustCommunicationDAL.COL_NAME_COMMUNICATION_FORMAT) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class CustCommunication
                 Return CType(Row(CustCommunicationDAL.COL_NAME_COMMUNICATION_FORMAT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustCommunicationDAL.COL_NAME_COMMUNICATION_FORMAT, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class CustCommunication
 
 
 
-    Public Property CustContactId() As Guid
+    Public Property CustContactId As Guid
         Get
             CheckDeleted()
             If Row(CustCommunicationDAL.COL_NAME_CUST_CONTACT_ID) Is DBNull.Value Then
@@ -195,14 +195,14 @@ Public Class CustCommunication
                 Return New Guid(CType(Row(CustCommunicationDAL.COL_NAME_CUST_CONTACT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CustCommunicationDAL.COL_NAME_CUST_CONTACT_ID, Value)
         End Set
     End Property
 
 
-    Public Property CustomerId() As Guid
+    Public Property CustomerId As Guid
         Get
             CheckDeleted()
             If Row(CustCommunicationDAL.COL_NAME_CUSTOMER_ID) Is DBNull.Value Then
@@ -211,7 +211,7 @@ Public Class CustCommunication
                 Return New Guid(CType(Row(CustCommunicationDAL.COL_NAME_CUSTOMER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CustCommunicationDAL.COL_NAME_CUSTOMER_ID, Value)
         End Set
@@ -219,7 +219,7 @@ Public Class CustCommunication
 
 
     <ValidStringLength("", Max:=200)>
-    Public Property CommunicationComponent() As String
+    Public Property CommunicationComponent As String
         Get
             CheckDeleted()
             If Row(CustCommunicationDAL.COL_NAME_COMMUNICATION_COMPONENT) Is DBNull.Value Then
@@ -228,7 +228,7 @@ Public Class CustCommunication
                 Return CType(Row(CustCommunicationDAL.COL_NAME_COMMUNICATION_COMPONENT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustCommunicationDAL.COL_NAME_COMMUNICATION_COMPONENT, Value)
         End Set
@@ -236,7 +236,7 @@ Public Class CustCommunication
 
 
 
-    Public Property ComponentRefId() As Guid
+    Public Property ComponentRefId As Guid
         Get
             CheckDeleted()
             If Row(CustCommunicationDAL.COL_NAME_COMPONENT_REF_ID) Is DBNull.Value Then
@@ -245,7 +245,7 @@ Public Class CustCommunication
                 Return New Guid(CType(Row(CustCommunicationDAL.COL_NAME_COMPONENT_REF_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CustCommunicationDAL.COL_NAME_COMPONENT_REF_ID, Value)
         End Set
@@ -253,7 +253,7 @@ Public Class CustCommunication
 
 
     <ValidStringLength("", Max:=200)>
-    Public Property CommunicationStatus() As String
+    Public Property CommunicationStatus As String
         Get
             CheckDeleted()
             If Row(CustCommunicationDAL.COL_NAME_COMMUNICATION_STATUS) Is DBNull.Value Then
@@ -262,7 +262,7 @@ Public Class CustCommunication
                 Return CType(Row(CustCommunicationDAL.COL_NAME_COMMUNICATION_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustCommunicationDAL.COL_NAME_COMMUNICATION_STATUS, Value)
         End Set
@@ -270,7 +270,7 @@ Public Class CustCommunication
 
 
 
-    Public Property CommResponseId() As Guid
+    Public Property CommResponseId As Guid
         Get
             CheckDeleted()
             If Row(CustCommunicationDAL.COL_NAME_COMM_RESPONSE_ID) Is DBNull.Value Then
@@ -279,7 +279,7 @@ Public Class CustCommunication
                 Return New Guid(CType(Row(CustCommunicationDAL.COL_NAME_COMM_RESPONSE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CustCommunicationDAL.COL_NAME_COMM_RESPONSE_ID, Value)
         End Set
@@ -287,7 +287,7 @@ Public Class CustCommunication
 
 
 
-    Public Property CommResponseXml() As Object
+    Public Property CommResponseXml As Object
         Get
             CheckDeleted()
             If Row(CustCommunicationDAL.COL_NAME_COMM_RESPONSE_XML) Is DBNull.Value Then
@@ -296,7 +296,7 @@ Public Class CustCommunication
                 Return CType(Row(CustCommunicationDAL.COL_NAME_COMM_RESPONSE_XML), Object)
             End If
         End Get
-        Set(ByVal Value As Object)
+        Set
             CheckDeleted()
             SetValue(CustCommunicationDAL.COL_NAME_COMM_RESPONSE_XML, Value)
         End Set
@@ -304,7 +304,7 @@ Public Class CustCommunication
 
 
     <ValidStringLength("", Max:=80)>
-    Public Property IsRetryable() As String
+    Public Property IsRetryable As String
         Get
             CheckDeleted()
             If Row(CustCommunicationDAL.COL_NAME_IS_RETRYABLE) Is DBNull.Value Then
@@ -313,7 +313,7 @@ Public Class CustCommunication
                 Return CType(Row(CustCommunicationDAL.COL_NAME_IS_RETRYABLE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustCommunicationDAL.COL_NAME_IS_RETRYABLE, Value)
         End Set
@@ -321,7 +321,7 @@ Public Class CustCommunication
 
 
     <ValidStringLength("", Max:=200)>
-    Public Property RetryCompoReference() As String
+    Public Property RetryCompoReference As String
         Get
             CheckDeleted()
             If Row(CustCommunicationDAL.COL_NAME_RETRY_COMPO_REFERENCE) Is DBNull.Value Then
@@ -330,7 +330,7 @@ Public Class CustCommunication
                 Return CType(Row(CustCommunicationDAL.COL_NAME_RETRY_COMPO_REFERENCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CustCommunicationDAL.COL_NAME_RETRY_COMPO_REFERENCE, Value)
         End Set

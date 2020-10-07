@@ -97,7 +97,7 @@ Public Class ExcludeListitemByRole
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ExcludeListitemByRoleDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -108,7 +108,7 @@ Public Class ExcludeListitemByRole
     End Property
 
     <ValueMandatory("")> _
-    Public Property ListItemId() As Guid
+    Public Property ListItemId As Guid
         Get
             CheckDeleted()
             If row(ExcludeListitemByRoleDAL.COL_NAME_LIST_ITEM_ID) Is DBNull.Value Then
@@ -117,14 +117,14 @@ Public Class ExcludeListitemByRole
                 Return New Guid(CType(row(ExcludeListitemByRoleDAL.COL_NAME_LIST_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ExcludeListitemByRoleDAL.COL_NAME_LIST_ITEM_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(ExcludeListitemByRoleDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -133,14 +133,14 @@ Public Class ExcludeListitemByRole
                 Return New Guid(CType(row(ExcludeListitemByRoleDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ExcludeListitemByRoleDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ListId() As Guid
+    Public Property ListId As Guid
         Get
             CheckDeleted()
             If row(ExcludeListitemByRoleDAL.COL_NAME_LIST_ID) Is DBNull.Value Then
@@ -149,18 +149,18 @@ Public Class ExcludeListitemByRole
                 Return New Guid(CType(row(ExcludeListitemByRoleDAL.COL_NAME_LIST_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ExcludeListitemByRoleDAL.COL_NAME_LIST_ID, Value)
         End Set
     End Property
 
     <ValidExcludedRolesCount("")> _
-    Public Property ExcludedRolesCount() As Integer
+    Public Property ExcludedRolesCount As Integer
         Get
             Return _ExcludedRolesCount
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             _ExcludedRolesCount = Value
         End Set
@@ -189,7 +189,7 @@ Public Class ExcludeListitemByRole
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Dim bDirty As Boolean
 
@@ -261,7 +261,7 @@ Public Class ExcludeListitemByRole
 
 #Region "Children Related"
 
-    Public ReadOnly Property ExcludedLiRoleChildren() As ExcludedLiRolesList
+    Public ReadOnly Property ExcludedLiRoleChildren As ExcludedLiRolesList
         Get
             Return New ExcludedLiRolesList(Me)
         End Get

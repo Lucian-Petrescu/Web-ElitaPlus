@@ -118,7 +118,7 @@ Namespace Certificates
                     If dv.Table.Rows(0)("work_phone") IsNot System.DBNull.Value Then
                         WorkPhoneTD.InnerText = dv.Table.Rows(0)("work_phone")
                     End If
-                    If dv.Table.Rows(0)("address1") IsNot System.DBNull.Value Or dv.Table.Rows(0)("address2") IsNot System.DBNull.Value Or dv.Table.Rows(0)("address3") IsNot System.DBNull.Value Then
+                    If dv.Table.Rows(0)("address1") IsNot System.DBNull.Value OrElse dv.Table.Rows(0)("address2") IsNot System.DBNull.Value OrElse dv.Table.Rows(0)("address3") IsNot System.DBNull.Value Then
                         AddressTD.InnerText = dv.Table.Rows(0)("address1") & " " & dv.Table.Rows(0)("address2") & " " & dv.Table.Rows(0)("address3")
                     End If
                     If dv.Table.Rows(0)("city") IsNot System.DBNull.Value Then

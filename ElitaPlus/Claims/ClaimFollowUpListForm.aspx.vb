@@ -571,7 +571,7 @@ Namespace Claims
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
             Dim btnEditButtonCode As LinkButton
             Try
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                     If (e.Item.Cells(GRID_COL_CLAIM_NUMBER_IDX).FindControl(GRID_COL_CODE_CTRL) IsNot Nothing) Then
                         btnEditButtonCode = CType(e.Item.Cells(GRID_COL_CLAIM_NUMBER_IDX).FindControl(GRID_COL_CODE_CTRL), LinkButton)

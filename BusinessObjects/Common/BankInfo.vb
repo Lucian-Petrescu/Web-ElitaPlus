@@ -121,7 +121,7 @@ Public Class BankInfo
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(BankInfoDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -131,7 +131,7 @@ Public Class BankInfo
         End Get
     End Property
     <ValueMandatory("")>
-    Public Property CountryID() As Guid
+    Public Property CountryID As Guid
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -140,14 +140,14 @@ Public Class BankInfo
                 Return New Guid(CType(Row(BankInfoDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
     <ValidateAccountNameForCountries(""), ValidStringLength("", Max:=50)>
-    Public Property Account_Name() As String
+    Public Property Account_Name As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_ACCOUNT_NAME) Is DBNull.Value Then
@@ -156,12 +156,12 @@ Public Class BankInfo
                 Return CType(Row(BankInfoDAL.COL_NAME_ACCOUNT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_ACCOUNT_NAME, Value)
         End Set
     End Property
-    Public ReadOnly Property Account_Name_Obfuscated() As String
+    Public ReadOnly Property Account_Name_Obfuscated As String
         Get
             If Row(BankInfoDAL.COL_NAME_ACCOUNT_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -182,7 +182,7 @@ Public Class BankInfo
     End Property
 
     <ValidBankIDLengthFromCountry("")>
-    Public Property Bank_Id() As String
+    Public Property Bank_Id As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_BANK_ID) Is DBNull.Value Then
@@ -191,7 +191,7 @@ Public Class BankInfo
                 Return CType(Row(BankInfoDAL.COL_NAME_BANK_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_BANK_ID, Value)
         End Set
@@ -199,7 +199,7 @@ Public Class BankInfo
 
 
     <ValidAcctNOLengthFromCountry(""), ValidStringLength("", Max:=29)>
-    Public Property Account_Number() As String
+    Public Property Account_Number As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_ACCOUNT_NUMBER) Is DBNull.Value Then
@@ -208,14 +208,14 @@ Public Class BankInfo
                 Return CType(Row(BankInfoDAL.COL_NAME_ACCOUNT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_ACCOUNT_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40), ValidSwiftCode("")>
-    Public Property SwiftCode() As String
+    Public Property SwiftCode As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_SWIFT_CODE) Is DBNull.Value Then
@@ -224,14 +224,14 @@ Public Class BankInfo
                 Return CType(Row(BankInfoDAL.COL_NAME_SWIFT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_SWIFT_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40), ValidIBAN_Number("")>
-    Public Property IbanNumber() As String
+    Public Property IbanNumber As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_IBAN_NUMBER) Is DBNull.Value Then
@@ -240,12 +240,12 @@ Public Class BankInfo
                 Return CType(Row(BankInfoDAL.COL_NAME_IBAN_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_IBAN_NUMBER, Value)
         End Set
     End Property
-    Public ReadOnly Property OriginalIbanNumber() As String
+    Public ReadOnly Property OriginalIbanNumber As String
         Get
             Return _OriginalIbanNumber
         End Get
@@ -256,7 +256,7 @@ Public Class BankInfo
     End Sub
 
     <ValidateAccountTypeForbrasil("")>
-    Public Property AccountTypeId() As Guid
+    Public Property AccountTypeId As Guid
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_ACCOUNT_TYPE_ID) Is DBNull.Value Then
@@ -265,14 +265,14 @@ Public Class BankInfo
                 Return New Guid(CType(Row(BankInfoDAL.COL_NAME_ACCOUNT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_ACCOUNT_TYPE_ID, Value)
         End Set
     End Property
 
     '*ANI
-    Public Property PaymentReasonID() As Guid
+    Public Property PaymentReasonID As Guid
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_PAYMENT_REASON_ID) Is DBNull.Value Then
@@ -288,14 +288,14 @@ Public Class BankInfo
                 Return New Guid(CType(Row(BankInfoDAL.COL_NAME_PAYMENT_REASON_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_PAYMENT_REASON_ID, Value)
         End Set
     End Property '*ANI
 
     <ValidStringLength("", Max:=200)>
-    Public Property BranchName() As String
+    Public Property BranchName As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_BRANCH_NAME) Is DBNull.Value Then
@@ -304,14 +304,14 @@ Public Class BankInfo
                 Return CType(Row(BankInfoDAL.COL_NAME_BRANCH_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_BRANCH_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50), ValidateBankNameForbrasil("")>
-    Public Property BankName() As String
+    Public Property BankName As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_BANK_NAME) Is DBNull.Value Then
@@ -320,14 +320,14 @@ Public Class BankInfo
                 Return CType(Row(BankInfoDAL.COL_NAME_BANK_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_BANK_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property BankSortCode() As String
+    Public Property BankSortCode As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_BANK_SORT_CODE) Is DBNull.Value Then
@@ -336,14 +336,14 @@ Public Class BankInfo
                 Return CType(Row(BankInfoDAL.COL_NAME_BANK_SORT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_BANK_SORT_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)>
-    Public Property BankSubCode() As String
+    Public Property BankSubCode As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_BANK_SUB_CODE) Is DBNull.Value Then
@@ -352,14 +352,14 @@ Public Class BankInfo
                 Return CType(Row(BankInfoDAL.COL_NAME_BANK_SUB_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_BANK_SUB_CODE, Value)
         End Set
     End Property
 
     <ValidAmount("")>
-    Public Property TransactionLimit() As DecimalType
+    Public Property TransactionLimit As DecimalType
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_TRANSACTION_LIMIT) Is DBNull.Value Then
@@ -368,14 +368,14 @@ Public Class BankInfo
                 Return New DecimalType(CType(Row(BankInfoDAL.COL_NAME_TRANSACTION_LIMIT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_TRANSACTION_LIMIT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property BankLookupCode() As String
+    Public Property BankLookupCode As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_BANK_LOOKUP_CODE) Is DBNull.Value Then
@@ -384,82 +384,82 @@ Public Class BankInfo
                 Return CType(Row(BankInfoDAL.COL_NAME_BANK_LOOKUP_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_BANK_LOOKUP_CODE, Value)
         End Set
     End Property
 
-    Public Property SourceCountryID() As Guid
+    Public Property SourceCountryID As Guid
         Get
             Return _sourceCountryID
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _sourceCountryID = Value
         End Set
     End Property
-    Public Property ValidateFieldsforBR() As Boolean
+    Public Property ValidateFieldsforBR As Boolean
         Get
             Return _BRValidation
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _BRValidation = Value
         End Set
     End Property
 
-    Public Property ValidateFieldsforFR() As Boolean
+    Public Property ValidateFieldsforFR As Boolean
         Get
             Return _FRValidation
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _FRValidation = Value
         End Set
     End Property
-    Public Property ValidateBankFields() As Boolean
+    Public Property ValidateBankFields As Boolean
         Get
             Return _validateBankFields
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _validateBankFields = Value
         End Set
     End Property
 
     <ValidDomesticTransfer("")>
-    Public Property DomesticTransfer() As Boolean
+    Public Property DomesticTransfer As Boolean
         Get
             Return _domesticTransfer
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _domesticTransfer = Value
         End Set
     End Property
 
     <ValidInternationalTransfer("")>
-    Public Property InternationalTransfer() As Boolean
+    Public Property InternationalTransfer As Boolean
         Get
             Return _InternationalTransfer
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _InternationalTransfer = Value
         End Set
     End Property
 
     <ValidInternationalEUTransfer("")>
-    Public Property InternationalEUTransfer() As Boolean
+    Public Property InternationalEUTransfer As Boolean
         Get
             Return _InternationalEUTransfer
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _InternationalEUTransfer = Value
         End Set
     End Property
 
     <ValidInternationalEUTransfer("")>
-    Public Property SepaEUBankTransfer() As Boolean
+    Public Property SepaEUBankTransfer As Boolean
         Get
             Return _sepaEUBankTransfer
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _sepaEUBankTransfer = Value
         End Set
     End Property
@@ -474,7 +474,7 @@ Public Class BankInfo
                 Return New LongType(CType(Row(BankInfoDAL.COL_NAME_BRANCH_DIGIT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_BRANCH_DIGIT, Value)
         End Set
@@ -482,7 +482,7 @@ Public Class BankInfo
 
 
     <ValidateAccountDigitForbrasil("")>
-    Public Property AccountDigit() As LongType
+    Public Property AccountDigit As LongType
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_ACCOUNT_DIGIT) Is DBNull.Value Then
@@ -491,14 +491,14 @@ Public Class BankInfo
                 Return New LongType(CType(Row(BankInfoDAL.COL_NAME_ACCOUNT_DIGIT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_ACCOUNT_DIGIT, Value)
         End Set
     End Property
 
     <ValidateBranchNumberForbrasil("")>
-    Public Property BranchNumber() As LongType
+    Public Property BranchNumber As LongType
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_BRANCH_NUMBER) Is DBNull.Value Then
@@ -507,32 +507,32 @@ Public Class BankInfo
                 Return New LongType(CType(Row(BankInfoDAL.COL_NAME_BRANCH_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_BRANCH_NUMBER, Value)
         End Set
     End Property
 
-    Public Property PaymentMethodId() As Guid
+    Public Property PaymentMethodId As Guid
         Get
             Return _PaymentMethodId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _PaymentMethodId = Value
         End Set
     End Property
 
-    Public Property PayeeId() As Guid
+    Public Property PayeeId As Guid
         Get
             Return _PayeeId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _PayeeId = Value
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property TaxId() As String
+    Public Property TaxId As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_TAX_ID) Is DBNull.Value Then
@@ -541,13 +541,13 @@ Public Class BankInfo
                 Return CType(Row(BankInfoDAL.COL_NAME_TAX_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_TAX_ID, Value)
         End Set
     End Property
 
-    Public Property AddressId() As Guid
+    Public Property AddressId As Guid
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_ADDRESS_ID) Is DBNull.Value Then
@@ -556,7 +556,7 @@ Public Class BankInfo
                 Return New Guid(CType(Row(BankInfoDAL.COL_NAME_ADDRESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_ADDRESS_ID, Value)
         End Set
@@ -565,7 +565,7 @@ Public Class BankInfo
 
     Private _Address As Address = Nothing
 
-    Public ReadOnly Property BankInfoAddress() As Address
+    Public ReadOnly Property BankInfoAddress As Address
         Get
             If _Address Is Nothing Then
                 If AddressId.Equals(Guid.Empty) Then
@@ -585,7 +585,7 @@ Public Class BankInfo
 
 
     ' This field is a compute field, so It must be just for READONLY purpose
-    Public Property IbanNumberLast4Digits() As String
+    Public Property IbanNumberLast4Digits As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_IBAN_NUMBER_LAST4DIGITS) Is DBNull.Value Then
@@ -594,13 +594,13 @@ Public Class BankInfo
                 Return CType(Row(BankInfoDAL.COL_NAME_IBAN_NUMBER_LAST4DIGITS), String)
             End If
         End Get
-        Private Set(ByVal Value As String)
+        Private Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_IBAN_NUMBER_LAST4DIGITS, Value)
         End Set
     End Property
 
-    Public Property Account_Number_Last4Digits() As String
+    Public Property Account_Number_Last4Digits As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_ACCOUNT_NUMBER_LAST4DIGITS) Is DBNull.Value Then
@@ -609,7 +609,7 @@ Public Class BankInfo
                 Return CType(Row(BankInfoDAL.COL_NAME_ACCOUNT_NUMBER_LAST4DIGITS), String)
             End If
         End Get
-        Private Set(ByVal Value As String)
+        Private Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_ACCOUNT_NUMBER_LAST4DIGITS, Value)
         End Set
@@ -1365,7 +1365,7 @@ Public Class BankInfo
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty OrElse
             (Not BankInfoAddress.IsNew And BankInfoAddress.IsDirty) OrElse
@@ -1384,7 +1384,7 @@ Public Class BankInfo
 
     End Sub
 
-    Public ReadOnly Property IsEmpty() As Boolean
+    Public ReadOnly Property IsEmpty As Boolean
         Get
             If (Not IsEmptyString(Account_Name)) OrElse (Not IsEmptyNumber(Account_Number)) OrElse
             (Not IsEmptyNumber(Bank_Id)) Then

@@ -88,7 +88,7 @@
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(SearchConfigDAL.TableKeyName) Is DBNull.Value Then
                 Return Nothing
@@ -99,7 +99,7 @@
     End Property
 	
     <ValueMandatory(""),ValidStringLength("", Max:=400)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(SearchConfigDAL.ColNameCode) Is DBNull.Value Then
@@ -108,7 +108,7 @@
                 Return CType(row(SearchConfigDAL.ColNameCode), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(SearchConfigDAL.ColNameCode, Value)
         End Set
@@ -116,7 +116,7 @@
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=4000)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(SearchConfigDAL.ColNameDescription) Is DBNull.Value Then
@@ -125,7 +125,7 @@
                 Return CType(row(SearchConfigDAL.ColNameDescription), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(SearchConfigDAL.ColNameDescription, Value)
         End Set
@@ -133,7 +133,7 @@
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=400)> _
-    Public Property SearchTypeXcd() As String
+    Public Property SearchTypeXcd As String
         Get
             CheckDeleted()
             If row(SearchConfigDAL.ColNameSearchTypeXcd) Is DBNull.Value Then
@@ -142,7 +142,7 @@
                 Return CType(row(SearchConfigDAL.ColNameSearchTypeXcd), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(SearchConfigDAL.ColNameSearchTypeXcd, Value)
         End Set

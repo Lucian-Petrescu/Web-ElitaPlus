@@ -199,7 +199,7 @@ Public Class TurnAroundTimeRange
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(TurnAroundTimeRangeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -210,7 +210,7 @@ Public Class TurnAroundTimeRange
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If row(TurnAroundTimeRangeDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -219,7 +219,7 @@ Public Class TurnAroundTimeRange
                 Return New Guid(CType(row(TurnAroundTimeRangeDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TurnAroundTimeRangeDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
@@ -227,7 +227,7 @@ Public Class TurnAroundTimeRange
 
 
     <ValueMandatory("")> _
-    Public Property ColorId() As Guid
+    Public Property ColorId As Guid
         Get
             CheckDeleted()
             If row(TurnAroundTimeRangeDAL.COL_NAME_COLOR_ID) Is DBNull.Value Then
@@ -236,7 +236,7 @@ Public Class TurnAroundTimeRange
                 Return New Guid(CType(row(TurnAroundTimeRangeDAL.COL_NAME_COLOR_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TurnAroundTimeRangeDAL.COL_NAME_COLOR_ID, Value)
         End Set
@@ -244,7 +244,7 @@ Public Class TurnAroundTimeRange
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(TurnAroundTimeRangeDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -253,7 +253,7 @@ Public Class TurnAroundTimeRange
                 Return CType(Row(TurnAroundTimeRangeDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TurnAroundTimeRangeDAL.COL_NAME_CODE, Value)
         End Set
@@ -261,7 +261,7 @@ Public Class TurnAroundTimeRange
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(TurnAroundTimeRangeDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -270,7 +270,7 @@ Public Class TurnAroundTimeRange
                 Return CType(Row(TurnAroundTimeRangeDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TurnAroundTimeRangeDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -278,7 +278,7 @@ Public Class TurnAroundTimeRange
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=9998)> _
-    Public Property MinDays() As LongType
+    Public Property MinDays As LongType
         Get
             CheckDeleted()
             If row(TurnAroundTimeRangeDAL.COL_NAME_MIN_DAYS) Is DBNull.Value Then
@@ -287,7 +287,7 @@ Public Class TurnAroundTimeRange
                 Return New LongType(CType(row(TurnAroundTimeRangeDAL.COL_NAME_MIN_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(TurnAroundTimeRangeDAL.COL_NAME_MIN_DAYS, Value)
         End Set
@@ -295,7 +295,7 @@ Public Class TurnAroundTimeRange
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=1, Max:=9999)> _
-    Public Property MaxDays() As LongType
+    Public Property MaxDays As LongType
         Get
             CheckDeleted()
             If row(TurnAroundTimeRangeDAL.COL_NAME_MAX_DAYS) Is DBNull.Value Then
@@ -304,13 +304,13 @@ Public Class TurnAroundTimeRange
                 Return New LongType(CType(row(TurnAroundTimeRangeDAL.COL_NAME_MAX_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(TurnAroundTimeRangeDAL.COL_NAME_MAX_DAYS, Value)
         End Set
     End Property
 
-    Public ReadOnly Property ModefiedObjectId() As Guid
+    Public ReadOnly Property ModefiedObjectId As Guid
         Get
             Return _modefiedObjectId
         End Get

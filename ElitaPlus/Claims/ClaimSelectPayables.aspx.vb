@@ -127,7 +127,7 @@ Public Class ClaimSelectPayables
     Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
 
         Dim hasErrors As Boolean = False
-        If (Not moInvoiceDateRange.IsEmpty) Then hasErrors = hasErrors Or Not moInvoiceDateRange.Validate()
+        If (Not moInvoiceDateRange.IsEmpty) Then hasErrors = hasErrors OrElse Not moInvoiceDateRange.Validate()
         If (hasErrors) Then Exit Sub
 
         State.SearchClicked = True
@@ -144,7 +144,7 @@ Public Class ClaimSelectPayables
             'Loop through the visible items in the grid and check the status of the checkbox on each one.
             For Each pgdRow In Grid.Rows
                 chk = CType(pgdRow.FindControl(GRID_CHECK_ADD_CLAIM_AUTH_CHECKBOX), CheckBox)
-                If chk IsNot Nothing And chk.Checked = True Then
+                If chk IsNot Nothing AndAlso chk.Checked = True Then
                     payableSelected = True
                     Exit For
                 End If
@@ -186,7 +186,7 @@ Public Class ClaimSelectPayables
 
                     If chk.Checked = True Then
 
-                        If chkExcludeDed IsNot Nothing And chkExcludeDed.Checked = True Then
+                        If chkExcludeDed IsNot Nothing AndAlso chkExcludeDed.Checked = True Then
                             excludeDed = "Y"
                         Else
                             excludeDed = "N"
@@ -290,7 +290,7 @@ Public Class ClaimSelectPayables
             End If
 
             If dvRow IsNot Nothing Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                     Dim txtDueDate As Label
                     txtDueDate = CType(e.Row.Cells(GRID_CLAIM_COL_DUE_DATE_IDX).FindControl(GRID_DUE_DATE_LABEL), Label)
@@ -322,7 +322,7 @@ Public Class ClaimSelectPayables
                         End If
                         Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)
                         Dim yFullId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)
-                        If chkExcludeDed.ToolTip.Equals(String.Empty) AndAlso (objclaimAuth.PayDeductibleId.Equals(noId) Or objclaimAuth.PayDeductibleId.Equals(yFullId)) Then
+                        If chkExcludeDed.ToolTip.Equals(String.Empty) AndAlso (objclaimAuth.PayDeductibleId.Equals(noId) OrElse objclaimAuth.PayDeductibleId.Equals(yFullId)) Then
                             ControlMgr.SetEnableControl(Me, chkExcludeDed, False)
                             chkExcludeDed.ToolTip = "Dealer Does Not Pay Deductble"
                         End If

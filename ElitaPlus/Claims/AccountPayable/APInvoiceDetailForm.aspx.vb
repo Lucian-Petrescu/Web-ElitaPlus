@@ -150,7 +150,7 @@ Partial Class APInvoiceDetailForm
 #Region "Controlling logic"
     Private sub ShowButtons()
         'show Run Match button only if the invoice has unmatched lines and also not paid yet            
-        If State.UnMatchedLineCount > 0 And State.PaidAmount = 0 Then
+        If State.UnMatchedLineCount > 0 AndAlso State.PaidAmount = 0 Then
             ControlMgr.SetVisibleControl(Me, btnRunMatch_WRITE, True)
             ControlMgr.SetVisibleControl(Me, rbGetUnmatched, True)
         Else

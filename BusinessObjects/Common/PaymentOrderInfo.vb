@@ -103,7 +103,7 @@
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(BankInfoDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -113,7 +113,7 @@
         End Get
     End Property
     <ValueMandatory("")> _
-    Public Property CountryID() As Guid
+    Public Property CountryID As Guid
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -122,14 +122,14 @@
                 Return New Guid(CType(Row(BankInfoDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Account_Name() As String
+    Public Property Account_Name As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_ACCOUNT_NAME) Is DBNull.Value Then
@@ -138,7 +138,7 @@
                 Return CType(Row(BankInfoDAL.COL_NAME_ACCOUNT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_ACCOUNT_NAME, Value)
         End Set
@@ -146,7 +146,7 @@
 
 
     <ValueMandatory(""), ValidBankIDLengthFromCountry("")> _
-    Public Property Bank_Id() As String
+    Public Property Bank_Id As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_BANK_ID) Is DBNull.Value Then
@@ -155,14 +155,14 @@
                 Return CType(Row(BankInfoDAL.COL_NAME_BANK_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_BANK_ID, Value)
         End Set
     End Property
     
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property BankName() As String
+    Public Property BankName As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_BANK_NAME) Is DBNull.Value Then
@@ -171,34 +171,34 @@
                 Return CType(Row(BankInfoDAL.COL_NAME_BANK_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BankInfoDAL.COL_NAME_BANK_NAME, Value)
         End Set
     End Property
 
-    Public Property SourceCountryID() As Guid
+    Public Property SourceCountryID As Guid
         Get
             Return _sourceCountryID
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _sourceCountryID = Value
         End Set
     End Property
-    Public Property ValidateFieldsforBR() As Boolean
+    Public Property ValidateFieldsforBR As Boolean
         Get
             Return _BRValidation
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _BRValidation = Value
         End Set
     End Property
 
-    Public Property PaymentMethodId() As Guid
+    Public Property PaymentMethodId As Guid
         Get
             Return _PaymentMethodId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _PaymentMethodId = Value
         End Set
     End Property

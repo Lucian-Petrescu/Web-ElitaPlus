@@ -184,7 +184,7 @@ Public MustInherit Class ClaimBase
 #Region "Properties"
     'Key Property
     <ValidNonManufacturingCoverageType("")>
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ClaimDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -195,7 +195,7 @@ Public MustInherit Class ClaimBase
     End Property
 
     <ValueMandatory("")>
-    Public Property CertItemCoverageId() As Guid
+    Public Property CertItemCoverageId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CERT_ITEM_COVERAGE_ID) Is DBNull.Value Then
@@ -204,7 +204,7 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_CERT_ITEM_COVERAGE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             If (Not CertItemCoverageId.Equals(Value)) Then
                 SetValue(ClaimDAL.COL_NAME_CERT_ITEM_COVERAGE_ID, Value)
@@ -213,7 +213,7 @@ Public MustInherit Class ClaimBase
         End Set
     End Property
 
-    Public ReadOnly Property RiskType() As String
+    Public ReadOnly Property RiskType As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_RISK_TYPE) Is DBNull.Value Then
@@ -225,7 +225,7 @@ Public MustInherit Class ClaimBase
 
     End Property
 
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_RISK_TYPE_ID) Is DBNull.Value Then
@@ -234,13 +234,13 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_RISK_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Overridable Property ClaimActivityId() As Guid
+    Public Overridable Property ClaimActivityId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CLAIM_ACTIVITY_ID) Is DBNull.Value Then
@@ -249,13 +249,13 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_CLAIM_ACTIVITY_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_CLAIM_ACTIVITY_ID, Value)
         End Set
     End Property
 
-    Public Overridable Property ReasonClosedId() As Guid
+    Public Overridable Property ReasonClosedId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_REASON_CLOSED_ID) Is DBNull.Value Then
@@ -264,13 +264,13 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_REASON_CLOSED_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_REASON_CLOSED_ID, Value)
         End Set
     End Property
 
-    Public Overridable Property RepairCodeId() As Guid
+    Public Overridable Property RepairCodeId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_REPAIR_CODE_ID) Is DBNull.Value Then
@@ -279,13 +279,13 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_REPAIR_CODE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_REPAIR_CODE_ID, Value)
         End Set
     End Property
 
-    Public Overridable Property CauseOfLossId() As Guid
+    Public Overridable Property CauseOfLossId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CAUSE_OF_LOSS_ID) Is DBNull.Value Then
@@ -294,13 +294,13 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_CAUSE_OF_LOSS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_CAUSE_OF_LOSS_ID, Value)
         End Set
     End Property
 
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -309,13 +309,13 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
     End Property
 
-    Public Property MethodOfRepairId() As Guid
+    Public Property MethodOfRepairId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_METHOD_OF_REPAIR_ID) Is DBNull.Value Then
@@ -324,14 +324,14 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_METHOD_OF_REPAIR_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
         End Set
     End Property
 
     <ValidLawsuitId("")>
-    Public Property IsLawsuitId() As Guid
+    Public Property IsLawsuitId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_IS_LAWSUIT_ID) Is DBNull.Value Then
@@ -340,14 +340,14 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_IS_LAWSUIT_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_IS_LAWSUIT_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
@@ -356,7 +356,7 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_CLAIM_NUMBER, Value)
         End Set
@@ -364,7 +364,7 @@ Public MustInherit Class ClaimBase
 
 
     <ValidStringLength("", Max:=10)>
-    Public Property AuthorizationNumber() As String
+    Public Property AuthorizationNumber As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -373,13 +373,13 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
     End Property
 
-    Public Property LoanerCenterId() As Guid
+    Public Property LoanerCenterId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_LOANER_CENTER_ID) Is DBNull.Value Then
@@ -388,7 +388,7 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_LOANER_CENTER_ID), Byte()))
             End If
         End Get
-        Private Set(Value As Guid)
+        Private Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_LOANER_CENTER_ID, Value)
         End Set
@@ -396,7 +396,7 @@ Public MustInherit Class ClaimBase
 
 
     <ValidStringLength("", Max:=500)>
-    Public Property SpecialInstruction() As String
+    Public Property SpecialInstruction As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_SPECIAL_INSTRUCTION) Is DBNull.Value Then
@@ -405,7 +405,7 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_SPECIAL_INSTRUCTION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_SPECIAL_INSTRUCTION, Value)
         End Set
@@ -413,7 +413,7 @@ Public MustInherit Class ClaimBase
 
     <ValueMandatory(""), ValidStringLength("", Max:=1), ValidReasonClosed(""),
      Obsolete("Backward Compatability - Replace this with ClaimBase.Status - Action - Change to Private")>
-    Public Property StatusCode() As String
+    Public Property StatusCode As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_STATUS_CODE) Is DBNull.Value Then
@@ -422,14 +422,14 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_STATUS_CODE), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_STATUS_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)>
-    Public Property ContactName() As String
+    Public Property ContactName As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CONTACT_NAME) Is DBNull.Value Then
@@ -438,14 +438,14 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_CONTACT_NAME), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_CONTACT_NAME, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)>
-    Public Property CallerName() As String
+    Public Property CallerName As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CALLER_NAME) Is DBNull.Value Then
@@ -454,14 +454,14 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_CALLER_NAME), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_CALLER_NAME, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=500)>
-    Public Property ProblemDescription() As String
+    Public Property ProblemDescription As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_PROBLEM_DESCRIPTION) Is DBNull.Value Then
@@ -470,12 +470,12 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_PROBLEM_DESCRIPTION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_PROBLEM_DESCRIPTION, Value)
         End Set
     End Property
-    Public Property DeniedReasons() As String
+    Public Property DeniedReasons As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_DENIED_REASONS) Is DBNull.Value Then
@@ -484,7 +484,7 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_DENIED_REASONS), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_DENIED_REASONS, Value)
         End Set
@@ -516,7 +516,7 @@ Public MustInherit Class ClaimBase
     End Function
 
     <ValidStringLength("", Max:=50)>
-    Public Property TrackingNumber() As String
+    Public Property TrackingNumber As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_TRACKING_NUMBER) Is DBNull.Value Then
@@ -525,13 +525,13 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_TRACKING_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_TRACKING_NUMBER, Value)
         End Set
     End Property
 
-    Public Property EmployeeNumber() As String
+    Public Property EmployeeNumber As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_EMPLOYEE_NUMBER) Is DBNull.Value Then
@@ -540,13 +540,13 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_EMPLOYEE_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_EMPLOYEE_NUMBER, Value)
         End Set
     End Property
 
-    Public Property DeviceActivationDate() As DateType
+    Public Property DeviceActivationDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_DEVICE_ACTIVATION_DATE) Is DBNull.Value Then
@@ -555,13 +555,13 @@ Public MustInherit Class ClaimBase
                 Return New DateType(DateHelper.GetDateValue(Row(ClaimDAL.COL_NAME_DEVICE_ACTIVATION_DATE).ToString()))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_DEVICE_ACTIVATION_DATE, Value)
         End Set
     End Property
 
-    Public Property FulfilmentMethod() As String
+    Public Property FulfilmentMethod As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_FULFILMENT_METHOD_XCD) Is DBNull.Value Then
@@ -570,12 +570,12 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_FULFILMENT_METHOD_XCD), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_FULFILMENT_METHOD_XCD, Value)
         End Set
     End Property
-    Public Property FulfillmentProviderType() As FulfillmentProviderType
+    Public Property FulfillmentProviderType As FulfillmentProviderType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP) Is DBNull.Value Then
@@ -589,12 +589,12 @@ Public MustInherit Class ClaimBase
                 End If
             End If
         End Get
-        Set(Value As FulfillmentProviderType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP, Value)
         End Set
     End Property
-    Public Property BankInfoId() As Guid
+    Public Property BankInfoId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_BANK_INFO_ID) Is DBNull.Value Then
@@ -603,14 +603,14 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_BANK_INFO_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_BANK_INFO_ID, Value)
         End Set
     End Property
 
 
-    Public Property LiabilityLimit() As DecimalType
+    Public Property LiabilityLimit As DecimalType
         Get
             CheckDeleted()
             Dim lLimit As Decimal = 0D
@@ -635,13 +635,13 @@ Public MustInherit Class ClaimBase
                 End If
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_LIABILITY_LIMIT, Value)
         End Set
     End Property
 
-    Public Property Deductible() As DecimalType
+    Public Property Deductible As DecimalType
         Get
             CheckDeleted()
             Dim deduct As Decimal = 0D
@@ -651,13 +651,13 @@ Public MustInherit Class ClaimBase
                 Return New DecimalType(CType(Row(ClaimDAL.COL_NAME_DEDUCTIBLE), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_DEDUCTIBLE, Value)
         End Set
     End Property
 
-    Public Overridable Property ClaimClosedDate() As DateType
+    Public Overridable Property ClaimClosedDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CLAIM_CLOSED_DATE) Is DBNull.Value Then
@@ -666,14 +666,14 @@ Public MustInherit Class ClaimBase
                 Return New DateType(DateHelper.GetDateValue(Row(ClaimDAL.COL_NAME_CLAIM_CLOSED_DATE).ToString()))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_CLAIM_CLOSED_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Overridable Property CompanyId() As Guid
+    Public Overridable Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -682,13 +682,13 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
-    Public Property ContactSalutationID() As Guid
+    Public Property ContactSalutationID As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_CONTACT_SALUTATION_ID) Is DBNull.Value Then
@@ -697,13 +697,13 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_CONTACT_SALUTATION_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_CONTACT_SALUTATION_ID, Value)
         End Set
     End Property
 
-    Public Property CallerSalutationID() As Guid
+    Public Property CallerSalutationID As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_CALLER_SALUTATION_ID) Is DBNull.Value Then
@@ -712,14 +712,14 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_CALLER_SALUTATION_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_CALLER_SALUTATION_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20), ValueMandatoryConditionally(""), CPF_TaxNumberValidation("")>
-    Public Property CallerTaxNumber() As String
+    Public Property CallerTaxNumber As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CALLER_TAX_NUMBER) Is DBNull.Value Then
@@ -728,13 +728,13 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_CALLER_TAX_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_CALLER_TAX_NUMBER, Value)
         End Set
     End Property
 
-    Public Property DeductiblePercent() As DecimalType
+    Public Property DeductiblePercent As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_DEDUCTIBLE_PERCENT) Is DBNull.Value Then
@@ -743,13 +743,13 @@ Public MustInherit Class ClaimBase
                 Return New DecimalType(CType(Row(ClaimDAL.COL_NAME_DEDUCTIBLE_PERCENT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_DEDUCTIBLE_PERCENT, Value)
         End Set
     End Property
 
-    Public Property DeductiblePercentID() As Guid
+    Public Property DeductiblePercentID As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_DEDUCTIBLE_PERCENT_ID) Is DBNull.Value Then
@@ -758,14 +758,14 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_DEDUCTIBLE_PERCENT_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_DEDUCTIBLE_PERCENT_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property PolicyNumber() As String
+    Public Property PolicyNumber As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_POLICY_NUMBER) Is DBNull.Value Then
@@ -774,13 +774,13 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_POLICY_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_POLICY_NUMBER, Value)
         End Set
     End Property
 
-    Public Property Fraudulent() As Guid
+    Public Property Fraudulent As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_FRAUDULENT) Is DBNull.Value Then
@@ -789,13 +789,13 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_FRAUDULENT), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_FRAUDULENT, Value)
         End Set
     End Property
 
-    Public Property DealerReference() As String
+    Public Property DealerReference As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_DEALER_REFERENCE) Is DBNull.Value Then
@@ -804,13 +804,13 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_DEALER_REFERENCE), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_DEALER_REFERENCE, Value)
         End Set
     End Property
 
-    Public Property Pos() As String
+    Public Property Pos As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_POS) Is DBNull.Value Then
@@ -819,13 +819,13 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_POS), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_POS, Value)
         End Set
     End Property
 
-    Public Property DeniedReasonId() As Guid
+    Public Property DeniedReasonId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_DENIED_REASON_ID) Is DBNull.Value Then
@@ -834,13 +834,13 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_DENIED_REASON_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_DENIED_REASON_ID, Value)
         End Set
     End Property
 
-    Public Property Complaint() As Guid
+    Public Property Complaint As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_COMPLAINT) Is DBNull.Value Then
@@ -849,14 +849,14 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_COMPLAINT), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_COMPLAINT, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ClaimAuthorizationTypeId() As Guid
+    Public Property ClaimAuthorizationTypeId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CLAIM_AUTH_TYPE_ID) Is DBNull.Value Then
@@ -865,13 +865,13 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_CLAIM_AUTH_TYPE_ID), Byte()))
             End If
         End Get
-        Friend Set(Value As Guid)
+        Friend Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_CLAIM_AUTH_TYPE_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property MethodOfRepairCode() As String
+    Public ReadOnly Property MethodOfRepairCode As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_METHOD_OF_REPAIR_ID) Is DBNull.Value Then
@@ -884,7 +884,7 @@ Public MustInherit Class ClaimBase
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property MasterClaimNumber() As String
+    Public Property MasterClaimNumber As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_MASTER_CLAIM_NUMBER) Is DBNull.Value Then
@@ -893,14 +893,14 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_MASTER_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_MASTER_CLAIM_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidDateOfLoss("")>
-    Public Property LossDate() As DateType
+    Public Property LossDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_LOSS_DATE) Is DBNull.Value Then
@@ -909,13 +909,13 @@ Public MustInherit Class ClaimBase
                 Return New DateType(DateHelper.GetDateValue(Row(ClaimDAL.COL_NAME_LOSS_DATE).ToString()))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_LOSS_DATE, Value)
         End Set
     End Property
 
-    Public ReadOnly Property DefaultFollowUpDays() As LongType
+    Public ReadOnly Property DefaultFollowUpDays As LongType
         Get
             Return Company.DefaultFollowupDays
         End Get
@@ -942,7 +942,7 @@ Public MustInherit Class ClaimBase
         End Get
     End Property
 
-    Public ReadOnly Property DeductibleByMfgFlag() As Boolean
+    Public ReadOnly Property DeductibleByMfgFlag As Boolean
         Get
             Try
                 If Contract.DeductibleByManufacturerId.Equals(Guid.Empty) Then
@@ -961,7 +961,7 @@ Public MustInherit Class ClaimBase
         End Get
     End Property
 
-    Public Property DedCollectionMethodID() As Guid
+    Public Property DedCollectionMethodID As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_DED_COLLECTION_METHOD_ID) Is DBNull.Value Then
@@ -970,14 +970,14 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_DED_COLLECTION_METHOD_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_DED_COLLECTION_METHOD_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=6)>
-    Public Property DedCollectionCCAuthCode() As String
+    Public Property DedCollectionCCAuthCode As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_DED_COLLECTION_CC_AUTH_CODE) Is DBNull.Value Then
@@ -986,31 +986,31 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_DED_COLLECTION_CC_AUTH_CODE), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_DED_COLLECTION_CC_AUTH_CODE, Value)
         End Set
     End Property
 
-    Public Property IsComingFromDenyClaim() As Boolean
+    Public Property IsComingFromDenyClaim As Boolean
         Get
             Return moIsComingFromDenyClaim
         End Get
-        Set(Value As Boolean)
+        Set
             moIsComingFromDenyClaim = Value
         End Set
     End Property
 
-    Public Overridable Property IsRequiredCheckLossDateForCancelledCert() As Boolean
+    Public Overridable Property IsRequiredCheckLossDateForCancelledCert As Boolean
         Get
             Return _IsLossDateCheckforCancelledCert
         End Get
-        Set(Value As Boolean)
+        Set
             _IsLossDateCheckforCancelledCert = Value
         End Set
     End Property
 
-    Public Property DeductibleCollected() As DecimalType
+    Public Property DeductibleCollected As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_DEDUCTIBLE_COLLECTED) Is DBNull.Value Then
@@ -1019,13 +1019,13 @@ Public MustInherit Class ClaimBase
                 Return New DecimalType(CType(Row(ClaimDAL.COL_NAME_DEDUCTIBLE_COLLECTED), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_DEDUCTIBLE_COLLECTED, Value)
         End Set
     End Property
 
-    Public Property AuthorizedAmount() As DecimalType
+    Public Property AuthorizedAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_AUTHORIZED_AMOUNT) Is DBNull.Value Then
@@ -1034,23 +1034,23 @@ Public MustInherit Class ClaimBase
                 Return New DecimalType(CType(Row(ClaimDAL.COL_NAME_AUTHORIZED_AMOUNT), Decimal))
             End If
         End Get
-        Protected Set(Value As DecimalType)
+        Protected Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_AUTHORIZED_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property PoliceReport() As PoliceReport
+    Public Property PoliceReport As PoliceReport
         Get
             Return _policeReport
         End Get
-        Set(value As PoliceReport)
+        Set
             _policeReport = value
         End Set
     End Property
 
     <ValidReportedDate("")>
-    Public Property ReportedDate() As DateType
+    Public Property ReportedDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_REPORTED_DATE) Is DBNull.Value Then
@@ -1059,14 +1059,14 @@ Public MustInherit Class ClaimBase
                 Return New DateType(DateHelper.GetDateValue(Row(ClaimDAL.COL_NAME_REPORTED_DATE).ToString()))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_REPORTED_DATE, Value)
         End Set
     End Property
 
     <ValidFollowupDate(""), ValueMandatory("")>
-    Public Property FollowupDate() As DateType
+    Public Property FollowupDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_FOLLOWUP_DATE) Is DBNull.Value Then
@@ -1075,13 +1075,13 @@ Public MustInherit Class ClaimBase
                 Return New DateType(DateHelper.GetDateValue(Row(ClaimDAL.COL_NAME_FOLLOWUP_DATE).ToString()))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_FOLLOWUP_DATE, Value)
         End Set
     End Property
 
-    Public ReadOnly Property ClaimActivityCode() As String
+    Public ReadOnly Property ClaimActivityCode As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CLAIM_ACTIVITY_ID) Is DBNull.Value Then
@@ -1093,7 +1093,7 @@ Public MustInherit Class ClaimBase
 
     End Property
 
-    Public ReadOnly Property ClaimActivityDescription() As String
+    Public ReadOnly Property ClaimActivityDescription As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CLAIM_ACTIVITY_ID) Is DBNull.Value Then
@@ -1107,7 +1107,7 @@ Public MustInherit Class ClaimBase
 
     End Property
 
-    Public ReadOnly Property CauseOfLoss() As String
+    Public ReadOnly Property CauseOfLoss As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CAUSE_OF_LOSS_ID) Is DBNull.Value Then
@@ -1120,7 +1120,7 @@ Public MustInherit Class ClaimBase
         End Get
     End Property
 
-    Public ReadOnly Property MethodOfRepairDescription() As String
+    Public ReadOnly Property MethodOfRepairDescription As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_METHOD_OF_REPAIR_ID) Is DBNull.Value Then
@@ -1135,7 +1135,7 @@ Public MustInherit Class ClaimBase
     End Property
 
     <ValidStringLength("", Max:=20), ValidNewDeviceSKU("")>
-    Public Property NewDeviceSku() As String
+    Public Property NewDeviceSku As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_NEW_DEVICE_SKU) Is DBNull.Value Then
@@ -1144,13 +1144,13 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_NEW_DEVICE_SKU), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_NEW_DEVICE_SKU, Value)
         End Set
     End Property
 
-    Public Property SalvageAmount() As DecimalType
+    Public Property SalvageAmount As DecimalType
         Get
             CheckDeleted()
             Dim salvage As Decimal = 0D
@@ -1161,13 +1161,13 @@ Public MustInherit Class ClaimBase
                 Return New DecimalType(CType(Row(ClaimDAL.COL_NAME_SALVAGE_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_SALVAGE_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property DiscountAmount() As DecimalType
+    Public Property DiscountAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_DISCOUNT_AMOUNT) Is DBNull.Value Then
@@ -1176,13 +1176,13 @@ Public MustInherit Class ClaimBase
                 Return New DecimalType(CType(Row(ClaimDAL.COL_NAME_DISCOUNT_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_DISCOUNT_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property DiscountPercent() As LongType
+    Public Property DiscountPercent As LongType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_DISCOUNT_PERCENT) Is DBNull.Value Then
@@ -1191,7 +1191,7 @@ Public MustInherit Class ClaimBase
                 Return New LongType(CType(Row(ClaimDAL.COL_NAME_DISCOUNT_PERCENT), Long))
             End If
         End Get
-        Set(Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_DISCOUNT_PERCENT, Value)
         End Set
@@ -1203,14 +1203,14 @@ Public MustInherit Class ClaimBase
         End Get
     End Property
 
-    Public ReadOnly Property AuthorizationLimit() As DecimalType
+    Public ReadOnly Property AuthorizationLimit As DecimalType
         Get
             Return (ElitaPlusIdentity.Current.ActiveUser.AuthorizationLimit(CompanyId))
         End Get
 
     End Property
 
-    Public ReadOnly Property IsAuthorizationLimitExceeded() As Boolean
+    Public ReadOnly Property IsAuthorizationLimitExceeded As Boolean
         Get
             If Not AuthorizedAmount Is Nothing AndAlso AuthorizedAmount.Value > AuthorizationLimit.Value Then
                 Return True
@@ -1232,16 +1232,16 @@ Public MustInherit Class ClaimBase
         End Get
     End Property
 
-    Public Property IsUpdatedComment() As Boolean
+    Public Property IsUpdatedComment As Boolean
         Get
             Return _isUpdatedComment
         End Get
-        Set(Value As Boolean)
+        Set
             _isUpdatedComment = Value
         End Set
     End Property
 
-    Public Property IsLocked() As String
+    Public Property IsLocked As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_IS_LOCKED) Is DBNull.Value Then
@@ -1250,13 +1250,13 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_IS_LOCKED), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_IS_LOCKED, Value)
         End Set
     End Property
 
-    Public Property lockedOn() As DateType
+    Public Property lockedOn As DateType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_LOCKED_ON) Is DBNull.Value Then
@@ -1265,13 +1265,13 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_LOCKED_ON), DateType)
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_LOCKED_ON, Value)
         End Set
     End Property
 
-    Public Property LockedBy() As Guid
+    Public Property LockedBy As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_LOCKED_BY) Is DBNull.Value Then
@@ -1280,14 +1280,14 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_LOCKED_BY), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_LOCKED_BY, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property ClaimsAdjuster() As String
+    Public Property ClaimsAdjuster As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CLAIMS_ADJUSTER) Is DBNull.Value Then
@@ -1296,13 +1296,13 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_CLAIMS_ADJUSTER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_CLAIMS_ADJUSTER, Value)
         End Set
     End Property
 
-    Public Property ClaimsAdjusterName() As String
+    Public Property ClaimsAdjusterName As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CLAIMS_ADJUSTER_NAME) Is DBNull.Value Then
@@ -1311,45 +1311,45 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_CLAIMS_ADJUSTER_NAME), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_CLAIMS_ADJUSTER_NAME, Value)
         End Set
     End Property
 
-    Public Property AuthDetailDataHasChanged() As Boolean
+    Public Property AuthDetailDataHasChanged As Boolean
         Get
             Return _AuthDetailDataHasChanged
         End Get
-        Set(Value As Boolean)
+        Set
             _AuthDetailDataHasChanged = Value
         End Set
     End Property
 
     Public moGalaxyClaimNumberList As ArrayList = Nothing
 
-    Public ReadOnly Property CurrentShippingInfo() As ShippingInfo
+    Public ReadOnly Property CurrentShippingInfo As ShippingInfo
         Get
             Return objCurrentShippingInfo
         End Get
     End Property
 
-    Public ReadOnly Property MaxFollowUpDays() As LongType
+    Public ReadOnly Property MaxFollowUpDays As LongType
         Get
             Return (Company.MaxFollowupDays)
         End Get
     End Property
 
-    Public Property OriginalFollowUpDate() As Date
+    Public Property OriginalFollowUpDate As Date
         Get
             Return _originalFollowUpDate
         End Get
-        Set(Value As Date)
+        Set
             _originalFollowUpDate = Value
         End Set
     End Property
 
-    Public Property ContactInfoId() As Guid
+    Public Property ContactInfoId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CONTACT_INFO_ID) Is DBNull.Value Then
@@ -1358,13 +1358,13 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_CONTACT_INFO_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_CONTACT_INFO_ID, Value)
         End Set
     End Property
 
-    Public Property RepairCode() As String
+    Public Property RepairCode As String
         Get
             CheckDeleted()
             If ((Row(ClaimDAL.COL_NAME_REPAIR_CODE) Is DBNull.Value) OrElse (RepairCodeId.Equals(Guid.Empty))) Then
@@ -1373,13 +1373,13 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_REPAIR_CODE), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_REPAIR_CODE, Value)
         End Set
     End Property
 
-    Public Property RepairShortDesc() As String
+    Public Property RepairShortDesc As String
         Get
             CheckDeleted()
             If ((Row(ClaimDAL.COL_NAME_REPAIR_SHORT_DESC) Is DBNull.Value) OrElse (RepairCodeId.Equals(Guid.Empty))) Then
@@ -1388,14 +1388,14 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_REPAIR_SHORT_DESC), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_REPAIR_SHORT_DESC, Value)
         End Set
 
     End Property
 
-    Public ReadOnly Property NotificationTypeId() As Guid
+    Public ReadOnly Property NotificationTypeId As Guid
         Get
             CheckDeleted()
             If ((Row(ClaimDAL.COL_NAME_NOTIFICATION_TYPE_ID) Is DBNull.Value)) Then
@@ -1407,7 +1407,7 @@ Public MustInherit Class ClaimBase
 
     End Property
 
-    Public ReadOnly Property NotificationTypeDescription() As String
+    Public ReadOnly Property NotificationTypeDescription As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_NOTIFICATION_TYPE_ID) Is DBNull.Value Then
@@ -1419,7 +1419,7 @@ Public MustInherit Class ClaimBase
         End Get
     End Property
 
-    Public Property LastOperatorName() As String
+    Public Property LastOperatorName As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_LAST_OPERATOR_NAME) Is DBNull.Value Then
@@ -1428,14 +1428,14 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_LAST_OPERATOR_NAME), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_LAST_OPERATOR_NAME, Value)
         End Set
 
     End Property
 
-    Public ReadOnly Property UserName() As String
+    Public ReadOnly Property UserName As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_USER_NAME) Is DBNull.Value Then
@@ -1447,7 +1447,7 @@ Public MustInherit Class ClaimBase
 
     End Property
 
-    Public Property MobileNumber() As String
+    Public Property MobileNumber As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_MOBILE_NUMBER) Is DBNull.Value Then
@@ -1456,13 +1456,13 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_MOBILE_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_MOBILE_NUMBER, Value)
         End Set
     End Property
 
-    Public ReadOnly Property SerialNumber() As String
+    Public ReadOnly Property SerialNumber As String
         Get
             If ClaimedEquipment Is Nothing Then
                 Return Nothing
@@ -1472,7 +1472,7 @@ Public MustInherit Class ClaimBase
         End Get
     End Property
 
-    Public ReadOnly Property ClaimStatusesCount() As Integer
+    Public ReadOnly Property ClaimStatusesCount As Integer
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CLAIM_STATUSES_COUNT) Is DBNull.Value Then
@@ -1484,7 +1484,7 @@ Public MustInherit Class ClaimBase
 
     End Property
 
-    Public ReadOnly Property LatestClaimStatus() As ClaimStatus
+    Public ReadOnly Property LatestClaimStatus As ClaimStatus
         Get
             If ClaimStatusesCount > 0 Then
                 Return ClaimStatus.GetLatestClaimStatus(Id)
@@ -1495,7 +1495,7 @@ Public MustInherit Class ClaimBase
     End Property
 
     <ValidStringLength("", Max:=1)>
-    Public Property MgrAuthAmountFlag() As String
+    Public Property MgrAuthAmountFlag As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_MGR_AUTH_AMOUNT_FLAG) Is DBNull.Value Then
@@ -1504,7 +1504,7 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_MGR_AUTH_AMOUNT_FLAG), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
 
             If ((Value = Nothing) OrElse (Value.ToUpper <> "Y")) Then
@@ -1516,7 +1516,7 @@ Public MustInherit Class ClaimBase
         End Set
     End Property
 
-    Public ReadOnly Property ReasonClosed() As String
+    Public ReadOnly Property ReasonClosed As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_REASON_CLOSED_ID) Is DBNull.Value Then
@@ -1530,7 +1530,7 @@ Public MustInherit Class ClaimBase
 
     End Property
 
-    Public ReadOnly Property ReasonClosedCode() As String
+    Public ReadOnly Property ReasonClosedCode As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_REASON_CLOSED_ID) Is DBNull.Value Then
@@ -1599,7 +1599,7 @@ Public MustInherit Class ClaimBase
         End Get
     End Property
 
-    Public ReadOnly Property ConsumerPays() As DecimalType
+    Public ReadOnly Property ConsumerPays As DecimalType
         Get
             Dim cPays As Decimal = 0D
             Dim aPays As Decimal = AssurantPays.Value
@@ -1612,7 +1612,7 @@ Public MustInherit Class ClaimBase
         End Get
     End Property
 
-    Public ReadOnly Property AboveLiability() As DecimalType
+    Public ReadOnly Property AboveLiability As DecimalType
         Get
             ' Dim liabLimit As Decimal = CType(Row(ClaimDAL.COL_NAME_LIABILITY_LIMIT), Decimal)
             Dim liabLimit As Decimal = LiabilityLimit.Value
@@ -1657,7 +1657,7 @@ Public MustInherit Class ClaimBase
         End Get
     End Property
 
-    Public ReadOnly Property TotalPaid() As DecimalType
+    Public ReadOnly Property TotalPaid As DecimalType
         Get
             PopulateDisbursementSummary()
             Return _TotalPaid
@@ -1665,7 +1665,7 @@ Public MustInherit Class ClaimBase
     End Property
 
     Private _TotalPaidForCert As DecimalType = New DecimalType(0)
-    Public ReadOnly Property TotalPaidForCert() As DecimalType
+    Public ReadOnly Property TotalPaidForCert As DecimalType
         Get
             If _TotalPaidForCert.Equals(New DecimalType(0)) Then
                 _TotalPaidForCert = getTotalPaidForCert(CertificateId)
@@ -1676,7 +1676,7 @@ Public MustInherit Class ClaimBase
         End Get
     End Property
 
-    Protected Property PickUpDate() As DateType
+    Protected Property PickUpDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_PICKUP_DATE) Is DBNull.Value Then
@@ -1685,7 +1685,7 @@ Public MustInherit Class ClaimBase
                 Return New DateType(DateHelper.GetDateValue(Row(ClaimDAL.COL_NAME_PICKUP_DATE).ToString()))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_PICKUP_DATE, Value)
         End Set
@@ -1706,7 +1706,7 @@ Public MustInherit Class ClaimBase
         End Set
     End Property
 
-    Protected Property RepairDate() As DateType
+    Protected Property RepairDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_REPAIR_DATE) Is DBNull.Value Then
@@ -1715,13 +1715,13 @@ Public MustInherit Class ClaimBase
                 Return New DateType(DateHelper.GetDateValue(Row(ClaimDAL.COL_NAME_REPAIR_DATE).ToString()))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_REPAIR_DATE, Value)
         End Set
     End Property
 
-    Public ReadOnly Property DealerTypeCode() As String
+    Public ReadOnly Property DealerTypeCode As String
         Get
             If _DealerTypeCode Is Nothing Then
                 _DealerTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, Dealer.DealerTypeId)
@@ -1730,7 +1730,7 @@ Public MustInherit Class ClaimBase
         End Get
     End Property
 
-    Protected Property Bonus() As DecimalType
+    Protected Property Bonus As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_BONUS) Is DBNull.Value Then
@@ -1739,13 +1739,13 @@ Public MustInherit Class ClaimBase
                 Return New DecimalType(CType(Row(ClaimDAL.COL_NAME_BONUS), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_BONUS, Value)
         End Set
     End Property
 
-    Protected Property BonusTax() As DecimalType
+    Protected Property BonusTax As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_BONUS_TAX) Is DBNull.Value Then
@@ -1754,13 +1754,13 @@ Public MustInherit Class ClaimBase
                 Return New DecimalType(CType(Row(ClaimDAL.COL_NAME_BONUS_TAX), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_BONUS_TAX, Value)
         End Set
     End Property
 
-    Public ReadOnly Property IsClaimChild() As String
+    Public ReadOnly Property IsClaimChild As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_IS_CLAIM_CHILD) Is DBNull.Value Then
@@ -1772,7 +1772,7 @@ Public MustInherit Class ClaimBase
     End Property
 
     'REQ-6230
-    Public Property Purchase_Price() As DecimalType
+    Public Property Purchase_Price As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_PURCHASE_PRICE) Is DBNull.Value Then
@@ -1781,14 +1781,14 @@ Public MustInherit Class ClaimBase
                 Return New DecimalType(CType(Row(ClaimDAL.COL_NAME_PURCHASE_PRICE), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_PURCHASE_PRICE, Value)
         End Set
     End Property
 
     'REQ-6230
-    Public Property IndixId() As String
+    Public Property IndixId As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_INDIX_ID) Is DBNull.Value Then
@@ -1797,13 +1797,13 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_INDIX_ID), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_INDIX_ID, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=1)>
-    Public ReadOnly Property IsClaimReadOnly() As String
+    Public ReadOnly Property IsClaimReadOnly As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_IS_CLAIM_READ_ONLY) Is DBNull.Value Then
@@ -1814,7 +1814,7 @@ Public MustInherit Class ClaimBase
         End Get
     End Property
 
-    Public Property RemAuthNumber() As String
+    Public Property RemAuthNumber As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_REM_AUTH_NUMBER) Is DBNull.Value Then
@@ -1823,7 +1823,7 @@ Public MustInherit Class ClaimBase
                 Return CType(Row(ClaimDAL.COL_NAME_REM_AUTH_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_REM_AUTH_NUMBER, Value)
         End Set
@@ -1831,19 +1831,19 @@ Public MustInherit Class ClaimBase
 #End Region
 
 #Region "MustOverride & overridable  Properties"
-    Public MustOverride ReadOnly Property IsDaysLimitExceeded() As Boolean
-    Public MustOverride ReadOnly Property IsMaxSvcWrtyClaimsReached() As Boolean
+    Public MustOverride ReadOnly Property IsDaysLimitExceeded As Boolean
+    Public MustOverride ReadOnly Property IsMaxSvcWrtyClaimsReached As Boolean
 #End Region
 
 #Region "Non-Persistent Properties"
 
 #Region "Work Queue"
     Private _wqItem As WorkQueueItem
-    Public Property CurrentWorkQueueItem() As WorkQueueItem
+    Public Property CurrentWorkQueueItem As WorkQueueItem
         Get
             Return _wqItem
         End Get
-        Set(value As WorkQueueItem)
+        Set
             _wqItem = value
         End Set
     End Property
@@ -1867,7 +1867,7 @@ Public MustInherit Class ClaimBase
                     Return BasicClaimStatus.None
             End Select
         End Get
-        Set(value As BasicClaimStatus)
+        Set
             Select Case value
                 Case BasicClaimStatus.Pending
                     StatusCode = Codes.CLAIM_STATUS__PENDING
@@ -1883,7 +1883,7 @@ Public MustInherit Class ClaimBase
         End Set
     End Property
 
-    Public ReadOnly Property ClaimAuthorizationTypeCode() As String
+    Public ReadOnly Property ClaimAuthorizationTypeCode As String
         Get
             If (ClaimAuthorizationTypeId.Equals(Guid.Empty)) Then
                 Return Nothing
@@ -1904,7 +1904,7 @@ Public MustInherit Class ClaimBase
                     Return BasicClaimStatus.None
             End Select
         End Get
-        Private Set(value As ClaimAuthorizationType)
+        Private Set
             Select Case value
                 Case ClaimAuthorizationType.Single
                     ClaimAuthorizationTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_AUTHORIZATION_TYPE, Codes.CLAIM_AUTHORIZATION_TYPE__SINGLE)
@@ -1917,7 +1917,7 @@ Public MustInherit Class ClaimBase
     End Property
 
 #Region "Claim Authorization"
-    Public ReadOnly Property ClaimAuthorizationChildren() As ClaimAuthorizationList
+    Public ReadOnly Property ClaimAuthorizationChildren As ClaimAuthorizationList
         Get
             Return New ClaimAuthorizationList(Me)
         End Get
@@ -1926,7 +1926,7 @@ Public MustInherit Class ClaimBase
 #End Region
 
     <Obsolete("Backward Compatability - Replace this with ClaimBase.Certificate.CertNumber - Action - Remove")>
-    Public ReadOnly Property CertificateNumber() As String
+    Public ReadOnly Property CertificateNumber As String
         Get
             If (Certificate Is Nothing) Then
                 Return Nothing
@@ -1937,7 +1937,7 @@ Public MustInherit Class ClaimBase
     End Property
 
     <Obsolete("Backward Compatability - Replace this with ClaimBase.Certificate.CustomerName - Action - Remove")>
-    Public ReadOnly Property CustomerName() As String
+    Public ReadOnly Property CustomerName As String
         Get
             If (Certificate Is Nothing) Then
                 Return Nothing
@@ -1948,7 +1948,7 @@ Public MustInherit Class ClaimBase
     End Property
 
     <Obsolete("Backward Compatability - Replace this with ClaimBase.Certificate.Id - Action - Remove")>
-    Public Overridable ReadOnly Property CertificateId() As Guid
+    Public Overridable ReadOnly Property CertificateId As Guid
         Get
             If (Certificate Is Nothing) Then
                 Return Nothing
@@ -1959,7 +1959,7 @@ Public MustInherit Class ClaimBase
     End Property
 
     <Obsolete("Backward Compatability - Replace this with ClaimBase.Dealer.Dealer - Action - Remove")>
-    Public ReadOnly Property DealerCode() As String
+    Public ReadOnly Property DealerCode As String
         Get
             If (Dealer Is Nothing) Then
                 Return Nothing
@@ -1970,7 +1970,7 @@ Public MustInherit Class ClaimBase
     End Property
 
     <Obsolete("Backward Compatability - Replace this with ClaimBase.Dealer.DealerName - Action - Remove")>
-    Public ReadOnly Property DealerName() As String
+    Public ReadOnly Property DealerName As String
         Get
             If (Dealer Is Nothing) Then
                 Return Nothing
@@ -1981,19 +1981,19 @@ Public MustInherit Class ClaimBase
     End Property
 
     <Obsolete("Backward Compatability - Replace this with ClaimBase.CertificateItemCoverage.CoverageTypeId - Action - Remove")>
-    Public ReadOnly Property CoverageTypeId() As Guid
+    Public ReadOnly Property CoverageTypeId As Guid
         Get
             Return CertificateItemCoverage.CoverageTypeId
         End Get
     End Property
 
-    Public ReadOnly Property CoverageTypeCode() As String
+    Public ReadOnly Property CoverageTypeCode As String
         Get
             Return LookupListNew.GetCodeFromId(LookupListNew.LK_COVERAGE_TYPES, CertificateItemCoverage.CoverageTypeId)
         End Get
     End Property
 
-    Public ReadOnly Property CoverageTypeDescription() As String
+    Public ReadOnly Property CoverageTypeDescription As String
         Get
             Return LookupListNew.GetDescriptionFromId(LookupListNew.LK_COVERAGE_TYPES, CertificateItemCoverage.CoverageTypeId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         End Get
@@ -2001,14 +2001,14 @@ Public MustInherit Class ClaimBase
 
     ''TODO: Remove the code
     <Obsolete("Backward Compatability - Replace this with ClaimBase.CreatedDate - Action - Remove", True)>
-    Public ReadOnly Property CreationDate() As DateType
+    Public ReadOnly Property CreationDate As DateType
         Get
             Return MyBase.CreatedDate
         End Get
     End Property
 
     <Obsolete("Backward Compatability - Replace this with ClaimBase.ModifiedDate - Action - Remove")>
-    Public ReadOnly Property LastModifiedDate() As DateType
+    Public ReadOnly Property LastModifiedDate As DateType
         Get
             Return MyBase.ModifiedDate
         End Get
@@ -2025,7 +2025,7 @@ Public MustInherit Class ClaimBase
         End Get
     End Property
 
-    Public Property ShippingInfoId() As Guid
+    Public Property ShippingInfoId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_SHIPPING_INFO_ID) Is DBNull.Value Then
@@ -2034,20 +2034,20 @@ Public MustInherit Class ClaimBase
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_SHIPPING_INFO_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_SHIPPING_INFO_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property BonusAmount() As DecimalType
+    Public ReadOnly Property BonusAmount As DecimalType
         Get
             CheckDeleted()
             Return New Decimal.Add(Bonus, BonusTax)
         End Get
     End Property
 
-    Public Property CurrentRetailPrice() As DecimalType
+    Public Property CurrentRetailPrice As DecimalType
         Get
             CheckDeleted()
             Dim CurrentRetailPriceVal As Decimal = 0D
@@ -2057,7 +2057,7 @@ Public MustInherit Class ClaimBase
                 Return New DecimalType(CType(Row(ClaimDAL.COL_NAME_REG_ITEM_CURRENT_RETAIL_PRICE), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_REG_ITEM_CURRENT_RETAIL_PRICE, Value)
         End Set
@@ -2099,7 +2099,7 @@ Public MustInherit Class ClaimBase
             End If
             Return _company
         End Get
-        Private Set(value As Company)
+        Private Set
             _company = value
         End Set
     End Property
@@ -2120,7 +2120,7 @@ Public MustInherit Class ClaimBase
             End If
             Return _dealer
         End Get
-        Private Set(value As Dealer)
+        Private Set
             _dealer = value
             Company = Nothing
         End Set
@@ -2138,7 +2138,7 @@ Public MustInherit Class ClaimBase
             End If
             Return _certificate
         End Get
-        Private Set(value As Certificate)
+        Private Set
             _certificate = value
             Dealer = Nothing
             Company = Nothing
@@ -2154,7 +2154,7 @@ Public MustInherit Class ClaimBase
             End If
             Return _certItem
         End Get
-        Private Set(value As CertItem)
+        Private Set
             _certItem = value
             Certificate = Nothing
             Dealer = Nothing
@@ -2189,7 +2189,7 @@ Public MustInherit Class ClaimBase
             End If
             Return _certificateItemCoverage
         End Get
-        Private Set(value As CertItemCoverage)
+        Private Set
             _certificateItemCoverage = value
             CertificateItem = Nothing
             Certificate = Nothing
@@ -2214,7 +2214,7 @@ Public MustInherit Class ClaimBase
             End If
             Return _contactInfo
         End Get
-        Set(value As ContactInfo)
+        Set
             _contactInfo = value
         End Set
     End Property
@@ -2515,7 +2515,7 @@ Public MustInherit Class ClaimBase
 
 #Region "Claim Equipment"
 
-    Public ReadOnly Property ClaimEquipmentChildren() As ClaimEquipment.ClaimEquipmentList
+    Public ReadOnly Property ClaimEquipmentChildren As ClaimEquipment.ClaimEquipmentList
         Get
             Return New ClaimEquipment.ClaimEquipmentList(Me)
         End Get
@@ -2533,19 +2533,19 @@ Public MustInherit Class ClaimBase
 #End Region
 
 #Region "Claim Issues"
-    Public ReadOnly Property ClaimIssuesList() As ClaimIssue.ClaimIssueList
+    Public ReadOnly Property ClaimIssuesList As ClaimIssue.ClaimIssueList
         Get
             Return New ClaimIssue.ClaimIssueList(Me)
         End Get
     End Property
 
-    Public ReadOnly Property IssuesStatus() As String
+    Public ReadOnly Property IssuesStatus As String
         Get
             Return EvaluateIssues()
         End Get
     End Property
 
-    Public ReadOnly Property HasIssues() As Boolean
+    Public ReadOnly Property HasIssues As Boolean
         Get
             If (ClaimIssuesList.Count > 0) Then
                 Return True
@@ -2555,7 +2555,7 @@ Public MustInherit Class ClaimBase
         End Get
     End Property
 
-    Public ReadOnly Property AllIssuesResolvedOrWaived() As Boolean
+    Public ReadOnly Property AllIssuesResolvedOrWaived As Boolean
         Get
             If HasIssues Then
                 Dim issueStatus As String = EvaluateIssues()
@@ -2584,7 +2584,7 @@ Public MustInherit Class ClaimBase
 
         Return issuesStatus
     End Function
-    Public ReadOnly Property IssueDeniedReason() As String
+    Public ReadOnly Property IssueDeniedReason As String
         Get
             Return _IssueDeniedReason
         End Get
@@ -2605,14 +2605,14 @@ Public MustInherit Class ClaimBase
     'End Function
 
     Private _dealerIssues As DataView
-    Public Property DealerIssues() As DataView
+    Public Property DealerIssues As DataView
         Get
             If (_dealerIssues Is Nothing) Then
                 _dealerIssues = LoadIssues()
             End If
             Return _dealerIssues
         End Get
-        Set(value As DataView)
+        Set
             _dealerIssues = value
         End Set
     End Property
@@ -3065,7 +3065,7 @@ Public MustInherit Class ClaimBase
 #End Region
 
 #Region "Replacement Parts"
-    Public ReadOnly Property ReplacementPartChildren() As ReplacementPartList
+    Public ReadOnly Property ReplacementPartChildren As ReplacementPartList
         Get
             Return New ReplacementPartList(Me)
         End Get
@@ -3109,7 +3109,7 @@ Public MustInherit Class ClaimBase
 
 
 #Region "Claim Shipping"
-    Public ReadOnly Property ClaimShippingList() As ClaimShipping.ClaimShippingList
+    Public ReadOnly Property ClaimShippingList As ClaimShipping.ClaimShippingList
         Get
             Return New ClaimShipping.ClaimShippingList(Me)
         End Get
@@ -4453,11 +4453,11 @@ Public MustInherit Class ClaimBase
 
     Private _comment As Comment
 
-    Public Property CurrentComment() As Comment
+    Public Property CurrentComment As Comment
         Get
             Return _comment
         End Get
-        Set(value As Comment)
+        Set
             _comment = value
         End Set
 
@@ -4508,7 +4508,7 @@ Public MustInherit Class ClaimBase
         End If
     End Function
 
-    Public ReadOnly Property ClaimCommentsList() As Comment.ClaimCommentList
+    Public ReadOnly Property ClaimCommentsList As Comment.ClaimCommentList
         Get
             Return New Comment.ClaimCommentList(Me)
         End Get
@@ -4522,7 +4522,7 @@ Public MustInherit Class ClaimBase
         End If
     End Sub
 
-    Public ReadOnly Property ClaimHistoryChildren() As ClaimHistory.ClaimHistoryList
+    Public ReadOnly Property ClaimHistoryChildren As ClaimHistory.ClaimHistoryList
         Get
             Return New ClaimHistory.ClaimHistoryList(Me)
         End Get
@@ -4558,7 +4558,7 @@ Public MustInherit Class ClaimBase
             End If
             Return _ClaimedEquipment
         End Get
-        Set(value As ClaimEquipment)
+        Set
             _ClaimedEquipment = value
         End Set
     End Property
@@ -4583,7 +4583,7 @@ Public MustInherit Class ClaimBase
             End If
             Return _EnrolledEquipment
         End Get
-        Set(value As ClaimEquipment)
+        Set
             _EnrolledEquipment = value
         End Set
     End Property
@@ -4599,7 +4599,7 @@ Public MustInherit Class ClaimBase
             End If
             Return _ReplacementEquipment
         End Get
-        Set(value As ClaimEquipment)
+        Set
             _EnrolledEquipment = value
         End Set
     End Property

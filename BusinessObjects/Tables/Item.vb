@@ -104,7 +104,7 @@ Public Class Item
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ItemDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -116,7 +116,7 @@ Public Class Item
 
 
     <ValueMandatory("")> _
-    Public Property DealerID() As Guid
+    Public Property DealerID As Guid
         Get
             If pDealerId.Equals(guid.Empty) Then
                 Dim itemDAL As New ItemDAL
@@ -131,14 +131,14 @@ Public Class Item
                 Return pDealerId
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             pDealerId = Value
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If Row(ItemDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -147,7 +147,7 @@ Public Class Item
                 Return New Guid(CType(Row(ItemDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ItemDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
@@ -155,7 +155,7 @@ Public Class Item
 
 
     <ValueMandatory("")> _
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             CheckDeleted()
             If Row(ItemDAL.COL_NAME_RISK_TYPE_ID) Is DBNull.Value Then
@@ -164,14 +164,14 @@ Public Class Item
                 Return New Guid(CType(Row(ItemDAL.COL_NAME_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ItemDAL.COL_NAME_RISK_TYPE_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_LONG)> _
-    Public Property MaxReplacementCost() As DecimalType
+    Public Property MaxReplacementCost As DecimalType
         Get
             CheckDeleted()
             If Row(ItemDAL.COL_NAME_MAX_REPLACEMENT_COST) Is DBNull.Value Then
@@ -180,14 +180,14 @@ Public Class Item
                 Return New DecimalType(CType(Row(ItemDAL.COL_NAME_MAX_REPLACEMENT_COST), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ItemDAL.COL_NAME_MAX_REPLACEMENT_COST, Value)
         End Set
     End Property
 
 
-    Public Property ItemNumber() As LongType
+    Public Property ItemNumber As LongType
         Get
             CheckDeleted()
             If Row(ItemDAL.COL_NAME_ITEM_NUMBER) Is DBNull.Value Then
@@ -196,14 +196,14 @@ Public Class Item
                 Return New LongType(CType(Row(ItemDAL.COL_NAME_ITEM_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ItemDAL.COL_NAME_ITEM_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property OptionalItem() As Guid
+    Public Property OptionalItem As Guid
         Get
             CheckDeleted()
             If row(ItemDAL.COL_NAME_OPTIONAL_ITEM) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class Item
                 Return New Guid(CType(row(ItemDAL.COL_NAME_OPTIONAL_ITEM), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ItemDAL.COL_NAME_OPTIONAL_ITEM, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class Item
 
 
     <ValidStringLength("", Max:=5), ValidOptionalItemRequired(""), ValidOptionalItemDuplicate("")>
-    Public Property OptionalItemCode() As String
+    Public Property OptionalItemCode As String
         Get
             CheckDeleted()
             If Row(ItemDAL.COL_NAME_OPTIONAL_ITEM_CODE) Is DBNull.Value Then
@@ -229,14 +229,14 @@ Public Class Item
                 Return CType(Row(ItemDAL.COL_NAME_OPTIONAL_ITEM_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ItemDAL.COL_NAME_OPTIONAL_ITEM_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)>
-    Public Property Inuseflag() As String
+    Public Property Inuseflag As String
         Get
             CheckDeleted()
             If Row(ItemDAL.COL_NAME_INUSEFLAG) Is DBNull.Value Then
@@ -245,7 +245,7 @@ Public Class Item
                 Return CType(Row(ItemDAL.COL_NAME_INUSEFLAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ItemDAL.COL_NAME_INUSEFLAG, Value)
         End Set

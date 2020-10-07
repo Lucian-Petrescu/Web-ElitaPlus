@@ -90,7 +90,7 @@ Public Class TransDtlPart
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(TransDtlPartDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class TransDtlPart
     End Property
 
     <ValueMandatory("")> _
-    Public Property TransDtlClmUpdte2elitaId() As Guid
+    Public Property TransDtlClmUpdte2elitaId As Guid
         Get
             CheckDeleted()
             If row(TransDtlPartDAL.COL_NAME_TRANS_DTL_CLM_UPDTE_2ELITA_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class TransDtlPart
                 Return New Guid(CType(row(TransDtlPartDAL.COL_NAME_TRANS_DTL_CLM_UPDTE_2ELITA_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransDtlPartDAL.COL_NAME_TRANS_DTL_CLM_UPDTE_2ELITA_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class TransDtlPart
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=80)> _
-    Public Property XmlMfgPartCode() As String
+    Public Property XmlMfgPartCode As String
         Get
             CheckDeleted()
             If row(TransDtlPartDAL.COL_NAME_XML_MFG_PART_CODE) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class TransDtlPart
                 Return CType(row(TransDtlPartDAL.COL_NAME_XML_MFG_PART_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlPartDAL.COL_NAME_XML_MFG_PART_CODE, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class TransDtlPart
 
 
     <ValueMandatory("")> _
-    Public Property XmlPartDescriptionCode() As Guid
+    Public Property XmlPartDescriptionCode As Guid
         Get
             CheckDeleted()
             If row(TransDtlPartDAL.COL_NAME_XML_PART_DESCRIPTION_CODE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class TransDtlPart
                 Return New Guid(CType(row(TransDtlPartDAL.COL_NAME_XML_PART_DESCRIPTION_CODE), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransDtlPartDAL.COL_NAME_XML_PART_DESCRIPTION_CODE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class TransDtlPart
 
 
     <ValueMandatory("")> _
-    Public Property XmlPartCost() As DecimalType
+    Public Property XmlPartCost As DecimalType
         Get
             CheckDeleted()
             If row(TransDtlPartDAL.COL_NAME_XML_PART_COST) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class TransDtlPart
                 Return New DecimalType(CType(row(TransDtlPartDAL.COL_NAME_XML_PART_COST), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(TransDtlPartDAL.COL_NAME_XML_PART_COST, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class TransDtlPart
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property XmlPartDefect() As String
+    Public Property XmlPartDefect As String
         Get
             CheckDeleted()
             If row(TransDtlPartDAL.COL_NAME_XML_PART_DEFECT) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class TransDtlPart
                 Return CType(row(TransDtlPartDAL.COL_NAME_XML_PART_DEFECT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlPartDAL.COL_NAME_XML_PART_DEFECT, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class TransDtlPart
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property XmlPartSolution() As String
+    Public Property XmlPartSolution As String
         Get
             CheckDeleted()
             If row(TransDtlPartDAL.COL_NAME_XML_PART_SOLUTION) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class TransDtlPart
                 Return CType(row(TransDtlPartDAL.COL_NAME_XML_PART_SOLUTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlPartDAL.COL_NAME_XML_PART_SOLUTION, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class TransDtlPart
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property XmlInStock() As String
+    Public Property XmlInStock As String
         Get
             CheckDeleted()
             If row(TransDtlPartDAL.COL_NAME_XML_IN_STOCK) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class TransDtlPart
                 Return CType(row(TransDtlPartDAL.COL_NAME_XML_IN_STOCK), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlPartDAL.COL_NAME_XML_IN_STOCK, Value)
         End Set

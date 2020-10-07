@@ -90,7 +90,7 @@ Public Class ZipDistrictDetail
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ZipDistrictDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ZipDistrictDetail
     End Property
 
     <ValueMandatory("")> _
-    Public Property ZipDistrictId() As Guid
+    Public Property ZipDistrictId As Guid
         Get
             CheckDeleted()
             If row(ZipDistrictDetailDAL.COL_NAME_ZIP_DISTRICT_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ZipDistrictDetail
                 Return New Guid(CType(row(ZipDistrictDetailDAL.COL_NAME_ZIP_DISTRICT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ZipDistrictDetailDAL.COL_NAME_ZIP_DISTRICT_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ZipDistrictDetail
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=25)> _
-    Public Property ZipCode() As String
+    Public Property ZipCode As String
         Get
             CheckDeleted()
             If Row(ZipDistrictDetailDAL.COL_NAME_ZIP_CODE) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ZipDistrictDetail
                 Return CType(Row(ZipDistrictDetailDAL.COL_NAME_ZIP_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ZipDistrictDetailDAL.COL_NAME_ZIP_CODE, Value)
         End Set

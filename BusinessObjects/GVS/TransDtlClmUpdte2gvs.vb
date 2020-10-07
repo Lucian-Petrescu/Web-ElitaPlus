@@ -90,7 +90,7 @@ Public Class TransDtlClmUpdte2gvs
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(TransDtlClmUpdte2gvsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class TransDtlClmUpdte2gvs
     End Property
 
     <ValueMandatory("")> _
-    Public Property TransactionLogHeaderId() As Guid
+    Public Property TransactionLogHeaderId As Guid
         Get
             CheckDeleted()
             If row(TransDtlClmUpdte2gvsDAL.COL_NAME_TRANSACTION_LOG_HEADER_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class TransDtlClmUpdte2gvs
                 Return New Guid(CType(row(TransDtlClmUpdte2gvsDAL.COL_NAME_TRANSACTION_LOG_HEADER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransDtlClmUpdte2gvsDAL.COL_NAME_TRANSACTION_LOG_HEADER_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class TransDtlClmUpdte2gvs
 
 
     <ValueMandatory("")> _
-    Public Property ItemNumber() As LongType
+    Public Property ItemNumber As LongType
         Get
             CheckDeleted()
             If row(TransDtlClmUpdte2gvsDAL.COL_NAME_ITEM_NUMBER) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class TransDtlClmUpdte2gvs
                 Return New LongType(CType(row(TransDtlClmUpdte2gvsDAL.COL_NAME_ITEM_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(TransDtlClmUpdte2gvsDAL.COL_NAME_ITEM_NUMBER, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class TransDtlClmUpdte2gvs
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property Response() As String
+    Public Property Response As String
         Get
             CheckDeleted()
             If row(TransDtlClmUpdte2gvsDAL.COL_NAME_RESPONSE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class TransDtlClmUpdte2gvs
                 Return CType(row(TransDtlClmUpdte2gvsDAL.COL_NAME_RESPONSE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlClmUpdte2gvsDAL.COL_NAME_RESPONSE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class TransDtlClmUpdte2gvs
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property ResponseDetail() As String
+    Public Property ResponseDetail As String
         Get
             CheckDeleted()
             If row(TransDtlClmUpdte2gvsDAL.COL_NAME_RESPONSE_DETAIL) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class TransDtlClmUpdte2gvs
                 Return CType(row(TransDtlClmUpdte2gvsDAL.COL_NAME_RESPONSE_DETAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlClmUpdte2gvsDAL.COL_NAME_RESPONSE_DETAIL, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class TransDtlClmUpdte2gvs
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property XmlClaimNumber() As String
+    Public Property XmlClaimNumber As String
         Get
             CheckDeleted()
             If row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_CLAIM_NUMBER) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class TransDtlClmUpdte2gvs
                 Return CType(row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_CLAIM_NUMBER, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class TransDtlClmUpdte2gvs
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=80)> _
-    Public Property XmlClaimStatus() As String
+    Public Property XmlClaimStatus As String
         Get
             CheckDeleted()
             If row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_CLAIM_STATUS) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class TransDtlClmUpdte2gvs
                 Return CType(row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_CLAIM_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_CLAIM_STATUS, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class TransDtlClmUpdte2gvs
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property XmlReasonCloseCode() As String
+    Public Property XmlReasonCloseCode As String
         Get
             CheckDeleted()
             If row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_REASON_CLOSE_CODE) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class TransDtlClmUpdte2gvs
                 Return CType(row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_REASON_CLOSE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_REASON_CLOSE_CODE, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class TransDtlClmUpdte2gvs
 
 
     <ValueMandatory("")> _
-    Public Property XmlLaborAmount() As DecimalType
+    Public Property XmlLaborAmount As DecimalType
         Get
             CheckDeleted()
             If row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_LABOR_AMOUNT) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class TransDtlClmUpdte2gvs
                 Return New DecimalType(CType(row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_LABOR_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_LABOR_AMOUNT, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class TransDtlClmUpdte2gvs
 
 
     <ValueMandatory("")> _
-    Public Property XmlTripAmount() As DecimalType
+    Public Property XmlTripAmount As DecimalType
         Get
             CheckDeleted()
             If row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_TRIP_AMOUNT) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class TransDtlClmUpdte2gvs
                 Return New DecimalType(CType(row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_TRIP_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_TRIP_AMOUNT, Value)
         End Set
@@ -254,7 +254,7 @@ Public Class TransDtlClmUpdte2gvs
 
 
     <ValueMandatory("")> _
-    Public Property XmlShipping() As DecimalType
+    Public Property XmlShipping As DecimalType
         Get
             CheckDeleted()
             If row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_SHIPPING) Is DBNull.Value Then
@@ -263,7 +263,7 @@ Public Class TransDtlClmUpdte2gvs
                 Return New DecimalType(CType(row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_SHIPPING), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_SHIPPING, Value)
         End Set
@@ -271,7 +271,7 @@ Public Class TransDtlClmUpdte2gvs
 
 
     <ValueMandatory("")> _
-    Public Property XmlApprovedQuoteDate() As DateType
+    Public Property XmlApprovedQuoteDate As DateType
         Get
             CheckDeleted()
             If row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_APPROVED_QUOTE_DATE) Is DBNull.Value Then
@@ -280,7 +280,7 @@ Public Class TransDtlClmUpdte2gvs
                 Return New DateType(CType(row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_APPROVED_QUOTE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_APPROVED_QUOTE_DATE, Value)
         End Set
@@ -288,7 +288,7 @@ Public Class TransDtlClmUpdte2gvs
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=320)> _
-    Public Property XmlInvoiceNumber() As String
+    Public Property XmlInvoiceNumber As String
         Get
             CheckDeleted()
             If row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_INVOICE_NUMBER) Is DBNull.Value Then
@@ -297,7 +297,7 @@ Public Class TransDtlClmUpdte2gvs
                 Return CType(row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_INVOICE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_INVOICE_NUMBER, Value)
         End Set
@@ -305,7 +305,7 @@ Public Class TransDtlClmUpdte2gvs
 
 
 
-    Public Property XmlInvoiceProcessedDate() As DateType
+    Public Property XmlInvoiceProcessedDate As DateType
         Get
             CheckDeleted()
             If row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_INVOICE_PROCESSED_DATE) Is DBNull.Value Then
@@ -314,7 +314,7 @@ Public Class TransDtlClmUpdte2gvs
                 Return New DateType(CType(row(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_INVOICE_PROCESSED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(TransDtlClmUpdte2gvsDAL.COL_NAME_XML_INVOICE_PROCESSED_DATE, Value)
         End Set

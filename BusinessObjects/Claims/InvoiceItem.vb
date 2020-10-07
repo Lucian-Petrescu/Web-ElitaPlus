@@ -89,7 +89,7 @@ Public NotInheritable Class InvoiceItem
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(InvoiceItemDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public NotInheritable Class InvoiceItem
     End Property
 
     <ValueMandatory("")> _
-    Public Property InvoiceId() As Guid
+    Public Property InvoiceId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceItemDAL.COL_NAME_INVOICE_ID) Is DBNull.Value Then
@@ -109,7 +109,7 @@ Public NotInheritable Class InvoiceItem
                 Return New Guid(CType(Row(InvoiceItemDAL.COL_NAME_INVOICE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceItemDAL.COL_NAME_INVOICE_ID, Value)
             Invoice = Nothing
@@ -117,7 +117,7 @@ Public NotInheritable Class InvoiceItem
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimAuthorizationId() As Guid
+    Public Property ClaimAuthorizationId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceItemDAL.COL_NAME_CLAIM_AUTHORIZATION_ID) Is DBNull.Value Then
@@ -126,7 +126,7 @@ Public NotInheritable Class InvoiceItem
                 Return New Guid(CType(Row(InvoiceItemDAL.COL_NAME_CLAIM_AUTHORIZATION_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceItemDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
             ClaimAuthorization = Nothing
@@ -135,7 +135,7 @@ Public NotInheritable Class InvoiceItem
 
 
     <ValueMandatory("")> _
-    Public Property LineItemNumber() As LongType
+    Public Property LineItemNumber As LongType
         Get
             CheckDeleted()
             If Row(InvoiceItemDAL.COL_NAME_LINE_ITEM_NUMBER) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public NotInheritable Class InvoiceItem
                 Return New LongType(CType(Row(InvoiceItemDAL.COL_NAME_LINE_ITEM_NUMBER), Long))
             End If
         End Get
-        Set(Value As LongType)
+        Set
             CheckDeleted()
             SetValue(InvoiceItemDAL.COL_NAME_LINE_ITEM_NUMBER, Value)
         End Set
@@ -152,7 +152,7 @@ Public NotInheritable Class InvoiceItem
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property VendorSku() As String
+    Public Property VendorSku As String
         Get
             CheckDeleted()
             If Row(InvoiceItemDAL.COL_NAME_VENDOR_SKU) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public NotInheritable Class InvoiceItem
                 Return CType(Row(InvoiceItemDAL.COL_NAME_VENDOR_SKU), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceItemDAL.COL_NAME_VENDOR_SKU, Value)
         End Set
@@ -169,7 +169,7 @@ Public NotInheritable Class InvoiceItem
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property VendorSkuDescription() As String
+    Public Property VendorSkuDescription As String
         Get
             CheckDeleted()
             If Row(InvoiceItemDAL.COL_NAME_VENDOR_SKU_DESCRIPTION) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public NotInheritable Class InvoiceItem
                 Return CType(Row(InvoiceItemDAL.COL_NAME_VENDOR_SKU_DESCRIPTION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceItemDAL.COL_NAME_VENDOR_SKU_DESCRIPTION, Value)
         End Set
@@ -186,7 +186,7 @@ Public NotInheritable Class InvoiceItem
 
 
     <ValueMandatory("")> _
-    Public Property Amount() As DecimalType
+    Public Property Amount As DecimalType
         Get
             CheckDeleted()
             If Row(InvoiceItemDAL.COL_NAME_AMOUNT) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public NotInheritable Class InvoiceItem
                 Return New DecimalType(CType(Row(InvoiceItemDAL.COL_NAME_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(InvoiceItemDAL.COL_NAME_AMOUNT, Value)
         End Set
@@ -203,7 +203,7 @@ Public NotInheritable Class InvoiceItem
 
 
 
-    Public Property AdjustmentReasonId() As Guid
+    Public Property AdjustmentReasonId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceItemDAL.COL_NAME_ADJUSTMENT_REASON_ID) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public NotInheritable Class InvoiceItem
                 Return New Guid(CType(Row(InvoiceItemDAL.COL_NAME_ADJUSTMENT_REASON_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceItemDAL.COL_NAME_ADJUSTMENT_REASON_ID, Value)
         End Set
@@ -220,7 +220,7 @@ Public NotInheritable Class InvoiceItem
 
 
     <ValueMandatory("")> _
-    Public Property ServiceClassId() As Guid
+    Public Property ServiceClassId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceItemDAL.COL_NAME_SERVICE_CLASS_ID) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public NotInheritable Class InvoiceItem
                 Return New Guid(CType(Row(InvoiceItemDAL.COL_NAME_SERVICE_CLASS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceItemDAL.COL_NAME_SERVICE_CLASS_ID, Value)
         End Set
@@ -237,7 +237,7 @@ Public NotInheritable Class InvoiceItem
 
 
 
-    Public Property ServiceTypeId() As Guid
+    Public Property ServiceTypeId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceItemDAL.COL_NAME_SERVICE_TYPE_ID) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public NotInheritable Class InvoiceItem
                 Return New Guid(CType(Row(InvoiceItemDAL.COL_NAME_SERVICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceItemDAL.COL_NAME_SERVICE_TYPE_ID, Value)
         End Set
@@ -254,7 +254,7 @@ Public NotInheritable Class InvoiceItem
 
 
 
-    Public Property ServiceLevelId() As Guid
+    Public Property ServiceLevelId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceItemDAL.COL_NAME_SERVICE_LEVEL_ID) Is DBNull.Value Then
@@ -263,7 +263,7 @@ Public NotInheritable Class InvoiceItem
                 Return New Guid(CType(Row(InvoiceItemDAL.COL_NAME_SERVICE_LEVEL_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceItemDAL.COL_NAME_SERVICE_LEVEL_ID, Value)
         End Set
@@ -337,7 +337,7 @@ Public NotInheritable Class InvoiceItem
             End If
             Return _invoice
         End Get
-        Private Set(value As Invoice)
+        Private Set
             If (_invoice Is Nothing OrElse value Is Nothing OrElse Not _invoice.Equals(value)) Then
                 _invoice = value
             End If
@@ -353,7 +353,7 @@ Public NotInheritable Class InvoiceItem
             End If
             Return _claimAuthorization
         End Get
-        Private Set(value As ClaimAuthorization)
+        Private Set
             If (_claimAuthorization Is Nothing OrElse value Is Nothing OrElse Not _claimAuthorization.Equals(value)) Then
                 _claimAuthorization = value
             End If
@@ -369,7 +369,7 @@ Public NotInheritable Class InvoiceItem
             End If
             Return _invoiceReconciliation
         End Get
-        Set(value As InvoiceReconciliation)
+        Set
             If (_invoiceReconciliation Is Nothing OrElse value Is Nothing OrElse Not _invoiceReconciliation.Equals(value)) Then
                 _invoiceReconciliation = value
             End If

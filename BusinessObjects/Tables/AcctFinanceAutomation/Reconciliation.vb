@@ -126,7 +126,7 @@ Public Class Reconciliation
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ReconciliationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -137,7 +137,7 @@ Public Class Reconciliation
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(ReconciliationDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -146,7 +146,7 @@ Public Class Reconciliation
                 Return New Guid(CType(Row(ReconciliationDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ReconciliationDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -154,7 +154,7 @@ Public Class Reconciliation
 
 
     <ValueMandatory("")> _
-    Public Property BillingDate() As DateType
+    Public Property BillingDate As DateType
         Get
             CheckDeleted()
             If Row(ReconciliationDAL.COL_NAME_BILLING_DATE) Is DBNull.Value Then
@@ -163,7 +163,7 @@ Public Class Reconciliation
                 Return New DateType(CType(Row(ReconciliationDAL.COL_NAME_BILLING_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ReconciliationDAL.COL_NAME_BILLING_DATE, Value)
         End Set
@@ -171,7 +171,7 @@ Public Class Reconciliation
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property SocType() As String
+    Public Property SocType As String
         Get
             CheckDeleted()
             If Row(ReconciliationDAL.COL_NAME_SOC_TYPE) Is DBNull.Value Then
@@ -180,7 +180,7 @@ Public Class Reconciliation
                 Return CType(Row(ReconciliationDAL.COL_NAME_SOC_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReconciliationDAL.COL_NAME_SOC_TYPE, Value)
         End Set
@@ -188,7 +188,7 @@ Public Class Reconciliation
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property AccountStatus() As String
+    Public Property AccountStatus As String
         Get
             CheckDeleted()
             If Row(ReconciliationDAL.COL_NAME_ACCOUNT_STATUS) Is DBNull.Value Then
@@ -197,7 +197,7 @@ Public Class Reconciliation
                 Return CType(Row(ReconciliationDAL.COL_NAME_ACCOUNT_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReconciliationDAL.COL_NAME_ACCOUNT_STATUS, Value)
         End Set
@@ -205,7 +205,7 @@ Public Class Reconciliation
 
 
 
-    Public Property BillableCount() As LongType
+    Public Property BillableCount As LongType
         Get
             CheckDeleted()
             If Row(ReconciliationDAL.COL_NAME_BILLABLE_COUNT) Is DBNull.Value Then
@@ -214,7 +214,7 @@ Public Class Reconciliation
                 Return New LongType(CType(Row(ReconciliationDAL.COL_NAME_BILLABLE_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ReconciliationDAL.COL_NAME_BILLABLE_COUNT, Value)
         End Set
@@ -222,7 +222,7 @@ Public Class Reconciliation
 
 
 
-    Public Property CarrierCount() As LongType
+    Public Property CarrierCount As LongType
         Get
             CheckDeleted()
             If Row(ReconciliationDAL.COL_NAME_CARRIER_COUNT) Is DBNull.Value Then
@@ -231,7 +231,7 @@ Public Class Reconciliation
                 Return New LongType(CType(Row(ReconciliationDAL.COL_NAME_CARRIER_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ReconciliationDAL.COL_NAME_CARRIER_COUNT, Value)
         End Set
@@ -239,7 +239,7 @@ Public Class Reconciliation
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property Discrepancy() As String
+    Public Property Discrepancy As String
         Get
             CheckDeleted()
             If Row(ReconciliationDAL.COL_NAME_DISCREPANCY) Is DBNull.Value Then
@@ -248,7 +248,7 @@ Public Class Reconciliation
                 Return CType(Row(ReconciliationDAL.COL_NAME_DISCREPANCY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReconciliationDAL.COL_NAME_DISCREPANCY, Value)
         End Set

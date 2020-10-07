@@ -103,7 +103,7 @@ Public Class IssueType
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(IssueTypeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -114,7 +114,7 @@ Public Class IssueType
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(IssueTypeDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -123,7 +123,7 @@ Public Class IssueType
                 Return CType(Row(IssueTypeDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(IssueTypeDAL.COL_NAME_CODE, value)
         End Set
@@ -131,7 +131,7 @@ Public Class IssueType
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4000)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(IssueTypeDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -140,13 +140,13 @@ Public Class IssueType
                 Return CType(Row(IssueTypeDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(IssueTypeDAL.COL_NAME_DESCRIPTION, value)
         End Set
     End Property
 
-    Public Property IsSystemGenerated() As Guid
+    Public Property IsSystemGenerated As Guid
         Get
             CheckDeleted()
             If Row(IssueTypeDAL.COL_NAME_IS_SYSTEM_GENERATED_ID) Is DBNull.Value Then
@@ -155,13 +155,13 @@ Public Class IssueType
                 Return New Guid(CType(Row(IssueTypeDAL.COL_NAME_IS_SYSTEM_GENERATED_ID), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(IssueTypeDAL.COL_NAME_IS_SYSTEM_GENERATED_ID, value)
         End Set
     End Property
 
-    Public Property IsSelfCleaning() As Guid
+    Public Property IsSelfCleaning As Guid
         Get
             CheckDeleted()
             If Row(IssueTypeDAL.COL_NAME_IS_SELF_CLEANING_ID) Is DBNull.Value Then
@@ -170,7 +170,7 @@ Public Class IssueType
                 Return New Guid(CType(Row(IssueTypeDAL.COL_NAME_IS_SELF_CLEANING_ID), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(IssueTypeDAL.COL_NAME_IS_SELF_CLEANING_ID, value)
         End Set

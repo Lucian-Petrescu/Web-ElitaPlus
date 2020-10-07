@@ -5,7 +5,7 @@
         Get
             Return _action
         End Get
-        Set(ByVal value As IPriceListSearch)
+        Set
             _action = value
         End Set
     End Property

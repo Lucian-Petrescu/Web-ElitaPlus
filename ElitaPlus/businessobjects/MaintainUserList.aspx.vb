@@ -353,8 +353,8 @@ Partial Class MaintainUserList
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-            If dvRow IsNot Nothing And Not State.bnoRow Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Row.Cells(GRID_COL_NETWORKID_IDX).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV.COL_NETWORK_ID).ToString
                     If (e.Row.Cells(GRID_COL_NAME_IDX).FindControl(GRID_COL_EDIT_CTRL) IsNot Nothing) Then
                         btnEditItem = CType(e.Row.Cells(GRID_COL_NAME_IDX).FindControl(GRID_COL_EDIT_CTRL), LinkButton)

@@ -559,7 +559,7 @@ Public Class BestReplacementForm
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Item.Cells(BestReplacementForm.GRID_COL_MANUFACTURER).Text = dvRow(BestReplacementGroup.BestReplacementSelectionView.COL_NAME_MANUFACTURER).ToString
                 e.Item.Cells(BestReplacementForm.GRID_COL_MODEL).Text = dvRow(BestReplacementGroup.BestReplacementSelectionView.COL_NAME_MODEL).ToString
                 e.Item.Cells(BestReplacementForm.GRID_COL_REPLACEMENT_MANUFACTURER).Text = dvRow(BestReplacementGroup.BestReplacementSelectionView.COL_NAME_REPLACEMENT_EQUIPMENT_MANUFACTURER).ToString

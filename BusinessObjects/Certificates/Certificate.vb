@@ -52,9 +52,6 @@ Public Class Certificate
     Public Const CANCELLATION_REASON_CODE_16 = "16"
     Public Const CANCELLATION_REASON_CODE_17 = "17"
 
-    Public Const IDENTIFICATION_NUMBER = "IdentificationNumber"
-    Public Const TAX_ID_NUMB = "TaxIDNumb"
-
     Public Const SEARCH_SORT_DEFAULT = CertificateDAL.SORT_BY_CUSTOMER_NAME
     Public Const SEARCH_MAX_NUMBER_OF_ROWS = CertificateDAL.MAX_NUMBER_OF_ROWS
     Public Const EQUIPMENT_NOT_FOUND As String = "EQUIPMENT_NOT_FOUND" ' Equipment not Found on Equipment Table. Change/Update can not be Made.
@@ -69,7 +66,6 @@ Public Class Certificate
     Private Const ASTERISK As Char = "*"
     Private Const SEARCH_EXCEPTION_INFORCE_DATE As String = "SEARCH_EXCEPTION_INFORCE_DATE"
     Public Const SEARCH_REGEX As String = "^[*]|[%]"
-    Public Const BILLING_ACCOUNT_NUMBER As String = "BILLING_ACCOUNT_NUMBER"
 
 
 #End Region
@@ -176,17 +172,17 @@ Public Class Certificate
 #End Region
 #Region "Navigation Properties"
 
-    Private _productCode As ProductCode = Nothing
+    Private _product As ProductCode = Nothing
     Private _company As Company = Nothing
 
     Public ReadOnly Property Product As ProductCode
         Get
-            If (_productCode Is Nothing) Then
+            If (_product Is Nothing) Then
                 If (DealerId <> Guid.Empty) AndAlso (Not ProductCode Is Nothing) AndAlso (ProductCode.Trim().Length > 0) Then
-                    _productCode = New ProductCode(DealerId, ProductCode, Dataset)
+                    _product = New ProductCode(DealerId, ProductCode, Dataset)
                 End If
             End If
-            Return _productCode
+            Return _product
         End Get
     End Property
 
@@ -1056,9 +1052,9 @@ Public Class Certificate
         End Get
     End Property
 
-    Public ReadOnly Property GetCertificateItem(certItemID As Guid) As CertItem
+    Public ReadOnly Property GetCertificateItem(certItemId As Guid) As CertItem
         Get
-            Return New CertItem(certItemID, Dataset)
+            Return New CertItem(certItemId, Dataset)
         End Get
     End Property
 
@@ -1190,7 +1186,7 @@ Public Class Certificate
         End Set
     End Property
 
-    <ValidStringLength("", Max:=50), ValueMustBeBlankForDocumentNumber(""), SPValidationDocumentNumber(IDENTIFICATION_NUMBER), ValueTaxIdLenht("")>
+    <ValidStringLength("", Max:=50), ValueMustBeBlankForDocumentNumber(""), SPValidationDocumentNumber(nameof(IdentificationNumber)), ValueTaxIdLenht("")>
     Public Property IdentificationNumber As String
         Get
             CheckDeleted()
@@ -1220,7 +1216,7 @@ Public Class Certificate
         End Set
     End Property
 
-    <ValidStringLength("", Max:=20), ValueMustBeBlankForDocumentNumber(""), SPValidationDocumentNumber(TAX_ID_NUMB), ValueTaxIdLenht("")>
+    <ValidStringLength("", Max:=20), ValueMustBeBlankForDocumentNumber(""), SPValidationDocumentNumber(nameof(TaxIDNumb)), ValueTaxIdLenht("")>
     Public Property TaxIDNumb As String
         Get
             CheckDeleted()
@@ -5004,13 +5000,13 @@ Public Class Certificate
                         End If
 
                     Case VALIDATION_FLAG_PARTIAL
-                        If DisplayName = TAX_ID_NUMB _
+                        If DisplayName = nameof(TaxIDNumb) _
                             AndAlso (obj.getDocTypeCode <> DOC_TYPE_CPF AndAlso obj.getDocTypeCode <> DOC_TYPE_CNPJ) _
                             AndAlso (obj.TaxIDNumb Is Nothing OrElse obj.TaxIDNumb.Trim.Length = 0) Then
                             Return True
                         End If
 
-                        If DisplayName = IDENTIFICATION_NUMBER _
+                        If DisplayName = nameof(IdentificationNumber) _
                             AndAlso (Not obj.DocumentIssueDate Is Nothing _
                                 Or Not obj.IdType Is Nothing _
                                 Or Not obj.DocumentAgency Is Nothing _

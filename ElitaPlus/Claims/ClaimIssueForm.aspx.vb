@@ -101,7 +101,7 @@ Public Class ClaimIssueForm
 
         lblGrdHdr.Text = TranslationBase.TranslateLabelOrMessage("CLAIM_ISSUES")
         lblFileNewIssue.Text = TranslationBase.TranslateLabelOrMessage("FILE_NEW_CLAIM_ISSUE")
-        If (State.MyBO.StatusCode = Codes.CLAIM_STATUS__CLOSED Or State.MyBO.StatusCode = Codes.CLAIM_STATUS__DENIED) Then
+        If (State.MyBO.StatusCode = Codes.CLAIM_STATUS__CLOSED OrElse State.MyBO.StatusCode = Codes.CLAIM_STATUS__DENIED) Then
             lblFileNewIssue.Visible = False
         End If
 
@@ -340,8 +340,7 @@ Public Class ClaimIssueForm
 
                 ' Convert short status codes to full description with css
                 e.Row.Cells(GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(CLAIM_ISSUE_LIST, dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString)
-                If (dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED Or _
-                          dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__WAIVED) Then
+                If (dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED OrElse dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__WAIVED) Then
                     e.Row.Cells(GRID_COL_STATUS_CODE_IDX).CssClass = "StatActive"
                 Else
                     e.Row.Cells(GRID_COL_STATUS_CODE_IDX).CssClass = "StatInactive"

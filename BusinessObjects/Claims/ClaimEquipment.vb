@@ -102,7 +102,7 @@ Public Class ClaimEquipment
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ClaimEquipmentDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -112,7 +112,7 @@ Public Class ClaimEquipment
         End Get
     End Property
 
-    Public Property ClaimEquipmentDate() As DateType
+    Public Property ClaimEquipmentDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_CLAIM_EQUIPMENT_DATE) Is DBNull.Value Then
@@ -121,14 +121,14 @@ Public Class ClaimEquipment
                 Return New DateType(CType(Row(ClaimEquipmentDAL.COL_NAME_CLAIM_EQUIPMENT_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_CLAIM_EQUIPMENT_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -137,14 +137,14 @@ Public Class ClaimEquipment
                 Return New Guid(CType(Row(ClaimEquipmentDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -153,13 +153,13 @@ Public Class ClaimEquipment
                 Return New Guid(CType(Row(ClaimEquipmentDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
     End Property
 
-    Public Property DeviceTypeId() As Guid
+    Public Property DeviceTypeId As Guid
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_DEVICE_TYPE_ID) Is DBNull.Value Then
@@ -168,13 +168,13 @@ Public Class ClaimEquipment
                 Return New Guid(CType(Row(ClaimEquipmentDAL.COL_NAME_DEVICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_DEVICE_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property Comments() As String
+    Public Property Comments As String
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_COMMENTS) Is DBNull.Value Then
@@ -183,7 +183,7 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_COMMENTS).ToString
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_COMMENTS, Value)
         End Set
@@ -197,7 +197,7 @@ Public Class ClaimEquipment
     End Property
 
     <ValidateModelConditionally("")>
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -206,12 +206,12 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_MODEL).ToString
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
-    Public Property Color() As String
+    Public Property Color As String
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_COLOR) Is DBNull.Value Then
@@ -220,12 +220,12 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_COLOR).ToString
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_COLOR, Value)
         End Set
     End Property
-    Public Property Memory() As String
+    Public Property Memory As String
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_MEMORY) Is DBNull.Value Then
@@ -234,12 +234,12 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_MEMORY).ToString
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_MEMORY, Value)
         End Set
     End Property
-    Public Property SKU() As String
+    Public Property SKU As String
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_SKU) Is DBNull.Value Then
@@ -248,13 +248,13 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_SKU).ToString
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_SKU, Value)
         End Set
     End Property
 
-    Public Property SerialNumber() As String
+    Public Property SerialNumber As String
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_SERIAL_NUMBER) Is DBNull.Value Then
@@ -263,13 +263,13 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_SERIAL_NUMBER).ToString
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_SERIAL_NUMBER, Value)
         End Set
     End Property
 
-    Public Property IMEINumber() As String
+    Public Property IMEINumber As String
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_IMEI_NUMBER) Is DBNull.Value Then
@@ -278,12 +278,12 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_IMEI_NUMBER).ToString
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_IMEI_NUMBER, Value)
         End Set
     End Property
-    Public Property Price() As DecimalType
+    Public Property Price As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_PRICE) Is DBNull.Value Then
@@ -292,13 +292,13 @@ Public Class ClaimEquipment
                 Return New DecimalType(CType(Row(ClaimEquipmentDAL.COL_NAME_PRICE), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_PRICE, Value)
         End Set
     End Property
 
-    Public Property EquipmentId() As Guid
+    Public Property EquipmentId As Guid
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_EQUIPMENT_ID) Is DBNull.Value Then
@@ -307,7 +307,7 @@ Public Class ClaimEquipment
                 Return New Guid(CType(Row(ClaimEquipmentDAL.COL_NAME_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_EQUIPMENT_ID, Value)
             _EquipmentBO = Nothing
@@ -343,7 +343,7 @@ Public Class ClaimEquipment
         End Get
     End Property
     <ValueMandatory("")>
-    Public Property ClaimEquipmentTypeId() As Guid
+    Public Property ClaimEquipmentTypeId As Guid
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_CLAIM_EQUIPMENT_TYPE_ID) Is DBNull.Value Then
@@ -352,7 +352,7 @@ Public Class ClaimEquipment
                 Return New Guid(CType(Row(ClaimEquipmentDAL.COL_NAME_CLAIM_EQUIPMENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_CLAIM_EQUIPMENT_TYPE_ID, Value)
         End Set
@@ -366,7 +366,7 @@ Public Class ClaimEquipment
     End Property
 
 
-    Public Property Priority() As LongType
+    Public Property Priority As LongType
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_PRIORITY) Is DBNull.Value Then
@@ -375,14 +375,14 @@ Public Class ClaimEquipment
                 Return New LongType(CType(Row(ClaimEquipmentDAL.COL_NAME_PRIORITY), Long))
             End If
         End Get
-        Set(Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_PRIORITY, Value)
         End Set
     End Property
 
     Private _claim As ClaimBase
-    Public Property Claim() As ClaimBase
+    Public Property Claim As ClaimBase
         Get
             If (_claim Is Nothing) Then
                 If Not ClaimId.Equals(Guid.Empty) Then
@@ -391,19 +391,19 @@ Public Class ClaimEquipment
             End If
             Return _claim
         End Get
-        Private Set(value As ClaimBase)
+        Private Set
             _claim = value
         End Set
     End Property
 
 
-    Private ReadOnly Property OriginalModel() As String
+    Private ReadOnly Property OriginalModel As String
         Get
             Return CType(Row(ClaimEquipmentDAL.COL_NAME_MODEL, DataRowVersion.Original), String)
         End Get
     End Property
 
-    Public Property ClaimAuthorizationId() As Guid
+    Public Property ClaimAuthorizationId As Guid
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_CLAIM_AUTHORIZATION_ID) Is DBNull.Value Then
@@ -412,13 +412,13 @@ Public Class ClaimEquipment
                 Return New Guid(CType(Row(ClaimEquipmentDAL.COL_NAME_CLAIM_AUTHORIZATION_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
         End Set
     End Property
 
-    Public Property shippingFromName() As String
+    Public Property shippingFromName As String
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_SHIPPINGFROMNAME) Is DBNull.Value Then
@@ -427,12 +427,12 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_SHIPPINGFROMNAME).ToString
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_SHIPPINGFROMNAME, Value)
         End Set
     End Property
-    Public Property shippingFromDescription() As String
+    Public Property shippingFromDescription As String
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_SHIPPINGFROMDESCRIPTION) Is DBNull.Value Then
@@ -441,13 +441,13 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_SHIPPINGFROMDESCRIPTION).ToString
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_SHIPPINGFROMDESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property DeviceType() As String
+    Public Property DeviceType As String
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_DEVICE_TYPE) Is DBNull.Value Then
@@ -456,13 +456,13 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_DEVICE_TYPE).ToString
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_DEVICE_TYPE, Value)
         End Set
     End Property
 
-    Public Property EquipmentType() As String
+    Public Property EquipmentType As String
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_EQUIPMENT_TYPE) Is DBNull.Value Then
@@ -471,12 +471,12 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_EQUIPMENT_TYPE).ToString
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_EQUIPMENT_TYPE, Value)
         End Set
     End Property
-    Public Property PurchasedDate() As DateType
+    Public Property PurchasedDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_PURCHASED_DATE) Is DBNull.Value Then
@@ -485,12 +485,12 @@ Public Class ClaimEquipment
                 Return New DateType(CType(Row(ClaimEquipmentDAL.COL_NAME_PURCHASED_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_PURCHASED_DATE, Value)
         End Set
     End Property
-    Public Property PurchasedPrice() As DecimalType
+    Public Property PurchasedPrice As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_PURCHASE_PRICE) Is DBNull.Value Then
@@ -499,12 +499,12 @@ Public Class ClaimEquipment
                 Return New DecimalType(CType(Row(ClaimEquipmentDAL.COL_NAME_PURCHASE_PRICE), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_PURCHASE_PRICE, Value)
         End Set
     End Property
-    Public Property RegisteredItemName() As String
+    Public Property RegisteredItemName As String
         Get
             CheckDeleted()
             If Row(ClaimEquipmentDAL.COL_NAME_REGISTERED_ITEM_NAME) Is DBNull.Value Then
@@ -513,7 +513,7 @@ Public Class ClaimEquipment
                 Return Row(ClaimEquipmentDAL.COL_NAME_REGISTERED_ITEM_NAME).ToString
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimEquipmentDAL.COL_NAME_REGISTERED_ITEM_NAME, Value)
         End Set

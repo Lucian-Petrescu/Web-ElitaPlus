@@ -193,7 +193,7 @@ Namespace Tables
                     UpdateBreadCrum()
                     TranslateGridHeader(Grid)
 
-                    If State.PageCalledFrom = "MENU" Or State.PageCalledFrom = "NON_ADMIN_USER" Then
+                    If State.PageCalledFrom = "MENU" OrElse State.PageCalledFrom = "NON_ADMIN_USER" Then
                         AddCalendarwithTime(BtnBeginDate, txtBeginDate)
                         AddCalendarwithTime(BtnEndDate, txtEndDate)
                         AddCalendarwithTime(btnBeginDateOutage, txtBeginDateOutage)
@@ -749,7 +749,7 @@ Namespace Tables
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
                 'If e.Row.RowType = DataControlRowType.DataRow Then
-                If dvRow IsNot Nothing And Not State.bnoRow Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
                     Dim btnEditItem As LinkButton
                     ' Assign the detail id to the command agrument
                     If (e.Row.Cells(GRID_COL_NOTIFICATION_NAME_IDX).FindControl(BTN_CONTROL_EDIT_DETAIL_LIST) IsNot Nothing) Then
@@ -802,7 +802,7 @@ Namespace Tables
 
                     'Dim index As Integer = CInt(e.CommandArgument)
                     'Me.State.NotificationSelectedBOId = New Guid(Me.Grid.Rows(index).Cells(Me.GRID_COL_NOTIFICATION_LIST_ID_IDX).Text)
-                    If State.PageCalledFrom = "MAINPAGE" Or State.PageCalledFrom = "NON_ADMIN_USER" Then
+                    If State.PageCalledFrom = "MAINPAGE" OrElse State.PageCalledFrom = "NON_ADMIN_USER" Then
 
                         BeginNotificationDetailChildEdit()
                         PopulateDetailFromNotificationDetailChildBO()
@@ -831,9 +831,7 @@ Namespace Tables
 
         Protected Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
             Try
-                If txtBeginDate.Text = String.Empty And txtEndDate.Text = String.Empty And txtBeginDateOutage.Text = String.Empty And
-                    txtEndDateOutage.Text = String.Empty And ddlAudianceType.SelectedIndex = &H0 And ddlNotificationType.SelectedIndex = &H0 And
-                    txtNotificationDetail.Text = String.Empty And txtNotificationName.Text = String.Empty Then
+                If txtBeginDate.Text = String.Empty AndAlso txtEndDate.Text = String.Empty AndAlso txtBeginDateOutage.Text = String.Empty AndAlso txtEndDateOutage.Text = String.Empty AndAlso ddlAudianceType.SelectedIndex = &H0 AndAlso ddlNotificationType.SelectedIndex = &H0 AndAlso txtNotificationDetail.Text = String.Empty AndAlso txtNotificationName.Text = String.Empty Then
                     Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Notification), Nothing, "Search", Nothing)}
                     Throw New BOValidationException(errors, GetType(Notification).FullName)
 

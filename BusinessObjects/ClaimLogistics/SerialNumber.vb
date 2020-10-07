@@ -90,7 +90,7 @@ Public Class SerialNumber
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(SerialNumberDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class SerialNumber
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(SerialNumberDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class SerialNumber
                 Return New Guid(CType(row(SerialNumberDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SerialNumberDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class SerialNumber
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=80)> _
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
             CheckDeleted()
             If row(SerialNumberDAL.COL_NAME_CERT_NUMBER) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class SerialNumber
                 Return CType(row(SerialNumberDAL.COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SerialNumberDAL.COL_NAME_CERT_NUMBER, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class SerialNumber
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=120)> _
-    Public Property SerialNumber() As String
+    Public Property SerialNumber As String
         Get
             CheckDeleted()
             If row(SerialNumberDAL.COL_NAME_SERIAL_NUMBER) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class SerialNumber
                 Return CType(row(SerialNumberDAL.COL_NAME_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SerialNumberDAL.COL_NAME_SERIAL_NUMBER, Value)
         End Set

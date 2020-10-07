@@ -327,7 +327,7 @@ Namespace Reports
             End If
 
             ' Dim isSummary As String = YES
-            If isdealer = True And dealergrpCode IsNot Nothing Then
+            If isdealer = True AndAlso dealergrpCode IsNot Nothing Then
                 isdealer = False
             End If
 

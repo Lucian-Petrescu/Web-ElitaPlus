@@ -219,8 +219,8 @@ Namespace Interfaces
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As FileInfoDto = CType(e.Row.DataItem, FileInfoDto)
                 Dim btnEditItem As LinkButton
-                If dvRow IsNot Nothing And Not State.bnoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                         If Not String.IsNullOrEmpty(dvRow.LogicalFileName) Then
                             btnEditItem = CType(e.Row.Cells(GridDefenitionEnum.Filename).FindControl("btnGridShow"), LinkButton)

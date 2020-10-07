@@ -133,7 +133,7 @@ Public Class NavigationHistory
         '  Dim CFG_HOME_PAGE As String = ConfigurationMgr.ConfigValue(ELPWebConstants.HOME_PAGE)
         Dim CFG_HOME_PAGE As String = ELPWebConstants.HOME_PAGE
 
-        If Path.GetFileName(sLastPage).ToUpper = CFG_HOME_PAGE.ToUpper And oStack.Count = 0 Then
+        If Path.GetFileName(sLastPage).ToUpper = CFG_HOME_PAGE.ToUpper AndAlso oStack.Count = 0 Then
             oStack.Push(ELPWebConstants.CFG_PATH_TO_HOME_PAGE)
 
             'set the home page as the last page
@@ -168,7 +168,7 @@ Public Class NavigationHistory
         End If
 
         'if the home page is the last page in the stack push it back into the stack.
-        If Path.GetFileName(sLastPage).ToUpper = CFG_HOME_PAGE.ToUpper And oStack.Count = 0 Then
+        If Path.GetFileName(sLastPage).ToUpper = CFG_HOME_PAGE.ToUpper AndAlso oStack.Count = 0 Then
             oStack.Push(ELPWebConstants.CFG_PATH_TO_HOME_PAGE)
 
             'set the home page as the last page

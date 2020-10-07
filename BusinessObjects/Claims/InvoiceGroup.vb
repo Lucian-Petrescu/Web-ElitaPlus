@@ -92,7 +92,7 @@ Public Class InvoiceGroup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(InvoiceGroupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -103,7 +103,7 @@ Public Class InvoiceGroup
     End Property
 
     <ValidStringLength("", Max:=80)> _
-    Public Property InvoiceGroupNumber() As String
+    Public Property InvoiceGroupNumber As String
         Get
             CheckDeleted()
             If Row(InvoiceGroupDAL.COL_NAME_INVOICE_GROUP_NUMBER) Is DBNull.Value Then
@@ -112,7 +112,7 @@ Public Class InvoiceGroup
                 Return CType(Row(InvoiceGroupDAL.COL_NAME_INVOICE_GROUP_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceGroupDAL.COL_NAME_INVOICE_GROUP_NUMBER, Value)
         End Set
@@ -120,7 +120,7 @@ Public Class InvoiceGroup
 
 
 
-    Public Property InvoiceGroupStatusId() As Guid
+    Public Property InvoiceGroupStatusId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceGroupDAL.COL_NAME_INVOICE_GROUP_STATUS_ID) Is DBNull.Value Then
@@ -129,13 +129,13 @@ Public Class InvoiceGroup
                 Return New Guid(CType(Row(InvoiceGroupDAL.COL_NAME_INVOICE_GROUP_STATUS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InvoiceGroupDAL.COL_NAME_INVOICE_GROUP_STATUS_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property ReceiptDate() As Date
+    Public ReadOnly Property ReceiptDate As Date
         Get
             CheckDeleted()
             If Row(InvoiceGroupDAL.COL_NAME_CREATED_DATE) Is DBNull.Value Then
@@ -148,7 +148,7 @@ Public Class InvoiceGroup
     End Property
 
 
-    Public Property User() As String
+    Public Property User As String
         Get
             CheckDeleted()
             If Row(InvoiceGroupDAL.COL_NAME_CREATED_BY) Is DBNull.Value Then
@@ -157,7 +157,7 @@ Public Class InvoiceGroup
                 Return CType(Row(InvoiceGroupDAL.COL_NAME_CREATED_BY), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(InvoiceGroupDAL.COL_NAME_CREATED_BY, Value)
         End Set

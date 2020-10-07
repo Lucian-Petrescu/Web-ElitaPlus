@@ -204,7 +204,7 @@ Partial Public Class ClaimLoadForm
         MiscUtil.CreateFolder(webServerPath)
         System.IO.File.WriteAllBytes(webServerFile, fileBytes)
         '' ''DEF-24620 Start
-        If (AppConfig.HubRegion.ToUpper() = "C1" Or AppConfig.HubRegion.ToUpper() = "C2" Or AppConfig.HubRegion.ToUpper() = "AS") Then
+        If (AppConfig.HubRegion.ToUpper() = "C1" OrElse AppConfig.HubRegion.ToUpper() = "C2" OrElse AppConfig.HubRegion.ToUpper() = "AS") Then
             System.IO.File.WriteAllBytes(layoutFileName, System.Text.Encoding.ASCII.GetBytes("gen_clc"))
         Else
             Dim dv As DataView

@@ -96,7 +96,7 @@ Public Class CommissionEntity
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CommissionEntityDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -107,7 +107,7 @@ Public Class CommissionEntity
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property EntityName() As String
+    Public Property EntityName As String
         Get
             CheckDeleted()
             If Row(CommissionEntityDAL.COL_NAME_ENTITY_NAME) Is DBNull.Value Then
@@ -116,7 +116,7 @@ Public Class CommissionEntity
                 Return CType(Row(CommissionEntityDAL.COL_NAME_ENTITY_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommissionEntityDAL.COL_NAME_ENTITY_NAME, Value)
         End Set
@@ -124,7 +124,7 @@ Public Class CommissionEntity
 
 
     <ValidStringLength("", Max:=240)> _
-    Public Property Phone() As String
+    Public Property Phone As String
         Get
             CheckDeleted()
             If Row(CommissionEntityDAL.COL_NAME_PHONE) Is DBNull.Value Then
@@ -133,7 +133,7 @@ Public Class CommissionEntity
                 Return CType(Row(CommissionEntityDAL.COL_NAME_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommissionEntityDAL.COL_NAME_PHONE, Value)
         End Set
@@ -141,7 +141,7 @@ Public Class CommissionEntity
 
 
     <ValidStringLength("", Max:=800), EmailAddress("")> _
-    Public Property Email() As String
+    Public Property Email As String
         Get
             CheckDeleted()
             If Row(CommissionEntityDAL.COL_NAME_EMAIL) Is DBNull.Value Then
@@ -150,13 +150,13 @@ Public Class CommissionEntity
                 Return CType(Row(CommissionEntityDAL.COL_NAME_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommissionEntityDAL.COL_NAME_EMAIL, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-       Public Property PaymentMethodId() As Guid
+       Public Property PaymentMethodId As Guid
         Get
             CheckDeleted()
             If Row(CommissionEntityDAL.COL_NAME_PAYMENT_METHOD_ID) Is DBNull.Value Then
@@ -165,47 +165,47 @@ Public Class CommissionEntity
                 Return New Guid(CType(Row(CommissionEntityDAL.COL_NAME_PAYMENT_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommissionEntityDAL.COL_NAME_PAYMENT_METHOD_ID, Value)
         End Set
     End Property
 
-    Public Property isBankInfoNeedDeletion() As Boolean
+    Public Property isBankInfoNeedDeletion As Boolean
         Get
             Return _isBankInfoNeedDeletion
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _isBankInfoNeedDeletion = Value
         End Set
     End Property
-    Public Property IsNewBankInfo() As Boolean
+    Public Property IsNewBankInfo As Boolean
         Get
             Return _isNewBankInfo
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _isNewBankInfo = Value
         End Set
     End Property
-    Public Property IsNewWithCopy() As Boolean
+    Public Property IsNewWithCopy As Boolean
         Get
             Return _isNewWithCopy
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _isNewWithCopy = Value
         End Set
     End Property
 
-    Public Property IsDelete() As Boolean
+    Public Property IsDelete As Boolean
         Get
             Return _isDelete
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _isDelete = Value
         End Set
     End Property
 
-    Public Property BankInfoId() As Guid
+    Public Property BankInfoId As Guid
         Get
             CheckDeleted()
             If Row(CommissionEntityDAL.COL_NAME_BANK_INFO_ID) Is DBNull.Value Then
@@ -214,13 +214,13 @@ Public Class CommissionEntity
                 Return New Guid(CType(Row(CommissionEntityDAL.COL_NAME_BANK_INFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommissionEntityDAL.COL_NAME_BANK_INFO_ID, Value)
         End Set
     End Property
 
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(CommissionEntityDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class CommissionEntity
                 Return New Guid(CType(Row(CommissionEntityDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommissionEntityDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class CommissionEntity
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             CheckDeleted()
             If Row(CommissionEntityDAL.COL_NAME_ADDRESS1) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class CommissionEntity
                 Return CType(Row(CommissionEntityDAL.COL_NAME_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommissionEntityDAL.COL_NAME_ADDRESS1, Value)
         End Set
@@ -254,7 +254,7 @@ Public Class CommissionEntity
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             CheckDeleted()
             If Row(CommissionEntityDAL.COL_NAME_ADDRESS2) Is DBNull.Value Then
@@ -263,7 +263,7 @@ Public Class CommissionEntity
                 Return CType(Row(CommissionEntityDAL.COL_NAME_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommissionEntityDAL.COL_NAME_ADDRESS2, Value)
         End Set
@@ -271,7 +271,7 @@ Public Class CommissionEntity
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(CommissionEntityDAL.COL_NAME_CITY) Is DBNull.Value Then
@@ -280,13 +280,13 @@ Public Class CommissionEntity
                 Return CType(Row(CommissionEntityDAL.COL_NAME_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommissionEntityDAL.COL_NAME_CITY, Value)
         End Set
     End Property
 
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(CommissionEntityDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -295,7 +295,7 @@ Public Class CommissionEntity
                 Return New Guid(CType(Row(CommissionEntityDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommissionEntityDAL.COL_NAME_REGION_ID, Value)
         End Set
@@ -303,7 +303,7 @@ Public Class CommissionEntity
 
 
     <ValidStringLength("", Max:=160)> _
-    Public Property PostalCode() As String
+    Public Property PostalCode As String
         Get
             CheckDeleted()
             If Row(CommissionEntityDAL.COL_NAME_POSTAL_CODE) Is DBNull.Value Then
@@ -312,7 +312,7 @@ Public Class CommissionEntity
                 Return CType(Row(CommissionEntityDAL.COL_NAME_POSTAL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommissionEntityDAL.COL_NAME_POSTAL_CODE, Value)
         End Set
@@ -320,7 +320,7 @@ Public Class CommissionEntity
 
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(CommissionEntityDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -329,23 +329,23 @@ Public Class CommissionEntity
                 Return New Guid(CType(Row(CommissionEntityDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommissionEntityDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
-    Private Property LastPaymentMethodId() As Guid
+    Private Property LastPaymentMethodId As Guid
         Get
             Return _lastPaymentMethodId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _lastPaymentMethodId = Value
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DisplayId() As Guid
+    Public Property DisplayId As Guid
         Get
             CheckDeleted()
             If Row(CommissionEntityDAL.COL_NAME_DISPLAY_ID) Is DBNull.Value Then
@@ -354,22 +354,22 @@ Public Class CommissionEntity
                 Return New Guid(CType(Row(CommissionEntityDAL.COL_NAME_DISPLAY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommissionEntityDAL.COL_NAME_DISPLAY_ID, Value)
         End Set
     End Property
 
-    Public Property ConstrVoilation() As Boolean
+    Public Property ConstrVoilation As Boolean
         Get
             Return _constrVoilation
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _constrVoilation = Value
         End Set
     End Property
     <ValidStringLength("", Max:=15)>
-    Public Property TaxId() As String
+    Public Property TaxId As String
         Get
             CheckDeleted()
             If Row(CommissionEntityDAL.COL_NAME_TAX_ID) Is DBNull.Value Then
@@ -378,13 +378,13 @@ Public Class CommissionEntity
                 Return CType(Row(CommissionEntityDAL.COL_NAME_TAX_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommissionEntityDAL.COL_NAME_TAX_ID, Value)
         End Set
     End Property
 
-    Public Property CommissionEntityTypeid() As Guid
+    Public Property CommissionEntityTypeid As Guid
         Get
             CheckDeleted()
             If Row(CommissionEntityDAL.COL_NAME_COMMISSION_ENTITY_TYPE_ID) Is DBNull.Value Then
@@ -393,7 +393,7 @@ Public Class CommissionEntity
                 Return New Guid(CType(Row(CommissionEntityDAL.COL_NAME_COMMISSION_ENTITY_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommissionEntityDAL.COL_NAME_COMMISSION_ENTITY_TYPE_ID, Value)
         End Set
@@ -436,7 +436,7 @@ Public Class CommissionEntity
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty OrElse _
             (Not CurrentBankInfo Is Nothing AndAlso (Not CurrentBankInfo.IsNew And CurrentBankInfo.IsDirty)) OrElse _
@@ -514,13 +514,13 @@ Public Class CommissionEntity
 
     Private _bankinfo As BankInfo = Nothing
 
-    Public ReadOnly Property CurrentBankInfo() As BankInfo
+    Public ReadOnly Property CurrentBankInfo As BankInfo
         Get
             Return _bankinfo
         End Get
     End Property
 
-    Public ReadOnly Property NewBankInfo() As BankInfo
+    Public ReadOnly Property NewBankInfo As BankInfo
         Get
             Return _bankinfo
         End Get

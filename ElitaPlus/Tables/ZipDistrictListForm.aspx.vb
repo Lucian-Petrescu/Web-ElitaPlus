@@ -219,7 +219,7 @@ Partial Class ZipDistrictListForm
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Item.Cells(GRID_COL_ZD_ID).Text = New Guid(CType(dvRow(ZipDistrict.ZipDistrictSearchDV.COL_NAME_ZIP_DISTRICT_ID), Byte())).ToString
                 e.Item.Cells(GRID_COL_COUNTRY).Text = dvRow(ZipDistrict.ZipDistrictSearchDV.COL_NAME_COUNTRY_DESC).ToString
                 e.Item.Cells(GRID_COL_CODE).Text = dvRow(ZipDistrict.ZipDistrictSearchDV.COL_NAME_SHORT_DESC).ToString

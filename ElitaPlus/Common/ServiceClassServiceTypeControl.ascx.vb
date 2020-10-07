@@ -575,7 +575,7 @@ Namespace Common
                 overRideSingularity = dv.Count > SINGLE_ITEM
             End If
 
-            If Mode = Me.MODES.NEW_MODE And overRideSingularity Then
+            If Mode = Me.MODES.NEW_MODE AndAlso overRideSingularity Then
                 Me.Mode = Me.MODES.NEW_MODE
                 cboServiceType.Enabled = False
             Else

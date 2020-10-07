@@ -798,8 +798,7 @@ Partial Class InvoiceGroupDetailForm
 
                 State.InvoiceItemBO = New InvoiceItem(State.invitemid)
                 State.ClaimauthBO = New ClaimAuthorization(State.InvoiceItemBO.ClaimAuthorizationId)
-                If (State.ClaimauthBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED Or
-                             State.ClaimauthBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__FULFILLED) Then
+                If (State.ClaimauthBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED OrElse State.ClaimauthBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__FULFILLED) Then
                     ControlMgr.SetEnableControl(Me, btnAddstandardLineItems, True)
                     ControlMgr.SetEnableControl(Me, btnnew_lineitem, True)
                 End If
@@ -1329,8 +1328,7 @@ Partial Class InvoiceGroupDetailForm
                 State.invitemid = New Guid(CType(dvRow(InvoiceGroupDetail.InvoiceLineItemsDV.COL_LINE_ITEM_ID), Byte()))
                 invoiceitemBO = New InvoiceItem(State.invitemid)
                 claimauthBO = New ClaimAuthorization(invoiceitemBO.ClaimAuthorizationId)
-                If (claimauthBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED Or
-                             claimauthBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__FULFILLED) Then
+                If (claimauthBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED OrElse claimauthBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__FULFILLED) Then
                     lineitemdetailedit.Visible = True
                     lineitemdelete.Visible = True
                 End If
@@ -1429,8 +1427,7 @@ Partial Class InvoiceGroupDetailForm
                 State.InvoiceItemBO = New InvoiceItem(CType(State.Invoiceitemid, Guid))
                 State.ClaimauthBO = New ClaimAuthorization(State.InvoiceItemBO.ClaimAuthorizationId)
                 Try
-                    If (State.ClaimauthBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__VOID Or _
-                              State.ClaimauthBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__PENDING) Then
+                    If (State.ClaimauthBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__VOID OrElse State.ClaimauthBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__PENDING) Then
 
                         DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                         State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete

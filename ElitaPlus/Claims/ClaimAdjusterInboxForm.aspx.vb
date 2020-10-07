@@ -615,7 +615,7 @@ Partial Class ClaimAdjusterInboxForm
         checkValueArray = checkRecords.Value.Split(":"c)
 
         For i = 0 To checkValueArray.Length - 1
-            If (checkValueArray(i) IsNot Nothing And checkValueArray(i) <> "") Then
+            If (checkValueArray(i) IsNot Nothing AndAlso checkValueArray(i) <> "") Then
                 checkValues = checkValueArray(i).ToString & ":" & checkValues
             End If
         Next
@@ -802,7 +802,7 @@ Partial Class ClaimAdjusterInboxForm
             If dvRow IsNot Nothing Then
 
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_ID_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_ID))
                     If dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_TAT) IsNot System.DBNull.Value Then

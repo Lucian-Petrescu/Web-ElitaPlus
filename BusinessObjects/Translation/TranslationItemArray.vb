@@ -24,7 +24,7 @@ Public Class TranslationItemArray
 
     End Sub
 
-    Public ReadOnly Property Items() As ICollection
+    Public ReadOnly Property Items As ICollection
 
         Get
             Return mList.Values
@@ -32,7 +32,7 @@ Public Class TranslationItemArray
 
     End Property
 
-    Public ReadOnly Property CurrentCount() As Integer
+    Public ReadOnly Property CurrentCount As Integer
 
         Get
 

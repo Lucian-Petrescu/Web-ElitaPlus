@@ -67,102 +67,102 @@
     
 #Region "Properties"
     Private _InForceDate As DateTime
-    Public Property InForceDate() As DateTime
+    Public Property InForceDate As DateTime
         Get
             Return _InForceDate
         End Get
-        Set(ByVal value As DateTime)
+        Set
             _InForceDate = value
         End Set
     End Property
 
     Private _ClaimNumber As String
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             Return _ClaimNumber
         End Get
-        Set(ByVal value As String)
+        Set
             _ClaimNumber = value
         End Set
     End Property
 
     Private _CompanyCode As String
-    Public Property CompanyCode() As String
+    Public Property CompanyCode As String
         Get
             Return _CompanyCode
         End Get
-        Set(ByVal value As String)
+        Set
             _CompanyCode = value
         End Set
     End Property
 
     Private _ServiceClassCode As String
-    Public Property ServiceClassCode() As String
+    Public Property ServiceClassCode As String
         Get
             Return _ServiceClassCode
         End Get
-        Set(ByVal value As String)
+        Set
             _ServiceClassCode = value
         End Set
     End Property
 
     Private _ServiceTypeCode As String
-    Public Property ServiceTypeCode() As String
+    Public Property ServiceTypeCode As String
         Get
             Return _ServiceTypeCode
         End Get
-        Set(ByVal value As String)
+        Set
             _ServiceTypeCode = value
         End Set
     End Property
 
     Private _Make As String
-    Public Property Make() As String
+    Public Property Make As String
         Get
             Return _Make
         End Get
-        Set(ByVal value As String)
+        Set
             _Make = value
         End Set
     End Property
 
     Private _Model As String
-    Public Property Model() As String
+    Public Property Model As String
         Get
             Return _Model
         End Get
-        Set(ByVal value As String)
+        Set
             _Model = value
         End Set
     End Property
 
     Private _LowPrice As String
-    Public Property LowPrice() As String
+    Public Property LowPrice As String
         Get
             Return _LowPrice
         End Get
-        Set(ByVal value As String)
+        Set
             _LowPrice = value
         End Set
     End Property
 
     Private _HighPrice As String
-    Public Property HighPrice() As String
+    Public Property HighPrice As String
         Get
             Return _HighPrice
         End Get
-        Set(ByVal value As String)
+        Set
             _HighPrice = value
         End Set
     End Property
 
     Private _ServiceLevelCode As String
     <ValidStringLength("", Max:=50)> _
-    Public Property ServiceLevelCode() As String
+    Public Property ServiceLevelCode As String
         Get
             Return _ServiceLevelCode
         End Get
-        Set(ByVal value As String)
+        Set
             _ServiceLevelCode = value
         End Set
     End Property

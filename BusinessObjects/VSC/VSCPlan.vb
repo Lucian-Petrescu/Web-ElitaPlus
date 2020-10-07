@@ -90,7 +90,7 @@ Public Class VSCPlan
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(VscPlanDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class VSCPlan
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If row(VscPlanDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class VSCPlan
                 Return New Guid(CType(row(VscPlanDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VscPlanDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class VSCPlan
 
 
     <ValueMandatory("")> _
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             CheckDeleted()
             If row(VscPlanDAL.COL_NAME_RISK_TYPE_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class VSCPlan
                 Return New Guid(CType(row(VscPlanDAL.COL_NAME_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VscPlanDAL.COL_NAME_RISK_TYPE_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class VSCPlan
 
 
     <ValueMandatory("")> _
-    Public Property RiskGroupId() As Guid
+    Public Property RiskGroupId As Guid
         Get
             CheckDeleted()
             If row(VscPlanDAL.COL_NAME_RISK_GROUP_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class VSCPlan
                 Return New Guid(CType(row(VscPlanDAL.COL_NAME_RISK_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VscPlanDAL.COL_NAME_RISK_GROUP_ID, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class VSCPlan
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(VscPlanDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class VSCPlan
                 Return CType(row(VscPlanDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VscPlanDAL.COL_NAME_CODE, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class VSCPlan
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(VscPlanDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class VSCPlan
                 Return CType(row(VscPlanDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VscPlanDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class VSCPlan
 
 
     <ValidStringLength("", Max:=4)> _
-    Public Property IsWrapPlan() As String
+    Public Property IsWrapPlan As String
         Get
             CheckDeleted()
             If Row(VSCPlanDAL.COL_NAME_IS_WRAP_PLAN) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class VSCPlan
                 Return CType(Row(VSCPlanDAL.COL_NAME_IS_WRAP_PLAN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VSCPlanDAL.COL_NAME_IS_WRAP_PLAN, Value)
         End Set
@@ -225,7 +225,7 @@ Public Class VSCPlan
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty
         End Get

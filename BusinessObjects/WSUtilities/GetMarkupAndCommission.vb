@@ -118,7 +118,7 @@ Public Class GetMarkupAndCommission
 
 #Region "Properties"
 
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
@@ -126,13 +126,13 @@ Public Class GetMarkupAndCommission
                 Return CType(Row(DATA_COL_NAME_DEALER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
-    Public Property CertificateNumber() As String
+    Public Property CertificateNumber As String
         Get
             If Row(DATA_COL_NAME_CERTIFICATE_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -140,13 +140,13 @@ Public Class GetMarkupAndCommission
                 Return CType(Row(DATA_COL_NAME_CERTIFICATE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERTIFICATE_NUMBER, Value)
         End Set
     End Property
 
-    Public Property EndDate() As DateType
+    Public Property EndDate As DateType
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_END_DATE) Is DBNull.Value Then
@@ -155,13 +155,13 @@ Public Class GetMarkupAndCommission
                 Return New DateType(CType(Row(DATA_COL_NAME_END_DATE), DateTime))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_END_DATE, Value)
         End Set
     End Property
 
-    Public Property BeginDate() As DateType
+    Public Property BeginDate As DateType
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_BEGIN_DATE) Is DBNull.Value Then
@@ -170,14 +170,14 @@ Public Class GetMarkupAndCommission
                 Return New DateType(CType(Row(DATA_COL_NAME_BEGIN_DATE), DateTime))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_BEGIN_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property RequestNumber() As Integer
+    Public Property RequestNumber As Integer
         Get
             If Row(DATA_COL_NAME_REQUEST_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -185,7 +185,7 @@ Public Class GetMarkupAndCommission
                 Return CType(Row(DATA_COL_NAME_REQUEST_NUMBER), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_REQUEST_NUMBER, Value)
         End Set
@@ -231,7 +231,7 @@ Public Class GetMarkupAndCommission
 
 #Region "Extended Properties"
 
-    Private ReadOnly Property DealerId() As Guid
+    Private ReadOnly Property DealerId As Guid
         Get
             If _dealerId.Equals(Guid.Empty) AndAlso Not DealerCode Is Nothing AndAlso Not DealerCode.Equals(String.Empty) Then
 

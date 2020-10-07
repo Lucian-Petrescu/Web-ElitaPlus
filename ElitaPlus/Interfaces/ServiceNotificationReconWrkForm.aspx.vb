@@ -316,7 +316,7 @@
             Dim oTextBox As TextBox
             Dim oLabel As Label
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 '   Display Only
                 With e.Row
                     PopulateControlFromBOProperty(.FindControl("moDealerReconWrkIdLabel"), dvRow(SvcNotificationReconWrk.COL_NAME_SVC_NOTIFICATION_RECON_WRK_ID))

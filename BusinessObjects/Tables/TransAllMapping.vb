@@ -90,7 +90,7 @@ Public Class TransallMapping
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(TransallMappingDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class TransallMapping
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(TransAllMappingDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class TransallMapping
                 Return New Guid(CType(Row(TransAllMappingDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransAllMappingDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class TransallMapping
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=400)> _
-    Public Property InboundFilename() As String
+    Public Property InboundFilename As String
         Get
             CheckDeleted()
             If row(TransallMappingDAL.COL_NAME_INBOUND_FILENAME) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class TransallMapping
                 Return CType(row(TransallMappingDAL.COL_NAME_INBOUND_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransallMappingDAL.COL_NAME_INBOUND_FILENAME, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class TransallMapping
 
 
     <ValidStringLength("", Max:=400)> _
-    Public Property OutboundFilenameRegex() As String
+    Public Property OutboundFilenameRegex As String
         Get
             CheckDeleted()
             If row(TransallMappingDAL.COL_NAME_OUTBOUND_FILENAME_REGEX) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class TransallMapping
                 Return CType(row(TransallMappingDAL.COL_NAME_OUTBOUND_FILENAME_REGEX), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransallMappingDAL.COL_NAME_OUTBOUND_FILENAME_REGEX, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class TransallMapping
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=400)> _
-    Public Property OutputPath() As String
+    Public Property OutputPath As String
         Get
             CheckDeleted()
             If Row(TransAllMappingDAL.COL_NAME_OUTPUT_PATH) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class TransallMapping
                 Return CType(Row(TransAllMappingDAL.COL_NAME_OUTPUT_PATH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransAllMappingDAL.COL_NAME_OUTPUT_PATH, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class TransallMapping
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=400)> _
-    Public Property TransallPackage() As String
+    Public Property TransallPackage As String
         Get
             CheckDeleted()
             If row(TransallMappingDAL.COL_NAME_TRANSALL_PACKAGE) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class TransallMapping
                 Return CType(row(TransallMappingDAL.COL_NAME_TRANSALL_PACKAGE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransallMappingDAL.COL_NAME_TRANSALL_PACKAGE, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class TransallMapping
 
 
     <ValidStringLength("", Max:=4000)> _
-    Public Property LogfileEmails() As String
+    Public Property LogfileEmails As String
         Get
             CheckDeleted()
             If row(TransallMappingDAL.COL_NAME_LOGFILE_EMAILS) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class TransallMapping
                 Return CType(row(TransallMappingDAL.COL_NAME_LOGFILE_EMAILS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransallMappingDAL.COL_NAME_LOGFILE_EMAILS, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class TransallMapping
 
 
     <ValueMandatory("")> _
-    Public Property NumFiles() As LongType
+    Public Property NumFiles As LongType
         Get
             CheckDeleted()
             If row(TransallMappingDAL.COL_NAME_NUM_FILES) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class TransallMapping
                 Return New LongType(CType(row(TransallMappingDAL.COL_NAME_NUM_FILES), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(TransallMappingDAL.COL_NAME_NUM_FILES, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class TransallMapping
 
 
     <ValueMandatory("")> _
-    Public Property LayoutCodeId() As Guid
+    Public Property LayoutCodeId As Guid
         Get
             CheckDeleted()
             If Row(TransAllMappingDAL.COL_NAME_LAYOUT_CODE) Is DBNull.Value Then
@@ -229,13 +229,13 @@ Public Class TransallMapping
                 Return New Guid(CType(Row(TransAllMappingDAL.COL_NAME_LAYOUT_CODE), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransAllMappingDAL.COL_NAME_LAYOUT_CODE, Value)
         End Set
     End Property
 
-    Public Property FtpSiteId() As Guid
+    Public Property FtpSiteId As Guid
         Get
             CheckDeleted()
             If Row(TransAllMappingDAL.COL_NAME_FTP_SITE_ID) Is DBNull.Value Then
@@ -244,7 +244,7 @@ Public Class TransallMapping
                 Return New Guid(CType(Row(TransAllMappingDAL.COL_NAME_FTP_SITE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransAllMappingDAL.COL_NAME_FTP_SITE_ID, Value)
         End Set

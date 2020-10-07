@@ -90,7 +90,7 @@ Public Class SplitfileProcessed
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(SplitfileProcessedDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class SplitfileProcessed
     End Property
 
     <ValueMandatory("")> _
-    Public Property SplitSystemId() As Guid
+    Public Property SplitSystemId As Guid
         Get
             CheckDeleted()
             If row(SplitfileProcessedDAL.COL_NAME_SPLIT_SYSTEM_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class SplitfileProcessed
                 Return New Guid(CType(row(SplitfileProcessedDAL.COL_NAME_SPLIT_SYSTEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SplitfileProcessedDAL.COL_NAME_SPLIT_SYSTEM_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class SplitfileProcessed
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)> _
-    Public Property Filename() As String
+    Public Property Filename As String
         Get
             CheckDeleted()
             If row(SplitfileProcessedDAL.COL_NAME_FILENAME) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class SplitfileProcessed
                 Return CType(row(SplitfileProcessedDAL.COL_NAME_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SplitfileProcessedDAL.COL_NAME_FILENAME, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class SplitfileProcessed
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property ProcessFlag() As String
+    Public Property ProcessFlag As String
         Get
             CheckDeleted()
             If row(SplitfileProcessedDAL.COL_NAME_PROCESS_FLAG) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class SplitfileProcessed
                 Return CType(row(SplitfileProcessedDAL.COL_NAME_PROCESS_FLAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SplitfileProcessedDAL.COL_NAME_PROCESS_FLAG, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class SplitfileProcessed
 
 
     <ValueMandatory("")> _
-    Public Property Received() As LongType
+    Public Property Received As LongType
         Get
             CheckDeleted()
             If row(SplitfileProcessedDAL.COL_NAME_RECEIVED) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class SplitfileProcessed
                 Return New LongType(CType(row(SplitfileProcessedDAL.COL_NAME_RECEIVED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(SplitfileProcessedDAL.COL_NAME_RECEIVED, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class SplitfileProcessed
 
 
     <ValueMandatory("")> _
-    Public Property Counted() As LongType
+    Public Property Counted As LongType
         Get
             CheckDeleted()
             If row(SplitfileProcessedDAL.COL_NAME_COUNTED) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class SplitfileProcessed
                 Return New LongType(CType(row(SplitfileProcessedDAL.COL_NAME_COUNTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(SplitfileProcessedDAL.COL_NAME_COUNTED, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class SplitfileProcessed
 
 
     <ValueMandatory("")> _
-    Public Property Split() As LongType
+    Public Property Split As LongType
         Get
             CheckDeleted()
             If row(SplitfileProcessedDAL.COL_NAME_SPLIT) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class SplitfileProcessed
                 Return New LongType(CType(row(SplitfileProcessedDAL.COL_NAME_SPLIT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(SplitfileProcessedDAL.COL_NAME_SPLIT, Value)
         End Set

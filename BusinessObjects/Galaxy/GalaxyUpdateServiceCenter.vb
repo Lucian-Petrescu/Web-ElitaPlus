@@ -577,7 +577,7 @@ Public Class GalaxyUpdateServiceCenter
 #Region "Public Properties"
 
     <ValidStringLength("", Max:=200)> _
-  Public Property Address() As String
+  Public Property Address As String
         Get
             CheckDeleted()
             If Row(Source_Col_Address) Is DBNull.Value Then
@@ -586,14 +586,14 @@ Public Class GalaxyUpdateServiceCenter
                 Return CType(Row(Source_Col_Address), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Address, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(Source_Col_City) Is DBNull.Value Then
@@ -602,14 +602,14 @@ Public Class GalaxyUpdateServiceCenter
                 Return CType(Row(Source_Col_City), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_City, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)> _
-Public Property RegionCode() As String
+Public Property RegionCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_REGION_CODE) Is DBNull.Value Then
@@ -618,14 +618,14 @@ Public Property RegionCode() As String
                 Return CType(Row(SOURCE_COL_REGION_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_REGION_CODE, MiscUtil.ConvertToUpper(Value))
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)> _
-    Public Property PostalCode() As String
+    Public Property PostalCode As String
         Get
             CheckDeleted()
             If Row(Source_Col_Postal_Code) Is DBNull.Value Then
@@ -634,14 +634,14 @@ Public Property RegionCode() As String
                 Return CType(Row(Source_Col_Postal_Code), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Postal_Code, MiscUtil.ConvertToUpper(Value))
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property CountryCode() As String
+    Public Property CountryCode As String
         Get
             CheckDeleted()
             If Row(Source_Col_Country_Code) Is DBNull.Value Then
@@ -650,7 +650,7 @@ Public Property RegionCode() As String
                 Return CType(Row(Source_Col_Country_Code), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Country_Code, Value)
         End Set
@@ -672,7 +672,7 @@ Public Property RegionCode() As String
     'End Property
 
     'Added by REQ-452
-    Public Property ServiceType() As String
+    Public Property ServiceType As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_SERVICE_TYPE) Is DBNull.Value Then
@@ -681,14 +681,14 @@ Public Property RegionCode() As String
                 Return CType(Row(SOURCE_COL_SERVICE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_SERVICE_TYPE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property ServiceCenterCode() As String
+    Public Property ServiceCenterCode As String
         Get
             CheckDeleted()
             If Row(Source_Col_Service_Center_Code) Is DBNull.Value Then
@@ -697,14 +697,14 @@ Public Property RegionCode() As String
                 Return CType(Row(Source_Col_Service_Center_Code), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Service_Center_Code, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property ServiceCenterName() As String
+    Public Property ServiceCenterName As String
         Get
             CheckDeleted()
             If Row(Source_Col_Service_Center_Name) Is DBNull.Value Then
@@ -713,14 +713,14 @@ Public Property RegionCode() As String
                 Return CType(Row(Source_Col_Service_Center_Name), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Service_Center_Name, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=4)> _
-        Public Property RatingCode() As String
+        Public Property RatingCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_RATING_CODE) Is DBNull.Value Then
@@ -729,14 +729,14 @@ Public Property RegionCode() As String
                 Return CType(Row(SOURCE_COL_RATING_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_RATING_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=60)> _
-    Public Property Phone1() As String
+    Public Property Phone1 As String
         Get
             CheckDeleted()
             If Row(Source_Col_Phone) Is DBNull.Value Then
@@ -745,14 +745,14 @@ Public Property RegionCode() As String
                 Return CType(Row(Source_Col_Phone), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Phone, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=60)> _
-    Public Property Fax() As String
+    Public Property Fax As String
         Get
             CheckDeleted()
             If Row(Source_Col_Fax) Is DBNull.Value Then
@@ -761,14 +761,14 @@ Public Property RegionCode() As String
                 Return CType(Row(Source_Col_Fax), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Fax, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=120)> _
-Public Property RegistrationNumber() As String
+Public Property RegistrationNumber As String
         Get
             CheckDeleted()
             If Row(Source_Col_Registration_Number) Is DBNull.Value Then
@@ -777,14 +777,14 @@ Public Property RegistrationNumber() As String
                 Return CType(Row(Source_Col_Registration_Number), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Registration_Number, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=80)> _
-    Public Property TaxId() As String
+    Public Property TaxId As String
         Get
             CheckDeleted()
             If Row(Source_Col_Tax_Id) Is DBNull.Value Then
@@ -793,14 +793,14 @@ Public Property RegistrationNumber() As String
                 Return CType(Row(Source_Col_Tax_Id), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Tax_Id, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=4)> _
-    Public Property StatusCode() As String
+    Public Property StatusCode As String
         Get
             CheckDeleted()
             If Row(Source_Col_Status_Code) Is DBNull.Value Then
@@ -809,14 +809,14 @@ Public Property RegistrationNumber() As String
                 Return CType(Row(Source_Col_Status_Code), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Status_Code, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=4000)> _
-    Public Property Comments() As String
+    Public Property Comments As String
         Get
             CheckDeleted()
             If Row(Source_Col_Comments) Is DBNull.Value Then
@@ -825,14 +825,14 @@ Public Property RegistrationNumber() As String
                 Return CType(Row(Source_Col_Comments), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Comments, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property AccountName() As String
+    Public Property AccountName As String
         Get
             CheckDeleted()
             If Row(Source_Col_Account_Name) Is DBNull.Value Then
@@ -841,13 +841,13 @@ Public Property RegistrationNumber() As String
                 Return CType(Row(Source_Col_Account_Name), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Account_Name, Value)
         End Set
     End Property
 
-    Public Property BankId() As String
+    Public Property BankId As String
         Get
             CheckDeleted()
             If Row(Source_Col_Bank_Id) Is DBNull.Value Then
@@ -856,13 +856,13 @@ Public Property RegistrationNumber() As String
                 Return CType(Row(Source_Col_Bank_Id), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Bank_Id, Value)
         End Set
     End Property
 
-    Public Property Account_Number() As String
+    Public Property Account_Number As String
         Get
             CheckDeleted()
             If Row(Source_Col_Account_Number) Is DBNull.Value Then
@@ -871,14 +871,14 @@ Public Property RegistrationNumber() As String
                 Return CType(Row(Source_Col_Account_Number), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Account_Number, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=160)> _
-       Public Property IBANnumber() As String
+       Public Property IBANnumber As String
         Get
             CheckDeleted()
             If Row(Source_Col_IBAN_Number) Is DBNull.Value Then
@@ -887,14 +887,14 @@ Public Property RegistrationNumber() As String
                 Return CType(Row(Source_Col_IBAN_Number), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_IBAN_Number, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=160)> _
-       Public Property SwiftCode() As String
+       Public Property SwiftCode As String
         Get
             CheckDeleted()
             If Row(Source_Col_Swift_Code) Is DBNull.Value Then
@@ -903,14 +903,14 @@ Public Property RegistrationNumber() As String
                 Return CType(Row(Source_Col_Swift_Code), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Swift_Code, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property BankCountryCode() As String
+    Public Property BankCountryCode As String
         Get
             CheckDeleted()
             If Row(Source_Col_Bank_Country_Code) Is DBNull.Value Then
@@ -919,13 +919,13 @@ Public Property RegistrationNumber() As String
                 Return CType(Row(Source_Col_Bank_Country_Code), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Bank_Country_Code, Value)
         End Set
     End Property
 
-    Public Property AccountType() As String
+    Public Property AccountType As String
         Get
             CheckDeleted()
             If Row(Source_Col_Account_Type) Is DBNull.Value Then
@@ -934,13 +934,13 @@ Public Property RegistrationNumber() As String
                 Return CType(Row(Source_Col_Account_Type), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(Source_Col_Account_Type, Value)
         End Set
     End Property
 
-    Public Property PaymentMethod() As String
+    Public Property PaymentMethod As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_PAYMENT_METHOD) Is DBNull.Value Then
@@ -949,13 +949,13 @@ Public Property RegistrationNumber() As String
                 Return CType(Row(SOURCE_COL_PAYMENT_METHOD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_PAYMENT_METHOD, Value)
         End Set
     End Property
 
-    Public Property OriginalDealerCode() As String
+    Public Property OriginalDealerCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_ORIGINAL_DEALER_CODE) Is DBNull.Value Then
@@ -964,7 +964,7 @@ Public Property RegistrationNumber() As String
                 Return CType(Row(SOURCE_COL_ORIGINAL_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_ORIGINAL_DEALER_CODE, Value)
         End Set

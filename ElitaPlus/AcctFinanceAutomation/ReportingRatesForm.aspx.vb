@@ -450,7 +450,7 @@
 
             If dvRow IsNot Nothing Then
                 strID = GetGuidStringFromByteArray(CType(dvRow(AfaReportingRates.RptRateSearchDV.COL_AFA_REPORTING_RATE_ID), Byte()))
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     CType(e.Row.Cells(GRID_COL_RPT_RATE_ID_IDX).FindControl(GRID_CTRL_NAME_LABEL_RPT_RATE_ID), Label).Text = strID
 
                     If (State.IsEditMode = True AndAlso State.ReportingRateID.ToString.Equals(strID)) Then

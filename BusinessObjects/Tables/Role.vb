@@ -97,7 +97,7 @@ Public Class Role
     Public Property RolePermission As RolePermissionList
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IPermissionParent.Id
+    Public ReadOnly Property Id As Guid Implements IPermissionParent.Id
         Get
             If Row(RoleDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -108,7 +108,7 @@ Public Class Role
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=5)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(RoleDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -117,7 +117,7 @@ Public Class Role
                 Return CType(Row(RoleDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RoleDAL.COL_NAME_CODE, Value)
         End Set
@@ -125,7 +125,7 @@ Public Class Role
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=280)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(RoleDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -134,7 +134,7 @@ Public Class Role
                 Return CType(Row(RoleDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RoleDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -142,7 +142,7 @@ Public Class Role
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property IhqOnly() As String
+    Public Property IhqOnly As String
         Get
             CheckDeleted()
             If Row(RoleDAL.COL_NAME_IHQ_ONLY) Is DBNull.Value Then
@@ -151,13 +151,13 @@ Public Class Role
                 Return CType(Row(RoleDAL.COL_NAME_IHQ_ONLY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(RoleDAL.COL_NAME_IHQ_ONLY, Value)
         End Set
     End Property
 
-    Public Property RoleProviderId() As Guid
+    Public Property RoleProviderId As Guid
         Get
             CheckDeleted()
             If Row(RoleDAL.COL_NAME_ROLE_PROVIDER_ID) Is DBNull.Value Then
@@ -166,14 +166,14 @@ Public Class Role
                 Return New Guid(CType(Row(RoleDAL.COL_NAME_ROLE_PROVIDER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(RoleDAL.COL_NAME_ROLE_PROVIDER_ID, Value)
         End Set
     End Property
 
     'Changes for DEF : 3119
-    Public ReadOnly Property RemoteRoleId() As Guid
+    Public ReadOnly Property RemoteRoleId As Guid
         Get
             CheckDeleted()
             ' As per DEF 3119, Commented Existing logic. 

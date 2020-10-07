@@ -105,7 +105,7 @@ Public Class ProductPolicy
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ProductPolicyDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -116,7 +116,7 @@ Public Class ProductPolicy
     End Property
 
     <ValueMandatory("")> _
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If Row(ProductPolicyDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -125,7 +125,7 @@ Public Class ProductPolicy
                 Return New Guid(CType(Row(ProductPolicyDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductPolicyDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
@@ -133,7 +133,7 @@ Public Class ProductPolicy
 
 
     <ValueMandatory("")> _
-    Public Property TypeOfEquipmentId() As Guid
+    Public Property TypeOfEquipmentId As Guid
         Get
             CheckDeleted()
             If Row(ProductPolicyDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID) Is DBNull.Value Then
@@ -142,7 +142,7 @@ Public Class ProductPolicy
                 Return New Guid(CType(Row(ProductPolicyDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductPolicyDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID, Value)
         End Set
@@ -150,7 +150,7 @@ Public Class ProductPolicy
 
 
     <ValueMandatory("")> _
-    Public Property ExternalProdCodeId() As Guid
+    Public Property ExternalProdCodeId As Guid
         Get
             CheckDeleted()
             If Row(ProductPolicyDAL.COL_NAME_EXTERNAL_PROD_CODE_ID) Is DBNull.Value Then
@@ -159,14 +159,14 @@ Public Class ProductPolicy
                 Return New Guid(CType(Row(ProductPolicyDAL.COL_NAME_EXTERNAL_PROD_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductPolicyDAL.COL_NAME_EXTERNAL_PROD_CODE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Policy() As LongType
+    Public Property Policy As LongType
         Get
             CheckDeleted()
             If Row(ProductPolicyDAL.COL_NAME_POLICY_NUM) Is DBNull.Value Then
@@ -175,7 +175,7 @@ Public Class ProductPolicy
                 Return New LongType(CType(Row(ProductPolicyDAL.COL_NAME_POLICY_NUM), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ProductPolicyDAL.COL_NAME_POLICY_NUM, Value)
         End Set
@@ -183,20 +183,20 @@ Public Class ProductPolicy
 
     Public TypeOfEqup As String
     Public ExtProdCode As String
-    Public Property TypeOfEquipment() As String
+    Public Property TypeOfEquipment As String
         Get            
             Return TypeOfEqup
         End Get
-        Set(ByVal Value As String)
+        Set
             TypeOfEqup = Value
         End Set
     End Property
 
-    Public Property ExternalProdCode() As String
+    Public Property ExternalProdCode As String
         Get
             Return ExtProdCode
         End Get
-        Set(ByVal Value As String)
+        Set
             ExtProdCode = Value
         End Set
     End Property

@@ -96,7 +96,7 @@ Public Class VSCRateVersion
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(VSCRateVersionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -107,7 +107,7 @@ Public Class VSCRateVersion
     End Property
 
     <ValueMandatory("")> _
-    Public Property VscPlanId() As Guid
+    Public Property VscPlanId As Guid
         Get
             CheckDeleted()
             If Row(VSCRateVersionDAL.COL_NAME_VSC_PLAN_ID) Is DBNull.Value Then
@@ -116,13 +116,13 @@ Public Class VSCRateVersion
                 Return New Guid(CType(Row(VSCRateVersionDAL.COL_NAME_VSC_PLAN_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCRateVersionDAL.COL_NAME_VSC_PLAN_ID, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(VSCRateVersionDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -131,13 +131,13 @@ Public Class VSCRateVersion
                 Return New Guid(CType(Row(VSCRateVersionDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCRateVersionDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public Property DealerGroupId() As Guid
+    Public Property DealerGroupId As Guid
         Get
             CheckDeleted()
             If Row(VSCRateVersionDAL.COL_NAME_DEALER_GROUP_ID) Is DBNull.Value Then
@@ -146,14 +146,14 @@ Public Class VSCRateVersion
                 Return New Guid(CType(Row(VSCRateVersionDAL.COL_NAME_DEALER_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCRateVersionDAL.COL_NAME_DEALER_GROUP_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property VersionNumber() As LongType
+    Public Property VersionNumber As LongType
         Get
             CheckDeleted()
             If Row(VSCRateVersionDAL.COL_NAME_VERSION_NUMBER) Is DBNull.Value Then
@@ -162,14 +162,14 @@ Public Class VSCRateVersion
                 Return New LongType(CType(Row(VSCRateVersionDAL.COL_NAME_VERSION_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VSCRateVersionDAL.COL_NAME_VERSION_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(VSCRateVersionDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -178,14 +178,14 @@ Public Class VSCRateVersion
                 Return New DateType(CType(Row(VSCRateVersionDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(VSCRateVersionDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNewExpirationDate("")> _
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(VSCRateVersionDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -194,7 +194,7 @@ Public Class VSCRateVersion
                 Return New DateType(CType(Row(VSCRateVersionDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(VSCRateVersionDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set

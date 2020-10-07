@@ -119,7 +119,7 @@ Public Class ApInvoiceHeader
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ApInvoiceHeaderDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -130,7 +130,7 @@ Public Class ApInvoiceHeader
     End Property
 	
     <ValueMandatory(""),ValidStringLength("Invoice Number", Max:=100)> _
-    Public Property InvoiceNumber() As String
+    Public Property InvoiceNumber As String
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_INVOICE_NUMBER) Is DBNull.Value Then
@@ -139,7 +139,7 @@ Public Class ApInvoiceHeader
                 Return CType(row(ApInvoiceHeaderDAL.COL_NAME_INVOICE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_INVOICE_NUMBER, Value)
         End Set
@@ -147,7 +147,7 @@ Public Class ApInvoiceHeader
 	
 	
     <ValueMandatory("")> _
-    Public Property InvoiceDate() As DateType
+    Public Property InvoiceDate As DateType
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_INVOICE_DATE) Is DBNull.Value Then
@@ -156,7 +156,7 @@ Public Class ApInvoiceHeader
                 Return New DateType(CType(row(ApInvoiceHeaderDAL.COL_NAME_INVOICE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_INVOICE_DATE, Value)
         End Set
@@ -164,7 +164,7 @@ Public Class ApInvoiceHeader
 	
 	
     <ValueMandatory("")> _
-    Public Property InvoiceAmount() As DecimalType
+    Public Property InvoiceAmount As DecimalType
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_INVOICE_AMOUNT) Is DBNull.Value Then
@@ -173,7 +173,7 @@ Public Class ApInvoiceHeader
                 Return New DecimalType(CType(row(ApInvoiceHeaderDAL.COL_NAME_INVOICE_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_INVOICE_AMOUNT, Value)
         End Set
@@ -181,7 +181,7 @@ Public Class ApInvoiceHeader
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=100)> _
-    Public Property TermXcd() As String
+    Public Property TermXcd As String
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_TERM_XCD) Is DBNull.Value Then
@@ -190,7 +190,7 @@ Public Class ApInvoiceHeader
                 Return CType(row(ApInvoiceHeaderDAL.COL_NAME_TERM_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_TERM_XCD, Value)
         End Set
@@ -198,7 +198,7 @@ Public Class ApInvoiceHeader
 	
 	
     <ValueMandatory("")> _
-    Public Property PaidAmount() As DecimalType
+    Public Property PaidAmount As DecimalType
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_PAID_AMOUNT) Is DBNull.Value Then
@@ -207,7 +207,7 @@ Public Class ApInvoiceHeader
                 Return New DecimalType(CType(row(ApInvoiceHeaderDAL.COL_NAME_PAID_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_PAID_AMOUNT, Value)
         End Set
@@ -215,7 +215,7 @@ Public Class ApInvoiceHeader
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=100)> _
-    Public Property PaymentStatusXcd() As String
+    Public Property PaymentStatusXcd As String
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_PAYMENT_STATUS_XCD) Is DBNull.Value Then
@@ -224,7 +224,7 @@ Public Class ApInvoiceHeader
                 Return CType(row(ApInvoiceHeaderDAL.COL_NAME_PAYMENT_STATUS_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_PAYMENT_STATUS_XCD, Value)
         End Set
@@ -232,7 +232,7 @@ Public Class ApInvoiceHeader
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=250)> _
-    Public Property Source() As String
+    Public Property Source As String
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_SOURCE) Is DBNull.Value Then
@@ -241,7 +241,7 @@ Public Class ApInvoiceHeader
                 Return CType(row(ApInvoiceHeaderDAL.COL_NAME_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_SOURCE, Value)
         End Set
@@ -249,7 +249,7 @@ Public Class ApInvoiceHeader
 	
 	
     <ValueMandatory("")> _
-    Public Property VendorId() As Guid
+    Public Property VendorId As Guid
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_VENDOR_ID) Is DBNull.Value Then
@@ -258,13 +258,13 @@ Public Class ApInvoiceHeader
                 Return New Guid(CType(row(ApInvoiceHeaderDAL.COL_NAME_VENDOR_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_VENDOR_ID, Value)
         End Set
     End Property
 	
-  Public Property VendorAddressId() As Guid
+  Public Property VendorAddressId As Guid
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_VENDOR_ADDRESS_ID) Is DBNull.Value Then
@@ -273,7 +273,7 @@ Public Class ApInvoiceHeader
                 Return New Guid(CType(row(ApInvoiceHeaderDAL.COL_NAME_VENDOR_ADDRESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_VENDOR_ADDRESS_ID, Value)
         End Set
@@ -281,7 +281,7 @@ Public Class ApInvoiceHeader
 	
 	
     
-    Public Property ShipToAddressId() As Guid
+    Public Property ShipToAddressId As Guid
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_SHIP_TO_ADDRESS_ID) Is DBNull.Value Then
@@ -290,7 +290,7 @@ Public Class ApInvoiceHeader
                 Return New Guid(CType(row(ApInvoiceHeaderDAL.COL_NAME_SHIP_TO_ADDRESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_SHIP_TO_ADDRESS_ID, Value)
         End Set
@@ -298,7 +298,7 @@ Public Class ApInvoiceHeader
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=10)> _
-    Public Property CurrencyIsoCode() As String
+    Public Property CurrencyIsoCode As String
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_CURRENCY_ISO_CODE) Is DBNull.Value Then
@@ -307,7 +307,7 @@ Public Class ApInvoiceHeader
                 Return CType(row(ApInvoiceHeaderDAL.COL_NAME_CURRENCY_ISO_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_CURRENCY_ISO_CODE, Value)
         End Set
@@ -315,7 +315,7 @@ Public Class ApInvoiceHeader
 	
 	
     <ValueMandatory("")> _
-    Public Property ExchangeRate() As DecimalType
+    Public Property ExchangeRate As DecimalType
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_EXCHANGE_RATE) Is DBNull.Value Then
@@ -324,7 +324,7 @@ Public Class ApInvoiceHeader
                 Return New DecimalType(CType(row(ApInvoiceHeaderDAL.COL_NAME_EXCHANGE_RATE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_EXCHANGE_RATE, Value)
         End Set
@@ -332,7 +332,7 @@ Public Class ApInvoiceHeader
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=100)> _
-    Public Property ApprovedXcd() As String
+    Public Property ApprovedXcd As String
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_APPROVED_XCD) Is DBNull.Value Then
@@ -341,7 +341,7 @@ Public Class ApInvoiceHeader
                 Return CType(row(ApInvoiceHeaderDAL.COL_NAME_APPROVED_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_APPROVED_XCD, Value)
         End Set
@@ -349,7 +349,7 @@ Public Class ApInvoiceHeader
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=50)> _
-    Public Property AccountingPeriod() As String
+    Public Property AccountingPeriod As String
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_ACCOUNTING_PERIOD) Is DBNull.Value Then
@@ -358,7 +358,7 @@ Public Class ApInvoiceHeader
                 Return CType(row(ApInvoiceHeaderDAL.COL_NAME_ACCOUNTING_PERIOD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_ACCOUNTING_PERIOD, Value)
         End Set
@@ -366,7 +366,7 @@ Public Class ApInvoiceHeader
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=1)> _
-    Public Property Distributed() As String
+    Public Property Distributed As String
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_DISTRIBUTED) Is DBNull.Value Then
@@ -375,7 +375,7 @@ Public Class ApInvoiceHeader
                 Return CType(row(ApInvoiceHeaderDAL.COL_NAME_DISTRIBUTED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_DISTRIBUTED, Value)
         End Set
@@ -383,7 +383,7 @@ Public Class ApInvoiceHeader
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=1)> _
-    Public Property Posted() As String
+    Public Property Posted As String
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_POSTED) Is DBNull.Value Then
@@ -392,13 +392,13 @@ Public Class ApInvoiceHeader
                 Return CType(row(ApInvoiceHeaderDAL.COL_NAME_POSTED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_POSTED, Value)
         End Set
     End Property
 	<ValueMandatory("")>
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -407,7 +407,7 @@ Public Class ApInvoiceHeader
                 Return New Guid(CType(row(ApInvoiceHeaderDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -415,7 +415,7 @@ Public Class ApInvoiceHeader
 	
 	
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -424,7 +424,7 @@ Public Class ApInvoiceHeader
                 Return New Guid(CType(row(ApInvoiceHeaderDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceHeaderDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -580,7 +580,7 @@ Public Class ApInvoiceHeader
             MyBase.New(table)
         End Sub
 
-        Public ReadOnly Property TotalCount() As Integer
+        Public ReadOnly Property TotalCount As Integer
             Get
                 If Count > 0 Then
                     Return Me(0)(COL_TOTAL_COUNT)

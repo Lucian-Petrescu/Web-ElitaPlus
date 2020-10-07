@@ -279,7 +279,7 @@ Partial Class AccountingEventDetailForm
                            Where lst.ListItemId = State.ParentBO.AcctEventTypeId
                            Select lst.Code).FirstOrDefault()
 
-        If (h = "UPR" Or h = "IBNR" Or h = "INV" Or h = "VEND") Then
+        If (h = "UPR" OrElse h = "IBNR" OrElse h = "INV" OrElse h = "VEND") Then
             AcctTSrList = (From lst In AcctTSrList
                            Where lst.Code <> "PRDCODE"
                            Select lst).ToArray()
@@ -1116,7 +1116,7 @@ Partial Class AccountingEventDetailForm
     End Sub
 
     Private Sub IncludeExcludeDeleteRecord()
-        If State.MyBO.IncludeExcludeInd = "I" And State.IncludeExcludeList.Count = 1 Then
+        If State.MyBO.IncludeExcludeInd = "I" AndAlso State.IncludeExcludeList.Count = 1 Then
             'at least one needed if inclusion config, delete of the last record is not allowed
             MasterPage.MessageController.AddError("AT_LEAST_ONE_INC_EXC_CONFIG_REQUIRED")
             Exit Sub

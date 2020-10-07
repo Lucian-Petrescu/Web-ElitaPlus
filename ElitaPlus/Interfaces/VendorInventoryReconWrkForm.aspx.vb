@@ -366,7 +366,7 @@ Namespace Interfaces
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim oTextBox As TextBox
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     PopulateControlFromBOProperty(.FindControl("moVendorInventoryReconWrkIdLabel"), dvRow(VendorloadInvReconWrkDal.ColNameVendorloadInvReconWrkId))
                     Dim oDrop As DropDownList = CType(e.Row.FindControl("moRecordTypeDrop"), DropDownList)
@@ -427,7 +427,7 @@ Namespace Interfaces
 
         Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
-                If IsDataGPageDirty() Or (State.BundlesHashTable IsNot Nothing AndAlso State.BundlesHashTable.Count > 0) Then
+                If IsDataGPageDirty() OrElse (State.BundlesHashTable IsNot Nothing AndAlso State.BundlesHashTable.Count > 0) Then
                     DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
                     State.ActionInProgress = DetailPageCommand.Back
                 Else

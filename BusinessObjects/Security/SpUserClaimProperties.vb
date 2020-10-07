@@ -90,7 +90,7 @@ Public Class SpUserClaimProperties
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(SpUserClaimPropertiesDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class SpUserClaimProperties
     End Property
 
     <ValueMandatory("")>
-    Public Property SpUserClaimsId() As Guid
+    Public Property SpUserClaimsId As Guid
         Get
             CheckDeleted()
             If Row(SpUserClaimPropertiesDAL.COL_NAME_SP_USER_CLAIMS_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class SpUserClaimProperties
                 Return New Guid(CType(Row(SpUserClaimPropertiesDAL.COL_NAME_SP_USER_CLAIMS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SpUserClaimPropertiesDAL.COL_NAME_SP_USER_CLAIMS_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class SpUserClaimProperties
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property PropertyName() As String
+    Public Property PropertyName As String
         Get
             CheckDeleted()
             If Row(SpUserClaimPropertiesDAL.COL_NAME_PROPERTY_NAME) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class SpUserClaimProperties
                 Return CType(Row(SpUserClaimPropertiesDAL.COL_NAME_PROPERTY_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SpUserClaimPropertiesDAL.COL_NAME_PROPERTY_NAME, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class SpUserClaimProperties
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=500)>
-    Public Property PropertyValue() As String
+    Public Property PropertyValue As String
         Get
             CheckDeleted()
             If Row(SpUserClaimPropertiesDAL.COL_NAME_PROPERTY_VALUE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class SpUserClaimProperties
                 Return CType(Row(SpUserClaimPropertiesDAL.COL_NAME_PROPERTY_VALUE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SpUserClaimPropertiesDAL.COL_NAME_PROPERTY_VALUE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class SpUserClaimProperties
 
 
     <ValueMandatory("")>
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(SpUserClaimPropertiesDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class SpUserClaimProperties
                 Return New DateType(CType(Row(SpUserClaimPropertiesDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SpUserClaimPropertiesDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class SpUserClaimProperties
 
 
     <ValueMandatory("")>
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(SpUserClaimPropertiesDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class SpUserClaimProperties
                 Return New DateType(CType(Row(SpUserClaimPropertiesDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SpUserClaimPropertiesDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set

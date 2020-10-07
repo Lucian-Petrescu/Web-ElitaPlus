@@ -473,7 +473,7 @@ Partial Class ServiceGroupForm
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 e.Item.Cells(GRID_COL_RISK_TYPE).Text = dvRow(RISK_TYPE_COL_NAME).ToString
                 e.Item.Cells(GRID_COL_MANUFACTURER).Text = dvRow(MANUFACTURER_COL_NAME).ToString
                 e.Item.Cells(GRID_COL_RISK_TYPE_ID).Text = dvRow(SERVICE_GROUP_RISK_COL_ID).ToString

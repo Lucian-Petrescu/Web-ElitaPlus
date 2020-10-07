@@ -687,7 +687,7 @@ Public Class GalaxyPayClaim
 #Region "Properties"
 
 
-    Public Property CertificateNumber() As String
+    Public Property CertificateNumber As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CERTIFICATE_NUMBER) Is DBNull.Value Then
@@ -696,13 +696,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_CERTIFICATE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CERTIFICATE_NUMBER, Value)
         End Set
     End Property
 
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_DEALER_CODE) Is DBNull.Value Then
@@ -711,13 +711,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_DEALER_CODE, Value)
         End Set
     End Property
 
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CLAIM_NUMBER) Is DBNull.Value Then
@@ -726,13 +726,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CLAIM_NUMBER, Value)
         End Set
     End Property
 
-    Public Property SvcControlNumber() As String
+    Public Property SvcControlNumber As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_SVC_CONTROL_NUMBER) Is DBNull.Value Then
@@ -741,7 +741,7 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_SVC_CONTROL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_SVC_CONTROL_NUMBER, Value)
         End Set
@@ -762,7 +762,7 @@ Public Class GalaxyPayClaim
     '    End Set
     'End Property
 
-    Public Property AuthorizationNumber() As String
+    Public Property AuthorizationNumber As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -771,13 +771,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_AUTHORIZATION_NUMBER, Value)
         End Set
     End Property
 
-    Public Property PayeeCode() As String
+    Public Property PayeeCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_PAYEE_CODE) Is DBNull.Value Then
@@ -786,13 +786,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_PAYEE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_PAYEE_CODE, Value)
         End Set
     End Property
 
-    Public Property CtcAddress1() As String
+    Public Property CtcAddress1 As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CTC_ADDRESS1) Is DBNull.Value Then
@@ -801,13 +801,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_CTC_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CTC_ADDRESS1, Value)
         End Set
     End Property
 
-    Public Property CtcAddress2() As String
+    Public Property CtcAddress2 As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CTC_ADDRESS2) Is DBNull.Value Then
@@ -816,13 +816,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_CTC_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CTC_ADDRESS2, Value)
         End Set
     End Property
 
-    Public Property CtcCity() As String
+    Public Property CtcCity As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CTC_CITY) Is DBNull.Value Then
@@ -831,13 +831,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_CTC_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CTC_CITY, Value)
         End Set
     End Property
 
-    Public Property CtcRegionCode() As String
+    Public Property CtcRegionCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CTC_REGION_CODE) Is DBNull.Value Then
@@ -846,13 +846,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_CTC_REGION_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CTC_REGION_CODE, Value)
         End Set
     End Property
 
-    Public Property CtcPostalCode() As String
+    Public Property CtcPostalCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CTC_POSTAL_CODE) Is DBNull.Value Then
@@ -861,13 +861,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_CTC_POSTAL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CTC_POSTAL_CODE, Value)
         End Set
     End Property
 
-    Public Property DisbursementCountryCode() As String
+    Public Property DisbursementCountryCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_DISBURSEMENT_COUNTRY_CODE) Is DBNull.Value Then
@@ -876,13 +876,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_DISBURSEMENT_COUNTRY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_DISBURSEMENT_COUNTRY_CODE, Value)
         End Set
     End Property
 
-    Public Property AccountName() As String
+    Public Property AccountName As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_ACCOUNT_NAME) Is DBNull.Value Then
@@ -891,13 +891,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_ACCOUNT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_ACCOUNT_NAME, Value)
         End Set
     End Property
 
-    Public Property BankId() As String
+    Public Property BankId As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_BANK_ID) Is DBNull.Value Then
@@ -906,13 +906,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_BANK_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_BANK_ID, Value)
         End Set
     End Property
 
-    Public Property AccountNumber() As String
+    Public Property AccountNumber As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_ACCOUNT_NUMBER) Is DBNull.Value Then
@@ -921,13 +921,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_ACCOUNT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_ACCOUNT_NUMBER, Value)
         End Set
     End Property
 
-    Public Property PaymentMethod() As String
+    Public Property PaymentMethod As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_PAYMENT_METHOD) Is DBNull.Value Then
@@ -936,13 +936,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_PAYMENT_METHOD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_PAYMENT_METHOD, Value)
         End Set
     End Property
 
-    Public Property IdentityDocumentNo() As String
+    Public Property IdentityDocumentNo As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_IDENTITY_DOCUMENT_NO) Is DBNull.Value Then
@@ -951,13 +951,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_IDENTITY_DOCUMENT_NO), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_IDENTITY_DOCUMENT_NO, Value)
         End Set
     End Property
 
-    Public Property DocumentType() As String
+    Public Property DocumentType As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_DOCUMENT_TYPE) Is DBNull.Value Then
@@ -966,13 +966,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_DOCUMENT_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_DOCUMENT_TYPE, Value)
         End Set
     End Property
 
-    Public Property IbanNumber() As String
+    Public Property IbanNumber As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_IBAN_NUMBER) Is DBNull.Value Then
@@ -981,13 +981,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_IBAN_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_IBAN_NUMBER, Value)
         End Set
     End Property
 
-    Public Property SwiftCode() As String
+    Public Property SwiftCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_SWIFT_CODE) Is DBNull.Value Then
@@ -996,13 +996,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_SWIFT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_SWIFT_CODE, Value)
         End Set
     End Property
 
-    Public Property AccountType() As String
+    Public Property AccountType As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_ACCOUNT_TYPE) Is DBNull.Value Then
@@ -1011,13 +1011,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_ACCOUNT_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_ACCOUNT_TYPE, Value)
         End Set
     End Property
 
-    Public Property PayeeOtherName() As String
+    Public Property PayeeOtherName As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_PAYEE_OTHER_NAME) Is DBNull.Value Then
@@ -1026,13 +1026,13 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_PAYEE_OTHER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_PAYEE_OTHER_NAME, Value)
         End Set
     End Property
 
-    Public Property UnitNumber() As LongType
+    Public Property UnitNumber As LongType
         Get
             CheckDeleted()
             If Row(SOURCE_COL_UNIT_NUMBER) Is DBNull.Value Then
@@ -1041,14 +1041,14 @@ Public Class GalaxyPayClaim
                 Return New LongType(CType(Row(SOURCE_COL_UNIT_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_UNIT_NUMBER, Value)
         End Set
     End Property
 
     'Added for Def-1782
-    Public Property InvoiceDate() As DateType
+    Public Property InvoiceDate As DateType
         Get
             CheckDeleted()
             If Row(SOURCE_COL_INVOICE_DATE) Is DBNull.Value Then
@@ -1057,7 +1057,7 @@ Public Class GalaxyPayClaim
                 Return CType(Row(SOURCE_COL_INVOICE_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_INVOICE_DATE, Value)
         End Set

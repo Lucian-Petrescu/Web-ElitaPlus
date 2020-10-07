@@ -133,7 +133,7 @@ Public NotInheritable Class Claim
 #Region "Properties"
 
     '<ValueMandatory("")> _
-    Public Property ClaimGroupId() As Guid
+    Public Property ClaimGroupId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CLAIM_GROUP_ID) Is DBNull.Value Then
@@ -142,14 +142,14 @@ Public NotInheritable Class Claim
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_CLAIM_GROUP_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_CLAIM_GROUP_ID, Value)
         End Set
     End Property
 
     Private _servCenterObject As ServiceCenter
-    Public ReadOnly Property ServiceCenterObject() As ServiceCenter Implements IInvoiceable.ServiceCenterObject
+    Public ReadOnly Property ServiceCenterObject As ServiceCenter Implements IInvoiceable.ServiceCenterObject
         Get
             If _servCenterObject Is Nothing Then
                 If Not ServiceCenterId.Equals(Guid.Empty) Then
@@ -160,43 +160,43 @@ Public NotInheritable Class Claim
         End Get
     End Property
 
-    Public ReadOnly Property CreatedDate() As DateType Implements IInvoiceable.CreatedDate
+    Public ReadOnly Property CreatedDate As DateType Implements IInvoiceable.CreatedDate
         Get
             Return MyBase.CreatedDate
         End Get
     End Property
 
-    Public ReadOnly Property CreatedDateTime() As DateTimeType Implements IInvoiceable.CreatedDateTime
+    Public ReadOnly Property CreatedDateTime As DateTimeType Implements IInvoiceable.CreatedDateTime
         Get
             Return MyBase.CreatedDateTime
         End Get
     End Property
 
-    Public ReadOnly Property AssurantPays() As DecimalType Implements IInvoiceable.AssurantPays
+    Public ReadOnly Property AssurantPays As DecimalType Implements IInvoiceable.AssurantPays
         Get
             Return MyBase.AssurantPays
         End Get
     End Property
 
-    Public ReadOnly Property ConsumerPays() As DecimalType Implements IInvoiceable.ConsumerPays
+    Public ReadOnly Property ConsumerPays As DecimalType Implements IInvoiceable.ConsumerPays
         Get
             Return MyBase.ConsumerPays
         End Get
     End Property
 
-    Public ReadOnly Property MethodOfRepairCode() As String Implements IInvoiceable.MethodOfRepairCode
+    Public ReadOnly Property MethodOfRepairCode As String Implements IInvoiceable.MethodOfRepairCode
         Get
             Return MyBase.MethodOfRepairCode
         End Get
     End Property
 
-    Public ReadOnly Property RiskType() As String Implements IInvoiceable.RiskType
+    Public ReadOnly Property RiskType As String Implements IInvoiceable.RiskType
         Get
             Return MyBase.RiskType
         End Get
     End Property
 
-    Public Property ServiceCenterId() As Guid Implements IInvoiceable.ServiceCenterId
+    Public Property ServiceCenterId As Guid Implements IInvoiceable.ServiceCenterId
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -205,7 +205,7 @@ Public NotInheritable Class Claim
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_SERVICE_CENTER_ID, Value)
             If Not Value.Equals(Guid.Empty) Then
@@ -219,7 +219,7 @@ Public NotInheritable Class Claim
         End Set
     End Property
 
-    Public Property LoanerCenterId() As Guid Implements IInvoiceable.LoanerCenterId
+    Public Property LoanerCenterId As Guid Implements IInvoiceable.LoanerCenterId
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_LOANER_CENTER_ID) Is DBNull.Value Then
@@ -228,25 +228,25 @@ Public NotInheritable Class Claim
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_LOANER_CENTER_ID), Byte()))
             End If
         End Get
-        Private Set(Value As Guid)
+        Private Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_LOANER_CENTER_ID, Value)
         End Set
     End Property
 
     <ValidAuthorizedAmount(""), ValidAuthAmountEdit("")>
-    Public Property AuthorizedAmount() As DecimalType Implements IInvoiceable.AuthorizedAmount
+    Public Property AuthorizedAmount As DecimalType Implements IInvoiceable.AuthorizedAmount
         Get
             Return MyBase.AuthorizedAmount
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             MyBase.AuthorizedAmount = Value
         End Set
     End Property
 
 
-    Public Property InvoiceProcessDate() As DateType Implements IInvoiceable.InvoiceProcessDate
+    Public Property InvoiceProcessDate As DateType Implements IInvoiceable.InvoiceProcessDate
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_INVOICE_PROCESS_DATE) Is DBNull.Value Then
@@ -255,14 +255,14 @@ Public NotInheritable Class Claim
                 Return New DateType(CType(Row(ClaimDAL.COL_NAME_INVOICE_PROCESS_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_INVOICE_PROCESS_DATE, Value)
         End Set
     End Property
 
     <ValidLoanerReturnedDate("")>
-    Public Property LoanerReturnedDate() As DateType Implements IInvoiceable.LoanerReturnedDate
+    Public Property LoanerReturnedDate As DateType Implements IInvoiceable.LoanerReturnedDate
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_LOANER_RETURNED_DATE) Is DBNull.Value Then
@@ -271,14 +271,14 @@ Public NotInheritable Class Claim
                 Return New DateType(CType(Row(ClaimDAL.COL_NAME_LOANER_RETURNED_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_LOANER_RETURNED_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property Source() As String
+    Public Property Source As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_SOURCE) Is DBNull.Value Then
@@ -287,14 +287,14 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_SOURCE), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_SOURCE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)>
-    Public Property SpareParts() As String
+    Public Property SpareParts As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_SPARE_PARTS) Is DBNull.Value Then
@@ -303,7 +303,7 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_SPARE_PARTS), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
 
             'Added logic to default to "Y" for spare parts if the current value is "Y", else default to "N"
@@ -318,7 +318,7 @@ Public NotInheritable Class Claim
         End Set
     End Property
 
-    Public ReadOnly Property ServiceCenter() As String
+    Public ReadOnly Property ServiceCenter As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_SERVICE_CENTER) Is DBNull.Value Then
@@ -330,7 +330,7 @@ Public NotInheritable Class Claim
 
     End Property
 
-    Public ReadOnly Property LoanerCenter() As String
+    Public ReadOnly Property LoanerCenter As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_LOANER_CENTER) Is DBNull.Value Then
@@ -342,7 +342,7 @@ Public NotInheritable Class Claim
 
     End Property
     <ValidStringLength("", Max:=30)>
-    Public Property LoanerRquestedXcd() As String
+    Public Property LoanerRquestedXcd As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_LOANER_REQUESTED_XCD) Is DBNull.Value Then
@@ -351,13 +351,13 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_LOANER_REQUESTED_XCD), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_LOANER_REQUESTED_XCD, Value)
         End Set
     End Property
 
-    Public ReadOnly Property DefectReason() As String
+    Public ReadOnly Property DefectReason As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_DEFECT_REASON) Is DBNull.Value Then
@@ -369,7 +369,7 @@ Public NotInheritable Class Claim
 
     End Property
 
-    Public ReadOnly Property TechnicalReport() As String
+    Public ReadOnly Property TechnicalReport As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_TECHNICAL_REPORT) Is DBNull.Value Then
@@ -381,7 +381,7 @@ Public NotInheritable Class Claim
 
     End Property
 
-    Public ReadOnly Property ExpectedRepairDate() As DateType
+    Public ReadOnly Property ExpectedRepairDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_EXPECTED_REPAIR_DATE) Is DBNull.Value Then
@@ -393,11 +393,11 @@ Public NotInheritable Class Claim
 
     End Property
 
-    Public Property LoanerTaken() As Boolean
+    Public Property LoanerTaken As Boolean
         Get
             Return Not LoanerCenterId.Equals(Guid.Empty)
         End Get
-        Set(Value As Boolean)
+        Set
             If Value Then
                 LoanerCenterId = ServiceCenterObject.LoanerCenterId
             Else
@@ -406,7 +406,7 @@ Public NotInheritable Class Claim
         End Set
     End Property
 
-    Public ReadOnly Property CoverageTypeDescription() As String
+    Public ReadOnly Property CoverageTypeDescription As String
         Get
             If Row(ClaimDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
                 Dim certItemCoverage As New CertItemCoverage(CertItemCoverageId)
@@ -423,7 +423,7 @@ Public NotInheritable Class Claim
         End Get
     End Property
 
-    Public ReadOnly Property StoreServiceCenterId() As Guid
+    Public ReadOnly Property StoreServiceCenterId As Guid
         Get
             CheckDeleted()
             If ((Row(ClaimDAL.COL_NAME_STORE_SERVICE_CENTER_ID) Is DBNull.Value)) Then
@@ -435,7 +435,7 @@ Public NotInheritable Class Claim
 
     End Property
 
-    Public Property WhoPaysId() As Guid
+    Public Property WhoPaysId As Guid
         Get
             CheckDeleted()
             If ((Row(ClaimDAL.COL_NAME_WHO_PAYS_ID) Is DBNull.Value)) Then
@@ -444,13 +444,13 @@ Public NotInheritable Class Claim
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_WHO_PAYS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_WHO_PAYS_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property WhoPaysDescription() As String
+    Public ReadOnly Property WhoPaysDescription As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_WHO_PAYS_ID) Is DBNull.Value Then
@@ -463,7 +463,7 @@ Public NotInheritable Class Claim
         End Get
     End Property
 
-    Public Overrides ReadOnly Property IsDaysLimitExceeded() As Boolean
+    Public Overrides ReadOnly Property IsDaysLimitExceeded As Boolean
         Get
             'For service warranties
             'Since the RepairDate for the new Service Warranty Claim is Blank, we need to get the 
@@ -499,7 +499,7 @@ Public NotInheritable Class Claim
         Return False
     End Function
 
-    Public Overrides ReadOnly Property IsMaxSvcWrtyClaimsReached() As Boolean
+    Public Overrides ReadOnly Property IsMaxSvcWrtyClaimsReached As Boolean
         Get
             Dim result As Boolean = False
             Dim claimdal As New ClaimDAL
@@ -527,17 +527,17 @@ Public NotInheritable Class Claim
 
     Private _IsFirstClaimRecordFortheIncident As Boolean = False
 
-    Public ReadOnly Property IsFirstClaimRecordFortheIncident() As Boolean
+    Public ReadOnly Property IsFirstClaimRecordFortheIncident As Boolean
         Get
             Return _IsFirstClaimRecordFortheIncident
         End Get
     End Property
 
-    Public Property IsComingFromPayClaim() As Boolean Implements IInvoiceable.IsComingFromPayClaim
+    Public Property IsComingFromPayClaim As Boolean Implements IInvoiceable.IsComingFromPayClaim
         Get
             Return moIsComingFromPayClaim
         End Get
-        Set(Value As Boolean)
+        Set
             moIsComingFromPayClaim = Value
         End Set
     End Property
@@ -545,7 +545,7 @@ Public NotInheritable Class Claim
 
 
     <ValidVisitDate("")>
-    Public Property VisitDate() As DateType
+    Public Property VisitDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_VISIT_DATE) Is DBNull.Value Then
@@ -554,14 +554,14 @@ Public NotInheritable Class Claim
                 Return New DateType(CType(Row(ClaimDAL.COL_NAME_VISIT_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_VISIT_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property BatchNumber() As String
+    Public Property BatchNumber As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_BATCH_NUMBER) Is DBNull.Value Then
@@ -570,13 +570,13 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_BATCH_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_BATCH_NUMBER, Value)
         End Set
     End Property
 
-    Public Property ClaimSpecialServiceId() As Guid
+    Public Property ClaimSpecialServiceId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CLAIM_IS_SPECIAL_SERVICE_ID) Is DBNull.Value Then
@@ -585,33 +585,33 @@ Public NotInheritable Class Claim
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_CLAIM_IS_SPECIAL_SERVICE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_CLAIM_IS_SPECIAL_SERVICE_ID, Value)
         End Set
     End Property
 
-    Public Property SpecialServiceOccurrenceType() As String
+    Public Property SpecialServiceOccurrenceType As String
         Get
             Return splsvcOccurances
         End Get
-        Set(Value As String)
+        Set
             splsvcOccurances = Value
         End Set
     End Property
-    Public Property SpecialServiceServiceClass() As String
+    Public Property SpecialServiceServiceClass As String
         Get
             Return splsvcSvcCls
         End Get
-        Set(Value As String)
+        Set
             splsvcSvcCls = Value
         End Set
     End Property
-    Public Property SpecialServiceServiceType() As String
+    Public Property SpecialServiceServiceType As String
         Get
             Return splsvcSvcType
         End Get
-        Set(Value As String)
+        Set
             splsvcSvcType = Value
         End Set
     End Property
@@ -627,34 +627,34 @@ Public NotInheritable Class Claim
     '    End Set
     'End Property
 
-    Public Property SpecialServiceDesc() As String
+    Public Property SpecialServiceDesc As String
         Get
             Return splsvcDesc
         End Get
-        Set(Value As String)
+        Set
             splsvcDesc = Value
         End Set
     End Property
 
-    Public Property IsUpdatedMasterClaimComment() As Boolean
+    Public Property IsUpdatedMasterClaimComment As Boolean
         Get
             Return moIsUpdatedMasterClaimComment
         End Get
-        Set(Value As Boolean)
+        Set
             moIsUpdatedMasterClaimComment = Value
         End Set
     End Property
 
-    Public Property MasterClaimId() As Guid
+    Public Property MasterClaimId As Guid
         Get
             Return moMasterClaimId
         End Get
-        Set(Value As Guid)
+        Set
             moMasterClaimId = Value
         End Set
     End Property
 
-    Public ReadOnly Property SpecialService() As String
+    Public ReadOnly Property SpecialService As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CLAIM_IS_SPECIAL_SERVICE_ID) Is DBNull.Value Then
@@ -667,7 +667,7 @@ Public NotInheritable Class Claim
         End Get
     End Property
 
-    Public Property InvoiceDate() As DateType Implements IInvoiceable.InvoiceDate
+    Public Property InvoiceDate As DateType Implements IInvoiceable.InvoiceDate
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_INVOICE_DATE) Is DBNull.Value Then
@@ -676,13 +676,13 @@ Public NotInheritable Class Claim
                 Return New DateType(CType(Row(ClaimDAL.COL_NAME_INVOICE_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_INVOICE_DATE, Value)
         End Set
     End Property
 
-    Public Property CurrentOdometer() As LongType
+    Public Property CurrentOdometer As LongType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_CURRENT_ODOMETER) Is DBNull.Value Then
@@ -691,13 +691,13 @@ Public NotInheritable Class Claim
                 Return New LongType(CType(Row(ClaimDAL.COL_NAME_CURRENT_ODOMETER), Long))
             End If
         End Get
-        Set(Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_CURRENT_ODOMETER, Value)
         End Set
     End Property
 
-    Public Property ReverseLogisticsId() As Guid
+    Public Property ReverseLogisticsId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_REVERSE_LOGISTICS_ID) Is DBNull.Value Then
@@ -706,13 +706,13 @@ Public NotInheritable Class Claim
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_REVERSE_LOGISTICS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_REVERSE_LOGISTICS_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property IsSupervisorAuthorizationRequired() As Boolean
+    Public ReadOnly Property IsSupervisorAuthorizationRequired As Boolean
         Get
             Dim bIsReq As Boolean
             Dim bDaysExceeded As Boolean = IsDaysLimitExceeded
@@ -736,7 +736,7 @@ Public NotInheritable Class Claim
         End Get
     End Property
 
-    Public ReadOnly Property StoreNumber() As String
+    Public ReadOnly Property StoreNumber As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_STORE_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -749,7 +749,7 @@ Public NotInheritable Class Claim
     End Property
 
     <ValidStringLength("", Max:=500)>
-    Public Property SpecialInstruction() As String
+    Public Property SpecialInstruction As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_SPECIAL_INSTRUCTION) Is DBNull.Value Then
@@ -758,56 +758,56 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_SPECIAL_INSTRUCTION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_SPECIAL_INSTRUCTION, Value)
         End Set
     End Property
 
-    Public Property CertRemainingBalance() As Decimal
+    Public Property CertRemainingBalance As Decimal
         Get
             Return _cert_RemainingBalance
         End Get
-        Set(Value As Decimal)
+        Set
             _cert_RemainingBalance = Value
         End Set
     End Property
 
-    Public Property VehicleCondition() As String
+    Public Property VehicleCondition As String
         Get
             Return _vehicle_condition
         End Get
-        Set(Value As String)
+        Set
             _vehicle_condition = Value
         End Set
     End Property
-    Public Property MFG_MAX_MileageLimit() As Integer
+    Public Property MFG_MAX_MileageLimit As Integer
         Get
             Return _MFG_MAX_Mileage_Limit
         End Get
-        Set(Value As Integer)
+        Set
             _MFG_MAX_Mileage_Limit = Value
         End Set
     End Property
-    Public Property CoverageMiKm() As Integer
+    Public Property CoverageMiKm As Integer
         Get
             Return _coverage_mi_km
         End Get
-        Set(Value As Integer)
+        Set
             _coverage_mi_km = Value
         End Set
     End Property
 
-    Public Property SourceForCancellation() As String
+    Public Property SourceForCancellation As String
         Get
             Return _sourceForCancellation
         End Get
-        Set(Value As String)
+        Set
             _sourceForCancellation = Value
         End Set
     End Property
 
-    Public Property DeviceReceptionDate() As DateType
+    Public Property DeviceReceptionDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_DEVICE_RECEPTION_DATE) Is DBNull.Value Then
@@ -816,13 +816,13 @@ Public NotInheritable Class Claim
                 Return New DateType(CType(Row(ClaimDAL.COL_NAME_DEVICE_RECEPTION_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_DEVICE_RECEPTION_DATE, Value)
         End Set
     End Property
 
-    Public Property DeviceActivationDate() As DateType
+    Public Property DeviceActivationDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_DEVICE_ACTIVATION_DATE) Is DBNull.Value Then
@@ -831,7 +831,7 @@ Public NotInheritable Class Claim
                 Return New DateType(CType(Row(ClaimDAL.COL_NAME_DEVICE_ACTIVATION_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_DEVICE_ACTIVATION_DATE, Value)
         End Set
@@ -839,7 +839,7 @@ Public NotInheritable Class Claim
 
 
     <ValidStringLength("", Max:=20)>
-    Public Property EmployeeNumber() As String
+    Public Property EmployeeNumber As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_EMPLOYEE_NUMBER) Is DBNull.Value Then
@@ -848,13 +848,13 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_EMPLOYEE_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_EMPLOYEE_NUMBER, Value)
         End Set
     End Property
 
-    Public Property FulfilmentMethod() As String
+    Public Property FulfilmentMethod As String
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_FULFILMENT_METHOD_XCD) Is DBNull.Value Then
@@ -863,12 +863,12 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_FULFILMENT_METHOD_XCD), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_FULFILMENT_METHOD_XCD, Value)
         End Set
     End Property
-    Public Property BankInfoId() As Guid
+    Public Property BankInfoId As Guid
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_BANK_INFO_ID) Is DBNull.Value Then
@@ -877,7 +877,7 @@ Public NotInheritable Class Claim
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_BANK_INFO_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_BANK_INFO_ID, Value)
         End Set
@@ -885,7 +885,7 @@ Public NotInheritable Class Claim
 #End Region
 
 #Region "Extended Properties"
-    Public ReadOnly Property CanDisplayVisitAndPickUpDates() As Boolean Implements IInvoiceable.CanDisplayVisitAndPickUpDates
+    Public ReadOnly Property CanDisplayVisitAndPickUpDates As Boolean Implements IInvoiceable.CanDisplayVisitAndPickUpDates
         Get
             'Pickup and visit dates: do not display if replacement and/or interface claim
             'Interface claim = Not claim.Source.Equals(String.Empty)
@@ -905,16 +905,16 @@ Public NotInheritable Class Claim
         End Get
     End Property
 
-    Public Property AuthDetailUsage() As String
+    Public Property AuthDetailUsage As String
         Get
             Return _AuthDetailUsage
         End Get
-        Set(Value As String)
+        Set
             _AuthDetailUsage = Value
         End Set
     End Property
 
-    Public ReadOnly Property MyDataset() As DataSet
+    Public ReadOnly Property MyDataset As DataSet
         Get
             Return Dataset
         End Get
@@ -926,27 +926,27 @@ Public NotInheritable Class Claim
 #Region "Invoiceable properties and Overridden Properties"
 
     <ValidRepairDate("")>
-    Public Property RepairDate() As DateType Implements IInvoiceable.RepairDate
+    Public Property RepairDate As DateType Implements IInvoiceable.RepairDate
         Get
             Return MyBase.RepairDate
         End Get
-        Set(Value As DateType)
+        Set
             MyBase.RepairDate = Value
         End Set
     End Property
 
     <ValidPickUpDate("")>
-    Public Property PickUpDate() As DateType Implements IInvoiceable.PickUpDate
+    Public Property PickUpDate As DateType Implements IInvoiceable.PickUpDate
         Get
             Return MyBase.PickUpDate
         End Get
-        Set(Value As DateType)
+        Set
             MyBase.PickUpDate = Value
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property AuthorizationNumber() As String Implements IInvoiceable.AuthorizationNumber
+    Public Property AuthorizationNumber As String Implements IInvoiceable.AuthorizationNumber
         Get
             CheckDeleted()
             If Row(ClaimDAL.COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -955,7 +955,7 @@ Public NotInheritable Class Claim
                 Return CType(Row(ClaimDAL.COL_NAME_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
@@ -967,31 +967,31 @@ Public NotInheritable Class Claim
     '    End Get
     'End Property
 
-    Public ReadOnly Property ClaimActivityCode() As String Implements IInvoiceable.ClaimActivityCode
+    Public ReadOnly Property ClaimActivityCode As String Implements IInvoiceable.ClaimActivityCode
         Get
             Return MyBase.ClaimActivityCode
         End Get
     End Property
 
-    Public ReadOnly Property Claim_Id() As Guid Implements IInvoiceable.Claim_Id
+    Public ReadOnly Property Claim_Id As Guid Implements IInvoiceable.Claim_Id
         Get
             Return Id
         End Get
     End Property
 
-    Public ReadOnly Property IsDirty() As Boolean Implements IInvoiceable.IsDirty
+    Public ReadOnly Property IsDirty As Boolean Implements IInvoiceable.IsDirty
         Get
             Return MyBase.IsDirty
         End Get
     End Property
 
-    Public ReadOnly Property ClaimAuthorizationId() As Guid Implements IInvoiceable.ClaimAuthorizationId
+    Public ReadOnly Property ClaimAuthorizationId As Guid Implements IInvoiceable.ClaimAuthorizationId
         Get
             Return Guid.Empty
         End Get
     End Property
 
-    Public Property RepairEstimate() As DecimalType Implements IInvoiceable.RepairEstimate
+    Public Property RepairEstimate As DecimalType Implements IInvoiceable.RepairEstimate
         Get
             CheckDeleted()
             Dim rEstimate As Decimal = 0D
@@ -1002,58 +1002,58 @@ Public NotInheritable Class Claim
                 Return New DecimalType(CType(Row(ClaimDAL.COL_NAME_REPAIR_ESTIMATE), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimDAL.COL_NAME_REPAIR_ESTIMATE, Value)
         End Set
     End Property
 
-    Public Overrides Property RepairCodeId() As Guid Implements IInvoiceable.RepairCodeId
+    Public Overrides Property RepairCodeId As Guid Implements IInvoiceable.RepairCodeId
         Get
             Return MyBase.RepairCodeId
         End Get
-        Set(value As Guid)
+        Set
             MyBase.RepairCodeId = value
         End Set
     End Property
 
-    Public Overrides Property ClaimActivityId() As Guid Implements IInvoiceable.ClaimActivityId
+    Public Overrides Property ClaimActivityId As Guid Implements IInvoiceable.ClaimActivityId
         Get
             Return MyBase.ClaimActivityId
         End Get
-        Set(value As Guid)
+        Set
             MyBase.ClaimActivityId = value
         End Set
     End Property
 
-    Public Property RiskTypeId() As Guid Implements IInvoiceable.RiskTypeId
+    Public Property RiskTypeId As Guid Implements IInvoiceable.RiskTypeId
         Get
             Return MyBase.RiskTypeId
         End Get
-        Set(Value As Guid)
+        Set
             MyBase.RiskTypeId = Value
         End Set
     End Property
 
-    Public Overrides Property ReasonClosedId() As Guid Implements IInvoiceable.ReasonClosedId
+    Public Overrides Property ReasonClosedId As Guid Implements IInvoiceable.ReasonClosedId
         Get
             Return MyBase.ReasonClosedId
         End Get
-        Set(value As Guid)
+        Set
             MyBase.ReasonClosedId = value
         End Set
     End Property
 
-    Public Property ClaimNumber() As String Implements IInvoiceable.ClaimNumber
+    Public Property ClaimNumber As String Implements IInvoiceable.ClaimNumber
         Get
             Return MyBase.ClaimNumber
         End Get
-        Set(value As String)
+        Set
             MyBase.ClaimNumber = value
         End Set
     End Property
 
-    Public ReadOnly Property CustomerName() As String Implements IInvoiceable.CustomerName
+    Public ReadOnly Property CustomerName As String Implements IInvoiceable.CustomerName
         Get
             Return MyBase.Certificate.CustomerName
         End Get
@@ -1063,109 +1063,109 @@ Public NotInheritable Class Claim
         MyBase.VerifyConcurrency(sModifiedDate)
     End Sub
 
-    Public Property StatusCode() As String Implements IInvoiceable.StatusCode
+    Public Property StatusCode As String Implements IInvoiceable.StatusCode
         Get
             Return MyBase.StatusCode
         End Get
-        Set(value As String)
+        Set
             MyBase.StatusCode = value
         End Set
     End Property
 
-    Public Overrides Property ClaimClosedDate() As DateType Implements IInvoiceable.ClaimClosedDate
+    Public Overrides Property ClaimClosedDate As DateType Implements IInvoiceable.ClaimClosedDate
         Get
             Return MyBase.ClaimClosedDate
         End Get
-        Set(value As DateType)
+        Set
             MyBase.ClaimClosedDate = value
         End Set
     End Property
 
-    Public Overrides Property CauseOfLossId() As Guid Implements IInvoiceable.CauseOfLossId
+    Public Overrides Property CauseOfLossId As Guid Implements IInvoiceable.CauseOfLossId
         Get
             Return MyBase.CauseOfLossId
         End Get
-        Set(value As Guid)
+        Set
             MyBase.CauseOfLossId = value
         End Set
     End Property
 
-    Public Overrides Property CompanyId() As Guid Implements IInvoiceable.CompanyId
+    Public Overrides Property CompanyId As Guid Implements IInvoiceable.CompanyId
         Get
             Return MyBase.CompanyId
         End Get
-        Set(value As Guid)
+        Set
             MyBase.CompanyId = value
         End Set
     End Property
 
-    Public Overrides ReadOnly Property CertificateId() As Guid Implements IInvoiceable.CertificateId
+    Public Overrides ReadOnly Property CertificateId As Guid Implements IInvoiceable.CertificateId
         Get
             Return MyBase.CertificateId
         End Get
     End Property
 
-    Public ReadOnly Property PayDeductibleId() As Guid Implements IInvoiceable.PayDeductibleId
+    Public ReadOnly Property PayDeductibleId As Guid Implements IInvoiceable.PayDeductibleId
         Get
             Return MyBase.Dealer.PayDeductibleId
         End Get
     End Property
 
-    Public Property CertItemCoverageId() As Guid Implements IInvoiceable.CertItemCoverageId
+    Public Property CertItemCoverageId As Guid Implements IInvoiceable.CertItemCoverageId
         Get
             Return MyBase.CertItemCoverageId
         End Get
-        Set(value As Guid)
+        Set
             MyBase.CertItemCoverageId = value
         End Set
     End Property
 
-    Public Overrides Property IsRequiredCheckLossDateForCancelledCert() As Boolean Implements IInvoiceable.IsRequiredCheckLossDateForCancelledCert
+    Public Overrides Property IsRequiredCheckLossDateForCancelledCert As Boolean Implements IInvoiceable.IsRequiredCheckLossDateForCancelledCert
         Get
             Return MyBase.IsRequiredCheckLossDateForCancelledCert
         End Get
-        Set(value As Boolean)
+        Set
             MyBase.IsRequiredCheckLossDateForCancelledCert = value
         End Set
     End Property
 
-    Public Property SalvageAmount() As DecimalType Implements IInvoiceable.SalvageAmount
+    Public Property SalvageAmount As DecimalType Implements IInvoiceable.SalvageAmount
         Get
             Return MyBase.SalvageAmount
         End Get
-        Set(value As DecimalType)
+        Set
             MyBase.SalvageAmount = value
         End Set
     End Property
 
-    Public Property Deductible() As DecimalType Implements IInvoiceable.Deductible
+    Public Property Deductible As DecimalType Implements IInvoiceable.Deductible
         Get
             Return MyBase.Deductible
         End Get
-        Set(value As DecimalType)
+        Set
             MyBase.Deductible = value
         End Set
     End Property
 
-    Public Property DiscountAmount() As DecimalType Implements IInvoiceable.DiscountAmount
+    Public Property DiscountAmount As DecimalType Implements IInvoiceable.DiscountAmount
         Get
             Return MyBase.DiscountAmount
         End Get
-        Set(value As DecimalType)
+        Set
             MyBase.DiscountAmount = value
         End Set
     End Property
 
-    Public Property LiabilityLimit() As DecimalType Implements IInvoiceable.LiabilityLimit
+    Public Property LiabilityLimit As DecimalType Implements IInvoiceable.LiabilityLimit
         Get
             Return MyBase.LiabilityLimit
         End Get
-        Set(value As DecimalType)
+        Set
             MyBase.LiabilityLimit = value
         End Set
     End Property
 
-    Public ReadOnly Property AboveLiability() As DecimalType Implements IInvoiceable.AboveLiability
+    Public ReadOnly Property AboveLiability As DecimalType Implements IInvoiceable.AboveLiability
         Get
             Return MyBase.AboveLiability
         End Get
@@ -1176,12 +1176,12 @@ Public NotInheritable Class Claim
     End Sub
 
     'KDDDI Changes 
-    Public ReadOnly Property IsReshipmentAllowed() As String Implements IInvoiceable.IsReshipmentAllowed
+    Public ReadOnly Property IsReshipmentAllowed As String Implements IInvoiceable.IsReshipmentAllowed
         Get
             Return MyBase.Dealer.Is_Reshipment_Allowed
         End Get
     End Property
-    Public ReadOnly Property IsCancelShipmentAllowed() As String Implements IInvoiceable.IsCancelShipmentAllowed
+    Public ReadOnly Property IsCancelShipmentAllowed As String Implements IInvoiceable.IsCancelShipmentAllowed
         Get
             Return MyBase.Dealer.Is_Cancel_Shipment_Allowed
         End Get
@@ -1761,9 +1761,7 @@ Public NotInheritable Class Claim
                     nEstimatePrice = price
                 End If
                 ''''''''''''''''''''''''''''''''''''''''''
-                If PreserveAuthAmount() Then
-                    AuthorizedAmount = AuthorizedAmount
-                Else
+                If Not PreserveAuthAmount() Then
                     AuthorizedAmount = nEstimatePrice
                 End If
 
@@ -1773,9 +1771,7 @@ Public NotInheritable Class Claim
                         ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_REPLACED)
                         CloseTheClaim()
                     End If
-                    If PreserveAuthAmount() Then
-                        AuthorizedAmount = AuthorizedAmount
-                    Else
+                    If Not PreserveAuthAmount() Then
                         AuthorizedAmount = New DecimalType(ZERO_DECIMAL)
                     End If
                 Else

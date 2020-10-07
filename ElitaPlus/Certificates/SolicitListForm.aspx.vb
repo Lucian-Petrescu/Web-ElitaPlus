@@ -168,13 +168,12 @@ Namespace Certificates
 #Region "Button event handlers"
         Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
             Try
-                If txtInitialSalesOrder.Text = String.Empty And txtCustomerId.Text = String.Empty And txtApplyDate.Text = String.Empty And
-                    txtSimPhoneNumber.Text = String.Empty And ddlDealer.SelectedIndex = &H0 Then
+                If txtInitialSalesOrder.Text = String.Empty AndAlso txtCustomerId.Text = String.Empty AndAlso txtApplyDate.Text = String.Empty AndAlso txtSimPhoneNumber.Text = String.Empty AndAlso ddlDealer.SelectedIndex = &H0 Then
 
                     MasterPage.MessageController.AddErrorAndShow(SEARCH_EXCEPTION, True)
                     Return
                 End If
-                If ddlDealer.SelectedIndex = &H0 Or ddlDealer.SelectedValue Is Nothing Then
+                If ddlDealer.SelectedIndex = &H0 OrElse ddlDealer.SelectedValue Is Nothing Then
 
                     MasterPage.MessageController.AddErrorAndShow("SELECT_DEALER", True)
                     Return
@@ -350,7 +349,7 @@ Namespace Certificates
                     txtInitialSalesOrder.Text = State.initialSalesOrderNumber
 
                     State.dealerId = GetSelectedItem(ddlDealer)
-                    If State.dealerId <> Guid.Empty And ddlDealer.Items.Count > 0 Then SetSelectedItem(ddlDealer, State.dealerId)
+                    If State.dealerId <> Guid.Empty AndAlso ddlDealer.Items.Count > 0 Then SetSelectedItem(ddlDealer, State.dealerId)
 
                     txtCustomerId.Text = State.customerId
 
@@ -393,7 +392,7 @@ Namespace Certificates
 
                 If String.IsNullOrEmpty(oWebPasswd.Url) Then
                     Throw New ArgumentNullException($"Web Password entry not found or Solicitation  Api Url not configured for Service Type {Codes.SERVICE_TYPE_SOLICIT_API_URL}")
-                ElseIf String.IsNullOrEmpty(oWebPasswd.UserId) Or String.IsNullOrEmpty(oWebPasswd.Password) Then
+                ElseIf String.IsNullOrEmpty(oWebPasswd.UserId) OrElse String.IsNullOrEmpty(oWebPasswd.Password) Then
                     Throw New ArgumentNullException($"Web Password username or password not configured for Service Type {Codes.SERVICE_TYPE_SOLICIT_API_URL}")
                 End If
                 ' System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls Or System.Net.SecurityProtocolType.Tls11 Or System.Net.SecurityProtocolType.Tls12

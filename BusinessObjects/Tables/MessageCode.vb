@@ -93,7 +93,7 @@ Public Class MessageCode
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(MessageCodeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -104,7 +104,7 @@ Public Class MessageCode
     End Property
 
     <ValueMandatory("")> _
-    Public Property MsgType() As Guid
+    Public Property MsgType As Guid
         Get
             CheckDeleted()
             If row(MessageCodeDAL.COL_NAME_MSG_TYPE) Is DBNull.Value Then
@@ -113,14 +113,14 @@ Public Class MessageCode
                 Return New Guid(CType(row(MessageCodeDAL.COL_NAME_MSG_TYPE), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(MessageCodeDAL.COL_NAME_MSG_TYPE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)> _
-    Public Property MsgCode() As String
+    Public Property MsgCode As String
         Get
             CheckDeleted()
             If Row(MessageCodeDAL.COL_NAME_MSG_CODE) Is DBNull.Value Then
@@ -129,14 +129,14 @@ Public Class MessageCode
                 Return CType(Row(MessageCodeDAL.COL_NAME_MSG_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(MessageCodeDAL.COL_NAME_MSG_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property LabelId() As Guid
+    Public Property LabelId As Guid
         Get
             CheckDeleted()
             If row(MessageCodeDAL.COL_NAME_LABEL_ID) Is DBNull.Value Then
@@ -145,14 +145,14 @@ Public Class MessageCode
                 Return New Guid(CType(row(MessageCodeDAL.COL_NAME_LABEL_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(MessageCodeDAL.COL_NAME_LABEL_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property MsgParameterCount() As LongType
+    Public Property MsgParameterCount As LongType
         Get
             CheckDeleted()
             If row(MessageCodeDAL.COL_NAME_MSG_PARAMETER_COUNT) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class MessageCode
                 Return New LongType(CType(row(MessageCodeDAL.COL_NAME_MSG_PARAMETER_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(MessageCodeDAL.COL_NAME_MSG_PARAMETER_COUNT, Value)
         End Set

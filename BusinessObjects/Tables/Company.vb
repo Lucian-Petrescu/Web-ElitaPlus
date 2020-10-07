@@ -107,16 +107,16 @@ Public Class Company
     End Property
 
     Private _constrVoilation As Boolean
-    Public Property ConstrVoilation() As Boolean
+    Public Property ConstrVoilation As Boolean
         Get
             Return _constrVoilation
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _constrVoilation = Value
         End Set
     End Property
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IAttributable.Id
+    Public ReadOnly Property Id As Guid Implements IAttributable.Id
         Get
             If Row(CompanyDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -127,7 +127,7 @@ Public Class Company
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=70)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -136,7 +136,7 @@ Public Class Company
                 Return CType(Row(CompanyDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -144,7 +144,7 @@ Public Class Company
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=5), CheckIfCompanyCodeAlreadyExists("")>
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -153,7 +153,7 @@ Public Class Company
                 Return CType(Row(CompanyDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_CODE, Value)
         End Set
@@ -161,7 +161,7 @@ Public Class Company
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=15)> _
-    Public Property TaxIdNumber() As String
+    Public Property TaxIdNumber As String
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_TAX_ID_NUMBER) Is DBNull.Value Then
@@ -170,7 +170,7 @@ Public Class Company
                 Return CType(Row(CompanyDAL.COL_NAME_TAX_ID_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_TAX_ID_NUMBER, Value)
         End Set
@@ -178,7 +178,7 @@ Public Class Company
 
 
     <ValueMandatory("")> _
-    Public Property BusinessCountryId() As Guid
+    Public Property BusinessCountryId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_BUSINESS_COUNTRY_ID) Is DBNull.Value Then
@@ -187,14 +187,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_BUSINESS_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_BUSINESS_COUNTRY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=15)> _
-    Public Property Phone() As String
+    Public Property Phone As String
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_PHONE) Is DBNull.Value Then
@@ -203,7 +203,7 @@ Public Class Company
                 Return CType(Row(CompanyDAL.COL_NAME_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_PHONE, Value)
         End Set
@@ -211,7 +211,7 @@ Public Class Company
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=15)> _
-    Public Property Fax() As String
+    Public Property Fax As String
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_FAX) Is DBNull.Value Then
@@ -220,7 +220,7 @@ Public Class Company
                 Return CType(Row(CompanyDAL.COL_NAME_FAX), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_FAX, Value)
         End Set
@@ -228,7 +228,7 @@ Public Class Company
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50), EmailAddress("")> _
-    Public Property Email() As String
+    Public Property Email As String
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_EMAIL) Is DBNull.Value Then
@@ -238,7 +238,7 @@ Public Class Company
                 Return CType(Row(CompanyDAL.COL_NAME_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_EMAIL, Value)
         End Set
@@ -246,7 +246,7 @@ Public Class Company
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0)> _
-    Public Property RefundToleranceAmt() As DecimalType
+    Public Property RefundToleranceAmt As DecimalType
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_REFUND_TOLERANCE_AMT) Is DBNull.Value Then
@@ -255,7 +255,7 @@ Public Class Company
                 Return New DecimalType(CType(Row(CompanyDAL.COL_NAME_REFUND_TOLERANCE_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_REFUND_TOLERANCE_AMT, Value)
         End Set
@@ -263,7 +263,7 @@ Public Class Company
 
 
     <ValueMandatory("")> _
-    Public Property ClaimNumberFormatId() As Guid
+    Public Property ClaimNumberFormatId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_CLAIM_NUMBER_FORMAT_ID) Is DBNull.Value Then
@@ -272,12 +272,12 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_CLAIM_NUMBER_FORMAT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_CLAIM_NUMBER_FORMAT_ID, Value)
         End Set
     End Property
-    Public Property CertNumberFormatId() As Guid
+    Public Property CertNumberFormatId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_CERT_NUMBER_FORMAT_ID) Is DBNull.Value Then
@@ -286,14 +286,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_CERT_NUMBER_FORMAT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_CERT_NUMBER_FORMAT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property InvoiceMethodId() As Guid
+    Public Property InvoiceMethodId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_INVOICE_METHOD_ID) Is DBNull.Value Then
@@ -302,7 +302,7 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_INVOICE_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_INVOICE_METHOD_ID, Value)
         End Set
@@ -310,7 +310,7 @@ Public Class Company
 
 
     <ValueMandatory("")> _
-    Public Property LanguageId() As Guid
+    Public Property LanguageId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_LANGUAGE_ID) Is DBNull.Value Then
@@ -319,7 +319,7 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_LANGUAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_LANGUAGE_ID, Value)
         End Set
@@ -327,7 +327,7 @@ Public Class Company
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0)> _
-    Public Property DefaultFollowupDays() As LongType
+    Public Property DefaultFollowupDays As LongType
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_DEFAULT_FOLLOWUP_DAYS) Is DBNull.Value Then
@@ -336,7 +336,7 @@ Public Class Company
                 Return New LongType(CType(Row(CompanyDAL.COL_NAME_DEFAULT_FOLLOWUP_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_DEFAULT_FOLLOWUP_DAYS, Value)
         End Set
@@ -344,7 +344,7 @@ Public Class Company
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0), FollowupdaysMax("")> _
-    Public Property MaxFollowupDays() As LongType
+    Public Property MaxFollowupDays As LongType
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_MAX_FOLLOWUP_DAYS) Is DBNull.Value Then
@@ -353,7 +353,7 @@ Public Class Company
                 Return New LongType(CType(Row(CompanyDAL.COL_NAME_MAX_FOLLOWUP_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_MAX_FOLLOWUP_DAYS, Value)
         End Set
@@ -361,7 +361,7 @@ Public Class Company
 
 
     <ValidStringLength("", Max:=1000)> _
-    Public Property LegalDisclaimer() As String
+    Public Property LegalDisclaimer As String
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_LEGAL_DISCLAIMER) Is DBNull.Value Then
@@ -370,14 +370,14 @@ Public Class Company
                 Return CType(Row(CompanyDAL.COL_NAME_LEGAL_DISCLAIMER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_LEGAL_DISCLAIMER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property SalutationId() As Guid
+    Public Property SalutationId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_SALUTATION_ID) Is DBNull.Value Then
@@ -386,14 +386,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_SALUTATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_SALUTATION_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_ADDRESS1) Is DBNull.Value Then
@@ -402,7 +402,7 @@ Public Class Company
                 Return CType(Row(AddressDAL.COL_NAME_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_ADDRESS1, Value)
         End Set
@@ -410,7 +410,7 @@ Public Class Company
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_ADDRESS2) Is DBNull.Value Then
@@ -419,7 +419,7 @@ Public Class Company
                 Return CType(Row(AddressDAL.COL_NAME_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_ADDRESS2, Value)
         End Set
@@ -427,7 +427,7 @@ Public Class Company
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_CITY) Is DBNull.Value Then
@@ -436,7 +436,7 @@ Public Class Company
                 Return CType(Row(AddressDAL.COL_NAME_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_CITY, Value)
         End Set
@@ -444,7 +444,7 @@ Public Class Company
 
 
 
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -453,14 +453,14 @@ Public Class Company
                 Return New Guid(CType(Row(AddressDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
 
     <PostalCodeChecker(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_POSTALCODEFORMAT_ERR)> _
-    Public Property PostalCode() As String
+    Public Property PostalCode As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_POSTAL_CODE) Is DBNull.Value Then
@@ -469,14 +469,14 @@ Public Class Company
                 Return CType(Row(AddressDAL.COL_NAME_POSTAL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_POSTAL_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -485,14 +485,14 @@ Public Class Company
                 Return New Guid(CType(Row(AddressDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AddressDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -501,14 +501,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyTypeId() As Guid
+    Public Property CompanyTypeId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_COMPANY_TYPE_ID) Is DBNull.Value Then
@@ -517,14 +517,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_COMPANY_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_COMPANY_TYPE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property UPR_USES_WP_Id() As Guid
+    Public Property UPR_USES_WP_Id As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_UPR_USES_WP_ID) Is DBNull.Value Then
@@ -533,7 +533,7 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_UPR_USES_WP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_UPR_USES_WP_ID, Value)
         End Set
@@ -541,7 +541,7 @@ Public Class Company
 
     '09/11/2006 - ALR - Added for auto closing claims
     <ValueMandatory(""), ValidNumericRange("", Min:=0)> _
-    Public Property DaysToCloseClaim() As LongType
+    Public Property DaysToCloseClaim As LongType
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_DAYS_TO_CLOSE_CLAIM) Is DBNull.Value Then
@@ -550,14 +550,14 @@ Public Class Company
                 Return New LongType(CType(Row(CompanyDAL.COL_NAME_DAYS_TO_CLOSE_CLAIM), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_DAYS_TO_CLOSE_CLAIM, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property MasterClaimProcessingId() As Guid
+    Public Property MasterClaimProcessingId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_MASTER_CLAIM_PROCESSING_ID) Is DBNull.Value Then
@@ -566,7 +566,7 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_MASTER_CLAIM_PROCESSING_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_MASTER_CLAIM_PROCESSING_ID, Value)
         End Set
@@ -574,7 +574,7 @@ Public Class Company
 
     '11/01/2006 - AA - Added for WR:769958_Support claim # offset
     <ValueMandatory(""), ValidNumericRange("", Min:=0), ValidOffsetMax("")> _
-    Public Property ClaimNumberOffset() As LongType
+    Public Property ClaimNumberOffset As LongType
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_CLAIM_NUMBER_OFFSET) Is DBNull.Value Then
@@ -583,14 +583,14 @@ Public Class Company
                 Return New LongType(CType(Row(CompanyDAL.COL_NAME_CLAIM_NUMBER_OFFSET), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_CLAIM_NUMBER_OFFSET, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property EUMemberId() As Guid
+    Public Property EUMemberId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_EU_MEMBER_ID) Is DBNull.Value Then
@@ -599,14 +599,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_EU_MEMBER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_EU_MEMBER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property UseZipDistrictId() As Guid
+    Public Property UseZipDistrictId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_USE_ZIP_DISTRICTS_ID) Is DBNull.Value Then
@@ -615,13 +615,13 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_USE_ZIP_DISTRICTS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_USE_ZIP_DISTRICTS_ID, Value)
         End Set
     End Property
 
-    Public Property AcctCompanyId() As Guid
+    Public Property AcctCompanyId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_ACCT_COMPANY_ID) Is DBNull.Value Then
@@ -630,14 +630,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_ACCT_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_ACCT_COMPANY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AuthDetailRqrdId() As Guid
+    Public Property AuthDetailRqrdId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_AUTH_DETAIL_RQRD_ID) Is DBNull.Value Then
@@ -646,14 +646,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_AUTH_DETAIL_RQRD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_AUTH_DETAIL_RQRD_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AddlDACId() As Guid
+    Public Property AddlDACId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_ADDL_DAC_ID) Is DBNull.Value Then
@@ -662,14 +662,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_ADDL_DAC_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_ADDL_DAC_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AutoProcessFileId() As Guid
+    Public Property AutoProcessFileId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_AUTO_PROCESS_FILE_ID) Is DBNull.Value Then
@@ -678,14 +678,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_AUTO_PROCESS_FILE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_AUTO_PROCESS_FILE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property UseRecoveriesId() As Guid
+    Public Property UseRecoveriesId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_USE_RECOVERIES_ID) Is DBNull.Value Then
@@ -694,14 +694,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_USE_RECOVERIES_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_USE_RECOVERIES_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServiceOrdersByDealerId() As Guid
+    Public Property ServiceOrdersByDealerId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_SERVICE_ORDERS_BY_DEALER_ID) Is DBNull.Value Then
@@ -710,14 +710,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_SERVICE_ORDERS_BY_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_SERVICE_ORDERS_BY_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property RequireItemDescriptionId() As Guid
+    Public Property RequireItemDescriptionId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_REQUIRE_ITEM_DESCRIPTION_ID) Is DBNull.Value Then
@@ -726,14 +726,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_REQUIRE_ITEM_DESCRIPTION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_REQUIRE_ITEM_DESCRIPTION_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property RequiresAgentCodeId() As Guid
+    Public Property RequiresAgentCodeId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_REQUIRE_AGENT_CODE_ID) Is DBNull.Value Then
@@ -742,14 +742,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_REQUIRE_AGENT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_REQUIRE_AGENT_CODE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClipMethodId() As Guid
+    Public Property ClipMethodId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_CLIP_METHOD_ID) Is DBNull.Value Then
@@ -758,14 +758,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_CLIP_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_CLIP_METHOD_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ReportCommissionTaxId() As Guid
+    Public Property ReportCommissionTaxId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_REPORT_COMMISSION_TAX_ID) Is DBNull.Value Then
@@ -774,13 +774,13 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_REPORT_COMMISSION_TAX_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_REPORT_COMMISSION_TAX_ID, Value)
         End Set
     End Property
 
-    Public Property TimeZoneNameId() As Guid
+    Public Property TimeZoneNameId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_TIME_ZONE_NAME_ID) Is DBNull.Value Then
@@ -789,14 +789,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_TIME_ZONE_NAME_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_TIME_ZONE_NAME_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ComputeTaxBasedId() As Guid
+    Public Property ComputeTaxBasedId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_COMPUTE_TAX_BASED_ID) Is DBNull.Value Then
@@ -805,13 +805,13 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_COMPUTE_TAX_BASED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_COMPUTE_TAX_BASED_ID, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-    Public Property BillingByDealerId() As Guid
+    Public Property BillingByDealerId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_BILLING_BY_DEALER_ID) Is DBNull.Value Then
@@ -820,14 +820,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_BILLING_BY_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_BILLING_BY_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property PoliceRptForLossCovId() As Guid
+    Public Property PoliceRptForLossCovId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_POLICE_RPT_FOR_LOSS_COV_ID) Is DBNull.Value Then
@@ -836,7 +836,7 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_POLICE_RPT_FOR_LOSS_COV_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_POLICE_RPT_FOR_LOSS_COV_ID, Value)
         End Set
@@ -858,7 +858,7 @@ Public Class Company
     '    End Set
     'End Property
 
-    Public Property FtpSiteId() As Guid
+    Public Property FtpSiteId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_FTP_SITE_ID) Is DBNull.Value Then
@@ -867,14 +867,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_FTP_SITE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_FTP_SITE_ID, Value)
         End Set
     End Property
     'REQ-910 new flag
     <ValueMandatory("")> _
-    Public Property ReqCustomerLegalInfoId() As Guid
+    Public Property ReqCustomerLegalInfoId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_REQ_CUSTOMER_LEGAL_INFO_ID) Is DBNull.Value Then
@@ -883,13 +883,13 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_REQ_CUSTOMER_LEGAL_INFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_REQ_CUSTOMER_LEGAL_INFO_ID, Value)
         End Set
     End Property
 
-    Public Property UseTransferOfOwnership() As Guid
+    Public Property UseTransferOfOwnership As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_USE_TRANSFER_OF_OWNERSHIP) Is DBNull.Value Then
@@ -898,14 +898,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_USE_TRANSFER_OF_OWNERSHIP), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_USE_TRANSFER_OF_OWNERSHIP, Value)
         End Set
     End Property
 
     <ValueMandatory(""), CheckDoublicatePREFIX("")> _
-    Public Property UniqueCertificateNumbersId() As Guid
+    Public Property UniqueCertificateNumbersId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_UNIQUE_CERTIFICATE_NUMBERS_ID) Is DBNull.Value Then
@@ -914,14 +914,14 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_UNIQUE_CERTIFICATE_NUMBERS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_UNIQUE_CERTIFICATE_NUMBERS_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Override_WarrantyPrice_Check() As Guid
+    Public Property Override_WarrantyPrice_Check As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_OVERRIDE_WARRANTYPRICE_CHECK) Is DBNull.Value Then
@@ -930,13 +930,13 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_OVERRIDE_WARRANTYPRICE_CHECK), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_OVERRIDE_WARRANTYPRICE_CHECK, Value)
         End Set
     End Property
 
-    Public Property UniqueCertEffectiveDate() As DateType
+    Public Property UniqueCertEffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_UNIQUE_CERT_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -945,13 +945,13 @@ Public Class Company
                 Return New DateType(CType(Row(CompanyDAL.COL_NAME_UNIQUE_CERT_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_UNIQUE_CERT_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
-    Public Property CertnumlookupbyId() As Guid
+    Public Property CertnumlookupbyId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_NAME_CERTNUMLOOKUPBY_ID) Is DBNull.Value Then
@@ -960,13 +960,13 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_NAME_CERTNUMLOOKUPBY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_NAME_CERTNUMLOOKUPBY_ID, Value)
         End Set
     End Property
 
-    Public Property UsePreInvoiceProcessId() As Guid
+    Public Property UsePreInvoiceProcessId As Guid
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_USE_PRE_INVOICE_PROCESS_ID) Is DBNull.Value Then
@@ -975,13 +975,13 @@ Public Class Company
                 Return New Guid(CType(Row(CompanyDAL.COL_USE_PRE_INVOICE_PROCESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_USE_PRE_INVOICE_PROCESS_ID, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0)> _
-    Public Property SCPreInvWaitingPeriod() As LongType
+    Public Property SCPreInvWaitingPeriod As LongType
         Get
             CheckDeleted()
             If Row(CompanyDAL.COL_SC_PRE_INV_WAITING_PERIOD) Is DBNull.Value Then
@@ -990,7 +990,7 @@ Public Class Company
                 Return New LongType(CType(Row(CompanyDAL.COL_SC_PRE_INV_WAITING_PERIOD), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CompanyDAL.COL_SC_PRE_INV_WAITING_PERIOD, Value)
         End Set
@@ -1004,7 +1004,7 @@ Public Class Company
 
 #Region "Public Members"
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsFamilyDirty()
         End Get

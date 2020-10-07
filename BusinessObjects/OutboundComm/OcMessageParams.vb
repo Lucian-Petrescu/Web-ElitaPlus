@@ -87,7 +87,7 @@
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(OcMessageParamsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -98,7 +98,7 @@
     End Property
 
     <ValueMandatory("")>
-    Public Property OcMessageId() As Guid
+    Public Property OcMessageId As Guid
         Get
             CheckDeleted()
             If Row(OcMessageParamsDAL.COL_NAME_OC_MESSAGE_ID) Is DBNull.Value Then
@@ -107,7 +107,7 @@
                 Return New Guid(CType(Row(OcMessageParamsDAL.COL_NAME_OC_MESSAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(OcMessageParamsDAL.COL_NAME_OC_MESSAGE_ID, Value)
         End Set
@@ -115,7 +115,7 @@
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=600)>
-    Public Property ParamName() As String
+    Public Property ParamName As String
         Get
             CheckDeleted()
             If Row(OcMessageParamsDAL.COL_NAME_PARAM_NAME) Is DBNull.Value Then
@@ -124,7 +124,7 @@
                 Return CType(Row(OcMessageParamsDAL.COL_NAME_PARAM_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageParamsDAL.COL_NAME_PARAM_NAME, Value)
         End Set
@@ -132,7 +132,7 @@
 
 
     <ValidStringLength("", Max:=400)>
-    Public Property ParamValue() As String
+    Public Property ParamValue As String
         Get
             CheckDeleted()
             If Row(OcMessageParamsDAL.COL_NAME_PARAM_VALUE) Is DBNull.Value Then
@@ -141,7 +141,7 @@
                 Return CType(Row(OcMessageParamsDAL.COL_NAME_PARAM_VALUE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcMessageParamsDAL.COL_NAME_PARAM_VALUE, Value)
         End Set

@@ -156,8 +156,8 @@ Namespace Reports
             'User Selected Range Option
 
             ' Begin Date Missing
-            If BeginDate.Text.Equals(String.Empty) Or BeginDate.Text Is Nothing Then
-                If Not (EndDate.Text.Equals(String.Empty) Or EndDate.Text Is Nothing) Then
+            If BeginDate.Text.Equals(String.Empty) OrElse BeginDate.Text Is Nothing Then
+                If Not (EndDate.Text.Equals(String.Empty) OrElse EndDate.Text Is Nothing) Then
                     Try
                         Throw New GUIException(Message.MSG_INVALID_BEGIN_END_DATES_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_DATE_REQUIRED_ERR)
                     Catch ex As Exception
@@ -168,8 +168,8 @@ Namespace Reports
             End If
 
             ' End Date Missing
-            If EndDate.Text.Equals(String.Empty) Or EndDate.Text Is Nothing Then
-                If Not (BeginDate.Text.Equals(String.Empty) Or BeginDate.Text Is Nothing) Then
+            If EndDate.Text.Equals(String.Empty) OrElse EndDate.Text Is Nothing Then
+                If Not (BeginDate.Text.Equals(String.Empty) OrElse BeginDate.Text Is Nothing) Then
                     Try
                         Throw New GUIException(Message.MSG_INVALID_BEGIN_END_DATES_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_END_DATE_REQUIRED_ERR)
                     Catch ex As Exception
@@ -179,7 +179,7 @@ Namespace Reports
                 End If
             End If
 
-            If Not (BeginDate.Text.Equals(String.Empty) Or BeginDate.Text Is Nothing) And Not (EndDate.Text.Equals(String.Empty) Or EndDate.Text Is Nothing) Then
+            If Not (BeginDate.Text.Equals(String.Empty) OrElse BeginDate.Text Is Nothing) AndAlso Not (EndDate.Text.Equals(String.Empty) OrElse EndDate.Text Is Nothing) Then
                 ' Both Dates are present
                 oStartDateTime = DateHelper.GetDateValue(BeginDate.Text)
                 oEndDateTime = DateHelper.GetDateValue(EndDate.Text)

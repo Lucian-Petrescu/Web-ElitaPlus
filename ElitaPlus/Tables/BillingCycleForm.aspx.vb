@@ -508,8 +508,8 @@ Namespace Tables
         Public Sub PopulateDateFields()
             Dim today As System.DateTime
             today = DateTime.Now
-            Dim StartDay As Integer = If(moStartDayText.Text = String.Empty Or moStartDayText.Text Is Nothing, 0, CInt(moStartDayText.Text))
-            Dim EndDay As Integer = If(moEndDayText.Text = String.Empty Or moEndDayText.Text Is Nothing, 0, If(CInt(moEndDayText.Text) = 31, 0, CInt(moEndDayText.Text)))
+            Dim StartDay As Integer = If(moStartDayText.Text = String.Empty OrElse moStartDayText.Text Is Nothing, 0, CInt(moStartDayText.Text))
+            Dim EndDay As Integer = If(moEndDayText.Text = String.Empty OrElse moEndDayText.Text Is Nothing, 0, If(CInt(moEndDayText.Text) = 31, 0, CInt(moEndDayText.Text)))
             Dim Boffsetdays As Integer
             If moBillingRunDateOffsetDaysText.Text = String.Empty Then
                 Boffsetdays = 0
@@ -591,7 +591,7 @@ Namespace Tables
                 PopulateBOsFromForm()
 
                 Dim errors() As ValidationError = {New ValidationError("Billing Cycle Code or Start Day or End Day is required", GetType(BillingCycle), Nothing, "DealerID", Nothing)}
-                If ((State.moBillingCycle.BillingCycleCode = Nothing) Or (State.moBillingCycle.StartDay = Nothing) Or (State.moBillingCycle.EndDay = Nothing)) Then
+                If ((State.moBillingCycle.BillingCycleCode = Nothing) OrElse (State.moBillingCycle.StartDay = Nothing) OrElse (State.moBillingCycle.EndDay = Nothing)) Then
                     Throw New BOValidationException(errors, GetType(BillingCycle).FullName)
                 End If
 

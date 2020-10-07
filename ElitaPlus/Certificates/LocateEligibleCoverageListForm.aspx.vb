@@ -185,7 +185,7 @@ Namespace Certificates
         End Sub
 
         Private Sub DisableControls()
-            If cboRiskType.Items.Count = NO_RECORD_FOUND_DEFAULT_BLANK And cboCoverageType.Items.Count = NO_RECORD_FOUND_DEFAULT_BLANK Then
+            If cboRiskType.Items.Count = NO_RECORD_FOUND_DEFAULT_BLANK AndAlso cboCoverageType.Items.Count = NO_RECORD_FOUND_DEFAULT_BLANK Then
                 HandleGridMessages(NO_RECORD_FOUND, True)
                 ControlMgr.SetVisibleControl(Me, SearchResultPanel, False)
                 ControlMgr.SetVisibleControl(Me, btnContinue, False)
@@ -393,12 +393,12 @@ Namespace Certificates
             End If
 
             If RiskTypeTR.Visible Then
-                If cboRiskType.Text.Equals(String.Empty) Or cboRiskType.Text.Equals(Guid.Empty.ToString) Then
+                If cboRiskType.Text.Equals(String.Empty) OrElse cboRiskType.Text.Equals(Guid.Empty.ToString) Then
                     errMsg.Add(RiskTypeLabel.Text & " : " & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
                     blnValid = False
                 End If
             End If
-            If cboCoverageType.Text.Equals(String.Empty) Or cboCoverageType.Text.Equals(Guid.Empty.ToString) Then
+            If cboCoverageType.Text.Equals(String.Empty) OrElse cboCoverageType.Text.Equals(Guid.Empty.ToString) Then
                 errMsg.Add(CoverageTypeLabel.Text & " : " & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
                 blnValid = False
             End If

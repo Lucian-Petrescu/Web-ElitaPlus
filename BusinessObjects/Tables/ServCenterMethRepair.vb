@@ -90,7 +90,7 @@ Public Class ServCenterMethRepair
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ServCenterMethRepairDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ServCenterMethRepair
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServCenterMorId() As Guid
+    Public Property ServCenterMorId As Guid
         Get
             CheckDeleted()
             If row(ServCenterMethRepairDAL.COL_NAME_SERV_CENTER_MOR_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ServCenterMethRepair
                 Return New Guid(CType(row(ServCenterMethRepairDAL.COL_NAME_SERV_CENTER_MOR_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServCenterMethRepairDAL.COL_NAME_SERV_CENTER_MOR_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ServCenterMethRepair
 
 
     <ValueMandatory("")>
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If row(ServCenterMethRepairDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -127,13 +127,13 @@ Public Class ServCenterMethRepair
                 Return New Guid(CType(row(ServCenterMethRepairDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServCenterMethRepairDAL.COL_NAME_SERVICE_CENTER_ID, value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0, Max:=999), ValueMandatory("")>
-    Public Property ServiceWarrantyDays() As LongType
+    Public Property ServiceWarrantyDays As LongType
         Get
             CheckDeleted()
             If Row(ServCenterMethRepairDAL.ColNameServCenterServiceWarrantyDays) Is DBNull.Value Then
@@ -142,7 +142,7 @@ Public Class ServCenterMethRepair
                 Return New LongType(CType(Row(ServCenterMethRepairDAL.ColNameServCenterServiceWarrantyDays), Long))
             End If
         End Get
-        Set(ByVal value As LongType)
+        Set
             CheckDeleted()
             SetValue(ServCenterMethRepairDAL.ColNameServCenterServiceWarrantyDays, value)
         End Set

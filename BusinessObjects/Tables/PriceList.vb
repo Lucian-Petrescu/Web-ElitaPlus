@@ -92,7 +92,7 @@ Public Class PriceList
 
 #Region "Properties"
 
-    Public Overrides ReadOnly Property IsNew() As Boolean Implements IExpirable.IsNew
+    Public Overrides ReadOnly Property IsNew As Boolean Implements IExpirable.IsNew
         Get
             Return MyBase.IsNew
         End Get
@@ -100,7 +100,7 @@ Public Class PriceList
 
     'Key Property
     <ValidateDuplicatePriceListDetail(""), ValidateOverlappingDates(""), ValidateOverlappingPrices("")>
-    Public ReadOnly Property Id() As Guid Implements IExpirable.ID
+    Public ReadOnly Property Id As Guid Implements IExpirable.ID
         Get
             If Row(PriceListDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -111,7 +111,7 @@ Public Class PriceList
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=10), ValidateDuplicateCode("")>
-    Public Property Code() As String Implements IExpirable.Code
+    Public Property Code As String Implements IExpirable.Code
         Get
             CheckDeleted()
             If Row(PriceListDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -120,7 +120,7 @@ Public Class PriceList
                 Return CType(Row(PriceListDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDAL.COL_NAME_CODE, Value)
         End Set
@@ -128,7 +128,7 @@ Public Class PriceList
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(PriceListDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -137,7 +137,7 @@ Public Class PriceList
                 Return CType(Row(PriceListDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PriceListDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -145,7 +145,7 @@ Public Class PriceList
 
 
     <ValueMandatory("")>
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(PriceListDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -154,14 +154,14 @@ Public Class PriceList
                 Return New Guid(CType(Row(PriceListDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceListDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property DefaultCurrencyId() As Guid
+    Public Property DefaultCurrencyId As Guid
         Get
             CheckDeleted()
             If Row(PriceListDAL.COL_NAME_DEFAULT_CURRENCY_ID) Is DBNull.Value Then
@@ -170,14 +170,14 @@ Public Class PriceList
                 Return New Guid(CType(Row(PriceListDAL.COL_NAME_DEFAULT_CURRENCY_ID), Byte()))
             End If
         End Get
-        Set(value As Guid)
+        Set
             SetValue(PriceListDAL.COL_NAME_DEFAULT_CURRENCY_ID, value)
         End Set
     End Property
 
 
     <ValueMandatory("")>
-    Public Property ManageInventoryId() As Guid
+    Public Property ManageInventoryId As Guid
         Get
             CheckDeleted()
             If Row(PriceListDAL.COL_NAME_MANAGE_INVENTORY_ID) Is DBNull.Value Then
@@ -186,14 +186,14 @@ Public Class PriceList
                 Return New Guid(CType(Row(PriceListDAL.COL_NAME_MANAGE_INVENTORY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PriceListDAL.COL_NAME_MANAGE_INVENTORY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EFFECTIVE)>
-    Public Property Effective() As DateTimeType Implements IExpirable.Effective
+    Public Property Effective As DateTimeType Implements IExpirable.Effective
         Get
             CheckDeleted()
             If Row(PriceListDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -202,7 +202,7 @@ Public Class PriceList
                 Return New DateTimeType(CType(Row(PriceListDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(PriceListDAL.COL_NAME_EFFECTIVE, Value)
         End Set
@@ -210,7 +210,7 @@ Public Class PriceList
 
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EXPIRATION), EffectiveExpirationDateValidation(Codes.EXPIRATION)>
-    Public Property Expiration() As DateTimeType Implements IExpirable.Expiration
+    Public Property Expiration As DateTimeType Implements IExpirable.Expiration
         Get
             CheckDeleted()
             If Row(PriceListDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -219,7 +219,7 @@ Public Class PriceList
                 Return New DateTimeType(CType(Row(PriceListDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(PriceListDAL.COL_NAME_EXPIRATION, Value)
         End Set
@@ -231,7 +231,7 @@ Public Class PriceList
         Get
             Return Guid.Empty
         End Get
-        Set(ByVal value As Guid)
+        Set
             'do nothing
         End Set
     End Property
@@ -323,7 +323,7 @@ Public Class PriceList
         End Try
     End Function
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
@@ -644,7 +644,7 @@ Public Class PriceList
 
 
 #Region "Price List Service Center Views"
-    Public ReadOnly Property ServiceCenterChildren() As ServiceCenter.ServiceCenterDetailView
+    Public ReadOnly Property ServiceCenterChildren As ServiceCenter.ServiceCenterDetailView
         Get
             Return New ServiceCenter.ServiceCenterDetailView(Me)
         End Get
@@ -716,7 +716,7 @@ Public Class PriceList
     End Function
 
 #Region "Price List - Price List Detail Views"
-    Public ReadOnly Property PriceListDetailChildren() As PriceListDetail.PriceListDetailChildern
+    Public ReadOnly Property PriceListDetailChildren As PriceListDetail.PriceListDetailChildern
         Get
             Return New PriceListDetail.PriceListDetailChildern(Me)
         End Get

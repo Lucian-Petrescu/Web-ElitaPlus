@@ -90,7 +90,7 @@ Public Class Notification
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(NotificationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class Notification
     End Property
 
     <ValueMandatory("")> _
-    Public Property NotificationTypeId() As Guid
+    Public Property NotificationTypeId As Guid
         Get
             CheckDeleted()
             If row(NotificationDAL.COL_NAME_NOTIFICATION_TYPE_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class Notification
                 Return New Guid(CType(row(NotificationDAL.COL_NAME_NOTIFICATION_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(NotificationDAL.COL_NAME_NOTIFICATION_TYPE_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class Notification
 
 
     <ValueMandatory("")> _
-    Public Property NotificationBeginDate() As DateTimeType
+    Public Property NotificationBeginDate As DateTimeType
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_NOTIFICATION_BEGIN_DATE) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class Notification
                 Return New DateTimeType(CType(Row(NotificationDAL.COL_NAME_NOTIFICATION_BEGIN_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(NotificationDAL.COL_NAME_NOTIFICATION_BEGIN_DATE, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class Notification
 
 
     <ValueMandatory("")> _
-    Public Property NotificationEndDate() As DateTimeType
+    Public Property NotificationEndDate As DateTimeType
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_NOTIFICATION_END_DATE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class Notification
                 Return New DateTimeType(CType(Row(NotificationDAL.COL_NAME_NOTIFICATION_END_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(NotificationDAL.COL_NAME_NOTIFICATION_END_DATE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class Notification
 
 
     <ValueMandatory("")> _
-    Public Property AudianceTypeId() As Guid
+    Public Property AudianceTypeId As Guid
         Get
             CheckDeleted()
             If row(NotificationDAL.COL_NAME_AUDIANCE_TYPE_ID) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class Notification
                 Return New Guid(CType(row(NotificationDAL.COL_NAME_AUDIANCE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(NotificationDAL.COL_NAME_AUDIANCE_TYPE_ID, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class Notification
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)> _
-    Public Property NotificationName() As String
+    Public Property NotificationName As String
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_NOTIFICATION_NAME) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class Notification
                 Return CType(Row(NotificationDAL.COL_NAME_NOTIFICATION_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(NotificationDAL.COL_NAME_NOTIFICATION_NAME, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class Notification
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1000)> _
-    Public Property NotificationDetails() As String
+    Public Property NotificationDetails As String
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_NOTIFICATION_DETAILS) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class Notification
                 Return CType(Row(NotificationDAL.COL_NAME_NOTIFICATION_DETAILS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(NotificationDAL.COL_NAME_NOTIFICATION_DETAILS, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class Notification
 
 
     <ValueMandatory("")> _
-    Public Property OutageBeginDate() As DateTimeType
+    Public Property OutageBeginDate As DateTimeType
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_OUTAGE_BEGIN_DATE) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class Notification
                 Return New DateTimeType(CType(Row(NotificationDAL.COL_NAME_OUTAGE_BEGIN_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(NotificationDAL.COL_NAME_OUTAGE_BEGIN_DATE, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class Notification
 
 
     <ValueMandatory("")> _
-    Public Property OutageEndDate() As DateTimeType
+    Public Property OutageEndDate As DateTimeType
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_OUTAGE_END_DATE) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class Notification
                 Return New DateTimeType(CType(Row(NotificationDAL.COL_NAME_OUTAGE_END_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(NotificationDAL.COL_NAME_OUTAGE_END_DATE, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class Notification
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property ContactInfo() As String
+    Public Property ContactInfo As String
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_CONTACT_INFO) Is DBNull.Value Then
@@ -246,13 +246,13 @@ Public Class Notification
                 Return CType(Row(NotificationDAL.COL_NAME_CONTACT_INFO), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(NotificationDAL.COL_NAME_CONTACT_INFO, Value)
         End Set
     End Property
 
-    Public ReadOnly Property SerialNo() As LongType
+    Public ReadOnly Property SerialNo As LongType
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_SERIAL_NO) Is DBNull.Value Then
@@ -264,7 +264,7 @@ Public Class Notification
     End Property
 
     <ValidStringLength("", Max:=1)> _
-    Public Property Enabled() As String
+    Public Property Enabled As String
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_ENABLED) Is DBNull.Value Then
@@ -273,7 +273,7 @@ Public Class Notification
                 Return CType(Row(NotificationDAL.COL_NAME_ENABLED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(NotificationDAL.COL_NAME_ENABLED, Value)
         End Set

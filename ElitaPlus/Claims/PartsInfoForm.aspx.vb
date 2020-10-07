@@ -512,7 +512,7 @@ Partial Class PartsInfoForm
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                 PopulateControlFromBOProperty(e.Item.Cells(ID_COL), dvRow(PartsInfo.PartsInfoDV.COL_NAME_PARTS_INFO_ID))
                 PopulateControlFromBOProperty(e.Item.Cells(DESCRIPTION_COL), dvRow(PartsInfo.PartsInfoDV.COL_NAME_PARTS_DESCRIPTION))

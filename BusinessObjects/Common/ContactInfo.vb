@@ -4,7 +4,7 @@ Public Class ContactInfo
     Inherits BusinessObjectBase
 
     Public Interface IContactInfoUser
-        Property ContactInfoId() As Guid
+        Property ContactInfoId As Guid
     End Interface
 
 #Region "Private Attributes"
@@ -140,7 +140,7 @@ Public Class ContactInfo
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ContactInfoDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -151,7 +151,7 @@ Public Class ContactInfo
     End Property
 
     <ValueMandatory("")> _
-    Public Property AddressTypeId() As Guid
+    Public Property AddressTypeId As Guid
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_ADDRESS_TYPE_ID) Is DBNull.Value Then
@@ -160,7 +160,7 @@ Public Class ContactInfo
                 Return New Guid(CType(Row(ContactInfoDAL.COL_NAME_ADDRESS_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ContactInfoDAL.COL_NAME_ADDRESS_TYPE_ID, Value)
         End Set
@@ -168,7 +168,7 @@ Public Class ContactInfo
 
 
     <ValueMandatory("")> _
-    Public Property AddressId() As Guid
+    Public Property AddressId As Guid
         Get
             CheckDeleted()
             If row(ContactInfoDAL.COL_NAME_ADDRESS_ID) Is DBNull.Value Then
@@ -177,7 +177,7 @@ Public Class ContactInfo
                 Return New Guid(CType(row(ContactInfoDAL.COL_NAME_ADDRESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ContactInfoDAL.COL_NAME_ADDRESS_ID, Value)
         End Set
@@ -185,7 +185,7 @@ Public Class ContactInfo
 
 
     <RequiredFieldBySetting("", Nothing, "[SALU]")> _
-    Public Property SalutationId() As Guid
+    Public Property SalutationId As Guid
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_SALUTATION_ID) Is DBNull.Value Then
@@ -194,7 +194,7 @@ Public Class ContactInfo
                 Return New Guid(CType(Row(ContactInfoDAL.COL_NAME_SALUTATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ContactInfoDAL.COL_NAME_SALUTATION_ID, Value)
         End Set
@@ -202,7 +202,7 @@ Public Class ContactInfo
 
 
     <ValidStringLength("", Max:=50), RequiredFieldBySetting("", Nothing, "[NAME]")> _
-    Public Property Name() As String
+    Public Property Name As String
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_NAME) Is DBNull.Value Then
@@ -211,7 +211,7 @@ Public Class ContactInfo
                 Return CType(Row(ContactInfoDAL.COL_NAME_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ContactInfoDAL.COL_NAME_NAME, Value)
         End Set
@@ -219,7 +219,7 @@ Public Class ContactInfo
 
 
     <ValidStringLength("", Max:=20), RequiredFieldBySetting("", Nothing, "[HPHONE]")> _
-    Public Property HomePhone() As String
+    Public Property HomePhone As String
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_HOME_PHONE) Is DBNull.Value Then
@@ -228,7 +228,7 @@ Public Class ContactInfo
                 Return CType(Row(ContactInfoDAL.COL_NAME_HOME_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ContactInfoDAL.COL_NAME_HOME_PHONE, Value)
         End Set
@@ -236,7 +236,7 @@ Public Class ContactInfo
 
 
     <ValidStringLength("", Max:=20), RequiredFieldBySetting("", Nothing, "[WPHONE]")> _
-    Public Property WorkPhone() As String
+    Public Property WorkPhone As String
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_WORK_PHONE) Is DBNull.Value Then
@@ -245,7 +245,7 @@ Public Class ContactInfo
                 Return CType(Row(ContactInfoDAL.COL_NAME_WORK_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ContactInfoDAL.COL_NAME_WORK_PHONE, Value)
         End Set
@@ -253,7 +253,7 @@ Public Class ContactInfo
 
 
     <ValidStringLength("", Max:=50), RequiredFieldBySetting("", Nothing, "[EMAIL]")> _
-    Public Property Email() As String
+    Public Property Email As String
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_EMAIL) Is DBNull.Value Then
@@ -262,7 +262,7 @@ Public Class ContactInfo
                 Return CType(Row(ContactInfoDAL.COL_NAME_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ContactInfoDAL.COL_NAME_EMAIL, Value)
         End Set
@@ -270,7 +270,7 @@ Public Class ContactInfo
 
 
     <ValidStringLength("", Max:=20), RequiredFieldBySetting("", Nothing, "[CPHONE]")> _
-    Public Property CellPhone() As String
+    Public Property CellPhone As String
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_CELL_PHONE) Is DBNull.Value Then
@@ -279,7 +279,7 @@ Public Class ContactInfo
                 Return CType(Row(ContactInfoDAL.COL_NAME_CELL_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ContactInfoDAL.COL_NAME_CELL_PHONE, Value)
         End Set
@@ -300,13 +300,13 @@ Public Class ContactInfo
         End Get
     End Property
 
-    Public ReadOnly Property Address() As Address
+    Public ReadOnly Property Address As Address
         Get
             Return Address(Dataset)
         End Get
     End Property
 
-    Public ReadOnly Property ContactInfoReqFields() As String
+    Public ReadOnly Property ContactInfoReqFields As String
         Get
             If _countryObject Is Nothing Then
                 If Not _address Is Nothing AndAlso Not _address.CountryId.Equals(Guid.Empty) Then
@@ -320,7 +320,7 @@ Public Class ContactInfo
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property Company() As String
+    Public Property Company As String
         Get
             CheckDeleted()
             If row(ContactInfoDAL.COL_NAME_COMPANY) Is DBNull.Value Then
@@ -329,7 +329,7 @@ Public Class ContactInfo
                 Return CType(row(ContactInfoDAL.COL_NAME_COMPANY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ContactInfoDAL.COL_NAME_COMPANY, Value)
         End Set
@@ -337,7 +337,7 @@ Public Class ContactInfo
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property JobTitle() As String
+    Public Property JobTitle As String
         Get
             CheckDeleted()
             If row(ContactInfoDAL.COL_NAME_JOB_TITLE) Is DBNull.Value Then
@@ -346,7 +346,7 @@ Public Class ContactInfo
                 Return CType(row(ContactInfoDAL.COL_NAME_JOB_TITLE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ContactInfoDAL.COL_NAME_JOB_TITLE, Value)
         End Set
@@ -354,7 +354,7 @@ Public Class ContactInfo
 
 
     <ValidStringLength("", Max:=25)> _
-    Public Property FirstName() As String
+    Public Property FirstName As String
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_FIRST_NAME) Is DBNull.Value Then
@@ -363,14 +363,14 @@ Public Class ContactInfo
                 Return CType(Row(ContactInfoDAL.COL_NAME_FIRST_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ContactInfoDAL.COL_NAME_FIRST_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=25)> _
-    Public Property LastName() As String
+    Public Property LastName As String
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_LAST_NAME) Is DBNull.Value Then
@@ -379,7 +379,7 @@ Public Class ContactInfo
                 Return CType(Row(ContactInfoDAL.COL_NAME_LAST_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ContactInfoDAL.COL_NAME_LAST_NAME, Value)
         End Set
@@ -424,19 +424,19 @@ Public Class ContactInfo
             _ItemName = ItemName
             _Required = Required
         End Sub
-        Public Property ItemName() As String
+        Public Property ItemName As String
             Get
                 Return _ItemName
             End Get
-            Set(ByVal Value As String)
+            Set
                 _ItemName = Value
             End Set
         End Property
-        Public Property Required() As Boolean
+        Public Property Required As Boolean
             Get
                 Return _Required
             End Get
-            Set(ByVal Value As Boolean)
+            Set
                 Required = Value
             End Set
         End Property
@@ -487,11 +487,11 @@ Public Class ContactInfo
         End Sub
 
         Private _propertyShortName As String = Nothing
-        Private Property propertyShortName() As String
+        Private Property propertyShortName As String
             Get
                 Return _propertyShortName
             End Get
-            Set(ByVal Value As String)
+            Set
                 _propertyShortName = Value
             End Set
         End Property

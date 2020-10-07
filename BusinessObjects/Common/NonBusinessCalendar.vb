@@ -120,7 +120,7 @@ Public Class NonbusinessCalendar
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(NonBusinessCalendarDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -131,7 +131,7 @@ Public Class NonbusinessCalendar
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(NonBusinessCalendarDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -140,7 +140,7 @@ Public Class NonbusinessCalendar
                 Return New Guid(CType(Row(NonBusinessCalendarDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(NonBusinessCalendarDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
@@ -148,7 +148,7 @@ Public Class NonbusinessCalendar
 
 
     <ValueMandatory("")> _
-    Public Property NonbusinessDate() As DateType
+    Public Property NonbusinessDate As DateType
         Get
             CheckDeleted()
             If Row(NonBusinessCalendarDAL.COL_NAME_NONBUSINESS_DATE) Is DBNull.Value Then
@@ -157,7 +157,7 @@ Public Class NonbusinessCalendar
                 Return New DateType(CType(Row(NonBusinessCalendarDAL.COL_NAME_NONBUSINESS_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(NonBusinessCalendarDAL.COL_NAME_NONBUSINESS_DATE, Value)
         End Set

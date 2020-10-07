@@ -109,7 +109,7 @@ Public Class IssueComment
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(IssueCommentDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -120,7 +120,7 @@ Public Class IssueComment
     End Property
 
     <ValueMandatory("")> _
-    Public Property IssueId() As Guid
+    Public Property IssueId As Guid
         Get
             CheckDeleted()
             If Row(IssueCommentDAL.COL_NAME_ISSUE_ID) Is DBNull.Value Then
@@ -129,14 +129,14 @@ Public Class IssueComment
                 Return New Guid(CType(Row(IssueCommentDAL.COL_NAME_ISSUE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(IssueCommentDAL.COL_NAME_ISSUE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), DuplicateNoteTypeValidator("")> _
-    Public Property IssueCommentTypeId() As Guid
+    Public Property IssueCommentTypeId As Guid
         Get
             CheckDeleted()
             If Row(IssueCommentDAL.COL_NAME_ISSUE_COMMENT_TYPE_ID) Is DBNull.Value Then
@@ -145,14 +145,14 @@ Public Class IssueComment
                 Return New Guid(CType(Row(IssueCommentDAL.COL_NAME_ISSUE_COMMENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(IssueCommentDAL.COL_NAME_ISSUE_COMMENT_TYPE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(IssueCommentDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -161,14 +161,14 @@ Public Class IssueComment
                 Return CType(Row(IssueCommentDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(IssueCommentDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=4000)> _
-    Public Property Text() As String
+    Public Property Text As String
         Get
             CheckDeleted()
             If Row(IssueCommentDAL.COL_NAME_TEXT) Is DBNull.Value Then
@@ -177,14 +177,14 @@ Public Class IssueComment
                 Return CType(Row(IssueCommentDAL.COL_NAME_TEXT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(IssueCommentDAL.COL_NAME_TEXT, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DisplayOnWeb() As Guid
+    Public Property DisplayOnWeb As Guid
         Get
             CheckDeleted()
             If Row(IssueCommentDAL.COL_NAME_DISPLAY_ON_WEB) Is DBNull.Value Then
@@ -193,7 +193,7 @@ Public Class IssueComment
                 Return New Guid(CType(Row(IssueCommentDAL.COL_NAME_DISPLAY_ON_WEB), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(IssueCommentDAL.COL_NAME_DISPLAY_ON_WEB, Value)
         End Set

@@ -133,7 +133,7 @@ Public Class DelayFactor
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(DelayFactorDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -144,7 +144,7 @@ Public Class DelayFactor
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(DelayFactorDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -153,14 +153,14 @@ Public Class DelayFactor
                 Return New Guid(CType(row(DelayFactorDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DelayFactorDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidDelayFactorPeriod("")> _
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(DelayFactorDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -169,14 +169,14 @@ Public Class DelayFactor
                 Return New DateType(CType(Row(DelayFactorDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DelayFactorDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If row(DelayFactorDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -185,14 +185,14 @@ Public Class DelayFactor
                 Return New DateType(CType(row(DelayFactorDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DelayFactorDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("LowNumberOfDays", MIN:=MIN_DAY, Max:=MAX_DAY, Message:=ERR_LOW_DAY_OUT_OF_BOUND), ValidDelayFactor("")> _
-    Public Property LowNumberOfDays() As LongType
+    Public Property LowNumberOfDays As LongType
         Get
             CheckDeleted()
             If Row(DelayFactorDAL.COL_NAME_LOW_NUMBER_OF_DAYS) Is DBNull.Value Then
@@ -201,14 +201,14 @@ Public Class DelayFactor
                 Return New LongType(CType(Row(DelayFactorDAL.COL_NAME_LOW_NUMBER_OF_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(DelayFactorDAL.COL_NAME_LOW_NUMBER_OF_DAYS, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", MIN:=MIN_DAY, Max:=MAX_DAY, Message:=ERR_HIGH_DAY_OUT_OF_BOUND)> _
-    Public Property HighNumberOfDays() As LongType
+    Public Property HighNumberOfDays As LongType
         Get
             CheckDeleted()
             If Row(DelayFactorDAL.COL_NAME_HIGH_NUMBER_OF_DAYS) Is DBNull.Value Then
@@ -217,14 +217,14 @@ Public Class DelayFactor
                 Return New LongType(CType(Row(DelayFactorDAL.COL_NAME_HIGH_NUMBER_OF_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(DelayFactorDAL.COL_NAME_HIGH_NUMBER_OF_DAYS, Value)
         End Set
     End Property
 
     <ValidNumericRange("", MIN:=MIN_FACTOR, Max:=MAX_FACTOR, Message:=ERR_DELAY_FACTOR_OUT_OF_BOUND), ValidDelayFactorPercent("")> _
-    Public Property Factor() As DecimalType
+    Public Property Factor As DecimalType
         Get
             CheckDeleted()
             If Row(DelayFactorDAL.COL_NAME_FACTOR) Is DBNull.Value Then
@@ -233,7 +233,7 @@ Public Class DelayFactor
                 Return New DecimalType(CType(Row(DelayFactorDAL.COL_NAME_FACTOR), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DelayFactorDAL.COL_NAME_FACTOR, Value)
         End Set

@@ -37,12 +37,12 @@ Public NotInheritable Class MultiAuthClaim
 #End Region
 
 #Region "Claim Authorization"
-    Public ReadOnly Property ClaimAuthorizationChildren() As ClaimAuthorizationList
+    Public ReadOnly Property ClaimAuthorizationChildren As ClaimAuthorizationList
         Get
             Return New ClaimAuthorizationList(Me)
         End Get
     End Property
-    Public ReadOnly Property NonVoidClaimAuthorizationList() As IEnumerable(Of ClaimAuthorization)
+    Public ReadOnly Property NonVoidClaimAuthorizationList As IEnumerable(Of ClaimAuthorization)
         Get
             Return ClaimAuthorizationChildren.Where(Function(item) Not item.ClaimAuthStatus = ClaimAuthorizationStatus.Void)
         End Get
@@ -67,22 +67,16 @@ Public NotInheritable Class MultiAuthClaim
 
 #End Region
 
-#Region "Instance Fields"
-    Private _repairDate As DateType
-    Private _invoiceProcessDate As DateType
-    Private _pickUpDate As DateType
-#End Region
-
 #Region "Properties"
 
     <ValidateContainsDeductible("")>
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             Return MyBase.Id
         End Get
     End Property
 
-    Public Overrides ReadOnly Property IsDaysLimitExceeded() As Boolean
+    Public Overrides ReadOnly Property IsDaysLimitExceeded As Boolean
         Get
             Dim flag = False
             If (Not IsNew) Then
@@ -106,7 +100,7 @@ Public NotInheritable Class MultiAuthClaim
             Return flag
         End Get
     End Property
-    Public Overrides ReadOnly Property IsMaxSvcWrtyClaimsReached() As Boolean
+    Public Overrides ReadOnly Property IsMaxSvcWrtyClaimsReached As Boolean
         Get
             Dim result As Boolean = False
             Dim claimdal As New ClaimDAL
@@ -152,13 +146,13 @@ Public NotInheritable Class MultiAuthClaim
         End Get
     End Property
 
-    Public ReadOnly Property HasMultipleServiceCenters() As Boolean
+    Public ReadOnly Property HasMultipleServiceCenters As Boolean
         Get
             Return Not EvaluateForSingleServiceCenter()
         End Get
     End Property
 
-    Public ReadOnly Property ReserveAmount() As DecimalType
+    Public ReadOnly Property ReserveAmount As DecimalType
         Get
             Dim dal As New ClaimDAL
             Return dal.GetClaimReserveAmount(Id)

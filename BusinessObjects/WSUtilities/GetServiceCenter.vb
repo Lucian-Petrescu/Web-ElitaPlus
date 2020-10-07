@@ -94,7 +94,7 @@ Public Class GetServiceCenter
 #Region "Properties"
 
     <ValueMandatory("")> _
-     Public Property ServiceCenterCode() As String
+     Public Property ServiceCenterCode As String
         Get
             If Row(DATA_COL_NAME_SERVICE_CENTER_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -102,13 +102,13 @@ Public Class GetServiceCenter
                 Return (CType(Row(DATA_COL_NAME_SERVICE_CENTER_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
-    Private ReadOnly Property CountryId() As Guid
+    Private ReadOnly Property CountryId As Guid
         Get
             Return _country_id
         End Get

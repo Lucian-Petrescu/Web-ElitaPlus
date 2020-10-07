@@ -32,7 +32,7 @@ Public Class UpdateSubscriberStatus
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -40,14 +40,14 @@ Public Class UpdateSubscriberStatus
                 Return CType(Row(DATA_COL_NAME_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CertificateNumber() As String
+    Public Property CertificateNumber As String
         Get
             If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -55,7 +55,7 @@ Public Class UpdateSubscriberStatus
                 Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
@@ -70,7 +70,7 @@ Public Class UpdateSubscriberStatus
                 Return CType(Row(DATA_COL_NAME_SUBSCRIBER_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_SUBSCRIBER_STATUS, Value)
         End Set
@@ -78,7 +78,7 @@ Public Class UpdateSubscriberStatus
 
 
     <ValueMandatory("")> _
-    Public Property StatusChangeDate() As DateType
+    Public Property StatusChangeDate As DateType
         Get
             If Row(DATA_COL_NAME_STATUS_CHANGE_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -86,7 +86,7 @@ Public Class UpdateSubscriberStatus
                 Return CType(Row(DATA_COL_NAME_STATUS_CHANGE_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_STATUS_CHANGE_DATE, Value)
         End Set

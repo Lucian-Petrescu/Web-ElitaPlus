@@ -234,13 +234,13 @@ Public Class ClaimFileManagementSearchForm
 
         Public ReadOnly Property FileValidationIsAvailable As Boolean
             Get
-                Return RecordsReceived > 0 And RecordsCounted > 0 And RecordsRejected > 0
+                Return RecordsReceived > 0 AndAlso RecordsCounted > 0 AndAlso RecordsRejected > 0
             End Get
         End Property
 
         Public ReadOnly Property FileReprocessingIsAvailable As Boolean
             Get
-                Return RecordsReceived > 0 And RecordsCounted > 0 And RecordsRejected > 0 And FileStatus = FileStateType.Success
+                Return RecordsReceived > 0 AndAlso RecordsCounted > 0 AndAlso RecordsRejected > 0 AndAlso FileStatus = FileStateType.Success
             End Get
         End Property
 

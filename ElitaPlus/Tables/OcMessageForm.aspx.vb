@@ -504,8 +504,8 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If dvRow IsNot Nothing And State.MessageParametersGrid_DV.Count > 0 Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso State.MessageParametersGrid_DV.Count > 0 Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         CType(e.Row.Cells(0).FindControl("lblParamName"), Label).Text = dvRow(OcMessageParams.MessageParamsDV.COL_PARAM_NAME).ToString
                         CType(e.Row.Cells(1).FindControl("lblParamValue"), Label).Text = dvRow(OcMessageParams.MessageParamsDV.COL_PARAM_VALUE).ToString
                     End If
@@ -684,9 +684,9 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If dvRow IsNot Nothing And State.MessageAttemptsGrid_DV.Count > 0 Then
+                If dvRow IsNot Nothing AndAlso State.MessageAttemptsGrid_DV.Count > 0 Then
 
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem OrElse itemType = ListItemType.EditItem Then
                         If (State.MessageAttemptsGrid_IsInEditMode = True AndAlso State.MessageAttemptsGrid_OcMessageAttemptId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(OcMessageAttempts.MessageAttemptsDV.COL_OC_MESSAGE_ATTEMPS_ID), Byte())))) Then
                             CType(e.Row.Cells(1).FindControl("btnSelect"), ImageButton).Visible = False
                             CType(e.Row.Cells(2).FindControl("txtRecipientAddress"), TextBox).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_RECIPIENT_ADDRESS).ToString
@@ -694,8 +694,7 @@ Namespace Tables
                             CType(e.Row.Cells(6).FindControl("lblStatus"), Label).Text = "In-Progress"
                         Else
                             If Not String.IsNullOrEmpty(dvRow(OcMessageAttempts.MessageAttemptsDV.COL_RECIPIENT_ADDRESS).ToString) Then
-                                If dvRow(OcMessageAttempts.MessageAttemptsDV.COL_PROCESS_STATUS_XCD).ToString.ToUpper() = "TASK_STATUS-C" Or
-                                   dvRow(OcMessageAttempts.MessageAttemptsDV.COL_PROCESS_STATUS_XCD).ToString.ToUpper() = "TASK_STATUS-F" Then
+                                If dvRow(OcMessageAttempts.MessageAttemptsDV.COL_PROCESS_STATUS_XCD).ToString.ToUpper() = "TASK_STATUS-C" OrElse dvRow(OcMessageAttempts.MessageAttemptsDV.COL_PROCESS_STATUS_XCD).ToString.ToUpper() = "TASK_STATUS-F" Then
                                     CType(e.Row.Cells(1).FindControl("btnSelect"), ImageButton).Visible = True
                                 Else
                                     CType(e.Row.Cells(1).FindControl("btnSelect"), ImageButton).Visible = False

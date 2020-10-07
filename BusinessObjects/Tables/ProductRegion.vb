@@ -90,7 +90,7 @@ Public Class ProductRegion
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ProductRegionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ProductRegion
     End Property
 
     <ValueMandatory("")> _
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If row(ProductRegionDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ProductRegion
                 Return New Guid(CType(row(ProductRegionDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductRegionDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ProductRegion
 
 
     <ValueMandatory("")> _
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If row(ProductRegionDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ProductRegion
                 Return New Guid(CType(row(ProductRegionDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductRegionDAL.COL_NAME_REGION_ID, Value)
         End Set

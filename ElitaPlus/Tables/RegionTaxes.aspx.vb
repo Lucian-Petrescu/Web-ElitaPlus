@@ -185,7 +185,7 @@ Partial Class RegionTaxes
                 AddLabelDecorations(State.MyBO)
             End If
 
-            If Not State.DealerDesc.IsNullOrEmpty(State.DealerDesc) And Not State.Dealer.IsNullOrEmpty(State.Dealer) Then
+            If Not State.DealerDesc.IsNullOrEmpty(State.DealerDesc) AndAlso Not State.Dealer.IsNullOrEmpty(State.Dealer) Then
                 Label10.Visible = True
                 Label11.Visible = True
                 lblDealer.Visible = True
@@ -251,7 +251,7 @@ Partial Class RegionTaxes
                     State.CompanyTypeXCD = filteredExtendedCountryType(0).ExtendedCode
                 End If
 
-                If objParam.RegionTaxID = Nothing Or objParam.RegionTaxID = Guid.Empty Then
+                If objParam.RegionTaxID = Nothing OrElse objParam.RegionTaxID = Guid.Empty Then
                     'new region tax, with regionid and taxtype id from countrytax form
                     State.MyBO = New RegionTax()
                     State.MyBO.RegionId = objParam.RegionID

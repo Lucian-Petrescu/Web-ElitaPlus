@@ -1534,7 +1534,7 @@ Namespace Tables
                 '  BindBoPropertiesToGridHeaders(oTolerance)
                 With State.MyBo
                     PopulateToleranceBOFromForm()
-                    bIsDirty = .IsDirty Or oComTolerance.IsDirty Or State.moIsAssocCommDirty
+                    bIsDirty = .IsDirty OrElse oComTolerance.IsDirty OrElse State.moIsAssocCommDirty
                     .Save()
                 End With
             Catch ex As Exception
@@ -1995,7 +1995,7 @@ Namespace Tables
                     End If
                 End If
                 If oAssocComm IsNot Nothing Then
-                    State.moIsAssocCommDirty = State.moIsAssocCommDirty Or oAssocComm.IsDirty
+                    State.moIsAssocCommDirty = State.moIsAssocCommDirty OrElse oAssocComm.IsDirty
                 End If
             Next
 

@@ -188,7 +188,7 @@ Namespace Certificates
         Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs)
             Try
                 PopulateBOsFromForm()
-                If State.MyBO.IsDirty And State.MyBO.DirtyColumns.Count > 1 Then
+                If State.MyBO.IsDirty AndAlso State.MyBO.DirtyColumns.Count > 1 Then
                     DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                     State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
@@ -486,7 +486,7 @@ Namespace Certificates
                 PopulateBOsFromForm()
                 If State.MyBO.IsDirty Then
                     If State.MyBO.DirtyColumns.Count = 1 Then
-                        If (State.InitialMaufacturer = State.MyBO.Manufacturer) And (State.MyBO.DirtyColumns.ContainsKey("MANUFACTURER")) Then
+                        If (State.InitialMaufacturer = State.MyBO.Manufacturer) AndAlso (State.MyBO.DirtyColumns.ContainsKey("MANUFACTURER")) Then
                             Exit Sub
                         End If
                     End If
@@ -528,7 +528,7 @@ Namespace Certificates
                 PopulateBOsFromForm()
                 If State.MyBO.IsDirty Then
                     If State.MyBO.DirtyColumns.Count = 1 Then
-                        If (State.InitialMaufacturer = State.MyBO.Manufacturer) And (State.MyBO.DirtyColumns.ContainsKey("MANUFACTURER")) Then
+                        If (State.InitialMaufacturer = State.MyBO.Manufacturer) AndAlso (State.MyBO.DirtyColumns.ContainsKey("MANUFACTURER")) Then
                             Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.boChanged)
                             NavController.Navigate(Me, "back", retObj)
                         End If

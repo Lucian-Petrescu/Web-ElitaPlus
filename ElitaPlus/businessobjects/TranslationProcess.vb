@@ -413,7 +413,7 @@ Public Class TranslationProcess
         '   If oPageControl.GetType.BaseType Is GetType(System.Web.UI.WebControls.ListControl) Then
 
         If oPageControl.GetType Is GetType(System.Web.UI.WebControls.CheckBoxList) _
- Or oPageControl.GetType Is GetType(System.Web.UI.WebControls.RadioButtonList) Then
+ OrElse oPageControl.GetType Is GetType(System.Web.UI.WebControls.RadioButtonList) Then
 
             TranslateSingleListControl(CType(oPageControl, ListControl))
         End If
@@ -442,7 +442,7 @@ Public Class TranslationProcess
         Next
 
         'do the translation
-        If (oTranslationItemArray IsNot Nothing And oTranslationItemArray.Items.Count > 0) Then
+        If (oTranslationItemArray IsNot Nothing AndAlso oTranslationItemArray.Items.Count > 0) Then
             TranslateList(oTranslationItemArray, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         End If
 
@@ -858,7 +858,7 @@ Public Class TranslationProcess
             'make sure you aren't adding the default literal control and that it has an id.
             sTypeName = oCell.Controls(nCount).GetType.Name
             If sTypeName <> GetType(System.Web.UI.LiteralControl).Name _
-            And oCell.Controls(nCount).ID <> String.Empty Then
+            AndAlso oCell.Controls(nCount).ID <> String.Empty Then
 
                 If mlstTranslatableGridControls.IndexOf(sTypeName) <> -1 Then
 

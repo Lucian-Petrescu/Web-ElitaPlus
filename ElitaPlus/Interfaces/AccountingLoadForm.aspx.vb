@@ -185,7 +185,7 @@ Partial Public Class AccountingLoadForm
 
         Try
 
-            If e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.Item Then
+            If e.Item.ItemType = ListItemType.AlternatingItem OrElse e.Item.ItemType = ListItemType.Item Then
 
                 dr = CType(e.Item.DataItem, System.Data.DataRowView).Row
 
@@ -676,8 +676,7 @@ Partial Public Class AccountingLoadForm
                                     boolSaveParent = True
                                 End If
                                 'Set the domestic transfer information
-                                If (_bi.SwiftCode IsNot Nothing AndAlso _bi.SwiftCode.Length > 0) Or _
-                                   (_bi.IbanNumber IsNot Nothing AndAlso _bi.IbanNumber.Length > 0) Then
+                                If (_bi.SwiftCode IsNot Nothing AndAlso _bi.SwiftCode.Length > 0) OrElse (_bi.IbanNumber IsNot Nothing AndAlso _bi.IbanNumber.Length > 0) Then
                                     _bi.DomesticTransfer = False
                                 Else
                                     _bi.DomesticTransfer = True

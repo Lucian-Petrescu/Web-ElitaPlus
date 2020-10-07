@@ -97,7 +97,7 @@ Public Class ClaimFulfillmentOrderDetail
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ClaimFulfillmentOrderDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -108,7 +108,7 @@ Public Class ClaimFulfillmentOrderDetail
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)>
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_CF_ORDER_CODE) Is DBNull.Value Then
@@ -117,14 +117,14 @@ Public Class ClaimFulfillmentOrderDetail
                 Return CType(Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_CF_ORDER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_CF_ORDER_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_CF_ORDER_DESCRIPTION) Is DBNull.Value Then
@@ -133,13 +133,13 @@ Public Class ClaimFulfillmentOrderDetail
                 Return CType(Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_CF_ORDER_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_CF_ORDER_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property CfOrderHeaderId() As Guid
+    Public Property CfOrderHeaderId As Guid
         Get
             CheckDeleted()
             If Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_CF_ORDER_HEADER_ID) Is DBNull.Value Then
@@ -148,7 +148,7 @@ Public Class ClaimFulfillmentOrderDetail
                 Return New Guid(CType(Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_CF_ORDER_HEADER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_CF_ORDER_HEADER_ID, Value)
         End Set
@@ -156,7 +156,7 @@ Public Class ClaimFulfillmentOrderDetail
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property PriceListSourceXcd() As String
+    Public Property PriceListSourceXcd As String
         Get
             CheckDeleted()
             If Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_PRICE_LIST_SOURCE_XCD) Is DBNull.Value Then
@@ -165,13 +165,13 @@ Public Class ClaimFulfillmentOrderDetail
                 Return CType(Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_PRICE_LIST_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_PRICE_LIST_SOURCE_XCD, Value)
         End Set
     End Property
 
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -180,14 +180,14 @@ Public Class ClaimFulfillmentOrderDetail
                 Return New Guid(CType(Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property PriceListCode() As String
+    Public Property PriceListCode As String
         Get
             CheckDeleted()
             If Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_PRICE_LIST_CODE) Is DBNull.Value Then
@@ -196,14 +196,14 @@ Public Class ClaimFulfillmentOrderDetail
                 Return CType(Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_PRICE_LIST_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_PRICE_LIST_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property EquipmentTypeXcd() As String
+    Public Property EquipmentTypeXcd As String
         Get
             CheckDeleted()
             If Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_EQUIPMENT_TYPE_XCD) Is DBNull.Value Then
@@ -212,14 +212,14 @@ Public Class ClaimFulfillmentOrderDetail
                 Return CType(Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_EQUIPMENT_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_EQUIPMENT_TYPE_XCD, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property ServiceClassXcd() As String
+    Public Property ServiceClassXcd As String
         Get
             CheckDeleted()
             If Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_SERVICE_CLASS_XCD) Is DBNull.Value Then
@@ -228,7 +228,7 @@ Public Class ClaimFulfillmentOrderDetail
                 Return CType(Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_SERVICE_CLASS_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_SERVICE_CLASS_XCD, Value)
         End Set
@@ -236,7 +236,7 @@ Public Class ClaimFulfillmentOrderDetail
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property ServiceTypeXcd() As String
+    Public Property ServiceTypeXcd As String
         Get
             CheckDeleted()
             If Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_SERVICE_TYPE_XCD) Is DBNull.Value Then
@@ -245,7 +245,7 @@ Public Class ClaimFulfillmentOrderDetail
                 Return CType(Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_SERVICE_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_SERVICE_TYPE_XCD, Value)
         End Set
@@ -253,7 +253,7 @@ Public Class ClaimFulfillmentOrderDetail
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property ServiceLevelXcd() As String
+    Public Property ServiceLevelXcd As String
         Get
             CheckDeleted()
             If Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_SERVICE_LEVEL_XCD) Is DBNull.Value Then
@@ -262,7 +262,7 @@ Public Class ClaimFulfillmentOrderDetail
                 Return CType(Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_SERVICE_LEVEL_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_SERVICE_LEVEL_XCD, Value)
         End Set
@@ -270,7 +270,7 @@ Public Class ClaimFulfillmentOrderDetail
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property StockItemTypeXcd() As String
+    Public Property StockItemTypeXcd As String
         Get
             CheckDeleted()
             If Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_STOCK_ITEM_TYPE_XCD) Is DBNull.Value Then
@@ -279,7 +279,7 @@ Public Class ClaimFulfillmentOrderDetail
                 Return CType(Row(ClaimFulfillmentOrderDetailDAL.COL_NAME_STOCK_ITEM_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_STOCK_ITEM_TYPE_XCD, Value)
         End Set

@@ -203,60 +203,57 @@ Namespace Reports
                 Throw New GUIException(Message.MSG_INVALID_DEALER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
             End If
 
-            If moClaimCreatedBeginDateText.Text.Equals(String.Empty) And moClaimCreatedEndDateText.Text.Equals(String.Empty) And
-               moClaimClosedBeginDateText.Text.Equals(String.Empty) And moClaimClosedEndDateText.Text.Equals(String.Empty) And
-               moExtStatusBeginDateText.Text.Equals(String.Empty) And moExtStatusEndDateText.Text.Equals(String.Empty) And
-               selectedExtendedStatusId.Equals(Guid.Empty) Then
+            If moClaimCreatedBeginDateText.Text.Equals(String.Empty) AndAlso moClaimCreatedEndDateText.Text.Equals(String.Empty) AndAlso moClaimClosedBeginDateText.Text.Equals(String.Empty) AndAlso moClaimClosedEndDateText.Text.Equals(String.Empty) AndAlso moExtStatusBeginDateText.Text.Equals(String.Empty) AndAlso moExtStatusEndDateText.Text.Equals(String.Empty) AndAlso selectedExtendedStatusId.Equals(Guid.Empty) Then
                 Throw New GUIException(Message.MSG_MAX_LIMIT_EXCEEDED_GENERIC, Message.MSG_MAX_LIMIT_EXCEEDED_GENERIC)
             End If
 
-            If (Not moClaimCreatedBeginDateText.Text.Equals(String.Empty) And Not moClaimCreatedEndDateText.Text.Equals(String.Empty)) Then
+            If (Not moClaimCreatedBeginDateText.Text.Equals(String.Empty) AndAlso Not moClaimCreatedEndDateText.Text.Equals(String.Empty)) Then
                 ReportExtractBase.ValidateBeginEndDate(moClaimCreatedBeginDateLabel, moClaimCreatedBeginDateText.Text, moClaimCreatedEndDateLabel, moClaimCreatedEndDateText.Text)
             Else
-                If (Not moClaimCreatedBeginDateText.Text.Equals(String.Empty) And moClaimCreatedEndDateText.Text.Equals(String.Empty)) Then
+                If (Not moClaimCreatedBeginDateText.Text.Equals(String.Empty) AndAlso moClaimCreatedEndDateText.Text.Equals(String.Empty)) Then
                     ElitaPlusPage.SetLabelError(moClaimCreatedEndDateLabel)
                     Throw New GUIException(Message.MSG_INVALID_DATE_RANGE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_DATE_RANGE)
                 End If
-                If (moClaimCreatedBeginDateText.Text.Equals(String.Empty) And Not moClaimCreatedEndDateText.Text.Equals(String.Empty)) Then
+                If (moClaimCreatedBeginDateText.Text.Equals(String.Empty) AndAlso Not moClaimCreatedEndDateText.Text.Equals(String.Empty)) Then
                     ElitaPlusPage.SetLabelError(moClaimCreatedBeginDateLabel)
                     Throw New GUIException(Message.MSG_INVALID_DATE_RANGE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_DATE_RANGE)
                 End If
             End If
 
-            If (Not moClaimClosedBeginDateText.Text.Equals(String.Empty) And Not moClaimClosedEndDateText.Text.Equals(String.Empty)) Then
+            If (Not moClaimClosedBeginDateText.Text.Equals(String.Empty) AndAlso Not moClaimClosedEndDateText.Text.Equals(String.Empty)) Then
                 ReportExtractBase.ValidateBeginEndDate(moClaimClosedBeginDateLabel, moClaimClosedBeginDateText.Text, moClaimClosedEndDateLabel, moClaimClosedEndDateText.Text)
             Else
-                If (Not moClaimClosedBeginDateText.Text.Equals(String.Empty) And moClaimClosedEndDateText.Text.Equals(String.Empty)) Then
+                If (Not moClaimClosedBeginDateText.Text.Equals(String.Empty) AndAlso moClaimClosedEndDateText.Text.Equals(String.Empty)) Then
                     ElitaPlusPage.SetLabelError(moClaimClosedEndDateLabel)
                     Throw New GUIException(Message.MSG_INVALID_DATE_RANGE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_DATE_RANGE)
                 End If
-                If (moClaimClosedBeginDateText.Text.Equals(String.Empty) And Not moClaimClosedEndDateText.Text.Equals(String.Empty)) Then
+                If (moClaimClosedBeginDateText.Text.Equals(String.Empty) AndAlso Not moClaimClosedEndDateText.Text.Equals(String.Empty)) Then
                     ElitaPlusPage.SetLabelError(moClaimClosedBeginDateLabel)
                     Throw New GUIException(Message.MSG_INVALID_DATE_RANGE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_DATE_RANGE)
                 End If
             End If
 
-            If (Not moExtStatusBeginDateText.Text.Equals(String.Empty) And Not moExtStatusEndDateText.Text.Equals(String.Empty)) Then
+            If (Not moExtStatusBeginDateText.Text.Equals(String.Empty) AndAlso Not moExtStatusEndDateText.Text.Equals(String.Empty)) Then
                 ReportExtractBase.ValidateBeginEndDate(moExtStatusBeginDateLabel, moExtStatusBeginDateText.Text, moExtStatusEndDateLabel, moExtStatusEndDateText.Text)
             Else
-                If (Not moExtStatusBeginDateText.Text.Equals(String.Empty) And moExtStatusEndDateText.Text.Equals(String.Empty)) Then
+                If (Not moExtStatusBeginDateText.Text.Equals(String.Empty) AndAlso moExtStatusEndDateText.Text.Equals(String.Empty)) Then
                     ElitaPlusPage.SetLabelError(moExtStatusEndDateLabel)
                     Throw New GUIException(Message.MSG_INVALID_DATE_RANGE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_DATE_RANGE)
                 End If
-                If (moExtStatusBeginDateText.Text.Equals(String.Empty) And Not moExtStatusEndDateText.Text.Equals(String.Empty)) Then
+                If (moExtStatusBeginDateText.Text.Equals(String.Empty) AndAlso Not moExtStatusEndDateText.Text.Equals(String.Empty)) Then
                     ElitaPlusPage.SetLabelError(moExtStatusBeginDateLabel)
                     Throw New GUIException(Message.MSG_INVALID_DATE_RANGE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_DATE_RANGE)
                 End If
             End If
 
             If Not selectedExtendedStatusId.Equals(Guid.Empty) Then
-                If ((moExtStatusBeginDateText.Text.Equals(String.Empty)) And (moExtStatusEndDateText.Text.Equals(String.Empty))) Then
+                If ((moExtStatusBeginDateText.Text.Equals(String.Empty)) AndAlso (moExtStatusEndDateText.Text.Equals(String.Empty))) Then
                     ElitaPlusPage.SetLabelError(moExtStatusBeginDateLabel)
                     Throw New GUIException(Message.MSG_INVALID_DATE_RANGE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_DATE_RANGE)
                 End If
             End If
 
-            If ((Not moExtStatusBeginDateText.Text.Equals(String.Empty)) And (Not moExtStatusEndDateText.Text.Equals(String.Empty))) Then
+            If ((Not moExtStatusBeginDateText.Text.Equals(String.Empty)) AndAlso (Not moExtStatusEndDateText.Text.Equals(String.Empty))) Then
                 If selectedExtendedStatusId.Equals(Guid.Empty) Then
                     ElitaPlusPage.SetLabelError(moExtendedLabel)
                     Throw New GUIException(Message.MSG_INVALID_EXTENDED_STATUS, Assurant.ElitaPlus.Common.ErrorCodes.GUI_EXTENDED_STATUS_MUST_BE_SELECTED_ERR)

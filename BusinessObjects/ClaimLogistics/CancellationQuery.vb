@@ -107,7 +107,7 @@ Public Class CancellationQuery
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
             If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -115,14 +115,14 @@ Public Class CancellationQuery
                 Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -130,14 +130,14 @@ Public Class CancellationQuery
                 Return CType(Row(DATA_COL_NAME_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CancellationDate() As DateType
+    Public Property CancellationDate As DateType
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_CANCELLATION_DATE) Is DBNull.Value Then
@@ -146,13 +146,13 @@ Public Class CancellationQuery
                 Return CType(Row(DATA_COL_NAME_CANCELLATION_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CANCELLATION_DATE, Value)
         End Set
     End Property
 
-    Private ReadOnly Property CertID() As Guid
+    Private ReadOnly Property CertID As Guid
         Get
             If _certId.Equals(Guid.Empty) Then
                 Dim dsCert As DataSet = Certificate.ClaimLogisticsGetCert(CertNumber, DealerCode)
@@ -258,7 +258,7 @@ Public Class CancellationQuery
 
 #Region "Extended Properties"
 
-    Private ReadOnly Property DealerId() As Guid
+    Private ReadOnly Property DealerId As Guid
         Get
             If _dealerId.Equals(Guid.Empty) Then
 

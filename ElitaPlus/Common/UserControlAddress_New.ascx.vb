@@ -627,7 +627,7 @@ Partial Class UserControlAddress_New
                     LoadCountryList()
                 End If
                 '# DEF-2818 Start
-                If (moRegionDrop_WRITE.Visible) Or moCountryDrop_WRITE.SelectedIndex <> -1 Then ' If not visible that means this part is not applicable. 
+                If (moRegionDrop_WRITE.Visible) OrElse moCountryDrop_WRITE.SelectedIndex <> -1 Then ' If not visible that means this part is not applicable. 
                     Page.SetSelectedItem(moRegionDrop_WRITE, Page.GetGuidValueFromPropertyName(MyGenBO, "RegionId"))
                 End If
                 '# DEF-2818 End

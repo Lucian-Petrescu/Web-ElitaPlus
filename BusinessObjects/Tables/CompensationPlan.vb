@@ -119,7 +119,7 @@ Public Class CompensationPlan
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CompensationPlanDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -130,7 +130,7 @@ Public Class CompensationPlan
     End Property
 
     <ValueMandatory("")>
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(CompensationPlanDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -139,7 +139,7 @@ Public Class CompensationPlan
                 Return New Guid(CType(Row(CompensationPlanDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CompensationPlanDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -147,7 +147,7 @@ Public Class CompensationPlan
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100), CheckDuplicate("")> 
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(CompensationPlanDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -157,14 +157,14 @@ Public Class CompensationPlan
             End If
         End Get
 
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CompensationPlanDAL.COL_NAME_CODE, value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(CompensationPlanDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -174,7 +174,7 @@ Public Class CompensationPlan
             End If
         End Get
 
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CompensationPlanDAL.COL_NAME_DESCRIPTION, value)
         End Set
@@ -184,7 +184,7 @@ Public Class CompensationPlan
     <ValueMandatory(""), ValidIntervalDate("", Common.ErrorCodes.INVALID_EFFECTIVE_BIGGER_EXPIRATION_ERR,
                         Common.ErrorCodes.INVALID_EFFECTIVE_SMALLER_MAX_EXPIRATION_ERR1,
                         Common.ErrorCodes.INVALID_DELETE_SMALLER_MAXEXPIRATION_ERR)>
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(CompensationPlanDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -193,7 +193,7 @@ Public Class CompensationPlan
                 Return New DateType(CType(Row(CompensationPlanDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CompensationPlanDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class CompensationPlan
     <ValueMandatory(""), ValidIntervalDate("", Common.ErrorCodes.INVALID_EFFECTIVE_BIGGER_EXPIRATION_ERR,
                         Common.ErrorCodes.INVALID_EFFECTIVE_SMALLER_MAX_EXPIRATION_ERR1,
                         Common.ErrorCodes.INVALID_DELETE_SMALLER_MAXEXPIRATION_ERR)>
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(CompensationPlanDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -212,13 +212,13 @@ Public Class CompensationPlan
                 Return New DateType(CType(Row(CompensationPlanDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CompensationPlanDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty 'OrElse IsFamilyDirty
         End Get
@@ -320,31 +320,31 @@ Public Class CompensationPlan
 
 #Region "Validation"
 
-    ReadOnly Property IEffective() As DateType Implements IValidateIntervalDate.IEffective
+    ReadOnly Property IEffective As DateType Implements IValidateIntervalDate.IEffective
         Get
             Return EffectiveDate
         End Get
     End Property
 
-    ReadOnly Property ICode() As String
+    ReadOnly Property ICode As String
         Get
             Return Code
         End Get
 
     End Property
-    ReadOnly Property IDescription() As String
+    ReadOnly Property IDescription As String
         Get
             Return Description
         End Get
 
     End Property
-    ReadOnly Property IExpiration() As DateType Implements IValidateIntervalDate.IExpiration
+    ReadOnly Property IExpiration As DateType Implements IValidateIntervalDate.IExpiration
         Get
             Return ExpirationDate
         End Get
     End Property
 
-    ReadOnly Property IMaxExpiration() As DateType Implements IValidateIntervalDate.IMaxExpiration
+    ReadOnly Property IMaxExpiration As DateType Implements IValidateIntervalDate.IMaxExpiration
         Get
             Dim oCompensationPlanData As New CompensationPlanData
             With oCompensationPlanData
@@ -354,13 +354,13 @@ Public Class CompensationPlan
         End Get
     End Property
 
-    Public ReadOnly Property IIsNew() As Boolean Implements IValidateIntervalDate.IIsNew
+    Public ReadOnly Property IIsNew As Boolean Implements IValidateIntervalDate.IIsNew
         Get
             Return IsNew
         End Get
     End Property
 
-    ReadOnly Property IIsDeleted() As Boolean Implements IValidateIntervalDate.IIsDeleted
+    ReadOnly Property IIsDeleted As Boolean Implements IValidateIntervalDate.IIsDeleted
         Get
             Return IsDeleted
         End Get

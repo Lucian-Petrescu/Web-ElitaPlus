@@ -305,8 +305,8 @@ Namespace Interfaces
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
-                If dvRow IsNot Nothing And Not State.bnoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                         e.Row.Cells(GridDefenitionEnum.FileProcessedId).Text = GetGuidStringFromByteArray(CType(dvRow(AppleGBIFileReconWrk.COL_NAME_FILE_PROCESSED_ID), Byte()))
                         e.Row.Cells(GridDefenitionEnum.Filename).Text = dvRow(AppleGBIFileReconWrk.COL_NAME_FILE_NAME).ToString

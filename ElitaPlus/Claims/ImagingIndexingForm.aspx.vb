@@ -207,7 +207,7 @@ Public Class ImagingIndexingForm
     Protected Sub PopulateBOsFromForm()
         With State.MyBO
             State.MyBO.ClaimId = State.selectedClaimId
-            If State.MyBO.ImageId = Nothing Or State.MyBO.ImageId = Guid.Empty Then
+            If State.MyBO.ImageId = Nothing OrElse State.MyBO.ImageId = Guid.Empty Then
                 State.MyBO.ImageId = State.WorkQueueItem.WorkQueueItem.ImageId
             End If
             PopulateBOProperty(State.MyBO, "DocumentTypeId", ddlDocumentType)

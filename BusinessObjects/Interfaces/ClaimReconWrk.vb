@@ -124,7 +124,7 @@ Public Class ClaimReconWrk
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ClaimReconWrkDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -135,7 +135,7 @@ Public Class ClaimReconWrk
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimfileProcessedId() As Guid
+    Public Property ClaimfileProcessedId As Guid
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_CLAIMFILE_PROCESSED_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class ClaimReconWrk
                 Return New Guid(CType(Row(ClaimReconWrkDAL.COL_NAME_CLAIMFILE_PROCESSED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_CLAIMFILE_PROCESSED_ID, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class ClaimReconWrk
 
 
     <ValidStringLength("", Max:=30)> _
-    Public Property RejectReason() As String
+    Public Property RejectReason As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_REJECT_REASON) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_REJECT_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_REJECT_REASON, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class ClaimReconWrk
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property ClaimLoaded() As String
+    Public Property ClaimLoaded As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_CLAIM_LOADED) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_CLAIM_LOADED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_CLAIM_LOADED, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class ClaimReconWrk
 
 
     <ValidStringLength("", Max:=4)> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_DEALER_CODE) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_DEALER_CODE, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class ClaimReconWrk
 
 
     <ValidStringLength("", Max:=20)> _
-    Public Property Certificate() As String
+    Public Property Certificate As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_CERTIFICATE) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_CERTIFICATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_CERTIFICATE, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class ClaimReconWrk
 
 
 
-    Public Property CertificateSalesDate() As DateType
+    Public Property CertificateSalesDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_CERTIFICATE_SALES_DATE) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class ClaimReconWrk
                 Return New DateType(CType(Row(ClaimReconWrkDAL.COL_NAME_CERTIFICATE_SALES_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_CERTIFICATE_SALES_DATE, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class ClaimReconWrk
 
 
     <ValidStringLength("", Max:=10)> _
-    Public Property AuthorizationNumber() As String
+    Public Property AuthorizationNumber As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
@@ -254,7 +254,7 @@ Public Class ClaimReconWrk
 
 
 
-    Public Property AuthorizationCreationDate() As DateType
+    Public Property AuthorizationCreationDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_AUTHORIZATION_CREATION_DATE) Is DBNull.Value Then
@@ -263,7 +263,7 @@ Public Class ClaimReconWrk
                 Return New DateType(CType(Row(ClaimReconWrkDAL.COL_NAME_AUTHORIZATION_CREATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_AUTHORIZATION_CREATION_DATE, Value)
         End Set
@@ -271,7 +271,7 @@ Public Class ClaimReconWrk
 
 
     <ValidStringLength("", Max:=4)> _
-    Public Property AuthorizationCode() As String
+    Public Property AuthorizationCode As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_AUTHORIZATION_CODE) Is DBNull.Value Then
@@ -280,7 +280,7 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_AUTHORIZATION_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_AUTHORIZATION_CODE, Value)
         End Set
@@ -288,7 +288,7 @@ Public Class ClaimReconWrk
 
 
     <ValidStringLength("", Max:=160)> _
-    Public Property ProblemDescription() As String
+    Public Property ProblemDescription As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_PROBLEM_DESCRIPTION) Is DBNull.Value Then
@@ -297,7 +297,7 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_PROBLEM_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_PROBLEM_DESCRIPTION, Value)
         End Set
@@ -305,7 +305,7 @@ Public Class ClaimReconWrk
 
 
     <ValidStringLength("", Max:=6)> _
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
@@ -314,7 +314,7 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
@@ -322,7 +322,7 @@ Public Class ClaimReconWrk
 
 
     <ValidStringLength("", Max:=6)> _
-    Public Property AdditionalProductCode() As String
+    Public Property AdditionalProductCode As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_ADDITIONAL_PRODUCT_CODE) Is DBNull.Value Then
@@ -331,7 +331,7 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_ADDITIONAL_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_ADDITIONAL_PRODUCT_CODE, Value)
         End Set
@@ -339,7 +339,7 @@ Public Class ClaimReconWrk
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property Manufacturer() As String
+    Public Property Manufacturer As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_MANUFACTURER) Is DBNull.Value Then
@@ -348,7 +348,7 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_MANUFACTURER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_MANUFACTURER, Value)
         End Set
@@ -356,7 +356,7 @@ Public Class ClaimReconWrk
 
 
     <ValidStringLength("", Max:=100)>
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -365,7 +365,7 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_MODEL, Value)
         End Set
@@ -373,7 +373,7 @@ Public Class ClaimReconWrk
 
 
     <ValidStringLength("", Max:=30)> _
-    Public Property SerialNumber() As String
+    Public Property SerialNumber As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_SERIAL_NUMBER) Is DBNull.Value Then
@@ -382,7 +382,7 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_SERIAL_NUMBER, Value)
         End Set
@@ -390,7 +390,7 @@ Public Class ClaimReconWrk
 
 
     <ValidStringLength("", Max:=10)> _
-    Public Property ServiceCenterCode() As String
+    Public Property ServiceCenterCode As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_SERVICE_CENTER_CODE) Is DBNull.Value Then
@@ -399,7 +399,7 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_SERVICE_CENTER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_SERVICE_CENTER_CODE, Value)
         End Set
@@ -407,7 +407,7 @@ Public Class ClaimReconWrk
 
 
 
-    Public Property Amount() As DecimalType
+    Public Property Amount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_AMOUNT) Is DBNull.Value Then
@@ -416,7 +416,7 @@ Public Class ClaimReconWrk
                 Return New DecimalType(CType(Row(ClaimReconWrkDAL.COL_NAME_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_AMOUNT, Value)
         End Set
@@ -424,7 +424,7 @@ Public Class ClaimReconWrk
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property DoNotProcess() As String
+    Public Property DoNotProcess As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_DO_NOT_PROCESS) Is DBNull.Value Then
@@ -433,7 +433,7 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_DO_NOT_PROCESS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_DO_NOT_PROCESS, Value)
         End Set
@@ -441,7 +441,7 @@ Public Class ClaimReconWrk
 
 
 
-    Public Property DateClaimClosed() As DateType
+    Public Property DateClaimClosed As DateType
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_DATE_CLAIM_CLOSED) Is DBNull.Value Then
@@ -450,7 +450,7 @@ Public Class ClaimReconWrk
                 Return New DateType(CType(Row(ClaimReconWrkDAL.COL_NAME_DATE_CLAIM_CLOSED), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_DATE_CLAIM_CLOSED, Value)
         End Set
@@ -458,7 +458,7 @@ Public Class ClaimReconWrk
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property StatusCode() As String
+    Public Property StatusCode As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_STATUS_CODE) Is DBNull.Value Then
@@ -467,14 +467,14 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_STATUS_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_STATUS_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
@@ -483,13 +483,13 @@ Public Class ClaimReconWrk
                 Return CType(Row(ClaimReconWrkDAL.COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
-    Public Property ReplacementDate() As DateType
+    Public Property ReplacementDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimReconWrkDAL.COL_NAME_REPLACEMENT_DATE) Is DBNull.Value Then
@@ -498,7 +498,7 @@ Public Class ClaimReconWrk
                 Return New DateType(CType(Row(ClaimReconWrkDAL.COL_NAME_REPLACEMENT_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimReconWrkDAL.COL_NAME_REPLACEMENT_DATE, Value)
         End Set

@@ -191,7 +191,7 @@ Partial Public Class CertAddDetailsForm
     End Sub
     Private Sub PopulateAMLControls()
         If State.Company.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0")) _
-        And State.Dealer.RequireCustomerAMLInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CAIT, "0")) Then '0= None 
+        AndAlso State.Dealer.RequireCustomerAMLInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CAIT, "0")) Then '0= None 
 
             moAMLRegulations1.Attributes("style") = "display: none"
             moAMLRegulations2.Attributes("style") = "display: none"
@@ -995,7 +995,7 @@ Partial Public Class CertAddDetailsForm
             End If
 
             If Not State.Company.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0")) _
-                Or Not State.Dealer.RequireCustomerAMLInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CAIT, "0")) Then '0= None
+                OrElse Not State.Dealer.RequireCustomerAMLInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CAIT, "0")) Then '0= None
 
                 If ddlMaritalStatus.SelectedIndex > 0 Then
                     Dim selectedMaritalStatusId As Guid = GetSelectedItem(ddlMaritalStatus)

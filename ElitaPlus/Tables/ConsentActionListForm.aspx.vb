@@ -498,7 +498,7 @@ Namespace Tables
 
             Catch ex As Exception
                 Dim GetExceptionType As String = ex.GetBaseException.GetType().Name
-                If ((Not GetExceptionType.Equals(String.Empty)) And GetExceptionType.Equals("BOValidationException")) Then
+                If ((Not GetExceptionType.Equals(String.Empty)) AndAlso GetExceptionType.Equals("BOValidationException")) Then
                     ControlMgr.SetVisibleControl(Me, Grid, False)
                     lblPageSize.Visible = False
                     lblRecordCount.Visible = False

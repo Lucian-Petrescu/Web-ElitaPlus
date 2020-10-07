@@ -121,7 +121,7 @@ Public Class ServiceOrdersAddress
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ServiceOrdersAddressDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -132,7 +132,7 @@ Public Class ServiceOrdersAddress
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(ServiceOrdersAddressDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -141,7 +141,7 @@ Public Class ServiceOrdersAddress
                 Return New Guid(CType(row(ServiceOrdersAddressDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceOrdersAddressDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -149,7 +149,7 @@ Public Class ServiceOrdersAddress
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Name() As String
+    Public Property Name As String
         Get
             CheckDeleted()
             If row(ServiceOrdersAddressDAL.COL_NAME_NAME) Is DBNull.Value Then
@@ -158,7 +158,7 @@ Public Class ServiceOrdersAddress
                 Return CType(row(ServiceOrdersAddressDAL.COL_NAME_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceOrdersAddressDAL.COL_NAME_NAME, Value)
         End Set
@@ -166,7 +166,7 @@ Public Class ServiceOrdersAddress
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=15)> _
-    Public Property TaxIdNumber() As String
+    Public Property TaxIdNumber As String
         Get
             CheckDeleted()
             If Row(ServiceOrdersAddressDAL.COL_NAME_TAX_ID_NUMBER) Is DBNull.Value Then
@@ -175,7 +175,7 @@ Public Class ServiceOrdersAddress
                 Return CType(Row(ServiceOrdersAddressDAL.COL_NAME_TAX_ID_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceOrdersAddressDAL.COL_NAME_TAX_ID_NUMBER, Value)
         End Set
@@ -183,7 +183,7 @@ Public Class ServiceOrdersAddress
 
 
 
-    Public Property AddressId() As Guid
+    Public Property AddressId As Guid
         Get
             CheckDeleted()
             If row(ServiceOrdersAddressDAL.COL_NAME_ADDRESS_ID) Is DBNull.Value Then
@@ -192,7 +192,7 @@ Public Class ServiceOrdersAddress
                 Return New Guid(CType(row(ServiceOrdersAddressDAL.COL_NAME_ADDRESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceOrdersAddressDAL.COL_NAME_ADDRESS_ID, Value)
         End Set
@@ -200,7 +200,7 @@ Public Class ServiceOrdersAddress
 
 
     Private _Address As Address = Nothing
-    Public ReadOnly Property Address() As Address
+    Public ReadOnly Property Address As Address
         Get
             If _Address Is Nothing Then
                 If AddressId.Equals(Guid.Empty) Then
@@ -224,11 +224,11 @@ Public Class ServiceOrdersAddress
     End Property
 
     Private _CompanyId As Guid = Guid.Empty
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             Return _CompanyId
         End Get
-        Set(ByVal value As Guid)
+        Set
             _CompanyId = value
         End Set
     End Property
@@ -271,7 +271,7 @@ Public Class ServiceOrdersAddress
     End Sub
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty OrElse _
             (Not Address.IsNew And Address.IsDirty) OrElse _
@@ -279,7 +279,7 @@ Public Class ServiceOrdersAddress
         End Get
     End Property
 
-    Public ReadOnly Property IsEmpty() As Boolean
+    Public ReadOnly Property IsEmpty As Boolean
         Get
             If (Not IsEmptyString(Name)) OrElse (Not IsEmptyString(TaxIdNumber))  Then
                 Return False

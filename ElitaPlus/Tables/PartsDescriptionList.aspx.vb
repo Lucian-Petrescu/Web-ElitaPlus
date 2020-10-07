@@ -552,7 +552,7 @@ Partial Class PartsDescriptionList
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-        If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+        If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
             If e.Row.Cells.Count >= 5 AndAlso e.Row.Cells(CODE_COL).FindControl(CODE_CONTROL_NAME) IsNot Nothing Then
                 If State.IsEditMode AndAlso State.PartsDesc.DescriptionEnglish Is Nothing Then

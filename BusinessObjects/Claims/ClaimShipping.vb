@@ -90,7 +90,7 @@ Public Class ClaimShipping
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimShippingDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ClaimShipping
     End Property
           
     <ValueMandatory("")> _
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If row(ClaimShippingDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ClaimShipping
                 Return New Guid(CType(row(ClaimShippingDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimShippingDAL.COL_NAME_CLAIM_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ClaimShipping
           
           
     <ValueMandatory("")> _
-    Public Property ShippingTypeId() As Guid
+    Public Property ShippingTypeId As Guid
         Get
             CheckDeleted()
             If row(ClaimShippingDAL.COL_NAME_SHIPPING_TYPE_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ClaimShipping
                 Return New Guid(CType(row(ClaimShippingDAL.COL_NAME_SHIPPING_TYPE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimShippingDAL.COL_NAME_SHIPPING_TYPE_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class ClaimShipping
           
           
     <ValueMandatory("")> _
-    Public Property ShippingDate() As DateType
+    Public Property ShippingDate As DateType
         Get
             CheckDeleted()
             If row(ClaimShippingDAL.COL_NAME_SHIPPING_DATE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class ClaimShipping
                 Return New DateType(CType(row(ClaimShippingDAL.COL_NAME_SHIPPING_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimShippingDAL.COL_NAME_SHIPPING_DATE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class ClaimShipping
           
           
     <ValidStringLength("", Max:=120)> _
-    Public Property TrackingNumber() As String
+    Public Property TrackingNumber As String
         Get
             CheckDeleted()
             If row(ClaimShippingDAL.COL_NAME_TRACKING_NUMBER) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class ClaimShipping
                 Return CType(row(ClaimShippingDAL.COL_NAME_TRACKING_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimShippingDAL.COL_NAME_TRACKING_NUMBER, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class ClaimShipping
 
     
 
-    Public Property ReceivedDate() As DateType
+    Public Property ReceivedDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimShippingDAL.COL_NAME_RECEIVED_DATE) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class ClaimShipping
                 Return New DateType(CType(Row(ClaimShippingDAL.COL_NAME_RECEIVED_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimShippingDAL.COL_NAME_RECEIVED_DATE, Value)
         End Set
@@ -195,7 +195,7 @@ Public Class ClaimShipping
             End If
             Return _claim
         End Get
-        Private Set(value As ClaimBase)
+        Private Set
             _claim = value
         End Set
     End Property

@@ -760,7 +760,7 @@ Public Class UpdateClaimData
 #Region "Properties"
 
     <ValueMandatory("")>
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CLAIM_NUMBER) Is DBNull.Value Then
@@ -769,14 +769,14 @@ Public Class UpdateClaimData
                 Return CType(Row(SOURCE_COL_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CLAIM_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property CertItemCoverageCode() As String
+    Public Property CertItemCoverageCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CERT_ITEM_COVERAGE_CODE) Is DBNull.Value Then
@@ -785,14 +785,14 @@ Public Class UpdateClaimData
                 Return CType(Row(SOURCE_COL_CERT_ITEM_COVERAGE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CERT_ITEM_COVERAGE_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ClaimStatusCode() As String
+    Public Property ClaimStatusCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CLAIM_STATUS) Is DBNull.Value Then
@@ -801,13 +801,13 @@ Public Class UpdateClaimData
                 Return CType(Row(SOURCE_COL_CLAIM_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CLAIM_STATUS, Value)
         End Set
     End Property
 
-    Public Property ServiceCenterCode() As String
+    Public Property ServiceCenterCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_SERVICE_CENTER_CODE) Is DBNull.Value Then
@@ -816,13 +816,13 @@ Public Class UpdateClaimData
                 Return CType(Row(SOURCE_COL_SERVICE_CENTER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
-    Public Property ReasonClosedCode() As String
+    Public Property ReasonClosedCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_REASON_CLOSED_CODE) Is DBNull.Value Then
@@ -831,13 +831,13 @@ Public Class UpdateClaimData
                 Return CType(Row(SOURCE_COL_REASON_CLOSED_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_REASON_CLOSED_CODE, Value)
         End Set
     End Property
 
-    Public Property ProblemDescription() As String
+    Public Property ProblemDescription As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_PROBLEM_DESCRIPTION) Is DBNull.Value Then
@@ -846,13 +846,13 @@ Public Class UpdateClaimData
                 Return CType(Row(SOURCE_COL_PROBLEM_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_PROBLEM_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property SpecialInstruction() As String
+    Public Property SpecialInstruction As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_SPECIAL_INSTRUCTION) Is DBNull.Value Then
@@ -861,13 +861,13 @@ Public Class UpdateClaimData
                 Return CType(Row(SOURCE_COL_SPECIAL_INSTRUCTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_SPECIAL_INSTRUCTION, Value)
         End Set
     End Property
 
-    Public Property VisitDate() As DateType
+    Public Property VisitDate As DateType
         Get
             CheckDeleted()
             If Row(SOURCE_COL_VISIT_DATE) Is DBNull.Value Then
@@ -876,13 +876,13 @@ Public Class UpdateClaimData
                 Return CType(Row(SOURCE_COL_VISIT_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_VISIT_DATE, Value)
         End Set
     End Property
 
-    Public Property StatusComments() As String
+    Public Property StatusComments As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_STATUS_COMMENTS) Is DBNull.Value Then
@@ -891,13 +891,13 @@ Public Class UpdateClaimData
                 Return CType(Row(SOURCE_COL_STATUS_COMMENTS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_STATUS_COMMENTS, Value)
         End Set
     End Property
 
-    Public Property ClaimComments() As String
+    Public Property ClaimComments As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_CLAIM_COMMENTS) Is DBNull.Value Then
@@ -906,13 +906,13 @@ Public Class UpdateClaimData
                 Return CType(Row(SOURCE_COL_CLAIM_COMMENTS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_CLAIM_COMMENTS, Value)
         End Set
     End Property
 
-    Public Property Amount() As DecimalType
+    Public Property Amount As DecimalType
         Get
             CheckDeleted()
             If Row(SOURCE_COL_AMOUNT) Is DBNull.Value Then
@@ -921,13 +921,13 @@ Public Class UpdateClaimData
                 Return New DecimalType(CType(Row(SOURCE_COL_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property ExternalUserName() As String
+    Public Property ExternalUserName As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_EXTERNAL_USER_NAME) Is DBNull.Value Then
@@ -936,13 +936,13 @@ Public Class UpdateClaimData
                 Return CType(Row(SOURCE_COL_EXTERNAL_USER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_EXTERNAL_USER_NAME, Value)
         End Set
     End Property
 
-    Public Property SpecialServiceCode() As String
+    Public Property SpecialServiceCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_SPECIAL_SERVICE_CODE) Is DBNull.Value Then
@@ -951,13 +951,13 @@ Public Class UpdateClaimData
                 Return CType(Row(SOURCE_COL_SPECIAL_SERVICE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_SPECIAL_SERVICE_CODE, Value)
         End Set
     End Property
 
-    Public Property SpecialServiceOnlyCode() As String
+    Public Property SpecialServiceOnlyCode As String
         Get
             CheckDeleted()
             If Row(SOURCE_COL_SPECIAL_SERVICE_ONLY_CODE) Is DBNull.Value Then
@@ -966,7 +966,7 @@ Public Class UpdateClaimData
                 Return CType(Row(SOURCE_COL_SPECIAL_SERVICE_ONLY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SOURCE_COL_SPECIAL_SERVICE_ONLY_CODE, Value)
         End Set
@@ -975,7 +975,7 @@ Public Class UpdateClaimData
 
 #Region "Extended Properties"
 
-    Private ReadOnly Property ClaimID() As Guid
+    Private ReadOnly Property ClaimID As Guid
         Get
             If _claimId.Equals(Guid.Empty) Then
                 _claimId = PickupListHeader.GetClaimIDByCode(ClaimNumber, CertItemCoverageCode)
@@ -990,7 +990,7 @@ Public Class UpdateClaimData
         End Get
     End Property
 
-    Public ReadOnly Property ClaimStatusByGroupID() As Guid
+    Public ReadOnly Property ClaimStatusByGroupID As Guid
         Get
             If _claimStatusByGroupId.Equals(Guid.Empty) Then
                 _claimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(CType(Row(SOURCE_COL_CLAIM_STATUS), String))
@@ -1004,7 +1004,7 @@ Public Class UpdateClaimData
         End Get
     End Property
 
-    Public ReadOnly Property ServiceCenterID() As Guid
+    Public ReadOnly Property ServiceCenterID As Guid
         Get
             If _serviceCenterId.Equals(Guid.Empty) AndAlso Not ServiceCenterCode Is Nothing AndAlso ServiceCenterCode <> "" Then
 
@@ -1026,7 +1026,7 @@ Public Class UpdateClaimData
         End Get
     End Property
 
-    Public ReadOnly Property ReasonCloseID() As Guid
+    Public ReadOnly Property ReasonCloseID As Guid
         Get
             If _reasonCloseId.Equals(Guid.Empty) AndAlso Not ReasonClosedCode Is Nothing AndAlso ReasonClosedCode <> "" Then
 

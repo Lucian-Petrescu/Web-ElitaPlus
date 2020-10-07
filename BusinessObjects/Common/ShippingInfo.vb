@@ -91,7 +91,7 @@ Public Class ShippingInfo
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ShippingInfoDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@ Public Class ShippingInfo
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property CreditCardNumber() As String
+    Public Property CreditCardNumber As String
         Get
             CheckDeleted()
             If Row(ShippingInfoDAL.COL_NAME_CREDIT_CARD_NUMBER) Is DBNull.Value Then
@@ -111,7 +111,7 @@ Public Class ShippingInfo
                 Return CType(Row(ShippingInfoDAL.COL_NAME_CREDIT_CARD_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ShippingInfoDAL.COL_NAME_CREDIT_CARD_NUMBER, Value)
         End Set
@@ -119,7 +119,7 @@ Public Class ShippingInfo
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=10, Min:=6)> _
-    Public Property AuthorizationNumber() As String
+    Public Property AuthorizationNumber As String
         Get
             CheckDeleted()
             If Row(ShippingInfoDAL.COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -128,7 +128,7 @@ Public Class ShippingInfo
                 Return CType(Row(ShippingInfoDAL.COL_NAME_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ShippingInfoDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
@@ -136,7 +136,7 @@ Public Class ShippingInfo
 
 
     <ValueMandatory("")> _
-    Public Property ProcessingFee() As DecimalType
+    Public Property ProcessingFee As DecimalType
         Get
             CheckDeleted()
             If Row(ShippingInfoDAL.COL_NAME_PROCESSING_FEE) Is DBNull.Value Then
@@ -145,7 +145,7 @@ Public Class ShippingInfo
                 Return New DecimalType(CType(Row(ShippingInfoDAL.COL_NAME_PROCESSING_FEE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ShippingInfoDAL.COL_NAME_PROCESSING_FEE, Value)
         End Set
@@ -153,7 +153,7 @@ Public Class ShippingInfo
 
 
     <ValueMandatory("")> _
-    Public Property TotalCharge() As DecimalType
+    Public Property TotalCharge As DecimalType
         Get
             CheckDeleted()
             If Row(ShippingInfoDAL.COL_NAME_TOTAL_CHARGE) Is DBNull.Value Then
@@ -162,7 +162,7 @@ Public Class ShippingInfo
                 Return New DecimalType(CType(Row(ShippingInfoDAL.COL_NAME_TOTAL_CHARGE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ShippingInfoDAL.COL_NAME_TOTAL_CHARGE, Value)
         End Set
@@ -170,7 +170,7 @@ Public Class ShippingInfo
 
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(ShippingInfoDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -179,7 +179,7 @@ Public Class ShippingInfo
                 Return New Guid(CType(Row(ShippingInfoDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ShippingInfoDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
@@ -187,7 +187,7 @@ Public Class ShippingInfo
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             CheckDeleted()
             If Row(ShippingInfoDAL.COL_NAME_ADDRESS1) Is DBNull.Value Then
@@ -196,7 +196,7 @@ Public Class ShippingInfo
                 Return CType(Row(ShippingInfoDAL.COL_NAME_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ShippingInfoDAL.COL_NAME_ADDRESS1, Value)
         End Set
@@ -204,7 +204,7 @@ Public Class ShippingInfo
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             CheckDeleted()
             If Row(ShippingInfoDAL.COL_NAME_ADDRESS2) Is DBNull.Value Then
@@ -213,7 +213,7 @@ Public Class ShippingInfo
                 Return CType(Row(ShippingInfoDAL.COL_NAME_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ShippingInfoDAL.COL_NAME_ADDRESS2, Value)
         End Set
@@ -221,7 +221,7 @@ Public Class ShippingInfo
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(ShippingInfoDAL.COL_NAME_CITY) Is DBNull.Value Then
@@ -230,7 +230,7 @@ Public Class ShippingInfo
                 Return CType(Row(ShippingInfoDAL.COL_NAME_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ShippingInfoDAL.COL_NAME_CITY, Value)
         End Set
@@ -238,7 +238,7 @@ Public Class ShippingInfo
 
 
     <ValueMandatory("")> _
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(ShippingInfoDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -247,7 +247,7 @@ Public Class ShippingInfo
                 Return New Guid(CType(Row(ShippingInfoDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ShippingInfoDAL.COL_NAME_REGION_ID, Value)
         End Set
@@ -255,7 +255,7 @@ Public Class ShippingInfo
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=25)> _
-    Public Property PostalCode() As String
+    Public Property PostalCode As String
         Get
             CheckDeleted()
             If Row(ShippingInfoDAL.COL_NAME_POSTAL_CODE) Is DBNull.Value Then
@@ -264,17 +264,17 @@ Public Class ShippingInfo
                 Return CType(Row(ShippingInfoDAL.COL_NAME_POSTAL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ShippingInfoDAL.COL_NAME_POSTAL_CODE, Value)
         End Set
     End Property
 
-    Public Property ClaimIDHasBeenObtained() As Boolean
+    Public Property ClaimIDHasBeenObtained As Boolean
         Get
             Return _claimIDHasBeenObtained
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _claimIDHasBeenObtained = Value
         End Set
     End Property

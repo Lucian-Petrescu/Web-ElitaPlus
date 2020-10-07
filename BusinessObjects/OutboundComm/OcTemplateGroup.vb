@@ -89,7 +89,7 @@ Public Class OcTemplateGroup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(OcTemplateGroupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class OcTemplateGroup
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=400), CheckDuplicate("")>
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(OcTemplateGroupDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -109,7 +109,7 @@ Public Class OcTemplateGroup
                 Return CType(row(OcTemplateGroupDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateGroupDAL.COL_NAME_CODE, Value)
         End Set
@@ -117,7 +117,7 @@ Public Class OcTemplateGroup
 
 
     <ValidStringLength("", Max:=2000)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(OcTemplateGroupDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -126,7 +126,7 @@ Public Class OcTemplateGroup
                 Return CType(row(OcTemplateGroupDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateGroupDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -134,7 +134,7 @@ Public Class OcTemplateGroup
 
 
     <ValidStringLength("", Max:=400)>
-    Public Property GroupAccountUserName() As String
+    Public Property GroupAccountUserName As String
         Get
             CheckDeleted()
             If row(OcTemplateGroupDAL.COL_NAME_GROUP_ACCOUNT_USER_NAME) Is DBNull.Value Then
@@ -143,7 +143,7 @@ Public Class OcTemplateGroup
                 Return CType(row(OcTemplateGroupDAL.COL_NAME_GROUP_ACCOUNT_USER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateGroupDAL.COL_NAME_GROUP_ACCOUNT_USER_NAME, Value)
         End Set
@@ -151,7 +151,7 @@ Public Class OcTemplateGroup
 
 
     <ValidStringLength("", Max:=400)>
-    Public Property GroupAccountPassword() As String
+    Public Property GroupAccountPassword As String
         Get
             CheckDeleted()
             If row(OcTemplateGroupDAL.COL_NAME_GROUP_ACCOUNT_PASSWORD) Is DBNull.Value Then
@@ -160,19 +160,19 @@ Public Class OcTemplateGroup
                 Return CType(row(OcTemplateGroupDAL.COL_NAME_GROUP_ACCOUNT_PASSWORD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(OcTemplateGroupDAL.COL_NAME_GROUP_ACCOUNT_PASSWORD, Value)
         End Set
     End Property
 
-    Public ReadOnly Property DealerList() As OcTemplateGroupDealerList
+    Public ReadOnly Property DealerList As OcTemplateGroupDealerList
         Get
             Return New OcTemplateGroupDealerList(Me)
         End Get
     End Property
 
-    Public ReadOnly Property TemplateList() As OcTemplateList
+    Public ReadOnly Property TemplateList As OcTemplateList
         Get
             Return New OcTemplateList(Me)
         End Get

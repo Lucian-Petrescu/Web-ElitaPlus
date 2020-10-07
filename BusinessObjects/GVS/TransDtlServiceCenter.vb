@@ -90,7 +90,7 @@ Public Class TransDtlServiceCenter
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(TransDtlServiceCenterDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class TransDtlServiceCenter
     End Property
 
     <ValueMandatory("")> _
-    Public Property TransactionLogHeaderId() As Guid
+    Public Property TransactionLogHeaderId As Guid
         Get
             CheckDeleted()
             If row(TransDtlServiceCenterDAL.COL_NAME_TRANSACTION_LOG_HEADER_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class TransDtlServiceCenter
                 Return New Guid(CType(row(TransDtlServiceCenterDAL.COL_NAME_TRANSACTION_LOG_HEADER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(TransDtlServiceCenterDAL.COL_NAME_TRANSACTION_LOG_HEADER_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class TransDtlServiceCenter
 
 
     <ValueMandatory("")> _
-    Public Property ItemNumber() As LongType
+    Public Property ItemNumber As LongType
         Get
             CheckDeleted()
             If row(TransDtlServiceCenterDAL.COL_NAME_ITEM_NUMBER) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class TransDtlServiceCenter
                 Return New LongType(CType(row(TransDtlServiceCenterDAL.COL_NAME_ITEM_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(TransDtlServiceCenterDAL.COL_NAME_ITEM_NUMBER, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class TransDtlServiceCenter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property Response() As String
+    Public Property Response As String
         Get
             CheckDeleted()
             If row(TransDtlServiceCenterDAL.COL_NAME_RESPONSE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class TransDtlServiceCenter
                 Return CType(row(TransDtlServiceCenterDAL.COL_NAME_RESPONSE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlServiceCenterDAL.COL_NAME_RESPONSE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class TransDtlServiceCenter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property ResponseDetail() As String
+    Public Property ResponseDetail As String
         Get
             CheckDeleted()
             If row(TransDtlServiceCenterDAL.COL_NAME_RESPONSE_DETAIL) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class TransDtlServiceCenter
                 Return CType(row(TransDtlServiceCenterDAL.COL_NAME_RESPONSE_DETAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlServiceCenterDAL.COL_NAME_RESPONSE_DETAIL, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class TransDtlServiceCenter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property XmlServiceCenterCode() As String
+    Public Property XmlServiceCenterCode As String
         Get
             CheckDeleted()
             If row(TransDtlServiceCenterDAL.COL_NAME_XML_SERVICE_CENTER_CODE) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class TransDtlServiceCenter
                 Return CType(row(TransDtlServiceCenterDAL.COL_NAME_XML_SERVICE_CENTER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlServiceCenterDAL.COL_NAME_XML_SERVICE_CENTER_CODE, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class TransDtlServiceCenter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property XmlDescription() As String
+    Public Property XmlDescription As String
         Get
             CheckDeleted()
             If row(TransDtlServiceCenterDAL.COL_NAME_XML_DESCRIPTION) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class TransDtlServiceCenter
                 Return CType(row(TransDtlServiceCenterDAL.COL_NAME_XML_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlServiceCenterDAL.COL_NAME_XML_DESCRIPTION, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class TransDtlServiceCenter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=320)> _
-    Public Property XmlTaxId() As String
+    Public Property XmlTaxId As String
         Get
             CheckDeleted()
             If row(TransDtlServiceCenterDAL.COL_NAME_XML_TAX_ID) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class TransDtlServiceCenter
                 Return CType(row(TransDtlServiceCenterDAL.COL_NAME_XML_TAX_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlServiceCenterDAL.COL_NAME_XML_TAX_ID, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class TransDtlServiceCenter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=16)> _
-    Public Property XmlStatusCode() As String
+    Public Property XmlStatusCode As String
         Get
             CheckDeleted()
             If row(TransDtlServiceCenterDAL.COL_NAME_XML_STATUS_CODE) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class TransDtlServiceCenter
                 Return CType(row(TransDtlServiceCenterDAL.COL_NAME_XML_STATUS_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(TransDtlServiceCenterDAL.COL_NAME_XML_STATUS_CODE, Value)
         End Set

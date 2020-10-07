@@ -90,7 +90,7 @@ Public Class BillingHeader
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(BillingHeaderDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class BillingHeader
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(BillingHeaderDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class BillingHeader
                 Return New Guid(CType(row(BillingHeaderDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BillingHeaderDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class BillingHeader
 
 
     <ValueMandatory("")> _
-    Public Property DateFileSent() As DateType
+    Public Property DateFileSent As DateType
         Get
             CheckDeleted()
             If row(BillingHeaderDAL.COL_NAME_DATE_FILE_SENT) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class BillingHeader
                 Return New DateType(CType(row(BillingHeaderDAL.COL_NAME_DATE_FILE_SENT), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(BillingHeaderDAL.COL_NAME_DATE_FILE_SENT, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class BillingHeader
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Filename() As String
+    Public Property Filename As String
         Get
             CheckDeleted()
             If Row(BillingHeaderDAL.COL_NAME_FILENAME) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class BillingHeader
                 Return CType(Row(BillingHeaderDAL.COL_NAME_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BillingHeaderDAL.COL_NAME_FILENAME, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class BillingHeader
 
 
     <ValueMandatory("")> _
-    Public Property TotalBilledAmt() As DecimalType
+    Public Property TotalBilledAmt As DecimalType
         Get
             CheckDeleted()
             If row(BillingHeaderDAL.COL_NAME_TOTAL_BILLED_AMT) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class BillingHeader
                 Return New DecimalType(CType(row(BillingHeaderDAL.COL_NAME_TOTAL_BILLED_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(BillingHeaderDAL.COL_NAME_TOTAL_BILLED_AMT, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class BillingHeader
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property Status() As String
+    Public Property Status As String
         Get
             CheckDeleted()
             If row(BillingHeaderDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -178,14 +178,14 @@ Public Class BillingHeader
                 Return CType(row(BillingHeaderDAL.COL_NAME_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BillingHeaderDAL.COL_NAME_STATUS, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=48)> _
-    Public Property ReferenceNumber() As String
+    Public Property ReferenceNumber As String
         Get
             CheckDeleted()
             If row(BillingHeaderDAL.COL_NAME_REFERENCE_NUMBER) Is DBNull.Value Then
@@ -194,7 +194,7 @@ Public Class BillingHeader
                 Return CType(row(BillingHeaderDAL.COL_NAME_REFERENCE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BillingHeaderDAL.COL_NAME_REFERENCE_NUMBER, Value)
         End Set
@@ -205,14 +205,14 @@ Public Class BillingHeader
 
 #Region "Properties External BOs"
 
-    Public ReadOnly Property DealerCode() As String
+    Public ReadOnly Property DealerCode As String
         Get
             If DealerId.Equals(Guid.Empty) Then Return Nothing
             Return LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, DealerId)
         End Get
     End Property
 
-    Public ReadOnly Property DealerNameLoad() As String
+    Public ReadOnly Property DealerNameLoad As String
         Get
             If DealerId.Equals(Guid.Empty) Then Return Nothing
             Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_DEALERS)

@@ -34,13 +34,13 @@ Public Class WSUtility
     End Sub
 
 #Region "Properties"
-    Public ReadOnly Property HasError() As Boolean
+    Public ReadOnly Property HasError As Boolean
         Get
             Return bHasError
         End Get
     End Property
 
-    Public ReadOnly Property ErrorMsg() As String
+    Public ReadOnly Property ErrorMsg As String
         Get
             Return sErrorMsg
         End Get

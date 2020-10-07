@@ -125,13 +125,13 @@ Public Class EntitySchedule
         Get
             Return _entityObject
         End Get
-        Private Set(ByVal value As IEffecttiveExpiration)
+        Private Set
             _entityObject = value
         End Set
     End Property
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(EntityScheduleDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -142,7 +142,7 @@ Public Class EntitySchedule
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Entity() As String
+    Public Property Entity As String
         Get
             CheckDeleted()
             If Row(EntityScheduleDAL.COL_NAME_ENTITY) Is DBNull.Value Then
@@ -151,7 +151,7 @@ Public Class EntitySchedule
                 Return CType(Row(EntityScheduleDAL.COL_NAME_ENTITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EntityScheduleDAL.COL_NAME_ENTITY, Value)
         End Set
@@ -159,7 +159,7 @@ Public Class EntitySchedule
 
 
     <ValueMandatory("")> _
-    Public Property EntityId() As Guid
+    Public Property EntityId As Guid
         Get
             CheckDeleted()
             If Row(EntityScheduleDAL.COL_NAME_ENTITY_ID) Is DBNull.Value Then
@@ -168,7 +168,7 @@ Public Class EntitySchedule
                 Return New Guid(CType(Row(EntityScheduleDAL.COL_NAME_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EntityScheduleDAL.COL_NAME_ENTITY_ID, Value)
         End Set
@@ -176,7 +176,7 @@ Public Class EntitySchedule
 
 
     <ValueMandatory("")> _
-    Public Property ScheduleId() As Guid
+    Public Property ScheduleId As Guid
         Get
             CheckDeleted()
             If Row(EntityScheduleDAL.COL_NAME_SCHEDULE_ID) Is DBNull.Value Then
@@ -185,7 +185,7 @@ Public Class EntitySchedule
                 Return New Guid(CType(Row(EntityScheduleDAL.COL_NAME_SCHEDULE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EntityScheduleDAL.COL_NAME_SCHEDULE_ID, Value)
         End Set
@@ -208,7 +208,7 @@ Public Class EntitySchedule
     DateCompareValidator("", Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_WQ_SCHEDULE_EFF_LESSER_THAN_WQ_EFF, _
         "EntityEffective", DateCompareValidatorAttribute.CompareType.GreaterThanOrEqual, DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.MinDate, _
         DefaultCompareValue:=DateCompareValidatorAttribute.DefaultType.MinDate)> _
-    Public Property Effective() As DateTimeType
+    Public Property Effective As DateTimeType
         Get
             CheckDeleted()
             If Row(EntityScheduleDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -221,7 +221,7 @@ Public Class EntitySchedule
                 End If
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             If (Not Value Is Nothing) Then
                 If (EntityObject.GetType().Equals(GetType(WorkQueue))) Then
@@ -236,7 +236,7 @@ Public Class EntitySchedule
     <DateCompareValidator("", Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, "", _
             DateCompareValidatorAttribute.CompareType.GreaterThan, CheckWhenNew:=True, CompareToType:=DateCompareValidatorAttribute.CompareToPropertyType.Nothing, _
             DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.UtcToday)> _
-    Public ReadOnly Property EffectiveUtc() As DateTimeType
+    Public ReadOnly Property EffectiveUtc As DateTimeType
         Get
             If Row(EntityScheduleDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
                 Return Nothing
@@ -246,7 +246,7 @@ Public Class EntitySchedule
         End Get
     End Property
 
-    Public ReadOnly Property ExpirationUtc() As DateTimeType
+    Public ReadOnly Property ExpirationUtc As DateTimeType
         Get
             If Row(EntityScheduleDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
                 Return Nothing
@@ -281,7 +281,7 @@ Public Class EntitySchedule
     DateCompareValidatorAttribute("", Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_WQ_SCHEDULE_EXP_GREATER_THAN_WQ_EXP, _
         "EntityExpiration", DateCompareValidatorAttribute.CompareType.LessThanOrEqual, DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.MaxDate, _
         DefaultCompareValue:=DateCompareValidatorAttribute.DefaultType.MaxDate)> _
-    Public Property Expiration() As DateTimeType
+    Public Property Expiration As DateTimeType
         Get
             CheckDeleted()
             If Row(EntityScheduleDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -294,7 +294,7 @@ Public Class EntitySchedule
                 End If
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             If (Not Value Is Nothing) Then
                 If (EntityObject.GetType().Equals(GetType(WorkQueue))) Then
@@ -315,7 +315,7 @@ Public Class EntitySchedule
 
 
     <ValueMandatory("")> _
-    Public Property ScheduleCode() As String
+    Public Property ScheduleCode As String
         Get
             CheckDeleted()
             If Row(ScheduleDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -324,14 +324,14 @@ Public Class EntitySchedule
                 Return CType(Row(EntityScheduleDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EntityScheduleDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ScheduleDescription() As String
+    Public Property ScheduleDescription As String
         Get
             CheckDeleted()
             If Row(ScheduleDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -340,7 +340,7 @@ Public Class EntitySchedule
                 Return CType(Row(EntityScheduleDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EntityScheduleDAL.COL_NAME_DESCRIPTION, Value)
         End Set

@@ -489,7 +489,7 @@ Partial Class UserControlClaimCloseRules
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim strID As String
 
-            If dvRow IsNot Nothing And Not TheState.bnoRow Then
+            If dvRow IsNot Nothing AndAlso Not TheState.bnoRow Then
                 strID = ThePage.GetGuidStringFromByteArray(CType(dvRow(ClaimCloseRules.CloseClaimRulesDV.COL_CLAIM_CLOSE_RULE_ID), Byte()))
 
                 If (TheState.IsEditMode = True AndAlso TheState.DefaultClaimCloseRuleID.ToString.Equals(strID)) Then
@@ -772,7 +772,7 @@ Partial Class UserControlClaimCloseRules
         ' get the new current page index
         Dim i As Integer
         For i = 1 To intNewPageCount
-            If intFirstRecordIndex >= (i - 1) * intNewPageSize + 1 And intFirstRecordIndex <= i * intNewPageSize Then
+            If intFirstRecordIndex >= (i - 1) * intNewPageSize + 1 AndAlso intFirstRecordIndex <= i * intNewPageSize Then
                 intNewCurrentPageIndex = i - 1
                 Exit For
             End If

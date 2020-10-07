@@ -95,7 +95,7 @@ Public Class CountryLineOfBusiness
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CountryLineOfBusinessDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -106,7 +106,7 @@ Public Class CountryLineOfBusiness
     End Property
 
     <ValueMandatory("")>
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(CountryLineOfBusinessDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -115,14 +115,14 @@ Public Class CountryLineOfBusiness
                 Return New Guid(CType(Row(CountryLineOfBusinessDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryLineOfBusinessDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("", Message:="Line of Business Code is required."), ValidStringLength("", Max:=15, Message:="Line of Business Code can be max 15 chars.")>
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(CountryLineOfBusinessDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -131,14 +131,14 @@ Public Class CountryLineOfBusiness
                 Return CType(Row(CountryLineOfBusinessDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryLineOfBusinessDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("", Message:="Line of Business Description is required."), ValidStringLength("", Max:=100, Message:="Description should be between 1 to 100 chars.")>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(CountryLineOfBusinessDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -147,13 +147,13 @@ Public Class CountryLineOfBusiness
                 Return CType(Row(CountryLineOfBusinessDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryLineOfBusinessDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
     <ValueMandatory("", Message:="Business Type is required.")>
-    Public Property LineOfBusinessId() As Guid
+    Public Property LineOfBusinessId As Guid
         Get
             CheckDeleted()
             If Row(CountryLineOfBusinessDAL.COL_NAME_LINE_OF_BUSINESS_ID) Is DBNull.Value Then
@@ -162,14 +162,14 @@ Public Class CountryLineOfBusiness
                 Return New Guid(CType(Row(CountryLineOfBusinessDAL.COL_NAME_LINE_OF_BUSINESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryLineOfBusinessDAL.COL_NAME_LINE_OF_BUSINESS_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)>
-    Public Property InUse() As String
+    Public Property InUse As String
         Get
             CheckDeleted()
             If Row(CountryLineOfBusinessDAL.COL_NAME_IN_USE) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class CountryLineOfBusiness
                 Return CType(Row(CountryLineOfBusinessDAL.COL_NAME_IN_USE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryLineOfBusinessDAL.COL_NAME_IN_USE, Value)
         End Set

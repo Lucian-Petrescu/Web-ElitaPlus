@@ -102,7 +102,7 @@ Public Class ClaimsByPicklist
 
 #Region "Properties"
 
-    Public Property PickListNumber() As String
+    Public Property PickListNumber As String
         Get
             If Row(DATA_COL_NAME_PICK_LIST_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -110,13 +110,13 @@ Public Class ClaimsByPicklist
                 Return (CType(Row(DATA_COL_NAME_PICK_LIST_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_PICK_LIST_NUMBER, Value)
         End Set
     End Property
 
-    Public Property StoreNumber() As String
+    Public Property StoreNumber As String
         Get
             If Row(DATA_COL_NAME_STORE_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -124,13 +124,13 @@ Public Class ClaimsByPicklist
                 Return (CType(Row(DATA_COL_NAME_STORE_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_STORE_NUMBER, Value)
         End Set
     End Property
 
-    Public Property ServiceCenterCode() As String
+    Public Property ServiceCenterCode As String
         Get
             If Row(DATA_COL_NAME_SERVICE_CENTER_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -138,13 +138,13 @@ Public Class ClaimsByPicklist
                 Return (CType(Row(DATA_COL_NAME_SERVICE_CENTER_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
-    Public ReadOnly Property HeaderID() As Guid
+    Public ReadOnly Property HeaderID As Guid
         Get
             If _headerId.Equals(Guid.Empty) Then
 
@@ -166,7 +166,7 @@ Public Class ClaimsByPicklist
         End Get
     End Property
 
-    Public ReadOnly Property ServiceCenterID() As Guid
+    Public ReadOnly Property ServiceCenterID As Guid
         Get
             If _serviceCenterId.Equals(Guid.Empty) AndAlso Not ServiceCenterCode Is Nothing AndAlso ServiceCenterCode <> "" Then
 
@@ -188,7 +188,7 @@ Public Class ClaimsByPicklist
         End Get
     End Property
 
-    Public ReadOnly Property StoreServiceCenterID() As Guid
+    Public ReadOnly Property StoreServiceCenterID As Guid
         Get
             If _storeServiceCenterId.Equals(Guid.Empty) AndAlso Not StoreNumber Is Nothing AndAlso StoreNumber <> "" Then
 

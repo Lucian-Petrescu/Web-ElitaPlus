@@ -149,7 +149,7 @@ Namespace Reports
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
             End If
 
-            If moBeginDateText.Text.Trim.ToString <> String.Empty And moEndDateText.Text.Trim.ToString <> String.Empty Then
+            If moBeginDateText.Text.Trim.ToString <> String.Empty AndAlso moEndDateText.Text.Trim.ToString <> String.Empty Then
                 ReportCeBase.ValidateBeginEndDate(moBeginDateLabel, moBeginDateText.Text, moEndDateLabel, moEndDateText.Text)
                 endDate = ReportCeBase.FormatDate(moEndDateLabel, moEndDateText.Text)
                 beginDate = ReportCeBase.FormatDate(moBeginDateLabel, moBeginDateText.Text)
@@ -158,8 +158,7 @@ Namespace Reports
                 oListContext.CompanyId = CompanyMultipleDrop.SelectedGuid
                 Dim acctFileLst As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="AccountingTransmissionFileByCompany", context:=oListContext)
                 Dim filteredAcctFileLst As DataElements.ListItem() = (From acclist In acctFileLst
-                                                                      Where ((Date.ParseExact(acclist.ExtendedCode, "MMddyyyy", DateTimeFormatInfo.InvariantInfo) >= Date.ParseExact(beginDate, "yyyyMMdd", DateTimeFormatInfo.InvariantInfo)) And
-                                                                              Date.ParseExact(acclist.ExtendedCode, "MMddyyyy", DateTimeFormatInfo.InvariantInfo) <= Date.ParseExact(endDate, "yyyyMMdd", DateTimeFormatInfo.InvariantInfo))
+                                                                      Where ((Date.ParseExact(acclist.ExtendedCode, "MMddyyyy", DateTimeFormatInfo.InvariantInfo) >= Date.ParseExact(beginDate, "yyyyMMdd", DateTimeFormatInfo.InvariantInfo)) AndAlso Date.ParseExact(acclist.ExtendedCode, "MMddyyyy", DateTimeFormatInfo.InvariantInfo) <= Date.ParseExact(endDate, "yyyyMMdd", DateTimeFormatInfo.InvariantInfo))
                                                                       Select acclist)
                 cboFileName.Populate(acctFileLst, New PopulateOptions() With
                                 {

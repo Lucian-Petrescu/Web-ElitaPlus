@@ -105,7 +105,7 @@ Public Class ApInvoiceLines
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ApInvoiceLinesDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -116,7 +116,7 @@ Public Class ApInvoiceLines
     End Property
 	
     <ValueMandatory("")> _
-    Public Property ApInvoiceHeaderId() As Guid
+    Public Property ApInvoiceHeaderId As Guid
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_AP_INVOICE_HEADER_ID) Is DBNull.Value Then
@@ -125,7 +125,7 @@ Public Class ApInvoiceLines
                 Return New Guid(CType(row(ApInvoiceLinesDAL.COL_NAME_AP_INVOICE_HEADER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_AP_INVOICE_HEADER_ID, Value)
         End Set
@@ -133,7 +133,7 @@ Public Class ApInvoiceLines
 	
 	
     <ValueMandatory("Line Number")> _
-    Public Property LineNumber() As LongType
+    Public Property LineNumber As LongType
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_LINE_NUMBER) Is DBNull.Value Then
@@ -142,7 +142,7 @@ Public Class ApInvoiceLines
                 Return New LongType(CType(row(ApInvoiceLinesDAL.COL_NAME_LINE_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_LINE_NUMBER, Value)
         End Set
@@ -150,7 +150,7 @@ Public Class ApInvoiceLines
 	
 	
     <ValueMandatory("Line Type"),ValidStringLength("", Max:=400)> _
-    Public Property LineType() As String
+    Public Property LineType As String
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_LINE_TYPE) Is DBNull.Value Then
@@ -159,7 +159,7 @@ Public Class ApInvoiceLines
                 Return CType(row(ApInvoiceLinesDAL.COL_NAME_LINE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_LINE_TYPE, Value)
         End Set
@@ -167,7 +167,7 @@ Public Class ApInvoiceLines
 	
 	
     <ValueMandatoryVendorItem("Vendor Item Code"),ValidStringLength("", Max:=400)> _
-    Public Property VendorItemCode() As String
+    Public Property VendorItemCode As String
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_VENDOR_ITEM_CODE) Is DBNull.Value Then
@@ -176,7 +176,7 @@ Public Class ApInvoiceLines
                 Return CType(row(ApInvoiceLinesDAL.COL_NAME_VENDOR_ITEM_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_VENDOR_ITEM_CODE, Value)
         End Set
@@ -184,7 +184,7 @@ Public Class ApInvoiceLines
 	
 	
     <ValueMandatoryVendorItemDescription("Description"),ValidStringLength("", Max:=1000)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -193,7 +193,7 @@ Public Class ApInvoiceLines
                 Return CType(row(ApInvoiceLinesDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -201,7 +201,7 @@ Public Class ApInvoiceLines
 	
 	
     <ValueMandatoryquantity("Quantity")> _
-    Public Property Quantity() As DecimalType
+    Public Property Quantity As DecimalType
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_QUANTITY) Is DBNull.Value Then
@@ -210,7 +210,7 @@ Public Class ApInvoiceLines
                 Return New DecimalType(CType(row(ApInvoiceLinesDAL.COL_NAME_QUANTITY), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_QUANTITY, Value)
         End Set
@@ -218,7 +218,7 @@ Public Class ApInvoiceLines
 	
 	
     <ValueMandatoryUom("Unit of Measurement"),ValidStringLength("", Max:=400)> _
-    Public Property UomXcd() As String
+    Public Property UomXcd As String
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_UOM_XCD) Is DBNull.Value Then
@@ -227,7 +227,7 @@ Public Class ApInvoiceLines
                 Return CType(row(ApInvoiceLinesDAL.COL_NAME_UOM_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_UOM_XCD, Value)
         End Set
@@ -235,7 +235,7 @@ Public Class ApInvoiceLines
 	
 	
     <ValueMandatory("")> _
-    Public Property MatchedQuantity() As DecimalType
+    Public Property MatchedQuantity As DecimalType
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_MATCHED_QUANTITY) Is DBNull.Value Then
@@ -244,7 +244,7 @@ Public Class ApInvoiceLines
                 Return New DecimalType(CType(row(ApInvoiceLinesDAL.COL_NAME_MATCHED_QUANTITY), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_MATCHED_QUANTITY, Value)
         End Set
@@ -252,7 +252,7 @@ Public Class ApInvoiceLines
 	
 	
     <ValueMandatory("")> _
-    Public Property PaidQuantity() As DecimalType
+    Public Property PaidQuantity As DecimalType
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_PAID_QUANTITY) Is DBNull.Value Then
@@ -261,7 +261,7 @@ Public Class ApInvoiceLines
                 Return New DecimalType(CType(row(ApInvoiceLinesDAL.COL_NAME_PAID_QUANTITY), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_PAID_QUANTITY, Value)
         End Set
@@ -269,7 +269,7 @@ Public Class ApInvoiceLines
 	
 	
     <ValueMandatoryUnitPrice("Unit Price")> _
-    Public Property UnitPrice() As DecimalType
+    Public Property UnitPrice As DecimalType
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_UNIT_PRICE) Is DBNull.Value Then
@@ -278,7 +278,7 @@ Public Class ApInvoiceLines
                 Return New DecimalType(CType(row(ApInvoiceLinesDAL.COL_NAME_UNIT_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_UNIT_PRICE, Value)
         End Set
@@ -286,7 +286,7 @@ Public Class ApInvoiceLines
 	
 	
     <ValueMandatoryTotalPrice("")> _
-    Public Property TotalPrice() As DecimalType
+    Public Property TotalPrice As DecimalType
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_TOTAL_PRICE) Is DBNull.Value Then
@@ -295,7 +295,7 @@ Public Class ApInvoiceLines
                 Return New DecimalType(CType(row(ApInvoiceLinesDAL.COL_NAME_TOTAL_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_TOTAL_PRICE, Value)
         End Set
@@ -303,7 +303,7 @@ Public Class ApInvoiceLines
 	
 	
     
-    Public Property ParentLineNumber() As LongType
+    Public Property ParentLineNumber As LongType
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_PARENT_LINE_NUMBER) Is DBNull.Value Then
@@ -312,7 +312,7 @@ Public Class ApInvoiceLines
                 Return New LongType(CType(row(ApInvoiceLinesDAL.COL_NAME_PARENT_LINE_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_PARENT_LINE_NUMBER, Value)
         End Set
@@ -320,7 +320,7 @@ Public Class ApInvoiceLines
 	
 	
     <ValidStringLength("", Max:=400)> _
-    Public Property PoNumber() As String
+    Public Property PoNumber As String
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_PO_NUMBER) Is DBNull.Value Then
@@ -329,7 +329,7 @@ Public Class ApInvoiceLines
                 Return CType(row(ApInvoiceLinesDAL.COL_NAME_PO_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_PO_NUMBER, Value)
         End Set
@@ -337,7 +337,7 @@ Public Class ApInvoiceLines
 	
 	
     
-    Public Property PoDate() As DateType
+    Public Property PoDate As DateType
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_PO_DATE) Is DBNull.Value Then
@@ -346,7 +346,7 @@ Public Class ApInvoiceLines
                 Return New DateType(CType(row(ApInvoiceLinesDAL.COL_NAME_PO_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_PO_DATE, Value)
         End Set
@@ -354,7 +354,7 @@ Public Class ApInvoiceLines
 	
 	
     
-    Public Property BillingPeriodStartDate() As DateType
+    Public Property BillingPeriodStartDate As DateType
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_BILLING_PERIOD_START_DATE) Is DBNull.Value Then
@@ -363,7 +363,7 @@ Public Class ApInvoiceLines
                 Return New DateType(CType(row(ApInvoiceLinesDAL.COL_NAME_BILLING_PERIOD_START_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_BILLING_PERIOD_START_DATE, Value)
         End Set
@@ -371,7 +371,7 @@ Public Class ApInvoiceLines
 	
 	
     
-    Public Property BillingPeriodEndDate() As DateType
+    Public Property BillingPeriodEndDate As DateType
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_BILLING_PERIOD_END_DATE) Is DBNull.Value Then
@@ -380,7 +380,7 @@ Public Class ApInvoiceLines
                 Return New DateType(CType(row(ApInvoiceLinesDAL.COL_NAME_BILLING_PERIOD_END_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_BILLING_PERIOD_END_DATE, Value)
         End Set
@@ -388,7 +388,7 @@ Public Class ApInvoiceLines
 	
 	
     <ValidStringLength("", Max:=400)> _
-    Public Property ReferenceNumber() As String
+    Public Property ReferenceNumber As String
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_REFERENCE_NUMBER) Is DBNull.Value Then
@@ -397,7 +397,7 @@ Public Class ApInvoiceLines
                 Return CType(row(ApInvoiceLinesDAL.COL_NAME_REFERENCE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_REFERENCE_NUMBER, Value)
         End Set
@@ -405,7 +405,7 @@ Public Class ApInvoiceLines
 	
 	
     <ValidStringLength("", Max:=1000)> _
-    Public Property VendorTransactionType() As String
+    Public Property VendorTransactionType As String
         Get
             CheckDeleted()
             If row(ApInvoiceLinesDAL.COL_NAME_VENDOR_TRANSACTION_TYPE) Is DBNull.Value Then
@@ -414,7 +414,7 @@ Public Class ApInvoiceLines
                 Return CType(row(ApInvoiceLinesDAL.COL_NAME_VENDOR_TRANSACTION_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ApInvoiceLinesDAL.COL_NAME_VENDOR_TRANSACTION_TYPE, Value)
         End Set

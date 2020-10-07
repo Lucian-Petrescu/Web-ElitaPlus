@@ -180,11 +180,11 @@ Namespace Tables
                 moListPriceGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 moListPriceGrid.CurrentPageIndex = 0
 
-                If txtFromDate.Text <> "" And txtToDate.Text = "" Then
+                If txtFromDate.Text <> "" AndAlso txtToDate.Text = "" Then
                     txtToDate = txtFromDate
                 End If
 
-                If txtToDate.Text <> "" And txtFromDate.Text = "" Then
+                If txtToDate.Text <> "" AndAlso txtFromDate.Text = "" Then
                     txtFromDate = txtToDate
                 End If
 
@@ -194,7 +194,7 @@ Namespace Tables
 
                 'Dates
                 'High date must be higher than low date.
-                If txtFromDate.Text <> "" Or txtToDate.Text <> "" Then
+                If txtFromDate.Text <> "" OrElse txtToDate.Text <> "" Then
                     ExchangeRateListForm.ValidateBeginEndDate(lblFromDate, txtFromDate.Text, lblToDate, txtToDate.Text)
                 End If
 

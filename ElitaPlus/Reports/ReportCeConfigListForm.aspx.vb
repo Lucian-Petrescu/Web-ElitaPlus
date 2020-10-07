@@ -136,8 +136,8 @@
 
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-                If dvRow IsNot Nothing And Not State.bnoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         '  e.Row.Cells(Me.GRID_COL_REPORT_CONFIG_ID).Text = GetGuidStringFromByteArray(CType(dvRow(Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV.COL_USER_ID), Byte()))
                         e.Row.Cells(GRID_COL_COMPANY).Text = dvRow(ReportConfig.ReportConfigSearchDV.COL_COMPANY).ToString
                         e.Row.Cells(GRID_COL_REPORT).Text = dvRow(ReportConfig.ReportConfigSearchDV.COL_REPORT).ToString

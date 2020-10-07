@@ -90,7 +90,7 @@ Public Class ServiceClassType
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ServiceClassTypeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ServiceClassType
     End Property
 
     <ValueMandatory("")>
-    Public Property ServiceClassId() As Guid
+    Public Property ServiceClassId As Guid
         Get
             CheckDeleted()
             If Row(ServiceClassTypeDAL.COL_NAME_SERVICE_CLASS_ID) Is DBNull.Value Then
@@ -110,13 +110,13 @@ Public Class ServiceClassType
                 Return New Guid(CType(Row(ServiceClassTypeDAL.COL_NAME_SERVICE_CLASS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceClassTypeDAL.COL_NAME_SERVICE_CLASS_ID, Value)
         End Set
     End Property
 
-    Public Property ServiceTypeId() As Guid
+    Public Property ServiceTypeId As Guid
         Get
             CheckDeleted()
             If Row(ServiceClassTypeDAL.COL_NAME_SERVICE_TYPE_ID) Is DBNull.Value Then
@@ -125,13 +125,13 @@ Public Class ServiceClassType
                 Return New Guid(CType(Row(ServiceClassTypeDAL.COL_NAME_SERVICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceClassTypeDAL.COL_NAME_SERVICE_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property IsDeductibleId() As Guid
+    Public Property IsDeductibleId As Guid
         Get
             CheckDeleted()
             If Row(ServiceClassTypeDAL.COL_NAME_IS_DEDUCTIBLE_ID) Is DBNull.Value Then
@@ -140,13 +140,13 @@ Public Class ServiceClassType
                 Return New Guid(CType(Row(ServiceClassTypeDAL.COL_NAME_IS_DEDUCTIBLE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceClassTypeDAL.COL_NAME_IS_DEDUCTIBLE_ID, Value)
         End Set
     End Property
 
-    Public Property IsStandardId() As Guid
+    Public Property IsStandardId As Guid
         Get
             CheckDeleted()
             If Row(ServiceClassTypeDAL.COL_NAME_IS_STANDARD_ID) Is DBNull.Value Then
@@ -155,13 +155,13 @@ Public Class ServiceClassType
                 Return New Guid(CType(Row(ServiceClassTypeDAL.COL_NAME_IS_STANDARD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceClassTypeDAL.COL_NAME_IS_STANDARD_ID, Value)
         End Set
     End Property
 
-    Public Property ContainsDeductibleId() As Guid
+    Public Property ContainsDeductibleId As Guid
         Get
             CheckDeleted()
             If Row(ServiceClassTypeDAL.COL_NAME_CONTAINS_DEDUCTIBLE_ID) Is DBNull.Value Then
@@ -170,25 +170,25 @@ Public Class ServiceClassType
                 Return New Guid(CType(Row(ServiceClassTypeDAL.COL_NAME_CONTAINS_DEDUCTIBLE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceClassTypeDAL.COL_NAME_CONTAINS_DEDUCTIBLE_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property ServiceClassCode() As String
+    Public ReadOnly Property ServiceClassCode As String
         Get
             Return LookupListNew.GetCodeFromId(Codes.SERVICE_CLASS, ServiceClassId)
         End Get
     End Property
 
-    Public ReadOnly Property ServiceTypeCode() As String
+    Public ReadOnly Property ServiceTypeCode As String
         Get
             Return LookupListNew.GetCodeFromId(Codes.SERVICE_CLASS_TYPE, ServiceTypeId)
         End Get
     End Property
 
-    Public ReadOnly Property IsDeductibleApplicable() As Boolean
+    Public ReadOnly Property IsDeductibleApplicable As Boolean
         Get
             If (IsDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) Then
                 Return True
@@ -198,7 +198,7 @@ Public Class ServiceClassType
         End Get
     End Property
 
-    Public ReadOnly Property IsStandardItem() As Boolean
+    Public ReadOnly Property IsStandardItem As Boolean
         Get
             If (IsStandardId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) Then
                 Return True
@@ -208,7 +208,7 @@ Public Class ServiceClassType
         End Get
     End Property
 
-    Public ReadOnly Property ContainsDeductible() As Boolean
+    Public ReadOnly Property ContainsDeductible As Boolean
         Get
             If (ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) Then
                 Return True

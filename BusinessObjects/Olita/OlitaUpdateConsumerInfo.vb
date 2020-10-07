@@ -248,7 +248,7 @@ Public Class OlitaUpdateConsumerInfo
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
@@ -256,14 +256,14 @@ Public Class OlitaUpdateConsumerInfo
                 Return (CType(Row(DATA_COL_NAME_DEALER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
             If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -271,12 +271,12 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
-    Public Property SalutationCode() As String
+    Public Property SalutationCode As String
         Get
             If Row(DATA_COL_SALUTATION) Is DBNull.Value Then
                 Return Nothing
@@ -284,13 +284,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return (CType(Row(DATA_COL_SALUTATION), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_SALUTATION, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-    Public Property CustomerName() As String
+    Public Property CustomerName As String
         Get
             If Row(DATA_COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -298,14 +298,14 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_CUSTOMER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CUSTOMER_NAME, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             If Row(DATA_COL_NAME_ADDRESS1) Is DBNull.Value Then
                 Return Nothing
@@ -313,13 +313,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_ADDRESS1, Value)
         End Set
     End Property
 
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             If Row(DATA_COL_NAME_ADDRESS2) Is DBNull.Value Then
                 Return Nothing
@@ -327,14 +327,14 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_ADDRESS2, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property City() As String
+    Public Property City As String
         Get
             If Row(DATA_COL_NAME_CITY) Is DBNull.Value Then
                 Return Nothing
@@ -342,14 +342,14 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CITY, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ShortDescription() As String
+    Public Property ShortDescription As String
         Get
             If Row(DATA_COL_NAME_REGION_SHORT_DESCRIPTION) Is DBNull.Value Then
                 Return Nothing
@@ -357,14 +357,14 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_REGION_SHORT_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_REGION_SHORT_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidUserCountry("")> _
-    Public Property CountryCode() As String
+    Public Property CountryCode As String
         Get
             If Row(DATA_COL_NAME_COUNTRY_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -372,14 +372,14 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_COUNTRY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_COUNTRY_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property PostalCode() As String
+    Public Property PostalCode As String
         Get
             If Row(DATA_COL_NAME_POSTAL_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -387,14 +387,14 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_POSTAL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_POSTAL_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property HomePhone() As String
+    Public Property HomePhone As String
         Get
             If Row(DATA_COL_NAME_HOME_PHONE) Is DBNull.Value Then
                 Return Nothing
@@ -402,14 +402,14 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_HOME_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_HOME_PHONE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Email() As String
+    Public Property Email As String
         Get
             If Row(DATA_COL_NAME_EMAIL) Is DBNull.Value Then
                 Return Nothing
@@ -417,14 +417,14 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_EMAIL, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property UserPassword() As String
+    Public Property UserPassword As String
         Get
             If Row(DATA_COL_NAME_USER_PASSWORD) Is DBNull.Value Then
                 Return Nothing
@@ -432,13 +432,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_USER_PASSWORD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_USER_PASSWORD, Value)
         End Set
     End Property
 
-    Public Property WorkPhone() As String
+    Public Property WorkPhone As String
         Get
             If Row(DATA_COL_NAME_WORK_PHONE) Is DBNull.Value Then
                 Return Nothing
@@ -446,13 +446,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_WORK_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_WORK_PHONE, Value)
         End Set
     End Property
 
-    Public Property MembershipNumber() As String
+    Public Property MembershipNumber As String
         Get
             If Row(DATA_COL_NAME_MEMBERSHIP_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -460,13 +460,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_MEMBERSHIP_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MEMBERSHIP_NUMBER, Value)
         End Set
     End Property
 
-    Public Property PrimaryMemberName() As String
+    Public Property PrimaryMemberName As String
         Get
             If Row(DATA_COL_NAME_PRIMARY_MEMBER_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -474,13 +474,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_PRIMARY_MEMBER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_PRIMARY_MEMBER_NAME, Value)
         End Set
     End Property
 
-    Public Property MailingAddress1() As String
+    Public Property MailingAddress1 As String
         Get
             If Row(DATA_COL_NAME_MAILING_ADDRESS1) Is DBNull.Value Then
                 Return Nothing
@@ -488,13 +488,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_MAILING_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MAILING_ADDRESS1, Value)
         End Set
     End Property
 
-    Public Property MailingAddress2() As String
+    Public Property MailingAddress2 As String
         Get
             If Row(DATA_COL_NAME_MAILING_ADDRESS2) Is DBNull.Value Then
                 Return Nothing
@@ -502,13 +502,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_MAILING_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MAILING_ADDRESS2, Value)
         End Set
     End Property
 
-    Public Property MailingCity() As String
+    Public Property MailingCity As String
         Get
             If Row(DATA_COL_NAME_MAILING_CITY) Is DBNull.Value Then
                 Return Nothing
@@ -516,13 +516,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_MAILING_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MAILING_CITY, Value)
         End Set
     End Property
 
-    Public Property MailingRegionShortDescription() As String
+    Public Property MailingRegionShortDescription As String
         Get
             If Row(DATA_COL_NAME_MAILING_REGION_SHORT_DESCRIPTION) Is DBNull.Value Then
                 Return Nothing
@@ -530,13 +530,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_MAILING_REGION_SHORT_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MAILING_REGION_SHORT_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property MailingCountryCode() As String
+    Public Property MailingCountryCode As String
         Get
             If Row(DATA_COL_NAME_MAILING_COUNTRY_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -544,13 +544,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_MAILING_COUNTRY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MAILING_COUNTRY_CODE, Value)
         End Set
     End Property
 
-    Public Property MailingPostalCode() As String
+    Public Property MailingPostalCode As String
         Get
             If Row(DATA_COL_NAME_MAILING_POSTAL_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -558,13 +558,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_MAILING_POSTAL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MAILING_POSTAL_CODE, Value)
         End Set
     End Property
 
-    Public Property WarrantySalesDate() As DateType
+    Public Property WarrantySalesDate As DateType
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_WARRANTY_SALES_DATE) Is DBNull.Value Then
@@ -573,13 +573,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return New DateType(CType(Row(DATA_COL_NAME_WARRANTY_SALES_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_WARRANTY_SALES_DATE, Value)
         End Set
     End Property
 
-    Public Property MembershipType() As String
+    Public Property MembershipType As String
         Get
             If Row(DATA_COL_NAME_MEMBERSHIP_TYPE) Is DBNull.Value Then
                 Return Nothing
@@ -587,13 +587,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_MEMBERSHIP_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MEMBERSHIP_TYPE, Value)
         End Set
     End Property
 
-    Public Property ProductSalesDate() As DateType
+    Public Property ProductSalesDate As DateType
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_PRODUCT_SALES_DATE) Is DBNull.Value Then
@@ -602,13 +602,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return New DateType(CType(Row(DATA_COL_NAME_PRODUCT_SALES_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_PRODUCT_SALES_DATE, Value)
         End Set
     End Property
 
-    Public Property SalesPrice() As DecimalType
+    Public Property SalesPrice As DecimalType
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_SALES_PRICE) Is DBNull.Value Then
@@ -617,13 +617,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return New DecimalType(CType(Row(DATA_COL_NAME_SALES_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_SALES_PRICE, Value)
         End Set
     End Property
 
-    Public Property VATNum() As String
+    Public Property VATNum As String
         Get
             If Row(DATA_COL_NAME_VAT_NUM) Is DBNull.Value Then
                 Return Nothing
@@ -631,13 +631,13 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_VAT_NUM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_VAT_NUM, Value)
         End Set
     End Property
 
-    Public Property IdentificationNumber() As String
+    Public Property IdentificationNumber As String
         Get
             If Row(DATA_COL_NAME_IDENTIFICATION_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -645,7 +645,7 @@ Public Class OlitaUpdateConsumerInfo
                 Return CType(Row(DATA_COL_NAME_IDENTIFICATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_IDENTIFICATION_NUMBER, Value)
         End Set
@@ -654,7 +654,7 @@ Public Class OlitaUpdateConsumerInfo
 
 #Region "Extended Properties"
 
-    Private ReadOnly Property CountryId() As Guid
+    Private ReadOnly Property CountryId As Guid
         Get
             If _countryId.Equals(Guid.Empty) Then
                 Dim objCountryDV As DataView = Country.getList("", CountryCode)
@@ -671,7 +671,7 @@ Public Class OlitaUpdateConsumerInfo
         End Get
     End Property
 
-    Private ReadOnly Property RegionId() As Guid
+    Private ReadOnly Property RegionId As Guid
         Get
             If _regionId.Equals(Guid.Empty) Then
                 'Dim alUserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -705,7 +705,7 @@ Public Class OlitaUpdateConsumerInfo
     '    End Get
     'End Property
 
-    Private ReadOnly Property MailingCountryId() As Guid
+    Private ReadOnly Property MailingCountryId As Guid
         Get
             If MailingCountryCode Is Nothing Then
                 Return _mailing_countryId
@@ -744,7 +744,7 @@ Public Class OlitaUpdateConsumerInfo
     '    End Get
     'End Property
 
-    Private ReadOnly Property MailingRegionId() As Guid
+    Private ReadOnly Property MailingRegionId As Guid
         Get
             If MailingRegionShortDescription Is Nothing Then
                 Return _mailing_regionId
@@ -813,20 +813,20 @@ Public Class OlitaUpdateConsumerInfo
         End Get
     End Property
 
-    Private Property IsEndorse() As Boolean
+    Private Property IsEndorse As Boolean
         Get
             Return mbIsEndorse
         End Get
-        Set(ByVal value As Boolean)
+        Set
             mbIsEndorse = value
         End Set
     End Property
 
-    Private Property TheCertEndorse() As CertEndorse
+    Private Property TheCertEndorse As CertEndorse
         Get
             Return moCertEndorse
         End Get
-        Set(ByVal value As CertEndorse)
+        Set
             moCertEndorse = value
         End Set
     End Property

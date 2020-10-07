@@ -287,7 +287,7 @@ Public NotInheritable Class ClaimFacade
 End Class
 
 Public Module CLaimExtentions
-    <Extension()> _
+    <Extension> _
     Public Function AsClaim(Of TClaim As ClaimBase)(oClaim As ClaimBase) As TClaim
         If (GetType(TClaim).IsAssignableFrom(oClaim.GetType())) Then
             Return CType(oClaim, TClaim)

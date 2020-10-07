@@ -89,7 +89,7 @@ Public Class EntityIssue
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(EntityIssueDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class EntityIssue
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Entity() As String
+    Public Property Entity As String
         Get
             CheckDeleted()
             If row(EntityIssueDAL.COL_NAME_ENTITY) Is DBNull.Value Then
@@ -109,14 +109,14 @@ Public Class EntityIssue
                 Return CType(row(EntityIssueDAL.COL_NAME_ENTITY), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(EntityIssueDAL.COL_NAME_ENTITY, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Protected Overridable Property EntityId() As Guid
+    Protected Overridable Property EntityId As Guid
         Get
             CheckDeleted()
             If row(EntityIssueDAL.COL_NAME_ENTITY_ID) Is DBNull.Value Then
@@ -125,14 +125,14 @@ Public Class EntityIssue
                 Return New Guid(CType(row(EntityIssueDAL.COL_NAME_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EntityIssueDAL.COL_NAME_ENTITY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property IssueId() As Guid
+    Public Property IssueId As Guid
         Get
             CheckDeleted()
             If Row(EntityIssueDAL.COL_NAME_ISSUE_ID) Is DBNull.Value Then
@@ -141,13 +141,13 @@ Public Class EntityIssue
                 Return New Guid(CType(Row(EntityIssueDAL.COL_NAME_ISSUE_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EntityIssueDAL.COL_NAME_ISSUE_ID, Value)
         End Set
     End Property
 
-    Protected Overridable Property WorkQueueItemCreatedId() As Guid
+    Protected Overridable Property WorkQueueItemCreatedId As Guid
         Get
             CheckDeleted()
             If Row(EntityIssueDAL.COL_NAME_WORKQUEUE_ITEM_CREATED_ID) Is DBNull.Value Then
@@ -156,12 +156,12 @@ Public Class EntityIssue
                 Return New Guid(CType(Row(EntityIssueDAL.COL_NAME_WORKQUEUE_ITEM_CREATED_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EntityIssueDAL.COL_NAME_WORKQUEUE_ITEM_CREATED_ID, Value)
         End Set
     End Property
-    Public ReadOnly Property EntityIssueData() As String
+    Public ReadOnly Property EntityIssueData As String
         Get
             CheckDeleted()
             If Row(EntityIssueDAL.COL_NAME_ENTITY_ISSUE_DATA) Is DBNull.Value Then

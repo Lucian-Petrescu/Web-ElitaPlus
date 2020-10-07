@@ -288,7 +288,7 @@ Partial Class UserControlInvoiceRegionTaxes
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim strID As String '= InvoiceTransactionId
 
-            If dvRow IsNot Nothing And Not TheState.bnoRow Then
+            If dvRow IsNot Nothing AndAlso Not TheState.bnoRow Then
                 strID = ThePage.GetGuidStringFromByteArray(CType(dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_INVOICE_REGION_TAX_ID), Byte()))
 
                 If (TheState.IsEditMode = True AndAlso TheState.DefaultInvoiceTransID.ToString.Equals(strID)) Then
@@ -524,8 +524,8 @@ Partial Class UserControlInvoiceRegionTaxes
                 recCount = TheState.InvoiceRegionTaxDV.Count
             End If
             If TheState.IsEditable Then
-                If InvoiceStatus IsNot Nothing And InvoiceStatus <> String.Empty Then
-                    If InvoiceStatus = INVOICE_STATUS_PAID Or InvoiceStatus = INVOICE_STATUS_REJECTED Then
+                If InvoiceStatus IsNot Nothing AndAlso InvoiceStatus <> String.Empty Then
+                    If InvoiceStatus = INVOICE_STATUS_PAID OrElse InvoiceStatus = INVOICE_STATUS_REJECTED Then
                         ControlMgr.SetVisibleControl(ThePage, NewButton_WRITE, False)
                     Else
                         If recCount <= 23 Then
@@ -700,8 +700,8 @@ Partial Class UserControlInvoiceRegionTaxes
 
     Protected Sub GridIIBBTaxes_DataBound(sender As Object, e As EventArgs) Handles GridIIBBTaxes.DataBound
         If TheState.IsEditable Then
-            If InvoiceStatus IsNot Nothing And InvoiceStatus <> String.Empty Then
-                If InvoiceStatus = INVOICE_STATUS_PAID Or InvoiceStatus = INVOICE_STATUS_REJECTED Then
+            If InvoiceStatus IsNot Nothing AndAlso InvoiceStatus <> String.Empty Then
+                If InvoiceStatus = INVOICE_STATUS_PAID OrElse InvoiceStatus = INVOICE_STATUS_REJECTED Then
                     GridIIBBTaxes.Columns(GRID_COL_EDIT).Visible = False
 
                 Else
@@ -752,7 +752,7 @@ Partial Class UserControlInvoiceRegionTaxes
         ' get the new current page index
         Dim i As Integer
         For i = 1 To intNewPageCount
-            If intFirstRecordIndex >= (i - 1) * intNewPageSize + 1 And intFirstRecordIndex <= i * intNewPageSize Then
+            If intFirstRecordIndex >= (i - 1) * intNewPageSize + 1 AndAlso intFirstRecordIndex <= i * intNewPageSize Then
                 intNewCurrentPageIndex = i - 1
                 Exit For
             End If

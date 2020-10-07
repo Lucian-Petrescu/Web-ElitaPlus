@@ -331,7 +331,7 @@ Namespace Certificates
                 AddHandler CType(e.Item.FindControl("BillingStatusDropdown"), DropDownList).SelectedIndexChanged, AddressOf EnableDisableRejectCodeDD
             End If
 
-            If elemType = ListItemType.AlternatingItem Or elemType = ListItemType.Item Then
+            If elemType = ListItemType.AlternatingItem OrElse elemType = ListItemType.Item Then
                 Dim objButton As Button
                 objButton = CType(e.Item.Cells(GRID_COL_PAID).FindControl("btnPaid"), Button)
                 objButton.Style.Add("background-color", "#dee3e7")
@@ -348,7 +348,7 @@ Namespace Certificates
                 AddHandler CType(e.Item.FindControl("BillingStatusDropdown"), DropDownList).SelectedIndexChanged, AddressOf EnableDisableRejectCodeDD_VSC
             End If
 
-            If elemType = ListItemType.AlternatingItem Or elemType = ListItemType.Item Then
+            If elemType = ListItemType.AlternatingItem OrElse elemType = ListItemType.Item Then
                 Dim objButton As Button
                 objButton = CType(e.Item.Cells(GRID_COL_PAID_VSC).FindControl("btnPaid"), Button)
                 objButton.Style.Add("background-color", "#dee3e7")
@@ -381,9 +381,9 @@ Namespace Certificates
 
                     Dim allRejectTable As DataTable = New DataTable()
                     allRejectTable = oGetAllRejInstNoForCert.ToTable()
-                    If allRejectTable IsNot Nothing And allRejectTable.Rows.Count > 0 Then
+                    If allRejectTable IsNot Nothing AndAlso allRejectTable.Rows.Count > 0 Then
                         dataChk = allRejectTable.Select("installment_number=" & dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString())
-                        If (dataChk IsNot Nothing And dataChk.Length > 0) Then  ' Data available 
+                        If (dataChk IsNot Nothing AndAlso dataChk.Length > 0) Then  ' Data available 
                             displayButton = True
                         Else
                             displayButton = False
@@ -394,7 +394,7 @@ Namespace Certificates
 
                 End If
                 'DEF-2822 End
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Item.Cells(GRID_COL_BILLING_DETAIL_ID).Text = New Guid(CType(dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_BILLING_DETAIL_ID), Byte())).ToString
                     e.Item.Cells(GRID_COL_INSTALLMENT_NUMB).Text = dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString
                     e.Item.Cells(GRID_COL_CREATED_DATE).Text = dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_CREATED_DATE).ToString
@@ -408,11 +408,11 @@ Namespace Certificates
                         Dim emptyGuid As Guid = Guid.Empty
                         Dim singlePremiumId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_PERIOD_RENEW, Codes.PERIOD_RENEW__SINGLE_PREMIUM)
                         'If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.MonthlyBillingId) = Codes.YESNO_Y) And (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.IncludeFirstPmt) = Codes.YESNO_Y) Then
-                        If (((Not oContract.RecurringPremiumId.Equals(emptyGuid)) And (Not oContract.RecurringPremiumId.Equals(singlePremiumId))) And (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.IncludeFirstPmt) = Codes.YESNO_Y)) Then
+                        If (((Not oContract.RecurringPremiumId.Equals(emptyGuid)) AndAlso (Not oContract.RecurringPremiumId.Equals(singlePremiumId))) AndAlso (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.IncludeFirstPmt) = Codes.YESNO_Y)) Then
                             'Req - 1016 - end
                             img.Visible = False
                         Else
-                            If oBSCode = BILLING_STATUS_ACTIVE And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString = oMaxActiveInstNoForCert) Then
+                            If oBSCode = BILLING_STATUS_ACTIVE AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString = oMaxActiveInstNoForCert) Then
                                 img.Visible = True
                             Else
                                 img.Visible = False
@@ -420,13 +420,13 @@ Namespace Certificates
                         End If
                     Else
                         If LookupListNew.GetCodeFromId(LookupListNew.LK_ALLOW_CC_REJECTIONS, oContract.AllowMultipleRejectionsId) = Codes.ALLOW_CC_REJECTIONS_NO Then
-                            If oBSCode = BILLING_STATUS_ACTIVE And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString = oMaxActiveInstNoForCert) Then
+                            If oBSCode = BILLING_STATUS_ACTIVE AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString = oMaxActiveInstNoForCert) Then
                                 img.Visible = True
                             Else
                                 img.Visible = False
                             End If
                         Else
-                            If oBSCode = BILLING_STATUS_ACTIVE And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") Then
+                            If oBSCode = BILLING_STATUS_ACTIVE AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") Then
                                 img.Visible = True
                             Else
                                 img.Visible = False
@@ -441,7 +441,7 @@ Namespace Certificates
                     End If
 
                     If LookupListNew.GetCodeFromId(LookupListNew.LK_ALLOW_CC_REJECTIONS, oContract.AllowMultipleRejectionsId) = Codes.ALLOW_CC_REJECTIONS_NO Then
-                        If oBSCode = BILLING_STATUS_REJECT And dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_PAID).ToString = "" And displayButton And Integer.Parse(dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString) < 0 Then
+                        If oBSCode = BILLING_STATUS_REJECT AndAlso dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_PAID).ToString = "" AndAlso displayButton AndAlso Integer.Parse(dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString) < 0 Then
                             Dim btnpd As Button = CType(e.Item.Cells(GRID_COL_PAID).FindControl("btnPaid"), Button)
                             ControlMgr.SetVisibleControl(Me, btnpd, True)
                         Else
@@ -457,7 +457,7 @@ Namespace Certificates
                         Dim i As Integer
                         For i = 0 To oGetAllRejInstNoForCert.Count - 1
 
-                            If oGetAllRejInstNoForCert(i)(0).ToString = dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString AndAlso oGetAllRejInstNoForCert(i)(1).ToString = dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_CREATED_DATE1).ToString And displayButton Then
+                            If oGetAllRejInstNoForCert(i)(0).ToString = dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString AndAlso oGetAllRejInstNoForCert(i)(1).ToString = dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_CREATED_DATE1).ToString AndAlso displayButton Then
                                 ControlMgr.SetVisibleControl(Me, btnpd, True)
                                 ControlMgr.SetVisibleControl(Me, lblpd, False)
                             End If
@@ -510,11 +510,11 @@ Namespace Certificates
                         Dim emptyGuid As Guid = Guid.Empty
                         Dim singlePremiumId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_PERIOD_RENEW, Codes.PERIOD_RENEW__SINGLE_PREMIUM)
                         'If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.MonthlyBillingId) = Codes.YESNO_Y) And (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.IncludeFirstPmt) = Codes.YESNO_Y) Then
-                        If (((Not oContract.RecurringPremiumId.Equals(emptyGuid)) And (Not oContract.RecurringPremiumId.Equals(singlePremiumId))) And (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.IncludeFirstPmt) = Codes.YESNO_Y)) Then
+                        If (((Not oContract.RecurringPremiumId.Equals(emptyGuid)) AndAlso (Not oContract.RecurringPremiumId.Equals(singlePremiumId))) AndAlso (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.IncludeFirstPmt) = Codes.YESNO_Y)) Then
                             'Req - 1016 - end
                             img.Visible = False
                         Else
-                            If oBSCode = BILLING_STATUS_ACTIVE And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString = oMaxActiveInstNoForCert) Then
+                            If oBSCode = BILLING_STATUS_ACTIVE AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString = oMaxActiveInstNoForCert) Then
                                 img.Visible = True
                             Else
                                 img.Visible = False
@@ -522,13 +522,13 @@ Namespace Certificates
                         End If
                     Else
                         If LookupListNew.GetCodeFromId(LookupListNew.LK_ALLOW_CC_REJECTIONS, oContract.AllowMultipleRejectionsId) = Codes.ALLOW_CC_REJECTIONS_NO Then
-                            If oBSCode = BILLING_STATUS_ACTIVE And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString = oMaxActiveInstNoForCert) Then
+                            If oBSCode = BILLING_STATUS_ACTIVE AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString = oMaxActiveInstNoForCert) Then
                                 img.Visible = True
                             Else
                                 img.Visible = False
                             End If
                         Else
-                            If oBSCode = BILLING_STATUS_ACTIVE And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") Then
+                            If oBSCode = BILLING_STATUS_ACTIVE AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") Then
                                 img.Visible = True
                             Else
                                 img.Visible = False
@@ -564,7 +564,7 @@ Namespace Certificates
                 Dim oContractId As Guid = Contract.GetContractID(CType(CallingParameters, Guid))
                 Dim oContract As New Contract(oContractId)
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Item.Cells(GRID_COL_BILLING_DETAIL_ID).Text = New Guid(CType(dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_BILLING_DETAIL_ID), Byte())).ToString
                     e.Item.Cells(GRID_COL_INSTALLMENT_NUMB).Text = dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString
                     e.Item.Cells(GRID_COL_CREATED_DATE_VSC).Text = dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_CREATED_DATE).ToString
@@ -578,13 +578,13 @@ Namespace Certificates
                     '    img.Visible = False
                     'End If
                     If LookupListNew.GetCodeFromId(LookupListNew.LK_ALLOW_CC_REJECTIONS, oContract.AllowMultipleRejectionsId) = Codes.ALLOW_CC_REJECTIONS_NO Then
-                        If oBSCode = BILLING_STATUS_ACTIVE And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString = oMaxActiveInstNoForCert) Then
+                        If oBSCode = BILLING_STATUS_ACTIVE AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString = oMaxActiveInstNoForCert) Then
                             img.Visible = True
                         Else
                             img.Visible = False
                         End If
                     Else
-                        If oBSCode = BILLING_STATUS_ACTIVE And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") Then
+                        If oBSCode = BILLING_STATUS_ACTIVE AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") Then
                             img.Visible = True
                         Else
                             img.Visible = False
@@ -601,7 +601,7 @@ Namespace Certificates
                     End If
 
                     If LookupListNew.GetCodeFromId(LookupListNew.LK_ALLOW_CC_REJECTIONS, oContract.AllowMultipleRejectionsId) = Codes.ALLOW_CC_REJECTIONS_NO Then
-                        If oBSCode = BILLING_STATUS_REJECT And dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_PAID).ToString = "" And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString = oGetLatestRejInstNoForCert) Then
+                        If oBSCode = BILLING_STATUS_REJECT AndAlso dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_PAID).ToString = "" AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString = oGetLatestRejInstNoForCert) Then
                             Dim btnpd As Button = CType(e.Item.Cells(GRID_COL_PAID_VSC).FindControl("btnPaid"), Button)
                             ControlMgr.SetVisibleControl(Me, btnpd, True)
                         Else
@@ -668,13 +668,13 @@ Namespace Certificates
                     Dim img As ImageButton = CType(e.Item.Cells(0).FindControl("btnEdit"), ImageButton)
 
                     If LookupListNew.GetCodeFromId(LookupListNew.LK_ALLOW_CC_REJECTIONS, oContract.AllowMultipleRejectionsId) = Codes.ALLOW_CC_REJECTIONS_NO Then
-                        If oBSCode = BILLING_STATUS_ACTIVE And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString = oMaxActiveInstNoForCert) Then
+                        If oBSCode = BILLING_STATUS_ACTIVE AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString = oMaxActiveInstNoForCert) Then
                             img.Visible = True
                         Else
                             img.Visible = False
                         End If
                     Else
-                        If oBSCode = BILLING_STATUS_ACTIVE And (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") Then
+                        If oBSCode = BILLING_STATUS_ACTIVE AndAlso (dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_REJECTED_ID).ToString = "") Then
                             img.Visible = True
                         Else
                             img.Visible = False

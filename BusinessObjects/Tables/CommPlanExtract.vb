@@ -90,7 +90,7 @@ Public Class CommPlanExtract
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CommPlanExtractDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class CommPlanExtract
     End Property
 
     <ValueMandatory("")>
-    Public Property CommissionPlanId() As Guid
+    Public Property CommissionPlanId As Guid
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_COMMISSION_PLAN_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class CommPlanExtract
                 Return New Guid(CType(Row(CommPlanExtractDAL.COL_NAME_COMMISSION_PLAN_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_COMMISSION_PLAN_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class CommPlanExtract
 
 
     <ValueMandatory("")>
-    Public Property CommExtractPackageId() As Guid
+    Public Property CommExtractPackageId As Guid
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_COMM_EXTRACT_PACKAGE_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class CommPlanExtract
                 Return New Guid(CType(Row(CommPlanExtractDAL.COL_NAME_COMM_EXTRACT_PACKAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_COMM_EXTRACT_PACKAGE_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class CommPlanExtract
 
 
     <ValueMandatory("")>
-    Public Property SequenceNumber() As LongType
+    Public Property SequenceNumber As LongType
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_SEQUENCE_NUMBER) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class CommPlanExtract
                 Return New LongType(CType(Row(CommPlanExtractDAL.COL_NAME_SEQUENCE_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_SEQUENCE_NUMBER, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class CommPlanExtract
 
 
     <ValueMandatory("")>
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class CommPlanExtract
                 Return New DateType(CType(Row(CommPlanExtractDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class CommPlanExtract
 
 
     <ValueMandatory("")>
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class CommPlanExtract
                 Return New DateType(CType(Row(CommPlanExtractDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class CommPlanExtract
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property CommTitleXcd() As String
+    Public Property CommTitleXcd As String
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_COMM_TITLE_XCD) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class CommPlanExtract
                 Return CType(Row(CommPlanExtractDAL.COL_NAME_COMM_TITLE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_COMM_TITLE_XCD, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class CommPlanExtract
 
 
     <ValidStringLength("", Max:=50)>
-    Public Property CycleFrequencyXcd() As String
+    Public Property CycleFrequencyXcd As String
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_CYCLE_FREQUENCY_XCD) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class CommPlanExtract
                 Return CType(Row(CommPlanExtractDAL.COL_NAME_CYCLE_FREQUENCY_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_CYCLE_FREQUENCY_XCD, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class CommPlanExtract
 
 
 
-    Public Property CycleCutOffDay() As LongType
+    Public Property CycleCutOffDay As LongType
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_CYCLE_CUT_OFF_DAY) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class CommPlanExtract
                 Return New LongType(CType(Row(CommPlanExtractDAL.COL_NAME_CYCLE_CUT_OFF_DAY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_CYCLE_CUT_OFF_DAY, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class CommPlanExtract
 
 
 
-    Public Property CycleRunDay() As LongType
+    Public Property CycleRunDay As LongType
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_CYCLE_RUN_DAY) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class CommPlanExtract
                 Return New LongType(CType(Row(CommPlanExtractDAL.COL_NAME_CYCLE_RUN_DAY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_CYCLE_RUN_DAY, Value)
         End Set
@@ -254,7 +254,7 @@ Public Class CommPlanExtract
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)>
-    Public Property AmountSourceXcd() As String
+    Public Property AmountSourceXcd As String
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_AMOUNT_SOURCE_XCD) Is DBNull.Value Then
@@ -263,14 +263,14 @@ Public Class CommPlanExtract
                 Return CType(Row(CommPlanExtractDAL.COL_NAME_AMOUNT_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_AMOUNT_SOURCE_XCD, Value)
         End Set
     End Property
 
 
-    Public Property CommissionPercentage() As LongType
+    Public Property CommissionPercentage As LongType
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_COMMISSION_PERCENTAGE) Is DBNull.Value Then
@@ -279,14 +279,14 @@ Public Class CommPlanExtract
                 Return New LongType(CType(Row(CommPlanExtractDAL.COL_NAME_COMMISSION_PERCENTAGE), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_COMMISSION_PERCENTAGE, Value)
         End Set
     End Property
 
 
-    Public Property CommissionAmount() As LongType
+    Public Property CommissionAmount As LongType
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_COMMISSION_AMOUNT) Is DBNull.Value Then
@@ -295,7 +295,7 @@ Public Class CommPlanExtract
                 Return New LongType(CType(Row(CommPlanExtractDAL.COL_NAME_COMMISSION_AMOUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_COMMISSION_AMOUNT, Value)
         End Set
@@ -303,7 +303,7 @@ Public Class CommPlanExtract
 
 
     <ValidStringLength("", Max:=50)>
-    Public Property CycleCutOffSourceXcd() As String
+    Public Property CycleCutOffSourceXcd As String
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_CYCLE_CUT_OFF_SOURCE_XCD) Is DBNull.Value Then
@@ -312,7 +312,7 @@ Public Class CommPlanExtract
                 Return CType(Row(CommPlanExtractDAL.COL_NAME_CYCLE_CUT_OFF_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_CYCLE_CUT_OFF_SOURCE_XCD, Value)
         End Set
@@ -320,7 +320,7 @@ Public Class CommPlanExtract
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50), ValidUniqueCode("")>
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -329,7 +329,7 @@ Public Class CommPlanExtract
                 Return CType(Row(CommPlanExtractDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_CODE, Value)
         End Set
@@ -337,7 +337,7 @@ Public Class CommPlanExtract
 
 
     <ValidStringLength("", Max:=200), ValueMandatory("")>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -346,7 +346,7 @@ Public Class CommPlanExtract
                 Return CType(Row(CommPlanExtractDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -354,7 +354,7 @@ Public Class CommPlanExtract
 
 
     <ValidStringLength("", Max:=50)>
-    Public Property CommAtRateXcd() As String
+    Public Property CommAtRateXcd As String
         Get
             CheckDeleted()
             If Row(CommPlanExtractDAL.COL_NAME_COMM_AT_RATE_XCD) Is DBNull.Value Then
@@ -363,7 +363,7 @@ Public Class CommPlanExtract
                 Return CType(Row(CommPlanExtractDAL.COL_NAME_COMM_AT_RATE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CommPlanExtractDAL.COL_NAME_COMM_AT_RATE_XCD, Value)
         End Set
@@ -394,7 +394,7 @@ Public Class CommPlanExtract
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty
         End Get

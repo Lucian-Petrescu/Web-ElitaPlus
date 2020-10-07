@@ -98,7 +98,7 @@ Public Class SoftQuestionGroup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(SoftQuestionGroupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -125,7 +125,7 @@ Public Class SoftQuestionGroup
     'End Property
 
     <ValueMandatory("")> _
-    Public ReadOnly Property CompanyGroupId() As Guid
+    Public ReadOnly Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(SoftQuestionGroupDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -137,7 +137,7 @@ Public Class SoftQuestionGroup
         
     End Property
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(SoftQuestionGroupDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -146,7 +146,7 @@ Public Class SoftQuestionGroup
                 Return CType(Row(SoftQuestionGroupDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SoftQuestionGroupDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -184,7 +184,7 @@ Public Class SoftQuestionGroup
         row.Delete()
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsFamilyDirty()
         End Get

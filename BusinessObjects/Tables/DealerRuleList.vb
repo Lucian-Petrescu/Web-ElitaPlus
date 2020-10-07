@@ -91,7 +91,7 @@ Public Class DealerRuleList
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IExpirable.ID
+    Public ReadOnly Property Id As Guid Implements IExpirable.ID
         Get
             If Row(DealerRuleListDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@ Public Class DealerRuleList
     End Property
 
     <ValueMandatory("")> _
-    Public Property RuleListId() As Guid
+    Public Property RuleListId As Guid
         Get
             CheckDeleted()
             If row(DealerRuleListDAL.COL_NAME_RULE_LIST_ID) Is DBNull.Value Then
@@ -111,14 +111,14 @@ Public Class DealerRuleList
                 Return New Guid(CType(row(DealerRuleListDAL.COL_NAME_RULE_LIST_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerRuleListDAL.COL_NAME_RULE_LIST_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(DealerRuleListDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -127,14 +127,14 @@ Public Class DealerRuleList
                 Return New Guid(CType(row(DealerRuleListDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(DealerRuleListDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Effective() As DateTimeType Implements IExpirable.Effective
+    Public Property Effective As DateTimeType Implements IExpirable.Effective
         Get
             CheckDeleted()
             If Row(DealerRuleListDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -143,14 +143,14 @@ Public Class DealerRuleList
                 Return New DateTimeType(CType(Row(DealerRuleListDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(DealerRuleListDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Expiration() As DateTimeType Implements IExpirable.Expiration
+    Public Property Expiration As DateTimeType Implements IExpirable.Expiration
         Get
             CheckDeleted()
             If Row(DealerRuleListDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -159,13 +159,13 @@ Public Class DealerRuleList
                 Return New DateTimeType(CType(Row(DealerRuleListDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(DealerRuleListDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
-    Public Property Description() As String
+    Public Property Description As String
         Get
             If Row(DealerRuleListDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
                 Return Nothing
@@ -173,7 +173,7 @@ Public Class DealerRuleList
                 Return CType(Row(DealerRuleListDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             'do nothing
         End Set
     End Property
@@ -259,7 +259,7 @@ Public Class DealerRuleList
         Get
             Return String.Empty
         End Get
-        Set(ByVal value As String)
+        Set
             'do nothing
         End Set
     End Property
@@ -268,7 +268,7 @@ Public Class DealerRuleList
         Get
             Return Guid.Empty
         End Get
-        Set(ByVal value As Guid)
+        Set
             'do nothing
         End Set
     End Property

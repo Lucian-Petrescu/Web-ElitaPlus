@@ -124,7 +124,7 @@ Public Class GetParts
 
 #Region "Properties"
 
-    Public Property RiskGroupCode() As String
+    Public Property RiskGroupCode As String
         Get
             If Row(DATA_COL_NAME_risk_group_code) Is DBNull.Value Then
                 Return Nothing
@@ -132,29 +132,29 @@ Public Class GetParts
                 Return (CType(Row(DATA_COL_NAME_risk_group_code), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_risk_group_code, Value)
         End Set
     End Property
 
-    Public Property ClaimID() As Guid
+    Public Property ClaimID As Guid
         Get
             Return _ClaimId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _ClaimId = Value
         End Set
     End Property
 
-    Private ReadOnly Property RiskGroupId() As Guid
+    Private ReadOnly Property RiskGroupId As Guid
         Get
             Return _Risk_Group_id
         End Get
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
@@ -163,14 +163,14 @@ Public Class GetParts
                 Return CType(Row(DATA_COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)> _
-    Public Property CompanyCode() As String
+    Public Property CompanyCode As String
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_COMPANY_CODE) Is DBNull.Value Then
@@ -179,16 +179,16 @@ Public Class GetParts
                 Return CType(Row(DATA_COL_NAME_COMPANY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_COMPANY_CODE, Value)
         End Set
     End Property
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             Return _company_id
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _company_id = Value
         End Set
     End Property

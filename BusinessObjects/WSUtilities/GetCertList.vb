@@ -124,7 +124,7 @@ Public Class GetCertList
 
 
     <ValueMandatory("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
@@ -132,13 +132,13 @@ Public Class GetCertList
                 Return CType(Row(DATA_COL_NAME_DEALER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
-    Public Property CertificateNumber() As String
+    Public Property CertificateNumber As String
         Get
             If Row(DATA_COL_NAME_CERTIFICATE_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -146,13 +146,13 @@ Public Class GetCertList
                 Return CType(Row(DATA_COL_NAME_CERTIFICATE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERTIFICATE_NUMBER, Value)
         End Set
     End Property
 
-    Public Property CustomerName() As String
+    Public Property CustomerName As String
         Get
             If Row(DATA_COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -160,13 +160,13 @@ Public Class GetCertList
                 Return CType(Row(DATA_COL_NAME_CUSTOMER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CUSTOMER_NAME, Value)
         End Set
     End Property
 
-    Public Property BranchCode() As String
+    Public Property BranchCode As String
         Get
             If Row(DATA_COL_NAME_BRANCH_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -174,13 +174,13 @@ Public Class GetCertList
                 Return (CType(Row(DATA_COL_NAME_BRANCH_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_BRANCH_CODE, Value)
         End Set
     End Property
 
-    Public Property Email() As String
+    Public Property Email As String
         Get
             If Row(DATA_COL_NAME_EMAIL) Is DBNull.Value Then
                 Return Nothing
@@ -188,14 +188,14 @@ Public Class GetCertList
                 Return (CType(Row(DATA_COL_NAME_EMAIL), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_EMAIL, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ForCancellation() As String
+    Public Property ForCancellation As String
         Get
             If Row(DATA_COL_NAME_FOR_CANCELLATION) Is DBNull.Value Then
                 Return Nothing
@@ -203,13 +203,13 @@ Public Class GetCertList
                 Return (CType(Row(DATA_COL_NAME_FOR_CANCELLATION), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_FOR_CANCELLATION, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-    Public Property SortBy() As Integer
+    Public Property SortBy As Integer
         Get
             If Row(DATA_COL_NAME_SORT_BY) Is DBNull.Value Then
                 Return Nothing
@@ -217,14 +217,14 @@ Public Class GetCertList
                 Return CType(Row(DATA_COL_NAME_SORT_BY), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_SORT_BY, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property SortOrder() As Integer
+    Public Property SortOrder As Integer
         Get
             If Row(DATA_COL_NAME_SORT_ORDER) Is DBNull.Value Then
                 Return Nothing
@@ -232,14 +232,14 @@ Public Class GetCertList
                 Return CType(Row(DATA_COL_NAME_SORT_ORDER), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_SORT_ORDER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property RequestNumber() As Integer
+    Public Property RequestNumber As Integer
         Get
             If Row(DATA_COL_NAME_REQUEST_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -247,7 +247,7 @@ Public Class GetCertList
                 Return CType(Row(DATA_COL_NAME_REQUEST_NUMBER), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_REQUEST_NUMBER, Value)
         End Set
@@ -284,7 +284,7 @@ Public Class GetCertList
 
 #Region "Extended Properties"
 
-    Private ReadOnly Property DealerId() As Guid
+    Private ReadOnly Property DealerId As Guid
         Get
             If _dealerId.Equals(Guid.Empty) Then
 

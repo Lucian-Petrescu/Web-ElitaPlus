@@ -294,8 +294,8 @@ Namespace Tables
 
 
 
-                If dvRow IsNot Nothing And Not State.bnoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         CType(e.Row.Cells(GRID_COL_PREMIUM_ADJUSTMENT_ID_IDX).FindControl("PremiumAdjustmentIdLabel"), Label).Text = GetGuidStringFromByteArray(CType(dvRow(PremiumAdjustmentDetails.PremiumAdjustmentSearchDV.COL_PREMIUM_ADJUSTMENT_ID), Byte()))
                         If (State.IsEditMode = True AndAlso State.PremiumAdjustmentId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(PremiumAdjustmentDetails.PremiumAdjustmentSearchDV.COL_PREMIUM_ADJUSTMENT_ID), Byte())))) Then
 
@@ -523,7 +523,7 @@ Namespace Tables
             Try
                 Dim errors() As ValidationError = {New ValidationError("Dealer and Company is required", GetType(PremiumAdjustmentDetails), Nothing, "DealerID", Nothing)}
                 PopulateBOFromForm()
-                If (State.myBO.DealerId.ToString = Guid.Empty.ToString Or State.myBO.CompanyId.ToString = Guid.Empty.ToString) Then
+                If (State.myBO.DealerId.ToString = Guid.Empty.ToString OrElse State.myBO.CompanyId.ToString = Guid.Empty.ToString) Then
                     Throw New BOValidationException(errors, GetType(PremiumAdjustmentDetails).FullName)
                 End If
                 If Not ErrCollection.Count > 0 Then

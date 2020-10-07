@@ -93,7 +93,7 @@ Namespace Tables
                     PopulateDropdown()
 
                     If State.IsGridVisible Then
-                        If Not (State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.SelectedPageSize = Grid.PageSize) Then
+                        If Not (State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) OrElse Not (State.SelectedPageSize = Grid.PageSize) Then
                             Grid.PageSize = State.SelectedPageSize
                         End If
                         cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
@@ -247,8 +247,8 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If dvRow IsNot Nothing And Not State.bNoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bNoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_BILLING_CYCLE_ID_IDX), dvRow(BillingCycle.BillingCycleSearchDV.COL_NAME_BILLING_CYCLE_ID))
                         PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_BILLING_CYCLE_CODE_IDX), dvRow(BillingCycle.BillingCycleSearchDV.COL_NAME_BILLING_CYCLE_CODE))
                         PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DEALER_IDX), dvRow(BillingCycle.BillingCycleSearchDV.COL_NAME_DEALER_NAME))

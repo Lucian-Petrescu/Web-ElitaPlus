@@ -370,27 +370,27 @@ Public Class ServiceOrderReportHandler
 
 #Region "Properties"
 
-    Private Property ClaimBO() As ClaimBase
+    Private Property ClaimBO As ClaimBase
     Public ClaimAuthorizationId As Guid
     'Reqs-784
-    Private Property ContactInfoBO() As ContactInfo
+    Private Property ContactInfoBO As ContactInfo
         Get
             Return soContact
         End Get
-        Set(ByVal Value As ContactInfo)
+        Set
             soContact = Value
         End Set
     End Property
     'Reqs-784
-    Private Property AddressBO() As Address
+    Private Property AddressBO As Address
         Get
             Return soAddress
         End Get
-        Set(ByVal Value As Address)
+        Set
             soAddress = Value
         End Set
     End Property
-    Public ReadOnly Property SODataSet() As ServiceOrderReport
+    Public ReadOnly Property SODataSet As ServiceOrderReport
         Get
             Return soDS
         End Get

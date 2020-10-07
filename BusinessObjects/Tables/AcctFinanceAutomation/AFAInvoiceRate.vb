@@ -95,7 +95,7 @@ Public Class AfaInvoiceRate
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IExpirable.ID
+    Public ReadOnly Property Id As Guid Implements IExpirable.ID
         Get
             If Row(AFAInvoiceRateDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -106,7 +106,7 @@ Public Class AfaInvoiceRate
     End Property
 
     <ValueMandatory("")>
-    Public Property AfaProductId() As Guid
+    Public Property AfaProductId As Guid
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_AFA_PRODUCT_ID) Is DBNull.Value Then
@@ -115,7 +115,7 @@ Public Class AfaInvoiceRate
                 Return New Guid(CType(Row(AFAInvoiceRateDAL.COL_NAME_AFA_PRODUCT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AFAInvoiceRateDAL.COL_NAME_AFA_PRODUCT_ID, Value)
         End Set
@@ -123,7 +123,7 @@ Public Class AfaInvoiceRate
 
 
     <ValidStringLength("", Max:=100)>
-    Public Property InsuranceCode() As String
+    Public Property InsuranceCode As String
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_INSURANCE_CODE) Is DBNull.Value Then
@@ -132,7 +132,7 @@ Public Class AfaInvoiceRate
                 Return CType(Row(AFAInvoiceRateDAL.COL_NAME_INSURANCE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AFAInvoiceRateDAL.COL_NAME_INSURANCE_CODE, Value)
         End Set
@@ -140,7 +140,7 @@ Public Class AfaInvoiceRate
 
 
     <ValidStringLength("", Max:=10)>
-    Public Property Tier() As String
+    Public Property Tier As String
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_TIER) Is DBNull.Value Then
@@ -149,13 +149,13 @@ Public Class AfaInvoiceRate
                 Return CType(Row(AFAInvoiceRateDAL.COL_NAME_TIER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AFAInvoiceRateDAL.COL_NAME_TIER, Value)
         End Set
     End Property
 
-    Public Property RegulatoryState() As String
+    Public Property RegulatoryState As String
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_REGULATORY_STATE) Is DBNull.Value Then
@@ -164,13 +164,13 @@ Public Class AfaInvoiceRate
                 Return CType(Row(AFAInvoiceRateDAL.COL_NAME_REGULATORY_STATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AFAInvoiceRateDAL.COL_NAME_REGULATORY_STATE, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidStringLength("", Max:=50), IsRateDefinitionUnique("LossType")>
-    Public Property LossType() As String
+    Public Property LossType As String
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_LOSS_TYPE) Is DBNull.Value Then
@@ -179,7 +179,7 @@ Public Class AfaInvoiceRate
                 Return CType(Row(AFAInvoiceRateDAL.COL_NAME_LOSS_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AFAInvoiceRateDAL.COL_NAME_LOSS_TYPE, Value)
         End Set
@@ -187,7 +187,7 @@ Public Class AfaInvoiceRate
 
 
 
-    Public Property RetailAmt() As DecimalType
+    Public Property RetailAmt As DecimalType
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_RETAIL_AMT) Is DBNull.Value Then
@@ -196,7 +196,7 @@ Public Class AfaInvoiceRate
                 Return New DecimalType(CType(Row(AFAInvoiceRateDAL.COL_NAME_RETAIL_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFAInvoiceRateDAL.COL_NAME_RETAIL_AMT, Value)
         End Set
@@ -204,7 +204,7 @@ Public Class AfaInvoiceRate
 
 
 
-    Public Property PremiumAmt() As DecimalType
+    Public Property PremiumAmt As DecimalType
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_PREMIUM_AMT) Is DBNull.Value Then
@@ -213,7 +213,7 @@ Public Class AfaInvoiceRate
                 Return New DecimalType(CType(Row(AFAInvoiceRateDAL.COL_NAME_PREMIUM_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFAInvoiceRateDAL.COL_NAME_PREMIUM_AMT, Value)
         End Set
@@ -221,7 +221,7 @@ Public Class AfaInvoiceRate
 
 
 
-    Public Property CommAmt() As DecimalType
+    Public Property CommAmt As DecimalType
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_COMM_AMT) Is DBNull.Value Then
@@ -230,7 +230,7 @@ Public Class AfaInvoiceRate
                 Return New DecimalType(CType(Row(AFAInvoiceRateDAL.COL_NAME_COMM_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFAInvoiceRateDAL.COL_NAME_COMM_AMT, Value)
         End Set
@@ -238,7 +238,7 @@ Public Class AfaInvoiceRate
 
 
 
-    Public Property AdminAmt() As DecimalType
+    Public Property AdminAmt As DecimalType
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_ADMIN_AMT) Is DBNull.Value Then
@@ -247,7 +247,7 @@ Public Class AfaInvoiceRate
                 Return New DecimalType(CType(Row(AFAInvoiceRateDAL.COL_NAME_ADMIN_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFAInvoiceRateDAL.COL_NAME_ADMIN_AMT, Value)
         End Set
@@ -255,7 +255,7 @@ Public Class AfaInvoiceRate
 
 
 
-    Public Property AncillaryAmt() As DecimalType
+    Public Property AncillaryAmt As DecimalType
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_ANCILLARY_AMT) Is DBNull.Value Then
@@ -264,7 +264,7 @@ Public Class AfaInvoiceRate
                 Return New DecimalType(CType(Row(AFAInvoiceRateDAL.COL_NAME_ANCILLARY_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFAInvoiceRateDAL.COL_NAME_ANCILLARY_AMT, Value)
         End Set
@@ -272,7 +272,7 @@ Public Class AfaInvoiceRate
 
 
 
-    Public Property OtherAmt() As DecimalType
+    Public Property OtherAmt As DecimalType
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_OTHER_AMT) Is DBNull.Value Then
@@ -281,7 +281,7 @@ Public Class AfaInvoiceRate
                 Return New DecimalType(CType(Row(AFAInvoiceRateDAL.COL_NAME_OTHER_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AFAInvoiceRateDAL.COL_NAME_OTHER_AMT, Value)
         End Set
@@ -289,7 +289,7 @@ Public Class AfaInvoiceRate
 
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EFFECTIVE), RejectOverlapsOrGaps("")>
-    Public Property Effective() As DateTimeType Implements IExpirable.Effective
+    Public Property Effective As DateTimeType Implements IExpirable.Effective
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -298,7 +298,7 @@ Public Class AfaInvoiceRate
                 Return New DateTimeType(CType(Row(AFAInvoiceRateDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(AFAInvoiceRateDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
@@ -306,7 +306,7 @@ Public Class AfaInvoiceRate
 
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EXPIRATION), EffectiveExpirationDateValidation(Codes.EXPIRATION)>
-    Public Property Expiration() As DateTimeType Implements IExpirable.Expiration
+    Public Property Expiration As DateTimeType Implements IExpirable.Expiration
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -315,7 +315,7 @@ Public Class AfaInvoiceRate
                 Return New DateTimeType(CType(Row(AFAInvoiceRateDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
             SetValue(AFAInvoiceRateDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
@@ -470,7 +470,7 @@ Public Class AfaInvoiceRate
         Get
 
         End Get
-        Set(ByVal value As String)
+        Set
 
         End Set
     End Property
@@ -479,7 +479,7 @@ Public Class AfaInvoiceRate
         Get
 
         End Get
-        Set(ByVal value As System.Guid)
+        Set
 
         End Set
     End Property
@@ -492,19 +492,19 @@ Public Class AfaInvoiceRate
 
 #End Region
 
-    Public ReadOnly Property OriginalEffectiveDate() As DateType
+    Public ReadOnly Property OriginalEffectiveDate As DateType
         Get
             Return New DateType(CType(Row(AFAInvoiceRateDAL.COL_NAME_EFFECTIVE_DATE, DataRowVersion.Original), Date))
         End Get
     End Property
 
-    Public ReadOnly Property OriginalExpirationDate() As DateType
+    Public ReadOnly Property OriginalExpirationDate As DateType
         Get
             Return New DateType(CType(Row(AFAInvoiceRateDAL.COL_NAME_EXPIRATION_DATE, DataRowVersion.Original), Date))
         End Get
     End Property
 
-    Public ReadOnly Property OriginalLossType() As String
+    Public ReadOnly Property OriginalLossType As String
         Get
             If Row(AFAInvoiceRateDAL.COL_NAME_LOSS_TYPE) Is DBNull.Value Then
                 Return Nothing
@@ -514,7 +514,7 @@ Public Class AfaInvoiceRate
         End Get
     End Property
 
-    Public ReadOnly Property OriginalTier() As String
+    Public ReadOnly Property OriginalTier As String
         Get
             If Row(AFAInvoiceRateDAL.COL_NAME_TIER) Is DBNull.Value Then
                 Return Nothing
@@ -524,7 +524,7 @@ Public Class AfaInvoiceRate
         End Get
     End Property
 
-    Public ReadOnly Property OriginalInsuranceCode() As String
+    Public ReadOnly Property OriginalInsuranceCode As String
         Get
             If Row(AFAInvoiceRateDAL.COL_NAME_INSURANCE_CODE) Is DBNull.Value Then
                 Return Nothing

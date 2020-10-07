@@ -250,7 +250,7 @@ Namespace Reports
 
 
             Dim filteredYearList As ListItem() = (From x In YearListLkl
-                                                  Where x.Description = currentAccountingYear.ToString() Or x.Description = (currentAccountingYear - 1).ToString()
+                                                  Where x.Description = currentAccountingYear.ToString() OrElse x.Description = (currentAccountingYear - 1).ToString()
                                                   Select x).ToArray()
 
             YearDropDownList.Populate(filteredYearList, New PopulateOptions() With
@@ -312,7 +312,7 @@ Namespace Reports
 
                 If (DateTime.Compare(scheduleDate.Date, DateTime.Now.Date) = 0) Then
                     ' If report schedulling option is not selected
-                    If CType(selectedMonth, Integer) > currentAccountingMonth And CType(selectedYear, Integer) >= currentAccountingYear Then
+                    If CType(selectedMonth, Integer) > currentAccountingMonth AndAlso CType(selectedYear, Integer) >= currentAccountingYear Then
                         ' Accounting month is not closed for the selected Month and Year
                         ElitaPlusPage.SetLabelError(MonthYearLabel)
                         Throw New GUIException(Message.MSG_ACCOUNTING_MONTH_NOT_YET_COMPLETED_IS_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ACCOUNTING_MONTH_NOT_YET_COMPLETED_IS_NOT_ALLOWED)
@@ -347,7 +347,7 @@ Namespace Reports
             End If
 
             ' Validating Dealer selection
-            If (rdealer.Checked = False And selectedDealerId.Equals(Guid.Empty)) Then
+            If (rdealer.Checked = False AndAlso selectedDealerId.Equals(Guid.Empty)) Then
                 ElitaPlusPage.SetLabelError(DealerMultipleDrop.CaptionLabel)
                 ElitaPlusPage.SetLabelError(lblSelectAllDealers)
                 Throw New GUIException(Message.MSG_DEALER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR) 'DEALER_IS_REQUIRED, GUI_DEALER_NOT_SELECTED

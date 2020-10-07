@@ -94,7 +94,7 @@ Public Class UpdatePickListStatus
 
 #Region "Properties"
 
-    Public Property PickListNumber() As String
+    Public Property PickListNumber As String
         Get
             If Row(DATA_COL_NAME_PICK_LIST_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -102,14 +102,14 @@ Public Class UpdatePickListStatus
                 Return (CType(Row(DATA_COL_NAME_PICK_LIST_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_PICK_LIST_NUMBER, Value)
         End Set
     End Property
 
 
-    Public Property PickupBy() As String
+    Public Property PickupBy As String
         Get
             If Row(DATA_COL_NAME_PICKUP_BY) Is DBNull.Value Then
                 Return Nothing
@@ -117,7 +117,7 @@ Public Class UpdatePickListStatus
                 Return (CType(Row(DATA_COL_NAME_PICKUP_BY), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_PICKUP_BY, Value)
         End Set

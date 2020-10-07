@@ -319,7 +319,7 @@ Namespace Reports
             'If regular report is selected then either Select All Dealers or a particular dealer should be selected
             If (queryStringCaller = "CR") Then
                 'either of the three options should be selected
-                If (rdealer.Checked = False And selectedDealerId.Equals(Guid.Empty) And ddlDealerCurrency.SelectedIndex = 0) Then
+                If (rdealer.Checked = False AndAlso selectedDealerId.Equals(Guid.Empty) AndAlso ddlDealerCurrency.SelectedIndex = 0) Then
                     Throw New GUIException(Message.MSG_GUI_INVALID_SELECTION, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_REQUIRED)
                 End If
                 'currency should be selected for every run

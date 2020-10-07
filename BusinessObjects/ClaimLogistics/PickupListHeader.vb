@@ -90,7 +90,7 @@ Public Class PickupListHeader
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(PickupListHeaderDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class PickupListHeader
     End Property
 
     <ValidStringLength("", Max:=120)> _
-    Public Property PickupType() As String
+    Public Property PickupType As String
         Get
             CheckDeleted()
             If row(PickupListHeaderDAL.COL_NAME_PICKUP_TYPE) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class PickupListHeader
                 Return CType(row(PickupListHeaderDAL.COL_NAME_PICKUP_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PickupListHeaderDAL.COL_NAME_PICKUP_TYPE, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class PickupListHeader
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property PicklistNumber() As String
+    Public Property PicklistNumber As String
         Get
             CheckDeleted()
             If row(PickupListHeaderDAL.COL_NAME_PICKLIST_NUMBER) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class PickupListHeader
                 Return CType(row(PickupListHeaderDAL.COL_NAME_PICKLIST_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PickupListHeaderDAL.COL_NAME_PICKLIST_NUMBER, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class PickupListHeader
 
 
     <ValueMandatory("")> _
-    Public Property RouteId() As Guid
+    Public Property RouteId As Guid
         Get
             CheckDeleted()
             If row(PickupListHeaderDAL.COL_NAME_ROUTE_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class PickupListHeader
                 Return New Guid(CType(row(PickupListHeaderDAL.COL_NAME_ROUTE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PickupListHeaderDAL.COL_NAME_ROUTE_ID, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class PickupListHeader
 
 
     <ValueMandatory("")> _
-    Public Property HeaderStatusId() As Guid
+    Public Property HeaderStatusId As Guid
         Get
             CheckDeleted()
             If row(PickupListHeaderDAL.COL_NAME_HEADER_STATUS_ID) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class PickupListHeader
                 Return New Guid(CType(row(PickupListHeaderDAL.COL_NAME_HEADER_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PickupListHeaderDAL.COL_NAME_HEADER_STATUS_ID, Value)
         End Set

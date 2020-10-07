@@ -99,7 +99,7 @@
     End Property
 
     <ValueMandatory("")> _
-    Public Property EquipmentId() As Guid
+    Public Property EquipmentId As Guid
         Get
             CheckDeleted()
             If Row(EquipmentImageDAL.COL_NAME_EQUIPMENT_ID) Is DBNull.Value Then
@@ -108,14 +108,14 @@
                 Return New Guid(CType(Row(EquipmentImageDAL.COL_NAME_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EquipmentImageDAL.COL_NAME_EQUIPMENT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ImageTypeId() As Guid
+    Public Property ImageTypeId As Guid
         Get
             CheckDeleted()
             If Row(EquipmentImageDAL.COL_NAME_IMAGE_TYPE_ID) Is DBNull.Value Then
@@ -124,7 +124,7 @@
                 Return New Guid(CType(Row(EquipmentImageDAL.COL_NAME_IMAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EquipmentImageDAL.COL_NAME_IMAGE_TYPE_ID, Value)
             'Set Image Type
@@ -135,7 +135,7 @@
     End Property
 
     <ValueMandatory("")> _
-    Public Property ImageType() As String
+    Public Property ImageType As String
         Get
             CheckDeleted()
             If Row(EquipmentImageDAL.COL_NAME_IMAGE_TYPE) Is DBNull.Value Then
@@ -144,14 +144,14 @@
                 Return Row(EquipmentImageDAL.COL_NAME_IMAGE_TYPE).ToString()
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentImageDAL.COL_NAME_IMAGE_TYPE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), CheckDuplicateCode("")> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(EquipmentImageDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -160,14 +160,14 @@
                 Return CType(Row(EquipmentImageDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentImageDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(EquipmentImageDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -176,14 +176,14 @@
                 Return CType(Row(EquipmentImageDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentImageDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValueMandatory(""), CheckDuplicatePath("")> _
-    Public Property Path() As String
+    Public Property Path As String
         Get
             CheckDeleted()
             If Row(EquipmentImageDAL.COL_NAME_EQUIPMENT_ID) Is DBNull.Value Then
@@ -192,7 +192,7 @@
                 Return CType(Row(EquipmentImageDAL.COL_NAME_EQUIPMENT_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentImageDAL.COL_NAME_EQUIPMENT_ID, Value)
         End Set

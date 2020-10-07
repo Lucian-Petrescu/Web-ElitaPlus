@@ -118,7 +118,7 @@ Public Class SpClaimTypes
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(SpClaimTypesDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -129,7 +129,7 @@ Public Class SpClaimTypes
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)>
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(SpClaimTypesDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -138,7 +138,7 @@ Public Class SpClaimTypes
                 Return CType(Row(SpClaimTypesDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SpClaimTypesDAL.COL_NAME_CODE, Value)
         End Set
@@ -146,7 +146,7 @@ Public Class SpClaimTypes
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=500)>
-    Public Property ClaimType() As String
+    Public Property ClaimType As String
         Get
             CheckDeleted()
             If Row(SpClaimTypesDAL.COL_NAME_CLAIM_TYPE) Is DBNull.Value Then
@@ -155,7 +155,7 @@ Public Class SpClaimTypes
                 Return CType(Row(SpClaimTypesDAL.COL_NAME_CLAIM_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SpClaimTypesDAL.COL_NAME_CLAIM_TYPE, Value)
         End Set
@@ -163,7 +163,7 @@ Public Class SpClaimTypes
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)>
-    Public Property SpClaimCategory() As String
+    Public Property SpClaimCategory As String
         Get
             CheckDeleted()
             If Row(SpClaimTypesDAL.COL_NAME_SP_CLAIM_CATEGORY) Is DBNull.Value Then
@@ -172,7 +172,7 @@ Public Class SpClaimTypes
                 Return CType(Row(SpClaimTypesDAL.COL_NAME_SP_CLAIM_CATEGORY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SpClaimTypesDAL.COL_NAME_SP_CLAIM_CATEGORY, Value)
         End Set
@@ -180,7 +180,7 @@ Public Class SpClaimTypes
 
 
     <ValueMandatory("")>
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(SpClaimTypesDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -189,7 +189,7 @@ Public Class SpClaimTypes
                 Return New DateType(CType(Row(SpClaimTypesDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SpClaimTypesDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
@@ -197,7 +197,7 @@ Public Class SpClaimTypes
 
 
     <ValueMandatory("")>
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(SpClaimTypesDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -206,7 +206,7 @@ Public Class SpClaimTypes
                 Return New DateType(CType(Row(SpClaimTypesDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(SpClaimTypesDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
@@ -214,7 +214,7 @@ Public Class SpClaimTypes
 
 
     <ValidStringLength("", Max:=400)>
-    Public Property ValueType() As String
+    Public Property ValueType As String
         Get
             CheckDeleted()
             If Row(SpClaimTypesDAL.COL_NAME_VALUE_TYPE) Is DBNull.Value Then
@@ -223,7 +223,7 @@ Public Class SpClaimTypes
                 Return CType(Row(SpClaimTypesDAL.COL_NAME_VALUE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(SpClaimTypesDAL.COL_NAME_VALUE_TYPE, Value)
         End Set

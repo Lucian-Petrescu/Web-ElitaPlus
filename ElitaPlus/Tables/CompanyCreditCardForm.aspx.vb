@@ -430,8 +430,8 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If dvRow IsNot Nothing And Not State.searchDV.Count > 0 Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.searchDV.Count > 0 Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         CType(e.Row.Cells(COMPANY_CREDIT_CARD_ID).FindControl(ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_COMPANY_CREDIT_CARD_ID), Byte()))
                         If (State.IsEditMode = True AndAlso State.Id.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_COMPANY_CREDIT_CARD_ID), Byte())))) Then
                             Dim companyLst As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Company")
@@ -458,7 +458,7 @@ Namespace Tables
                         End If
                     End If
                 End If
-                If dvRow IsNot Nothing And State.searchDV.Count > 0 Then
+                If dvRow IsNot Nothing AndAlso State.searchDV.Count > 0 Then
                     If CType(dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_BILLING_DATE), Long) = 0 Then
                         ControlMgr.SetEnableControl(Me, CType(e.Row.Cells(BILLING_SCHEDULE).FindControl(BILLING_SCHEDULE_CONTROL_NAME), ImageButton), True)
 

@@ -90,7 +90,7 @@ Public Class WarrantyMaster
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(WarrantyMasterDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class WarrantyMaster
     End Property
 
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(WarrantyMasterDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class WarrantyMaster
                 Return New Guid(CType(row(WarrantyMasterDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(WarrantyMasterDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class WarrantyMaster
 
 
     <ValidStringLength("", Max:=20)>
-    Public Property SkuNumber() As String
+    Public Property SkuNumber As String
         Get
             CheckDeleted()
             If Row(WarrantyMasterDAL.COL_NAME_SKU_NUMBER) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class WarrantyMaster
                 Return CType(Row(WarrantyMasterDAL.COL_NAME_SKU_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WarrantyMasterDAL.COL_NAME_SKU_NUMBER, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class WarrantyMaster
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property SkuDescription() As String
+    Public Property SkuDescription As String
         Get
             CheckDeleted()
             If Row(WarrantyMasterDAL.COL_NAME_SKU_DESCRIPTION) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class WarrantyMaster
                 Return CType(Row(WarrantyMasterDAL.COL_NAME_SKU_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WarrantyMasterDAL.COL_NAME_SKU_DESCRIPTION, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class WarrantyMaster
 
 
     <ValidStringLength("", Max:=4)> _
-    Public Property ManufacturerId() As String
+    Public Property ManufacturerId As String
         Get
             CheckDeleted()
             If Row(WarrantyMasterDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class WarrantyMaster
                 Return CType(Row(WarrantyMasterDAL.COL_NAME_MANUFACTURER_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WarrantyMasterDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class WarrantyMaster
 
 
     <ValidStringLength("", Max:=30)> _
-    Public Property ManufacturerName() As String
+    Public Property ManufacturerName As String
         Get
             CheckDeleted()
             If Row(WarrantyMasterDAL.COL_NAME_MANUFACTURER_NAME) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class WarrantyMaster
                 Return CType(Row(WarrantyMasterDAL.COL_NAME_MANUFACTURER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WarrantyMasterDAL.COL_NAME_MANUFACTURER_NAME, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class WarrantyMaster
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property WarrantyType() As String
+    Public Property WarrantyType As String
         Get
             CheckDeleted()
             If Row(WarrantyMasterDAL.COL_NAME_WARRANTY_TYPE) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class WarrantyMaster
                 Return CType(Row(WarrantyMasterDAL.COL_NAME_WARRANTY_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WarrantyMasterDAL.COL_NAME_WARRANTY_TYPE, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class WarrantyMaster
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property WarrantyDescription() As String
+    Public Property WarrantyDescription As String
         Get
             CheckDeleted()
             If Row(WarrantyMasterDAL.COL_NAME_WARRANTY_DESCRIPTION) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class WarrantyMaster
                 Return CType(Row(WarrantyMasterDAL.COL_NAME_WARRANTY_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WarrantyMasterDAL.COL_NAME_WARRANTY_DESCRIPTION, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class WarrantyMaster
 
 
     <ValidStringLength("", Max:=100)>
-    Public Property ModelNumber() As String
+    Public Property ModelNumber As String
         Get
             CheckDeleted()
             If Row(WarrantyMasterDAL.COL_NAME_MODEL_NUMBER) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class WarrantyMaster
                 Return CType(Row(WarrantyMasterDAL.COL_NAME_MODEL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WarrantyMasterDAL.COL_NAME_MODEL_NUMBER, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class WarrantyMaster
 
 
 
-    Public Property WarrantyDurationParts() As LongType
+    Public Property WarrantyDurationParts As LongType
         Get
             CheckDeleted()
             If row(WarrantyMasterDAL.COL_NAME_WARRANTY_DURATION_PARTS) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class WarrantyMaster
                 Return New LongType(CType(row(WarrantyMasterDAL.COL_NAME_WARRANTY_DURATION_PARTS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(WarrantyMasterDAL.COL_NAME_WARRANTY_DURATION_PARTS, Value)
         End Set
@@ -254,7 +254,7 @@ Public Class WarrantyMaster
 
 
 
-    Public Property WarrantyDurationLabor() As LongType
+    Public Property WarrantyDurationLabor As LongType
         Get
             CheckDeleted()
             If row(WarrantyMasterDAL.COL_NAME_WARRANTY_DURATION_LABOR) Is DBNull.Value Then
@@ -263,7 +263,7 @@ Public Class WarrantyMaster
                 Return New LongType(CType(row(WarrantyMasterDAL.COL_NAME_WARRANTY_DURATION_LABOR), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(WarrantyMasterDAL.COL_NAME_WARRANTY_DURATION_LABOR, Value)
         End Set
@@ -271,7 +271,7 @@ Public Class WarrantyMaster
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property IsDeleted() As String
+    Public Property IsDeleted As String
         Get
             CheckDeleted()
             If Row(WarrantyMasterDAL.COL_NAME_IS_DELETED) Is DBNull.Value Then
@@ -280,13 +280,13 @@ Public Class WarrantyMaster
                 Return CType(Row(WarrantyMasterDAL.COL_NAME_IS_DELETED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WarrantyMasterDAL.COL_NAME_IS_DELETED, Value)
         End Set
     End Property
 
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             CheckDeleted()
             If row(WarrantyMasterDAL.COL_NAME_RISK_TYPE_ID) Is DBNull.Value Then
@@ -295,7 +295,7 @@ Public Class WarrantyMaster
                 Return New Guid(CType(row(WarrantyMasterDAL.COL_NAME_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(WarrantyMasterDAL.COL_NAME_RISK_TYPE_ID, Value)
         End Set

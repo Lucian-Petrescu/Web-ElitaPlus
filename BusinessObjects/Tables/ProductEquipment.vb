@@ -123,7 +123,7 @@ Public Class ProductEquipment
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ProductEquipmentDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -133,7 +133,7 @@ Public Class ProductEquipment
         End Get
     End Property
     <ValueMandatory("")>
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -142,12 +142,12 @@ Public Class ProductEquipment
                 Return New Guid(CType(Row(ProductEquipmentDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductEquipmentDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
     End Property
-    Public Property ItemId() As Guid
+    Public Property ItemId As Guid
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_ITEM_ID) Is DBNull.Value Then
@@ -156,13 +156,13 @@ Public Class ProductEquipment
                 Return New Guid(CType(Row(ProductEquipmentDAL.COL_NAME_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductEquipmentDAL.COL_NAME_ITEM_ID, Value)
         End Set
     End Property
 
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -171,13 +171,13 @@ Public Class ProductEquipment
                 Return New Guid(CType(Row(ProductEquipmentDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductEquipmentDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
     End Property
     <EquipmentRequired("Make/Model"), EquipmentOverlappingValidation("")>
-    Public Property EquipmentId() As Guid
+    Public Property EquipmentId As Guid
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_EQUIPMENT_ID) Is DBNull.Value Then
@@ -186,13 +186,13 @@ Public Class ProductEquipment
                 Return New Guid(CType(Row(ProductEquipmentDAL.COL_NAME_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductEquipmentDAL.COL_NAME_EQUIPMENT_ID, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidEffectiveDate("")>
-    Public Property EffectiveDateProductEquip() As DateType
+    Public Property EffectiveDateProductEquip As DateType
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_EFFECTIVE_DATE_PRODUCT_EQUIP) Is DBNull.Value Then
@@ -201,13 +201,13 @@ Public Class ProductEquipment
                 Return New DateType(CType(Row(ProductEquipmentDAL.COL_NAME_EFFECTIVE_DATE_PRODUCT_EQUIP), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ProductEquipmentDAL.COL_NAME_EFFECTIVE_DATE_PRODUCT_EQUIP, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidExpirationDate("")>
-    Public Property ExpirationDateProductEquip() As DateType
+    Public Property ExpirationDateProductEquip As DateType
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_EXPIRATION_DATE_PRODUCT_EQUIP) Is DBNull.Value Then
@@ -216,12 +216,12 @@ Public Class ProductEquipment
                 Return New DateType(CType(Row(ProductEquipmentDAL.COL_NAME_EXPIRATION_DATE_PRODUCT_EQUIP), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ProductEquipmentDAL.COL_NAME_EXPIRATION_DATE_PRODUCT_EQUIP, Value)
         End Set
     End Property
-    Public Property DeviceTypeId() As Guid
+    Public Property DeviceTypeId As Guid
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_DEVICE_TYPE_ID) Is DBNull.Value Then
@@ -230,12 +230,12 @@ Public Class ProductEquipment
                 Return New Guid(CType(Row(ProductEquipmentDAL.COL_NAME_DEVICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ProductEquipmentDAL.COL_NAME_DEVICE_TYPE_ID, Value)
         End Set
     End Property
-    Public Property MethodOfRepairXcd() As String
+    Public Property MethodOfRepairXcd As String
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_METHOD_OF_REPAIR_XCD) Is DBNull.Value Then
@@ -244,12 +244,12 @@ Public Class ProductEquipment
                 Return CType(Row(ProductEquipmentDAL.COL_NAME_METHOD_OF_REPAIR_XCD), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(ProductEquipmentDAL.COL_NAME_METHOD_OF_REPAIR_XCD, value)
         End Set
     End Property
-    Public Property ConfigPurposeXcd() As String
+    Public Property ConfigPurposeXcd As String
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_CONFIG_PURPOSE_XCD) Is DBNull.Value Then
@@ -258,7 +258,7 @@ Public Class ProductEquipment
                 Return CType(Row(ProductEquipmentDAL.COL_NAME_CONFIG_PURPOSE_XCD), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(ProductEquipmentDAL.COL_NAME_CONFIG_PURPOSE_XCD, value)
         End Set
@@ -273,7 +273,7 @@ Public Class ProductEquipment
                 Return CType(Row(ProductEquipmentDAL.COL_NAME_EQUIPMENT_MAKE), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(ProductEquipmentDAL.COL_NAME_EQUIPMENT_MAKE, value)
         End Set
@@ -287,7 +287,7 @@ Public Class ProductEquipment
                 Return CType(Row(ProductEquipmentDAL.COL_NAME_EQUIPMENT_MODEL), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(ProductEquipmentDAL.COL_NAME_EQUIPMENT_MODEL, value)
         End Set

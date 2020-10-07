@@ -61,7 +61,7 @@
 #Region "Properties"
 
     <ValidStringLength("", Max:=2)> _
-    Public Property ItemNumber() As String
+    Public Property ItemNumber As String
         Get
             CheckDeleted()
             If Row(COL_ITEM_NUMBER) Is DBNull.Value Then
@@ -70,14 +70,14 @@
                 Return CType(Row(COL_ITEM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_ITEM_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property ItemManufacturer() As String
+    Public Property ItemManufacturer As String
         Get
             CheckDeleted()
             If Row(COL_ITEM_MANUFACTURER) Is DBNull.Value Then
@@ -86,14 +86,14 @@
                 Return CType(Row(COL_ITEM_MANUFACTURER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_ITEM_MANUFACTURER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)> _
-    Public Property ItemModel() As String
+    Public Property ItemModel As String
         Get
             CheckDeleted()
             If Row(COL_ITEM_MODEL) Is DBNull.Value Then
@@ -102,14 +102,14 @@
                 Return CType(Row(COL_ITEM_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_ITEM_MODEL, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property ItemSerialNumber() As String
+    Public Property ItemSerialNumber As String
         Get
             CheckDeleted()
             If Row(COL_ITEM_SERIAL_NUMBER) Is DBNull.Value Then
@@ -118,14 +118,14 @@
                 Return CType(Row(COL_ITEM_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_ITEM_SERIAL_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property ItemDescription() As String
+    Public Property ItemDescription As String
         Get
             CheckDeleted()
             If Row(COL_ITEM_DESCRIPTION) Is DBNull.Value Then
@@ -134,14 +134,14 @@
                 Return CType(Row(COL_ITEM_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_ITEM_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=99999999.99)> _
-    Public Property ItemPrice() As DecimalType
+    Public Property ItemPrice As DecimalType
         Get
             CheckDeleted()
             If Row(COL_ITEM_PRICE) Is DBNull.Value Then
@@ -150,14 +150,14 @@
                 Return CType(Row(COL_ITEM_PRICE), Decimal)
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(COL_ITEM_PRICE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property ItemBundleValue() As String
+    Public Property ItemBundleValue As String
         Get
             CheckDeleted()
             If Row(COL_ITEM_BUNDLE_VAL) Is DBNull.Value Then
@@ -166,14 +166,14 @@
                 Return CType(Row(COL_ITEM_BUNDLE_VAL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(COL_ITEM_BUNDLE_VAL, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=99999)> _
-    Public Property ItemManWarranty() As LongType
+    Public Property ItemManWarranty As LongType
         Get
             CheckDeleted()
             If Row(COL_ITEM_MAN_WARRANTY) Is DBNull.Value Then
@@ -182,7 +182,7 @@
                 Return CType(Row(COL_ITEM_MAN_WARRANTY), Long)
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(COL_ITEM_MAN_WARRANTY, Value)
         End Set

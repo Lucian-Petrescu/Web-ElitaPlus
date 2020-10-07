@@ -90,7 +90,7 @@ Public Class CommissionBreakdown
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CommissionBreakdownDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class CommissionBreakdown
     End Property
 
     <ValueMandatory("")> _
-    Public Property CommissionPeriodId() As Guid
+    Public Property CommissionPeriodId As Guid
         Get
             CheckDeleted()
             If row(CommissionBreakdownDAL.COL_NAME_COMMISSION_PERIOD_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class CommissionBreakdown
                 Return New Guid(CType(row(CommissionBreakdownDAL.COL_NAME_COMMISSION_PERIOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommissionBreakdownDAL.COL_NAME_COMMISSION_PERIOD_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class CommissionBreakdown
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)> _
-    Public Property AllowedMarkupPct() As DecimalType
+    Public Property AllowedMarkupPct As DecimalType
         Get
             CheckDeleted()
             If Row(CommissionBreakdownDAL.COL_NAME_ALLOWED_MARKUP_PCT) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class CommissionBreakdown
                 Return New DecimalType(CType(Row(CommissionBreakdownDAL.COL_NAME_ALLOWED_MARKUP_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommissionBreakdownDAL.COL_NAME_ALLOWED_MARKUP_PCT, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class CommissionBreakdown
 
 
     <ValueMandatory("")> _
-    Public Property Tolerance() As DecimalType
+    Public Property Tolerance As DecimalType
         Get
             CheckDeleted()
             If Row(CommissionBreakdownDAL.COL_NAME_TOLERANCE) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class CommissionBreakdown
                 Return New DecimalType(CType(Row(CommissionBreakdownDAL.COL_NAME_TOLERANCE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommissionBreakdownDAL.COL_NAME_TOLERANCE, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class CommissionBreakdown
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0), ValidMarkup("")> _
-    Public Property DealerMarkupPct() As DecimalType
+    Public Property DealerMarkupPct As DecimalType
         Get
             CheckDeleted()
             If Row(CommissionBreakdownDAL.COL_NAME_DEALER_MARKUP_PCT) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class CommissionBreakdown
                 Return New DecimalType(CType(Row(CommissionBreakdownDAL.COL_NAME_DEALER_MARKUP_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommissionBreakdownDAL.COL_NAME_DEALER_MARKUP_PCT, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class CommissionBreakdown
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0), ValidComm("")> _
-    Public Property DealerCommPct() As DecimalType
+    Public Property DealerCommPct As DecimalType
         Get
             CheckDeleted()
             If Row(CommissionBreakdownDAL.COL_NAME_DEALER_COMM_PCT) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class CommissionBreakdown
                 Return New DecimalType(CType(Row(CommissionBreakdownDAL.COL_NAME_DEALER_COMM_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommissionBreakdownDAL.COL_NAME_DEALER_COMM_PCT, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class CommissionBreakdown
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)> _
-    Public Property BrokerMarkupPct() As DecimalType
+    Public Property BrokerMarkupPct As DecimalType
         Get
             CheckDeleted()
             If Row(CommissionBreakdownDAL.COL_NAME_BROKER_MARKUP_PCT) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class CommissionBreakdown
                 Return New DecimalType(CType(Row(CommissionBreakdownDAL.COL_NAME_BROKER_MARKUP_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommissionBreakdownDAL.COL_NAME_BROKER_MARKUP_PCT, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class CommissionBreakdown
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)> _
-    Public Property BrokerCommPct() As DecimalType
+    Public Property BrokerCommPct As DecimalType
         Get
             CheckDeleted()
             If Row(CommissionBreakdownDAL.COL_NAME_BROKER_COMM_PCT) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class CommissionBreakdown
                 Return New DecimalType(CType(Row(CommissionBreakdownDAL.COL_NAME_BROKER_COMM_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommissionBreakdownDAL.COL_NAME_BROKER_COMM_PCT, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class CommissionBreakdown
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)> _
-    Public Property Broker2MarkupPct() As DecimalType
+    Public Property Broker2MarkupPct As DecimalType
         Get
             CheckDeleted()
             If Row(CommissionBreakdownDAL.COL_NAME_BROKER2_MARKUP_PCT) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class CommissionBreakdown
                 Return New DecimalType(CType(Row(CommissionBreakdownDAL.COL_NAME_BROKER2_MARKUP_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommissionBreakdownDAL.COL_NAME_BROKER2_MARKUP_PCT, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class CommissionBreakdown
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)> _
-    Public Property Broker2CommPct() As DecimalType
+    Public Property Broker2CommPct As DecimalType
         Get
             CheckDeleted()
             If Row(CommissionBreakdownDAL.COL_NAME_BROKER2_COMM_PCT) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class CommissionBreakdown
                 Return New DecimalType(CType(Row(CommissionBreakdownDAL.COL_NAME_BROKER2_COMM_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommissionBreakdownDAL.COL_NAME_BROKER2_COMM_PCT, Value)
         End Set
@@ -254,7 +254,7 @@ Public Class CommissionBreakdown
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)> _
-    Public Property Broker3MarkupPct() As DecimalType
+    Public Property Broker3MarkupPct As DecimalType
         Get
             CheckDeleted()
             If Row(CommissionBreakdownDAL.COL_NAME_BROKER3_MARKUP_PCT) Is DBNull.Value Then
@@ -263,7 +263,7 @@ Public Class CommissionBreakdown
                 Return New DecimalType(CType(Row(CommissionBreakdownDAL.COL_NAME_BROKER3_MARKUP_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommissionBreakdownDAL.COL_NAME_BROKER3_MARKUP_PCT, Value)
         End Set
@@ -271,7 +271,7 @@ Public Class CommissionBreakdown
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)> _
-    Public Property Broker3CommPct() As DecimalType
+    Public Property Broker3CommPct As DecimalType
         Get
             CheckDeleted()
             If Row(CommissionBreakdownDAL.COL_NAME_BROKER3_COMM_PCT) Is DBNull.Value Then
@@ -280,7 +280,7 @@ Public Class CommissionBreakdown
                 Return New DecimalType(CType(Row(CommissionBreakdownDAL.COL_NAME_BROKER3_COMM_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommissionBreakdownDAL.COL_NAME_BROKER3_COMM_PCT, Value)
         End Set
@@ -288,7 +288,7 @@ Public Class CommissionBreakdown
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)> _
-    Public Property Broker4MarkupPct() As DecimalType
+    Public Property Broker4MarkupPct As DecimalType
         Get
             CheckDeleted()
             If Row(CommissionBreakdownDAL.COL_NAME_BROKER4_MARKUP_PCT) Is DBNull.Value Then
@@ -297,7 +297,7 @@ Public Class CommissionBreakdown
                 Return New DecimalType(CType(Row(CommissionBreakdownDAL.COL_NAME_BROKER4_MARKUP_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommissionBreakdownDAL.COL_NAME_BROKER4_MARKUP_PCT, Value)
         End Set
@@ -305,7 +305,7 @@ Public Class CommissionBreakdown
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)> _
-    Public Property Broker4CommPct() As DecimalType
+    Public Property Broker4CommPct As DecimalType
         Get
             CheckDeleted()
             If Row(CommissionBreakdownDAL.COL_NAME_BROKER4_COMM_PCT) Is DBNull.Value Then
@@ -314,7 +314,7 @@ Public Class CommissionBreakdown
                 Return New DecimalType(CType(Row(CommissionBreakdownDAL.COL_NAME_BROKER4_COMM_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommissionBreakdownDAL.COL_NAME_BROKER4_COMM_PCT, Value)
         End Set

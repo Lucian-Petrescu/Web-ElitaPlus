@@ -90,7 +90,7 @@ Public Class EventTask
 
     'Key Property
     <ValidOnlyOneEntity(""), ValidOneEntitySelected("")> _
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(EventTaskDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class EventTask
         End Get
     End Property
 
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(EventTaskDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -109,13 +109,13 @@ Public Class EventTask
                 Return New Guid(CType(Row(EventTaskDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventTaskDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(EventTaskDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -124,13 +124,13 @@ Public Class EventTask
                 Return New Guid(CType(Row(EventTaskDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventTaskDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(EventTaskDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -139,13 +139,13 @@ Public Class EventTask
                 Return New Guid(CType(Row(EventTaskDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventTaskDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
-    Public Property DealerGroupId() As Guid
+    Public Property DealerGroupId As Guid
         Get
             CheckDeleted()
             If Row(EventTaskDAL.COL_NAME_DEALER_GROUP_ID) Is DBNull.Value Then
@@ -154,13 +154,13 @@ Public Class EventTask
                 Return New Guid(CType(Row(EventTaskDAL.COL_NAME_DEALER_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventTaskDAL.COL_NAME_DEALER_GROUP_ID, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(EventTaskDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -169,14 +169,14 @@ Public Class EventTask
                 Return New Guid(CType(Row(EventTaskDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventTaskDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5), ValidProductCode("")> _
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             CheckDeleted()
             If Row(EventTaskDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
@@ -185,14 +185,14 @@ Public Class EventTask
                 Return CType(Row(EventTaskDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EventTaskDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property EventTypeId() As Guid
+    Public Property EventTypeId As Guid
         Get
             CheckDeleted()
             If Row(EventTaskDAL.COL_NAME_EVENT_TYPE_ID) Is DBNull.Value Then
@@ -201,7 +201,7 @@ Public Class EventTask
                 Return New Guid(CType(Row(EventTaskDAL.COL_NAME_EVENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventTaskDAL.COL_NAME_EVENT_TYPE_ID, Value)
         End Set
@@ -222,7 +222,7 @@ Public Class EventTask
     '    End Set
     'End Property
 
-    Public Property EventTaskParameters() As String
+    Public Property EventTaskParameters As String
         Get
             CheckDeleted()
             If Row(EventTaskDAL.COL_NAME_EVENT_TASK_PARAMETERS) Is DBNull.Value Then
@@ -231,14 +231,14 @@ Public Class EventTask
                 Return CType(Row(EventTaskDAL.COL_NAME_EVENT_TASK_PARAMETERS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EventTaskDAL.COL_NAME_EVENT_TASK_PARAMETERS, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property TaskId() As Guid
+    Public Property TaskId As Guid
         Get
             CheckDeleted()
             If Row(EventTaskDAL.COL_NAME_TASK_ID) Is DBNull.Value Then
@@ -247,14 +247,14 @@ Public Class EventTask
                 Return New Guid(CType(Row(EventTaskDAL.COL_NAME_TASK_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventTaskDAL.COL_NAME_TASK_ID, Value)
         End Set
     End Property
 
     ' <ValidCoverageType("")> _
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(EventTaskDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -263,14 +263,14 @@ Public Class EventTask
                 Return New Guid(CType(Row(EventTaskDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventTaskDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=99)> _
-    Public Property RetryCount() As LongType
+    Public Property RetryCount As LongType
         Get
             CheckDeleted()
             If Row(EventTaskDAL.COL_NAME_RETRY_COUNT) Is DBNull.Value Then
@@ -279,14 +279,14 @@ Public Class EventTask
                 Return New LongType(CType(Row(EventTaskDAL.COL_NAME_RETRY_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(EventTaskDAL.COL_NAME_RETRY_COUNT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=999999)> _
-    Public Property RetryDelaySeconds() As LongType
+    Public Property RetryDelaySeconds As LongType
         Get
             CheckDeleted()
             If Row(EventTaskDAL.COL_NAME_RETRY_DELAY_SECONDS) Is DBNull.Value Then
@@ -295,14 +295,14 @@ Public Class EventTask
                 Return New LongType(CType(Row(EventTaskDAL.COL_NAME_RETRY_DELAY_SECONDS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(EventTaskDAL.COL_NAME_RETRY_DELAY_SECONDS, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=999999)> _
-    Public Property TimeoutSeconds() As LongType
+    Public Property TimeoutSeconds As LongType
         Get
             CheckDeleted()
             If Row(EventTaskDAL.COL_NAME_TIMEOUT_SECONDS) Is DBNull.Value Then
@@ -311,13 +311,13 @@ Public Class EventTask
                 Return New LongType(CType(Row(EventTaskDAL.COL_NAME_TIMEOUT_SECONDS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(EventTaskDAL.COL_NAME_TIMEOUT_SECONDS, Value)
         End Set
     End Property
 
-    Public Property EventArgumentId() As Guid
+    Public Property EventArgumentId As Guid
         Get
             CheckDeleted()
             If Row(EventTaskDAL.COL_NAME_EVENT_ARGUMENT_ID) Is DBNull.Value Then
@@ -326,14 +326,14 @@ Public Class EventTask
                 Return New Guid(CType(Row(EventTaskDAL.COL_NAME_EVENT_ARGUMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EventTaskDAL.COL_NAME_EVENT_ARGUMENT_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=999999)>
-    Public Property InitDelayMinutes() As LongType
+    Public Property InitDelayMinutes As LongType
         Get
             CheckDeleted()
             If Row(EventTaskDAL.COL_NAME_INIT_DELAY_MINUTES) Is DBNull.Value Then
@@ -342,7 +342,7 @@ Public Class EventTask
                 Return New LongType(CType(Row(EventTaskDAL.COL_NAME_INIT_DELAY_MINUTES), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(EventTaskDAL.COL_NAME_INIT_DELAY_MINUTES, Value)
         End Set

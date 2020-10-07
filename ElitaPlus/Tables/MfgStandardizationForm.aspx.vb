@@ -143,7 +143,7 @@ Namespace Tables
         End Property
         Private Property MfgStandardizationId() As String
             Get
-                If moMfgGrid.SelectedIndex > NO_ITEM_SELECTED_INDEX And IsNewMfgStandardization() = False Then
+                If moMfgGrid.SelectedIndex > NO_ITEM_SELECTED_INDEX AndAlso IsNewMfgStandardization() = False Then
                     moMfgStandardizationId = New Guid(CType((State.searchDV(moMfgGrid.SelectedIndex)("mfg_standardization_id")), Byte())).ToString
                 End If
                 Return moMfgStandardizationId
@@ -318,7 +318,7 @@ Namespace Tables
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-                If dvRow IsNot Nothing And Not State.bnoRow Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
                     If (itemType = ListItemType.Item OrElse
                         itemType = ListItemType.AlternatingItem OrElse
                         itemType = ListItemType.SelectedItem) Then

@@ -90,7 +90,7 @@ Public Class SubscriberTask
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(SubscriberTaskDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class SubscriberTask
     End Property
 
     <ValueMandatory("")> _
-    Public Property TaskId() As Guid
+    Public Property TaskId As Guid
         Get
             CheckDeleted()
             If row(SubscriberTaskDAL.COL_NAME_TASK_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class SubscriberTask
                 Return New Guid(CType(row(SubscriberTaskDAL.COL_NAME_TASK_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SubscriberTaskDAL.COL_NAME_TASK_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class SubscriberTask
 
 
     <ValueMandatory("")> _
-    Public Property SubscriberTypeId() As Guid
+    Public Property SubscriberTypeId As Guid
         Get
             CheckDeleted()
             If row(SubscriberTaskDAL.COL_NAME_SUBSCRIBER_TYPE_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class SubscriberTask
                 Return New Guid(CType(row(SubscriberTaskDAL.COL_NAME_SUBSCRIBER_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SubscriberTaskDAL.COL_NAME_SUBSCRIBER_TYPE_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class SubscriberTask
 
 
     <ValueMandatory("")> _
-    Public Property SubscriberStatusId() As Guid
+    Public Property SubscriberStatusId As Guid
         Get
             CheckDeleted()
             If row(SubscriberTaskDAL.COL_NAME_SUBSCRIBER_STATUS_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class SubscriberTask
                 Return New Guid(CType(row(SubscriberTaskDAL.COL_NAME_SUBSCRIBER_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(SubscriberTaskDAL.COL_NAME_SUBSCRIBER_STATUS_ID, Value)
         End Set

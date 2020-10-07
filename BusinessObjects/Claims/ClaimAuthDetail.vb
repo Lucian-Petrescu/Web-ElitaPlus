@@ -99,8 +99,6 @@ Public Class ClaimAuthDetail
 
 #Region "Private Members"
 
-    Private _ClaimId As Guid
-
     'Initialization code for new objects
     Private Sub Initialize()
         Me.LaborAmount = 0
@@ -117,7 +115,7 @@ Public Class ClaimAuthDetail
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimAuthDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -128,7 +126,7 @@ Public Class ClaimAuthDetail
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If row(ClaimAuthDetailDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -137,7 +135,7 @@ Public Class ClaimAuthDetail
                 Return New Guid(CType(row(ClaimAuthDetailDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthDetailDAL.COL_NAME_CLAIM_ID, Value)
         End Set
@@ -145,7 +143,7 @@ Public Class ClaimAuthDetail
 
 
     <ValueMandatoryConditionally(""), ValidNumericRange("", Max:=NEW_MAX_LONG, Min:=0)> _
-    Public Property LaborAmount() As DecimalType
+    Public Property LaborAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimAuthDetailDAL.COL_NAME_LABOR_AMOUNT) Is DBNull.Value Then
@@ -154,7 +152,7 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_LABOR_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthDetailDAL.COL_NAME_LABOR_AMOUNT, Value)
         End Set
@@ -162,7 +160,7 @@ Public Class ClaimAuthDetail
 
 
     <ValueMandatoryConditionally(""), ValidNumericRange("", Max:=NEW_MAX_LONG, Min:=0)> _
-    Public Property PartAmount() As DecimalType
+    Public Property PartAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimAuthDetailDAL.COL_NAME_PART_AMOUNT) Is DBNull.Value Then
@@ -171,7 +169,7 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_PART_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthDetailDAL.COL_NAME_PART_AMOUNT, Value)
         End Set
@@ -179,7 +177,7 @@ Public Class ClaimAuthDetail
 
 
     <ValueMandatoryConditionally(""), ValidNumericRange("", Max:=NEW_MAX_LONG, Min:=0)> _
-    Public Property ServiceCharge() As DecimalType
+    Public Property ServiceCharge As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimAuthDetailDAL.COL_NAME_SERVICE_CHARGE) Is DBNull.Value Then
@@ -188,7 +186,7 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_SERVICE_CHARGE), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthDetailDAL.COL_NAME_SERVICE_CHARGE, Value)
         End Set
@@ -196,7 +194,7 @@ Public Class ClaimAuthDetail
 
 
     <ValueMandatoryConditionally(""), ValidNumericRange("", Max:=NEW_MAX_LONG, Min:=0)> _
-    Public Property TripAmount() As DecimalType
+    Public Property TripAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimAuthDetailDAL.COL_NAME_TRIP_AMOUNT) Is DBNull.Value Then
@@ -205,14 +203,14 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_TRIP_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthDetailDAL.COL_NAME_TRIP_AMOUNT, Value)
         End Set
     End Property
 
     <ValueMandatoryConditionally(""), ValidNumericRange("", Max:=NEW_MAX_LONG, Min:=0)> _
-    Public Property ShippingAmount() As DecimalType
+    Public Property ShippingAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimAuthDetailDAL.COL_NAME_SHIPPING_AMOUNT) Is DBNull.Value Then
@@ -221,14 +219,14 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_SHIPPING_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthDetailDAL.COL_NAME_SHIPPING_AMOUNT, Value)
         End Set
     End Property
 
     <ValueMandatoryConditionally(""), ValidNumericRange("", Max:=NEW_MAX_LONG, Min:=0)> _
-    Public Property OtherAmount() As DecimalType
+    Public Property OtherAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimAuthDetailDAL.COL_NAME_OTHER_AMOUNT) Is DBNull.Value Then
@@ -237,7 +235,7 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_OTHER_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthDetailDAL.COL_NAME_OTHER_AMOUNT, Value)
         End Set
@@ -245,7 +243,7 @@ Public Class ClaimAuthDetail
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property OtherExplanation() As String
+    Public Property OtherExplanation As String
         Get
             CheckDeleted()
             If row(ClaimAuthDetailDAL.COL_NAME_OTHER_EXPLANATION) Is DBNull.Value Then
@@ -254,22 +252,15 @@ Public Class ClaimAuthDetail
                 Return CType(row(ClaimAuthDetailDAL.COL_NAME_OTHER_EXPLANATION), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthDetailDAL.COL_NAME_OTHER_EXPLANATION, Value)
         End Set
     End Property
 
-    Public Property TempClaimId() As Guid
-        Get
-            Return _ClaimId
-        End Get
-        Set(Value As Guid)
-            _ClaimId = Value
-        End Set
-    End Property
+    Public Property TempClaimId As Guid
 
-    Public Property DispositionAmount() As DecimalType
+    Public Property DispositionAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimAuthDetailDAL.COL_NAME_DISPOSITION_AMOUNT) Is DBNull.Value Then
@@ -278,14 +269,14 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_DISPOSITION_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthDetailDAL.COL_NAME_DISPOSITION_AMOUNT, Value)
         End Set
     End Property
 
 
-    Public Property DiagnosticsAmount() As DecimalType
+    Public Property DiagnosticsAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimAuthDetailDAL.COL_NAME_DIAGNOSTICS_AMOUNT) Is DBNull.Value Then
@@ -294,13 +285,13 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_DIAGNOSTICS_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthDetailDAL.COL_NAME_DIAGNOSTICS_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property TotalTaxAmount() As DecimalType
+    Public Property TotalTaxAmount As DecimalType
         Get
             CheckDeleted()
 
@@ -310,7 +301,7 @@ Public Class ClaimAuthDetail
             Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_TOTAL_TAX_AMOUNT), Decimal))
 
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimAuthDetailDAL.COL_NAME_TOTAL_TAX_AMOUNT, Value)
         End Set

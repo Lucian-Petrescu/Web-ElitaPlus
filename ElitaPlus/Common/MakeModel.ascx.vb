@@ -182,7 +182,7 @@ Partial Class MakeModel
             End If
         End If
 
-        If drop = "Make" Or selectNext Then
+        If drop = "Make" OrElse selectNext Then
             If Not isEmpty(Make) Then
                 dw = LookupListNew.GetVSCModelsLookupList(Make)
                 ModelDrop.DataSource = dw
@@ -204,13 +204,13 @@ Partial Class MakeModel
             YearDrop.Enabled = False
 
             'Restore Previously selected value
-            If drop = "" And Not isEmpty(State.ModelState) Then
+            If drop = "" AndAlso Not isEmpty(State.ModelState) Then
                 ModelDrop.SelectedValue = State.ModelState
                 selectNext = True
             End If
         End If
 
-        If drop = "Model" Or selectNext Then
+        If drop = "Model" OrElse selectNext Then
             If Not isEmpty(Model) Then
                 dw = LookupListNew.GetVSCTrimLookupList(Model, Make)
                 TrimDrop.DataSource = dw
@@ -230,13 +230,13 @@ Partial Class MakeModel
             YearDrop.Enabled = False
 
             'Restore Previously selected value
-            If drop = "" And Not isEmpty(State.EngineVersionState) Then
+            If drop = "" AndAlso Not isEmpty(State.EngineVersionState) Then
                 TrimDrop.SelectedValue = State.EngineVersionState
                 selectNext = True
             End If
         End If
 
-        If drop = "Trim" Or selectNext Then
+        If drop = "Trim" OrElse selectNext Then
             If Not isEmpty(EngineVersion) Then
                 dw = LookupListNew.GetVSCYearsLookupList(EngineVersion, Model, Make)
                 YearDrop.DataSource = dw
@@ -252,7 +252,7 @@ Partial Class MakeModel
             End If
 
             'Restore Previosly selected value
-            If drop = "" And Not isEmpty(State.YearState) Then YearDrop.SelectedValue = State.YearState
+            If drop = "" AndAlso Not isEmpty(State.YearState) Then YearDrop.SelectedValue = State.YearState
         End If
 
     End Sub

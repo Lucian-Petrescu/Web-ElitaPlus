@@ -90,7 +90,7 @@ Public Class CaseQuestionAnswer
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CaseQuestionAnswerDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class CaseQuestionAnswer
     End Property
 	
     <ValueMandatory("")> _
-    Public Property CaseQuestionSetId() As Guid
+    Public Property CaseQuestionSetId As Guid
         Get
             CheckDeleted()
             If row(CaseQuestionAnswerDAL.COL_NAME_CASE_QUESTION_SET_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class CaseQuestionAnswer
                 Return New Guid(CType(row(CaseQuestionAnswerDAL.COL_NAME_CASE_QUESTION_SET_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseQuestionAnswerDAL.COL_NAME_CASE_QUESTION_SET_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class CaseQuestionAnswer
 	
 	
     
-    Public Property DcmAnswerId() As Guid
+    Public Property DcmAnswerId As Guid
         Get
             CheckDeleted()
             If row(CaseQuestionAnswerDAL.COL_NAME_DCM_ANSWER_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class CaseQuestionAnswer
                 Return New Guid(CType(row(CaseQuestionAnswerDAL.COL_NAME_DCM_ANSWER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseQuestionAnswerDAL.COL_NAME_DCM_ANSWER_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class CaseQuestionAnswer
 	
 	
     <ValidStringLength("", Max:=2000)> _
-    Public Property AnswerText() As String
+    Public Property AnswerText As String
         Get
             CheckDeleted()
             If row(CaseQuestionAnswerDAL.COL_NAME_ANSWER_TEXT) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class CaseQuestionAnswer
                 Return CType(row(CaseQuestionAnswerDAL.COL_NAME_ANSWER_TEXT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CaseQuestionAnswerDAL.COL_NAME_ANSWER_TEXT, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class CaseQuestionAnswer
 	
 	
     
-    Public Property AnswerDate() As DateType
+    Public Property AnswerDate As DateType
         Get
             CheckDeleted()
             If row(CaseQuestionAnswerDAL.COL_NAME_ANSWER_DATE) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class CaseQuestionAnswer
                 Return New DateType(CType(row(CaseQuestionAnswerDAL.COL_NAME_ANSWER_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CaseQuestionAnswerDAL.COL_NAME_ANSWER_DATE, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class CaseQuestionAnswer
 	
 	
     
-    Public Property AnswerNumber() As DecimalType
+    Public Property AnswerNumber As DecimalType
         Get
             CheckDeleted()
             If row(CaseQuestionAnswerDAL.COL_NAME_ANSWER_NUMBER) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class CaseQuestionAnswer
                 Return New DecimalType(CType(row(CaseQuestionAnswerDAL.COL_NAME_ANSWER_NUMBER), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CaseQuestionAnswerDAL.COL_NAME_ANSWER_NUMBER, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class CaseQuestionAnswer
 	
 	
     <ValueMandatory("")> _
-    Public Property InteractionId() As Guid
+    Public Property InteractionId As Guid
         Get
             CheckDeleted()
             If row(CaseQuestionAnswerDAL.COL_NAME_INTERACTION_ID) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class CaseQuestionAnswer
                 Return New Guid(CType(row(CaseQuestionAnswerDAL.COL_NAME_INTERACTION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseQuestionAnswerDAL.COL_NAME_INTERACTION_ID, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class CaseQuestionAnswer
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=200)> _
-    Public Property DeleteFlagXcd() As String
+    Public Property DeleteFlagXcd As String
         Get
             CheckDeleted()
             If row(CaseQuestionAnswerDAL.COL_NAME_DELETE_FLAG_XCD) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class CaseQuestionAnswer
                 Return CType(row(CaseQuestionAnswerDAL.COL_NAME_DELETE_FLAG_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CaseQuestionAnswerDAL.COL_NAME_DELETE_FLAG_XCD, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class CaseQuestionAnswer
 	
 	
     <ValueMandatory("")> _
-    Public Property DcmQuestionId() As Guid
+    Public Property DcmQuestionId As Guid
         Get
             CheckDeleted()
             If row(CaseQuestionAnswerDAL.COL_NAME_DCM_QUESTION_ID) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class CaseQuestionAnswer
                 Return New Guid(CType(row(CaseQuestionAnswerDAL.COL_NAME_DCM_QUESTION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseQuestionAnswerDAL.COL_NAME_DCM_QUESTION_ID, Value)
         End Set

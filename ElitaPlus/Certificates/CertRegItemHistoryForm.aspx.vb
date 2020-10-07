@@ -192,8 +192,8 @@
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim sModified_Date As String
 
-            If dvRow IsNot Nothing And Not State.bnoRow Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                     e.Row.Cells(GRID_COL_REGISTERED_ITEM_NAME_IDX).Text = dvRow(CertRegisteredItemHist.CertRegItemHistSearchDV.COL_REGISTERED_ITEM_NAME).ToString
                     e.Row.Cells(GRID_COL_DEVICE_TYPE_IDX).Text = dvRow(CertRegisteredItemHist.CertRegItemHistSearchDV.COL_DEVICE_TYPE).ToString

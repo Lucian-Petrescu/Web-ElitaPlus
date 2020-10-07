@@ -90,7 +90,7 @@ Public Class ReppolicyClaimCount
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ReppolicyClaimCountDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ReppolicyClaimCount
     End Property
 
     <ValueMandatory("")> _
-    Public Property ContractId() As Guid
+    Public Property ContractId As Guid
         Get
             CheckDeleted()
             If row(ReppolicyClaimCountDAL.COL_NAME_CONTRACT_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ReppolicyClaimCount
                 Return New Guid(CType(row(ReppolicyClaimCountDAL.COL_NAME_CONTRACT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ReppolicyClaimCountDAL.COL_NAME_CONTRACT_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ReppolicyClaimCount
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             CheckDeleted()
             If Row(ReppolicyClaimCountDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
@@ -127,14 +127,14 @@ Public Class ReppolicyClaimCount
                 Return CType(Row(ReppolicyClaimCountDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReppolicyClaimCountDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=1, Max:=9999, MaxExclusive:=False)> _
-    Public Property CertDuration() As LongType
+    Public Property CertDuration As LongType
         Get
             CheckDeleted()
             If Row(ReppolicyClaimCountDAL.COL_NAME_CERT_DURATION) Is DBNull.Value Then
@@ -143,14 +143,14 @@ Public Class ReppolicyClaimCount
                 Return New LongType(CType(Row(ReppolicyClaimCountDAL.COL_NAME_CERT_DURATION), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ReppolicyClaimCountDAL.COL_NAME_CERT_DURATION, Value)
         End Set
     End Property
 
     <Config_Criteria_Valid(""), Duplicate_Config_Exists("")> _
-    Public Property ConverageTypeId() As Guid
+    Public Property ConverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(ReppolicyClaimCountDAL.COL_NAME_CONVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -159,7 +159,7 @@ Public Class ReppolicyClaimCount
                 Return New Guid(CType(Row(ReppolicyClaimCountDAL.COL_NAME_CONVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ReppolicyClaimCountDAL.COL_NAME_CONVERAGE_TYPE_ID, Value)
         End Set
@@ -167,7 +167,7 @@ Public Class ReppolicyClaimCount
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=1, Max:=99, MaxExclusive:=False)> _
-    Public Property ReplacementPolicyClaimCount() As LongType
+    Public Property ReplacementPolicyClaimCount As LongType
         Get
             CheckDeleted()
             If Row(ReppolicyClaimCountDAL.COL_NAME_REPLACEMENT_POLICY_CLAIM_COUNT) Is DBNull.Value Then
@@ -176,13 +176,13 @@ Public Class ReppolicyClaimCount
                 Return New LongType(CType(Row(ReppolicyClaimCountDAL.COL_NAME_REPLACEMENT_POLICY_CLAIM_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ReppolicyClaimCountDAL.COL_NAME_REPLACEMENT_POLICY_CLAIM_COUNT, Value)
         End Set
     End Property
 
-    Public ReadOnly Property CoverageTypeDescription() As String
+    Public ReadOnly Property CoverageTypeDescription As String
         Get
             Return LookupListNew.GetDescriptionFromId(LookupListNew.LK_COVERAGE_TYPES, ConverageTypeId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         End Get

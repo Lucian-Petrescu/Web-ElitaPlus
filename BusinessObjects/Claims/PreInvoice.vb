@@ -128,7 +128,7 @@ Public Class PreInvoice
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(PreInvoiceDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -139,7 +139,7 @@ Public Class PreInvoice
     End Property
 
     <ValueMandatory("")> _
-    Public Property PreInvoiceCreationDate() As DateType
+    Public Property PreInvoiceCreationDate As DateType
         Get
             CheckDeleted()
             If Row(PreInvoiceDAL.COL_NAME_PRE_INVOICE_CREATION_DATE) Is DBNull.Value Then
@@ -148,7 +148,7 @@ Public Class PreInvoice
                 Return New DateType(CType(Row(PreInvoiceDAL.COL_NAME_PRE_INVOICE_CREATION_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(PreInvoiceDAL.COL_NAME_PRE_INVOICE_CREATION_DATE, Value)
         End Set
@@ -156,7 +156,7 @@ Public Class PreInvoice
 
 
     <ValueMandatory("")> _
-    Public Property ScDisplayDate() As DateType
+    Public Property ScDisplayDate As DateType
         Get
             CheckDeleted()
             If Row(PreInvoiceDAL.COL_NAME_SC_DISPLAY_DATE) Is DBNull.Value Then
@@ -165,7 +165,7 @@ Public Class PreInvoice
                 Return New DateType(CType(Row(PreInvoiceDAL.COL_NAME_SC_DISPLAY_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(PreInvoiceDAL.COL_NAME_SC_DISPLAY_DATE, Value)
         End Set
@@ -173,7 +173,7 @@ Public Class PreInvoice
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property BatchNumber() As String
+    Public Property BatchNumber As String
         Get
             CheckDeleted()
             If Row(PreInvoiceDAL.COL_NAME_BATCH_NUMBER) Is DBNull.Value Then
@@ -182,7 +182,7 @@ Public Class PreInvoice
                 Return CType(Row(PreInvoiceDAL.COL_NAME_BATCH_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(PreInvoiceDAL.COL_NAME_BATCH_NUMBER, Value)
         End Set
@@ -190,7 +190,7 @@ Public Class PreInvoice
 
 
     <ValueMandatory("")> _
-    Public Property PreInvoiceStatusId() As Guid
+    Public Property PreInvoiceStatusId As Guid
         Get
             CheckDeleted()
             If Row(PreInvoiceDAL.COL_NAME_PRE_INVOICE_STATUS_ID) Is DBNull.Value Then
@@ -199,13 +199,13 @@ Public Class PreInvoice
                 Return New Guid(CType(Row(PreInvoiceDAL.COL_NAME_PRE_INVOICE_STATUS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PreInvoiceDAL.COL_NAME_PRE_INVOICE_STATUS_ID, Value)
         End Set
     End Property
 
-    Public Property TotalAuthAmount() As DecimalType
+    Public Property TotalAuthAmount As DecimalType
         Get
             CheckDeleted()
             If Row(PreInvoiceDAL.COL_NAME_TOTAL_AMOUNT) Is DBNull.Value Then
@@ -214,13 +214,13 @@ Public Class PreInvoice
                 Return New DecimalType(CType(Row(PreInvoiceDAL.COL_NAME_TOTAL_AMOUNT), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PreInvoiceDAL.COL_NAME_TOTAL_AMOUNT, Value)
         End Set
     End Property
 
-    Public ReadOnly Property TotalAmount() As DecimalType
+    Public ReadOnly Property TotalAmount As DecimalType
         Get
             If TotalAndBonusPopulated Then
                 Return _totalAmount
@@ -231,7 +231,7 @@ Public Class PreInvoice
         End Get
     End Property
 
-    Public ReadOnly Property TotalBonusAmount() As DecimalType
+    Public ReadOnly Property TotalBonusAmount As DecimalType
         Get
             If TotalAndBonusPopulated Then
                 Return _totalBonusAmount
@@ -243,7 +243,7 @@ Public Class PreInvoice
     End Property
 
     <ValueMandatory("")>
-    Public Property TotalClaims() As DecimalType
+    Public Property TotalClaims As DecimalType
         Get
             CheckDeleted()
             If Row(PreInvoiceDAL.COL_NAME_TOTAL_CLAIMS) Is DBNull.Value Then
@@ -252,7 +252,7 @@ Public Class PreInvoice
                 Return New DecimalType(CType(Row(PreInvoiceDAL.COL_NAME_TOTAL_CLAIMS), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(PreInvoiceDAL.COL_NAME_TOTAL_CLAIMS, Value)
         End Set
@@ -260,7 +260,7 @@ Public Class PreInvoice
 
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(PreInvoiceDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -269,7 +269,7 @@ Public Class PreInvoice
                 Return New Guid(CType(Row(PreInvoiceDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PreInvoiceDAL.COL_NAME_COMPANY_ID, Value)
         End Set

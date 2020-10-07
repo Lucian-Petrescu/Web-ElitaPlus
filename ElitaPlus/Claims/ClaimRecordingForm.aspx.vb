@@ -464,7 +464,7 @@ Public Class ClaimRecordingForm
                     objList = CaseBase.LoadExclSecFieldsConfig(Guid.Empty, oCertificate.DealerId)
                     If objList.Count > 0 Then
                         exclSecFieldsDt = ConvertToDataTable(Of CaseBase.ExclSecFields)(objList)
-                        If exclSecFieldsDt IsNot Nothing And exclSecFieldsDt.Rows.Count > 0 Then
+                        If exclSecFieldsDt IsNot Nothing AndAlso exclSecFieldsDt.Rows.Count > 0 Then
                             State.ExclSecFieldsDt = exclSecFieldsDt
                             'State.IsCallerAuthenticated = False                   
                         End If
@@ -956,7 +956,7 @@ Public Class ClaimRecordingForm
             caseRequest.PurposeCode = moPurposecode.SelectedValue 'oCase.CasePurposeXcd
 
             If (callerinfo.GetType() Is GetType(PhoneCaller)) Then
-                If (String.IsNullOrEmpty(callerinfo.PhoneNumber) And String.IsNullOrEmpty(callerinfo.EmailAddress)) Then
+                If (String.IsNullOrEmpty(callerinfo.PhoneNumber) AndAlso String.IsNullOrEmpty(callerinfo.EmailAddress)) Then
                     MasterPage.MessageController.AddError(errorMessage:=ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR, translate:=True)
                     Exit Sub
                 End If
@@ -1066,7 +1066,7 @@ Public Class ClaimRecordingForm
                 Session("PrevCallerEmail") = callerinfo.EmailAddress
 
                 If (callerinfo.GetType() Is GetType(PhoneCaller)) Then
-                    If (String.IsNullOrEmpty(callerinfo.PhoneNumber) And String.IsNullOrEmpty(callerinfo.EmailAddress)) Then
+                    If (String.IsNullOrEmpty(callerinfo.PhoneNumber) AndAlso String.IsNullOrEmpty(callerinfo.EmailAddress)) Then
                         errMsg.Add(ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR)
                     End If
                 End If
@@ -2287,7 +2287,7 @@ Public Class ClaimRecordingForm
 
 
     Protected Sub rep_OnItemDataBound(sender As Object, e As RepeaterItemEventArgs)
-        If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem Then
+        If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
             Dim panelCurrentDevice As Panel = DirectCast(e.Item.FindControl("panelCurrentDevice"), Panel)
             Dim lblDeviceDescription1 As Label = DirectCast(e.Item.FindControl("lblDeviceDescription1"), Label)
             Dim lblDeviceDescription2 As Label = DirectCast(e.Item.FindControl("lblDeviceDescription2"), Label)

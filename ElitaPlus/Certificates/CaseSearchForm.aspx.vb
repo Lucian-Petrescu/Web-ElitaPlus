@@ -328,7 +328,7 @@ Namespace Certificates
 
             Catch ex As Exception
                 Dim getExceptionType As String = ex.GetBaseException.GetType().Name
-                If ((Not GetExceptionType.Equals(String.Empty)) And GetExceptionType.Equals("BOValidationException")) Then
+                If ((Not GetExceptionType.Equals(String.Empty)) AndAlso GetExceptionType.Equals("BOValidationException")) Then
                     ControlMgr.SetVisibleControl(Me, Grid, False)
                     lblPageSize.Visible = False
                     lblRecordCount.Visible = False
@@ -389,7 +389,7 @@ Namespace Certificates
 
         Private Sub GetStateProperties()
             Try
-                If State.CompanyId <> Guid.Empty And ddlCompanyName.Items.Count > 0 Then SetSelectedItem(ddlCompanyName, State.CompanyId)
+                If State.CompanyId <> Guid.Empty AndAlso ddlCompanyName.Items.Count > 0 Then SetSelectedItem(ddlCompanyName, State.CompanyId)
 
                 TextBoxCaseNumber.Text = State.CaseNumber
                 If State.CaseStatus <> String.Empty And ddlCaseStatus.Items.Count > 0 Then SetSelectedItem(ddlCaseStatus, State.CaseStatus)
@@ -400,7 +400,7 @@ Namespace Certificates
                 TextBoxCallerLastName.Text = State.CallerLastName
                 TextBoxCertificateNumber.Text = State.CertificateNumber
                 If State.CaseClosedReason <> String.Empty And ddlCaseClosedReason.Items.Count > 0 Then SetSelectedItem(ddlCaseClosedReason, State.CaseClosedReason)
-                If State.selectedSortById <> Guid.Empty And cboSortBy.Items.Count > 0 Then SetSelectedItem(cboSortBy, State.selectedSortById)
+                If State.selectedSortById <> Guid.Empty AndAlso cboSortBy.Items.Count > 0 Then SetSelectedItem(cboSortBy, State.selectedSortById)
 
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)

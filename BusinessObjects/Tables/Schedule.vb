@@ -90,7 +90,7 @@ Public Class Schedule
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ScheduleDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class Schedule
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=10), ScheduleCodeValidator("")> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(ScheduleDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class Schedule
                 Return CType(Row(ScheduleDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ScheduleDAL.COL_NAME_CODE, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class Schedule
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ScheduleDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class Schedule
                 Return CType(Row(ScheduleDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ScheduleDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -220,14 +220,14 @@ Public Class Schedule
     End Sub
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 
 #Region "ScheduleDetail"
-    Public ReadOnly Property ScheduleDetailChildren() As ScheduleDetail.ScheduleDetailList
+    Public ReadOnly Property ScheduleDetailChildren As ScheduleDetail.ScheduleDetailList
         Get
             Return New ScheduleDetail.ScheduleDetailList(Me)
         End Get

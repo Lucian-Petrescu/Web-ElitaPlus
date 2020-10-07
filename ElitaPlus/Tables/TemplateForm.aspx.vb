@@ -620,7 +620,7 @@ Namespace Tables
             Try
                 With TheTemplate
                     PopulateBOsFromForm()
-                    bIsDirty = .IsDirty Or TheTemplate.IsChildrenDirty
+                    bIsDirty = .IsDirty OrElse TheTemplate.IsChildrenDirty
                 End With
             Catch ex As Exception
                 MasterPage.MessageController.AddError(TEMPLATE_FORM001)
@@ -897,8 +897,8 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If dvRow IsNot Nothing And State.ParametersGrid_DV.Count > 0 Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then
+                If dvRow IsNot Nothing AndAlso State.ParametersGrid_DV.Count > 0 Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem OrElse itemType = ListItemType.EditItem Then
                         CType(e.Row.Cells(GRID_PARAM_COL_OC_TEMPLATE_PARAMS_ID).FindControl(ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(OcTemplateParams.TemplateParamsDV.COL_OC_TEMPLATE_PARAMS_ID), Byte()))
 
                         If (State.ParametersGrid_IsInEditMode = True AndAlso State.ParametersGrid_TemplateParamsId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(OcTemplateParams.TemplateParamsDV.COL_OC_TEMPLATE_PARAMS_ID), Byte())))) Then
@@ -1306,8 +1306,8 @@ Namespace Tables
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If dvRow IsNot Nothing And State.RecipientsGrid_DV.Count > 0 Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then
+                If dvRow IsNot Nothing AndAlso State.RecipientsGrid_DV.Count > 0 Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem OrElse itemType = ListItemType.EditItem Then
                         CType(e.Row.Cells(GRID_RECIPIENT_COL_OC_TEMPLATE_RECIPIENT_ID).FindControl(ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(OcTemplateRecipient.TemplateRecipientsDV.COL_OC_TEMPLATE_RECIPIENT_ID), Byte()))
 
                         If (State.RecipientsGrid_IsInEditMode = True AndAlso State.RecipientsGrid_TemplateRecipientId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(OcTemplateRecipient.TemplateRecipientsDV.COL_OC_TEMPLATE_RECIPIENT_ID), Byte())))) Then

@@ -349,7 +349,7 @@ Namespace Interfaces
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 With e.Item
                     ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_NOTIFICATIONFILE_PROCESSED_ID_IDX), dvRow(ServiceNotificationFileProcessed.COL_NAME_SVC_NOTIFICATION_PROCESSED_ID))
                     ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_FILENAME_IDX), dvRow(ServiceNotificationFileProcessed.COL_NAME_FILENAME))
@@ -520,8 +520,7 @@ Namespace Interfaces
             For i = 0 To (moDataGrid.Items.Count - 1)
                 edt = CType(moDataGrid.Items(i).Cells(ThePage.EDIT_COL).FindControl(ThePage.EDIT_CONTROL_NAME), ImageButton)
                 If edt IsNot Nothing Then
-                    edt.Enabled = (moDataGrid.Items(i).Cells(GRID_COL_REJECTED_IDX).Text.Trim() <> "0" Or _
-                                  (moDataGrid.Items(i).Cells(GRID_COL_REJECTED_IDX).Text.Trim() = "0" And moDataGrid.Items(i).Cells(GRID_COL_BYPASSES_IDX).Text.Trim() <> "0"))
+                    edt.Enabled = (moDataGrid.Items(i).Cells(GRID_COL_REJECTED_IDX).Text.Trim() <> "0" OrElse (moDataGrid.Items(i).Cells(GRID_COL_REJECTED_IDX).Text.Trim() = "0" AndAlso moDataGrid.Items(i).Cells(GRID_COL_BYPASSES_IDX).Text.Trim() <> "0"))
                 End If
             Next
             If TheState.moInterfaceTypeCode = ServiceNotificationFileProcessedData.InterfaceTypeCode.CLOSE_NOTIFICATION Then

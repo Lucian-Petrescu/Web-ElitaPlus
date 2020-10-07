@@ -98,7 +98,7 @@ Partial Public Class MessageCodeForm
         lblRecordCount.Visible = Grid.Visible
 
         If ErrControllerMaster.Visible Then
-            If Grid.Visible And Grid.Rows.Count < 10 Then
+            If Grid.Visible AndAlso Grid.Rows.Count < 10 Then
                 Dim fillerHight As Integer = 200
                 fillerHight = fillerHight - Grid.Rows.Count * 20
                 spanFiller.Text = "<tr><td colspan=""2"" style=""height:" & fillerHight & "px"">&nbsp;</td></tr>"
@@ -174,7 +174,7 @@ Partial Public Class MessageCodeForm
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim lblTemp As Label, ddl As DropDownList, txt As TextBox
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     If .RowIndex = Grid.EditIndex Then
                         ddl = CType(e.Row.FindControl(GRID_CTRL_NAME_MSG_TYPE), DropDownList)
@@ -316,7 +316,7 @@ Partial Public Class MessageCodeForm
                         If (Not .IsGridAddNew) OrElse (.IsGridAddNew AndAlso IsMsgCodeNew(.MyBO)) Then
                             .MyBO.Save()
                             Grid.EditIndex = NO_ITEM_SELECTED_INDEX
-                            If .IsGridAddNew And .searchDV.Count = 1 Then
+                            If .IsGridAddNew AndAlso .searchDV.Count = 1 Then
                                 .searchMsgCode = .MyBO.MsgCode
                                 .searchMsgType = .MyBO.MsgType
                             End If

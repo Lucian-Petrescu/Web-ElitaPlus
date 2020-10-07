@@ -162,7 +162,7 @@ Namespace Reports
                 ControlMgr.SetEnableControl(Me, rIncludeDealer, False)
                 ControlMgr.SetEnableControl(Me, rExcludeDealer, False)
             End If
-            If rGroup.Checked = True Or cboDealerGroup.SelectedIndex > 0 Then
+            If rGroup.Checked = True OrElse cboDealerGroup.SelectedIndex > 0 Then
                 DealerMultipleDrop.SelectedIndex = -1
             End If
         End Sub
@@ -371,7 +371,7 @@ Namespace Reports
                 odealergrp = New DealerGroup(dealerGroupId)
                 dealerGrpCode = odealergrp.Code
                 dealerGrpDesc = odealergrp.Description
-            ElseIf selectedDealerId.Equals(Guid.Empty) And dealerGroupId.Equals(Guid.Empty) Then
+            ElseIf selectedDealerId.Equals(Guid.Empty) AndAlso dealerGroupId.Equals(Guid.Empty) Then
                 ElitaPlusPage.SetLabelError(DealerMultipleDrop.CaptionLabel)
                 Throw New GUIException(Message.MSG_INVALID_DEALER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
             End If

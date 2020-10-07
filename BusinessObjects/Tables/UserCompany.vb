@@ -156,7 +156,7 @@ Public Class UserCompany
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(UserCompanyDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -167,7 +167,7 @@ Public Class UserCompany
     End Property
 
     <ValueMandatory("")> _
-    Public Property UserId() As Guid
+    Public Property UserId As Guid
         Get
             CheckDeleted()
             If row(UserCompanyDAL.COL_NAME_USER_ID) Is DBNull.Value Then
@@ -176,7 +176,7 @@ Public Class UserCompany
                 Return New Guid(CType(row(UserCompanyDAL.COL_NAME_USER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(UserCompanyDAL.COL_NAME_USER_ID, Value)
         End Set
@@ -184,7 +184,7 @@ Public Class UserCompany
 
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(UserCompanyDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -193,7 +193,7 @@ Public Class UserCompany
                 Return New Guid(CType(row(UserCompanyDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(UserCompanyDAL.COL_NAME_COMPANY_ID, Value)
         End Set

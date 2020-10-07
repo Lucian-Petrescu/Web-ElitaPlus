@@ -327,7 +327,7 @@ Namespace Reports
 
 
             If selectionType = BY_STORE Then
-                If txtActiveDays.Text.Trim.ToString = String.Empty Or Not IsNumeric(txtActiveDays.Text.Trim.ToString) Then
+                If txtActiveDays.Text.Trim.ToString = String.Empty OrElse Not IsNumeric(txtActiveDays.Text.Trim.ToString) Then
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER_OF_ACTIVE_DAYS_ERR)
                 Else
                     numberActiveDays = CType(txtActiveDays.Text, Integer)

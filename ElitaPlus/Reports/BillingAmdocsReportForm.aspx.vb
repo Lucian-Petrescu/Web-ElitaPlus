@@ -213,11 +213,11 @@ Namespace Reports
                     ElitaPlusPage.SetLabelError(lblBeginDate)
                     ElitaPlusPage.SetLabelError(lblEndDate)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION)
-                ElseIf ((Not txtBeginDate.Text.Equals(String.Empty) And txtEndDate.Text.Equals(String.Empty)) Or (txtBeginDate.Text.Equals(String.Empty) And Not txtEndDate.Text.Equals(String.Empty))) Then
+                ElseIf ((Not txtBeginDate.Text.Equals(String.Empty) AndAlso txtEndDate.Text.Equals(String.Empty)) OrElse (txtBeginDate.Text.Equals(String.Empty) AndAlso Not txtEndDate.Text.Equals(String.Empty))) Then
                     ElitaPlusPage.SetLabelError(lblBeginDate)
                     ElitaPlusPage.SetLabelError(lblEndDate)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_AND_END_DATES_MUST_BE_SELECTED_ERR)
-                ElseIf Not txtBeginDate.Text.Equals(String.Empty) And Not txtEndDate.Text.Equals(String.Empty) Then
+                ElseIf Not txtBeginDate.Text.Equals(String.Empty) AndAlso Not txtEndDate.Text.Equals(String.Empty) Then
                     ReportExtractBase.ValidateBeginEndDate(lblBeginDate, txtBeginDate.Text, lblEndDate, txtEndDate.Text)
                 End If
 

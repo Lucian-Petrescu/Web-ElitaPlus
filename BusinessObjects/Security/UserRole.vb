@@ -123,7 +123,7 @@ Public Class UserRole
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(UserRoleDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -134,7 +134,7 @@ Public Class UserRole
     End Property
 
     <ValueMandatory("")> _
-    Public Property RoleId() As Guid
+    Public Property RoleId As Guid
         Get
             CheckDeleted()
             If row(UserRoleDAL.COL_NAME_ROLE_ID) Is DBNull.Value Then
@@ -143,7 +143,7 @@ Public Class UserRole
                 Return New Guid(CType(row(UserRoleDAL.COL_NAME_ROLE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(UserRoleDAL.COL_NAME_ROLE_ID, Value)
         End Set
@@ -151,7 +151,7 @@ Public Class UserRole
 
 
     <ValueMandatory("")> _
-    Public Property UserId() As Guid
+    Public Property UserId As Guid
         Get
             CheckDeleted()
             If row(UserRoleDAL.COL_NAME_USER_ID) Is DBNull.Value Then
@@ -160,7 +160,7 @@ Public Class UserRole
                 Return New Guid(CType(row(UserRoleDAL.COL_NAME_USER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(UserRoleDAL.COL_NAME_USER_ID, Value)
         End Set

@@ -386,7 +386,7 @@ Namespace Reports
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
             End If
 
-            If moWeekEndDateText.Text <> String.Empty And moWeekBeginDateText.Text <> String.Empty Then
+            If moWeekEndDateText.Text <> String.Empty AndAlso moWeekBeginDateText.Text <> String.Empty Then
 
                 'Dates
                 ReportCeBase.ValidateBeginEndDate(moWBeginDateLabel, moWeekBeginDateText.Text, moWEndDateLabel, moWeekEndDateText.Text)
@@ -395,16 +395,16 @@ Namespace Reports
                 ForamatType = "Week"
 
                 'Number (Quarter)
-            ElseIf txtEndQuatNum.Text <> String.Empty And txtBeginQuatNum.Text <> String.Empty _
-                      And cboEndQuatYear.SelectedValue.ToString <> String.Empty _
-                  And cboBeginQuatYear.SelectedValue.ToString <> String.Empty Then
+            ElseIf txtEndQuatNum.Text <> String.Empty AndAlso txtBeginQuatNum.Text <> String.Empty _
+                      AndAlso cboEndQuatYear.SelectedValue.ToString <> String.Empty _
+                  AndAlso cboBeginQuatYear.SelectedValue.ToString <> String.Empty Then
 
-                If IsNumeric(txtEndQuatNum.Text) And IsNumeric(txtEndQuatNum.Text) Then
+                If IsNumeric(txtEndQuatNum.Text) AndAlso IsNumeric(txtEndQuatNum.Text) Then
 
-                    If CInt(txtEndQuatNum.Text.Trim.ToString) > 0 And CInt(txtEndQuatNum.Text.Trim.ToString) <= 4 _
-                        And CInt(txtBeginQuatNum.Text.Trim.ToString) > 0 And CInt(txtEndQuatNum.Text.Trim.ToString) <= 4 Then
+                    If CInt(txtEndQuatNum.Text.Trim.ToString) > 0 AndAlso CInt(txtEndQuatNum.Text.Trim.ToString) <= 4 _
+                        AndAlso CInt(txtBeginQuatNum.Text.Trim.ToString) > 0 AndAlso CInt(txtEndQuatNum.Text.Trim.ToString) <= 4 Then
 
-                        If cboBeginQuatYear.SelectedItem.ToString <> String.Empty And cboEndQuatYear.SelectedItem.ToString <> String.Empty Then
+                        If cboBeginQuatYear.SelectedItem.ToString <> String.Empty AndAlso cboEndQuatYear.SelectedItem.ToString <> String.Empty Then
 
                             EndNumber = txtEndQuatNum.Text
                             BeginNumber = txtBeginQuatNum.Text
@@ -448,17 +448,17 @@ Namespace Reports
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER)
                 End If
 
-            ElseIf txtEndMonthNum.Text <> String.Empty And txtBeginMonthNum.Text <> String.Empty _
-                And cboEndMonthyear.SelectedValue.ToString <> String.Empty _
-                And cboBeginMonthyear.SelectedValue.ToString <> String.Empty Then
+            ElseIf txtEndMonthNum.Text <> String.Empty AndAlso txtBeginMonthNum.Text <> String.Empty _
+                AndAlso cboEndMonthyear.SelectedValue.ToString <> String.Empty _
+                AndAlso cboBeginMonthyear.SelectedValue.ToString <> String.Empty Then
 
-                If IsNumeric(txtEndMonthNum.Text) And IsNumeric(txtBeginMonthNum.Text) Then
+                If IsNumeric(txtEndMonthNum.Text) AndAlso IsNumeric(txtBeginMonthNum.Text) Then
 
                     'Number (Month)
-                    If CInt(txtEndMonthNum.Text.Trim.ToString) > 0 And CInt(txtEndMonthNum.Text.Trim.ToString) <= 12 _
-                    And CInt(txtBeginMonthNum.Text.Trim.ToString) > 0 And CInt(txtBeginMonthNum.Text.Trim.ToString) <= 12 Then
+                    If CInt(txtEndMonthNum.Text.Trim.ToString) > 0 AndAlso CInt(txtEndMonthNum.Text.Trim.ToString) <= 12 _
+                    AndAlso CInt(txtBeginMonthNum.Text.Trim.ToString) > 0 AndAlso CInt(txtBeginMonthNum.Text.Trim.ToString) <= 12 Then
 
-                        If cboBeginMonthyear.SelectedItem.ToString <> String.Empty And cboEndMonthyear.SelectedItem.ToString <> String.Empty Then
+                        If cboBeginMonthyear.SelectedItem.ToString <> String.Empty AndAlso cboEndMonthyear.SelectedItem.ToString <> String.Empty Then
 
                             EndNumber = txtEndMonthNum.Text
                             BeginNumber = txtBeginMonthNum.Text

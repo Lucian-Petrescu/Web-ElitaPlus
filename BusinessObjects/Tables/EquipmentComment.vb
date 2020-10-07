@@ -86,7 +86,7 @@
 
 #Region "Properties"
     <ValueMandatory("")> _
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             CheckDeleted()
             If Row(EquipmentCommentDAL.COL_NAME_EQUIPMENT_COMMENT_ID) Is DBNull.Value Then
@@ -98,7 +98,7 @@
     End Property
 
     <ValueMandatory("")> _
-    Public Property EquipmentId() As Guid
+    Public Property EquipmentId As Guid
         Get
             CheckDeleted()
             If Row(EquipmentCommentDAL.COL_NAME_EQUIPMENT_ID) Is DBNull.Value Then
@@ -107,14 +107,14 @@
                 Return New Guid(CType(Row(EquipmentCommentDAL.COL_NAME_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EquipmentCommentDAL.COL_NAME_EQUIPMENT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=4000)> _
-    Public Property Comment() As String
+    Public Property Comment As String
         Get
             CheckDeleted()
             If Row(EquipmentCommentDAL.COL_NAME_COMMENT) Is DBNull.Value Then
@@ -123,7 +123,7 @@
                 Return Row(EquipmentCommentDAL.COL_NAME_COMMENT).ToString()
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EquipmentCommentDAL.COL_NAME_COMMENT, Value)
         End Set

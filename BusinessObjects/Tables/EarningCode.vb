@@ -89,7 +89,7 @@ Public Class EarningCode
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(EarningCodeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class EarningCode
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(EarningCodeDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -109,7 +109,7 @@ Public Class EarningCode
                 Return New Guid(CType(Row(EarningCodeDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EarningCodeDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
@@ -117,7 +117,7 @@ Public Class EarningCode
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(EarningCodeDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -126,7 +126,7 @@ Public Class EarningCode
                 Return CType(Row(EarningCodeDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EarningCodeDAL.COL_NAME_CODE, Value)
         End Set
@@ -134,7 +134,7 @@ Public Class EarningCode
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(EarningCodeDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -143,7 +143,7 @@ Public Class EarningCode
                 Return CType(Row(EarningCodeDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(EarningCodeDAL.COL_NAME_DESCRIPTION, Value)
         End Set

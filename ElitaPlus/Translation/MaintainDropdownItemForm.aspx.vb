@@ -116,7 +116,7 @@ Namespace Translation
                 Dim newLangTransValue As String = CType(DataGridDropdownItems.Items(i).Cells(NEW_TRANS_VALUE_CIDX).FindControl("TextBoxLangTrans"), TextBox).Text
                 'comparing to the original values saved in hidden columns
                 Dim isDirty As Boolean = False
-                isDirty = isDirty Or (newLangTransValue.Trim.ToUpper <> DataGridDropdownItems.Items(i).Cells(OLD_TRANS_VALUE_CIDX).Text.Trim.ToUpper)
+                isDirty = isDirty OrElse (newLangTransValue.Trim.ToUpper <> DataGridDropdownItems.Items(i).Cells(OLD_TRANS_VALUE_CIDX).Text.Trim.ToUpper)
                 If isDirty Then
                     Dim DropdownItemId As New Guid(CType(DataGridDropdownItems.Items(i).Cells(DROPDOWN_ITEM_ID_CIDX).FindControl("lblListItemId"), Label).Text)
                     Dim nDictItemTranslationID As New Guid(CType(DataGridDropdownItems.Items(i).Cells(DICT_ITEM_GUID_ID_CIDX).FindControl("lblDictItemTransId"), Label).Text)

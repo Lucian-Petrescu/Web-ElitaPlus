@@ -71,7 +71,7 @@ Public Class AppleCareEnrollItemUpdateTask
                             Dim response As ApplePartResponse = appleCare.GetApplePartFromIMEI(CertIMEI)
                             Dim applePartNumber As String = response.PartNumber
 
-                            If response.ErrorResponse IsNot Nothing And applePartNumber Is Nothing Then
+                            If response.ErrorResponse IsNot Nothing AndAlso applePartNumber Is Nothing Then
                                 failedLogs.AppendLine("Item ID: " + certItem.Id.ToString() + " - IMEI: " + CertIMEI + ". " + response.ErrorResponse.ErrorMessage)
                             ElseIf applePartNumber IsNot Nothing Then
                                 Dim errMsg As String

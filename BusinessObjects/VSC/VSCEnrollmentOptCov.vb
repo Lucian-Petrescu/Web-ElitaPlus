@@ -90,7 +90,7 @@ Public Class VscEnrollmentOptCov
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(VscEnrollmentOptCovDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class VscEnrollmentOptCov
     End Property
 
     <ValueMandatory("")> _
-    Public Property EnrollmentId() As Guid
+    Public Property EnrollmentId As Guid
         Get
             CheckDeleted()
             If row(VscEnrollmentOptCovDAL.COL_NAME_ENROLLMENT_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class VscEnrollmentOptCov
                 Return New Guid(CType(row(VscEnrollmentOptCovDAL.COL_NAME_ENROLLMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VscEnrollmentOptCovDAL.COL_NAME_ENROLLMENT_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class VscEnrollmentOptCov
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property OptionalCoverageCode() As String
+    Public Property OptionalCoverageCode As String
         Get
             CheckDeleted()
             If row(VscEnrollmentOptCovDAL.COL_NAME_OPTIONAL_COVERAGE_CODE) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class VscEnrollmentOptCov
                 Return CType(row(VscEnrollmentOptCovDAL.COL_NAME_OPTIONAL_COVERAGE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VscEnrollmentOptCovDAL.COL_NAME_OPTIONAL_COVERAGE_CODE, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class VscEnrollmentOptCov
 
 
     <ValueMandatory("")> _
-    Public Property OptionalCoverageAmount() As DecimalType
+    Public Property OptionalCoverageAmount As DecimalType
         Get
             CheckDeleted()
             If row(VscEnrollmentOptCovDAL.COL_NAME_OPTIONAL_COVERAGE_AMOUNT) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class VscEnrollmentOptCov
                 Return New DecimalType(CType(row(VscEnrollmentOptCovDAL.COL_NAME_OPTIONAL_COVERAGE_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(VscEnrollmentOptCovDAL.COL_NAME_OPTIONAL_COVERAGE_AMOUNT, Value)
         End Set

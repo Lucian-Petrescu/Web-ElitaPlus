@@ -90,7 +90,7 @@ Public Class VscCoverageRate
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(VscCoverageRateDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class VscCoverageRate
     End Property
 
     <ValueMandatory("")> _
-    Public Property VscRateVersionId() As Guid
+    Public Property VscRateVersionId As Guid
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_VSC_RATE_VERSION_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class VscCoverageRate
                 Return New Guid(CType(row(VscCoverageRateDAL.COL_NAME_VSC_RATE_VERSION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_VSC_RATE_VERSION_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class VscCoverageRate
 
 
     <ValueMandatory("")> _
-    Public Property VscCoverageId() As Guid
+    Public Property VscCoverageId As Guid
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_VSC_COVERAGE_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class VscCoverageRate
                 Return New Guid(CType(row(VscCoverageRateDAL.COL_NAME_VSC_COVERAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_VSC_COVERAGE_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class VscCoverageRate
 
 
     <ValueMandatory("")> _
-    Public Property ClassCodeId() As Guid
+    Public Property ClassCodeId As Guid
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_CLASS_CODE_ID) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class VscCoverageRate
                 Return New Guid(CType(row(VscCoverageRateDAL.COL_NAME_CLASS_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_CLASS_CODE_ID, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class VscCoverageRate
 
 
     <ValueMandatory("")> _
-    Public Property OdometerLowRange() As LongType
+    Public Property OdometerLowRange As LongType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_ODOMETER_LOW_RANGE) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class VscCoverageRate
                 Return New LongType(CType(row(VscCoverageRateDAL.COL_NAME_ODOMETER_LOW_RANGE), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_ODOMETER_LOW_RANGE, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class VscCoverageRate
 
 
     <ValueMandatory("")> _
-    Public Property OdometerHighRange() As LongType
+    Public Property OdometerHighRange As LongType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_ODOMETER_HIGH_RANGE) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class VscCoverageRate
                 Return New LongType(CType(row(VscCoverageRateDAL.COL_NAME_ODOMETER_HIGH_RANGE), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_ODOMETER_HIGH_RANGE, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class VscCoverageRate
 
 
     <ValueMandatory("")> _
-    Public Property Deductible() As DecimalType
+    Public Property Deductible As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_DEDUCTIBLE) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_DEDUCTIBLE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_DEDUCTIBLE, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class VscCoverageRate
 
 
     <ValueMandatory("")> _
-    Public Property DiscountedDeductibleAmt() As DecimalType
+    Public Property DiscountedDeductibleAmt As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_AMT) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_AMT, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class VscCoverageRate
 
 
     <ValueMandatory("")> _
-    Public Property DiscountedDeductiblePcnt() As DecimalType
+    Public Property DiscountedDeductiblePcnt As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_PCNT) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_PCNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_PCNT, Value)
         End Set
@@ -237,7 +237,7 @@ Public Class VscCoverageRate
 
 
     <ValueMandatory("")> _
-    Public Property TermMonths() As LongType
+    Public Property TermMonths As LongType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_TERM_MONTHS) Is DBNull.Value Then
@@ -246,7 +246,7 @@ Public Class VscCoverageRate
                 Return New LongType(CType(row(VscCoverageRateDAL.COL_NAME_TERM_MONTHS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_TERM_MONTHS, Value)
         End Set
@@ -254,7 +254,7 @@ Public Class VscCoverageRate
 
 
     <ValueMandatory("")> _
-    Public Property TermKmMi() As LongType
+    Public Property TermKmMi As LongType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_TERM_KM_MI) Is DBNull.Value Then
@@ -263,7 +263,7 @@ Public Class VscCoverageRate
                 Return New LongType(CType(row(VscCoverageRateDAL.COL_NAME_TERM_KM_MI), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_TERM_KM_MI, Value)
         End Set
@@ -271,7 +271,7 @@ Public Class VscCoverageRate
 
 
 
-    Public Property CommissionsPercent() As DecimalType
+    Public Property CommissionsPercent As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT) Is DBNull.Value Then
@@ -280,7 +280,7 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT, Value)
         End Set
@@ -288,7 +288,7 @@ Public Class VscCoverageRate
 
 
 
-    Public Property MarketingPercent() As DecimalType
+    Public Property MarketingPercent As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_MARKETING_PERCENT) Is DBNull.Value Then
@@ -297,7 +297,7 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_MARKETING_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_MARKETING_PERCENT, Value)
         End Set
@@ -305,7 +305,7 @@ Public Class VscCoverageRate
 
 
 
-    Public Property AdminExpense() As DecimalType
+    Public Property AdminExpense As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_ADMIN_EXPENSE) Is DBNull.Value Then
@@ -314,7 +314,7 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_ADMIN_EXPENSE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_ADMIN_EXPENSE, Value)
         End Set
@@ -322,7 +322,7 @@ Public Class VscCoverageRate
 
 
 
-    Public Property ProfitExpense() As DecimalType
+    Public Property ProfitExpense As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_PROFIT_EXPENSE) Is DBNull.Value Then
@@ -331,7 +331,7 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_PROFIT_EXPENSE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_PROFIT_EXPENSE, Value)
         End Set
@@ -339,7 +339,7 @@ Public Class VscCoverageRate
 
 
 
-    Public Property LossCostPercent() As DecimalType
+    Public Property LossCostPercent As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_LOSS_COST_PERCENT) Is DBNull.Value Then
@@ -348,7 +348,7 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_LOSS_COST_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_LOSS_COST_PERCENT, Value)
         End Set
@@ -356,7 +356,7 @@ Public Class VscCoverageRate
 
 
 
-    Public Property Wp() As DecimalType
+    Public Property Wp As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_WP) Is DBNull.Value Then
@@ -365,7 +365,7 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_WP), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_WP, Value)
         End Set
@@ -373,7 +373,7 @@ Public Class VscCoverageRate
 
 
 
-    Public Property TaxesPercent() As DecimalType
+    Public Property TaxesPercent As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_TAXES_PERCENT) Is DBNull.Value Then
@@ -382,7 +382,7 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_TAXES_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_TAXES_PERCENT, Value)
         End Set
@@ -390,7 +390,7 @@ Public Class VscCoverageRate
 
 
     <ValueMandatory("")> _
-    Public Property Gwp() As DecimalType
+    Public Property Gwp As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_GWP) Is DBNull.Value Then
@@ -399,7 +399,7 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_GWP), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_GWP, Value)
         End Set
@@ -407,7 +407,7 @@ Public Class VscCoverageRate
 
 
     <ValueMandatory("")> _
-    Public Property EngineManufWarrMonths() As LongType
+    Public Property EngineManufWarrMonths As LongType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_MONTHS) Is DBNull.Value Then
@@ -416,7 +416,7 @@ Public Class VscCoverageRate
                 Return New LongType(CType(row(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_MONTHS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_MONTHS, Value)
         End Set
@@ -424,7 +424,7 @@ Public Class VscCoverageRate
 
 
     <ValueMandatory("")> _
-    Public Property EngineManufWarrKmMi() As LongType
+    Public Property EngineManufWarrKmMi As LongType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_KM_MI) Is DBNull.Value Then
@@ -433,13 +433,13 @@ Public Class VscCoverageRate
                 Return New LongType(CType(row(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_KM_MI), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_KM_MI, Value)
         End Set
     End Property
     <ValueMandatory("")>
-    Public Property VehicleValuerangefrom() As LongType
+    Public Property VehicleValuerangefrom As LongType
         Get
             CheckDeleted()
             If Row(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_FROM) Is DBNull.Value Then
@@ -448,13 +448,13 @@ Public Class VscCoverageRate
                 Return New LongType(CType(Row(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_FROM), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_FROM, Value)
         End Set
     End Property
     <ValueMandatory("")>
-    Public Property VehicleValuerangeto() As LongType
+    Public Property VehicleValuerangeto As LongType
         Get
             CheckDeleted()
             If Row(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_TO) Is DBNull.Value Then
@@ -463,7 +463,7 @@ Public Class VscCoverageRate
                 Return New LongType(CType(Row(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_TO), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_TO, Value)
         End Set

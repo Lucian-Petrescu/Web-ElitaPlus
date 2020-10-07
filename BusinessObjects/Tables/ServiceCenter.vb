@@ -198,7 +198,7 @@ Public Class ServiceCenter
         End Get
     End Property
 
-    Public Property OriginalDealerId() As Guid
+    Public Property OriginalDealerId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_ORIGINAL_DEALER) Is DBNull.Value Then
@@ -207,14 +207,14 @@ Public Class ServiceCenter
                 Return New Guid(CType(Row(ServiceCenterDAL.COL_NAME_ORIGINAL_DEALER), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_ORIGINAL_DEALER, Value)
         End Set
     End Property
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IAttributable.Id
+    Public ReadOnly Property Id As Guid Implements IAttributable.Id
         Get
             If Row(ServiceCenterDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -225,7 +225,7 @@ Public Class ServiceCenter
     End Property
 
     <ValueMandatory("")>
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -234,14 +234,14 @@ Public Class ServiceCenter
                 Return New Guid(CType(Row(ServiceCenterDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property AddressId() As Guid 'Implements Address.IAddressUser.AddressId
+    Public Property AddressId As Guid 'Implements Address.IAddressUser.AddressId
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_ADDRESS_ID) Is DBNull.Value Then
@@ -250,7 +250,7 @@ Public Class ServiceCenter
                 Return New Guid(CType(Row(ServiceCenterDAL.COL_NAME_ADDRESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_ADDRESS_ID, Value)
         End Set
@@ -273,7 +273,7 @@ Public Class ServiceCenter
     'End Property
 
     <ValueMandatory("")>
-    Public Property ServiceGroupId() As Guid
+    Public Property ServiceGroupId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_SERVICE_GROUP_ID) Is DBNull.Value Then
@@ -282,14 +282,14 @@ Public Class ServiceCenter
                 Return New Guid(CType(Row(ServiceCenterDAL.COL_NAME_SERVICE_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_SERVICE_GROUP_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property PaymentMethodId() As Guid
+    Public Property PaymentMethodId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_PAYMENT_METHOD_ID) Is DBNull.Value Then
@@ -298,14 +298,14 @@ Public Class ServiceCenter
                 Return New Guid(CType(Row(ServiceCenterDAL.COL_NAME_PAYMENT_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_PAYMENT_METHOD_ID, Value)
         End Set
     End Property
 
 
-    Public Property LoanerCenterId() As Guid
+    Public Property LoanerCenterId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_LOANER_CENTER_ID) Is DBNull.Value Then
@@ -314,13 +314,13 @@ Public Class ServiceCenter
                 Return New Guid(CType(Row(ServiceCenterDAL.COL_NAME_LOANER_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_LOANER_CENTER_ID, Value)
         End Set
     End Property
 
-    Public Property MasterCenterId() As Guid
+    Public Property MasterCenterId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_MASTER_CENTER_ID) Is DBNull.Value Then
@@ -329,7 +329,7 @@ Public Class ServiceCenter
                 Return New Guid(CType(Row(ServiceCenterDAL.COL_NAME_MASTER_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_MASTER_CENTER_ID, Value)
             If Value = Guid.Empty Then
@@ -340,7 +340,7 @@ Public Class ServiceCenter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=10), ValueMethodOfRepair("")>
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -349,7 +349,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_CODE, Value)
         End Set
@@ -357,7 +357,7 @@ Public Class ServiceCenter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50), ValidateByteLength("", Max:=30)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -366,7 +366,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -374,7 +374,7 @@ Public Class ServiceCenter
 
 
     <ValidStringLength("", Max:=1)>
-    Public Property RatingCode() As String
+    Public Property RatingCode As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_RATING_CODE) Is DBNull.Value Then
@@ -383,7 +383,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_RATING_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_RATING_CODE, Value)
         End Set
@@ -391,7 +391,7 @@ Public Class ServiceCenter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)>
-    Public Property ContactName() As String
+    Public Property ContactName As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_CONTACT_NAME) Is DBNull.Value Then
@@ -400,7 +400,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_CONTACT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_CONTACT_NAME, Value)
         End Set
@@ -408,7 +408,7 @@ Public Class ServiceCenter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=30)>
-    Public Property OwnerName() As String
+    Public Property OwnerName As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_OWNER_NAME) Is DBNull.Value Then
@@ -417,7 +417,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_OWNER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_OWNER_NAME, Value)
         End Set
@@ -425,7 +425,7 @@ Public Class ServiceCenter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)>
-    Public Property Phone1() As String
+    Public Property Phone1 As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_PHONE1) Is DBNull.Value Then
@@ -434,7 +434,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_PHONE1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_PHONE1, Value)
         End Set
@@ -442,7 +442,7 @@ Public Class ServiceCenter
 
 
     <ValidStringLength("", Max:=20)>
-    Public Property Phone2() As String
+    Public Property Phone2 As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_PHONE2) Is DBNull.Value Then
@@ -451,7 +451,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_PHONE2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_PHONE2, Value)
         End Set
@@ -459,7 +459,7 @@ Public Class ServiceCenter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)>
-    Public Property Fax() As String
+    Public Property Fax As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_FAX) Is DBNull.Value Then
@@ -468,14 +468,14 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_FAX), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_FAX, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50), ValidEmail(""), EmailAddress("")>
-    Public Property Email() As String
+    Public Property Email As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_EMAIL) Is DBNull.Value Then
@@ -484,7 +484,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_EMAIL, Value)
         End Set
@@ -492,7 +492,7 @@ Public Class ServiceCenter
 
 
     <ValidStringLength("", Max:=30)>
-    Public Property FtpAddress() As String
+    Public Property FtpAddress As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_FTP_ADDRESS) Is DBNull.Value Then
@@ -501,7 +501,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_FTP_ADDRESS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_FTP_ADDRESS, Value)
         End Set
@@ -509,7 +509,7 @@ Public Class ServiceCenter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)>
-    Public Property TaxId() As String
+    Public Property TaxId As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_TAX_ID) Is DBNull.Value Then
@@ -518,7 +518,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_TAX_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_TAX_ID, Value)
         End Set
@@ -526,7 +526,7 @@ Public Class ServiceCenter
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=365)>
-    Public Property ServiceWarrantyDays() As LongType
+    Public Property ServiceWarrantyDays As LongType
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_SERVICE_WARRANTY_DAYS) Is DBNull.Value Then
@@ -535,7 +535,7 @@ Public Class ServiceCenter
                 Return New LongType(CType(Row(ServiceCenterDAL.COL_NAME_SERVICE_WARRANTY_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_SERVICE_WARRANTY_DAYS, Value)
         End Set
@@ -543,7 +543,7 @@ Public Class ServiceCenter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)>
-    Public Property StatusCode() As String
+    Public Property StatusCode As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_STATUS_CODE) Is DBNull.Value Then
@@ -552,7 +552,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_STATUS_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_STATUS_CODE, Value)
         End Set
@@ -560,7 +560,7 @@ Public Class ServiceCenter
 
 
     <ValidStringLength("", Max:=100)>
-    Public Property BusinessHours() As String
+    Public Property BusinessHours As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_BUSINESS_HOURS) Is DBNull.Value Then
@@ -569,22 +569,22 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_BUSINESS_HOURS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_BUSINESS_HOURS, Value)
         End Set
     End Property
-    Public Property ConstrVoilation() As Boolean
+    Public Property ConstrVoilation As Boolean
         Get
             Return _constrVoilation
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _constrVoilation = Value
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)>
-    Public Property MasterFlag() As String
+    Public Property MasterFlag As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_MASTER_FLAG) Is DBNull.Value Then
@@ -593,7 +593,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_MASTER_FLAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_MASTER_FLAG, Value)
         End Set
@@ -601,7 +601,7 @@ Public Class ServiceCenter
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)>
-    Public Property LoanerFlag() As String
+    Public Property LoanerFlag As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_LOANER_FLAG) Is DBNull.Value Then
@@ -610,23 +610,23 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_LOANER_FLAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_LOANER_FLAG, Value)
         End Set
     End Property
 
-    Public Property isBankInfoNeedDeletion() As Boolean
+    Public Property isBankInfoNeedDeletion As Boolean
         Get
             Return _isBankInfoNeedDeletion
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _isBankInfoNeedDeletion = Value
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property DefaultToEmailFlag() As Boolean
+    Public Property DefaultToEmailFlag As Boolean
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_DEFAULT_TO_EMAIL_FLAG) Is DBNull.Value Then
@@ -635,7 +635,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_DEFAULT_TO_EMAIL_FLAG), String) = "Y"
             End If
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             CheckDeleted()
             If Value Then
                 SetValue(ServiceCenterDAL.COL_NAME_DEFAULT_TO_EMAIL_FLAG, "Y")
@@ -646,7 +646,7 @@ Public Class ServiceCenter
     End Property
 
     <ValueMandatory("")>
-    Public Property IvaResponsibleFlag() As Boolean
+    Public Property IvaResponsibleFlag As Boolean
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_IVA_RESPONSIBLE_FLAG) Is DBNull.Value Then
@@ -655,7 +655,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_IVA_RESPONSIBLE_FLAG), String) = "Y"
             End If
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             CheckDeleted()
             If Value Then
                 SetValue(ServiceCenterDAL.COL_NAME_IVA_RESPONSIBLE_FLAG, "Y")
@@ -665,7 +665,7 @@ Public Class ServiceCenter
         End Set
     End Property
 
-    Public Property FreeZoneFlag() As Boolean
+    Public Property FreeZoneFlag As Boolean
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_FREE_ZONE_FLAG) Is DBNull.Value Then
@@ -674,7 +674,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_FREE_ZONE_FLAG), String) = "Y"
             End If
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             CheckDeleted()
             If Value Then
                 SetValue(ServiceCenterDAL.COL_NAME_FREE_ZONE_FLAG, "Y")
@@ -685,7 +685,7 @@ Public Class ServiceCenter
     End Property
 
 
-    Public ReadOnly Property DateAdded() As DateType
+    Public ReadOnly Property DateAdded As DateType
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_CREATED_DATE) Is DBNull.Value Then
@@ -697,7 +697,7 @@ Public Class ServiceCenter
 
     End Property
 
-    Public ReadOnly Property DateModified() As DateType
+    Public ReadOnly Property DateModified As DateType
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_MODIFIED_DATE) Is DBNull.Value Then
@@ -709,14 +709,14 @@ Public Class ServiceCenter
 
     End Property
 
-    Public ReadOnly Property HasLoanerCenter() As Boolean
+    Public ReadOnly Property HasLoanerCenter As Boolean
         Get
             Return Not LoanerCenterId.Equals(Guid.Empty)
         End Get
     End Property
 
     <ValidStringLength("", Max:=1000)>
-    Public Property Comments() As String
+    Public Property Comments As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_COMMENTS) Is DBNull.Value Then
@@ -725,14 +725,14 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_COMMENTS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_COMMENTS, Value)
         End Set
     End Property
 
 
-    Public Property BankInfoId() As Guid
+    Public Property BankInfoId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_BANKINFO_ID) Is DBNull.Value Then
@@ -741,14 +741,14 @@ Public Class ServiceCenter
                 Return New Guid(CType(Row(ServiceCenterDAL.COL_NAME_BANKINFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_BANKINFO_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property Shipping() As Boolean
+    Public Property Shipping As Boolean
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_SHIPPING) Is DBNull.Value Then
@@ -757,7 +757,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_SHIPPING), String) = "Y"
             End If
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             CheckDeleted()
             If Value Then
                 SetValue(ServiceCenterDAL.COL_NAME_SHIPPING, "Y")
@@ -767,7 +767,7 @@ Public Class ServiceCenter
         End Set
     End Property
     <ValueMandatoryConditionally(""), ValidAmount("")>
-    Public Property ProcessingFee() As DecimalType
+    Public Property ProcessingFee As DecimalType
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_PROCESSING_FEE) Is DBNull.Value Then
@@ -778,23 +778,23 @@ Public Class ServiceCenter
 
 
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_PROCESSING_FEE, Value)
         End Set
     End Property
 
-    Private Property LastPaymentMethodId() As Guid
+    Private Property LastPaymentMethodId As Guid
         Get
             Return _lastPaymentMethodId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _lastPaymentMethodId = Value
         End Set
     End Property
 
     <ValidStringLength("", Max:=50), CcEmailAddress("")>
-    Public Property CcEmail() As String
+    Public Property CcEmail As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_CC_EMAIL) Is DBNull.Value Then
@@ -803,13 +803,13 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_CC_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_CC_EMAIL, Value)
         End Set
     End Property
 
-    Public Property RouteId() As Guid
+    Public Property RouteId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_ROUTE_ID) Is DBNull.Value Then
@@ -818,13 +818,13 @@ Public Class ServiceCenter
                 Return New Guid(CType(Row(ServiceCenterDAL.COL_NAME_ROUTE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_ROUTE_ID, Value)
         End Set
     End Property
 
-    Public Property IntegratedWithID() As Guid
+    Public Property IntegratedWithID As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_INTEGRATED_WITH_ID) Is DBNull.Value Then
@@ -833,13 +833,13 @@ Public Class ServiceCenter
                 Return New Guid(CType(Row(ServiceCenterDAL.COL_NAME_INTEGRATED_WITH_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_INTEGRATED_WITH_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property IntegratedWithGVS() As Boolean
+    Public ReadOnly Property IntegratedWithGVS As Boolean
         Get
             Dim ret As Boolean = False
 
@@ -855,7 +855,7 @@ Public Class ServiceCenter
         End Get
     End Property
 
-    Public Property PayMaster() As Boolean
+    Public Property PayMaster As Boolean
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_PAY_MASTER) Is DBNull.Value Then
@@ -864,7 +864,7 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_PAY_MASTER), String) = "Y"
             End If
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             CheckDeleted()
             If Value Then
                 SetValue(ServiceCenterDAL.COL_NAME_PAY_MASTER, "Y")
@@ -875,7 +875,7 @@ Public Class ServiceCenter
         End Set
     End Property
 
-    Public ReadOnly Property IntegratedAsOf() As DateTimeType
+    Public ReadOnly Property IntegratedAsOf As DateTimeType
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_INTEGRATED_AS_OF) Is DBNull.Value Then
@@ -887,20 +887,20 @@ Public Class ServiceCenter
 
     End Property
 
-    Public Property MethodOfRepairCount() As Integer
+    Public Property MethodOfRepairCount As Integer
         Get
             If _intMethodOfRepairCount = -1 Then
                 _intMethodOfRepairCount = GetSelectedMethodOfRepair.Count
             End If
             Return _intMethodOfRepairCount
         End Get
-        Set(ByVal Value As Integer)
+        Set
             _intMethodOfRepairCount = Value
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ReverseLogisticsId() As Guid
+    Public Property ReverseLogisticsId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_REVERSE_LOGISTICS_ID) Is DBNull.Value Then
@@ -909,7 +909,7 @@ Public Class ServiceCenter
                 Return New Guid(CType(Row(ServiceCenterDAL.COL_NAME_REVERSE_LOGISTICS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_REVERSE_LOGISTICS_ID, Value)
         End Set
@@ -930,7 +930,7 @@ Public Class ServiceCenter
     '    End Set
     'End Property
 
-    Public Property DistributionMethodId() As Guid
+    Public Property DistributionMethodId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_DISTRIBUTION_METHOD_ID) Is DBNull.Value Then
@@ -939,7 +939,7 @@ Public Class ServiceCenter
                 Return New Guid(CType(Row(ServiceCenterDAL.COL_NAME_DISTRIBUTION_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_DISTRIBUTION_METHOD_ID, Value)
         End Set
@@ -947,7 +947,7 @@ Public Class ServiceCenter
 
 
 
-    Public Property FulfillmentTimeZoneId() As Guid
+    Public Property FulfillmentTimeZoneId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_FULFILLMENT_TIME_ZONE_ID) Is DBNull.Value Then
@@ -956,7 +956,7 @@ Public Class ServiceCenter
                 Return New Guid(CType(Row(ServiceCenterDAL.COL_NAME_FULFILLMENT_TIME_ZONE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_FULFILLMENT_TIME_ZONE_ID, Value)
         End Set
@@ -964,7 +964,7 @@ Public Class ServiceCenter
 
     'DEF-2818 : added the validation for ValidPriceListCode
     <ValueMandatory(""), ValidStringLength("", Max:=40), ValidPriceListCode("")>
-    Public Property PriceListCode() As String
+    Public Property PriceListCode As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_PRICE_LIST_CODE) Is DBNull.Value Then
@@ -973,13 +973,13 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_PRICE_LIST_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_PRICE_LIST_CODE, Value)
         End Set
     End Property
 
-    Public Property PriceListCode_Current() As String
+    Public Property PriceListCode_Current As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_PRICE_LIST_CODE) Is DBNull.Value Then
@@ -988,14 +988,14 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_PRICE_LIST_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_PRICE_LIST_CODE, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=100, Min:=0)>
-    Public Property DiscountPct() As DecimalType
+    Public Property DiscountPct As DecimalType
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_DISCOUNT_PCT) Is DBNull.Value Then
@@ -1004,7 +1004,7 @@ Public Class ServiceCenter
                 Return New DecimalType(CType(Row(ServiceCenterDAL.COL_NAME_DISCOUNT_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_DISCOUNT_PCT, Value)
         End Set
@@ -1012,7 +1012,7 @@ Public Class ServiceCenter
 
 
     <ValueIsAnInteger(""), ValidNumericRange("", Min:=0)>
-    Public Property DiscountDays() As LongType
+    Public Property DiscountDays As LongType
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_DISCOUNT_DAYS) Is DBNull.Value Then
@@ -1021,7 +1021,7 @@ Public Class ServiceCenter
                 Return New LongType(CType(Row(ServiceCenterDAL.COL_NAME_DISCOUNT_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_DISCOUNT_DAYS, Value)
         End Set
@@ -1029,7 +1029,7 @@ Public Class ServiceCenter
 
 
     <ValueIsAnInteger(""), ValidNumericRange("", Min:=0)>
-    Public Property NetDays() As LongType
+    Public Property NetDays As LongType
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_NET_DAYS) Is DBNull.Value Then
@@ -1040,7 +1040,7 @@ Public Class ServiceCenter
                 Return New LongType(CType(Row(ServiceCenterDAL.COL_NAME_NET_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             'START  DEF-2818
             'If Value Is Nothing Then
@@ -1051,14 +1051,14 @@ Public Class ServiceCenter
         End Set
     End Property
 
-    Public ReadOnly Property MyDataset() As DataSet
+    Public ReadOnly Property MyDataset As DataSet
         Get
             Return Dataset
         End Get
     End Property
 
     <ValueMandatory("")>
-    Public Property PreInvoiceId() As Guid
+    Public Property PreInvoiceId As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_PRE_INVOICE_ID) Is DBNull.Value Then
@@ -1067,12 +1067,12 @@ Public Class ServiceCenter
                 Return New Guid(CType(Row(ServiceCenterDAL.COL_NAME_PRE_INVOICE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_PRE_INVOICE_ID, Value)
         End Set
     End Property
-    Public Property AutoProcessInventoryFileXcd() As String
+    Public Property AutoProcessInventoryFileXcd As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_AUTO_PROCESS_INV_FILE_XCD) Is DBNull.Value Then
@@ -1081,14 +1081,14 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_AUTO_PROCESS_INV_FILE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_AUTO_PROCESS_INV_FILE_XCD, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30, Message:="ClaimReservedBasedOnXcd should be between 1 to 30 chars.")>
-    Public Property ClaimReservedBasedOnXcd() As String
+    Public Property ClaimReservedBasedOnXcd As String
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_BASED_ON_XCD) Is DBNull.Value Then
@@ -1097,13 +1097,13 @@ Public Class ServiceCenter
                 Return CType(Row(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_BASED_ON_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_BASED_ON_XCD, Value)
         End Set
     End Property
     <ValidNumericRange("", Max:=100, Min:=0, MaxExclusive:=False, MinExclusive:=True), RequiredConditionally("")>
-    Public Property ClaimReservedPercent() As DecimalType
+    Public Property ClaimReservedPercent As DecimalType
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_PERCENT) Is DBNull.Value Then
@@ -1112,14 +1112,14 @@ Public Class ServiceCenter
                 Return New DecimalType(CType(Row(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_PERCENT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=100, Min:=0)>
-    Public Property WithholdingRate() As DecimalType
+    Public Property WithholdingRate As DecimalType
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_WITHHOLDING_RATE) Is DBNull.Value Then
@@ -1128,7 +1128,7 @@ Public Class ServiceCenter
                 Return New DecimalType(CType(Row(ServiceCenterDAL.COL_NAME_WITHHOLDING_RATE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ServiceCenterDAL.COL_NAME_WITHHOLDING_RATE, Value)
         End Set
@@ -1182,7 +1182,7 @@ Public Class ServiceCenter
     '    End Get
     'End Property
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Dim bDirty As Boolean
 
@@ -1292,7 +1292,7 @@ Public Class ServiceCenter
 #Region "Manufacturer"
 
 
-    Public ReadOnly Property ServiceCenterManufacturerChildren() As ServiceCenterManufacturerList
+    Public ReadOnly Property ServiceCenterManufacturerChildren As ServiceCenterManufacturerList
         Get
             Return New ServiceCenterManufacturerList(Me)
         End Get
@@ -1415,7 +1415,7 @@ Public Class ServiceCenter
 
 #Region "ServiceNetwork"
 
-    Public ReadOnly Property ServiceCenterNetworkChildren() As ServiceCenterNetworkList
+    Public ReadOnly Property ServiceCenterNetworkChildren As ServiceCenterNetworkList
         Get
             Return New ServiceCenterNetworkList(Me)
         End Get
@@ -1486,7 +1486,7 @@ Public Class ServiceCenter
 
 #Region "Dealer"
 
-    Public ReadOnly Property ServiceCenterDealerChildren() As ServiceCenterDealerList
+    Public ReadOnly Property ServiceCenterDealerChildren As ServiceCenterDealerList
         Get
             Return New ServiceCenterDealerList(Me)
         End Get
@@ -1587,7 +1587,7 @@ Public Class ServiceCenter
 
 #Region "District"
 
-    Public ReadOnly Property ServiceCenterDistrictChildren() As ServiceCenterZipDistrictList
+    Public ReadOnly Property ServiceCenterDistrictChildren As ServiceCenterZipDistrictList
         Get
             Return New ServiceCenterZipDistrictList(Me)
         End Get
@@ -1713,7 +1713,7 @@ Public Class ServiceCenter
         Return rowFilter
 
     End Function
-    Public ReadOnly Property ServiceCenterMethoOfRepairsChildren() As ServCenterMethRepairList
+    Public ReadOnly Property ServiceCenterMethoOfRepairsChildren As ServCenterMethRepairList
         Get
             Return New ServCenterMethRepairList(Me)
         End Get
@@ -1775,7 +1775,7 @@ Public Class ServiceCenter
 #Region "Address"
 
     Private _address As Address = Nothing
-    Public ReadOnly Property Address() As Address
+    Public ReadOnly Property Address As Address
         Get
             If _address Is Nothing Then
                 If AddressId.Equals(Guid.Empty) Then
@@ -1810,7 +1810,7 @@ Public Class ServiceCenter
     '    End Get
     'End Property
 
-    Public ReadOnly Property CurrentBankInfo() As BankInfo
+    Public ReadOnly Property CurrentBankInfo As BankInfo
         Get
             Return _bankinfo
         End Get
@@ -1833,7 +1833,7 @@ Public Class ServiceCenter
 #Region "Loaner Center"
     Private _loanerCenter As ServiceCenter = Nothing
 
-    Public ReadOnly Property LoanerCenter() As ServiceCenter
+    Public ReadOnly Property LoanerCenter As ServiceCenter
         Get
             If HasLoanerCenter Then
                 If _loanerCenter Is Nothing Then
@@ -1904,7 +1904,7 @@ Public Class ServiceCenter
 
     Private _SvcPriceListRecon As SvcPriceListRecon = Nothing
 
-    Public Property CurrentSVCPLRecon() As SvcPriceListRecon
+    Public Property CurrentSVCPLRecon As SvcPriceListRecon
 
         Get
             Dim dv As SVCPlReconSearchDV = GetLatestRecbySVC()
@@ -1915,7 +1915,7 @@ Public Class ServiceCenter
             Return _SvcPriceListRecon
 
         End Get
-        Set(value As SvcPriceListRecon)
+        Set
             _SvcPriceListRecon = value
         End Set
     End Property
@@ -2586,7 +2586,7 @@ Public Class ServiceCenter
         Return New DataView(dal.GetContactsView(ServiceCenterId).Tables(0))
     End Function
 
-    Public ReadOnly Property ContactsChildren() As IsContactChildrenList
+    Public ReadOnly Property ContactsChildren As IsContactChildrenList
         Get
             Return New IsContactChildrenList(Me)
         End Get
@@ -2859,7 +2859,7 @@ Public Class ServiceCenter
         Return New DataView(dal.GetQuantityView(ServiceCenterId).Tables(0))
     End Function
 
-    Public ReadOnly Property QuantityChildren() As IsQuantityChildrenList
+    Public ReadOnly Property QuantityChildren As IsQuantityChildrenList
         Get
             Return New IsQuantityChildrenList(Me)
         End Get
@@ -2951,7 +2951,7 @@ Public Class ServiceCenter
         Return New DataView(dal.GetScheduleView(ServiceCenterId).Tables(0))
     End Function
 
-    Public ReadOnly Property scheduleChildren() As IsScheduleChildrenList
+    Public ReadOnly Property scheduleChildren As IsScheduleChildrenList
         Get
             Return New IsScheduleChildrenList(Me)
         End Get
@@ -3178,7 +3178,7 @@ Public Class ServiceCenter
             Get
                 Return _minLength
             End Get
-            Set(ByVal value As Int32)
+            Set
                 _minLength = value
                 _minLengthSet = True
             End Set
@@ -3188,7 +3188,7 @@ Public Class ServiceCenter
             Get
                 Return _maxLength
             End Get
-            Set(ByVal value As Int32)
+            Set
                 _maxLength = value
                 _maxLengthSet = True
             End Set
@@ -3253,7 +3253,7 @@ Public NotInheritable Class ValidateByteLengthAttribute
         Get
             Return _minLength
         End Get
-        Set(ByVal value As Int32)
+        Set
             _minLength = value
             _minLengthSet = True
         End Set
@@ -3263,7 +3263,7 @@ Public NotInheritable Class ValidateByteLengthAttribute
         Get
             Return _maxLength
         End Get
-        Set(ByVal value As Int32)
+        Set
             _maxLength = value
             _maxLengthSet = True
         End Set

@@ -89,7 +89,7 @@ Public Class GetPicklistByDateRange
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property StartDate() As DateTime
+    Public Property StartDate As DateTime
         Get
             If Row(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -97,14 +97,14 @@ Public Class GetPicklistByDateRange
                 Return CType(Row(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE), String)
             End If
         End Get
-        Set(ByVal Value As Date)
+        Set
             CheckDeleted()
             SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property EndDate() As DateTime
+    Public Property EndDate As DateTime
         Get
             If Row(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -112,7 +112,7 @@ Public Class GetPicklistByDateRange
                 Return CType(Row(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE), String)
             End If
         End Get
-        Set(ByVal Value As Date)
+        Set
             CheckDeleted()
             SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE, Value)
         End Set

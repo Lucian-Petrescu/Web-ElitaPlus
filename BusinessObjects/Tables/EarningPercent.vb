@@ -105,7 +105,7 @@ Public Class EarningPercent
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(EarningPercentDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -116,7 +116,7 @@ Public Class EarningPercent
     End Property
 
     <ValueMandatory("")> _
-    Public Property EarningPatternId() As Guid
+    Public Property EarningPatternId As Guid
         Get
             CheckDeleted()
             If Row(EarningPercentDAL.COL_NAME_EARNING_PATTERN_ID) Is DBNull.Value Then
@@ -125,7 +125,7 @@ Public Class EarningPercent
                 Return New Guid(CType(Row(EarningPercentDAL.COL_NAME_EARNING_PATTERN_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(EarningPercentDAL.COL_NAME_EARNING_PATTERN_ID, Value)
         End Set
@@ -133,7 +133,7 @@ Public Class EarningPercent
 
 
     <ValueMandatory(""), ValidNumericRange("EarningTerm", MIN:=MIN_TERM, Max:=MAX_TERM, Message:=ElitaPlus.Common.ErrorCodes.EARNING_MONTH_MUST_BE_BETWEEN_1_AND_999), ValidTerm("")> _
-    Public Property EarningTerm() As LongType
+    Public Property EarningTerm As LongType
         Get
             CheckDeleted()
             If Row(EarningPercentDAL.COL_NAME_EARNING_TERM) Is DBNull.Value Then
@@ -142,7 +142,7 @@ Public Class EarningPercent
                 Return New LongType(CType(Row(EarningPercentDAL.COL_NAME_EARNING_TERM), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(EarningPercentDAL.COL_NAME_EARNING_TERM, Value)
         End Set
@@ -150,7 +150,7 @@ Public Class EarningPercent
 
 
     <ValueMandatory(""), ValidNumericRange("EarningPercent", MIN:=MIN_PERCENT, Max:=MAX_PERCENT, Message:=ElitaPlus.Common.ErrorCodes.EARNING_PERCENT_MUST_BE_LESS_THAN_100), ValidPercent(""), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=EARNING_PERCENT_FORM012)> _
-    Public Property EarningPercent() As DecimalType
+    Public Property EarningPercent As DecimalType
         Get
             CheckDeleted()
             If Row(EarningPercentDAL.COL_NAME_EARNING_PERCENT) Is DBNull.Value Then
@@ -159,7 +159,7 @@ Public Class EarningPercent
                 Return New DecimalType(CType(Row(EarningPercentDAL.COL_NAME_EARNING_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(EarningPercentDAL.COL_NAME_EARNING_PERCENT, Value)
         End Set

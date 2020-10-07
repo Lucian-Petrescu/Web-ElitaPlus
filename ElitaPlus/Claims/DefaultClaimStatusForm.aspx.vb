@@ -435,9 +435,9 @@ Namespace Claims
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 Dim strID As String
 
-                If dvRow IsNot Nothing And Not State.bnoRow Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
                     strID = GetGuidStringFromByteArray(CType(dvRow(DefaultClaimStatus.DefaultClaimStatusSearchDV.COL_DEFAULT_CLAIM_STATUS_ID), Byte()))
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         CType(e.Row.Cells(GRID_COL_DEFAULT_CLAIM_STATUS_ID_IDX).FindControl(GRID_CTRL_NAME_LABLE_DEFAULT_CLAIM_STATUS_ID), Label).Text = strID
 
                         If (State.IsEditMode = True AndAlso State.DefaultClaimStatusID.ToString.Equals(strID)) Then

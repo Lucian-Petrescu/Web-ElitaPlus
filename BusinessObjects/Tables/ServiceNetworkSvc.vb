@@ -128,7 +128,7 @@ Public Class ServiceNetworkSvc
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ServiceNetworkSvcDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -139,7 +139,7 @@ Public Class ServiceNetworkSvc
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServiceNetworkId() As Guid
+    Public Property ServiceNetworkId As Guid
         Get
             CheckDeleted()
             If Row(ServiceNetworkSvcDAL.COL_NAME_SERVICE_NETWORK_ID) Is DBNull.Value Then
@@ -148,7 +148,7 @@ Public Class ServiceNetworkSvc
                 Return New Guid(CType(Row(ServiceNetworkSvcDAL.COL_NAME_SERVICE_NETWORK_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceNetworkSvcDAL.COL_NAME_SERVICE_NETWORK_ID, Value)
         End Set
@@ -156,7 +156,7 @@ Public Class ServiceNetworkSvc
 
 
     <ValueMandatory("")> _
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(ServiceNetworkSvcDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -165,7 +165,7 @@ Public Class ServiceNetworkSvc
                 Return New Guid(CType(Row(ServiceNetworkSvcDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ServiceNetworkSvcDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set

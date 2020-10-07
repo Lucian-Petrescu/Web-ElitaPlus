@@ -126,7 +126,7 @@ Public Class BillingPlan
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(BillingPlanDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -141,7 +141,7 @@ Public Class BillingPlan
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)> _
-    Public Property BillingPlanCode() As String
+    Public Property BillingPlanCode As String
         Get
             CheckDeleted()
             If Row(BillingPlanDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -150,14 +150,14 @@ Public Class BillingPlan
                 Return CType(Row(BillingPlanDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BillingPlanDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property BillingPlanDescription() As String
+    Public Property BillingPlanDescription As String
         Get
             CheckDeleted()
             If Row(BillingPlanDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -166,7 +166,7 @@ Public Class BillingPlan
                 Return CType(Row(BillingPlanDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BillingPlanDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -175,7 +175,7 @@ Public Class BillingPlan
 
 
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(BillingPlanDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -184,13 +184,13 @@ Public Class BillingPlan
                 Return New Guid(CType(Row(BillingPlanDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BillingPlanDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public Property DealerGroupId() As Guid
+    Public Property DealerGroupId As Guid
         Get
             CheckDeleted()
             If Row(BillingPlanDAL.COL_NAME_DEALER_GROUP_ID) Is DBNull.Value Then
@@ -199,7 +199,7 @@ Public Class BillingPlan
                 Return New Guid(CType(Row(BillingPlanDAL.COL_NAME_DEALER_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BillingPlanDAL.COL_NAME_DEALER_GROUP_ID, Value)
         End Set

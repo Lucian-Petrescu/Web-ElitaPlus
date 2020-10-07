@@ -150,7 +150,7 @@
                         , ElitaPlusPage.GetLongDateFormattedString(CType(dvRow("received_date"), Date)), "")
                         Dim oRecdDateImage As ImageButton = CType(e.Row.Cells(GRID_COL_RECEIVED_DATE_IDX).FindControl("ImageButtonRecdDate"), ImageButton)
                         'once received date is populated, value cannot be updated
-                        If (dvRow("received_date") Is Nothing Or dvRow("received_date").ToString() = String.Empty) Then
+                        If (dvRow("received_date") Is Nothing OrElse dvRow("received_date").ToString() = String.Empty) Then
                             oRecdDateImage.Visible = True
                             CType(e.Row.Cells(GRID_COL_RECEIVED_DATE_IDX).FindControl("TextboxReceivedDate"), TextBox).ReadOnly = False
                             If (oRecdDateImage IsNot Nothing) Then

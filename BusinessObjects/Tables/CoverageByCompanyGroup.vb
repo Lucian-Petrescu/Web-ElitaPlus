@@ -89,7 +89,7 @@ Public Class CoverageByCompanyGroup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CoverageByCompanyGroupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class CoverageByCompanyGroup
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(CoverageByCompanyGroupDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -109,7 +109,7 @@ Public Class CoverageByCompanyGroup
                 Return New Guid(CType(Row(CoverageByCompanyGroupDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageByCompanyGroupDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
@@ -117,7 +117,7 @@ Public Class CoverageByCompanyGroup
 
 
     <ValueMandatory("")> _
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(CoverageByCompanyGroupDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -126,7 +126,7 @@ Public Class CoverageByCompanyGroup
                 Return New Guid(CType(Row(CoverageByCompanyGroupDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CoverageByCompanyGroupDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set

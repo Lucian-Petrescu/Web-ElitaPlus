@@ -319,8 +319,8 @@ Namespace Tables
 
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-                If dvRow IsNot Nothing And Not State.bnoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         e.Row.Cells(GRID_COL_EARNING_PATTERN_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(Assurant.ElitaPlus.BusinessObjectsNew.EarningPattern.COL_EARNING_PATTERN_ID), Byte()))
                         e.Row.Cells(GRID_COL_DESCRIPTION).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.EarningPattern.COL_DESCRIPTION).ToString
                         e.Row.Cells(GRID_COL_CODE).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.EarningPattern.COL_CODE).ToString

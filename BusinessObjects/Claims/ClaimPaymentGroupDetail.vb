@@ -271,7 +271,7 @@ Public Class ClaimPaymentGroupDetail
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ClaimPaymentGroupDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -282,7 +282,7 @@ Public Class ClaimPaymentGroupDetail
     End Property
 
     <ValueMandatory("")> _
-    Public Property PaymentGroupId() As Guid
+    Public Property PaymentGroupId As Guid
         Get
             CheckDeleted()
             If Row(ClaimPaymentGroupDetailDAL.COL_NAME_PAYMENT_GROUP_ID) Is DBNull.Value Then
@@ -291,7 +291,7 @@ Public Class ClaimPaymentGroupDetail
                 Return New Guid(CType(Row(ClaimPaymentGroupDetailDAL.COL_NAME_PAYMENT_GROUP_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimPaymentGroupDetailDAL.COL_NAME_PAYMENT_GROUP_ID, Value)
         End Set
@@ -315,7 +315,7 @@ Public Class ClaimPaymentGroupDetail
     'End Property
 
     <ValidStringLength("", Max:=1)> _
-    Public Property ExcludeDeductible() As String
+    Public Property ExcludeDeductible As String
         Get
             CheckDeleted()
             If Row(ClaimPaymentGroupDetailDAL.COL_NAME_EXCLUDE_DEDUCTIBLE) Is DBNull.Value Then
@@ -324,7 +324,7 @@ Public Class ClaimPaymentGroupDetail
                 Return CType(Row(ClaimPaymentGroupDetailDAL.COL_NAME_EXCLUDE_DEDUCTIBLE), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimPaymentGroupDetailDAL.COL_NAME_EXCLUDE_DEDUCTIBLE, Value)
         End Set
@@ -332,7 +332,7 @@ Public Class ClaimPaymentGroupDetail
 
 
     <ValueMandatory("")> _
-    Public Property ClaimAuthorizationId() As Guid
+    Public Property ClaimAuthorizationId As Guid
         Get
             CheckDeleted()
             If Row(ClaimPaymentGroupDetailDAL.COL_NAME_AUTHORIZATION_ID) Is DBNull.Value Then
@@ -341,7 +341,7 @@ Public Class ClaimPaymentGroupDetail
                 Return New Guid(CType(Row(ClaimPaymentGroupDetailDAL.COL_NAME_AUTHORIZATION_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimPaymentGroupDetailDAL.COL_NAME_AUTHORIZATION_ID, Value)
         End Set

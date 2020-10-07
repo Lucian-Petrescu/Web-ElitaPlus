@@ -137,7 +137,7 @@ Public Class ClaimPaymentGroup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ClaimPaymentGroupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -148,7 +148,7 @@ Public Class ClaimPaymentGroup
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property PaymentGroupNumber() As String
+    Public Property PaymentGroupNumber As String
         Get
             CheckDeleted()
             If Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBER) Is DBNull.Value Then
@@ -157,7 +157,7 @@ Public Class ClaimPaymentGroup
                 Return CType(Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBER), String)
             End If
         End Get
-        Set(Value As String)
+        Set
             CheckDeleted()
             SetValue(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBER, Value)
         End Set
@@ -165,7 +165,7 @@ Public Class ClaimPaymentGroup
 
 
     <ValueMandatory("")> _
-    Public Property PaymentGroupStatusId() As Guid
+    Public Property PaymentGroupStatusId As Guid
         Get
             CheckDeleted()
             If Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_STATUS_ID) Is DBNull.Value Then
@@ -174,7 +174,7 @@ Public Class ClaimPaymentGroup
                 Return New Guid(CType(Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_STATUS_ID), Byte()))
             End If
         End Get
-        Set(Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_STATUS_ID, Value)
         End Set
@@ -182,7 +182,7 @@ Public Class ClaimPaymentGroup
 
 
     <ValueMandatory("")> _
-    Public Property PaymentGroupDate() As DateType
+    Public Property PaymentGroupDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_DATE) Is DBNull.Value Then
@@ -191,7 +191,7 @@ Public Class ClaimPaymentGroup
                 Return New DateType(CType(Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_DATE), Date))
             End If
         End Get
-        Set(Value As DateType)
+        Set
             CheckDeleted()
             SetValue(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_DATE, Value)
         End Set
@@ -199,7 +199,7 @@ Public Class ClaimPaymentGroup
 
 
     <ValueMandatory("")> _
-    Public Property PaymentGroupTotal() As DecimalType
+    Public Property PaymentGroupTotal As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_TOTAL) Is DBNull.Value Then
@@ -208,18 +208,18 @@ Public Class ClaimPaymentGroup
                 Return New DecimalType(CType(Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_TOTAL), Decimal))
             End If
         End Get
-        Set(Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_TOTAL, Value)
         End Set
     End Property
 
     Dim _companyId As Guid
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             Return _companyId
         End Get
-        Set(value As Guid)
+        Set
             _companyId = value
         End Set
     End Property
@@ -227,7 +227,7 @@ Public Class ClaimPaymentGroup
 
 #End Region
 
-    Public ReadOnly Property PymntGrpDetailChildren() As ClaimPaymentGroupDetail.PymntGrpDetailList
+    Public ReadOnly Property PymntGrpDetailChildren As ClaimPaymentGroupDetail.PymntGrpDetailList
         Get
             Return New ClaimPaymentGroupDetail.PymntGrpDetailList(Me)
         End Get

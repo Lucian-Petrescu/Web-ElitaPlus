@@ -90,7 +90,7 @@ Public Class ExcludedLiRoles
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ExcludedLiRolesDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ExcludedLiRoles
     End Property
 
     <ValueMandatory("")> _
-    Public Property ExcludeListitemRoleId() As Guid
+    Public Property ExcludeListitemRoleId As Guid
         Get
             CheckDeleted()
             If row(ExcludedLiRolesDAL.COL_NAME_EXCLUDE_LISTITEM_ROLE_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ExcludedLiRoles
                 Return New Guid(CType(row(ExcludedLiRolesDAL.COL_NAME_EXCLUDE_LISTITEM_ROLE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ExcludedLiRolesDAL.COL_NAME_EXCLUDE_LISTITEM_ROLE_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ExcludedLiRoles
 
 
     <ValueMandatory("")> _
-    Public Property RoleId() As Guid
+    Public Property RoleId As Guid
         Get
             CheckDeleted()
             If row(ExcludedLiRolesDAL.COL_NAME_ROLE_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ExcludedLiRoles
                 Return New Guid(CType(row(ExcludedLiRolesDAL.COL_NAME_ROLE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ExcludedLiRolesDAL.COL_NAME_ROLE_ID, Value)
         End Set

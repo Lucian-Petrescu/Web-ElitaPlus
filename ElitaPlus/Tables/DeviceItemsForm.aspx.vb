@@ -165,10 +165,10 @@ Namespace Tables
 
                 'comparing to the original values saved in hidden columns
                 Dim isDirty As Boolean = False
-                isDirty = isDirty Or (newProgCodeValue.Trim.ToUpper <> DataGridDropdownItems.Items(i).Cells(OLD_PROGCODE_CIDX).Text.Trim.ToUpper)
-                isDirty = isDirty Or (newEngTransValue.Trim.ToUpper <> DataGridDropdownItems.Items(i).Cells(OLD_TRANS_VALUE_CIDX).Text.Trim.ToUpper)
-                isDirty = isDirty Or (strNewMaintByUserValue <> DataGridDropdownItems.Items(i).Cells(OLD_MAINT_BY_USER_CIDX).Text.Trim.ToUpper)
-                isDirty = isDirty Or (strNewDispToUserValue <> DataGridDropdownItems.Items(i).Cells(OLD_DISP_TO_USER_CIDX).Text.Trim.ToUpper)
+                isDirty = isDirty OrElse (newProgCodeValue.Trim.ToUpper <> DataGridDropdownItems.Items(i).Cells(OLD_PROGCODE_CIDX).Text.Trim.ToUpper)
+                isDirty = isDirty OrElse (newEngTransValue.Trim.ToUpper <> DataGridDropdownItems.Items(i).Cells(OLD_TRANS_VALUE_CIDX).Text.Trim.ToUpper)
+                isDirty = isDirty OrElse (strNewMaintByUserValue <> DataGridDropdownItems.Items(i).Cells(OLD_MAINT_BY_USER_CIDX).Text.Trim.ToUpper)
+                isDirty = isDirty OrElse (strNewDispToUserValue <> DataGridDropdownItems.Items(i).Cells(OLD_DISP_TO_USER_CIDX).Text.Trim.ToUpper)
                 If isDirty Then
                     Dim DropdownItemId As New Guid(CType(DataGridDropdownItems.Items(i).Cells(DROPDOWN_ITEM_ID_CIDX).FindControl("lblListItemId"), Label).Text)
                     Try

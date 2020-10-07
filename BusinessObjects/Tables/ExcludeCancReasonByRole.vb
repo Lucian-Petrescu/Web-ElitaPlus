@@ -90,7 +90,7 @@ Public Class ExcludeCancReasonByRole
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ExcludeCancreasonByRoleDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ExcludeCancReasonByRole
     End Property
 
     <ValueMandatory("")> _
-    Public Property CancellationReasonId() As Guid
+    Public Property CancellationReasonId As Guid
         Get
             CheckDeleted()
             If Row(ExcludeCancreasonByRoleDAL.COL_NAME_CANCELLATION_REASON_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ExcludeCancReasonByRole
                 Return New Guid(CType(Row(ExcludeCancreasonByRoleDAL.COL_NAME_CANCELLATION_REASON_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ExcludeCancreasonByRoleDAL.COL_NAME_CANCELLATION_REASON_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ExcludeCancReasonByRole
 
 
     <ValueMandatory("")> _
-    Public Property RoleId() As Guid
+    Public Property RoleId As Guid
         Get
             CheckDeleted()
             If Row(ExcludeCancreasonByRoleDAL.COL_NAME_ROLE_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ExcludeCancReasonByRole
                 Return New Guid(CType(Row(ExcludeCancreasonByRoleDAL.COL_NAME_ROLE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ExcludeCancreasonByRoleDAL.COL_NAME_ROLE_ID, Value)
         End Set

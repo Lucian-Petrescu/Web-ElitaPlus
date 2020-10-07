@@ -86,7 +86,7 @@ Public Class GetVSCMakes
 
 #Region "Properties"
 
-    Public Property CompanyGroupCode() As String
+    Public Property CompanyGroupCode As String
         Get
             If Row(DATA_COL_NAME_COMPANY_GROUP_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -94,7 +94,7 @@ Public Class GetVSCMakes
                 Return (CType(Row(DATA_COL_NAME_COMPANY_GROUP_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_COMPANY_GROUP_CODE, Value)
         End Set

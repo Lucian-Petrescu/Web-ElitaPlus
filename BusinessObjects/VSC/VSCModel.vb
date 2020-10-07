@@ -137,7 +137,7 @@ Public Class VSCModel
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(VSCModelDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -148,7 +148,7 @@ Public Class VSCModel
     End Property
 
     <ValueMandatory("")> _
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -157,7 +157,7 @@ Public Class VSCModel
                 Return New Guid(CType(Row(VSCModelDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCModelDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
@@ -165,7 +165,7 @@ Public Class VSCModel
 
     'REQ-1142 changed the data type
     <ValueMandatory(""), ValidStringLength("", Max:=15), Valid_CarCode("")> _
-    Public Property CarCode() As String
+    Public Property CarCode As String
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_CAR_CODE) Is DBNull.Value Then
@@ -174,14 +174,14 @@ Public Class VSCModel
                 Return CType(Row(VSCModelDAL.COL_NAME_CAR_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VSCModelDAL.COL_NAME_CAR_CODE, Value)
         End Set
     End Property
     'REQ-1142 
     <ValidStringLength("", Max:=10), Valid_External_Car_Code("")> _
-    Public Property ExternalCarCode() As String
+    Public Property ExternalCarCode As String
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_EXTERNAL_CAR_CODE) Is DBNull.Value Then
@@ -190,14 +190,14 @@ Public Class VSCModel
                 Return CType(Row(VSCModelDAL.COL_NAME_EXTERNAL_CAR_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VSCModelDAL.COL_NAME_EXTERNAL_CAR_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -206,7 +206,7 @@ Public Class VSCModel
                 Return CType(Row(VSCModelDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VSCModelDAL.COL_NAME_MODEL, Value)
         End Set
@@ -214,7 +214,7 @@ Public Class VSCModel
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -223,14 +223,14 @@ Public Class VSCModel
                 Return CType(Row(VSCModelDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(VSCModelDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=1111)> _
-    Public Property ModelYear() As Integer
+    Public Property ModelYear As Integer
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_MODEL_YEAR) Is DBNull.Value Then
@@ -239,14 +239,14 @@ Public Class VSCModel
                 Return (CType(Row(VSCModelDAL.COL_NAME_MODEL_YEAR), Integer))
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(VSCModelDAL.COL_NAME_MODEL_YEAR, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property NewClassCodeId() As Guid
+    Public Property NewClassCodeId As Guid
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_NEW_CLASS_CODE_ID) Is DBNull.Value Then
@@ -255,14 +255,14 @@ Public Class VSCModel
                 Return New Guid(CType(Row(VSCModelDAL.COL_NAME_NEW_CLASS_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCModelDAL.COL_NAME_NEW_CLASS_CODE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property UsedClassCodeId() As Guid
+    Public Property UsedClassCodeId As Guid
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_USED_CLASS_CODE_ID) Is DBNull.Value Then
@@ -271,14 +271,14 @@ Public Class VSCModel
                 Return New Guid(CType(Row(VSCModelDAL.COL_NAME_USED_CLASS_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCModelDAL.COL_NAME_USED_CLASS_CODE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ActiveNewId() As Guid
+    Public Property ActiveNewId As Guid
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_ACTIVE_NEW_ID) Is DBNull.Value Then
@@ -287,14 +287,14 @@ Public Class VSCModel
                 Return New Guid(CType(Row(VSCModelDAL.COL_NAME_ACTIVE_NEW_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCModelDAL.COL_NAME_ACTIVE_NEW_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ActiveUsedId() As Guid
+    Public Property ActiveUsedId As Guid
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_ACTIVE_USED_ID) Is DBNull.Value Then
@@ -303,14 +303,14 @@ Public Class VSCModel
                 Return New Guid(CType(Row(VSCModelDAL.COL_NAME_ACTIVE_USED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCModelDAL.COL_NAME_ACTIVE_USED_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CoverageLimitId() As Guid
+    Public Property CoverageLimitId As Guid
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_COVERAGE_LIMIT_ID) Is DBNull.Value Then
@@ -319,14 +319,14 @@ Public Class VSCModel
                 Return New Guid(CType(Row(VSCModelDAL.COL_NAME_COVERAGE_LIMIT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCModelDAL.COL_NAME_COVERAGE_LIMIT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGgroupId() As Guid
+    Public Property CompanyGgroupId As Guid
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -335,14 +335,14 @@ Public Class VSCModel
                 Return New Guid(CType(Row(VSCModelDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(VSCModelDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0)> _
-    Public Property CoverageLimitCode() As Integer
+    Public Property CoverageLimitCode As Integer
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_COVERAGE_LIMIT_CODE) Is DBNull.Value Then
@@ -351,7 +351,7 @@ Public Class VSCModel
                 Return (CType(Row(VSCModelDAL.COL_NAME_COVERAGE_LIMIT_CODE), Integer))
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(VSCModelDAL.COL_NAME_COVERAGE_LIMIT_CODE, Value)
         End Set

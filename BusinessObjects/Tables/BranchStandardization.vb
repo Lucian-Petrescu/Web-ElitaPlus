@@ -97,7 +97,7 @@ Public Class BranchStandardization
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(BranchStandardizationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -108,7 +108,7 @@ Public Class BranchStandardization
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(BranchStandardizationDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -117,7 +117,7 @@ Public Class BranchStandardization
                 Return New Guid(CType(Row(BranchStandardizationDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BranchStandardizationDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -125,7 +125,7 @@ Public Class BranchStandardization
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)> _
-    Public Property DealerBranchCode() As String
+    Public Property DealerBranchCode As String
         Get
             CheckDeleted()
             If Row(BranchStandardizationDAL.COL_NAME_DEALER_BRANCH_CODE) Is DBNull.Value Then
@@ -134,7 +134,7 @@ Public Class BranchStandardization
                 Return CType(Row(BranchStandardizationDAL.COL_NAME_DEALER_BRANCH_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BranchStandardizationDAL.COL_NAME_DEALER_BRANCH_CODE, Value)
         End Set
@@ -142,7 +142,7 @@ Public Class BranchStandardization
 
 
     <ValueMandatory("")> _
-    Public Property BranchId() As Guid
+    Public Property BranchId As Guid
         Get
             CheckDeleted()
             If Row(BranchStandardizationDAL.COL_NAME_BRANCH_ID) Is DBNull.Value Then
@@ -151,7 +151,7 @@ Public Class BranchStandardization
                 Return New Guid(CType(Row(BranchStandardizationDAL.COL_NAME_BRANCH_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BranchStandardizationDAL.COL_NAME_BRANCH_ID, Value)
         End Set

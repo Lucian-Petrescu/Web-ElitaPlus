@@ -11,7 +11,7 @@ Public Class RoleReport
 
 #Region "Properties"
 
-    Public ReadOnly Property DataList() As DataView
+    Public ReadOnly Property DataList As DataView
         Get
             If moDataList Is Nothing Then
                 moDataList = PopulateRoleMenus()
@@ -21,7 +21,7 @@ Public Class RoleReport
 
     End Property
 
-    Public ReadOnly Property TheDataSet() As DataSet
+    Public ReadOnly Property TheDataSet As DataSet
         Get
             If moDataSet Is Nothing Then
                 moDataSet = GetDataset()

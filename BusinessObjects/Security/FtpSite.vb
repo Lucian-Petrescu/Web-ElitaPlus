@@ -90,7 +90,7 @@ Public Class FtpSite
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(FtpSiteDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class FtpSite
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=5)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(FtpSiteDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class FtpSite
                 Return CType(Row(FtpSiteDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(FtpSiteDAL.COL_NAME_CODE, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class FtpSite
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=30)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(FtpSiteDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class FtpSite
                 Return CType(Row(FtpSiteDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(FtpSiteDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class FtpSite
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Host() As String
+    Public Property Host As String
         Get
             CheckDeleted()
             If Row(FtpSiteDAL.COL_NAME_HOST) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class FtpSite
                 Return CType(Row(FtpSiteDAL.COL_NAME_HOST), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(FtpSiteDAL.COL_NAME_HOST, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class FtpSite
 
 
     <ValueMandatory("")> _
-    Public Property Port() As LongType
+    Public Property Port As LongType
         Get
             CheckDeleted()
             If row(FtpSiteDAL.COL_NAME_PORT) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class FtpSite
                 Return New LongType(CType(row(FtpSiteDAL.COL_NAME_PORT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(FtpSiteDAL.COL_NAME_PORT, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class FtpSite
 
 
     <ValueMandatory("")> _
-    Public Property UserName() As String
+    Public Property UserName As String
         Get
             CheckDeleted()
             If Row(FtpSiteDAL.COL_NAME_USER_NAME) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class FtpSite
                 Return CType(Row(FtpSiteDAL.COL_NAME_USER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(FtpSiteDAL.COL_NAME_USER_NAME, Value)
         End Set
@@ -186,7 +186,7 @@ Public Class FtpSite
 
 
     <ValueMandatory("")> _
-    Public Property Password() As String
+    Public Property Password As String
         Get
             CheckDeleted()
             If Row(FtpSiteDAL.COL_NAME_PASSWORD) Is DBNull.Value Then
@@ -195,7 +195,7 @@ Public Class FtpSite
                 Return CType(Row(FtpSiteDAL.COL_NAME_PASSWORD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(FtpSiteDAL.COL_NAME_PASSWORD, Value)
         End Set
@@ -203,7 +203,7 @@ Public Class FtpSite
 
 
     <ValidStringLength("", Max:=30)> _
-    Public Property Account() As String
+    Public Property Account As String
         Get
             CheckDeleted()
             If Row(FtpSiteDAL.COL_NAME_ACCOUNT) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class FtpSite
                 Return CType(Row(FtpSiteDAL.COL_NAME_ACCOUNT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(FtpSiteDAL.COL_NAME_ACCOUNT, Value)
         End Set
@@ -220,7 +220,7 @@ Public Class FtpSite
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=255)> _
-    Public Property Directory() As String
+    Public Property Directory As String
         Get
             CheckDeleted()
             If Row(FtpSiteDAL.COL_NAME_DIRECTORY) Is DBNull.Value Then
@@ -229,7 +229,7 @@ Public Class FtpSite
                 Return CType(Row(FtpSiteDAL.COL_NAME_DIRECTORY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(FtpSiteDAL.COL_NAME_DIRECTORY, Value)
         End Set

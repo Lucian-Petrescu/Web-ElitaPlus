@@ -90,7 +90,7 @@ Public Class ReportsPageCtrl
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ReportsPagectrlDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ReportsPageCtrl
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property ReportName() As String
+    Public Property ReportName As String
         Get
             CheckDeleted()
             If Row(ReportsPagectrlDAL.COL_NAME_REPORT_NAME) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class ReportsPageCtrl
                 Return CType(Row(ReportsPagectrlDAL.COL_NAME_REPORT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportsPagectrlDAL.COL_NAME_REPORT_NAME, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class ReportsPageCtrl
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=48)> _
-    Public Property PeriodGenerated() As String
+    Public Property PeriodGenerated As String
         Get
             CheckDeleted()
             If Row(ReportsPagectrlDAL.COL_NAME_PERIOD_GENERATED) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class ReportsPageCtrl
                 Return CType(Row(ReportsPagectrlDAL.COL_NAME_PERIOD_GENERATED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportsPagectrlDAL.COL_NAME_PERIOD_GENERATED, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class ReportsPageCtrl
 
 
     <ValueMandatory("")> _
-    Public Property LastPagenum() As DecimalType
+    Public Property LastPagenum As DecimalType
         Get
             CheckDeleted()
             If Row(ReportsPagectrlDAL.COL_NAME_LAST_PAGENUM) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class ReportsPageCtrl
                 Return New DecimalType(CType(Row(ReportsPagectrlDAL.COL_NAME_LAST_PAGENUM), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(ReportsPagectrlDAL.COL_NAME_LAST_PAGENUM, Value)
         End Set
@@ -152,7 +152,7 @@ Public Class ReportsPageCtrl
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Status() As String
+    Public Property Status As String
         Get
             CheckDeleted()
             If Row(ReportsPagectrlDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -161,7 +161,7 @@ Public Class ReportsPageCtrl
                 Return CType(Row(ReportsPagectrlDAL.COL_NAME_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ReportsPagectrlDAL.COL_NAME_STATUS, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class ReportsPageCtrl
 
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(ReportsPagectrlDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class ReportsPageCtrl
                 Return New Guid(CType(Row(ReportsPagectrlDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(ReportsPagectrlDAL.COL_NAME_COMPANY_ID, Value)
         End Set

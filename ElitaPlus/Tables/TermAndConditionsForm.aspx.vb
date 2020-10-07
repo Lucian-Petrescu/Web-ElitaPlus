@@ -215,7 +215,7 @@ Namespace Tables
 
         Protected Sub CheckIfComingFromSaveConfirm()
             Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
-            If confResponse IsNot Nothing AndAlso (confResponse = CONFIRM_MESSAGE_OK Or confResponse = MSG_VALUE_YES) Then
+            If confResponse IsNot Nothing AndAlso (confResponse = CONFIRM_MESSAGE_OK OrElse confResponse = MSG_VALUE_YES) Then
                 If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
                     State.MyBO.Save()
                 End If

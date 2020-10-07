@@ -149,7 +149,7 @@ Public Class ElitaReportBase
         If (DisplayRequiredFieldNote) Then
             breadCrumBuilder.Append(String.Format("<p><span>*</span>{0}</p>", TranslationBase.TranslateLabelOrMessage("INDICATES_REQUIRED_FIELDS")))
         End If
-        If (isFirst And Not DisplayRequiredFieldNote) Then
+        If (isFirst AndAlso Not DisplayRequiredFieldNote) Then
             BreadCrumDiv.Visible = False
         Else
             BreadCrumDiv.InnerHtml = breadCrumBuilder.ToString()

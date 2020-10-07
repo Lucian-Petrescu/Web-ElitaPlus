@@ -100,7 +100,7 @@ Public Class AccountingCloseInfo
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(AccountingCloseInfoDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -111,7 +111,7 @@ Public Class AccountingCloseInfo
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(AccountingCloseInfoDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -120,7 +120,7 @@ Public Class AccountingCloseInfo
                 Return New Guid(CType(Row(AccountingCloseInfoDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AccountingCloseInfoDAL.COL_NAME_COMPANY_ID, Value)
         End Set
@@ -128,7 +128,7 @@ Public Class AccountingCloseInfo
 
 
     <ValueMandatory(""), ValidateEntedClossingDate("")> _
-    Public Property ClosingDate() As DateType
+    Public Property ClosingDate As DateType
         Get
             CheckDeleted()
             If Row(AccountingCloseInfoDAL.COL_NAME_CLOSING_DATE) Is DBNull.Value Then
@@ -137,17 +137,17 @@ Public Class AccountingCloseInfo
                 Return New DateType(CType(Row(AccountingCloseInfoDAL.COL_NAME_CLOSING_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(AccountingCloseInfoDAL.COL_NAME_CLOSING_DATE, Value)
         End Set
     End Property
 
-    Public Property isDateEnable() As Boolean
+    Public Property isDateEnable As Boolean
         Get
             Return mIsDateEnable
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             mIsDateEnable = Value
         End Set
     End Property

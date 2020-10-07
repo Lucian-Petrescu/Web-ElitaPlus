@@ -90,7 +90,7 @@ Public Class AcctBusinessUnit
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AcctBusinessUnitDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class AcctBusinessUnit
     End Property
 
     <ValueMandatory("")> _
-    Public Property AcctCompanyId() As Guid
+    Public Property AcctCompanyId As Guid
         Get
             CheckDeleted()
             If row(AcctBusinessUnitDAL.COL_NAME_ACCT_COMPANY_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class AcctBusinessUnit
                 Return New Guid(CType(row(AcctBusinessUnitDAL.COL_NAME_ACCT_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctBusinessUnitDAL.COL_NAME_ACCT_COMPANY_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class AcctBusinessUnit
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)> _
-    Public Property BusinessUnit() As String
+    Public Property BusinessUnit As String
         Get
             CheckDeleted()
             If Row(AcctBusinessUnitDAL.COL_NAME_BUSINESS_UNIT) Is DBNull.Value Then
@@ -127,14 +127,14 @@ Public Class AcctBusinessUnit
                 Return CType(Row(AcctBusinessUnitDAL.COL_NAME_BUSINESS_UNIT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctBusinessUnitDAL.COL_NAME_BUSINESS_UNIT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(AcctBusinessUnitDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -143,14 +143,14 @@ Public Class AcctBusinessUnit
                 Return CType(Row(AcctBusinessUnitDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctBusinessUnitDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)> _
-    Public Property SuppressVendors() As String
+    Public Property SuppressVendors As String
         Get
             CheckDeleted()
             If Row(AcctBusinessUnitDAL.COL_NAME_SUPPRESS_VENDORS) Is DBNull.Value Then
@@ -159,13 +159,13 @@ Public Class AcctBusinessUnit
                 Return CType(Row(AcctBusinessUnitDAL.COL_NAME_SUPPRESS_VENDORS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(AcctBusinessUnitDAL.COL_NAME_SUPPRESS_VENDORS, Value)
         End Set
     End Property
 
-    Public Property PaymentMethodId() As Guid
+    Public Property PaymentMethodId As Guid
         Get
             CheckDeleted()
             If Row(AcctBusinessUnitDAL.COL_NAME_PAYMENT_METHOD_ID) Is DBNull.Value Then
@@ -174,7 +174,7 @@ Public Class AcctBusinessUnit
                 Return New Guid(CType(Row(AcctBusinessUnitDAL.COL_NAME_PAYMENT_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AcctBusinessUnitDAL.COL_NAME_PAYMENT_METHOD_ID, Value)
         End Set

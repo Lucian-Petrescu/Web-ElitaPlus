@@ -166,7 +166,7 @@ Public Class InterfaceStatusWrk
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(InterfaceStatusWrkDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -175,7 +175,7 @@ Public Class InterfaceStatusWrk
             End If
         End Get
     End Property
-    Public ReadOnly Property Sessionpaddrid() As Guid
+    Public ReadOnly Property Sessionpaddrid As Guid
         Get
             CheckDeleted()
             If Row(InterfaceStatusWrkDAL.COL_NAME_SESSIONPADDRID) Is DBNull.Value Then
@@ -190,7 +190,7 @@ Public Class InterfaceStatusWrk
         ' End Set
     End Property
     <ValidStringLength("", Max:=30)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(InterfaceStatusWrkDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -199,14 +199,14 @@ Public Class InterfaceStatusWrk
                 Return CType(Row(InterfaceStatusWrkDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InterfaceStatusWrkDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property Active_Filename() As String
+    Public Property Active_Filename As String
         Get
             CheckDeleted()
             If Row(InterfaceStatusWrkDAL.COL_NAME_ACTIVE_FILENAME) Is DBNull.Value Then
@@ -215,13 +215,13 @@ Public Class InterfaceStatusWrk
                 Return CType(Row(InterfaceStatusWrkDAL.COL_NAME_ACTIVE_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InterfaceStatusWrkDAL.COL_NAME_ACTIVE_FILENAME, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=30)> _
-    Public Property Status() As String
+    Public Property Status As String
         Get
             CheckDeleted()
             If Row(InterfaceStatusWrkDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -230,13 +230,13 @@ Public Class InterfaceStatusWrk
                 Return CType(Row(InterfaceStatusWrkDAL.COL_NAME_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(InterfaceStatusWrkDAL.COL_NAME_STATUS, Value)
         End Set
     End Property
 
-    Public ReadOnly Property ReLoadStatus() As String
+    Public ReadOnly Property ReLoadStatus As String
         Get
             ReLoad(Id)
 
@@ -244,7 +244,7 @@ Public Class InterfaceStatusWrk
         End Get
     End Property
 
-    Public ReadOnly Property Error_Message() As String
+    Public ReadOnly Property Error_Message As String
         Get
             CheckDeleted()
             If Row(InterfaceStatusWrkDAL.COL_NAME_ERROR_MESSAGE) Is DBNull.Value Then
@@ -256,7 +256,7 @@ Public Class InterfaceStatusWrk
     End Property
 
     'REQ-1056 
-    Public ReadOnly Property Created_Date() As String
+    Public ReadOnly Property Created_Date As String
         Get
             CheckDeleted()
             If Row(InterfaceStatusWrkDAL.COL_NAME_CREATED_DATE) Is DBNull.Value Then

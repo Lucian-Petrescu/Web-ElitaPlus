@@ -1072,7 +1072,7 @@ Namespace Certificates
                     If State.MyBO.getCancelationRequestFlag = YES Then
                         If Not State.CertCancelRequestId.Equals(Guid.Empty) Then
                             State.certCancelRequestBO = New CertCancelRequest(State.CertCancelRequestId)
-                            If State.CancelRulesForSFR = Codes.YESNO_Y AndAlso State.certCancelRequestBO.Status = CERT_CAN_REQ_ACCEPTED Or State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED Then
+                            If State.CancelRulesForSFR = Codes.YESNO_Y AndAlso State.certCancelRequestBO.Status = CERT_CAN_REQ_ACCEPTED OrElse State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED Then
                                 ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, False)
                             End If
                         Else
@@ -1273,7 +1273,7 @@ Namespace Certificates
         Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
                 WorkingPanelVisible = True
-                If CalledUrl = ClaimForm.URL And ClaimForm.Save_Ok = True Then
+                If CalledUrl = ClaimForm.URL AndAlso ClaimForm.Save_Ok = True Then
                     ClaimForm.Save_Ok = False
                     State.ClaimsearchDV = Nothing
 
@@ -1397,14 +1397,14 @@ Namespace Certificates
             End If
 
             If Not (State.MyBO.PaymentTypeId.Equals(Guid.Empty)) Then
-                If (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS And State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) _
-                   Or (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) _
-                   Or (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS_PRE_AUTH And State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__PRE_AUTH_CREDIT_CARD) _
-                   Or (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_THRID_PARTY) _
-                   Or (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__PARTIAL_PAYMENT And State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) Then
+                If (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) _
+                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) _
+                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS_PRE_AUTH AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__PRE_AUTH_CREDIT_CARD) _
+                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_THRID_PARTY) _
+                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__PARTIAL_PAYMENT AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) Then
                     State.creditCardPayment = True
-                ElseIf (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS And State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT) _
-                       Or (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__PARTIAL_PAYMENT And State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT) Then
+                ElseIf (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT) _
+                       OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__PARTIAL_PAYMENT AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT) Then
                     State.directDebitPayment = True
                 End If
             End If
@@ -1467,17 +1467,17 @@ Namespace Certificates
                 ControlMgr.SetEnableControl(Me, btnCancelRequestUndo_WRITE, False)
                 ControlMgr.SetEnableControl(Me, moFulfillmentConsentActionDrop, False)
 
-                If (Not State.MyBO.StatusCode = CERT_CANCEL_STATUS) And State.MyBO.getCancelationRequestFlag = YES Then
+                If (Not State.MyBO.StatusCode = CERT_CANCEL_STATUS) AndAlso State.MyBO.getCancelationRequestFlag = YES Then
                     If State.certCancelRequestBO Is Nothing Then
                         State.CertCancelRequestId = State.MyBO.getCertCancelRequestID
                         If Not State.CertCancelRequestId.Equals(Guid.Empty) Then
                             State.certCancelRequestBO = New CertCancelRequest(State.CertCancelRequestId)
-                            If State.CancelRulesForSFR = Codes.YESNO_Y AndAlso State.certCancelRequestBO.Status = CERT_CAN_REQ_ACCEPTED Or State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED Then
+                            If State.CancelRulesForSFR = Codes.YESNO_Y AndAlso State.certCancelRequestBO.Status = CERT_CAN_REQ_ACCEPTED OrElse State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED Then
                                 ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, False)
                             Else
                                 ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, True)
                             End If
-                            If State.CancelRulesForSFR = Codes.YESNO_Y AndAlso State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED And State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE Then
+                            If State.CancelRulesForSFR = Codes.YESNO_Y AndAlso State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED AndAlso State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE Then
                                 ControlMgr.SetVisibleControl(Me, btnCreateNewRequest_WRITE, True)
                             Else
                                 ControlMgr.SetVisibleControl(Me, btnCreateNewRequest_WRITE, False)
@@ -1485,7 +1485,7 @@ Namespace Certificates
                         Else
                             ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, True)
                         End If
-                    ElseIf State.certCancelRequestBO Is Nothing And Not State.MyBO.getCertCancelRequestID.Equals(guid.Empty) Then
+                    ElseIf State.certCancelRequestBO Is Nothing AndAlso Not State.MyBO.getCertCancelRequestID.Equals(guid.Empty) Then
                         State.CertCancelRequestId = State.MyBO.getCertCancelRequestID
                         State.certCancelRequestBO = New CertCancelRequest(State.CertCancelRequestId)
                         ControlMgr.SetVisibleControl(Me, btnCreateNewRequest_WRITE, False)
@@ -1499,7 +1499,7 @@ Namespace Certificates
                         Else
                             ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, True)
                         End If
-                        If State.CancelRulesForSFR = Codes.YESNO_Y AndAlso State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED And State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE Then
+                        If State.CancelRulesForSFR = Codes.YESNO_Y AndAlso State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED AndAlso State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE Then
                             ControlMgr.SetVisibleControl(Me, btnCreateNewRequest_WRITE, True)
                         Else
                             ControlMgr.SetVisibleControl(Me, btnCreateNewRequest_WRITE, False)
@@ -1531,7 +1531,7 @@ Namespace Certificates
                 End If
 
 
-                If Not (State.IsNewBillPayBtnVisible) And State.oPaymentCount > 0 Then
+                If Not (State.IsNewBillPayBtnVisible) AndAlso State.oPaymentCount > 0 Then
                     ControlMgr.SetEnableControl(Me, btnPaymentHistory, True)
                 Else
                     ControlMgr.SetEnableControl(Me, btnPaymentHistory, False)
@@ -1539,7 +1539,7 @@ Namespace Certificates
 
                 If State.oBillingCount > 0 Then
                     Dim dvBillingTotals As BillingDetail.BillingTotals = BillingDetail.getBillingTotals(State.MyBO.Id)
-                    If dvBillingTotals IsNot Nothing And dvBillingTotals.Count > 0 And dvBillingTotals.Item(0).Row(0) > 0 Then
+                    If dvBillingTotals IsNot Nothing AndAlso dvBillingTotals.Count > 0 And dvBillingTotals.Item(0).Row(0) > 0 Then
                         ControlMgr.SetEnableControl(Me, btnDebitHistory, True)
                     Else
                         ControlMgr.SetEnableControl(Me, btnDebitHistory, False)
@@ -1551,7 +1551,7 @@ Namespace Certificates
                 Dim dvBillPay As DataView
                 dvBillPay = BillingPayDetail.getBillPayTotals(State.MyBO.Id)
                 Dim cnt = 0
-                If dvBillPay IsNot Nothing And dvBillPay.Count > 0 And dvBillPay.Table.Rows.Count > 0 Then
+                If dvBillPay IsNot Nothing AndAlso dvBillPay.Count > 0 AndAlso dvBillPay.Table.Rows.Count > 0 Then
                     cnt = CType(dvBillPay.Table.Rows(0).Item(0), Integer)
                 End If
 
@@ -1609,15 +1609,13 @@ Namespace Certificates
 
                 If State.MyBO.IsChildCertificate Then
                     EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, False)
-                ElseIf State.MyBO.getCancelationRequestFlag = YES Or Not State.CertCancelRequestId.Equals(Guid.Empty) Then
+                ElseIf State.MyBO.getCancelationRequestFlag = YES OrElse Not State.CertCancelRequestId.Equals(Guid.Empty) Then
                     EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, True)
                 Else
                     EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, False)
                 End If
                 'AA REQ-910 new fields added BEGIN
-                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-                   State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Or
-                   State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3=Display and Require at enrollment
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3=Display and Require at enrollment
                     ControlMgr.SetVisibleControl(Me, cboIncomeRangeId, False)
                     ControlMgr.SetVisibleControl(Me, cboPoliticallyExposedId, False)
                     ControlMgr.SetVisibleControl(Me, moIncomeRangeText, True)
@@ -1629,9 +1627,7 @@ Namespace Certificates
                 'AA REQ-910 new fields added END
 
                 'REQ-1255 - AML Regulations - START
-                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-                   State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
-                   State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
 
                     'Marital Status
                     ControlMgr.SetVisibleControl(Me, ddlMaritalStatus, False)
@@ -1706,7 +1702,7 @@ Namespace Certificates
                 EnableDisableControls(moPremiumInformationTabPanel_WRITE, True)
                 ' Start - REQ:5932
                 If Not State.MyBO.CustomerId.Equals(Guid.Empty) Then
-                    If (State.MyBO.CustomerFirstName Is Nothing) And (State.MyBO.CustomerLastName Is Nothing) Then
+                    If (State.MyBO.CustomerFirstName Is Nothing) AndAlso (State.MyBO.CustomerLastName Is Nothing) Then
                         moCustName1.Attributes("style") = "display: none"
                         moCustName2.Attributes("style") = "display: none"
                         moAltCustLasName.Attributes("style") = "display: none"
@@ -1816,9 +1812,7 @@ Namespace Certificates
                         End If
                 End Select
                 'AA REQ-910 new fields added BEGIN
-                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-                   State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
-                   State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only  or 3= Display and Require At Enrollment
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only  or 3= Display and Require At Enrollment
                     ControlMgr.SetVisibleControl(Me, cboIncomeRangeId, True)
                     ControlMgr.SetVisibleControl(Me, cboPoliticallyExposedId, True)
                     ControlMgr.SetVisibleControl(Me, moIncomeRangeText, False)
@@ -1830,9 +1824,7 @@ Namespace Certificates
                 End If
                 'AA REQ-910 new fields added END
                 'REQ-1255 - AML Regulations - START
-                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-                   State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
-                   State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only  or 3= Display and Require At Enrollment
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only  or 3= Display and Require At Enrollment
                     'Marital Status
                     ControlMgr.SetVisibleControl(Me, ddlMaritalStatus, True)
                     ControlMgr.SetEnableControl(Me, ddlMaritalStatus, True)
@@ -1900,7 +1892,7 @@ Namespace Certificates
                 'REQ-1255 - END
                 ' Start - REQ:5932
                 If Not State.MyBO.CustomerId.Equals(Guid.Empty) Then
-                    If (State.MyBO.CustomerFirstName Is Nothing) And (State.MyBO.CustomerLastName Is Nothing) Then
+                    If (State.MyBO.CustomerFirstName Is Nothing) AndAlso (State.MyBO.CustomerLastName Is Nothing) Then
                         moCustName1.Attributes("style") = "display: none"
                         moCustName2.Attributes("style") = "display: none"
                         moAltCustLasName.Attributes("style") = "display: none"
@@ -1926,7 +1918,7 @@ Namespace Certificates
                         Else
                             strTranferOfOwnership = String.Empty
                         End If
-                        If strTranferOfOwnership = YES And State.MyBO.StatusCode = CERT_STATUS Then
+                        If strTranferOfOwnership = YES AndAlso State.MyBO.StatusCode = CERT_STATUS Then
                             ControlMgr.SetEnableControl(Me, moTaxIdText, False)
                             ControlMgr.SetEnableControl(Me, moCustomerFirstNameText, False)
                             ControlMgr.SetEnableControl(Me, moCustomerMiddleNameText, False)
@@ -2197,9 +2189,7 @@ Namespace Certificates
 
 
             'AA REQ-910 new fields added BEGIN
-            If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-               State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
-               State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
+            If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
                 moOccupationLabel.Enabled = True
                 moOccupationText.ReadOnly = False
 
@@ -2212,9 +2202,7 @@ Namespace Certificates
             'AA REQ-910 new fields added END
 
             'REQ-1255 -- START
-            If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-               State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
-               State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
+            If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
                 moCUIT_CUILLabel.Enabled = True
                 moCUIT_CUILText.ReadOnly = False
             End If
@@ -2594,10 +2582,10 @@ Namespace Certificates
             End If
 
             If Not (State.MyBO.PaymentTypeId.Equals(Guid.Empty)) Then
-                If (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS And State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) _
-                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) _
-                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_THRID_PARTY) _
-                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS_PRE_AUTH And State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__PRE_AUTH_CREDIT_CARD) Then
+                If (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) _
+                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) _
+                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_THRID_PARTY) _
+                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS_PRE_AUTH AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__PRE_AUTH_CREDIT_CARD) Then
                     State.creditCardPayment = True
                 End If
                 PopulateControlFromBOProperty(moPaymentByText, State.MyBO.getPaymentTypeDescription)
@@ -2712,10 +2700,10 @@ Namespace Certificates
                 End If
 
                 If .DocumentIssueDate IsNot Nothing _
-                   Or .IdType IsNot Nothing _
-                   Or .DocumentAgency IsNot Nothing _
-                   Or .RgNumber IsNot Nothing _
-                   Or Not .DocumentTypeID.Equals(Guid.Empty) Then
+                   OrElse .IdType IsNot Nothing _
+                   OrElse .DocumentAgency IsNot Nothing _
+                   OrElse .RgNumber IsNot Nothing _
+                   OrElse Not .DocumentTypeID.Equals(Guid.Empty) Then
                     ControlMgr.SetVisibleControl(Me, moTaxIdLabel, False)
                     ControlMgr.SetVisibleControl(Me, moTaxIdText, False)
                 End If
@@ -2744,7 +2732,7 @@ Namespace Certificates
                     tdDatePaid.InnerHtml = ""
                 End If
 
-                If ((.Source Is Nothing) Or (Not .Source.ToUpper().Equals("VSC"))) Then 'Or (.VehicleLicenseTag Is Nothing Or .VehicleLicenseTag = "")) Then
+                If ((.Source Is Nothing) OrElse (Not .Source.ToUpper().Equals("VSC"))) Then 'Or (.VehicleLicenseTag Is Nothing Or .VehicleLicenseTag = "")) Then
                     ControlMgr.SetVisibleControl(Me, moVehicleLicenseTagText, False)
                     ControlMgr.SetVisibleControl(Me, moVehicleLicenseTagLabel, False)
                     tdVehicleLicenseTag.InnerHtml = ""
@@ -2964,14 +2952,14 @@ Namespace Certificates
 
             Dim IsCustomerLglInfo As Boolean = State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0"))
 
-            If (Not IsDobDisplay And IsCustomerLglInfo) Then
+            If (Not IsDobDisplay AndAlso IsCustomerLglInfo) Then
                 ControlMgr.SetVisibleControl(Me, moDateOfBirthLabel, False)
                 ControlMgr.SetVisibleControl(Me, moDateOfBirthText, False)
                 ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
                 ControlMgr.SetVisibleControl(Me, tdDateOfBirthCalTag, False)
             End If
 
-            If (Not IsDobDisplay And Not IsCustomerLglInfo) Then
+            If (Not IsDobDisplay AndAlso Not IsCustomerLglInfo) Then
                 If Not (State.IsEdit) Then
                     moDateOfBirthText.Text = State.MyBO.MaskDatePart(moDateOfBirthText.Text, True)
                 End If
@@ -3205,18 +3193,14 @@ Namespace Certificates
                 PopulateBOProperty(State.MyBO, "Region", moRegionText)
 
                 'AA REQ-910 new fields added BEGIN
-                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-                   State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
-                   State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
                     PopulateBOProperty(State.MyBO, "IncomeRangeId", cboIncomeRangeId)
                     PopulateBOProperty(State.MyBO, "Occupation", moOccupationText)
                     PopulateBOProperty(State.MyBO, "PoliticallyExposedId", cboPoliticallyExposedId)
                 End If
                 'AA REQ-910 new fields added END
                 'REQ-1255 - AML Regulations - START
-                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-                   State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
-                   State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment  
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment  
                     PopulateBOProperty(State.MyBO, "MaritalStatus", ddlMaritalStatus)
                     PopulateBOProperty(State.MyBO, "Nationality", ddlNationality)
                     PopulateBOProperty(State.MyBO, "PlaceOfBirth", ddlPlaceOfBirth)
@@ -3402,7 +3386,7 @@ Namespace Certificates
                     State.creditCardPayment = True
                 ElseIf HasInstallment AndAlso Not (State.TheDirectDebitState.certInstallment.BankInfoId = Guid.Empty) Then
                     State.directDebitPayment = True
-                ElseIf (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS And State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEALER_BILL) Then
+                ElseIf (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEALER_BILL) Then
                     State.dealerBillPayment = True
                 End If
             End If
@@ -3803,7 +3787,7 @@ Namespace Certificates
                         PopulateControlFromBOProperty(moRfIBANNumberText, State.RefundBankInfoBO.IbanNumberLast4Digits)
                     End If
 
-                    If .RefundMethod = REFUND_METHOD_SEPA And (.PayRejectCode <> String.Empty Or .RefundStatus = Codes.REFUND_STATUS_PENDING) Then
+                    If .RefundMethod = REFUND_METHOD_SEPA AndAlso (.PayRejectCode <> String.Empty OrElse .RefundStatus = Codes.REFUND_STATUS_PENDING) Then
                         ControlMgr.SetEnableControl(Me, moRfIBANNumberText, True)
                         ControlMgr.SetEnableControl(Me, moRfAccountNumberText, True)
                         ControlMgr.SetVisibleControl(Me, UpdateBankInfoButton_WRITE, True)
@@ -4171,7 +4155,7 @@ Namespace Certificates
             If State.certCancellationBO IsNot Nothing AndAlso State.certCancellationBO.CancellationDate IsNot Nothing Then
                 CancelCertDateTextbox.Text = GetDateFormattedStringNullable(State.certCancellationBO.CancellationDate.Value)
             Else
-                If Not State.MyBO.PreviousCertificateId.Equals(Guid.Empty) And State.MyBO.WarrantySalesDate.Value > System.DateTime.Today Then
+                If Not State.MyBO.PreviousCertificateId.Equals(Guid.Empty) AndAlso State.MyBO.WarrantySalesDate.Value > System.DateTime.Today Then
                     CancelCertDateTextbox.Text = GetDateFormattedStringNullable(State.MyBO.WarrantySalesDate.Value)
                     ControlMgr.SetEnableControl(Me, CancelCertDateTextbox, False)
                     ControlMgr.SetVisibleControl(Me, CancelCertDateImagebutton, False)
@@ -4233,9 +4217,9 @@ Namespace Certificates
                                         dtCancellationDate = State.certCancelRequestBO.CancellationRequestDate.Value
                                     End If
                                 ElseIf State.CancReasonIsLawful = Codes.EXT_YESNO_Y Then
-                                    If State.CancReasonCode = Codes.SFR_CR_CHATELLAW And State.certCancelRequestBO.CancellationRequestDate.Value < DateAdd("M", State.CertTerm, State.MyBO.WarrantySalesDate.Value) Then
+                                    If State.CancReasonCode = Codes.SFR_CR_CHATELLAW AndAlso State.certCancelRequestBO.CancellationRequestDate.Value < DateAdd("M", State.CertTerm, State.MyBO.WarrantySalesDate.Value) Then
                                         dtCancellationDate = DateAdd("D", -1, DateAdd("M", State.CertTerm, State.MyBO.WarrantySalesDate.Value))
-                                    ElseIf State.CancReasonCode = Codes.SFR_CR_HAMONLAW And State.certCancelRequestBO.CancellationRequestDate.Value > DateAdd("M", State.CertTerm, State.MyBO.WarrantySalesDate.Value) Then
+                                    ElseIf State.CancReasonCode = Codes.SFR_CR_HAMONLAW AndAlso State.certCancelRequestBO.CancellationRequestDate.Value > DateAdd("M", State.CertTerm, State.MyBO.WarrantySalesDate.Value) Then
                                         dtCancellationDate = DateAdd("D", +30, State.certCancelRequestBO.CancellationRequestDate.Value)
                                     Else
                                         dtCancellationDate = State.certCancelRequestBO.CancellationRequestDate.Value
@@ -4356,7 +4340,7 @@ Namespace Certificates
 
                             End If
 
-                            If State.CancReasonIsLawful = Codes.EXT_YESNO_Y And (State.CancReasonCode = Codes.SFR_CR_DEATH Or State.CancReasonCode = Codes.SFR_CR_MOVINGABROAD) Then
+                            If State.CancReasonIsLawful = Codes.EXT_YESNO_Y AndAlso (State.CancReasonCode = Codes.SFR_CR_DEATH OrElse State.CancReasonCode = Codes.SFR_CR_MOVINGABROAD) Then
                                 ControlMgr.SetVisibleControl(Me, moProofOfDocumentationDrop, True)
                                 ControlMgr.SetVisibleControl(Me, moProofOfDocumentationLabel, True)
                             End If
@@ -4390,7 +4374,7 @@ Namespace Certificates
                     End If
                 End If
 
-                If Not State.CertCancelRequestId.Equals(Guid.Empty) And Not State.MyBO.getCancelationRequestFlag = YES Then
+                If Not State.CertCancelRequestId.Equals(Guid.Empty) AndAlso Not State.MyBO.getCancelationRequestFlag = YES Then
                     ControlMgr.SetEnableControl(Me, moUseExistingBankDetailsDrop, False)
                 End If
 
@@ -4474,7 +4458,7 @@ Namespace Certificates
 
                 If Not State.MyBO.UpgradeTermUomId.Equals(Guid.Empty) Then
                     Dim strUpgradeTermUomCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_UPGRADE_TERM_UNIT_OF_MEASURE, State.MyBO.UpgradeTermUomId)
-                    If strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_DAYS) Or strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_MONTHS) Then
+                    If strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_DAYS) OrElse strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_MONTHS) Then
 
                         ControlMgr.SetVisibleControl(Me, lblUpgradeTermUnitOfMeasure, True)
                         ControlMgr.SetVisibleControl(Me, moUpgradeTermUnitOfMeasureText, True)
@@ -4490,7 +4474,7 @@ Namespace Certificates
                         PopulateControlFromBOProperty(moUpgradeFixedTermText, .UpgradeFixedTerm)
                         Dim strUpgradeTermUomDesc As String = LookupListNew.GetDescriptionFromId(LookupListCache.LK_UPGRADE_TERM_UNIT_OF_MEASURE, State.MyBO.UpgradeTermUomId, True)
                         PopulateControlFromBOProperty(moUpgradeTermUnitOfMeasureText, strUpgradeTermUomDesc)
-                    ElseIf strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_DAYS) Or strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_MONTHS) Then
+                    ElseIf strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_DAYS) OrElse strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_MONTHS) Then
                         ControlMgr.SetVisibleControl(Me, lblUpgradeTermUnitOfMeasure, True)
                         ControlMgr.SetVisibleControl(Me, moUpgradeTermUnitOfMeasureText, True)
                         ControlMgr.SetVisibleControl(Me, moUpgradeFixedTermLabel, False)
@@ -4744,7 +4728,7 @@ Namespace Certificates
 
             'Validation based on Prefix
             Prefix = Int16.Parse(cuit.Substring(0, 2))
-            If (Prefix <> 20 And Prefix <> 23 And Prefix <> 24 And Prefix <> 27 And Prefix <> 30 And Prefix <> 33 And Prefix <> 34) Then
+            If (Prefix <> 20 AndAlso Prefix <> 23 AndAlso Prefix <> 24 AndAlso Prefix <> 27 AndAlso Prefix <> 30 AndAlso Prefix <> 33 AndAlso Prefix <> 34) Then
                 Return False
             End If
 
@@ -4790,13 +4774,12 @@ Namespace Certificates
 
                 'REQ-1255 -- START
                 'Validate CUIT_CUIL field
-                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-                   State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Then  '1= Display and Require When Cancelling or 2= Display Only
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Then  '1= Display and Require When Cancelling or 2= Display Only
                     If moCUIT_CUILText.Text <> String.Empty Then
                         Dim CUIT_CUIL_Number As Int64 = 0
                         Dim DigitCheckerResult As Boolean = False
                         'Checking for numeric
-                        If moCUIT_CUILText.Text.Length > 11 Or Not Int64.TryParse(moCUIT_CUILText.Text, CUIT_CUIL_Number) Then
+                        If moCUIT_CUILText.Text.Length > 11 OrElse Not Int64.TryParse(moCUIT_CUILText.Text, CUIT_CUIL_Number) Then
                             Throw New GUIException(Message.MSG_INVALID_CUIT_CUIL_NUMBER, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_CUIT_CUIL_NUMBER_ERR)
                         End If
                         'Checking for valid number
@@ -4930,7 +4913,7 @@ Namespace Certificates
                     End If
                 End If
 
-                If currentStatus = Codes.BILLING_STATUS__REJECTED Or currentStatus = Codes.BILLING_STATUS__ON_HOLD Then
+                If currentStatus = Codes.BILLING_STATUS__REJECTED OrElse currentStatus = Codes.BILLING_STATUS__ON_HOLD Then
                     .BillingStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_BILLING_STATUS, Codes.BILLING_STATUS__ACTIVE)
                 End If
 
@@ -5350,7 +5333,7 @@ Namespace Certificates
             Dim Row As DataRowView
 
             ' Check if the Coverages Data is already fetched from the DB, else get the data from the DB 
-            If (State.CoveragesearchDV Is Nothing) Or State.blnMFGChanged Then
+            If (State.CoveragesearchDV Is Nothing) OrElse State.blnMFGChanged Then
                 State.CoveragesearchDV = CertItemCoverage.GetCurrentProductCodeCoverages(State.MyBO.Id)
             End If
 
@@ -5557,7 +5540,7 @@ Namespace Certificates
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
                 Dim btnEditCoverage As LinkButton
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                     Dim maxRenewalDuration as String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_MAX_RENEWAL_DURATION).ToString
                     Dim coverageBeginDate as Date = CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date)
@@ -5701,7 +5684,7 @@ Namespace Certificates
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
                 Dim btnEditCoverage As LinkButton
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Item.Cells(GRID_COL_RISK_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_RISK_TYPE).ToString
                     e.Item.Cells(GRID_COL_BEGIN_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date))
                     e.Item.Cells(GRID_COL_END_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date))
@@ -5816,7 +5799,7 @@ Namespace Certificates
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
                 Dim btnEditClaim As LinkButton
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     If (e.Item.Cells(GRID_COL_CLAIM_NUMBER).FindControl(GRID_COL_CLAIM_NUMBER_CTRL) IsNot Nothing) Then
                         btnEditClaim = CType(e.Item.Cells(GRID_COL_CLAIM_NUMBER).FindControl(GRID_COL_CLAIM_NUMBER_CTRL), LinkButton)
                         btnEditClaim.Text = dvRow(Certificate.CertificateClaimsDV.COL_CLAIM_NUMBER).ToString
@@ -5912,18 +5895,18 @@ Namespace Certificates
 
             ControlMgr.SetVisibleControl(Me, btnNewCertItem_WRITE, False)
             ControlMgr.SetVisibleControl(Me, btnNewCertRegItem_WRITE, False)
-            If (cert.Product.AllowRegisteredItems = Codes.EXT_YESNO_Y And cert.StatusCode = CERT_STATUS) Then
+            If (cert.Product.AllowRegisteredItems = Codes.EXT_YESNO_Y AndAlso cert.StatusCode = CERT_STATUS) Then
                 ControlMgr.SetVisibleControl(Me, btnNewCertRegItem_WRITE, True)
             End If
-            If (cert.StatusCode = CERT_STATUS And blnAddItemAllowed) Then
+            If (cert.StatusCode = CERT_STATUS AndAlso blnAddItemAllowed) Then
                 ControlMgr.SetVisibleControl(Me, btnNewCertItem_WRITE, True)
             End If
 
-            If (cert.StatusCode = CERT_STATUS And blnCoveragesExpired And blnAddItemAfterExpired And blnAddItemAllowed) Then
+            If (cert.StatusCode = CERT_STATUS AndAlso blnCoveragesExpired AndAlso blnAddItemAfterExpired AndAlso blnAddItemAllowed) Then
                 ControlMgr.SetVisibleControl(Me, btnNewCertItem_WRITE, True)
             End If
 
-            If (cert.StatusCode = CERT_CANCEL_STATUS And blnAddItemAfterExpired And blnAddItemAllowed) Then
+            If (cert.StatusCode = CERT_CANCEL_STATUS AndAlso blnAddItemAfterExpired AndAlso blnAddItemAllowed) Then
                 If State.MyBO.TheCertCancellationBO.getCancellationReasonCode = CANCEL_REASON_EXP Then
                     ControlMgr.SetVisibleControl(Me, btnNewCertItem_WRITE, True)
                 End If
@@ -5961,7 +5944,7 @@ Namespace Certificates
             ' Original retail price captured at cert item level. Populated in certificate generl tab working on the assumption that
             ' wireless customers using this field will have only one cert item -- VS
 
-            If Not (ItemsRow.Item(CertItem.CertItemSearchDV.COL_ORIGINAL_RETAIL_PRICE).Equals(DBNull.Value)) And dv.Count = 1 Then
+            If Not (ItemsRow.Item(CertItem.CertItemSearchDV.COL_ORIGINAL_RETAIL_PRICE).Equals(DBNull.Value)) AndAlso dv.Count = 1 Then
                 PopulateControlFromBOProperty(moOriginalRetailPriceText, CType(ItemsRow.Item(CertItem.CertItemSearchDV.COL_ORIGINAL_RETAIL_PRICE), Decimal), DECIMAL_FORMAT)
             Else
                 PopulateControlFromBOProperty(moOriginalRetailPriceText, Nothing)
@@ -5998,7 +5981,7 @@ Namespace Certificates
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Row.Cells(ITEMS_GRID_COL_ITEM_NUMBER_IDX).Text = dvRow(CertItem.CertItemSearchDV.COL_ITEM_NUMBER).ToString
                     If (e.Row.Cells(ITEMS_GRID_COL_RISK_TYPE_DESCRIPTION_IDX).FindControl(ITEMS_GRID_COL_EDIT_CTRL) IsNot Nothing) Then
                         btnEditItem = CType(e.Row.Cells(ITEMS_GRID_COL_RISK_TYPE_DESCRIPTION_IDX).FindControl(ITEMS_GRID_COL_EDIT_CTRL), LinkButton)
@@ -6037,7 +6020,7 @@ Namespace Certificates
 
             ControlMgr.SetVisibleControl(Me, btnNewCertItem_WRITE, False)
             ControlMgr.SetVisibleControl(Me, btnNewCertRegItem_WRITE, False)
-            If (cert.Product.AllowRegisteredItems = Codes.EXT_YESNO_Y And cert.StatusCode = CERT_STATUS) Then
+            If (cert.Product.AllowRegisteredItems = Codes.EXT_YESNO_Y AndAlso cert.StatusCode = CERT_STATUS) Then
                 ControlMgr.SetVisibleControl(Me, btnNewCertRegItem_WRITE, True)
             End If
 
@@ -6094,7 +6077,7 @@ Namespace Certificates
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     If (e.Row.Cells(REG_ITEMS_COL_REGISTERED_ITEM_NAME_IDX).FindControl(REG_ITEMS_GRID_COL_EDIT_CTRL) IsNot Nothing) Then
                         btnRegEditItem = CType(e.Row.Cells(REG_ITEMS_COL_REGISTERED_ITEM_NAME_IDX).FindControl(REG_ITEMS_GRID_COL_EDIT_CTRL), LinkButton)
                         btnRegEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(CertItem.CertRegItemSearchDV.COL_CERT_REGISTERED_ITEM_ID), Byte()))
@@ -6192,7 +6175,7 @@ Namespace Certificates
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     If (e.Item.Cells(GRID_COL_TIME_STAMP).FindControl(COMMENT_GRID_COL_EDIT_CTRL) IsNot Nothing) Then
                         btnEditItem = CType(e.Item.Cells(GRID_COL_TIME_STAMP).FindControl(ITEMS_GRID_COL_EDIT_CTRL), LinkButton)
                         btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Comment.CommentSearchDV.COL_COMMENT_ID), Byte()))
@@ -6320,7 +6303,7 @@ Namespace Certificates
 
         Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
             Try
-                If (State.DataProtectionHistBO.RestrictedStatus = RestrictCode Or State.DataProtectionHistBO.RestrictedStatus = UnRestrictCode) Then
+                If (State.DataProtectionHistBO.RestrictedStatus = RestrictCode OrElse State.DataProtectionHistBO.RestrictedStatus = UnRestrictCode) Then
                     State.DBCommentBO = State.DataProtectionHistBO.AddComments(Guid.Empty)
                     State.DBCertificateBO = State.DataProtectionHistBO.AddCertificate(State.MyBO.Id)
                 ElseIf (State.CertForgotBO.RestrictedStatus = ForgottenCode) Then
@@ -6480,7 +6463,7 @@ Namespace Certificates
                 Dim commentTypeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetCommentTypeLookupList(Authentication.LangId), CommentCode)
                 Dim restrictionId As Guid = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(RestrictionListCode, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), actionCode)
 
-                If (actionCode.Equals("R") Or actionCode.Equals("UR")) Then
+                If (actionCode.Equals("R") OrElse actionCode.Equals("UR")) Then
                     'Logic For Restriction And  UnRestriction '
 
                     With State.DBCommentBO
@@ -6549,7 +6532,7 @@ Namespace Certificates
                 blnSuccess = False
             End If
 
-            If (actionCode.Equals("R") Or actionCode.Equals("UR")) Then
+            If (actionCode.Equals("R") OrElse actionCode.Equals("UR")) Then
                 If State.DataProtectionHistBO.RequestId = String.Empty Then
                     MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage("REQUEST_ID") & ":" & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
                     blnSuccess = False
@@ -6671,7 +6654,7 @@ Namespace Certificates
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     If (e.Item.Cells(GRID_COL_ENDORSE_NUMBER).FindControl(ENDORSEMENT_GRID_COL_EDIT_CTRL) IsNot Nothing) Then
                         btnEditItem = CType(e.Item.Cells(GRID_COL_ENDORSE_NUMBER).FindControl(ENDORSEMENT_GRID_COL_EDIT_CTRL), LinkButton)
                         btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_ID), Byte()))
@@ -6748,7 +6731,7 @@ Namespace Certificates
                 Dim coverageRow As DataRow = dv.Table.Rows(0)
             End If
 
-            If ItemDV.Count > 1 Or cert.StatusCode <> CERT_STATUS Or State.MyBO.IsChildCertificate Then
+            If ItemDV.Count > 1 OrElse cert.StatusCode <> CERT_STATUS OrElse State.MyBO.IsChildCertificate Then
                 btnAddEndorsement_WRITE.Enabled = False
             End If
 
@@ -6865,7 +6848,7 @@ Namespace Certificates
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Item.Cells(CERT_EXT_CERT_ID_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_CERT_ID).ToString
                     e.Item.Cells(CERT_EXT_FIELD_NAME_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_NAME).ToString
                     e.Item.Cells(CERT_EXT_FIELD_VALUE_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE).ToString
@@ -7095,9 +7078,9 @@ Namespace Certificates
                 Else
                     strTranferOfOwnership = String.Empty
                 End If
-                If strTranferOfOwnership = YES And State.MyBO.StatusCode = CERT_STATUS Then
+                If strTranferOfOwnership = YES AndAlso State.MyBO.StatusCode = CERT_STATUS Then
                     If State.MyBO.CustomerName IsNot Nothing Then
-                        If (State.MyBO.CustomerName <> moCustomerNameText.Text And moCustomerNameText.Text.Trim <> String.Empty) Or (moTaxIdText.Visible = True And State.MyBO.TaxIDNumb <> moTaxIdText.Text) Then
+                        If (State.MyBO.CustomerName <> moCustomerNameText.Text AndAlso moCustomerNameText.Text.Trim <> String.Empty) OrElse (moTaxIdText.Visible = True AndAlso State.MyBO.TaxIDNumb <> moTaxIdText.Text) Then
                             DisplayMessage(Message.MSG_TRANSFER_Of_OWNERSHIP_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenTransferOfOwnershipPromptResponse)
                         Else
                             saveCertificate()
@@ -7136,11 +7119,11 @@ Namespace Certificates
                     Else
                         strTranferOfOwnership = String.Empty
                     End If
-                    If strTranferOfOwnership = YES And State.MyBO.StatusCode = CERT_STATUS Then
+                    If strTranferOfOwnership = YES AndAlso State.MyBO.StatusCode = CERT_STATUS Then
                         If cboDocumentTypeId.SelectedIndex <= 0 Then
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DOCUMENT_TYPE_REQUIRED)
                         End If
-                        If (State.MyBO.TaxIDNumb <> moNewTaxIdText.Text And moNewTaxIdText.Text.Trim <> String.Empty) Or (cboDocumentTypeId.SelectedItem.Text <> State.MyBO.getDocTypeDesc) Then
+                        If (State.MyBO.TaxIDNumb <> moNewTaxIdText.Text AndAlso moNewTaxIdText.Text.Trim <> String.Empty) OrElse (cboDocumentTypeId.SelectedItem.Text <> State.MyBO.getDocTypeDesc) Then
                             DisplayMessage(Message.MSG_TRANSFER_Of_OWNERSHIP_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenTransferOfOwnershipPromptResponse)
                         Else
                             saveCertificate()
@@ -7681,10 +7664,8 @@ Namespace Certificates
             Try
                 'REQ-910 New fields BEGIN 
                 If (State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) _
-                    Or State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3"))) AndAlso (State.QuotedRefundAmt > 0) Then ' 1 = Display and Require When Cancelling 
-                    If (State.MyBO.Occupation Is Nothing OrElse State.MyBO.Occupation.Equals(String.Empty)) Or
-                       (State.MyBO.PoliticallyExposedId.Equals(Guid.Empty)) Or
-                       (State.MyBO.IncomeRangeId.Equals(Guid.Empty)) Then
+                    OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3"))) AndAlso (State.QuotedRefundAmt > 0) Then ' 1 = Display and Require When Cancelling 
+                    If (State.MyBO.Occupation Is Nothing OrElse State.MyBO.Occupation.Equals(String.Empty)) OrElse (State.MyBO.PoliticallyExposedId.Equals(Guid.Empty)) OrElse (State.MyBO.IncomeRangeId.Equals(Guid.Empty)) Then
                         Throw New GUIException(Message.MSG_CANCELLATION_CANNOT_BE_PROCESSED, Assurant.ElitaPlus.Common.ErrorCodes.CANNOT_CANCEL_CERT_CUST_LEGAL_INFO_MISSING)
                     End If
                 End If
@@ -8292,7 +8273,7 @@ Namespace Certificates
                 Else
                     Dim oCancellationReason As New CancellationReason(GetSelectedItem(moCancelRequestReasonDrop))
                     State.CancReasonIsLawful = oCancellationReason.IsLawful
-                    If State.CancReasonIsLawful = Codes.EXT_YESNO_Y And (oCancellationReason.Code = Codes.SFR_CR_DEATH Or oCancellationReason.Code = Codes.SFR_CR_MOVINGABROAD) Then
+                    If State.CancReasonIsLawful = Codes.EXT_YESNO_Y AndAlso (oCancellationReason.Code = Codes.SFR_CR_DEATH OrElse oCancellationReason.Code = Codes.SFR_CR_MOVINGABROAD) Then
                         ControlMgr.SetVisibleControl(Me, moProofOfDocumentationLabel, True)
                         ControlMgr.SetVisibleControl(Me, moProofOfDocumentationDrop, True)
                         ControlMgr.SetEnableControl(Me, moProofOfDocumentationDrop, True)

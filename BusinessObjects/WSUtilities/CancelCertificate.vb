@@ -196,7 +196,7 @@ Public Class CancelCertificate
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
             If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -204,14 +204,14 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -219,14 +219,14 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CancellationDate() As DateType
+    Public Property CancellationDate As DateType
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_CANCELLATION_DATE) Is DBNull.Value Then
@@ -235,14 +235,14 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_CANCELLATION_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CANCELLATION_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Source() As String
+    Public Property Source As String
         Get
             If Row(DATA_COL_NAME_SOURCE) Is DBNull.Value Then
                 Return Nothing
@@ -250,13 +250,13 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_SOURCE, Value)
         End Set
     End Property
 
-    Public Property PaymentMethodCode() As String
+    Public Property PaymentMethodCode As String
         Get
             If Row(DATA_COL_PAYMENT_METHOD_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -264,13 +264,13 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_PAYMENT_METHOD_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_PAYMENT_METHOD_CODE, Value)
         End Set
     End Property
 
-    Public Property AccountName() As String
+    Public Property AccountName As String
         Get
             If Row(DATA_COL_ACCOUNT_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -278,13 +278,13 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_ACCOUNT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_ACCOUNT_NAME, Value)
         End Set
     End Property
 
-    Public Property BankId() As String
+    Public Property BankId As String
         Get
             If Row(DATA_COL_BANK_ID) Is DBNull.Value Then
                 Return Nothing
@@ -292,13 +292,13 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_BANK_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_BANK_ID, Value)
         End Set
     End Property
 
-    Public Property AccountNumber() As String
+    Public Property AccountNumber As String
         Get
             If Row(DATA_COL_ACCOUNT_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -306,13 +306,13 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_ACCOUNT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_ACCOUNT_NUMBER, Value)
         End Set
     End Property
 
-    Public Property SwiftCode() As String
+    Public Property SwiftCode As String
         Get
             If Row(DATA_COL_SWIFT_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -320,13 +320,13 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_SWIFT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_SWIFT_CODE, Value)
         End Set
     End Property
 
-    Public Property IBANNumber() As String
+    Public Property IBANNumber As String
         Get
             If Row(DATA_COL_IBAN_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -334,13 +334,13 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_IBAN_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_IBAN_NUMBER, Value)
         End Set
     End Property
 
-    Public Property AccountTypeCode() As String
+    Public Property AccountTypeCode As String
         Get
             If Row(DATA_COL_ACCOUNT_TYPE_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -348,13 +348,13 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_ACCOUNT_TYPE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_ACCOUNT_TYPE_CODE, Value)
         End Set
     End Property
 
-    Public Property PaymentReasonCode() As String
+    Public Property PaymentReasonCode As String
         Get
             If Row(DATA_COL_PAYMENT_REASON_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -362,13 +362,13 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_PAYMENT_REASON_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_PAYMENT_REASON_CODE, Value)
         End Set
     End Property
 
-    Public Property InvoiceNumber() As String
+    Public Property InvoiceNumber As String
         Get
             If Row(DATA_COL_NAME_INVOICE_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -376,13 +376,13 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_INVOICE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_INVOICE_NUMBER, Value)
         End Set
     End Property
 
-    Public Property CancelAllByInvoice() As String
+    Public Property CancelAllByInvoice As String
         Get
             If Row(DATA_COL_NAME_CANCEL_ALL_BY_INVOICE) Is DBNull.Value Then
                 Return Nothing
@@ -390,14 +390,14 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_CANCEL_ALL_BY_INVOICE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CANCEL_ALL_BY_INVOICE, Value)
         End Set
     End Property
 
 
-    Public Property CancellationReasonCode() As String
+    Public Property CancellationReasonCode As String
         Get
             If Row(DATA_COL_NAME_CANCELLATION_REASON_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -405,13 +405,13 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_CANCELLATION_REASON_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CANCELLATION_REASON_CODE, Value)
         End Set
     End Property
 
-    Public Property RefundAmount() As Decimal
+    Public Property RefundAmount As Decimal
         Get
             If Row(DATA_COL_NAME_REFUND_AMOUNT) Is DBNull.Value Then
                 Return Nothing
@@ -419,14 +419,14 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_REFUND_AMOUNT), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_REFUND_AMOUNT, Value)
         End Set
     End Property
 
 
-    Public Property CommentTypeCode() As String
+    Public Property CommentTypeCode As String
         Get
             If Row(DATA_COL_NAME_COMMENT_TYPE_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -434,14 +434,14 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_COMMENT_TYPE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_COMMENT_TYPE_CODE, Value)
         End Set
     End Property
 
 
-    Public Property Comments() As String
+    Public Property Comments As String
         Get
             If Row(DATA_COL_NAME_COMMENTS) Is DBNull.Value Then
                 Return Nothing
@@ -449,12 +449,12 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_COMMENTS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_COMMENTS, Value)
         End Set
     End Property
-    Public Property Action() As String
+    Public Property Action As String
         Get
             If Row(DATA_COL_NAME_ACTION) Is DBNull.Value Then
                 Return Nothing
@@ -462,13 +462,13 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_ACTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_ACTION, Value)
         End Set
     End Property
 
-    Public Property ACCOUNT_DIGIT() As Long
+    Public Property ACCOUNT_DIGIT As Long
         Get
             If Row(DATA_COL_NAME_ACCOUNT_DIGIT) Is DBNull.Value Then
                 Return Nothing
@@ -476,12 +476,12 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_ACCOUNT_DIGIT), Long)
             End If
         End Get
-        Set(ByVal Value As Long)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_ACCOUNT_DIGIT, Value)
         End Set
     End Property
-    Public Property BRANCH_DIGIT() As Long
+    Public Property BRANCH_DIGIT As Long
         Get
             If Row(DATA_COL_NAME_BRANCH_DIGIT) Is DBNull.Value Then
                 Return Nothing
@@ -489,13 +489,13 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_BRANCH_DIGIT), Long)
             End If
         End Get
-        Set(ByVal value As Long)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_BRANCH_DIGIT, Value)
         End Set
     End Property
 
-    Public Property BRANCH_NUMBER() As Long
+    Public Property BRANCH_NUMBER As Long
         Get
             If Row(DATA_COL_NAME_BRANCH_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -503,13 +503,13 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_BRANCH_NUMBER), Long)
             End If
         End Get
-        Set(ByVal Value As Long)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_BRANCH_NUMBER, Value)
         End Set
     End Property
 
-    Private ReadOnly Property CertID() As Guid
+    Private ReadOnly Property CertID As Guid
         Get
             If _certId.Equals(Guid.Empty) Then
                 Dim dsCert As DataSet = Certificate.ClaimLogisticsGetCert(CertNumber, DealerCode)
@@ -551,7 +551,7 @@ Public Class CancelCertificate
         Return CommentTypeID
     End Function
 
-    Public Property InstallmentsPaid() As Long
+    Public Property InstallmentsPaid As Long
         Get
             If Row(DATA_COL_NAME_INST_PAID) Is DBNull.Value Then
                 Return Nothing
@@ -559,7 +559,7 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_INST_PAID), Long)
             End If
         End Get
-        Set(ByVal Value As Long)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_INST_PAID, Value)
         End Set
@@ -761,7 +761,7 @@ Public Class CancelCertificate
 
 #Region "Extended Properties"
 
-    Private ReadOnly Property DealerId() As Guid
+    Private ReadOnly Property DealerId As Guid
         Get
             If _dealerId.Equals(Guid.Empty) Then
 
@@ -780,7 +780,7 @@ Public Class CancelCertificate
         End Get
     End Property
 
-    Private ReadOnly Property CompanyId() As Guid
+    Private ReadOnly Property CompanyId As Guid
         Get
             If _companyId.Equals(Guid.Empty) Then
                 Dim objDealer As New Dealer(DealerId)
@@ -792,11 +792,11 @@ Public Class CancelCertificate
     End Property
 
 
-    Private Property CancellationCode() As String
+    Private Property CancellationCode As String
         Get
             Return _cancellation_code
         End Get
-        Set(ByVal value As String)
+        Set
             _cancellation_code = value
         End Set
     End Property

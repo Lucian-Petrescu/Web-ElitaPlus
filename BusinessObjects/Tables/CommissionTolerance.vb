@@ -119,7 +119,7 @@ Public Class CommissionTolerance
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CommissionToleranceDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -130,7 +130,7 @@ Public Class CommissionTolerance
     End Property
 
     <ValueMandatory("")> _
-    Public Property CommissionPeriodId() As Guid
+    Public Property CommissionPeriodId As Guid
         Get
             CheckDeleted()
             If row(CommissionToleranceDAL.COL_NAME_COMMISSION_PERIOD_ID) Is DBNull.Value Then
@@ -139,14 +139,14 @@ Public Class CommissionTolerance
                 Return New Guid(CType(row(CommissionToleranceDAL.COL_NAME_COMMISSION_PERIOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CommissionToleranceDAL.COL_NAME_COMMISSION_PERIOD_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0), ValidMarkup("")> _
-    Public Property AllowedMarkupPct() As DecimalType
+    Public Property AllowedMarkupPct As DecimalType
         Get
             CheckDeleted()
             If Row(CommissionToleranceDAL.COL_NAME_ALLOWED_MARKUP_PCT) Is DBNull.Value Then
@@ -155,7 +155,7 @@ Public Class CommissionTolerance
                 Return New DecimalType(CType(Row(CommissionToleranceDAL.COL_NAME_ALLOWED_MARKUP_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommissionToleranceDAL.COL_NAME_ALLOWED_MARKUP_PCT, Value)
         End Set
@@ -163,7 +163,7 @@ Public Class CommissionTolerance
 
 
     <ValueMandatory("")> _
-    Public Property Tolerance() As DecimalType
+    Public Property Tolerance As DecimalType
         Get
             CheckDeleted()
             If row(CommissionToleranceDAL.COL_NAME_TOLERANCE) Is DBNull.Value Then
@@ -172,13 +172,13 @@ Public Class CommissionTolerance
                 Return New DecimalType(CType(row(CommissionToleranceDAL.COL_NAME_TOLERANCE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CommissionToleranceDAL.COL_NAME_TOLERANCE, Value)
         End Set
     End Property
 
-    Public ReadOnly Property AssociatedAssocComm() As AssociateCommissions.AssocCommList
+    Public ReadOnly Property AssociatedAssocComm As AssociateCommissions.AssocCommList
         Get
             Return New AssociateCommissions.AssocCommList(Me, Id)
         End Get

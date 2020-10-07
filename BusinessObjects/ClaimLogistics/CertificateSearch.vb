@@ -105,7 +105,7 @@ Public Class CertificateSearch
 #Region "Properties"
 
     <ValidateParameters("")> _
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
             If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -113,14 +113,14 @@ Public Class CertificateSearch
                 Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
     <ValidateParameters("")> _
-    Public Property CustomerName() As String
+    Public Property CustomerName As String
         Get
             If Row(DATA_COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -128,14 +128,14 @@ Public Class CertificateSearch
                 Return CType(Row(DATA_COL_NAME_CUSTOMER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CUSTOMER_NAME, Value)
         End Set
     End Property
 
     <ValidateParameters("")> _
-    Public Property CustomerPhone() As String
+    Public Property CustomerPhone As String
         Get
             If Row(DATA_COL_NAME_CUSTOMER_PHONE) Is DBNull.Value Then
                 Return Nothing
@@ -143,18 +143,18 @@ Public Class CertificateSearch
                 Return CType(Row(DATA_COL_NAME_CUSTOMER_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CUSTOMER_PHONE, Value)
         End Set
     End Property
 
 
-    Public Property RecordsToReturn() As Integer
+    Public Property RecordsToReturn As Integer
         Get
             Return _recordsToRreturn
         End Get
-        Set(ByVal Value As Integer)
+        Set
             _recordsToRreturn = Value
         End Set
     End Property

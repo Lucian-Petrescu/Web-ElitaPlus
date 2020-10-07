@@ -8,7 +8,7 @@ Namespace DocumentImaging
         Private Shared syncRoot As Object = New Object()
         Private Shared oDocClient As DocumentClient
 
-        Private Shared ReadOnly Property ClientProxy() As DocumentClient
+        Private Shared ReadOnly Property ClientProxy As DocumentClient
             Get
                 Dim oDocClient As DocumentClient
                 If (oDocClient Is Nothing OrElse oDocClient.State <> ServiceModel.CommunicationState.Opened) Then

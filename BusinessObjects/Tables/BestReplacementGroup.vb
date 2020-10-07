@@ -85,7 +85,7 @@ Public Class BestReplacementGroup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(BestReplacementGroupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -96,7 +96,7 @@ Public Class BestReplacementGroup
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(BestReplacementGroupDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -105,7 +105,7 @@ Public Class BestReplacementGroup
                 Return New Guid(CType(Row(BestReplacementGroupDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BestReplacementGroupDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
@@ -113,7 +113,7 @@ Public Class BestReplacementGroup
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(BestReplacementGroupDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -122,7 +122,7 @@ Public Class BestReplacementGroup
                 Return CType(Row(BestReplacementGroupDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BestReplacementGroupDAL.COL_NAME_CODE, Value)
         End Set
@@ -130,7 +130,7 @@ Public Class BestReplacementGroup
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=30)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(BestReplacementGroupDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -139,7 +139,7 @@ Public Class BestReplacementGroup
                 Return CType(Row(BestReplacementGroupDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BestReplacementGroupDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -169,7 +169,7 @@ Public Class BestReplacementGroup
     End Sub
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
@@ -252,7 +252,7 @@ Public Class BestReplacementGroup
 #End Region
 
 #Region "Children Related"
-    Public ReadOnly Property BestReplacementChildren() As BestReplacementList
+    Public ReadOnly Property BestReplacementChildren As BestReplacementList
         Get
             Return New BestReplacementList(Me)
         End Get

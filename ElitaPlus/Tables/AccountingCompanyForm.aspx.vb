@@ -506,9 +506,9 @@ Namespace Tables
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-            If dvRow IsNot Nothing And Not State.bnoRow Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                     CType(e.Row.Cells(ID_COL).FindControl(ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(AcctCompany.AcctCompanyDV.COL_ACCT_COMPANY_ID), Byte()))
 

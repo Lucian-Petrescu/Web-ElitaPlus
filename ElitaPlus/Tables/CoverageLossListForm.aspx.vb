@@ -218,9 +218,9 @@ Partial Class CoverageLossListForm
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-            If dvRow IsNot Nothing And Not State.bnoRow Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Row.Cells(GRID_COL_EXDN_ID).Text = New Guid(CType(dvRow(CoverageLoss.SearchDV.COL_NAME_COVERAGE_TYPE_ID), Byte())).ToString
                     e.Row.Cells(GRID_COL_CODE).Text = dvRow(CoverageLoss.SearchDV.COL_NAME_CODE).ToString
                     e.Row.Cells(GRID_COL_DESCRIPTION).Text = dvRow(CoverageLoss.SearchDV.COL_NAME_DESCRIPTION).ToString

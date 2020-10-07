@@ -103,7 +103,7 @@ Public Class GetCountriesRegions
 
 #Region "Properties"
 
-    Public Property CountryCodesList() As ArrayList
+    Public Property CountryCodesList As ArrayList
         Get
             If Not _countryCodesList Is Nothing Then
                 Return _countryCodesList
@@ -112,12 +112,12 @@ Public Class GetCountriesRegions
                 Return _countryCodesList
             End If
         End Get
-        Set(ByVal Value As ArrayList)
+        Set
             _countryCodesList = Value
         End Set
     End Property
 
-    Public Property UserCountriesIDs() As ArrayList
+    Public Property UserCountriesIDs As ArrayList
         Get
             If Not _userCountriesIDs Is Nothing Then
                 Return _userCountriesIDs
@@ -126,7 +126,7 @@ Public Class GetCountriesRegions
                 Return _userCountriesIDs
             End If
         End Get
-        Set(ByVal Value As ArrayList)
+        Set
             _userCountriesIDs = Value
         End Set
     End Property

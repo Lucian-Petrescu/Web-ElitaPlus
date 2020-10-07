@@ -470,7 +470,7 @@ Namespace Security
 
             If dvRow IsNot Nothing Then
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                     If dvRow(Servers.SearchDV.COL_BATCH_HOSTNAME) Is DBNull.Value OrElse dvRow(Servers.SearchDV.COL_BATCH_HOSTNAME).ToString.Trim.Length = 0 Then
                         CType(e.Row.Cells(0).FindControl(GRID_SERVERS_TEST_BUTTON), ImageButton).ImageUrl = "../Navigation/images/icons/no_icon2.gif"

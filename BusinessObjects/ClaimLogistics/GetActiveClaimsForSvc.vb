@@ -27,7 +27,6 @@ Public Class GetActiveClaimsForSvc
 #Region "Private Members"
     Private _serviceCenterID As Guid = Guid.Empty
     Private _ExtendedClaimStatusListItemID As Guid = Guid.Empty
-    Private _excludeRepairedClaims As Boolean = False
 
 
     Private Sub MapDataSet(ByVal ds As GetActiveClaimsForSvcDs)
@@ -61,7 +60,6 @@ Public Class GetActiveClaimsForSvc
             Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
             _serviceCenterID = Guid.Empty
             _ExtendedClaimStatusListItemID = Guid.Empty
-            _excludeRepairedClaims = False
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -102,7 +100,7 @@ Public Class GetActiveClaimsForSvc
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property ServiceCenterCode() As String
+    Public Property ServiceCenterCode As String
         Get
             If Row(DATA_COL_NAME_SERVICE_CENTER_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -110,14 +108,14 @@ Public Class GetActiveClaimsForSvc
                 Return (CType(Row(DATA_COL_NAME_SERVICE_CENTER_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property SortOrder() As String
+    Public Property SortOrder As String
         Get
             If Row(DATA_COL_NAME_SORT_ORDER) Is DBNull.Value Then
                 Return Nothing
@@ -125,13 +123,13 @@ Public Class GetActiveClaimsForSvc
                 Return (CType(Row(DATA_COL_NAME_SORT_ORDER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_SORT_ORDER, Value)
         End Set
     End Property
 
-    Public Property CurrentClaimStatusCode() As String
+    Public Property CurrentClaimStatusCode As String
         Get
             If Row(DATA_COL_NAME_CURRENT_CLAIM_STATUS_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -139,13 +137,13 @@ Public Class GetActiveClaimsForSvc
                 Return (CType(Row(DATA_COL_NAME_CURRENT_CLAIM_STATUS_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CURRENT_CLAIM_STATUS_CODE, Value)
         End Set
     End Property
 
-    Public Property ExcludeRepairedClaims() As String
+    Public Property ExcludeRepairedClaims As String
         Get
             If Row(DATA_COL_NAME_EXCLUDE_REPAIRED_CLAIMS) Is DBNull.Value Then
                 Return Nothing
@@ -153,13 +151,13 @@ Public Class GetActiveClaimsForSvc
                 Return (CType(Row(DATA_COL_NAME_EXCLUDE_REPAIRED_CLAIMS), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_EXCLUDE_REPAIRED_CLAIMS, Value)
         End Set
     End Property
 
-    Private ReadOnly Property ServiceCenterID() As Guid
+    Private ReadOnly Property ServiceCenterID As Guid
         Get
 
             If _serviceCenterID.Equals(Guid.Empty) Then
@@ -175,7 +173,7 @@ Public Class GetActiveClaimsForSvc
         End Get
     End Property
 
-    Private ReadOnly Property ExtendedClaimStatusListItemID() As Guid
+    Private ReadOnly Property ExtendedClaimStatusListItemID As Guid
         Get
             If Not CurrentClaimStatusCode Is Nothing AndAlso Not CurrentClaimStatusCode.Equals(String.Empty) Then
                 If _ExtendedClaimStatusListItemID.Equals(Guid.Empty) Then

@@ -154,7 +154,7 @@ Public Class CountryTax
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CountryTaxDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -165,7 +165,7 @@ Public Class CountryTax
     End Property
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If row(CountryTaxDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -174,14 +174,14 @@ Public Class CountryTax
                 Return New Guid(CType(row(CountryTaxDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property TaxTypeId() As Guid
+    Public Property TaxTypeId As Guid
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX_TYPE_ID) Is DBNull.Value Then
@@ -190,14 +190,14 @@ Public Class CountryTax
                 Return New Guid(CType(Row(CountryTaxDAL.COL_NAME_TAX_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX_TYPE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidEffectiveDate(""), ValidNewEffectiveDate("")> _
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -206,14 +206,14 @@ Public Class CountryTax
                 Return New DateType(CType(Row(CountryTaxDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidLastEntryForDelete("")> _
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -222,14 +222,14 @@ Public Class CountryTax
                 Return New DateType(CType(Row(CountryTaxDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=120), ValidTaxGroup("", 1)> _
-    Public Property Tax1Description() As String
+    Public Property Tax1Description As String
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX1_DESCRIPTION) Is DBNull.Value Then
@@ -238,13 +238,13 @@ Public Class CountryTax
                 Return CType(Row(CountryTaxDAL.COL_NAME_TAX1_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX1_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property Tax1PercentFlagId() As Guid
+    Public Property Tax1PercentFlagId As Guid
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX1_PERCENT_FLAG_ID) Is DBNull.Value Then
@@ -253,14 +253,14 @@ Public Class CountryTax
                 Return New Guid(CType(Row(CountryTaxDAL.COL_NAME_TAX1_PERCENT_FLAG_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX1_PERCENT_FLAG_ID, Value)
         End Set
     End Property
 
     <RequiredAtLeastOneTaxgroupFilled("")> _
-    Public Property Tax1ComputeMethodId() As Guid
+    Public Property Tax1ComputeMethodId As Guid
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX1_COMPUTE_METHOD_ID) Is DBNull.Value Then
@@ -269,14 +269,14 @@ Public Class CountryTax
                 Return New Guid(CType(Row(CountryTaxDAL.COL_NAME_TAX1_COMPUTE_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX1_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
     <ValidTaxPercent("", 1)> _
-    Public Property Tax1Percent() As DecimalType
+    Public Property Tax1Percent As DecimalType
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX1_PERCENT) Is DBNull.Value Then
@@ -285,14 +285,14 @@ Public Class CountryTax
                 Return New DecimalType(CType(Row(CountryTaxDAL.COL_NAME_TAX1_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX1_PERCENT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=120), ValidTaxGroup("", 2)> _
-    Public Property Tax2Description() As String
+    Public Property Tax2Description As String
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX2_DESCRIPTION) Is DBNull.Value Then
@@ -301,13 +301,13 @@ Public Class CountryTax
                 Return CType(Row(CountryTaxDAL.COL_NAME_TAX2_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX2_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property Tax2ComputeMethodId() As Guid
+    Public Property Tax2ComputeMethodId As Guid
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX2_COMPUTE_METHOD_ID) Is DBNull.Value Then
@@ -316,13 +316,13 @@ Public Class CountryTax
                 Return New Guid(CType(Row(CountryTaxDAL.COL_NAME_TAX2_COMPUTE_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX2_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
-    Public Property Tax2PercentFlagId() As Guid
+    Public Property Tax2PercentFlagId As Guid
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX2_PERCENT_FLAG_ID) Is DBNull.Value Then
@@ -331,14 +331,14 @@ Public Class CountryTax
                 Return New Guid(CType(Row(CountryTaxDAL.COL_NAME_TAX2_PERCENT_FLAG_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX2_PERCENT_FLAG_ID, Value)
         End Set
     End Property
 
     <ValidTaxPercent("", 2)> _
-    Public Property Tax2Percent() As DecimalType
+    Public Property Tax2Percent As DecimalType
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX2_PERCENT) Is DBNull.Value Then
@@ -347,14 +347,14 @@ Public Class CountryTax
                 Return New DecimalType(CType(Row(CountryTaxDAL.COL_NAME_TAX2_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX2_PERCENT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=120), ValidTaxGroup("", 3)> _
-    Public Property Tax3Description() As String
+    Public Property Tax3Description As String
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX3_DESCRIPTION) Is DBNull.Value Then
@@ -363,13 +363,13 @@ Public Class CountryTax
                 Return CType(Row(CountryTaxDAL.COL_NAME_TAX3_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX3_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property Tax3ComputeMethodId() As Guid
+    Public Property Tax3ComputeMethodId As Guid
         Get
             CheckDeleted()
             If row(CountryTaxDAL.COL_NAME_TAX3_COMPUTE_METHOD_ID) Is DBNull.Value Then
@@ -378,13 +378,13 @@ Public Class CountryTax
                 Return New Guid(CType(row(CountryTaxDAL.COL_NAME_TAX3_COMPUTE_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX3_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
-    Public Property Tax3PercentFlagId() As Guid
+    Public Property Tax3PercentFlagId As Guid
         Get
             CheckDeleted()
             If row(CountryTaxDAL.COL_NAME_TAX3_PERCENT_FLAG_ID) Is DBNull.Value Then
@@ -393,14 +393,14 @@ Public Class CountryTax
                 Return New Guid(CType(row(CountryTaxDAL.COL_NAME_TAX3_PERCENT_FLAG_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX3_PERCENT_FLAG_ID, Value)
         End Set
     End Property
 
     <ValidTaxPercent("", 3)> _
-    Public Property Tax3Percent() As DecimalType
+    Public Property Tax3Percent As DecimalType
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX3_PERCENT) Is DBNull.Value Then
@@ -409,14 +409,14 @@ Public Class CountryTax
                 Return New DecimalType(CType(Row(CountryTaxDAL.COL_NAME_TAX3_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX3_PERCENT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=120), ValidTaxGroup("", 4)> _
-    Public Property Tax4Description() As String
+    Public Property Tax4Description As String
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX4_DESCRIPTION) Is DBNull.Value Then
@@ -425,13 +425,13 @@ Public Class CountryTax
                 Return CType(Row(CountryTaxDAL.COL_NAME_TAX4_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX4_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property Tax4ComputeMethodId() As Guid
+    Public Property Tax4ComputeMethodId As Guid
         Get
             CheckDeleted()
             If row(CountryTaxDAL.COL_NAME_TAX4_COMPUTE_METHOD_ID) Is DBNull.Value Then
@@ -440,13 +440,13 @@ Public Class CountryTax
                 Return New Guid(CType(row(CountryTaxDAL.COL_NAME_TAX4_COMPUTE_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX4_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
-    Public Property Tax4PercentFlagId() As Guid
+    Public Property Tax4PercentFlagId As Guid
         Get
             CheckDeleted()
             If row(CountryTaxDAL.COL_NAME_TAX4_PERCENT_FLAG_ID) Is DBNull.Value Then
@@ -455,14 +455,14 @@ Public Class CountryTax
                 Return New Guid(CType(row(CountryTaxDAL.COL_NAME_TAX4_PERCENT_FLAG_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX4_PERCENT_FLAG_ID, Value)
         End Set
     End Property
 
     <ValidTaxPercent("", 4)> _
-    Public Property Tax4Percent() As DecimalType
+    Public Property Tax4Percent As DecimalType
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX4_PERCENT) Is DBNull.Value Then
@@ -471,14 +471,14 @@ Public Class CountryTax
                 Return New DecimalType(CType(Row(CountryTaxDAL.COL_NAME_TAX4_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX4_PERCENT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=120), ValidTaxGroup("", 5)> _
-    Public Property Tax5Description() As String
+    Public Property Tax5Description As String
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX5_DESCRIPTION) Is DBNull.Value Then
@@ -487,7 +487,7 @@ Public Class CountryTax
                 Return CType(Row(CountryTaxDAL.COL_NAME_TAX5_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX5_DESCRIPTION, Value)
         End Set
@@ -495,7 +495,7 @@ Public Class CountryTax
 
 
     <ValidStringLength("", Max:=1)>
-    Public Property ApplyWithholdingFlag() As String
+    Public Property ApplyWithholdingFlag As String
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_APPLY_WITHHOLDING_FLAG) Is DBNull.Value Then
@@ -504,13 +504,13 @@ Public Class CountryTax
                 Return CType(Row(CountryTaxDAL.COL_NAME_APPLY_WITHHOLDING_FLAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_APPLY_WITHHOLDING_FLAG, Value)
         End Set
     End Property
 
-    Public Property Tax5ComputeMethodId() As Guid
+    Public Property Tax5ComputeMethodId As Guid
         Get
             CheckDeleted()
             If row(CountryTaxDAL.COL_NAME_TAX5_COMPUTE_METHOD_ID) Is DBNull.Value Then
@@ -519,13 +519,13 @@ Public Class CountryTax
                 Return New Guid(CType(row(CountryTaxDAL.COL_NAME_TAX5_COMPUTE_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX5_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
-    Public Property Tax5PercentFlagId() As Guid
+    Public Property Tax5PercentFlagId As Guid
         Get
             CheckDeleted()
             If row(CountryTaxDAL.COL_NAME_TAX5_PERCENT_FLAG_ID) Is DBNull.Value Then
@@ -534,14 +534,14 @@ Public Class CountryTax
                 Return New Guid(CType(row(CountryTaxDAL.COL_NAME_TAX5_PERCENT_FLAG_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX5_PERCENT_FLAG_ID, Value)
         End Set
     End Property
 
     <ValidTaxPercent("", 5)> _
-    Public Property Tax5Percent() As DecimalType
+    Public Property Tax5Percent As DecimalType
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX5_PERCENT) Is DBNull.Value Then
@@ -550,14 +550,14 @@ Public Class CountryTax
                 Return New DecimalType(CType(Row(CountryTaxDAL.COL_NAME_TAX5_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX5_PERCENT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=120), ValidTaxGroup("", 6)> _
-    Public Property Tax6Description() As String
+    Public Property Tax6Description As String
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX6_DESCRIPTION) Is DBNull.Value Then
@@ -566,13 +566,13 @@ Public Class CountryTax
                 Return CType(Row(CountryTaxDAL.COL_NAME_TAX6_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX6_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property Tax6ComputeMethodId() As Guid
+    Public Property Tax6ComputeMethodId As Guid
         Get
             CheckDeleted()
             If row(CountryTaxDAL.COL_NAME_TAX6_COMPUTE_METHOD_ID) Is DBNull.Value Then
@@ -581,13 +581,13 @@ Public Class CountryTax
                 Return New Guid(CType(row(CountryTaxDAL.COL_NAME_TAX6_COMPUTE_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX6_COMPUTE_METHOD_ID, Value)
         End Set
     End Property
 
-    Public Property Tax6PercentFlagId() As Guid
+    Public Property Tax6PercentFlagId As Guid
         Get
             CheckDeleted()
             If row(CountryTaxDAL.COL_NAME_TAX6_PERCENT_FLAG_ID) Is DBNull.Value Then
@@ -596,14 +596,14 @@ Public Class CountryTax
                 Return New Guid(CType(row(CountryTaxDAL.COL_NAME_TAX6_PERCENT_FLAG_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX6_PERCENT_FLAG_ID, Value)
         End Set
     End Property
 
     <ValidTaxPercent("", 6)> _
-    Public Property Tax6Percent() As DecimalType
+    Public Property Tax6Percent As DecimalType
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_TAX6_PERCENT) Is DBNull.Value Then
@@ -612,14 +612,14 @@ Public Class CountryTax
                 Return New DecimalType(CType(Row(CountryTaxDAL.COL_NAME_TAX6_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_TAX6_PERCENT, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyTypeId() As Guid
+    Public Property CompanyTypeId As Guid
         Get
             CheckDeleted()
             If row(CountryTaxDAL.COL_NAME_COMPANY_TYPE_ID) Is DBNull.Value Then
@@ -628,14 +628,14 @@ Public Class CountryTax
                 Return New Guid(CType(row(CountryTaxDAL.COL_NAME_COMPANY_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_COMPANY_TYPE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ProductTaxTypeId() As Guid
+    Public Property ProductTaxTypeId As Guid
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_PRODUCT_TAX_TYPE_ID) Is DBNull.Value Then
@@ -644,13 +644,13 @@ Public Class CountryTax
                 Return New Guid(CType(Row(CountryTaxDAL.COL_NAME_PRODUCT_TAX_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_PRODUCT_TAX_TYPE_ID, Value)
         End Set
     End Property
     'REQ-1150
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(CountryTaxDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -659,7 +659,7 @@ Public Class CountryTax
                 Return New Guid(CType(Row(CountryTaxDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CountryTaxDAL.COL_NAME_DEALER_ID, Value)
         End Set
@@ -675,7 +675,7 @@ Public Class CountryTax
 
     'End Property
 
-    Public Shared ReadOnly Property isInvoiceTaxEnabled() As Boolean
+    Public Shared ReadOnly Property isInvoiceTaxEnabled As Boolean
         Get
             Try
                 Dim dv As DataView
@@ -745,7 +745,7 @@ Public Class CountryTax
         End Get
     End Property
 
-    Public Shared ReadOnly Property NumberOfTaxGroups() As Integer
+    Public Shared ReadOnly Property NumberOfTaxGroups As Integer
         Get
             Return MAX_NUMBER_OF_TAX_GROUPS
         End Get
@@ -897,7 +897,7 @@ Public Class CountryTax
 #End Region
 
 #Region "TaxGroupData class definition"
-    <Serializable()> Public Class TaxGroupData
+    <Serializable> Public Class TaxGroupData
         Public Description As String
         Public CompMethod As Guid
         Public PercentFlag As Guid

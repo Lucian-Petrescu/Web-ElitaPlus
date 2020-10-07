@@ -185,7 +185,7 @@ Namespace Tables
                     PopulateDropdown()
 
                     If State.IsGridVisible Then
-                        If Not (State.PageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.PageSize = Grid.PageSize) Then
+                        If Not (State.PageSize = DEFAULT_NEW_UI_PAGE_SIZE) OrElse Not (State.PageSize = Grid.PageSize) Then
                             Grid.PageSize = State.PageSize
                         End If
 
@@ -380,8 +380,8 @@ Namespace Tables
                 Dim btnEditItem As LinkButton
                 Dim btnEditItem2 As LinkButton
 
-                If dvRow IsNot Nothing And Not State.bNoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bNoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         btnEditItem = CType(e.Row.Cells(GRID_COL_EDIT_IDX).FindControl("SelectAction"), LinkButton)
                         btnEditItem.Text = dvRow(OcTemplate.TemplateSearchDV.COL_TEMPLATE_GROUP_CODE).ToString
 

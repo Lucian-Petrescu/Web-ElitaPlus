@@ -140,7 +140,7 @@
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(BestReplacementReconDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -151,7 +151,7 @@
     End Property
 
     <ValueMandatory("")> _
-    Public Property fileProcessedId() As Guid
+    Public Property fileProcessedId As Guid
         Get
             CheckDeleted()
             If Row(BestReplacementReconDAL.COL_NAME_FILE_PROCESSED_ID) Is DBNull.Value Then
@@ -160,13 +160,13 @@
                 Return New Guid(CType(Row(BestReplacementReconDAL.COL_NAME_FILE_PROCESSED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BestReplacementReconDAL.COL_NAME_FILE_PROCESSED_ID, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=1)> _
-    Public Property loadstatus() As String
+    Public Property loadstatus As String
         Get
             CheckDeleted()
             If Row(BestReplacementReconDAL.COL_NAME_LOAD_STATUS) Is DBNull.Value Then
@@ -177,14 +177,14 @@
                 Return CType(Row(BestReplacementReconDAL.COL_NAME_LOAD_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BestReplacementReconDAL.COL_NAME_LOAD_STATUS, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property RejectReason() As String
+    Public Property RejectReason As String
         Get
             CheckDeleted()
             If Row(BestReplacementReconDAL.COL_REJECT_REASON) Is DBNull.Value Then
@@ -193,14 +193,14 @@
                 Return CType(Row(BestReplacementReconDAL.COL_REJECT_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BestReplacementReconDAL.COL_REJECT_REASON, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=255)> _
-    Public Property Manufacturer() As String
+    Public Property Manufacturer As String
         Get
             CheckDeleted()
             If Row(BestReplacementReconDAL.COL_NAME_MANUFACTURER) Is DBNull.Value Then
@@ -211,13 +211,13 @@
                 Return CType(Row(BestReplacementReconDAL.COL_NAME_MANUFACTURER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BestReplacementReconDAL.COL_NAME_MANUFACTURER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=100)>
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(BestReplacementReconDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -226,14 +226,14 @@
                 Return CType(Row(BestReplacementReconDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BestReplacementReconDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=999)> _
-    Public Property Priority() As LongType
+    Public Property Priority As LongType
         Get
             CheckDeleted()
             If Row(BestReplacementReconDAL.COL_NAME_PRIORITY) Is DBNull.Value Then
@@ -242,7 +242,7 @@
                 Return New LongType(CType(Row(BestReplacementReconDAL.COL_NAME_PRIORITY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(BestReplacementReconDAL.COL_NAME_PRIORITY, Value)
         End Set
@@ -250,7 +250,7 @@
 
 
     <ValidStringLength("", Max:=5)> _
-    Public Property RecordType() As String
+    Public Property RecordType As String
         Get
             CheckDeleted()
             If Row(BestReplacementReconDAL.COL_NAME_RECORD_TYPE) Is DBNull.Value Then
@@ -260,14 +260,14 @@
                 Return CType(Row(BestReplacementReconDAL.COL_NAME_RECORD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BestReplacementReconDAL.COL_NAME_RECORD_TYPE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=255)> _
-    Public Property ReplacementManufacturer() As String
+    Public Property ReplacementManufacturer As String
         Get
             CheckDeleted()
             If Row(BestReplacementReconDAL.COL_NAME_REPLACEMENT_MANUFACTURER) Is DBNull.Value Then
@@ -276,14 +276,14 @@
                 Return CType(Row(BestReplacementReconDAL.COL_NAME_REPLACEMENT_MANUFACTURER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BestReplacementReconDAL.COL_NAME_REPLACEMENT_MANUFACTURER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)> _
-    Public Property ReplacementModel() As String
+    Public Property ReplacementModel As String
         Get
             CheckDeleted()
             If Row(BestReplacementReconDAL.COL_NAME_REPLACEMENT_MODEL) Is DBNull.Value Then
@@ -292,14 +292,14 @@
                 Return CType(Row(BestReplacementReconDAL.COL_NAME_REPLACEMENT_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BestReplacementReconDAL.COL_NAME_REPLACEMENT_MODEL, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=12)> _
-    Public Property RejectCode() As String
+    Public Property RejectCode As String
         Get
             CheckDeleted()
             If Row(BestReplacementReconDAL.COL_NAME_REJECT_CODE) Is DBNull.Value Then
@@ -310,7 +310,7 @@
                 Return CType(Row(BestReplacementReconDAL.COL_NAME_REJECT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BestReplacementReconDAL.COL_NAME_REJECT_CODE, Value)
         End Set
@@ -318,7 +318,7 @@
 
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)> _
-    Public Property Reject_Msg_Parms() As DecimalType
+    Public Property Reject_Msg_Parms As DecimalType
         Get
             CheckDeleted()
             If Row(BestReplacementReconDAL.COL_NAME_REJECT_MSG_PARMS) Is DBNull.Value Then
@@ -327,12 +327,12 @@
                 Return New DecimalType(CType(Row(BestReplacementReconDAL.COL_NAME_REJECT_MSG_PARMS), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(BestReplacementReconDAL.COL_NAME_REJECT_MSG_PARMS, Value)
         End Set
     End Property
-    Public Property ModifiedDate() As DateType
+    Public Property ModifiedDate As DateType
         Get
             CheckDeleted()
             If Row(BestReplacementReconDAL.COL_NAME_MODIFIED_DATE) Is DBNull.Value Then
@@ -341,12 +341,12 @@
                 Return New DateType(CType(Row(BestReplacementReconDAL.COL_NAME_MODIFIED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(BestReplacementReconDAL.COL_NAME_MODIFIED_DATE, Value)
         End Set
     End Property
-    Public Property ModifiedBy() As String
+    Public Property ModifiedBy As String
         Get
             CheckDeleted()
             If Row(BestReplacementReconDAL.COL_NAME_MODIFIED_BY) Is DBNull.Value Then
@@ -356,7 +356,7 @@
                 Return CType(Row(BestReplacementReconDAL.COL_NAME_MODIFIED_BY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(BestReplacementReconDAL.COL_NAME_MODIFIED_BY, Value)
         End Set

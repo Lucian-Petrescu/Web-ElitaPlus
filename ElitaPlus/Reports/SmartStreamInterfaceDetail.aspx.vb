@@ -217,7 +217,7 @@ Namespace Reports
 
         Private Sub moBeginDateText_TextChanged(sender As Object, e As System.EventArgs) Handles moBeginDateText.TextChanged
             Try
-                If moBeginDateText.Text.Trim.ToString <> String.Empty And moEndDateText.Text.Trim.ToString <> String.Empty Then
+                If moBeginDateText.Text.Trim.ToString <> String.Empty AndAlso moEndDateText.Text.Trim.ToString <> String.Empty Then
                     PopulateFileName()
                 End If
             Catch ex As Exception
@@ -227,7 +227,7 @@ Namespace Reports
 
         Protected Sub moEndDateText_TextChanged(sender As Object, e As EventArgs) Handles moEndDateText.TextChanged
             Try
-                If moBeginDateText.Text.Trim.ToString <> String.Empty And moEndDateText.Text.Trim.ToString <> String.Empty Then
+                If moBeginDateText.Text.Trim.ToString <> String.Empty AndAlso moEndDateText.Text.Trim.ToString <> String.Empty Then
                     PopulateFileName()
                 End If
             Catch ex As Exception
@@ -284,8 +284,7 @@ Namespace Reports
                                                          Where Not x.Translation Like "%.TMP"
                                                          Select x).ToArray()
             Dim filteredAcctFileLst As DataElements.ListItem() = (From acclist In filterList
-                                                                  Where ((Date.ParseExact(acclist.ExtendedCode, "MMddyyyy", DateTimeFormatInfo.InvariantInfo) >= beginDate) And
-                                                                                          (Date.ParseExact(acclist.ExtendedCode, "MMddyyyy", DateTimeFormatInfo.InvariantInfo) <= endDate))
+                                                                  Where ((Date.ParseExact(acclist.ExtendedCode, "MMddyyyy", DateTimeFormatInfo.InvariantInfo) >= beginDate) AndAlso (Date.ParseExact(acclist.ExtendedCode, "MMddyyyy", DateTimeFormatInfo.InvariantInfo) <= endDate))
                                                                   Select acclist).ToArray()
             cboFileName.Populate(filteredAcctFileLst, New PopulateOptions() With
                                                    {

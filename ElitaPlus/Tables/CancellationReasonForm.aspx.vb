@@ -206,7 +206,7 @@ Partial Class CancellationReasonForm
             PopulateBOProperty(State.MyBO, "IsLawful", cboIsLawful, False, True)
             PopulateBOProperty(State.MyBO, "BenefitCancelReasonCode", txtBenefitCancelCode)
 
-            If State.MyBO.IsNew And ElitaPlusIdentity.Current.ActiveUser.Companies.Count > 1 Then
+            If State.MyBO.IsNew AndAlso ElitaPlusIdentity.Current.ActiveUser.Companies.Count > 1 Then
                 State.MyBO.CompanyId = UserCompanyMultipleDrop.SelectedGuid
             End If
         End With
@@ -512,7 +512,7 @@ Partial Class CancellationReasonForm
         listcontext.UserId = ElitaPlusIdentity.Current.ActiveUser.Id
         Dim paymentLKL As ListItem() = CommonConfigManager.Current.ListManager.GetList("PaymentMethodByRoleCompany", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
         Dim filteredList As ListItem() = (From x In paymentLKL
-                                          Where Not x.Code = "CTT" Or Not x.Code = "PYO"
+                                          Where Not x.Code = "CTT" OrElse Not x.Code = "PYO"
                                           Select x).ToArray()
         cboDefRefPaymentMethod.Populate(filteredList, New PopulateOptions() With
              {

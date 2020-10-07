@@ -101,7 +101,7 @@
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ServiceNotificationFileProcessedDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -128,7 +128,7 @@
     '  End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=15)> _
-    Public Property Filename() As String
+    Public Property Filename As String
         Get
             CheckDeleted()
             If Row(ServiceNotificationFileProcessedDAL.COL_NAME_FILENAME) Is DBNull.Value Then
@@ -137,13 +137,13 @@
                 Return CType(Row(ServiceNotificationFileProcessedDAL.COL_NAME_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_FILENAME, Value)
         End Set
     End Property
 
-    Public Property Received() As LongType
+    Public Property Received As LongType
         Get
             CheckDeleted()
             If Row(ServiceNotificationFileProcessedDAL.COL_NAME_RECEIVED) Is DBNull.Value Then
@@ -152,13 +152,13 @@
                 Return New LongType(CType(Row(ServiceNotificationFileProcessedDAL.COL_NAME_RECEIVED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_RECEIVED, Value)
         End Set
     End Property
 
-    Public Property Bypassed() As LongType
+    Public Property Bypassed As LongType
         Get
             CheckDeleted()
             If Row(ServiceNotificationFileProcessedDAL.COL_NAME_BYPASSED) Is DBNull.Value Then
@@ -167,14 +167,14 @@
                 Return New LongType(CType(Row(ServiceNotificationFileProcessedDAL.COL_NAME_BYPASSED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_BYPASSED, Value)
         End Set
     End Property
 
 
-    Public Property Counted() As LongType
+    Public Property Counted As LongType
         Get
             CheckDeleted()
             If Row(ServiceNotificationFileProcessedDAL.COL_NAME_COUNTED) Is DBNull.Value Then
@@ -183,7 +183,7 @@
                 Return New LongType(CType(Row(ServiceNotificationFileProcessedDAL.COL_NAME_COUNTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_COUNTED, Value)
         End Set
@@ -191,7 +191,7 @@
 
 
 
-    Public Property Rejected() As LongType
+    Public Property Rejected As LongType
         Get
             CheckDeleted()
             If Row(ServiceNotificationFileProcessedDAL.COL_NAME_REJECTED) Is DBNull.Value Then
@@ -200,7 +200,7 @@
                 Return New LongType(CType(Row(ServiceNotificationFileProcessedDAL.COL_NAME_REJECTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_REJECTED, Value)
         End Set
@@ -208,7 +208,7 @@
 
 
 
-    Public Property Validated() As LongType
+    Public Property Validated As LongType
         Get
             CheckDeleted()
             If Row(ServiceNotificationFileProcessedDAL.COL_NAME_VALIDATED) Is DBNull.Value Then
@@ -217,7 +217,7 @@
                 Return New LongType(CType(Row(ServiceNotificationFileProcessedDAL.COL_NAME_VALIDATED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_VALIDATED, Value)
         End Set
@@ -225,7 +225,7 @@
 
 
 
-    Public Property Loaded() As LongType
+    Public Property Loaded As LongType
         Get
             CheckDeleted()
             If Row(ServiceNotificationFileProcessedDAL.COL_NAME_LOADED) Is DBNull.Value Then
@@ -234,7 +234,7 @@
                 Return New LongType(CType(Row(ServiceNotificationFileProcessedDAL.COL_NAME_LOADED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_LOADED, Value)
         End Set

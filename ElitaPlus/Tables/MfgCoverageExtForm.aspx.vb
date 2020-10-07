@@ -576,9 +576,9 @@ Namespace Tables
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-            If dvRow IsNot Nothing And Not State.bnoRow Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     CType(e.Row.Cells(MFG_COVERAGE_EXT_ID_COL).FindControl(MFG_COVERAGE_EXT_ID_CONTROL), Label).Text = GetGuidStringFromByteArray(CType(dvRow(MfgCoverageExt.COL_MFG_COVERAGE_EXT_ID), Byte()))
 
                     If (State.IsEditMode = True _

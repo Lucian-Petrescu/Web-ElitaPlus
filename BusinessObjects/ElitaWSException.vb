@@ -12,11 +12,11 @@ Public Class ElitaWSException
 
     Private _source As Xml.XmlQualifiedName = SoapException.ServerFaultCode
 
-    Private Property SourceException() As Xml.XmlQualifiedName
+    Private Property SourceException As Xml.XmlQualifiedName
         Get
             Return _source
         End Get
-        Set(ByVal Value As Xml.XmlQualifiedName)
+        Set
             _source = Value
         End Set
     End Property

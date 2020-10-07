@@ -98,7 +98,7 @@ Public Class GetCertInfoWEPPTMX
 #Region "Properties"
 
     '<ValueMandatory("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
@@ -106,12 +106,12 @@ Public Class GetCertInfoWEPPTMX
                 Return CType(Row(DATA_COL_NAME_DEALER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
-    Public Property CertNum() As String
+    Public Property CertNum As String
         Get
             If Row(DATA_COL_NAME_CERT_NUM) Is DBNull.Value Then
                 Return Nothing
@@ -119,12 +119,12 @@ Public Class GetCertInfoWEPPTMX
                 Return CType(Row(DATA_COL_NAME_CERT_NUM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_CERT_NUM, Value)
         End Set
     End Property
 
-    Public Property PhoneNum() As String
+    Public Property PhoneNum As String
         Get
             If Row(DATA_COL_NAME_PHONE_NUM) Is DBNull.Value Then
                 Return Nothing
@@ -132,12 +132,12 @@ Public Class GetCertInfoWEPPTMX
                 Return CType(Row(DATA_COL_NAME_PHONE_NUM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_PHONE_NUM, Value)
         End Set
     End Property
 
-    Public Property SerialNum() As String
+    Public Property SerialNum As String
         Get
             If Row(DATA_COL_NAME_SERIAL_NUM) Is DBNull.Value Then
                 Return Nothing
@@ -145,7 +145,7 @@ Public Class GetCertInfoWEPPTMX
                 Return CType(Row(DATA_COL_NAME_SERIAL_NUM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             SetValue(DATA_COL_NAME_SERIAL_NUM, Value)
         End Set
     End Property

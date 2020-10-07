@@ -234,7 +234,7 @@ Public Class DealerRejectForm
 
     Private Sub DataGridRejectCode_ItemCreated(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles DataGridRejectCode.ItemCreated
         Try
-            If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem Then
+            If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
                 AddHandler CType(e.Item.Cells(GRID_COL_SELECTED_CHK_IDX).FindControl(GRID_CTL_SELECTED_CHKBOX), CheckBox).CheckedChanged, AddressOf OnCheckedChangeEvent
             End If
         Catch ex As Exception
@@ -246,7 +246,7 @@ Public Class DealerRejectForm
         Try
             BaseItemBound(source, e)
 
-            If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.EditItem Then
+            If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem OrElse e.Item.ItemType = ListItemType.EditItem Then
                 Dim drv As DataRowView = CType(e.Item.DataItem, DataRowView)
                 Dim i As Integer
                 Dim disableRow As Boolean = False

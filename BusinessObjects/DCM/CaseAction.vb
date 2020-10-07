@@ -90,7 +90,7 @@ Public Class CaseAction
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CaseActionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class CaseAction
     End Property
 	
     
-    Public Property CaseId() As Guid
+    Public Property CaseId As Guid
         Get
             CheckDeleted()
             If row(CaseActionDAL.COL_NAME_CASE_ID) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class CaseAction
                 Return New Guid(CType(row(CaseActionDAL.COL_NAME_CASE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseActionDAL.COL_NAME_CASE_ID, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class CaseAction
 	
 	
     
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If row(CaseActionDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class CaseAction
                 Return New Guid(CType(row(CaseActionDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseActionDAL.COL_NAME_CLAIM_ID, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class CaseAction
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property ActionOwnerXcd() As String
+    Public Property ActionOwnerXcd As String
         Get
             CheckDeleted()
             If row(CaseActionDAL.COL_NAME_ACTION_OWNER_XCD) Is DBNull.Value Then
@@ -144,13 +144,13 @@ Public Class CaseAction
                 Return CType(row(CaseActionDAL.COL_NAME_ACTION_OWNER_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CaseActionDAL.COL_NAME_ACTION_OWNER_XCD, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=200)>
-    Public Property ActionOwner() As String
+    Public Property ActionOwner As String
         Get
             CheckDeleted()
             If Row(CaseActionDAL.COL_NAME_ACTION_OWNER) Is DBNull.Value Then
@@ -159,7 +159,7 @@ Public Class CaseAction
                 Return CType(Row(CaseActionDAL.COL_NAME_ACTION_OWNER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CaseActionDAL.COL_NAME_ACTION_OWNER, Value)
         End Set
@@ -167,7 +167,7 @@ Public Class CaseAction
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property ActionTypeXcd() As String
+    Public Property ActionTypeXcd As String
         Get
             CheckDeleted()
             If row(CaseActionDAL.COL_NAME_ACTION_TYPE_XCD) Is DBNull.Value Then
@@ -176,13 +176,13 @@ Public Class CaseAction
                 Return CType(row(CaseActionDAL.COL_NAME_ACTION_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CaseActionDAL.COL_NAME_ACTION_TYPE_XCD, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=200)>
-    Public Property ActionType() As String
+    Public Property ActionType As String
         Get
             CheckDeleted()
             If Row(CaseActionDAL.COL_NAME_ACTION_TYPE) Is DBNull.Value Then
@@ -191,7 +191,7 @@ Public Class CaseAction
                 Return CType(Row(CaseActionDAL.COL_NAME_ACTION_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CaseActionDAL.COL_NAME_ACTION_TYPE, Value)
         End Set
@@ -199,7 +199,7 @@ Public Class CaseAction
 
 
     <ValueMandatory(""),ValidStringLength("", Max:=200)> _
-    Public Property StatusXcd() As String
+    Public Property StatusXcd As String
         Get
             CheckDeleted()
             If row(CaseActionDAL.COL_NAME_STATUS_XCD) Is DBNull.Value Then
@@ -208,7 +208,7 @@ Public Class CaseAction
                 Return CType(row(CaseActionDAL.COL_NAME_STATUS_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CaseActionDAL.COL_NAME_STATUS_XCD, Value)
         End Set
@@ -216,7 +216,7 @@ Public Class CaseAction
 
 
     <ValidStringLength("", Max:=200)>
-    Public Property Status() As String
+    Public Property Status As String
         Get
             CheckDeleted()
             If Row(CaseActionDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -225,13 +225,13 @@ Public Class CaseAction
                 Return CType(Row(CaseActionDAL.COL_NAME_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CaseActionDAL.COL_NAME_STATUS, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=120)> _
-    Public Property RefSource() As String
+    Public Property RefSource As String
         Get
             CheckDeleted()
             If row(CaseActionDAL.COL_NAME_REF_SOURCE) Is DBNull.Value Then
@@ -240,7 +240,7 @@ Public Class CaseAction
                 Return CType(row(CaseActionDAL.COL_NAME_REF_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(CaseActionDAL.COL_NAME_REF_SOURCE, Value)
         End Set
@@ -248,7 +248,7 @@ Public Class CaseAction
 	
 	
     
-    Public Property RefId() As Guid
+    Public Property RefId As Guid
         Get
             CheckDeleted()
             If row(CaseActionDAL.COL_NAME_REF_ID) Is DBNull.Value Then
@@ -257,7 +257,7 @@ Public Class CaseAction
                 Return New Guid(CType(row(CaseActionDAL.COL_NAME_REF_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseActionDAL.COL_NAME_REF_ID, Value)
         End Set

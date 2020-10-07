@@ -168,8 +168,8 @@ Namespace Tables
 
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-                If dvRow IsNot Nothing And Not State.bnoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         e.Row.Cells(GRID_COL_CREDIT_CARD_TYPE).Text = dvRow(State.searchDV.COL_CREDIT_CARD_TYPE).ToString
                         e.Row.Cells(GRID_COL_FORMAT).Text = dvRow(State.searchDV.COL_FORMAT).ToString
                     End If

@@ -240,7 +240,7 @@ Namespace Translation
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 Dim lblTemp As Label, ddl As DropDownList, txt As TextBox
 
-                If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+                If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                     With e.Row
                         If .RowIndex = GridForm.EditIndex Then
 

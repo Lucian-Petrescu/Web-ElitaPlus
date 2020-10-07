@@ -174,7 +174,7 @@ Partial Public Class ComunaCodeForm
     Private Sub ComunaCodeForm_LoadComplete(sender As Object, e As System.EventArgs) Handles Me.LoadComplete
         SetControlState()
         If ErrControllerMaster.Visible Then
-            If Grid.Visible And Grid.Rows.Count < 10 Then
+            If Grid.Visible AndAlso Grid.Rows.Count < 10 Then
                 Dim fillerHight As Integer = 200
                 fillerHight = fillerHight - Grid.Rows.Count * 20
                 spanFiller.Text = "<tr><td colspan=""2"" style=""height:" & fillerHight & "px"">&nbsp;</td></tr>"
@@ -261,7 +261,7 @@ Partial Public Class ComunaCodeForm
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim lblTemp As Label, ddl As DropDownList, txt As TextBox
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     If .RowIndex = Grid.EditIndex Then
                         ddl = CType(e.Row.FindControl(GRID_CTRL_NAME_REGION), DropDownList)
@@ -486,7 +486,7 @@ Partial Public Class ComunaCodeForm
                 With State
                     If (.MyBO.IsDirty) Then
                         .MyBO.Save()
-                        If .IsGridAddNew And .searchDV.Count = 1 Then
+                        If .IsGridAddNew AndAlso .searchDV.Count = 1 Then
                             .searchRegion = .MyBO.RegionId
                             .searchComuna = .MyBO.Comuna
                             .searchPostalCode = .MyBO.Postalcode

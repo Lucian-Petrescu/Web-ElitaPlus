@@ -133,7 +133,7 @@ Public Class InstallmentFactor
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(InstallmentFactorDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -144,7 +144,7 @@ Public Class InstallmentFactor
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(InstallmentFactorDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -153,14 +153,14 @@ Public Class InstallmentFactor
                 Return New Guid(CType(Row(InstallmentFactorDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(InstallmentFactorDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidInstallmentFactorPeriod("")> _
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(InstallmentFactorDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -169,14 +169,14 @@ Public Class InstallmentFactor
                 Return New DateType(CType(Row(InstallmentFactorDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(InstallmentFactorDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(InstallmentFactorDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -185,14 +185,14 @@ Public Class InstallmentFactor
                 Return New DateType(CType(Row(InstallmentFactorDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(InstallmentFactorDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("LowNumberOfPayments", MIN:=MIN_PAYMENT, Max:=MAX_PAYMENT, Message:=ERR_LOW_PAYMENT_OUT_OF_BOUND), ValidInstallmentFactor("")> _
-    Public Property LowNumberOfPayments() As LongType
+    Public Property LowNumberOfPayments As LongType
         Get
             CheckDeleted()
             If Row(InstallmentFactorDAL.COL_NAME_LOW_NUMBER_OF_PAYMENTS) Is DBNull.Value Then
@@ -201,14 +201,14 @@ Public Class InstallmentFactor
                 Return New LongType(CType(Row(InstallmentFactorDAL.COL_NAME_LOW_NUMBER_OF_PAYMENTS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(InstallmentFactorDAL.COL_NAME_LOW_NUMBER_OF_PAYMENTS, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", MIN:=MIN_PAYMENT, Max:=MAX_PAYMENT, Message:=ERR_HIGH_PAYMENT_OUT_OF_BOUND)> _
-    Public Property HighNumberOfPayments() As LongType
+    Public Property HighNumberOfPayments As LongType
         Get
             CheckDeleted()
             If Row(InstallmentFactorDAL.COL_NAME_HIGH_NUMBER_OF_PAYMENTS) Is DBNull.Value Then
@@ -217,14 +217,14 @@ Public Class InstallmentFactor
                 Return New LongType(CType(Row(InstallmentFactorDAL.COL_NAME_HIGH_NUMBER_OF_PAYMENTS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(InstallmentFactorDAL.COL_NAME_HIGH_NUMBER_OF_PAYMENTS, Value)
         End Set
     End Property
 
     <ValidNumericRange("", MIN:=MIN_FACTOR, Max:=MAX_FACTOR, Message:=ERR_INSTALLMENT_FACTOR_OUT_OF_BOUND), ValidInstallmentFactorPercent("")> _
-    Public Property Factor() As DecimalType
+    Public Property Factor As DecimalType
         Get
             CheckDeleted()
             If Row(InstallmentFactorDAL.COL_NAME_FACTOR) Is DBNull.Value Then
@@ -233,7 +233,7 @@ Public Class InstallmentFactor
                 Return New DecimalType(CType(Row(InstallmentFactorDAL.COL_NAME_FACTOR), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(InstallmentFactorDAL.COL_NAME_FACTOR, Value)
         End Set

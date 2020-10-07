@@ -290,7 +290,7 @@ Namespace Reports
                     ElitaPlusPage.SetLabelError(lblMonth)
                     ElitaPlusPage.SetLabelError(lblYear)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION)
-                ElseIf ((Not selectedMonthID.Equals(Guid.Empty) And selectedYear.Equals(String.Empty)) Or (selectedMonthID.Equals(Guid.Empty) And Not selectedYear.Equals(String.Empty))) Then
+                ElseIf ((Not selectedMonthID.Equals(Guid.Empty) AndAlso selectedYear.Equals(String.Empty)) OrElse (selectedMonthID.Equals(Guid.Empty) AndAlso Not selectedYear.Equals(String.Empty))) Then
                     ElitaPlusPage.SetLabelError(lblMonth)
                     ElitaPlusPage.SetLabelError(lblYear)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION)

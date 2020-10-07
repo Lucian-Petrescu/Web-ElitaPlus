@@ -201,7 +201,7 @@ Namespace Interfaces
 
         Public ReadOnly Property CompanyGroupId As Guid
             Get
-                If (ShowComapnyGroup And Not moCompanyGroup.SelectedGuid = Guid.Empty) Then
+                If (ShowComapnyGroup AndAlso Not moCompanyGroup.SelectedGuid = Guid.Empty) Then
                     Return moCompanyGroup.SelectedGuid
                 ElseIf Not ShowComapnyGroup Then
                     Return ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
@@ -670,10 +670,10 @@ Namespace Interfaces
                 End If
                 moCompanyGroup.NothingSelected = True
                 moCompanyGroup.SetControl(True, MultipleColumnDDLabelControl.MODES.NEW_MODE, True, companyGroupDV, "* " & TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY_GROUP), True, True)
-                If (Not clearSelectedValue And selectedValue <> Guid.Empty) Then
+                If (Not clearSelectedValue AndAlso selectedValue <> Guid.Empty) Then
                     moCompanyGroup.SelectedGuid = selectedValue
                 End If
-                clearSelectedValue = clearSelectedValue Or moCompanyGroup.SelectedGuid <> selectedValue
+                clearSelectedValue = clearSelectedValue OrElse moCompanyGroup.SelectedGuid <> selectedValue
             Else
                 moCompanyGroup.ClearMultipleDrop()
             End If
@@ -690,10 +690,10 @@ Namespace Interfaces
                 companyDV = ElitaPlusIdentity.Current.ActiveUser.LoadUserCompanyAssigned(CompanyGroupId, ElitaPlusIdentity.Current.ActiveUser.Id)
                 moCompany.NothingSelected = True
                 moCompany.SetControl(True, MultipleColumnDDLabelControl.MODES.NEW_MODE, True, companyDV, "* " & TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True, True)
-                If (Not clearSelectedValue And selectedValue <> Guid.Empty) Then
+                If (Not clearSelectedValue AndAlso selectedValue <> Guid.Empty) Then
                     moCompany.SelectedGuid = selectedValue
                 End If
-                clearSelectedValue = clearSelectedValue Or moCompany.SelectedGuid <> selectedValue
+                clearSelectedValue = clearSelectedValue OrElse moCompany.SelectedGuid <> selectedValue
             Else
                 moCompany.ClearMultipleDrop()
             End If
@@ -710,10 +710,10 @@ Namespace Interfaces
                 dealerDV = LookupListNew.GetDealerLookupList(CompanyId)
                 moDealer.NothingSelected = True
                 moDealer.SetControl(True, MultipleColumnDDLabelControl.MODES.NEW_MODE, True, dealerDV, "* " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_DEALER), True, True)
-                If (Not clearSelectedValue And selectedValue <> Guid.Empty) Then
+                If (Not clearSelectedValue AndAlso selectedValue <> Guid.Empty) Then
                     moDealer.SelectedGuid = selectedValue
                 End If
-                clearSelectedValue = clearSelectedValue Or moDealer.SelectedGuid <> selectedValue
+                clearSelectedValue = clearSelectedValue OrElse moDealer.SelectedGuid <> selectedValue
             Else
                 moDealer.ClearMultipleDrop()
             End If
@@ -731,10 +731,10 @@ Namespace Interfaces
                     e = New PopulateReferenceEventArgs(Me)
                     RaiseEvent PopulateReferenceDataView(Me, e)
                     moReference.SetControl(True, MultipleColumnDDLabelControl.MODES.NEW_MODE, True, e.ReferenceDV, "* " + TranslationBase.TranslateLabelOrMessage(ReferenceCaption), True, True)
-                    If (Not clearSelectedValue And selectedValue <> Guid.Empty) Then
+                    If (Not clearSelectedValue AndAlso selectedValue <> Guid.Empty) Then
                         moReference.SelectedGuid = selectedValue
                     End If
-                    clearSelectedValue = clearSelectedValue Or moReference.SelectedGuid <> selectedValue
+                    clearSelectedValue = clearSelectedValue OrElse moReference.SelectedGuid <> selectedValue
                 Else
                     moReference.ClearMultipleDrop()
                 End If
@@ -788,9 +788,9 @@ Namespace Interfaces
 
         Private Function IsSelectionValid() As Boolean
             If (CompanyGroupId = Guid.Empty) Then Return False
-            If (ShowComapny And CompanyId = Guid.Empty) Then Return False
-            If (ShowDealer And DealerId = Guid.Empty) Then Return False
-            If (ShowReference And ReferenceId = Guid.Empty) Then Return False
+            If (ShowComapny AndAlso CompanyId = Guid.Empty) Then Return False
+            If (ShowDealer AndAlso DealerId = Guid.Empty) Then Return False
+            If (ShowReference AndAlso ReferenceId = Guid.Empty) Then Return False
             Return True
         End Function
 
@@ -913,7 +913,7 @@ Namespace Interfaces
                         ControlMgr.SetEnableControl(ThePage, BtnValidate_WRITE, False)
                     End If
 
-                    If (.Loaded.Value = .Counted.Value) Or (.Loaded.Value = 0) Then
+                    If (.Loaded.Value = .Counted.Value) OrElse (.Loaded.Value = 0) Then
                         ControlMgr.SetEnableControl(ThePage, BtnDeleteFile_WRITE, True)
                     End If
                 End With
@@ -988,7 +988,7 @@ Namespace Interfaces
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 With e.Item
                     ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_FILE_PROCESSED_ID_IDX), dvRow(FileProcessed.COL_NAME_FILE_PROCESSED_ID))
                     ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_FILENAME_IDX), dvRow(FileProcessed.COL_NAME_FILENAME))

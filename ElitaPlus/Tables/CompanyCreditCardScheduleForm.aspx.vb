@@ -426,7 +426,7 @@ Namespace Tables
 
             Dim odv As DataView = GetDV()
 
-            If odv.Count > 0 And odv.Count < 12 Then
+            If odv.Count > 0 AndAlso odv.Count < 12 Then
                 For i As Integer = 0 To odv.Count - 1
                     Dim dr As DataRow = oDataTable.NewRow()
                     dr(BillingSchedulingIfoDataview.COL_ID) = GuidControl.ByteArrayToGuid(odv.Item(i).Row.Item(DV_ID_COL))
@@ -559,7 +559,7 @@ Namespace Tables
         Private Sub PopulateData(year As String)
             Dim dv As DataView
 
-            If year = State.NewYearSelected And State.NewYearAdded = False Then
+            If year = State.NewYearSelected AndAlso State.NewYearAdded = False Then
                 dv = Get_A_New_Date()
             Else
                 dv = GetDV(State.CompanyCreditCardId)
@@ -848,7 +848,7 @@ Namespace Tables
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
             Dim oTextBox As TextBox
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 With e.Item
                     PopulateControlFromBOProperty(.Cells(ID_COL), dvRow(CcBillingSchedule.COL_NAME_CC_BILLING_SCHEDULE_IDD))
                     oTextBox = CType(e.Item.Cells(CLOSE_DATE_COL).FindControl("moDateCompTextGrid"), TextBox)

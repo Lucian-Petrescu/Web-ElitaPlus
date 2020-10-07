@@ -479,8 +479,8 @@ Namespace Certificates
             If elemType = ListItemType.EditItem Then
                 AddHandler CType(e.Item.FindControl("BillingStatusDD"), DropDownList).SelectedIndexChanged, AddressOf EnblDisblRjctCodeDD
             End If
-            If elemType = ListItemType.AlternatingItem Or elemType = ListItemType.Item Then
-                If elemType = ListItemType.AlternatingItem Or elemType = ListItemType.Item Then
+            If elemType = ListItemType.AlternatingItem OrElse elemType = ListItemType.Item Then
+                If elemType = ListItemType.AlternatingItem OrElse elemType = ListItemType.Item Then
                     Dim objButton As Button
                     objButton = CType(e.Item.Cells(GRID_COL_PAID).FindControl("btnPaid"), Button)
                     objButton.Style.Add("background-color", "#eee3e7")
@@ -530,11 +530,11 @@ Namespace Certificates
 
                     Dim allRejectTable As DataTable = New DataTable()
                     allRejectTable = oGetAllRejInstNoForCert.ToTable()
-                    If allRejectTable IsNot Nothing And allRejectTable.Rows.Count > 0 Then
+                    If allRejectTable IsNot Nothing AndAlso allRejectTable.Rows.Count > 0 Then
                         If (dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString IsNot Nothing _
                        AndAlso Not String.IsNullOrEmpty(dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString)) Then
                             dataChk = allRejectTable.Select("installment_number=" & dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString())
-                            If (dataChk IsNot Nothing And dataChk.Length > 0) Then  ' Data available 
+                            If (dataChk IsNot Nothing AndAlso dataChk.Length > 0) Then  ' Data available 
                                 dsplyBtn = True
                             Else
                                 dsplyBtn = False
@@ -546,7 +546,7 @@ Namespace Certificates
                     End If
                 End If
 
-                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     'e.Item.Cells(Me.GRID_COL_BILLING_DETAIL_ID).Text = New Guid(CType(dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_BILLING_DETAIL_ID), Byte())).ToString
                     'e.Item.Cells(Me.GRID_COL_INSTALLMENT_NUMBER).Text = dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString
 
@@ -590,8 +590,7 @@ Namespace Certificates
                         If (dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString IsNot Nothing _
                        AndAlso Not String.IsNullOrEmpty(dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString)) Then
 
-                            If oBSCode = BILLING_STATUS_REJECT And dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_PAID).ToString = "" And
-                                dsplyBtn And Integer.Parse(dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString) < 0 Then
+                            If oBSCode = BILLING_STATUS_REJECT AndAlso dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_PAID).ToString = "" AndAlso dsplyBtn AndAlso Integer.Parse(dvRow(BillingDetail.BillingHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString) < 0 Then
                                 Dim btnpd As Button = CType(e.Item.Cells(GRID_COL_PAID).FindControl("btnPaid"), Button)
                                 ControlMgr.SetVisibleControl(Me, btnpd, True)
                             Else
@@ -610,8 +609,7 @@ Namespace Certificates
                         For i = 0 To oGetAllRejInstNoForCert.Count - 1
 
                             If oGetAllRejInstNoForCert(i)(0).ToString = dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString AndAlso
-                                                                                oGetAllRejInstNoForCert(i)(1).ToString = dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_CREATED_DATE1).ToString And
-                                                                                dsplyBtn Then
+                                                                                oGetAllRejInstNoForCert(i)(1).ToString = dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_CREATED_DATE1).ToString AndAlso dsplyBtn Then
                                 ControlMgr.SetVisibleControl(Me, btnpd, True)
                                 ControlMgr.SetVisibleControl(Me, lblpd, False)
                             End If
@@ -877,8 +875,7 @@ Namespace Certificates
                     State.PaymentDate = PayGridObject.Items(e.Item.ItemIndex).Cells(GRID_COL_COLLECTED_DATE).Text
                     ControlMgr.SetVisibleControl(Me, btnAddCheckPayment, False)
                     ControlMgr.SetVisibleControl(Me, btnAddRejectPayment, True)
-                    If State.oBillPayTotalAmount < 0 Or
-                        CType(e.Item.Cells(0).FindControl("Payment_Type_XCD"), HiddenField).Value = "RFM-SEPA" Then
+                    If State.oBillPayTotalAmount < 0 OrElse CType(e.Item.Cells(0).FindControl("Payment_Type_XCD"), HiddenField).Value = "RFM-SEPA" Then
 
                         ControlMgr.SetVisibleControl(Me, btnAddRejectPayment, False)
                     Else

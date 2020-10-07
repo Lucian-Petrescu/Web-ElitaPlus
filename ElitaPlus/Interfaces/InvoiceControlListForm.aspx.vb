@@ -85,7 +85,7 @@ Partial Public Class InvoiceControlListForm
 
                 populateSearchControls()
 
-                If IsReturningFromChild And State.IsGridVisible Then
+                If IsReturningFromChild AndAlso State.IsGridVisible Then
                     cboPageSize.SelectedValue = CType(State.PageSize, String)
                     Grid.PageSize = State.PageSize
                     PopulateGrid(State.HasDataChanged)

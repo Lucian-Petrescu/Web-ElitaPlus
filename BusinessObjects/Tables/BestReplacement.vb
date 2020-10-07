@@ -99,7 +99,7 @@ Public Class BestReplacement
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(BestReplacementDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -110,7 +110,7 @@ Public Class BestReplacement
     End Property
 
     <ValueMandatory("")> _
-    Public Property MigrationPathId() As Guid
+    Public Property MigrationPathId As Guid
         Get
             CheckDeleted()
             If Row(BestReplacementDAL.COL_NAME_MIGRATION_PATH_ID) Is DBNull.Value Then
@@ -119,14 +119,14 @@ Public Class BestReplacement
                 Return New Guid(CType(Row(BestReplacementDAL.COL_NAME_MIGRATION_PATH_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BestReplacementDAL.COL_NAME_MIGRATION_PATH_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property EquipmentId() As Guid
+    Public Property EquipmentId As Guid
         Get
             CheckDeleted()
             If Row(BestReplacementDAL.COL_NAME_EQUIPMENT_ID) Is DBNull.Value Then
@@ -135,7 +135,7 @@ Public Class BestReplacement
                 Return New Guid(CType(Row(BestReplacementDAL.COL_NAME_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BestReplacementDAL.COL_NAME_EQUIPMENT_ID, Value)
             ' Set Equipment Model
@@ -146,7 +146,7 @@ Public Class BestReplacement
     End Property
 
     <ValueMandatory("")> _
-    Public Property EquipmentManufacturerId() As Guid
+    Public Property EquipmentManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(BestReplacementDAL.COL_NAME_EQUIPMENT_MANUFACTURER_ID) Is DBNull.Value Then
@@ -155,7 +155,7 @@ Public Class BestReplacement
                 Return New Guid(CType(Row(BestReplacementDAL.COL_NAME_EQUIPMENT_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BestReplacementDAL.COL_NAME_EQUIPMENT_MANUFACTURER_ID, Value)
             'Set Manufacturer Description
@@ -166,7 +166,7 @@ Public Class BestReplacement
     End Property
 
     <ValueMandatory("")> _
-    Public ReadOnly Property EquipmentManufacturer() As String
+    Public ReadOnly Property EquipmentManufacturer As String
         Get
             CheckDeleted()
             If Row(BestReplacementDAL.COL_NAME_EQUIPMENT_MANUFACTURER) Is DBNull.Value Then
@@ -178,7 +178,7 @@ Public Class BestReplacement
     End Property
 
     <ValueMandatory("")> _
-    Public ReadOnly Property EquipmentModel() As String
+    Public ReadOnly Property EquipmentModel As String
         Get
             CheckDeleted()
             If Row(BestReplacementDAL.COL_NAME_EQUIPMENT_MODEL) Is DBNull.Value Then
@@ -190,7 +190,7 @@ Public Class BestReplacement
     End Property
 
     <ValueMandatory(""), CheckDuplicateEquipmentReplacementEquipmentCombination("")> _
-    Public Property ReplacementEquipmentId() As Guid
+    Public Property ReplacementEquipmentId As Guid
         Get
             CheckDeleted()
             If Row(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_ID) Is DBNull.Value Then
@@ -199,7 +199,7 @@ Public Class BestReplacement
                 Return New Guid(CType(Row(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_ID, Value)
             ' Set Replacement Equipment Model
@@ -210,7 +210,7 @@ Public Class BestReplacement
     End Property
 
     <ValueMandatory("")> _
-    Public Property ReplacementEquipmentManufacturerId() As Guid
+    Public Property ReplacementEquipmentManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_MANUFACTURER_ID) Is DBNull.Value Then
@@ -219,7 +219,7 @@ Public Class BestReplacement
                 Return New Guid(CType(Row(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_MANUFACTURER_ID, Value)
             'Set Replacement Manufacturer Description
@@ -230,7 +230,7 @@ Public Class BestReplacement
     End Property
 
     <ValueMandatory("")> _
-    Public ReadOnly Property ReplacementEquipmentManufacturer() As String
+    Public ReadOnly Property ReplacementEquipmentManufacturer As String
         Get
             CheckDeleted()
             If Row(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_MANUFACTURER) Is DBNull.Value Then
@@ -242,7 +242,7 @@ Public Class BestReplacement
     End Property
 
     <ValueMandatory("")> _
-    Public ReadOnly Property ReplacementEquipmentModel() As String
+    Public ReadOnly Property ReplacementEquipmentModel As String
         Get
             CheckDeleted()
             If Row(BestReplacementDAL.COL_NAME_REPLACEMENT_EQUIPMENT_MODEL) Is DBNull.Value Then
@@ -254,7 +254,7 @@ Public Class BestReplacement
     End Property
 
     <ValueMandatory(""), CheckDuplicatePriorities(""), ValidNumericRange("LowPrice", MIN:=MIN_PRIORITY, Max:=MAX_PRIORITY, Message:=BEST_REPLACEMENT_FORM003)> _
-    Public Property Priority() As LongType
+    Public Property Priority As LongType
         Get
             CheckDeleted()
             If Row(BestReplacementDAL.COL_NAME_PRIORITY) Is DBNull.Value Then
@@ -263,7 +263,7 @@ Public Class BestReplacement
                 Return New LongType(CType(Row(BestReplacementDAL.COL_NAME_PRIORITY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(BestReplacementDAL.COL_NAME_PRIORITY, Value)
         End Set

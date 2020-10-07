@@ -90,7 +90,7 @@ Public Class NewDictionaryItem
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(NewDictionaryItemDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class NewDictionaryItem
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property UiProgCode() As String
+    Public Property UiProgCode As String
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_UI_PROG_CODE) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class NewDictionaryItem
                 Return CType(row(NewDictionaryItemDAL.COL_NAME_UI_PROG_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(NewDictionaryItemDAL.COL_NAME_UI_PROG_CODE, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class NewDictionaryItem
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1600)> _
-    Public Property EnglishTranslation() As String
+    Public Property EnglishTranslation As String
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_ENGLISH_TRANSLATION) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class NewDictionaryItem
                 Return CType(row(NewDictionaryItemDAL.COL_NAME_ENGLISH_TRANSLATION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(NewDictionaryItemDAL.COL_NAME_ENGLISH_TRANSLATION, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class NewDictionaryItem
 
 
     <ValidStringLength("", Max:=4)> _
-    Public Property Approved() As String
+    Public Property Approved As String
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_APPROVED) Is DBNull.Value Then
@@ -144,13 +144,13 @@ Public Class NewDictionaryItem
                 Return CType(row(NewDictionaryItemDAL.COL_NAME_APPROVED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(NewDictionaryItemDAL.COL_NAME_APPROVED, Value)
         End Set
     End Property
 
-    Public Property DictItemId() As Guid
+    Public Property DictItemId As Guid
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_DICT_ITEM_ID) Is DBNull.Value Then
@@ -159,7 +159,7 @@ Public Class NewDictionaryItem
                 Return New Guid(CType(row(NewDictionaryItemDAL.COL_NAME_DICT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(NewDictionaryItemDAL.COL_NAME_DICT_ITEM_ID, Value)
         End Set
@@ -167,7 +167,7 @@ Public Class NewDictionaryItem
 
 
     <ValidStringLength("", Max:=4)> _
-    Public Property Imported() As String
+    Public Property Imported As String
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_IMPORTED) Is DBNull.Value Then
@@ -176,7 +176,7 @@ Public Class NewDictionaryItem
                 Return CType(row(NewDictionaryItemDAL.COL_NAME_IMPORTED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(NewDictionaryItemDAL.COL_NAME_IMPORTED, Value)
         End Set
@@ -184,14 +184,14 @@ Public Class NewDictionaryItem
 
 
 
-    Public ReadOnly Property ModifiedDate() As DateType
+    Public ReadOnly Property ModifiedDate As DateType
         Get
             If Row(NewDictionaryItemDAL.COL_NAME_MODIFIED_DATE) Is DBNull.Value Then Return Nothing
             Return New DateType(CType(Row(NewDictionaryItemDAL.COL_NAME_MODIFIED_DATE), Date))
         End Get
     End Property
 
-    Public ReadOnly Property ModifiedById() As String
+    Public ReadOnly Property ModifiedById As String
         Get
             If Row(NewDictionaryItemDAL.COL_NAME_MODIFIED_BY) Is DBNull.Value Then Return Nothing
             Return CType(Row(NewDictionaryItemDAL.COL_NAME_MODIFIED_BY), String)
@@ -199,7 +199,7 @@ Public Class NewDictionaryItem
     End Property
 
 
-    Public ReadOnly Property CreatedDate() As DateType
+    Public ReadOnly Property CreatedDate As DateType
         Get
             If Row(NewDictionaryItemDAL.COL_NAME_CREATED_DATE) Is DBNull.Value Then Return Nothing
             Return New DateType(CType(Row(NewDictionaryItemDAL.COL_NAME_CREATED_DATE), Date))
@@ -207,7 +207,7 @@ Public Class NewDictionaryItem
     End Property
 
     '<ValueMandatory("")> _
-    Public ReadOnly Property CreatedById() As String
+    Public ReadOnly Property CreatedById As String
         Get
             If Row(NewDictionaryItemDAL.COL_NAME_CREATED_BY) Is DBNull.Value Then Return Nothing
             Return CType(Row(NewDictionaryItemDAL.COL_NAME_CREATED_BY), String)
@@ -215,7 +215,7 @@ Public Class NewDictionaryItem
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property MsgCode() As String
+    Public Property MsgCode As String
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_MSG_CODE) Is DBNull.Value Then
@@ -224,7 +224,7 @@ Public Class NewDictionaryItem
                 Return CType(row(NewDictionaryItemDAL.COL_NAME_MSG_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(NewDictionaryItemDAL.COL_NAME_MSG_CODE, Value)
         End Set
@@ -232,7 +232,7 @@ Public Class NewDictionaryItem
 
 
     <ValidStringLength("", Max:=1020)> _
-    Public Property MsgType() As String
+    Public Property MsgType As String
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_MSG_TYPE) Is DBNull.Value Then
@@ -241,7 +241,7 @@ Public Class NewDictionaryItem
                 Return CType(row(NewDictionaryItemDAL.COL_NAME_MSG_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(NewDictionaryItemDAL.COL_NAME_MSG_TYPE, Value)
         End Set
@@ -249,7 +249,7 @@ Public Class NewDictionaryItem
 
 
 
-    Public Property MsgParameterCount() As LongType
+    Public Property MsgParameterCount As LongType
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_MSG_PARAMETER_COUNT) Is DBNull.Value Then
@@ -258,7 +258,7 @@ Public Class NewDictionaryItem
                 Return New LongType(CType(row(NewDictionaryItemDAL.COL_NAME_MSG_PARAMETER_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(NewDictionaryItemDAL.COL_NAME_MSG_PARAMETER_COUNT, Value)
         End Set

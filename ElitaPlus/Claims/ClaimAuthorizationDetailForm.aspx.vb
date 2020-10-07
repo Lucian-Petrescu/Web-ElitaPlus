@@ -365,7 +365,7 @@ Partial Class ClaimAuthorizationDetailForm
         
 
         if iServiceClass >= 1 And iRepairCodeAccepted = False And _ 
-           (lblClaimAuthStatusValue.Text = "Authorized"  Or lblClaimAuthStatusValue.Text = "Sent") And _ 
+           (lblClaimAuthStatusValue.Text = "Authorized" OrElse lblClaimAuthStatusValue.Text = "Sent") And _ 
            lblClaimStatusValue.Text = "Active"
             btnRepairCodeProcess.Visible = true
 
@@ -441,7 +441,7 @@ Partial Class ClaimAuthorizationDetailForm
             Try
 
                 'Me.PopulateBOFromForm()
-                If State.MyBO.IsDirty Or State.MyBO.ClaimAuthorizationItemChildren.IsDirty Then
+                If State.MyBO.IsDirty OrElse State.MyBO.ClaimAuthorizationItemChildren.IsDirty Then
                     DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                     State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
@@ -606,7 +606,7 @@ Partial Class ClaimAuthorizationDetailForm
     End Sub
     Private Sub CheckCancelStatus()
 
-        If (State.MyBO IsNot Nothing AndAlso (State.MyBO.IsCancelShipmentAllowed = Codes.EXT_YESNO_N Or State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_CANCEL_COMPLETE Or State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_CANCEL_REQUESTED Or State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_CANCEL_FAILD Or State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_CANCEL_PENDING Or State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_CANCEL_SENT)) Then
+        If (State.MyBO IsNot Nothing AndAlso (State.MyBO.IsCancelShipmentAllowed = Codes.EXT_YESNO_N OrElse State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_CANCEL_COMPLETE OrElse State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_CANCEL_REQUESTED OrElse State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_CANCEL_FAILD OrElse State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_CANCEL_PENDING OrElse State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_CANCEL_SENT)) Then
             ControlMgr.SetVisibleControl(Me, btnCancelShipment, False)
         Else
             ControlMgr.SetVisibleControl(Me, btnCancelShipment, True)
@@ -991,7 +991,7 @@ Partial Class ClaimAuthorizationDetailForm
     End Sub
     Private Sub CheckReshipmentStatus()
 
-        If (State.MyBO IsNot Nothing AndAlso Me.State.MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled AndAlso State.MyBO.IsReshipmentAllowed = Codes.EXT_YESNO_Y AndAlso (State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_REPLACEMENT Or State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SERVICE_WARRANTY_REPLACEMENT) AndAlso (Not State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_RESHIPMENT_REQ Or Not State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_SOSUBMIT) AndAlso State.MyBO.LinkedClaimAurthID = Guid.Empty _
+        If (State.MyBO IsNot Nothing AndAlso Me.State.MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled AndAlso State.MyBO.IsReshipmentAllowed = Codes.EXT_YESNO_Y AndAlso (State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_REPLACEMENT OrElse State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SERVICE_WARRANTY_REPLACEMENT) AndAlso (Not State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_RESHIPMENT_REQ OrElse Not State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_SOSUBMIT) AndAlso State.MyBO.LinkedClaimAurthID = Guid.Empty _
                 AndAlso Not State.MyBO.CheckLinkedAuthItem(State.MyBO.ClaimAuthorizationId) = True) Then
             btnReshipment.Visible = True
             ControlMgr.SetVisibleControl(Me, btnReshipment, True)
@@ -1004,8 +1004,8 @@ Partial Class ClaimAuthorizationDetailForm
         'if claim is active and claim auth fulfillment type is 'Repair' or 'service warranty-repair' or 'service warranty-replacement', then display button
         If (State.MyBO IsNot Nothing AndAlso Me.State.ClaimBO.Status = BasicClaimStatus.Active _
             AndAlso (State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_REPAIR _
-                     Or State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SWRPR _
-                     Or State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SWRPL) _
+                     OrElse State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SWRPR _
+                     OrElse State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SWRPL) _
             AndAlso (State.ClaimBO.Dealer.DealerFulfillmentProviderClassCode = Codes.PROVIDER_CLASS_CODE__FULPROVORAEBS)) Then
             btnResendShippingLabel.Visible = True
             ControlMgr.SetVisibleControl(Me, btnResendShippingLabel, True)
@@ -1510,11 +1510,9 @@ Partial Class ClaimAuthorizationDetailForm
             Case ClaimAuthorizationType.Single
                 State.ClaimBO.CloseTheClaim()
             Case ClaimAuthorizationType.Multiple
-                If Not ( State.ClaimBO.Status = BasicClaimStatus.Closed Or State.ClaimBO.Status = BasicClaimStatus.Denied) Then
+                If Not ( State.ClaimBO.Status = BasicClaimStatus.Closed OrElse State.ClaimBO.Status = BasicClaimStatus.Denied) Then
                     If Not  State.ClaimBO.ReasonClosedId.Equals(Guid.Empty) Then
-                        If  State.ClaimBO.ClaimAuthorizationChildren.Where(Function(item) item.ClaimAuthStatus = ClaimAuthorizationStatus.Paid Or
-                                                                                             item.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid Or
-                                                                                             item.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled).Count > 0 Then
+                        If  State.ClaimBO.ClaimAuthorizationChildren.Where(Function(item) item.ClaimAuthStatus = ClaimAuthorizationStatus.Paid OrElse item.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid OrElse item.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled).Count > 0 Then
                             Throw New GUIException("CLAIM_CANNOT_BE_CLOSED_CONTAINS_RECONSILED_PAID_AUTH", "CLAIM_CANNOT_BE_CLOSED_CONTAINS_RECONSILED_PAID_AUTH")
                         End If
                     End If
@@ -1569,8 +1567,7 @@ Partial Class ClaimAuthorizationDetailForm
     Private Sub UpdateRepairCodeProcess()
         '      
 
-        If (rdbRepairQuoteStatus.SelectedValue = "RQAPT" Or rdbRepairQuoteStatus.SelectedValue = "RQRJT" Or rdbRepairQuoteStatus.SelectedValue = "") And
-            (txtRepairQuote.Text = "" Or txtRepairQuote.Text Is Nothing Or String.IsNullOrWhiteSpace(txtRepairQuote.Text)) Then
+        If (rdbRepairQuoteStatus.SelectedValue = "RQAPT" OrElse rdbRepairQuoteStatus.SelectedValue = "RQRJT" OrElse rdbRepairQuoteStatus.SelectedValue = "") AndAlso (txtRepairQuote.Text = "" OrElse txtRepairQuote.Text Is Nothing OrElse String.IsNullOrWhiteSpace(txtRepairQuote.Text)) Then
 
             divRepairCodeProcessError.Visible = True
             lblRepairCodeProcessError.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_NOT_SELECTED)
@@ -1581,7 +1578,7 @@ Partial Class ClaimAuthorizationDetailForm
             divRepairCodeProcessError.Visible = True
             lblRepairCodeProcessError.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_NOT_SELECTED)
 
-        ElseIf (rdbRepairQuoteStatus.SelectedValue = "RQAPT" Or rdbRepairQuoteStatus.SelectedValue = "RQRJT") And CDbl(txtRepairQuote.Text) > 0 Then
+        ElseIf (rdbRepairQuoteStatus.SelectedValue = "RQAPT" OrElse rdbRepairQuoteStatus.SelectedValue = "RQRJT") AndAlso CDbl(txtRepairQuote.Text) > 0 Then
 
             divRepairCodeProcessStatus.Visible = False
             divRepairCodeProcessError.Visible = False

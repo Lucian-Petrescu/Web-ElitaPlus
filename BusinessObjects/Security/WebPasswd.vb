@@ -186,7 +186,7 @@ Public Class WebPasswd
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(WebPasswdDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -197,7 +197,7 @@ Public Class WebPasswd
     End Property
 
     <ValueMandatory("")> _
-    Public Property UserId() As String
+    Public Property UserId As String
         Get
             CheckDeleted()
             If Row(WebPasswdDAL.COL_NAME_USER_ID) Is DBNull.Value Then
@@ -206,7 +206,7 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_USER_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WebPasswdDAL.COL_NAME_USER_ID, Value)
         End Set
@@ -214,7 +214,7 @@ Public Class WebPasswd
 
 
     <ValueMandatory("")> _
-    Public Property Password() As String
+    Public Property Password As String
         Get
             CheckDeleted()
             If Row(WebPasswdDAL.COL_NAME_PASSWORD) Is DBNull.Value Then
@@ -223,7 +223,7 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_PASSWORD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WebPasswdDAL.COL_NAME_PASSWORD, Value)
         End Set
@@ -231,7 +231,7 @@ Public Class WebPasswd
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property Env() As String
+    Public Property Env As String
         Get
             CheckDeleted()
             If Row(WebPasswdDAL.COL_NAME_ENV) Is DBNull.Value Then
@@ -240,7 +240,7 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_ENV), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WebPasswdDAL.COL_NAME_ENV, Value)
         End Set
@@ -248,7 +248,7 @@ Public Class WebPasswd
 
 
     <ValidStringLength("", Max:=400)> _
-    Public Property Url() As String
+    Public Property Url As String
         Get
             CheckDeleted()
             If row(WebPasswdDAL.COL_NAME_URL) Is DBNull.Value Then
@@ -257,7 +257,7 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_URL), String).Replace("[LOCALHOST]", Environment.MachineName)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WebPasswdDAL.COL_NAME_URL, Value)
         End Set
@@ -265,7 +265,7 @@ Public Class WebPasswd
 
 
 
-    Public Property Token() As String
+    Public Property Token As String
         Get
             CheckDeleted()
             If Row(WebPasswdDAL.COL_NAME_TOKEN) Is DBNull.Value Then
@@ -274,7 +274,7 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_TOKEN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WebPasswdDAL.COL_NAME_TOKEN, Value)
         End Set
@@ -282,7 +282,7 @@ Public Class WebPasswd
 
 
 
-    Public Property TokenCreatedDate() As DateType
+    Public Property TokenCreatedDate As DateType
         Get
             CheckDeleted()
             If row(WebPasswdDAL.COL_NAME_TOKEN_CREATED_DATE) Is DBNull.Value Then
@@ -291,7 +291,7 @@ Public Class WebPasswd
                 Return New DateType(CType(row(WebPasswdDAL.COL_NAME_TOKEN_CREATED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
             SetValue(WebPasswdDAL.COL_NAME_TOKEN_CREATED_DATE, Value)
         End Set
@@ -299,7 +299,7 @@ Public Class WebPasswd
 
 
 
-    Public Property NumPerProcess() As LongType
+    Public Property NumPerProcess As LongType
         Get
             CheckDeleted()
             If row(WebPasswdDAL.COL_NAME_NUM_PER_PROCESS) Is DBNull.Value Then
@@ -308,7 +308,7 @@ Public Class WebPasswd
                 Return New LongType(CType(row(WebPasswdDAL.COL_NAME_NUM_PER_PROCESS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(WebPasswdDAL.COL_NAME_NUM_PER_PROCESS, Value)
         End Set
@@ -316,7 +316,7 @@ Public Class WebPasswd
 
 
 
-    Public Property TokenDuration() As LongType
+    Public Property TokenDuration As LongType
         Get
             CheckDeleted()
             If row(WebPasswdDAL.COL_NAME_TOKEN_DURATION) Is DBNull.Value Then
@@ -325,7 +325,7 @@ Public Class WebPasswd
                 Return New LongType(CType(row(WebPasswdDAL.COL_NAME_TOKEN_DURATION), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(WebPasswdDAL.COL_NAME_TOKEN_DURATION, Value)
         End Set
@@ -333,7 +333,7 @@ Public Class WebPasswd
 
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If row(WebPasswdDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -342,7 +342,7 @@ Public Class WebPasswd
                 Return New Guid(CType(row(WebPasswdDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(WebPasswdDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
@@ -350,7 +350,7 @@ Public Class WebPasswd
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property IsExternal() As String
+    Public Property IsExternal As String
         Get
             CheckDeleted()
             If row(WebPasswdDAL.COL_NAME_IS_EXTERNAL) Is DBNull.Value Then
@@ -359,14 +359,14 @@ Public Class WebPasswd
                 Return CType(row(WebPasswdDAL.COL_NAME_IS_EXTERNAL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WebPasswdDAL.COL_NAME_IS_EXTERNAL, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=250)> _
-    Public Property AuthenticationKey() As String
+    Public Property AuthenticationKey As String
         Get
             CheckDeleted()
             If Row(WebPasswdDAL.COL_NAME_AUTHENTICATION_KEY) Is DBNull.Value Then
@@ -375,7 +375,7 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_AUTHENTICATION_KEY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WebPasswdDAL.COL_NAME_AUTHENTICATION_KEY, Value)
         End Set
@@ -383,7 +383,7 @@ Public Class WebPasswd
 
     'Fix for Def-2229
     <ValidStringLength("", Max:=40)> _
-    Public Property Hub() As String
+    Public Property Hub As String
         Get
             CheckDeleted()
             If Row(WebPasswdDAL.COL_NAME_HUB) Is DBNull.Value Then
@@ -392,7 +392,7 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_HUB), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WebPasswdDAL.COL_NAME_HUB, Value)
         End Set
@@ -400,7 +400,7 @@ Public Class WebPasswd
 
 
     <ValidStringLength("", Max:=400)> _
-    Public Property GenericUrl() As String
+    Public Property GenericUrl As String
         Get
             CheckDeleted()
             If Row(WebPasswdDAL.COL_NAME_GENERIC_URL) Is DBNull.Value Then
@@ -409,7 +409,7 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_GENERIC_URL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(WebPasswdDAL.COL_NAME_GENERIC_URL, Value)
         End Set

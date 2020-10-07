@@ -211,12 +211,12 @@ Namespace Tables
         Private Function GetEventArgumentBasedOnEventType(EventTypeCode As String) As DataElements.ListItem()
             Dim ocListContext As New ListContext
             If (EventTypeCode = "ISSUE_OPENED" _
-                    Or EventTypeCode = "ISSUE_RESOLVED" _
-                    Or EventTypeCode = "ISSUE_REJECTED" _
-                    Or EventTypeCode = "ISSUE_CLOSED" _
-                    Or EventTypeCode = "ISSUE_PENDING" _
-                    Or EventTypeCode = "ISSUE_WAIVED" _
-                    Or EventTypeCode = "ISSUE_REOPENED") Then
+                    OrElse EventTypeCode = "ISSUE_RESOLVED" _
+                    OrElse EventTypeCode = "ISSUE_REJECTED" _
+                    OrElse EventTypeCode = "ISSUE_CLOSED" _
+                    OrElse EventTypeCode = "ISSUE_PENDING" _
+                    OrElse EventTypeCode = "ISSUE_WAIVED" _
+                    OrElse EventTypeCode = "ISSUE_REOPENED") Then
 
                 Return CommonConfigManager.Current.ListManager.GetList(listCode:="GetIssue", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
             ElseIf (EventTypeCode = "CLM_EXT_STATUS") Then
@@ -523,7 +523,7 @@ Namespace Tables
 
                 If dvRow IsNot Nothing Then
                     strECID = GetGuidStringFromByteArray(CType(dvRow(EventConfig.EventConfigSearchDV.COL_EVENT_CONFIG_ID), Byte()))
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         CType(e.Row.Cells(GRID_COL_EVENT_CONFIG_ID_IDX).FindControl(GRID_CTRL_NAME_LABLE_EVENT_CONFIG_ID), Label).Text = strECID
 
                         If (State.IsEditMode = True AndAlso State.EventConfigID.ToString.Equals(strECID)) Then
@@ -719,11 +719,11 @@ Namespace Tables
                             'dv = LookupListNew.GetCoverageTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                             'Me.BindListControlToDataView(objDDL, dv, , , True)
 
-                            If dvRow(EventConfig.EventConfigSearchDV.COL_COVERAGE_TYPE_ID) IsNot Nothing And Not String.IsNullOrEmpty(dvRow(EventConfig.EventConfigSearchDV.COL_COVERAGE_TYPE_ID).ToString()) Then
+                            If dvRow(EventConfig.EventConfigSearchDV.COL_COVERAGE_TYPE_ID) IsNot Nothing AndAlso Not String.IsNullOrEmpty(dvRow(EventConfig.EventConfigSearchDV.COL_COVERAGE_TYPE_ID).ToString()) Then
 
                                 ' dv = LookupListNew.DropdownLookupList("CTYP", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                                 guidVal = New Guid(CType(dvRow(EventConfig.EventConfigSearchDV.COL_COVERAGE_TYPE_ID), Byte()))
-                                If Not guidVal = Nothing And Not guidVal = Guid.Empty Then
+                                If Not guidVal = Nothing AndAlso Not guidVal = Guid.Empty Then
                                     SetSelectedItem(objDDL, guidVal)
                                 End If
 

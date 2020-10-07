@@ -118,7 +118,7 @@ Partial Class PostalCodeRegExFormatForm
         CaseLabel.Visible = RegExTypeList.SelectedValue.StartsWith("Alpha")
         DisallowedValues.Visible = Not (RegExTypeList.SelectedValue = "Space") 'Or RegExTypeList.SelectedValue = "SpecialChar")
         DisallowLabel.Visible = Not (RegExTypeList.SelectedValue = "Space")
-        ExampleLabel.Visible = Not (RegExTypeList.SelectedValue = "Space" Or RegExTypeList.SelectedValue = "SpecialChar")
+        ExampleLabel.Visible = Not (RegExTypeList.SelectedValue = "Space" OrElse RegExTypeList.SelectedValue = "SpecialChar")
     End Sub
 
     Private Sub btnGenerate_Click(sender As System.Object, e As System.EventArgs) Handles btnGenerate.Click

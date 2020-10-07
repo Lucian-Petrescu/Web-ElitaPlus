@@ -90,7 +90,7 @@ Public Class AssociateCommissions
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AssociateCommissionsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class AssociateCommissions
     End Property
 
     <ValueMandatory("")> _
-    Public Property CommissionToleranceId() As Guid
+    Public Property CommissionToleranceId As Guid
         Get
             CheckDeleted()
             If row(AssociateCommissionsDAL.COL_NAME_COMMISSION_TOLERANCE_ID) Is DBNull.Value Then
@@ -110,14 +110,14 @@ Public Class AssociateCommissions
                 Return New Guid(CType(row(AssociateCommissionsDAL.COL_NAME_COMMISSION_TOLERANCE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(AssociateCommissionsDAL.COL_NAME_COMMISSION_TOLERANCE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)> _
-    Public Property MarkupPercent() As DecimalType
+    Public Property MarkupPercent As DecimalType
         Get
             CheckDeleted()
             If Row(AssociateCommissionsDAL.COL_NAME_MARKUP_PERCENT) Is DBNull.Value Then
@@ -126,14 +126,14 @@ Public Class AssociateCommissions
                 Return New DecimalType(CType(Row(AssociateCommissionsDAL.COL_NAME_MARKUP_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AssociateCommissionsDAL.COL_NAME_MARKUP_PERCENT, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)> _
-    Public Property CommissionPercent() As DecimalType
+    Public Property CommissionPercent As DecimalType
         Get
             CheckDeleted()
             If Row(AssociateCommissionsDAL.COL_NAME_COMMISSION_PERCENT) Is DBNull.Value Then
@@ -142,13 +142,13 @@ Public Class AssociateCommissions
                 Return New DecimalType(CType(Row(AssociateCommissionsDAL.COL_NAME_COMMISSION_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
             SetValue(AssociateCommissionsDAL.COL_NAME_COMMISSION_PERCENT, Value)
         End Set
     End Property
 
-    Public Property Position() As LongType
+    Public Property Position As LongType
         Get
             CheckDeleted()
             If row(AssociateCommissionsDAL.COL_NAME_POSITION) Is DBNull.Value Then
@@ -157,7 +157,7 @@ Public Class AssociateCommissions
                 Return New LongType(CType(row(AssociateCommissionsDAL.COL_NAME_POSITION), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
             SetValue(AssociateCommissionsDAL.COL_NAME_POSITION, Value)
         End Set
@@ -165,22 +165,22 @@ Public Class AssociateCommissions
 
     Dim _MarkupTotal As DecimalType
     <ValidNumericRange("", Max:=100, Min:=100), ValidMarkup("")> _
-    Public Property MarkupTotal() As DecimalType
+    Public Property MarkupTotal As DecimalType
         Get
             Return _MarkupTotal
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             _MarkupTotal = Value
         End Set
     End Property
 
     Dim _commTotal As DecimalType
     <ValidNumericRange("", Max:=100, Min:=100), ValidComm("")> _
-    Public Property CommTotal() As DecimalType
+    Public Property CommTotal As DecimalType
         Get
             Return _commTotal
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             _commTotal = Value
         End Set
     End Property

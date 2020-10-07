@@ -123,29 +123,29 @@ Public Class ElitaClaim
 
 #Region "Properties"
 
-    Public Property TransactionId() As String
+    Public Property TransactionId As String
         Get
             Return _transactionId
         End Get
-        Set(ByVal Value As String)
+        Set
             _transactionId = Value
         End Set
     End Property
 
-    Public Property FunctionTypeCode() As String
+    Public Property FunctionTypeCode As String
         Get
             Return _functionTypeCode
         End Get
-        Set(ByVal Value As String)
+        Set
             _functionTypeCode = Value
         End Set
     End Property
 
-    Public Property FunctionTypeId() As Guid
+    Public Property FunctionTypeId As Guid
         Get
             Return _functionTypeId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _functionTypeId = Value
         End Set
     End Property

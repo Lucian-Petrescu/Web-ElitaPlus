@@ -137,7 +137,7 @@ Public Class ClaimPaymentGroupForm
 
             State.searchDV = Nothing
             PopulateHeader()
-            If Not State.selectedPymntGroupId.Equals(Guid.Empty) Or IsReturningFromChild Then
+            If Not State.selectedPymntGroupId.Equals(Guid.Empty) OrElse IsReturningFromChild Then
                 PopulateGrid()
             End If
 

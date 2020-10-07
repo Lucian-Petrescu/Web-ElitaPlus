@@ -348,8 +348,8 @@ Partial Class InvoiceListForm
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Try
-            If dvRow IsNot Nothing And State.searchDV.Count > 0 Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If dvRow IsNot Nothing AndAlso State.searchDV.Count > 0 Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_INVOICE_ID_IDX), dvRow(ClaimInvoice.ClaimInvoiceSearchDV.COL_CLAIM_INVOICE_ID))
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_NUMBER_IDX), dvRow(ClaimInvoice.ClaimInvoiceSearchDV.COL_CLAIM_NUMBER))
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_INVOICE_NUMBER_IDX), dvRow(ClaimInvoice.ClaimInvoiceSearchDV.COL_INVOICE_NUMBER))

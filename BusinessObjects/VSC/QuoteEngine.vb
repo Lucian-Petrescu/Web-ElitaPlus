@@ -181,7 +181,7 @@ Public Class QuoteEngine
 
 #Region "Properties"
 
-    Public Property Manufacturer() As String
+    Public Property Manufacturer As String
         Get
             If Row(DATA_COL_NAME_MANUFACTURER) Is DBNull.Value Then
                 Return Nothing
@@ -189,13 +189,13 @@ Public Class QuoteEngine
                 Return (CType(Row(DATA_COL_NAME_MANUFACTURER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MANUFACTURER, Value)
         End Set
     End Property
 
-    Public Property Model() As String
+    Public Property Model As String
         Get
             If Row(DATA_COL_NAME_MODEL) Is DBNull.Value Then
                 Return Nothing
@@ -203,13 +203,13 @@ Public Class QuoteEngine
                 Return CType(Row(DATA_COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MODEL, Value)
         End Set
     End Property
 
-    Public Property EngineVersion() As String
+    Public Property EngineVersion As String
         Get
             If Row(DATA_COL_NAME_VERSION) Is DBNull.Value Then
                 Return Nothing
@@ -217,13 +217,13 @@ Public Class QuoteEngine
                 Return CType(Row(DATA_COL_NAME_VERSION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_VERSION, Value)
         End Set
     End Property
 
-    Public Property VIN() As String
+    Public Property VIN As String
         Get
             If Row(DATA_COL_NAME_VIN) Is DBNull.Value Then
                 Return Nothing
@@ -231,13 +231,13 @@ Public Class QuoteEngine
                 Return CType(Row(DATA_COL_NAME_VIN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_VIN, Value)
         End Set
     End Property
 
-    Public Property Year() As Integer
+    Public Property Year As Integer
         Get
             If Row(DATA_COL_NAME_YEAR) Is DBNull.Value Then
                 Return Nothing
@@ -245,13 +245,13 @@ Public Class QuoteEngine
                 Return CType(Row(DATA_COL_NAME_YEAR), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_YEAR, Value)
         End Set
     End Property
 
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -259,13 +259,13 @@ Public Class QuoteEngine
                 Return CType(Row(DATA_COL_NAME_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
-    Public Property WarrantyDate() As Date
+    Public Property WarrantyDate As Date
         Get
             If Row(DATA_COL_WARRANTY_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -273,13 +273,13 @@ Public Class QuoteEngine
                 Return CType(Row(DATA_COL_WARRANTY_DATE), String)
             End If
         End Get
-        Set(ByVal Value As Date)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_WARRANTY_DATE, Value)
         End Set
     End Property
 
-    Public Property Odometer() As Integer
+    Public Property Odometer As Integer
         Get
             If Row(DATA_COL_NAME_ODOMETER) Is DBNull.Value Then
                 Return Nothing
@@ -287,13 +287,13 @@ Public Class QuoteEngine
                 Return CType(Row(DATA_COL_NAME_ODOMETER), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_ODOMETER, Value)
         End Set
     End Property
 
-    Public Property Condition() As String
+    Public Property Condition As String
         Get
             If Row(DATA_COL_NAME_CONDITION) Is DBNull.Value Then
                 Return Nothing
@@ -301,13 +301,13 @@ Public Class QuoteEngine
                 Return CType(Row(DATA_COL_NAME_CONDITION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CONDITION, Value)
         End Set
     End Property
 
-    Public Property InServiceDate() As Date
+    Public Property InServiceDate As Date
         Get
             If Row(DATA_COL_NAME_IN_SERVICE_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -315,13 +315,13 @@ Public Class QuoteEngine
                 Return CType(Row(DATA_COL_NAME_IN_SERVICE_DATE), Date)
             End If
         End Get
-        Set(ByVal Value As Date)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_IN_SERVICE_DATE, Value)
         End Set
     End Property
 
-    Public Property VehicleLicenseTag() As String
+    Public Property VehicleLicenseTag As String
         Get
             If Row(DATA_COL_NAME_TAG) Is DBNull.Value Then
                 Return Nothing
@@ -329,13 +329,13 @@ Public Class QuoteEngine
                 Return CType(Row(DATA_COL_NAME_TAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_TAG, Value)
         End Set
     End Property
 
-    Public Property ExternalCarCode() As String
+    Public Property ExternalCarCode As String
         Get
             If Row(DATA_COL_EXTERNAL_CAR_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -343,13 +343,13 @@ Public Class QuoteEngine
                 Return CType(Row(DATA_COL_EXTERNAL_CAR_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_EXTERNAL_CAR_CODE, Value)
         End Set
     End Property
 
-    Public Property VehicleValue() As Decimal
+    Public Property VehicleValue As Decimal
         Get
             If Row(DATA_COL_VEHICLE_VALUE) Is DBNull.Value Then
                 Return Nothing
@@ -357,7 +357,7 @@ Public Class QuoteEngine
                 Return CType(Row(DATA_COL_VEHICLE_VALUE), String)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_VEHICLE_VALUE, Value)
         End Set
@@ -514,7 +514,7 @@ Public Class QuoteEngine
 
 #Region "Extended Properties"
 
-    Public ReadOnly Property ModelObject() As VSCModel
+    Public ReadOnly Property ModelObject As VSCModel
         Get
             If _modelObject Is Nothing Then
                 If Not Manufacturer Is Nothing AndAlso Not Model Is Nothing AndAlso Not Year = 0 Then
@@ -525,7 +525,7 @@ Public Class QuoteEngine
         End Get
     End Property
 
-    Public ReadOnly Property DealerObject() As Dealer
+    Public ReadOnly Property DealerObject As Dealer
         Get
             If _DealerObject Is Nothing Then
                 If Not DealerCode Is Nothing Then
@@ -536,7 +536,7 @@ Public Class QuoteEngine
         End Get
     End Property
 
-    Public ReadOnly Property DealerContract() As Contract
+    Public ReadOnly Property DealerContract As Contract
         Get
             If _ContractObject Is Nothing Then
                 _ContractObject = Contract.GetContract(DealerObject.Id, Today)
@@ -547,7 +547,7 @@ Public Class QuoteEngine
         End Get
     End Property
 
-    Public ReadOnly Property DealerPlansIDs() As ArrayList
+    Public ReadOnly Property DealerPlansIDs As ArrayList
         Get
             If _dealerPlansIDs Is Nothing Then
                 If Not DealerCode Is Nothing AndAlso Not DealerObject Is Nothing Then
@@ -558,7 +558,7 @@ Public Class QuoteEngine
         End Get
     End Property
 
-    Public ReadOnly Property CoveragesIDs() As ArrayList
+    Public ReadOnly Property CoveragesIDs As ArrayList
         Get
             If _coveragesIDs Is Nothing Then
                 If Not DealerCode Is Nothing AndAlso Not DealerObject Is Nothing Then

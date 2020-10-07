@@ -89,7 +89,7 @@ Public Class PartsDescription
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(PartsDescriptionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class PartsDescription
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(PartsDescriptionDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -109,7 +109,7 @@ Public Class PartsDescription
                 Return New Guid(CType(Row(PartsDescriptionDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PartsDescriptionDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
@@ -117,7 +117,7 @@ Public Class PartsDescription
 
 
     <ValueMandatory("")> _
-    Public Property RiskGroupId() As Guid
+    Public Property RiskGroupId As Guid
         Get
             CheckDeleted()
             If Row(PartsDescriptionDAL.COL_NAME_RISK_GROUP_ID) Is DBNull.Value Then
@@ -126,7 +126,7 @@ Public Class PartsDescription
                 Return New Guid(CType(Row(PartsDescriptionDAL.COL_NAME_RISK_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
             SetValue(PartsDescriptionDAL.COL_NAME_RISK_GROUP_ID, Value)
         End Set
@@ -134,7 +134,7 @@ Public Class PartsDescription
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=60)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(PartsDescriptionDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -143,7 +143,7 @@ Public Class PartsDescription
                 Return CType(Row(PartsDescriptionDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PartsDescriptionDAL.COL_NAME_DESCRIPTION, Value)
         End Set
@@ -151,7 +151,7 @@ Public Class PartsDescription
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=60), EnglishDescriptionValidator("")> _
-    Public Property DescriptionEnglish() As String
+    Public Property DescriptionEnglish As String
         Get
             CheckDeleted()
             If Row(PartsDescriptionDAL.COL_NAME_DESCRIPTION_ENGLISH) Is DBNull.Value Then
@@ -160,14 +160,14 @@ Public Class PartsDescription
                 Return CType(Row(PartsDescriptionDAL.COL_NAME_DESCRIPTION_ENGLISH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PartsDescriptionDAL.COL_NAME_DESCRIPTION_ENGLISH, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30), PartCodeValidator("")> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(PartsDescriptionDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -176,13 +176,13 @@ Public Class PartsDescription
                 Return CType(Row(PartsDescriptionDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(PartsDescriptionDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
-    Public Shared ReadOnly Property NextCode() As String
+    Public Shared ReadOnly Property NextCode As String
         Get
             Dim dalParts As PartsDescriptionDAL = New PartsDescriptionDAL
             Return dalParts.GetNextCode(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)

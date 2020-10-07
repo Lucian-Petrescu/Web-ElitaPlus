@@ -357,14 +357,14 @@ Namespace Tables
                 SetGridSourceXcdLabelFromBo()
                 'ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, False)
 
-                If (String.IsNullOrWhiteSpace(TextBoxCode.Text) Or String.IsNullOrWhiteSpace(TextBoxDescription.Text)) Then
+                If (String.IsNullOrWhiteSpace(TextBoxCode.Text) OrElse String.IsNullOrWhiteSpace(TextBoxDescription.Text)) Then
                     EnableNewDistributionButtons(False)
                 Else
                     EnableNewDistributionButtons(True)
                 End If
 
 
-                If State.IsComingFromPlanCodeDuplicate = True Or State.IsComingFromDateOverLap = True Then
+                If State.IsComingFromPlanCodeDuplicate = True OrElse State.IsComingFromDateOverLap = True Then
                     EnableNewDistributionButtons(False)
                     State.IsComingFromPlanCodeDuplicate = False
                     State.IsComingFromDateOverLap = False
@@ -1126,8 +1126,8 @@ Namespace Tables
                 Next
             Next
 
-            If ((countPM = 1 Or countPM >
-                1) And (countCertComm = 1 Or countCertComm > 1)) Then
+            If ((countPM = 1 OrElse countPM >
+                1) AndAlso (countCertComm = 1 OrElse countCertComm > 1)) Then
                 State.IsPmComCombination = True
             Else
                 State.IsPmComCombination = False
@@ -1228,7 +1228,7 @@ Namespace Tables
                 Next
             Next
 
-            If ((countCommPer = 1 Or countCommPer > 1) And (countAmt = 1 Or countAmt > 1)) Then
+            If ((countCommPer = 1 OrElse countCommPer > 1) AndAlso (countAmt = 1 OrElse countAmt > 1)) Then
                 State.IsAmountAndPercentBothPresent = True
             Else
                 State.IsAmountAndPercentBothPresent = False
@@ -1254,7 +1254,7 @@ Namespace Tables
 
                         If molblPayeeType IsNot Nothing Then
                             If molblPayeeType.Visible Then
-                                If (molblPayeeType.Text IsNot Nothing And Not String.IsNullOrWhiteSpace(molblPayeeType.Text)) Then
+                                If (molblPayeeType.Text IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(molblPayeeType.Text)) Then
                                     molblPayeeType.Text = GetDescOfExtCodePayeeTypeXcdOption(molblPayeeType.Text)
                                 End If
                             End If
@@ -1262,7 +1262,7 @@ Namespace Tables
 
                         If mollblCommPercentSourceXcd IsNot Nothing Then
                             If mollblCommPercentSourceXcd.Visible Then
-                                If (mollblCommPercentSourceXcd.Text IsNot Nothing And Not String.IsNullOrWhiteSpace(mollblCommPercentSourceXcd.Text)) Then
+                                If (mollblCommPercentSourceXcd.Text IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(mollblCommPercentSourceXcd.Text)) Then
                                     mollblCommPercentSourceXcd.Text = GetDescFromExtCode(mollblCommPercentSourceXcd.Text)
                                 End If
                             End If
@@ -1270,7 +1270,7 @@ Namespace Tables
 
                         If molblActEntSourceXcd IsNot Nothing Then
                             If molblActEntSourceXcd.Visible Then
-                                If (molblActEntSourceXcd.Text IsNot Nothing And Not String.IsNullOrWhiteSpace(molblActEntSourceXcd.Text)) Then
+                                If (molblActEntSourceXcd.Text IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(molblActEntSourceXcd.Text)) Then
                                     molblActEntSourceXcd.Text = GetDescFromExtCodeForActEnt(molblActEntSourceXcd.Text)
                                 End If
                             End If
@@ -1278,7 +1278,7 @@ Namespace Tables
 
                         If molblEntityType IsNot Nothing Then
                             If molblEntityType.Visible Then
-                                If (molblEntityType.Text IsNot Nothing And Not String.IsNullOrWhiteSpace(molblEntityType.Text)) Then
+                                If (molblEntityType.Text IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(molblEntityType.Text)) Then
                                     molblEntityType.Text = GetDescOfIDFromEntityTypeOption(molblEntityType.Text)
                                 End If
                             End If
@@ -1390,7 +1390,7 @@ Namespace Tables
             If State.IsNewWithCopy = False Then
                 With TheCommPlanDist
                     If mocboCommPercentSourceXcd.Visible Then
-                        If .CommissionsPercentSourceXcd IsNot Nothing And mocboCommPercentSourceXcd.Items.Count > 0 Then
+                        If .CommissionsPercentSourceXcd IsNot Nothing AndAlso mocboCommPercentSourceXcd.Items.Count > 0 Then
                             SetSelectedItem(mocboCommPercentSourceXcd, .CommissionsPercentSourceXcd)
 
                             If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
@@ -1418,13 +1418,13 @@ Namespace Tables
                 With TheCommPlanDist
 
                     If cboActEntitySourceXcd.Visible Then
-                        If .ActEntitySourceXcd IsNot Nothing And cboActEntitySourceXcd.Items.Count > 0 Then
+                        If .ActEntitySourceXcd IsNot Nothing AndAlso cboActEntitySourceXcd.Items.Count > 0 Then
                             SetSelectedItem(cboActEntitySourceXcd, .ActEntitySourceXcd)
                         End If
                     End If
 
                     If cboPayeeType.Visible Then
-                        If .PayeeTypeXcd IsNot Nothing And cboPayeeType.Items.Count > 0 Then
+                        If .PayeeTypeXcd IsNot Nothing AndAlso cboPayeeType.Items.Count > 0 Then
                             SetSelectedItem(cboPayeeType, .PayeeTypeXcd)
                         End If
                     End If
@@ -1435,15 +1435,15 @@ Namespace Tables
                         End If
                     End If
 
-                    If .CommissionPercent IsNot Nothing And moTextCommission_PercentText IsNot Nothing Then
+                    If .CommissionPercent IsNot Nothing AndAlso moTextCommission_PercentText IsNot Nothing Then
                         PopulateControlFromBOProperty(moTextCommission_PercentText, .CommissionPercent, PERCENT_FORMAT)
                     End If
 
-                    If .CommissionAmount IsNot Nothing And moLowPriceText IsNot Nothing Then
+                    If .CommissionAmount IsNot Nothing AndAlso moLowPriceText IsNot Nothing Then
                         PopulateControlFromBOProperty(moLowPriceText, .CommissionAmount, DECIMAL_FORMAT)
                     End If
 
-                    If .Position IsNot Nothing And textBoxPosition IsNot Nothing Then
+                    If .Position IsNot Nothing AndAlso textBoxPosition IsNot Nothing Then
                         PopulateControlFromBOProperty(textBoxPosition, .Position)
                     End If
                 End With
@@ -1480,7 +1480,7 @@ Namespace Tables
             Dim sGetCodeSourceOptionDesc As String
             Try
                 sGetCodeSourceOptionDesc = String.Empty
-                If desc IsNot Nothing And Not String.IsNullOrWhiteSpace(desc) Then
+                If desc IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(desc) Then
                     sGetCodeSourceOptionDesc = LookupListNew.GetDescriptionFromExtCode("ACCTBUCKETSOURCE_COMMBRKDOWN", ElitaPlusIdentity.Current.ActiveUser.LanguageId, desc)
                 End If
                 Return sGetCodeSourceOptionDesc
@@ -1493,7 +1493,7 @@ Namespace Tables
             Dim sGetCodeSourceOptionDesc As String
             Try
                 sGetCodeSourceOptionDesc = String.Empty
-                If desc IsNot Nothing And Not String.IsNullOrWhiteSpace(desc) Then
+                If desc IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(desc) Then
                     sGetCodeSourceOptionDesc = LookupListNew.GetDescriptionFromExtCode("ACCTFIELDTYP", ElitaPlusIdentity.Current.ActiveUser.LanguageId, desc)
                 End If
                 Return sGetCodeSourceOptionDesc
@@ -1506,7 +1506,7 @@ Namespace Tables
             Dim sGetDescOfExtCodeFromPayeeTypeXcd As String
             Try
                 sGetDescOfExtCodeFromPayeeTypeXcd = String.Empty
-                If desc IsNot Nothing And Not String.IsNullOrWhiteSpace(desc) Then
+                If desc IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(desc) Then
                     sGetDescOfExtCodeFromPayeeTypeXcd = LookupListNew.GetDescriptionFromExtCode("PYTYPE", ElitaPlusIdentity.Current.ActiveUser.LanguageId, desc)
                 End If
                 Return sGetDescOfExtCodeFromPayeeTypeXcd
@@ -1523,7 +1523,7 @@ Namespace Tables
                 listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                 Dim CommEntityList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CommEntityByCompanyGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontext)
 
-                If desc IsNot Nothing And Not String.IsNullOrWhiteSpace(desc) Then
+                If desc IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(desc) Then
                     If (desc.Length > 16) Then
                         sGetDescOfExtCodeFromPayeeTypeXcd = (From lst In CommEntityList
                                                              Where lst.ListItemId = GetGuidFromString(desc)
@@ -1925,7 +1925,7 @@ Namespace Tables
             Dim oDistribution As CommPlanDistribution
             Dim oDataView As DataView
 
-            If State.IsPlanNew = True And Not State.IsNewWithCopy Then
+            If State.IsPlanNew = True AndAlso Not State.IsNewWithCopy Then
                 Return ' We can not have Distribution if the plan is new
             End If
 
@@ -2016,7 +2016,7 @@ Namespace Tables
             Dim oDistribution As CommPlanDistribution
             Dim oDataView As DataView
 
-            If State.IsPlanNew = True And Not State.IsNewWithCopy Then
+            If State.IsPlanNew = True AndAlso Not State.IsNewWithCopy Then
                 Return ' We can not have Distribution if the plan is new
             End If
 
@@ -2050,7 +2050,7 @@ Namespace Tables
             Dim oDistribution As CommPlanDistribution
             Dim oDataView As DataView
 
-            If State.IsPlanNew = True And Not State.IsNewWithCopy Then
+            If State.IsPlanNew = True AndAlso Not State.IsNewWithCopy Then
                 Return ' We can not have Distribution if the plan is new
             End If
 
@@ -2067,12 +2067,12 @@ Namespace Tables
                         oDataView = getDVFromArray(State.moDistributionList, oDataView.Table)
                     End If
                 Else
-                    If moGridView.Visible And moGridView.Rows.Count > 0 Then
+                    If moGridView.Visible AndAlso moGridView.Rows.Count > 0 Then
                         oDataView = oDistribution.getPlanList(State.moCommPlanId) 'TheCommPlanDist.Id)
                     End If
                 End If
 
-                If moGridView.Visible And moGridView.Rows.Count > 0 Then
+                If moGridView.Visible AndAlso moGridView.Rows.Count > 0 Then
                     If Not String.IsNullOrWhiteSpace(DistributionId) Then
                         SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(DistributionId), moGridView, moGridView.PageIndex)
                     End If
@@ -2237,8 +2237,8 @@ Namespace Tables
             Dim textBoxAmt As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_AMOUNT_IDX).FindControl("moLowPriceText"), TextBox)
             Dim textBoxAmtPercent As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
 
-            If textBoxAmt IsNot Nothing And textBoxAmtPercent IsNot Nothing Then
-                If String.IsNullOrWhiteSpace(textBoxAmt.Text) And String.IsNullOrWhiteSpace(textBoxAmtPercent.Text) Then
+            If textBoxAmt IsNot Nothing AndAlso textBoxAmtPercent IsNot Nothing Then
+                If String.IsNullOrWhiteSpace(textBoxAmt.Text) AndAlso String.IsNullOrWhiteSpace(textBoxAmtPercent.Text) Then
                     ' Either one should be present
                     Throw New GUIException(Message.MSG_EITHER_PERCENTAGE_OR_AMOUNT_NEEDED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EITHER_PERCENTAGE_OR_AMOUNT_REQUIRED)
                 End If
