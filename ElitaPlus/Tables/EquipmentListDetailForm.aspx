@@ -179,7 +179,7 @@
                                             <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
                                              <div id="tabs" class="style-tabs-old" style="border:none;" >
                                                 <ul>
-                                                    <li style="background:#d5d6e4"><a href="#tabEquipment"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderTextOld">Equipment</asp:Label></a></li>                                                                
+                                                    <li style="background:#d5d6e4"><a href="#tabEquipment" rel="noopener noreferrer"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderTextOld">Equipment</asp:Label></a></li>                                                                
                                                 </ul>
                                                 <div id="tabEquipment" style="background:#d5d6e4;border:1px solid; border-color:black;">
                                                      <asp:Panel ID="PanelCommentEditDetail" runat="server" Width="100%" Height="100%">

@@ -1,4 +1,4 @@
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+﻿<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <%@ Page Language="vb" AutoEventWireup="false" MasterPageFile="../Navigation/masters/ElitaBase.Master"
     CodeBehind="PayBatchClaimForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.PayBatchClaimForm"
@@ -133,12 +133,12 @@
             <div id="tabs" class="style-tabs">
                 <ul>
                     <li>
-                        <a href="#tabsSearchInvoice">
+                        <a href="#tabsSearchInvoice" rel="noopener noreferrer">
                             <asp:Label ID="lblsearchInvoice" runat="server" CssClass="tabHeaderText">Claim Details</asp:Label>
                         </a>
                     </li>
                     <li>
-                        <a href="#tabsIIBBtaxes">
+                        <a href="#tabsIIBBtaxes" rel="noopener noreferrer">
                             <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">REGION_TAXES</asp:Label>
                         </a>
                     </li>

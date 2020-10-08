@@ -201,10 +201,10 @@
                                                     <div id="tabs" class="style-tabs-old" style="border:none;">
                                                        <%-- <div id="tabs" class="style-tabs-old style-tabs-oldBG" style="border:none;background:#fef9ea">--%>
                                                         <ul>
-                                                            <li style="background:#d5d6e4"><a href="#tabNotes"><asp:Label ID="Label1" runat="server" CssClass="tabHeaderTextOld">Notes</asp:Label></a></li>                                                                
-                                                            <li style="background:#d5d6e4"><a href="#tabAttributes"><asp:Label ID="Label17" runat="server" CssClass="tabHeaderTextOld">Attributes</asp:Label></a></li>                                                                
-                                                            <li style="background:#d5d6e4"><a href="#tabImages"><asp:Label ID="Label18" runat="server" CssClass="tabHeaderTextOld">Images</asp:Label></a></li>                                                                
-                                                            <li style="background:#d5d6e4"><a href="#tabRelatedEquipment"><asp:Label ID="Label19" runat="server" CssClass="tabHeaderTextOld">RELATED_EQUIPMENT</asp:Label></a></li>                                                                
+                                                            <li style="background:#d5d6e4"><a href="#tabNotes" rel="noopener noreferrer"><asp:Label ID="Label1" runat="server" CssClass="tabHeaderTextOld">Notes</asp:Label></a></li>                                                                
+                                                            <li style="background:#d5d6e4"><a href="#tabAttributes" rel="noopener noreferrer"><asp:Label ID="Label17" runat="server" CssClass="tabHeaderTextOld">Attributes</asp:Label></a></li>                                                                
+                                                            <li style="background:#d5d6e4"><a href="#tabImages" rel="noopener noreferrer"><asp:Label ID="Label18" runat="server" CssClass="tabHeaderTextOld">Images</asp:Label></a></li>                                                                
+                                                            <li style="background:#d5d6e4"><a href="#tabRelatedEquipment" rel="noopener noreferrer"><asp:Label ID="Label19" runat="server" CssClass="tabHeaderTextOld">RELATED_EQUIPMENT</asp:Label></a></li>                                                                
                                                         </ul>
                                                     <div id="tabNotes" style="background:#d5d6e4;border:1px solid; border-color:black;">
                                                             <!-- Tab begin -->

@@ -1,4 +1,4 @@
-<%@ Register TagPrefix="mytab" Namespace="Microsoft.Web.UI.WebControls" Assembly="Microsoft.Web.UI.WebControls, Version=1.0.2.226, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
+﻿<%@ Register TagPrefix="mytab" Namespace="Microsoft.Web.UI.WebControls" Assembly="Microsoft.Web.UI.WebControls, Version=1.0.2.226, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
 <%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
 
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="AccountingEventDetailForm.aspx.vb" Theme="Default"
@@ -165,8 +165,8 @@
          <asp:HiddenField ID="hdnDisabledTab" runat="server" />     
         <div id="tabs" class="style-tabs" style="border:none;">
           <ul>
-            <li><a href="#tabsCodeConfiguration"><asp:Label ID="Label5" runat="server" CssClass="tabHeaderText">CODE_CONFIGURATION</asp:Label></a></li>
-            <li><a href="#tabsInclusionExclisionConfig"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">INCLUSION_EXCLUSION_CONFIG</asp:Label></a></li>            
+            <li><a href="#tabsCodeConfiguration" rel="noopener noreferrer"><asp:Label ID="Label5" runat="server" CssClass="tabHeaderText">CODE_CONFIGURATION</asp:Label></a></li>
+            <li><a href="#tabsInclusionExclisionConfig" rel="noopener noreferrer"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">INCLUSION_EXCLUSION_CONFIG</asp:Label></a></li>            
           </ul>
           
           <div id="tabsCodeConfiguration" style="background:#d5d6e4;border-left: 1px solid black;border-right: 1px solid black;">

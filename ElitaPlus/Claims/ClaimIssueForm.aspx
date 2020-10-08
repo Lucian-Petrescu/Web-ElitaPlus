@@ -94,7 +94,7 @@
     <h2 class="dataGridHeader">
     <asp:label runat="server" ID="lblGrdHdr" ></asp:label>
     <span class="">
-        <a onclick="RevealModalWithMessage('ModalIssue');" href="javascript:void(0)">
+        <a onclick="RevealModalWithMessage('ModalIssue');" href="javascript:void(0)" rel="noopener noreferrer">
         <asp:Label ID="lblFileNewIssue" runat="server" ></asp:Label>  
         </a> </span>
     </h2>
@@ -154,7 +154,7 @@
     <div id="light" class="overlay_message_content" style="width:500px" >
         <p class="modalTitle">
             <asp:Label ID="lblModalTitle" runat="server" Text="NEW_CLAIM_ISSUE"></asp:Label>
-            <a href="javascript:void(0)" onclick="HideErrorAndModal('ModalIssue');">
+            <a href="javascript:void(0)" onclick="HideErrorAndModal('ModalIssue');" rel="noopener noreferrer">
                 <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16"
                     height="18" align="absmiddle" class="floatR" /></a></p>
         <div class="dataContainer">

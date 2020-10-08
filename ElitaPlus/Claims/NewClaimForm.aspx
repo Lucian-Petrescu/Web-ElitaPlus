@@ -1,4 +1,4 @@
-<%@ Register TagPrefix="uc1" TagName="UserControlPoliceReport" Src="../Common/UserControlPoliceReport_New.ascx" %>
+﻿<%@ Register TagPrefix="uc1" TagName="UserControlPoliceReport" Src="../Common/UserControlPoliceReport_New.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
 <%@ Register assembly="Microsoft.Web.UI.WebControls" namespace="Microsoft.Web.UI.WebControls" tagprefix="iewc" %>
 <%--REQ-784--%>
@@ -724,7 +724,7 @@
             <p class="modalTitle">
             <table width="525"><tr><td align="left">
                 <asp:Label ID="lblModalTitle" runat="server" Text="CONFIRM"></asp:Label></td><td align="right">
-                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');">
+                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');" rel="noopener noreferrer">
                     <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="right"/></a></td></tr></table></p>
             <table class="formGrid" cellspacing="0" cellpadding="0" border="0" width="525">
@@ -1005,7 +1005,7 @@
         <div class="dataContainer">
             <h2 class="dataGridHeader">
                 <asp:Label runat="server" ID="lblGrdHdr"></asp:Label>
-                <span class=""><a onclick="RevealModalWithMessage('ModalIssue');" href="javascript:void(0)">
+                <span class=""><a onclick="RevealModalWithMessage('ModalIssue');" href="javascript:void(0)" rel="noopener noreferrer">
                     <asp:Label ID="lblFileNewIssue" runat="server"></asp:Label>
                 </a></span>
             </h2>
@@ -1014,14 +1014,14 @@
                 <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />        
                 <div id="tabs" class="style-tabs">
                   <ul>
-                    <li><a href="#tabClaimIssues"><asp:Label ID="Label21" runat="server" CssClass="tabHeaderText">CLAIM_ISSUES</asp:Label></a></li>
-                    <li><a href="#tabClaimImages"><asp:Label ID="Label23" runat="server" CssClass="tabHeaderText">CLAIM_IMAGES</asp:Label></a></li>
-                    <li><a href="#tabDeviceInformation"><asp:Label ID="Label24" runat="server" CssClass="tabHeaderText">DEVICE_INFORMATION</asp:Label></a></li>
-                    <li><a href="#tabServiceCenterInformation"><asp:Label ID="Label25" runat="server" CssClass="tabHeaderText">SERVICE_CENTER_INFORMATION</asp:Label></a></li>
-                    <li><a href="#tabLogisticalInformation"><asp:Label ID="Label26" runat="server" CssClass="tabHeaderText">LOGISTICAL_INFORMATION</asp:Label></a></li>
-                    <li><a href="#tabExtendedStatusAging"><asp:Label ID="Label27" runat="server" CssClass="tabHeaderText">EXTENDED_STATUS_AGING</asp:Label></a></li>
-                    <li><a href="#tabsQuestionAnswerInfo"><asp:Label ID="Label28" runat="server" CssClass="tabHeaderText">CASE_QUESTION_ANSWER</asp:Label></a></li>
-                    <li><a href="#tabsActionInfo"><asp:Label ID="Label29" runat="server" CssClass="tabHeaderText">CASE_ACTION</asp:Label></a></li>
+                    <li><a href="#tabClaimIssues" rel="noopener noreferrer"><asp:Label ID="Label21" runat="server" CssClass="tabHeaderText">CLAIM_ISSUES</asp:Label></a></li>
+                    <li><a href="#tabClaimImages" rel="noopener noreferrer"><asp:Label ID="Label23" runat="server" CssClass="tabHeaderText">CLAIM_IMAGES</asp:Label></a></li>
+                    <li><a href="#tabDeviceInformation" rel="noopener noreferrer"><asp:Label ID="Label24" runat="server" CssClass="tabHeaderText">DEVICE_INFORMATION</asp:Label></a></li>
+                    <li><a href="#tabServiceCenterInformation" rel="noopener noreferrer"><asp:Label ID="Label25" runat="server" CssClass="tabHeaderText">SERVICE_CENTER_INFORMATION</asp:Label></a></li>
+                    <li><a href="#tabLogisticalInformation" rel="noopener noreferrer"><asp:Label ID="Label26" runat="server" CssClass="tabHeaderText">LOGISTICAL_INFORMATION</asp:Label></a></li>
+                    <li><a href="#tabExtendedStatusAging" rel="noopener noreferrer"><asp:Label ID="Label27" runat="server" CssClass="tabHeaderText">EXTENDED_STATUS_AGING</asp:Label></a></li>
+                    <li><a href="#tabsQuestionAnswerInfo" rel="noopener noreferrer"><asp:Label ID="Label28" runat="server" CssClass="tabHeaderText">CASE_QUESTION_ANSWER</asp:Label></a></li>
+                    <li><a href="#tabsActionInfo" rel="noopener noreferrer"><asp:Label ID="Label29" runat="server" CssClass="tabHeaderText">CASE_ACTION</asp:Label></a></li>
                   </ul>
 
                   <div id="tabClaimIssues">
@@ -1458,7 +1458,7 @@
             <div id="Div3" class="overlay_message_content" style="width: 1100px; left: 8%">
                 <p class="modalTitle">
                     <asp:Label ID="lblClaimImage" runat="server" Text="CLAIM_IMAGE"></asp:Label>
-                    <a href="javascript:void(0)" onclick="hideModal('modalClaimImages');">
+                    <a href="javascript:void(0)" onclick="hideModal('modalClaimImages');" rel="noopener noreferrer">
                         <img id="img3" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                             width="16" height="18" align="absmiddle" class="floatR" /></a></p>
                 <iframe class="pdfContainer" align="left" runat="server" id="pdfIframe"></iframe>
@@ -1470,7 +1470,7 @@
             <div id="Div4" class="overlay_message_content" style="width: 45%; top: 50px; overflow: hidden;">
                 <p class="modalTitle">
                     <asp:Label ID="lblCollectDeductible" runat="server" Text="COLLECT_DEDUCTIBLE"></asp:Label>
-                    <a href="javascript:void(0)" onclick="hideModal('modalCollectDeductible');">
+                    <a href="javascript:void(0)" onclick="hideModal('modalCollectDeductible');" rel="noopener noreferrer">
                         <img id="img5" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                             width="16" height="18" align="middle" class="floatR" /></a>
                 </p>
@@ -1510,7 +1510,7 @@
             <div id="Div2" class="overlay_message_content" style="width: 500px">
                 <p class="modalTitle">
                     <asp:Label ID="Label1" runat="server" Text="NEW_CLAIM_ISSUE"></asp:Label>
-                    <a href="javascript:void(0)" onclick="HideErrorAndModal('ModalIssue');">
+                    <a href="javascript:void(0)" onclick="HideErrorAndModal('ModalIssue');" rel="noopener noreferrer">
                         <img id="img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                             width="16" height="18" align="absmiddle" class="floatR" /></a></p>
                 <div class="dataContainer">

@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ContractForm.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ContractForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.ContractForm" EnableSessionState="True"
     MasterPageFile="../Navigation/masters/ElitaBase.Master" Theme="Default" %>
 
@@ -1103,9 +1103,9 @@
         <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
         <div id="tabs" class="style-tabs">
             <ul>
-                <li><a href="#tabsReplacementPolicy">
+                <li><a href="#tabsReplacementPolicy" rel="noopener noreferrer">
                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Replacement_Policy</asp:Label></a></li>
-                <li><a href="#tabsDepreciationSchedule">
+                <li><a href="#tabsDepreciationSchedule" rel="noopener noreferrer">
                     <asp:Label ID="Label1" runat="server" CssClass="tabHeaderText">Depreciation_Schedule</asp:Label></a></li>
             </ul>
             <div id="tabsReplacementPolicy">

@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="MaintainUser.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="MaintainUser.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.business.MaintainUser" EnableSessionState="True"
     MasterPageFile="../Navigation/masters/ElitaBase.Master" Theme="Default" %>
 
@@ -74,10 +74,10 @@
         <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
         <div id="tabs" class="style-tabs" style="position:static;">
           <ul>
-            <li style="position:static;"><a href="#tabsUserRoles"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">USER_ ROLES</asp:Label></a></li>
-            <li style="position:static;"><a href="#tabsUserCompany"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">USER_COMPANY</asp:Label></a></li>
-            <li style="position:static;"><a href="#tabsPermission"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">PERMISSION</asp:Label></a></li>
-            <li style="position:static;"><a href="#tabsUserSecurity"><asp:Label ID="Label9" runat="server" CssClass="tabHeaderText">USER_SECURITY</asp:Label></a></li>
+            <li style="position:static;"><a href="#tabsUserRoles" rel="noopener noreferrer"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">USER_ ROLES</asp:Label></a></li>
+            <li style="position:static;"><a href="#tabsUserCompany" rel="noopener noreferrer"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">USER_COMPANY</asp:Label></a></li>
+            <li style="position:static;"><a href="#tabsPermission" rel="noopener noreferrer"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">PERMISSION</asp:Label></a></li>
+            <li style="position:static;"><a href="#tabsUserSecurity" rel="noopener noreferrer"><asp:Label ID="Label9" runat="server" CssClass="tabHeaderText">USER_SECURITY</asp:Label></a></li>
           </ul>
           <div id="tabsUserRoles">
             <table id="Table5" cellspacing="0" cellpadding="0" width="300" align="center" border="0"

@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="DepreciationScheduleForm.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="DepreciationScheduleForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.DepreciationScheduleForm" Theme="Default"
     MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
@@ -60,7 +60,7 @@
         <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
         <div id="tabs" class="style-tabs">
             <ul>
-                <li><a href="#tabsDepreciationSchedule">
+                <li><a href="#tabsDepreciationSchedule" rel="noopener noreferrer">
                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">DEPRECIATION_SCHEDULE</asp:Label></a>
                 </li>
             </ul>

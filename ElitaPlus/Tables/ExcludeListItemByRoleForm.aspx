@@ -60,7 +60,7 @@
         <%--     changes for tab--%>
         <div id="tabs" class="style-tabs">
             <ul>
-                <li><a href="#tabsExcludeRoles">
+                <li><a href="#tabsExcludeRoles" rel="noopener noreferrer">
                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Exclude_Roles</asp:Label></a></li>
             </ul>
 

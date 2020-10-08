@@ -143,7 +143,7 @@
                         <asp:HiddenField ID="hdnDisabledTab" runat="server" />
                         <div id="tabs" class="style-tabs">
                             <ul>
-                                <li><a href="#tabInvoiceLines"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">INVOICE_LINE_ITEMS</asp:Label></a></li>
+                                <li><a href="#tabInvoiceLines" rel="noopener noreferrer"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">INVOICE_LINE_ITEMS</asp:Label></a></li>
                             </ul>
                             <div id="tabInvoiceLines">
                                 <table width="100%" class="dataGrid" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:5px;">
