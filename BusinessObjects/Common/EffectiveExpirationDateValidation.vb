@@ -15,7 +15,7 @@ Public NotInheritable Class EffectiveExpirationDateValidation
         If objectToCheck Is Nothing Then Return True
         Try
             Dim objDate As DateTimeType = DateTime.Parse(CType(objectToCheck, DateTimeType), LocalizationMgr.CurrentFormatProvider)
-            If Not objDate Is Nothing And Not Iface.Effective Is Nothing Then
+            If objDate IsNot Nothing AndAlso Iface.Effective IsNot Nothing Then
                 If Iface.Effective.Value > objDate.Value Then Return False
             End If
         Catch ex As FormatException

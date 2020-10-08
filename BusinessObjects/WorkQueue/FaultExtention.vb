@@ -14,16 +14,16 @@ Public Module FaultExtention
         Dim oType As Type = Nothing
         Dim validationErrors(ex.Detail.Details.Length - 1) As ValidationError
         Dim propInfo As PropertyInfo
-        If (Not businessObject Is Nothing) Then
+        If (businessObject IsNot Nothing) Then
             oType = businessObject.GetType()
         Else
             oType = GetType(BusinessObjectBase)
         End If
         For i As Integer = 0 To validationErrors.Length - 1
             With ex.Detail.Details(i)
-                If (Not businessObject Is Nothing) Then
+                If (businessObject IsNot Nothing) Then
                     propInfo = businessObject.GetType().GetProperty(.Key)
-                    If (Not propInfo Is Nothing) Then
+                    If (propInfo IsNot Nothing) Then
                         oValue = propInfo.GetValue(businessObject, Nothing)
                     Else
                         oValue = Nothing
@@ -48,16 +48,16 @@ Public Module FaultExtention
         Dim oType As Type = Nothing
         Dim validationErrors(ex.Detail.Details.Length - 1) As ValidationError
         Dim propInfo As PropertyInfo
-        If (Not businessObject Is Nothing) Then
+        If (businessObject IsNot Nothing) Then
             oType = businessObject.GetType()
         Else
             oType = GetType(BusinessObjectBase)
         End If
         For i As Integer = 0 To validationErrors.Length - 1
             With ex.Detail.Details(i)
-                If (Not businessObject Is Nothing) Then
+                If (businessObject IsNot Nothing) Then
                     propInfo = businessObject.GetType().GetProperty(.Key)
-                    If (Not propInfo Is Nothing) Then
+                    If (propInfo IsNot Nothing) Then
                         oValue = propInfo.GetValue(businessObject, Nothing)
                     Else
                         oValue = Nothing
@@ -82,16 +82,16 @@ Public Module FaultExtention
         Dim oType As Type = Nothing
         Dim validationErrors(ex.Detail.Details.Length - 1) As ValidationError
         Dim propInfo As PropertyInfo
-        If (Not businessObject Is Nothing) Then
+        If (businessObject IsNot Nothing) Then
             oType = businessObject.GetType()
         Else
             oType = GetType(BusinessObjectBase)
         End If
         For i As Integer = 0 To validationErrors.Length - 1
             With ex.Detail.Details(i)
-                If (Not businessObject Is Nothing) Then
+                If (businessObject IsNot Nothing) Then
                     propInfo = businessObject.GetType().GetProperty(.Key)
-                    If (Not propInfo Is Nothing) Then
+                    If (propInfo IsNot Nothing) Then
                         oValue = propInfo.GetValue(businessObject, Nothing)
                     Else
                         oValue = Nothing
@@ -116,16 +116,16 @@ Public Module FaultExtention
         Dim oType As Type = Nothing
         Dim validationErrors(ex.Detail.Details.Length - 1) As ValidationError
         Dim propInfo As PropertyInfo
-        If (Not businessObject Is Nothing) Then
+        If (businessObject IsNot Nothing) Then
             oType = businessObject.GetType()
         Else
             oType = GetType(BusinessObjectBase)
         End If
         For i As Integer = 0 To validationErrors.Length - 1
             With ex.Detail.Details(i)
-                If (Not businessObject Is Nothing) Then
+                If (businessObject IsNot Nothing) Then
                     propInfo = businessObject.GetType().GetProperty(.Key)
-                    If (Not propInfo Is Nothing) Then
+                    If (propInfo IsNot Nothing) Then
                         oValue = propInfo.GetValue(businessObject, Nothing)
                     Else
                         oValue = Nothing

@@ -76,7 +76,7 @@ Public Class EntitySchedule
         Try
             Dim dal As New EntityScheduleDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -202,10 +202,10 @@ Public Class EntitySchedule
         End Get
     End Property
 
-    <ValueMandatory(""), DateCompareValidatorAttribute("", Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, _
+    <ValueMandatory(""), DateCompareValidatorAttribute("", Common.ErrorCodes.GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, _
         "Expiration", DateCompareValidatorAttribute.CompareType.LessThan, DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.MaxDate, _
         DefaultCompareValue:=DateCompareValidatorAttribute.DefaultType.MinDate), _
-    DateCompareValidator("", Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_WQ_SCHEDULE_EFF_LESSER_THAN_WQ_EFF, _
+    DateCompareValidator("", Common.ErrorCodes.BO_ERROR_WQ_SCHEDULE_EFF_LESSER_THAN_WQ_EFF, _
         "EntityEffective", DateCompareValidatorAttribute.CompareType.GreaterThanOrEqual, DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.MinDate, _
         DefaultCompareValue:=DateCompareValidatorAttribute.DefaultType.MinDate)> _
     Public Property Effective As DateTimeType
@@ -223,7 +223,7 @@ Public Class EntitySchedule
         End Get
         Set
             CheckDeleted()
-            If (Not Value Is Nothing) Then
+            If (Value IsNot Nothing) Then
                 If (EntityObject.GetType().Equals(GetType(WorkQueue))) Then
                     Value = New DateTimeType(DirectCast(EntityObject, WorkQueue).ConvertTimeToUtc(Value.Value))
                 End If
@@ -233,7 +233,7 @@ Public Class EntitySchedule
         End Set
     End Property
 
-    <DateCompareValidator("", Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, "", _
+    <DateCompareValidator("", Common.ErrorCodes.GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, "", _
             DateCompareValidatorAttribute.CompareType.GreaterThan, CheckWhenNew:=True, CompareToType:=DateCompareValidatorAttribute.CompareToPropertyType.Nothing, _
             DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.UtcToday)> _
     Public ReadOnly Property EffectiveUtc As DateTimeType
@@ -274,11 +274,11 @@ Public Class EntitySchedule
         End Get
     End Property
 
-    <DateCompareValidatorAttribute("", Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, _
+    <DateCompareValidatorAttribute("", Common.ErrorCodes.GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, _
         "Effective", DateCompareValidatorAttribute.CompareType.GreaterThan, DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.MinDate, _
         DefaultCompareValue:=DateCompareValidatorAttribute.DefaultType.MaxDate), _
     OverlapValidator("", DataRowPropertyName:="DataRow", DataTablePropertyName:="DataTable", EffectiveDateColumnName:=EntityScheduleDAL.COL_NAME_EFFECTIVE, ExpirationDateColumnName:=EntityScheduleDAL.COL_NAME_EXPIRATION), _
-    DateCompareValidatorAttribute("", Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_WQ_SCHEDULE_EXP_GREATER_THAN_WQ_EXP, _
+    DateCompareValidatorAttribute("", Common.ErrorCodes.BO_ERROR_WQ_SCHEDULE_EXP_GREATER_THAN_WQ_EXP, _
         "EntityExpiration", DateCompareValidatorAttribute.CompareType.LessThanOrEqual, DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.MaxDate, _
         DefaultCompareValue:=DateCompareValidatorAttribute.DefaultType.MaxDate)> _
     Public Property Expiration As DateTimeType
@@ -296,7 +296,7 @@ Public Class EntitySchedule
         End Get
         Set
             CheckDeleted()
-            If (Not Value Is Nothing) Then
+            If (Value IsNot Nothing) Then
                 If (EntityObject.GetType().Equals(GetType(WorkQueue))) Then
                     Value = New DateTimeType(DirectCast(EntityObject, WorkQueue).ConvertTimeToUtc(Value.Value))
                 End If
@@ -321,12 +321,12 @@ Public Class EntitySchedule
             If Row(ScheduleDAL.COL_NAME_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(EntityScheduleDAL.COL_NAME_CODE), String)
+                Return CType(Row(DALBase.COL_NAME_CODE), String)
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(EntityScheduleDAL.COL_NAME_CODE, Value)
+            SetValue(DALBase.COL_NAME_CODE, Value)
         End Set
     End Property
 
@@ -337,12 +337,12 @@ Public Class EntitySchedule
             If Row(ScheduleDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(EntityScheduleDAL.COL_NAME_DESCRIPTION), String)
+                Return CType(Row(DALBase.COL_NAME_DESCRIPTION), String)
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(EntityScheduleDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(DALBase.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -395,7 +395,7 @@ Public Class EntitySchedule
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Object.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 #End Region
 
@@ -462,9 +462,9 @@ Public Class EntityScheduleList
     Public Overrides Function GetChild(childId As System.Guid) As BusinessObjectBase
         Dim bo As BusinessObjectBase
         Try
-            bo = MyBase.BOType.GetConstructor(New Type() {GetType(Guid), GetType(DataSet), GetType(IEffecttiveExpiration)}).Invoke(New Object() {childId, Table.DataSet, CType(Parent, IEffecttiveExpiration)})
+            bo = BOType.GetConstructor(New Type() {GetType(Guid), GetType(DataSet), GetType(IEffecttiveExpiration)}).Invoke(New Object() {childId, Table.DataSet, CType(Parent, IEffecttiveExpiration)})
         Catch ex As Exception
-            If Not ex.InnerException Is Nothing AndAlso ex.InnerException.GetType Is GetType(DataNotFoundException) Then
+            If ex.InnerException IsNot Nothing AndAlso ex.InnerException.GetType Is GetType(DataNotFoundException) Then
                 Throw ex.InnerException
             Else
                 Throw ex

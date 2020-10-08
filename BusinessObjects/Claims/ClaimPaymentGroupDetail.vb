@@ -59,7 +59,7 @@ Public Class ClaimPaymentGroupDetail
         Try
             Dim dal As New ClaimPaymentGroupDetailDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -236,7 +236,7 @@ Public Class ClaimPaymentGroupDetail
                 compIds = .Companies 'compIds.Add(.GetSelectedAssignedCompanies(ElitaPlusIdentity.Current.ActiveUser.Id))
             End With
 
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, _
+            Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, _
                                                                    GetType(ClaimPaymentGroupDetailDAL), Nothing, "Search", Nothing)}
 
             'Convert the Claim Number to UPPER Case

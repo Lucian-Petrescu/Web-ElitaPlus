@@ -16,11 +16,11 @@
                                                     st.GetFrame(1).GetMethod().Name,
                                                     log.PadLeft(log.Length + st.FrameCount * 2, " "))
 
-            If Not System.IO.File.Exists(fileName) Then
-                sw = System.IO.File.CreateText(fileName)
+            If Not IO.File.Exists(fileName) Then
+                sw = IO.File.CreateText(fileName)
                 sw.WriteLine(logString)
             Else
-                sw = System.IO.File.AppendText(fileName)
+                sw = IO.File.AppendText(fileName)
                 sw.WriteLine(logString)
             End If
         Catch ex As Exception

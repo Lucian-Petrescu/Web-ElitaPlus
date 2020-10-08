@@ -13,7 +13,7 @@ Public Class ExpirationVisitor
     Public Sub New()
     End Sub
     Public Function Visit(element As IElement) As Boolean Implements IVisitor.Visit
-        If Not element.GetType.GetInterface("IExpirable", True) Is Nothing Then
+        If element.GetType.GetInterface("IExpirable", True) IsNot Nothing Then
             Dim iface As IExpirable = DirectCast(element, IExpirable)
             If DateofExpiration Is Nothing Then
                 If iface.Effective.Value > DateTime.Now Then
@@ -26,7 +26,7 @@ Public Class ExpirationVisitor
             End If
             Dim Parent As Type = element.GetType
             For Each prop As PropertyInfo In Parent.GetProperties
-                If prop.PropertyType.BaseType.Name = "BusinessObjectListBase" And (TypeOf prop Is IExpirable) Then
+                If prop.PropertyType.BaseType.Name = "BusinessObjectListBase" AndAlso (TypeOf prop Is IExpirable) Then
                     For Each childIFace As IExpirable In prop.GetValue(Convert.ChangeType(element, Parent), Nothing)
                         childIFace.Expiration = iface.Expiration
                     Next

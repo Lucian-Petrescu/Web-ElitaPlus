@@ -66,7 +66,7 @@
         Try
             Dim dal As New ProductRewardsDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -316,17 +316,17 @@
         Public Function AddNewRowToEmptyDV() As ProductRewardsSearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ProductRewardsSearchDV.COL_PRODUCT_REWARD_ID) = (New Guid()).ToByteArray
-            row(ProductRewardsSearchDV.COL_PRODUCT_CODE_ID) = Guid.Empty.ToByteArray
-            row(ProductRewardsSearchDV.COL_NAME_REWARD_NAME) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_REWARD_TYPE) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_REWARD_AMOUNT) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_MIN_PURCHASE_PRICE) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_DAYS_TO_REDEEM) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_FROM_RENEWAL) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_TO_RENEWAL) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_EFFECTIVE_DATE) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_EXPIRATION_DATE) = DBNull.Value
+            row(COL_PRODUCT_REWARD_ID) = (New Guid()).ToByteArray
+            row(COL_PRODUCT_CODE_ID) = Guid.Empty.ToByteArray
+            row(COL_NAME_REWARD_NAME) = DBNull.Value
+            row(COL_NAME_REWARD_TYPE) = DBNull.Value
+            row(COL_NAME_REWARD_AMOUNT) = DBNull.Value
+            row(COL_NAME_MIN_PURCHASE_PRICE) = DBNull.Value
+            row(COL_NAME_DAYS_TO_REDEEM) = DBNull.Value
+            row(COL_NAME_FROM_RENEWAL) = DBNull.Value
+            row(COL_NAME_TO_RENEWAL) = DBNull.Value
+            row(COL_NAME_EFFECTIVE_DATE) = DBNull.Value
+            row(COL_NAME_EXPIRATION_DATE) = DBNull.Value
             dt.Rows.Add(row)
             Return New ProductRewardsSearchDV(dt)
         End Function
@@ -457,7 +457,7 @@
 
             Dim bValid As Boolean = True
 
-            If Not obj.ExpirationDate Is Nothing And Not obj.EffectiveDate Is Nothing Then
+            If obj.ExpirationDate IsNot Nothing And obj.EffectiveDate IsNot Nothing Then
                 If Convert.ToDateTime(obj.EffectiveDate.Value) > Convert.ToDateTime(obj.ExpirationDate.Value) Then
                     Message = PRODUCT_EQUIPMENT_FORM001
                     bValid = False
@@ -483,7 +483,7 @@
 
             Dim bValid As Boolean = True
 
-            If Not obj.EffectiveDate Is Nothing Then
+            If obj.EffectiveDate IsNot Nothing Then
                 If obj.EffectiveDate <= DateTime.Now.Date Then
                     Message = PRODUCT_EQUIPMENT_FORM003
                     bValid = False
@@ -511,7 +511,7 @@
 
             If Not obj.ProductCodeId = Guid.Empty Then
 
-                If Not obj.RewardType Is Nothing AndAlso Not obj.EffectiveDate Is Nothing AndAlso Not obj.ExpirationDate Is Nothing Then
+                If obj.RewardType IsNot Nothing AndAlso obj.EffectiveDate IsNot Nothing AndAlso obj.ExpirationDate IsNot Nothing Then
                     Dim oProductRewards As DataView = obj.ValidateUniqueCombination(obj.ProductCodeId, obj.RewardType, obj.EffectiveDate, obj.ExpirationDate)
                     Dim ProductRewardsRows As DataRowCollection = oProductRewards.Table.Rows
                     Dim ProductRewardsRow As DataRow
@@ -542,7 +542,7 @@
 
             If Not obj.ProductCodeId = Guid.Empty Then
 
-                If Not obj.RewardType Is Nothing AndAlso Not obj.EffectiveDate Is Nothing AndAlso Not obj.ExpirationDate Is Nothing Then
+                If obj.RewardType IsNot Nothing AndAlso obj.EffectiveDate IsNot Nothing AndAlso obj.ExpirationDate IsNot Nothing Then
                     Dim oProductRewards As DataView = obj.ValidateOverlap(obj.ProductCodeId, obj.RewardType, obj.EffectiveDate, obj.ExpirationDate)
                     Dim ProductRewardsRows As DataRowCollection = oProductRewards.Table.Rows
                     Dim ProductRewardsRow As DataRow
@@ -574,7 +574,7 @@
 
             Dim bValid As Boolean = True
 
-            If Not obj.FromRenewal Is Nothing And Not obj.ToRenewal Is Nothing Then
+            If obj.FromRenewal IsNot Nothing And obj.ToRenewal IsNot Nothing Then
                 If obj.FromRenewal.Value > obj.ToRenewal.Value Then
                     Message = PRODUCT_REWARDS_FORM005
                     bValid = False
@@ -603,7 +603,7 @@
             Dim ProductRewardsRows As DataRowCollection = oProductRewards.Table.Rows
             Dim ProductRewardsRow As DataRow
 
-            If oProductRewards.Count = 1 And Not obj.FromRenewal Is Nothing Then
+            If oProductRewards.Count = 1 And obj.FromRenewal IsNot Nothing Then
                 If oProductRewards.Item(0)(0).ToString = String.Empty Then
                     bValid = True
                 Else

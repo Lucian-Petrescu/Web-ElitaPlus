@@ -137,7 +137,7 @@ Public Class GalaxyGetCertificateDetail
             Validate()
 
             Dim _CertificateDetailDataSet As DataSet = Certificate.GalaxyGetCertificateDetail(CertNumber, DealerCode)
-            If Not _CertificateDetailDataSet Is Nothing AndAlso _CertificateDetailDataSet.Tables.Count > 0 AndAlso _CertificateDetailDataSet.Tables(0).Rows.Count > 0 Then
+            If _CertificateDetailDataSet IsNot Nothing AndAlso _CertificateDetailDataSet.Tables.Count > 0 AndAlso _CertificateDetailDataSet.Tables(0).Rows.Count > 0 Then
                 If _CertificateDetailDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
                     Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", CERTIFICATE_NOT_FOUND)
                 Else
@@ -149,7 +149,7 @@ Public Class GalaxyGetCertificateDetail
 
                     'Get Cert Item Coverages
                     Dim _CertCoveragesDataSet As DataSet = CertItemCoverage.LoadAllItemCoveragesForGalaxyCertificate(cert_id)
-                    If Not _CertCoveragesDataSet Is Nothing AndAlso _CertCoveragesDataSet.Tables.Count > 0 AndAlso _CertCoveragesDataSet.Tables(0).Rows.Count > 0 Then
+                    If _CertCoveragesDataSet IsNot Nothing AndAlso _CertCoveragesDataSet.Tables.Count > 0 AndAlso _CertCoveragesDataSet.Tables(0).Rows.Count > 0 Then
                         'add the coverages table to the certificate dataset
                         _CertificateDetailDataSet.Tables.Add(_CertCoveragesDataSet.Tables(0).Copy)
                         'remove the cert_id (guid) column from the certificate table

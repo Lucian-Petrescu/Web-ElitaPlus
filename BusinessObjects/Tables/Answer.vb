@@ -59,7 +59,7 @@ Public Class Answer
         Try
             Dim dal As New AnswerDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -309,7 +309,7 @@ Public Class Answer
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
     Public Function GetAnswerList(SoftQuestinoId As Guid) As DataView
@@ -396,7 +396,7 @@ Public Class Answer
         Implements IValidatorAttribute
         Private _fieldDisplayName As String
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.INVALID_CODE)
+            MyBase.New(fieldDisplayName, Messages.INVALID_CODE)
             _fieldDisplayName = fieldDisplayName
         End Sub
 
@@ -423,7 +423,7 @@ Public Class Answer
 
         Private _fieldDisplayName As String
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.INVALID_ORDER)
+            MyBase.New(fieldDisplayName, Messages.INVALID_ORDER)
             _fieldDisplayName = fieldDisplayName
         End Sub
 

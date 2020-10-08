@@ -59,7 +59,7 @@ Public Class ClaimCloseRules
         Try
             Dim dal As New ClaimCloseRulesDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -455,8 +455,7 @@ End Class
 Friend Class ClaimCloseRulesHelper
     Friend Shared Function IsValidClaimStatusIssueCombination(ClaimStatusByGroupId As Guid, ClaimIssueId As Guid) As Boolean
         Return _
-            (ClaimStatusByGroupId = Guid.Empty And Not ClaimIssueId = Guid.Empty) Or
-            (ClaimIssueId = Guid.Empty And Not ClaimStatusByGroupId = Guid.Empty)
+            (ClaimStatusByGroupId = Guid.Empty AndAlso Not ClaimIssueId = Guid.Empty) OrElse (ClaimIssueId = Guid.Empty AndAlso Not ClaimStatusByGroupId = Guid.Empty)
     End Function
 End Class
 

@@ -59,7 +59,7 @@ Public Class CommissionEntity
         Try
             Dim dal As New CommissionEntityDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -409,7 +409,7 @@ Public Class CommissionEntity
             If Not IsDeleted Then LastPaymentMethodId = PaymentMethodId
             If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CommissionEntityDAL '
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, LastPaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
+                If LookupListNew.GetCodeFromId(LookupListCache.LK_PAYMENTMETHOD, LastPaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
                     blnBankInfoSave = True
                     isBankInfoNeedDeletion = True
                 Else
@@ -439,8 +439,8 @@ Public Class CommissionEntity
     Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty OrElse _
-            (Not CurrentBankInfo Is Nothing AndAlso (Not CurrentBankInfo.IsNew And CurrentBankInfo.IsDirty)) OrElse _
-            (Not CurrentBankInfo Is Nothing AndAlso (CurrentBankInfo.IsNew And Not CurrentBankInfo.IsEmpty))
+            (CurrentBankInfo IsNot Nothing AndAlso (Not CurrentBankInfo.IsNew AndAlso CurrentBankInfo.IsDirty)) OrElse _
+            (CurrentBankInfo IsNot Nothing AndAlso (CurrentBankInfo.IsNew AndAlso Not CurrentBankInfo.IsEmpty))
         End Get
     End Property
 
@@ -448,13 +448,13 @@ Public Class CommissionEntity
         CheckDeleted()
         Dim binfo As BankInfo = CurrentBankInfo
         BeginEdit()
-        If Not binfo Is Nothing Then binfo.BeginEdit()
+        If binfo IsNot Nothing Then binfo.BeginEdit()
 
         Try
             LastPaymentMethodId = PaymentMethodId
 
             Delete()
-            If Not binfo Is Nothing Then binfo.Delete()
+            If binfo IsNot Nothing Then binfo.Delete()
             Save()
 
         Catch ex As Exception
@@ -462,7 +462,7 @@ Public Class CommissionEntity
                 ConstrVoilation = True
             End If
             cancelEdit()
-            If Not binfo Is Nothing Then binfo.cancelEdit()
+            If binfo IsNot Nothing Then binfo.cancelEdit()
             Throw ex
         End Try
     End Sub

@@ -65,7 +65,7 @@ Public Class RegionTax
         Try
             Dim dal As New RegionTaxDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -254,7 +254,7 @@ Public Class RegionTax
                 End If
             Next
 
-            If Not value Is Nothing Then
+            If value IsNot Nothing Then
                 If Not blnExisting Then 'create a new one
                     oRGD = New RegionTaxDetail(Dataset)
                     _detailRecords.Add(oRGD)
@@ -470,7 +470,7 @@ Public Class RegionTax
                 Dim minEffdt As Date, maxExpdt As Date, recCnt As Integer
                 obj.GetMinEffDateAndMaxExpDate(minEffdt, maxExpdt, recCnt)
 
-                If (maxExpdt <> Date.Parse(CountryTaxDAL.INFINITE_DATE_STR, System.Globalization.CultureInfo.InvariantCulture)) _
+                If (maxExpdt <> Date.Parse(CountryTaxDAL.INFINITE_DATE_STR, CultureInfo.InvariantCulture)) _
                     AndAlso (obj.EffectiveDate <> maxExpdt.AddDays(1)) Then
                     Return False
                 End If

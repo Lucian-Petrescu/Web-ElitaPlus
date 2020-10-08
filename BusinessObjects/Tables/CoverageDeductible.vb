@@ -69,7 +69,7 @@
         Try
             Dim dal As New CoverageDeductibleDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -215,7 +215,7 @@
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 #End Region
 
@@ -232,7 +232,7 @@
             Dim obj As CoverageDeductible = CType(objectToValidate, CoverageDeductible)
             If valueToCheck Is Nothing Then Return False
             If obj.Deductible = 0 Then Return True
-            If (LookupListNew.GetCodeFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, obj.DeductibleBasedOnId) <> "FIXED") Then
+            If (LookupListNew.GetCodeFromId(LookupListCache.LK_DEDUCTIBLE_BASED_ON, obj.DeductibleBasedOnId) <> "FIXED") Then
                 If (valueToCheck.Value > 100) Then
                     Return False
                 End If

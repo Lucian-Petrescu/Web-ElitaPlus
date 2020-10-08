@@ -129,40 +129,40 @@ Public Class ClaimIssue
     Public Property ProcessedDate As DateType
         Get
             CheckDeleted()
-            If Row(ClaimIssue.COL_NAME_PROCESSED_DATE) Is DBNull.Value Then
+            If Row(COL_NAME_PROCESSED_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New DateType(CType(Row(ClaimIssue.COL_NAME_PROCESSED_DATE), Date))
+                Return New DateType(CType(Row(COL_NAME_PROCESSED_DATE), Date))
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(ClaimIssue.COL_NAME_PROCESSED_DATE, Value)
+            SetValue(COL_NAME_PROCESSED_DATE, Value)
         End Set
     End Property
 
     Public Property ProcessedBy As String
         Get
             CheckDeleted()
-            If Row(ClaimIssue.COL_NAME_PROCESSED_BY) Is DBNull.Value Then
+            If Row(COL_NAME_PROCESSED_BY) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(ClaimIssue.COL_NAME_PROCESSED_BY), String)
+                Return CType(Row(COL_NAME_PROCESSED_BY), String)
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(ClaimIssue.COL_NAME_PROCESSED_BY, Value)
+            SetValue(COL_NAME_PROCESSED_BY, Value)
         End Set
     End Property
 
     Public ReadOnly Property StatusId As Guid
         Get
             CheckDeleted()
-            If Row(ClaimIssue.COL_NAME_STATUS_ID) Is DBNull.Value Then
+            If Row(COL_NAME_STATUS_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(Row(ClaimIssue.COL_NAME_STATUS_ID), Byte()))
+                Return New Guid(CType(Row(COL_NAME_STATUS_ID), Byte()))
 
             End If
         End Get
@@ -171,30 +171,30 @@ Public Class ClaimIssue
     Public Property StatusCode As String
         Get
             CheckDeleted()
-            If Row(ClaimIssue.COL_NAME_STATUS_CODE) Is DBNull.Value Then
+            If Row(COL_NAME_STATUS_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(ClaimIssue.COL_NAME_STATUS_CODE), String)
+                Return CType(Row(COL_NAME_STATUS_CODE), String)
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(ClaimIssue.COL_NAME_STATUS_CODE, Value)
+            SetValue(COL_NAME_STATUS_CODE, Value)
         End Set
     End Property
 
     Public Property CreatedBy As String
         Get
             CheckDeleted()
-            If Row(ClaimIssue.COL_NAME_CREATED_BY) Is DBNull.Value Then
+            If Row(COL_NAME_CREATED_BY) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(ClaimIssue.COL_NAME_CREATED_BY), String)
+                Return CType(Row(COL_NAME_CREATED_BY), String)
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(ClaimIssue.COL_NAME_CREATED_BY, Value)
+            SetValue(COL_NAME_CREATED_BY, Value)
         End Set
     End Property
 
@@ -214,15 +214,15 @@ Public Class ClaimIssue
     Public Property CreatedDate As DateTime
         Get
             CheckDeleted()
-            If Row(ClaimIssueDAL.COL_NAME_CREATED_DATE) Is DBNull.Value Then
+            If Row(DALBase.COL_NAME_CREATED_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(ClaimIssueDAL.COL_NAME_CREATED_DATE), DateTime)
+                Return CType(Row(DALBase.COL_NAME_CREATED_DATE), DateTime)
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(ClaimIssueDAL.COL_NAME_CREATED_DATE, Value)
+            SetValue(DALBase.COL_NAME_CREATED_DATE, Value)
         End Set
     End Property
 
@@ -238,7 +238,7 @@ Public Class ClaimIssue
         ' Check if Issue is still Open or Pending
         If (StatusCode = Codes.CLAIMISSUE_STATUS__OPEN OrElse StatusCode = Codes.CLAIMISSUE_STATUS__PENDING) Then
             ' Check if WorkQueueItem is already created
-            If (WorkQueueItemCreatedId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N))) Then
+            If (WorkQueueItemCreatedId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N))) Then
                 ' Get Work Queue ID based on Issue ID and Company ID
                 dal = New CompanyWorkQueueIssueDAL()
                 workQueueId = dal.GetWorkQueueIdByIssueCompany(Issue.Id, Claim.CompanyId)
@@ -255,11 +255,11 @@ Public Class ClaimIssue
                     wqi.Save()
 
                     ' Update Data Row
-                    WorkQueueItemCreatedId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
+                    WorkQueueItemCreatedId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)
                 End If
             End If
         Else
-            If (Not wqItem Is Nothing) Then
+            If (wqItem IsNot Nothing) Then
                 If (wqItem.WorkQueueItem.ClaimIssueId = ClaimIssueId) Then
                     wqItem.Process()
                 End If
@@ -412,7 +412,7 @@ Public Class ClaimIssue
                     dal.LoadList(parent.Dataset, parent.Id)
                     parent.AddChildrenCollection(GetType(ClaimIssueList))
                 End If
-                Return parent.Dataset.Tables(ClaimIssueDAL.TABLE_NAME)
+                Return parent.Dataset.Tables(EntityIssueDAL.TABLE_NAME)
             Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
             End Try
@@ -453,7 +453,7 @@ Public Class ClaimIssue
                     dal.LoadList(parent.Dataset, parent.Id)
                     parent.AddChildrenCollection(GetType(ConseqDamageIssueList))
                 End If
-                Return parent.Dataset.Tables(ClaimIssueDAL.TABLE_NAME)
+                Return parent.Dataset.Tables(EntityIssueDAL.TABLE_NAME)
             Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
             End Try

@@ -113,7 +113,7 @@ Public Class Authentication
                 oResult = .FindOne()
             End With
 
-            If (Not oResult Is Nothing) Then
+            If (oResult IsNot Nothing) Then
                 If (entry.Username Is String.Empty) Then
                     oUserCapitalCase = ("uid=" & networkId & ",").ToUpper
                     For Each sUserName As String In oResult.Properties("member")
@@ -270,13 +270,13 @@ Public Class Authentication
     Public ReadOnly Property ApplicationHost As String
         Get
             Dim oHost As String = String.Empty
-            If Not System.Web.HttpContext.Current Is Nothing Then
-                oHost = System.Web.HttpContext.Current.Request.Url.Host
-            ElseIf Not System.ServiceModel.OperationContext.Current Is Nothing Then
+            If Web.HttpContext.Current IsNot Nothing Then
+                oHost = Web.HttpContext.Current.Request.Url.Host
+            ElseIf ServiceModel.OperationContext.Current IsNot Nothing Then
                 ' WCF
-                oHost = System.ServiceModel.OperationContext.Current.Channel.LocalAddress.Uri.Host
-            ElseIf Not System.Net.Dns.GetHostName Is Nothing Then
-                oHost = System.Net.Dns.GetHostName
+                oHost = ServiceModel.OperationContext.Current.Channel.LocalAddress.Uri.Host
+            ElseIf Net.Dns.GetHostName IsNot Nothing Then
+                oHost = Net.Dns.GetHostName
             End If
             Return oHost
         End Get
@@ -315,13 +315,13 @@ Public Class Authentication
                      AppConfig.MANUAL_PREFIX & "HUB")
         If connType = String.Empty Then
             ' Get the hub from config file
-            connType = Assurant.Elita.Configuration.ElitaConfig.Current.General.Hub
+            connType = Elita.Configuration.ElitaConfig.Current.General.Hub
         End If
         Return connType
     End Function
 
     Private Sub StartLog()
-        Dim isDebug As String = System.Configuration.ConfigurationSettings.AppSettings("DEBUG_LOG")
+        Dim isDebug As String = Configuration.ConfigurationSettings.AppSettings("DEBUG_LOG")
         If isDebug Is Nothing Then
             isDebug = "FALSE"
         End If
@@ -336,7 +336,7 @@ Public Class Authentication
     Private Function IsUserPrivacyGroup(networkId As String, privacyLevel As String) As Boolean
         Dim isInLdap As Boolean = False
         If privacyLevel = AppConfig.DB_PRIVACY_ADV Then
-            isInLdap = IsLdapUserInGroup(Assurant.Elita.Configuration.ElitaConfig.Current.Security.DataProtectionGroup, networkId)
+            isInLdap = IsLdapUserInGroup(Elita.Configuration.ElitaConfig.Current.Security.DataProtectionGroup, networkId)
             If isInLdap Then
                 _PrivacyUserType = AppConfig.DataProtectionPrivacyLevel.Privacy_DataProtection
             Else
@@ -389,8 +389,8 @@ Public Class Authentication
         'Dim appUserSuffix As String = String.Empty
         Dim oServers As Servers
         Dim bIsDebugLogin As Boolean = False
-        Dim isDebugLogin As String = System.Configuration.ConfigurationSettings.AppSettings("DEBUG_LOGIN")
-        Dim isTraceOn As String = System.Configuration.ConfigurationSettings.AppSettings("TRACE_ON")
+        Dim isDebugLogin As String = Configuration.ConfigurationSettings.AppSettings("DEBUG_LOGIN")
+        Dim isTraceOn As String = Configuration.ConfigurationSettings.AppSettings("TRACE_ON")
         'Now set the Principal
         Dim identity As New ElitaPlusIdentity("ASSURNET")
         With identity
@@ -401,9 +401,9 @@ Public Class Authentication
         End With
 
         Dim principal As New ElitaPlusPrincipal(identity)
-        System.Threading.Thread.CurrentPrincipal = DirectCast(principal, ElitaPlusPrincipal)
+        Threading.Thread.CurrentPrincipal = DirectCast(principal, ElitaPlusPrincipal)
         StartLog()
-        If Not isDebugLogin Is Nothing Then
+        If isDebugLogin IsNot Nothing Then
             isDebugLogin = isDebugLogin.ToUpper
             If isDebugLogin = "TRUE" Then
                 bIsDebugLogin = True
@@ -413,7 +413,7 @@ Public Class Authentication
             End If
         End If
 
-        If Not isTraceOn Is Nothing Then
+        If isTraceOn IsNot Nothing Then
             isTraceOn = isTraceOn.ToUpper
             If isTraceOn = "TRUE" Then
                 identity.TraceOn = True
@@ -430,12 +430,12 @@ Public Class Authentication
         identity.LdapIp = oServers.LdapIp
 
         ' Privacy groups
-        If Not userPrivacyGroups Is Nothing Then
+        If userPrivacyGroups IsNot Nothing Then
             ' We already have the user privacy groups
             _PrivacyUserType = getDataProtectionPrivacyLevel(oServers.PrivacyLevelXCD, userPrivacyGroups) 'PrivacyLeveXCD property will be tri-state 
             'Trace userprivacygroup issue
             Dim logEntry As String
-            If (Not principal.ActiveUser Is Nothing) Then
+            If (principal.ActiveUser IsNot Nothing) Then
                 logEntry = " Authentication Class: _privaceygroup is not nothing; UserID=" & principal.ActiveUser.NetworkId & "; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
             Else
                 logEntry = " Authentication Class: _privaceygroup is not nothing; UserID= & principal.ActiveUser is still nothing & ; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
@@ -447,7 +447,7 @@ Public Class Authentication
             IsUserPrivacyGroup(networkID, oServers.PrivacyLevelXCD) 'PrivacyLeveXCD property will be tri-state 
             'Trace userprivacygroup issue
             Dim logEntry As String
-            If (Not principal.ActiveUser Is Nothing) Then
+            If (principal.ActiveUser IsNot Nothing) Then
                 logEntry = " Authentication Class: _privaceygroup is nothing and calling LDAP; UserID=" & principal.ActiveUser.NetworkId & "; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
             Else
                 logEntry = " Authentication Class: _privaceygroup is nothing and calling LDAP; UserID= & principal.ActiveUser is still nothing & ; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
@@ -480,12 +480,12 @@ Public Class Authentication
  
         If bIsDebugLogin = True Then
             Dim trace As String
-            If (Not userPrivacyGroups Is Nothing) Then
+            If (userPrivacyGroups IsNot Nothing) Then
                 trace = String.Join(",", userPrivacyGroups.ToArray())
             End If
 
-            AppConfig.Debug("CompanyGroup=" & Authentication.CompanyGroupCode &
-               "@ Language =" & GuidControl.GuidToHexString(Authentication.LangId) &
+            AppConfig.Debug("CompanyGroup=" & CompanyGroupCode &
+               "@ Language =" & GuidControl.GuidToHexString(LangId) &
                "@Groups" & trace)
         End If
 
@@ -540,8 +540,8 @@ Public Class Authentication
         If (String.IsNullOrWhiteSpace(machineDomainName)) Then
             machineDomain = GetMachineDomain()
         Else
-            If String.IsNullOrWhiteSpace(Assurant.Elita.Configuration.ElitaConfig.Current.General.MachineDomain) = False Then
-                If machineDomainName = Assurant.Elita.Configuration.ElitaConfig.Current.General.MachineDomain Then
+            If String.IsNullOrWhiteSpace(Elita.Configuration.ElitaConfig.Current.General.MachineDomain) = False Then
+                If machineDomainName = Elita.Configuration.ElitaConfig.Current.General.MachineDomain Then
                     machineDomain = machineDomainName
                 Else
                     machineDomain = GetMachineDomain()
@@ -574,15 +574,15 @@ Public Class Authentication
     End Function
 
     Public Shared Sub SetCulture()
-        If CType(System.Threading.Thread.CurrentPrincipal, Object).GetType Is GetType(ElitaPlusPrincipal) Then
+        If CType(Threading.Thread.CurrentPrincipal, Object).GetType Is GetType(ElitaPlusPrincipal) Then
             'Once the user is logged in we will be refreshing the culture with the user's language culture
             ' Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             '  Dim langId As Guid = langId
-            Dim cultureName As String = LookupListNew.GetCodeFromId(LookupListNew.LK_LANGUAGE_CULTURES, LangId)
-            System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(cultureName)
+            Dim cultureName As String = LookupListNew.GetCodeFromId(LookupListCache.LK_LANGUAGE_CULTURES, LangId)
+            Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(cultureName)
 
-            if (System.Threading.Thread.CurrentThread.CurrentCulture.Name.ToUpper() = "ZH-CN") then
-                System.Threading.Thread.CurrentThread.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames = {"一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月",""}
+            if (Threading.Thread.CurrentThread.CurrentCulture.Name.ToUpper() = "ZH-CN") then
+                Threading.Thread.CurrentThread.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames = {"一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月",""}
             End If
 
         End If

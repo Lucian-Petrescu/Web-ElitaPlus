@@ -59,7 +59,7 @@ Public Class UserNotification
         Try
             Dim dal As New UserNotificationDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -164,9 +164,9 @@ Public Class UserNotification
 
         Dim dal As New UserNotificationDAL
 
-        Dim AudianceTypeExternalId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__EXTERNAL_USER)
-        Dim AudianceTypeInternalId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__INTERNAL_USER)
-        Dim AudianceTypeAllId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__ALL_USERS)
+        Dim AudianceTypeExternalId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__EXTERNAL_USER)
+        Dim AudianceTypeInternalId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__INTERNAL_USER)
+        Dim AudianceTypeAllId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__ALL_USERS)
 
         If userId.Equals(Guid.Empty) Then
             Return dal.UserHasNotifications(ElitaPlusIdentity.Current.ActiveUser.Id, ElitaPlusIdentity.Current.ActiveUser.External, AudianceTypeExternalId, AudianceTypeInternalId, AudianceTypeAllId)

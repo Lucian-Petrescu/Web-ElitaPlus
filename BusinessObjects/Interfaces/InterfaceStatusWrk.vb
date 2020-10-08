@@ -83,7 +83,7 @@ Public Class InterfaceStatusWrk
         Try
             Dim dal As New InterfaceStatusWrkDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -114,7 +114,7 @@ Public Class InterfaceStatusWrk
                 ds = dal.LoadByActiveFileName(filename, parentFile)
             End If
 
-            If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
                 Return False
             Else
                 Return True
@@ -130,7 +130,7 @@ Public Class InterfaceStatusWrk
             Dim dal As New InterfaceStatusWrkDAL
             Dim ds As New DataSet
             ds = dal.Load_IsStatus_Running(id)
-            If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
                 Return True
             Else
                 Return False
@@ -302,7 +302,7 @@ Public Class InterfaceStatusWrk
                  (intStatus <> InterfaceStatusWrkDAL.STATUS_FAILURE) AndAlso _
                  (currentPollingCycles < maxPollingCycles))
 
-            System.Threading.Thread.CurrentThread.Sleep(sleepInterval)
+            Threading.Thread.CurrentThread.Sleep(sleepInterval)
             intStatus = ReLoadStatus()
             currentPollingCycles += 1
         End While

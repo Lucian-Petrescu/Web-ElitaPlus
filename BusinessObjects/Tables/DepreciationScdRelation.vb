@@ -64,7 +64,7 @@ Public Class DepreciationScdRelation
         Try
             Dim dal As New DepreciationScdRelationDal
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(DepreciationScdRelationDal.TableName).Rows.Remove(Row)
                 End If
             End If
@@ -344,8 +344,8 @@ Public Class DepreciationScdRelation
         If listToCheck.Exists(Function(r) (r.Id <> Id) _
                     AndAlso (r.DepreciationScheduleId.Equals(DepreciationScheduleId)) _
                     AndAlso (r.DepreciationScheduleUsageXcd.Equals(DepreciationScheduleUsageXcd)) _
-                    AndAlso ((EffectiveDate.Value >= r.EffectiveDate.Value And EffectiveDate.Value <= r.ExpirationDate.Value) _
-                              OrElse (ExpirationDate.Value >= r.EffectiveDate.Value And ExpirationDate.Value <= r.ExpirationDate.Value)
+                    AndAlso ((EffectiveDate.Value >= r.EffectiveDate.Value AndAlso EffectiveDate.Value <= r.ExpirationDate.Value) _
+                              OrElse (ExpirationDate.Value >= r.EffectiveDate.Value AndAlso ExpirationDate.Value <= r.ExpirationDate.Value)
                             )) Then
             blnDup = True
         End If

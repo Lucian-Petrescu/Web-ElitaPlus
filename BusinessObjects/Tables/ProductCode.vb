@@ -66,7 +66,7 @@ Public Class ProductCode
         Try
             Dim dal As New ProductCodeDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -90,7 +90,7 @@ Public Class ProductCode
         Try
             Dim dal As New ProductCodeDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -127,7 +127,7 @@ Public Class ProductCode
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        UpgradeProgramId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+        UpgradeProgramId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
         Inuseflag = "N"
     End Sub
 #End Region
@@ -518,7 +518,7 @@ Public Class ProductCode
     Public ReadOnly Property UpgradeFinanceBalanceComputationMethod As String
         Get
             If (UPGFinanceBalCompMethId <> Guid.Empty) Then
-                Return LookupListNew.GetCodeFromId(LookupListNew.LK_UPG_FINANCE_BAL_COMP_METH, UPGFinanceBalCompMethId)
+                Return LookupListNew.GetCodeFromId(LookupListCache.LK_UPG_FINANCE_BAL_COMP_METH, UPGFinanceBalCompMethId)
             Else
                 Return Codes.UPG_FINANCE_BAL_COMP_METH__NONE
             End If
@@ -1362,7 +1362,7 @@ Public Class ProductCode
             If _isDSCreator AndAlso (IsDirty OrElse IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ProductCodeDAL
                 'dal.Update(Me.Row)
-                MyBase.UpdateFamily(Dataset)
+                UpdateFamily(Dataset)
                 dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
                 If Row.RowState <> DataRowState.Detached Then
@@ -1486,7 +1486,7 @@ Public Class ProductCode
             Dim index As Integer
             ' Create Array
             For index = 0 To dtProductCodeIDs.Rows.Count - 1
-                If Not dtProductCodeIDs.Rows(index)(dal.COL_NAME_PRODUCT_CODE_ID) Is System.DBNull.Value Then
+                If dtProductCodeIDs.Rows(index)(dal.COL_NAME_PRODUCT_CODE_ID) IsNot DBNull.Value Then
                     ProductCodeIDs.Add(New Guid(CType(dtProductCodeIDs.Rows(index)(dal.COL_NAME_PRODUCT_CODE_ID), Byte())))
                 End If
             Next
@@ -1522,7 +1522,7 @@ Public Class ProductCode
         Try
             Dim dal As New ProductCodeDAL
             Dim objDealer As New Dealer(dealerId)
-            Dim TranslateProductCode_Flag As String = LookupListNew.GetCodeFromId(LookupListNew.LK_TRANSLATE_PRODUCT_CODES, objDealer.ConvertProductCodeId)
+            Dim TranslateProductCode_Flag As String = LookupListNew.GetCodeFromId(LookupListCache.LK_TRANSLATE_PRODUCT_CODES, objDealer.ConvertProductCodeId)
             If TranslateProductCode_Flag.Equals(Codes.TPRDC_NO) Then
                 Return New ProductCodeSearchByDealerDVForWS(
                     dal.LoadListByDealerForWS(dealerId, WarrSalesDate, sort_by,
@@ -1544,7 +1544,7 @@ Public Class ProductCode
         Try
             Dim dal As New ProductCodeDAL
             Dim objDealer As New Dealer(dealerId)
-            Dim TranslateProductCode_Flag As String = LookupListNew.GetCodeFromId(LookupListNew.LK_TRANSLATE_PRODUCT_CODES, objDealer.ConvertProductCodeId)
+            Dim TranslateProductCode_Flag As String = LookupListNew.GetCodeFromId(LookupListCache.LK_TRANSLATE_PRODUCT_CODES, objDealer.ConvertProductCodeId)
             If TranslateProductCode_Flag.Equals(Codes.TPRDC_NO) Then
                 Return dal.LoadDealerProductsInfo(ds, dealerId)
             Else
@@ -1773,7 +1773,7 @@ Public Class ProductCode
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, ProdRegionBO.RegionId)
         Next
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause
         Else
@@ -1866,7 +1866,7 @@ Public Class ProductCode
         dv = GetDeviceTypes(deviceType)
         For i = 0 To dv.Count - 1
             Dim prddevicetype As ProductEquipment = ProductDeviceTypeChildren.Find(New Guid(CType(dv(i)(LookupListNew.COL_ID_NAME), Byte())))
-            If Not prddevicetype Is Nothing Then
+            If prddevicetype IsNot Nothing Then
                 dtList.Add(prddevicetype)
             End If
         Next
@@ -1889,14 +1889,14 @@ Public Class ProductCode
     Public Sub RemoveDeviceTypesProdEquip(deviceTypeId As Guid)
 
         Dim prddevicetype As ProductEquipment = ProductDeviceTypeChildren.Find(deviceTypeId)
-        If Not prddevicetype Is Nothing Then
+        If prddevicetype IsNot Nothing Then
             prddevicetype.Delete()
         End If
 
     End Sub
     Public Sub SaveDeviceTypesProdEquip(workingItemPrddevicetype As ProductEquipment)
         Dim prddevicetype As ProductEquipment = ProductDeviceTypeChildren.Find(workingItemPrddevicetype.DeviceTypeId)
-        If Not prddevicetype Is Nothing Then
+        If prddevicetype IsNot Nothing Then
             prddevicetype.MethodOfRepairXcd = workingItemPrddevicetype.MethodOfRepairXcd
             prddevicetype.Save()
         End If
@@ -1914,7 +1914,7 @@ Public Class ProductCode
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, ProdDeviceTypeBO.DeviceTypeId)
         Next
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause
         Else
@@ -2152,7 +2152,7 @@ Public Class ProductCode
 
             If (Not obj.DealerId = Guid.Empty) Then
                 Dim oDealer As Dealer = New Dealer(obj.DealerId)
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_INSTALLMENT_DEFINITION, oDealer.UseInstallmentDefnId) = Codes.INSTALLMENT_DEFINITION__INCOMING Then
+                If LookupListNew.GetCodeFromId(LookupListCache.LK_INSTALLMENT_DEFINITION, oDealer.UseInstallmentDefnId) = Codes.INSTALLMENT_DEFINITION__INCOMING Then
                     Return True
                 End If
 
@@ -2178,7 +2178,7 @@ Public Class ProductCode
 
             If (Not obj.DealerId = Guid.Empty) Then
                 Dim oDealer As Dealer = New Dealer(obj.DealerId)
-                Dim dealerInstallmentDefCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_INSTALLMENT_DEFINITION, oDealer.UseInstallmentDefnId)
+                Dim dealerInstallmentDefCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_INSTALLMENT_DEFINITION, oDealer.UseInstallmentDefnId)
 
                 If dealerInstallmentDefCode.Equals(Codes.INSTALLMENT_DEFINITION__INCOMING) Then
                     Return True
@@ -2203,12 +2203,12 @@ Public Class ProductCode
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
-            If Not obj.NumOfClaims Is Nothing And obj.NumOfRepairClaims Is Nothing Then
+            If obj.NumOfClaims IsNot Nothing And obj.NumOfRepairClaims Is Nothing Then
                 Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
@@ -2230,7 +2230,7 @@ Public Class ProductCode
 
             If obj.NumOfClaims Is Nothing Or obj.NumOfRepairClaims Is Nothing Then
                 Return True
-            ElseIf Not obj.NumOfClaims Is Nothing And Not obj.NumOfRepairClaims Is Nothing Then
+            ElseIf obj.NumOfClaims IsNot Nothing And obj.NumOfRepairClaims IsNot Nothing Then
                 If obj.NumOfRepairClaims.Value > obj.NumOfClaims.Value Then
                     Return False
                 Else
@@ -2244,12 +2244,12 @@ Public Class ProductCode
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
-            If Not obj.NumOfClaims Is Nothing And obj.NumOfReplacementClaims Is Nothing Then
+            If obj.NumOfClaims IsNot Nothing And obj.NumOfReplacementClaims Is Nothing Then
                 Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
@@ -2270,7 +2270,7 @@ Public Class ProductCode
 
             If obj.NumOfClaims Is Nothing Or obj.NumOfReplacementClaims Is Nothing Then
                 Return True
-            ElseIf Not obj.NumOfClaims Is Nothing And Not obj.NumOfReplacementClaims Is Nothing Then
+            ElseIf obj.NumOfClaims IsNot Nothing And obj.NumOfReplacementClaims IsNot Nothing Then
                 If obj.NumOfReplacementClaims.Value > obj.NumOfClaims.Value Then
                     Return False
                 Else
@@ -2290,7 +2290,7 @@ Public Class ProductCode
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
-            If Not obj.AllowRegisteredItems Is Nothing And obj.AllowRegisteredItems = "YESNO-Y" Then
+            If obj.AllowRegisteredItems IsNot Nothing And obj.AllowRegisteredItems = "YESNO-Y" Then
                 If obj.ListForDeviceGroups = Guid.Empty Then
                     Return False
                 End If
@@ -2309,9 +2309,9 @@ Public Class ProductCode
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
-            Return (Not obj.AllowRegisteredItems Is Nothing) AndAlso
+            Return (obj.AllowRegisteredItems IsNot Nothing) AndAlso
                 ((obj.AllowRegisteredItems = "YESNO-Y" And obj.UpdateReplaceRegItemsId <> Guid.Empty) Or
-                (obj.AllowRegisteredItems = "YESNO-N" And obj.UpdateReplaceRegItemsId = Guid.Empty))
+                (obj.AllowRegisteredItems = "YESNO-N" AndAlso obj.UpdateReplaceRegItemsId = Guid.Empty))
         End Function
     End Class
 
@@ -2329,12 +2329,12 @@ Public Class ProductCode
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
             ' When "Claim/Liability Limit Base On" is set to a value other than "Not Applicable", "Claim/Liability Limit Policy" is requied
-            If ((Not obj Is Nothing) AndAlso (Not obj.ProdLiabilityLimitBasedOnId = Guid.Empty)) Then
+            If ((obj IsNot Nothing) AndAlso (Not obj.ProdLiabilityLimitBasedOnId = Guid.Empty)) Then
 
-                Dim sProdLiabilityLimitBasedOnCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PRODUCT_LIABILITY_LIMIT_BASE, obj.ProdLiabilityLimitBasedOnId)
+                Dim sProdLiabilityLimitBasedOnCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_PRODUCT_LIABILITY_LIMIT_BASE, obj.ProdLiabilityLimitBasedOnId)
 
                 If Not String.IsNullOrEmpty(sProdLiabilityLimitBasedOnCode) AndAlso
-                    (Not sProdLiabilityLimitBasedOnCode = LookupListNew.LK_COVERAGE_NOT_APPLICABLE_TYPE) Then
+                    (Not sProdLiabilityLimitBasedOnCode = LookupListCache.LK_COVERAGE_NOT_APPLICABLE_TYPE) Then
                     Return Not (obj.ProdLiabilityLimitPolicyId = Guid.Empty)
                 End If
             End If
@@ -2354,12 +2354,12 @@ Public Class ProductCode
             REM When the " Claim/Liability limit Base On" flag is set to any value other than "Not Applicable",
             REM the "Claim/Liability limit Appllied To" is required.
 
-            If ((Not obj Is Nothing) AndAlso (Not obj.ProdLiabilityLimitBasedOnId = Guid.Empty)) Then
+            If ((obj IsNot Nothing) AndAlso (Not obj.ProdLiabilityLimitBasedOnId = Guid.Empty)) Then
 
-                Dim sProdLiabilityLimitBasedOnCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PRODUCT_LIABILITY_LIMIT_BASE, obj.ProdLiabilityLimitBasedOnId)
+                Dim sProdLiabilityLimitBasedOnCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_PRODUCT_LIABILITY_LIMIT_BASE, obj.ProdLiabilityLimitBasedOnId)
 
                 If Not String.IsNullOrEmpty(sProdLiabilityLimitBasedOnCode) AndAlso
-                    (Not sProdLiabilityLimitBasedOnCode = LookupListNew.LK_COVERAGE_NOT_APPLICABLE_TYPE) Then
+                    (Not sProdLiabilityLimitBasedOnCode = LookupListCache.LK_COVERAGE_NOT_APPLICABLE_TYPE) Then
                     Return Not String.IsNullOrEmpty(obj.ProductLimitApplicableToXCD)
                 End If
             End If
@@ -2376,19 +2376,19 @@ Public Class ProductCode
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
-            If ((Not obj Is Nothing) AndAlso (Not obj.ProdLiabilityLimitBasedOnId = Guid.Empty)) _
-                   AndAlso LookupListNew.LK_COVERAGE_NOT_APPLICABLE_TYPE <> LookupListNew.GetCodeFromId(LookupListNew.LK_PRODUCT_LIABILITY_LIMIT_BASE, obj.ProdLiabilityLimitBasedOnId) Then
+            If ((obj IsNot Nothing) AndAlso (Not obj.ProdLiabilityLimitBasedOnId = Guid.Empty)) _
+                   AndAlso LookupListCache.LK_COVERAGE_NOT_APPLICABLE_TYPE <> LookupListNew.GetCodeFromId(LookupListCache.LK_PRODUCT_LIABILITY_LIMIT_BASE, obj.ProdLiabilityLimitBasedOnId) Then
 
-                Dim sProdLiabilityLimitBasedOnCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PRODUCT_LIABILITY_LIMIT_BASE, obj.ProdLiabilityLimitBasedOnId)
+                Dim sProdLiabilityLimitBasedOnCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_PRODUCT_LIABILITY_LIMIT_BASE, obj.ProdLiabilityLimitBasedOnId)
 
                 If String.IsNullOrEmpty(sProdLiabilityLimitBasedOnCode) OrElse
-                    (sProdLiabilityLimitBasedOnCode = LookupListNew.LK_COVERAGE_NOT_APPLICABLE_TYPE) Then
+                    (sProdLiabilityLimitBasedOnCode = LookupListCache.LK_COVERAGE_NOT_APPLICABLE_TYPE) Then
 
                     ' When ProdLiabilityLimitBasedOnId is set to NOTAPPL,
                     ' the following fields should be empty
 
-                    If Not obj.ProdLiabilityLimit Is Nothing Or
-                        Not obj.ProdLiabilityLimitPercent Is Nothing Or
+                    If obj.ProdLiabilityLimit IsNot Nothing Or
+obj.ProdLiabilityLimitPercent IsNot Nothing Or
                         Not obj.ProdLiabilityLimitPolicyId.Equals(Guid.Empty) Or
                         Not String.IsNullOrEmpty(obj.ProductLimitApplicableToXCD) Then
 
@@ -2416,23 +2416,23 @@ Public Class ProductCode
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
 
-            If ((Not obj Is Nothing) AndAlso (Not obj.ProdLiabilityLimitBasedOnId = Guid.Empty)) Then
+            If ((obj IsNot Nothing) AndAlso (Not obj.ProdLiabilityLimitBasedOnId = Guid.Empty)) Then
 
                 Dim dealerBO As Dealer = New Dealer(obj.DealerId)
-                If Not dealerBO Is Nothing Then
+                If dealerBO IsNot Nothing Then
 
                     If dealerBO.AttributeValues.Contains(Codes.DLR_ATTRBT__VALIDATE_NUM_OF_CLAIMS) _
                         AndAlso dealerBO.AttributeValues.Value(Codes.DLR_ATTRBT__VALIDATE_NUM_OF_CLAIMS) = Codes.YESNO_Y Then
 
-                        Dim sProdLiabilityLimitBasedOnCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PRODUCT_LIABILITY_LIMIT_BASE, obj.ProdLiabilityLimitBasedOnId)
+                        Dim sProdLiabilityLimitBasedOnCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_PRODUCT_LIABILITY_LIMIT_BASE, obj.ProdLiabilityLimitBasedOnId)
 
                         If Not String.IsNullOrEmpty(sProdLiabilityLimitBasedOnCode) _
-                            AndAlso (sProdLiabilityLimitBasedOnCode <> LookupListNew.LK_COVERAGE_NOT_APPLICABLE_TYPE) Then
+                            AndAlso (sProdLiabilityLimitBasedOnCode <> LookupListCache.LK_COVERAGE_NOT_APPLICABLE_TYPE) Then
 
 
                             If Not String.IsNullOrEmpty(obj.ProductLimitApplicableToXCD) _
-                                AndAlso (obj.ProductLimitApplicableToXCD = LookupListNew.LK_PROD_LIMIT_APPLICABLE_TO_ALL _
-                                Or obj.ProductLimitApplicableToXCD = LookupListNew.LK_PROD_LIMIT_APPLICABLE_TO_CLAIMONLY) Then
+                                AndAlso (obj.ProductLimitApplicableToXCD = LookupListCache.LK_PROD_LIMIT_APPLICABLE_TO_ALL _
+                                Or obj.ProductLimitApplicableToXCD = LookupListCache.LK_PROD_LIMIT_APPLICABLE_TO_CLAIMONLY) Then
 
                                 If obj.NumOfClaims Is Nothing OrElse obj.NumOfClaims.Value = 0 Then
                                     Return False
@@ -2465,7 +2465,7 @@ Public Class ProductCode
 
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
-            If Not obj Is Nothing AndAlso Not String.IsNullOrEmpty(obj.BenefitEligibleActionXCD) Then
+            If obj IsNot Nothing AndAlso Not String.IsNullOrEmpty(obj.BenefitEligibleActionXCD) Then
                 If obj.BenefitEligibleFlagXCD <> Codes.EXT_YESNO_Y Then
                     Return False
                 End If

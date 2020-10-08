@@ -79,7 +79,7 @@ Public Class GetParts
                 If Not .IsClaim_IDNull Then
                     ClaimID = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(.Claim_ID))
                     LoadRiskGroup()
-                ElseIf (Not .IsClaim_NumberNull AndAlso .IsCompany_CodeNull) Or (.IsClaim_NumberNull AndAlso Not .IsCompany_CodeNull) Then
+                ElseIf (Not .IsClaim_NumberNull AndAlso .IsCompany_CodeNull) OrElse (.IsClaim_NumberNull AndAlso Not .IsCompany_CodeNull) Then
                     Throw New BOValidationException("WSUtilities GetParts Error: ", Common.ErrorCodes.WS_XML_INVALID)
                 ElseIf Not .IsClaim_NumberNull AndAlso Not .IsCompany_CodeNull Then
                     CompanyCode = .Company_Code
@@ -113,10 +113,10 @@ Public Class GetParts
 
     Private Sub getRiskGroupId(Code As String)
         Dim dvRiskGroups As DataView = LookupListNew.GetRiskGroupsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-        If Not dvRiskGroups Is Nothing AndAlso dvRiskGroups.Count > 0 Then
+        If dvRiskGroups IsNot Nothing AndAlso dvRiskGroups.Count > 0 Then
             _Risk_Group_id = LookupListNew.GetIdFromCode(dvRiskGroups, Code)
             If _Risk_Group_id.Equals(Guid.Empty) Then
-                Throw New BOValidationException("WSUtilities GetParts Error: ", Assurant.ElitaPlus.Common.ErrorCodes.ERR_INVALID_RISK_GROUP)
+                Throw New BOValidationException("WSUtilities GetParts Error: ", Common.ErrorCodes.ERR_INVALID_RISK_GROUP)
             End If
         End If
     End Sub
@@ -200,7 +200,7 @@ Public Class GetParts
         Dim i As Integer
         For i = 0 To objCompaniesAL.Count - 1
             Dim objCompany As New Company(CType(objCompaniesAL.Item(i), Guid))
-            If Not objCompany Is Nothing AndAlso objCompany.Code.Equals(CompanyCode.ToUpper) Then
+            If objCompany IsNot Nothing AndAlso objCompany.Code.Equals(CompanyCode.ToUpper) Then
                 CompanyId = objCompany.Id
             End If
         Next

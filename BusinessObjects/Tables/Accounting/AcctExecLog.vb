@@ -67,7 +67,7 @@ Public Class AcctExecLog
         Try
             Dim dal As New AcctExecLogDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -222,7 +222,7 @@ Public Class AcctExecLog
             If Success Then
                 Status = String.Empty
             Else
-                If Not PreviousRunDate Is Nothing Then LastRunDate = PreviousRunDate
+                If PreviousRunDate IsNot Nothing Then LastRunDate = PreviousRunDate
                 Status = "F"
             End If
 

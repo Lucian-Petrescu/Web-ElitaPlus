@@ -3,7 +3,7 @@ Public Class OverlapValidationVisitor
     Implements IVisitor
 
     Public Function Visit(element As IElement) As Boolean Implements IVisitor.Visit
-        If Not element.GetType.GetInterface("IExpirable", True) Is Nothing Then
+        If element.GetType.GetInterface("IExpirable", True) IsNot Nothing Then
             Dim iface As IExpirable = DirectCast(element, IExpirable)
             'validation starts here
             Dim olapDal As New OverlapValidationVisitorDAL

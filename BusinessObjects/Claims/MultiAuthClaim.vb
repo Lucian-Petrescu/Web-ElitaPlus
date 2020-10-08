@@ -57,7 +57,7 @@ Public NotInheritable Class MultiAuthClaim
         If (HasActiveAuthorizations) Then
             Dim claimNumber As String = If(Me.ClaimNumber = String.Empty, "0", Me.ClaimNumber)
             If (ClaimInvoice.getPaymentsList(CompanyId, claimNumber).Count = 0) Then
-                If (Me.Status = BasicClaimStatus.Active Or Me.Status = BasicClaimStatus.Pending Or Me.Status = BasicClaimStatus.Denied) Then
+                If (Me.Status = BasicClaimStatus.Active OrElse Me.Status = BasicClaimStatus.Pending OrElse Me.Status = BasicClaimStatus.Denied) Then
                     flag = True
                 End If
             End If
@@ -81,9 +81,9 @@ Public NotInheritable Class MultiAuthClaim
             Dim flag = False
             If (Not IsNew) Then
                 For Each auth As ClaimAuthorization In ClaimAuthorizationChildren
-                    If Not ClaimActivityCode Is Nothing AndAlso ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK AndAlso Not auth.RepairDate Is Nothing AndAlso Not auth.ServiceCenter Is Nothing Then
+                    If ClaimActivityCode IsNot Nothing AndAlso ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK AndAlso auth.RepairDate IsNot Nothing AndAlso auth.ServiceCenter IsNot Nothing Then
                         Dim elpasedDaysSinceRepaired As Long
-                        If Not auth.PickUpDate Is Nothing Then
+                        If auth.PickUpDate IsNot Nothing Then
                             elpasedDaysSinceRepaired = Date.Now.Subtract(auth.PickUpDate.Value).Days
                         Else
                             elpasedDaysSinceRepaired = Date.Now.Subtract(auth.RepairDate.Value).Days
@@ -195,8 +195,7 @@ Public NotInheritable Class MultiAuthClaim
             If DeductibleType.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_AUTHORIZED_AMOUNT Then
                 PrepopulateDeductible()
             End If
-            If Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) And
-                newClaimAuth.ContainsDeductible Then
+            If Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) AndAlso newClaimAuth.ContainsDeductible Then
                 newClaimAuth.AddDeductibleLineItem()
             End If
             newClaimAuth.Save()
@@ -215,7 +214,7 @@ Public NotInheritable Class MultiAuthClaim
         newClaimAuth.Save()
         CalculateAuthAmount()
         PrepopulateDeductible()
-        If Not specialInstructions Is Nothing Then newClaimAuth.SpecialInstruction = specialInstructions
+        If specialInstructions IsNot Nothing Then newClaimAuth.SpecialInstruction = specialInstructions
 
         Return newClaimAuth
     End Function
@@ -232,7 +231,7 @@ Public NotInheritable Class MultiAuthClaim
         Dim repairDate As DateType = Nothing
         Dim createdOrModifiedDate As DateType = Nothing
         For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
-            If (Not auth.RepairDate Is Nothing) Then
+            If (auth.RepairDate IsNot Nothing) Then
                 If (createdOrModifiedDate Is Nothing) Then
                     createdOrModifiedDate = If(auth.ModifiedDate Is Nothing, auth.CreatedDate, auth.ModifiedDate)
                     repairDate = auth.RepairDate
@@ -250,7 +249,7 @@ Public NotInheritable Class MultiAuthClaim
         Dim pickUpDate As DateType = Nothing
         Dim createdOrModifiedDate As DateType = Nothing
         For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
-            If (Not auth.RepairDate Is Nothing) Then
+            If (auth.RepairDate IsNot Nothing) Then
                 If (createdOrModifiedDate Is Nothing) Then
                     createdOrModifiedDate = If(auth.ModifiedDate Is Nothing, auth.CreatedDate, auth.ModifiedDate)
                     pickUpDate = auth.PickUpDate
@@ -386,8 +385,8 @@ Public NotInheritable Class MultiAuthClaim
 
 
             CalculateFollowUpDate()
-            ClaimActivityId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT)
-            MethodOfRepairId = LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)
+            ClaimActivityId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT)
+            MethodOfRepairId = LookupListNew.GetIdFromCode(LookupListCache.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)
             ReasonClosedId = Guid.Empty
             ClaimClosedDate = Nothing
 
@@ -417,10 +416,10 @@ Public NotInheritable Class MultiAuthClaim
 
         Dim equipmentId As Guid, equipmentclassId As Guid, conditionId As Guid
         If (Dealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) Then
-            If (Not ClaimedEquipment Is Nothing) Then
+            If (ClaimedEquipment IsNot Nothing) Then
                 equipmentId = ClaimedEquipment.EquipmentId
                 equipmentclassId = ClaimedEquipment.EquipmentBO.EquipmentClassId
-                conditionId = LookupListNew.GetIdFromCode(LookupListNew.LK_CONDITION, Codes.EQUIPMENT_COND__NEW)
+                conditionId = LookupListNew.GetIdFromCode(LookupListCache.LK_CONDITION, Codes.EQUIPMENT_COND__NEW)
             Else
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, "NO_CLAIMED_EQUIPMENT_FOUND")
             End If
@@ -460,8 +459,7 @@ Public NotInheritable Class MultiAuthClaim
         Dim specialInstructions As String = String.Empty
 
         For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
-            If auth.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled Or
-                auth.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Paid Then
+            If auth.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled OrElse auth.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled OrElse auth.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid OrElse auth.ClaimAuthStatus = ClaimAuthorizationStatus.Paid Then
 
                 For Each authItem As ClaimAuthItem In auth.ClaimAuthorizationItemChildren
                     If (authItem.ServiceClassCode = Codes.SERVICE_CLASS__REPAIR) Then
@@ -488,7 +486,7 @@ Public NotInheritable Class MultiAuthClaim
         Next
 
         AddClaimAuthorization(serviceCenter.Id, dv, specialInstructions)
-        ClaimActivityId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__REWORK)
+        ClaimActivityId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__REWORK)
         ReasonClosedId = Guid.Empty
         ClaimClosedDate = Nothing
         If Status <> BasicClaimStatus.Active Then Status = BasicClaimStatus.Active
@@ -534,15 +532,12 @@ Public NotInheritable Class MultiAuthClaim
 
         'Find all authorizations which were modified within 1 sec of claim Closed DateTime
         For Each auth As ClaimAuthorization In ClaimAuthorizationChildren.Where(Function(item) _
-                                                   (item.ModifiedDate.Value.Ticks > claimClosedDateTime.AddSeconds(-1).Ticks And
-                                                    item.ModifiedDate.Value.Ticks < claimClosedDateTime.AddSeconds(1).Ticks))
+                                                   (item.ModifiedDate.Value.Ticks > claimClosedDateTime.AddSeconds(-1).Ticks AndAlso item.ModifiedDate.Value.Ticks < claimClosedDateTime.AddSeconds(1).Ticks))
 
             'Find the Authorization History which was created within 1 sec of claim Closed DateTime and whose status was changed
             Dim claimAuthHist As ClaimAuthHistory = auth.ClaimAuthorizationHistoryChildren.Where(Function(item) _
-                                                  (item.HistCreatedDate.Value.Ticks > claimClosedDateTime.AddSeconds(-1).Ticks And
-                                                    item.HistCreatedDate.Value.Ticks < claimClosedDateTime.AddSeconds(1).Ticks) And
-                                                   item.ClaimAuthStatus <> auth.ClaimAuthStatus).FirstOrDefault()
-            If Not claimAuthHist Is Nothing Then
+                                                  (item.HistCreatedDate.Value.Ticks > claimClosedDateTime.AddSeconds(-1).Ticks AndAlso item.HistCreatedDate.Value.Ticks < claimClosedDateTime.AddSeconds(1).Ticks) AndAlso item.ClaimAuthStatus <> auth.ClaimAuthStatus).FirstOrDefault()
+            If claimAuthHist IsNot Nothing Then
 
                 auth.ClaimAuthStatus = claimAuthHist.ClaimAuthStatus
                 auth.Save()
@@ -568,7 +563,7 @@ Public NotInheritable Class MultiAuthClaim
     Public Function IsDeductibleRefundAllowed() As Boolean
         Dim flag As Boolean = False
         For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
-            If (auth.ClaimAuthStatus = ClaimAuthorizationStatus.Collected And auth.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_SALES_ORDER) Then
+            If (auth.ClaimAuthStatus = ClaimAuthorizationStatus.Collected AndAlso auth.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_SALES_ORDER) Then
 
                 Dim authItem = auth.ClaimAuthorizationItemChildren.Where(Function(i) i.ServiceTypeCode = Codes.SERVICE_TYPE__DEDUCTIBLE).ToList()
 
@@ -583,8 +578,7 @@ Public NotInheritable Class MultiAuthClaim
 
     Public Function IsDeductibleRefundExist() As Boolean
         Dim flag As Boolean = False
-        Dim auth = NonVoidClaimAuthorizationList.Where(Function(c) c.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE And c.PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER And
-                                                                    (c.ClaimAuthStatus = ClaimAuthorizationStatus.Pending Or c.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized)).ToList()
+        Dim auth = NonVoidClaimAuthorizationList.Where(Function(c) c.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE AndAlso c.PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER AndAlso (c.ClaimAuthStatus = ClaimAuthorizationStatus.Pending OrElse c.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized)).ToList()
         If auth.Count > 0 Then
             flag = True
         End If

@@ -79,7 +79,7 @@ Public Class ProductEquipment
         Try
             Dim dal As New ProductEquipmentDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -359,11 +359,11 @@ Public Class ProductEquipment
             Dim bValid As Boolean = True
 
 
-            If Not obj Is Nothing AndAlso obj.ConfigPurposeXcd = ProductEquipmentDAL.BENEFITS_PURPOSE Then
+            If obj IsNot Nothing AndAlso obj.ConfigPurposeXcd = ProductEquipmentDAL.BENEFITS_PURPOSE Then
                 ' This should be always greater than Today's date in case of new record, 
                 ' but for edit record if effective date is passed then no changes should be allowed
                 If obj.IsNew AndAlso
-                    Not obj.EffectiveDateProductEquip Is Nothing AndAlso
+obj.EffectiveDateProductEquip IsNot Nothing AndAlso
                     Not Convert.ToDateTime(obj.EffectiveDateProductEquip.Value) > Date.Today Then
                     Return False
                 End If
@@ -383,7 +383,7 @@ Public Class ProductEquipment
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductEquipment = CType(objectToValidate, ProductEquipment)
 
-            If Not obj Is Nothing AndAlso obj.ConfigPurposeXcd = ProductEquipmentDAL.BENEFITS_PURPOSE Then
+            If obj IsNot Nothing AndAlso obj.ConfigPurposeXcd = ProductEquipmentDAL.BENEFITS_PURPOSE Then
                 If obj.EquipmentId.IsEmpty Then
                     Return False
                 End If
@@ -403,10 +403,10 @@ Public Class ProductEquipment
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductEquipment = CType(objectToValidate, ProductEquipment)
 
-            If Not obj Is Nothing AndAlso obj.ConfigPurposeXcd = ProductEquipmentDAL.BENEFITS_PURPOSE Then
+            If obj IsNot Nothing AndAlso obj.ConfigPurposeXcd = ProductEquipmentDAL.BENEFITS_PURPOSE Then
 
                 Dim equipmentTable As DataTable = obj.Dataset.Tables(ProductEquipmentDAL.TABLE_NAME_BENEFITS)
-                If Not equipmentTable Is Nothing Then
+                If equipmentTable IsNot Nothing Then
                     For Each dataRowEquipment As DataRow In equipmentTable.Rows
 
                         Dim prodEquipmentID As Guid = New Guid(CType(dataRowEquipment(ProductEquipmentDAL.COL_NAME_PROD_ITEM_MANUF_EQUIP_ID), Byte()))
@@ -453,7 +453,7 @@ Public Class ProductEquipment
 
             Dim bValid As Boolean = True
 
-            If Not obj.ExpirationDateProductEquip Is Nothing And Not obj.EffectiveDateProductEquip Is Nothing Then
+            If obj.ExpirationDateProductEquip IsNot Nothing And obj.EffectiveDateProductEquip IsNot Nothing Then
                 If Convert.ToDateTime(obj.EffectiveDateProductEquip.Value) > Convert.ToDateTime(obj.ExpirationDateProductEquip.Value) Then
                     Message = PRODUCT_EQUIPMENT_FORM001
                     bValid = False
@@ -535,11 +535,11 @@ Public Class ProductEquipment
         Public Function AddNewRowToEmptyDV() As ProductEquipmentSearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ProductEquipmentSearchDV.COL_NAME_PROD_ITEM_MANUF_EQUIP_ID) = Guid.NewGuid.ToByteArray
-            row(ProductEquipmentSearchDV.COL_NAME_PRODUCT_CODE_ID) = Guid.Empty.ToByteArray
-            row(ProductEquipmentSearchDV.COL_NAME_MANUFACTURER_ID) = DBNull.Value
-            row(ProductEquipmentSearchDV.COL_NAME_EFFECTIVE_DATE) = DBNull.Value
-            row(ProductEquipmentSearchDV.COL_NAME_EXPIRATION_DATE) = DBNull.Value
+            row(COL_NAME_PROD_ITEM_MANUF_EQUIP_ID) = Guid.NewGuid.ToByteArray
+            row(COL_NAME_PRODUCT_CODE_ID) = Guid.Empty.ToByteArray
+            row(COL_NAME_MANUFACTURER_ID) = DBNull.Value
+            row(COL_NAME_EFFECTIVE_DATE) = DBNull.Value
+            row(COL_NAME_EXPIRATION_DATE) = DBNull.Value
             dt.Rows.Add(row)
             Return New ProductEquipmentSearchDV(dt)
         End Function
@@ -584,11 +584,11 @@ Public Class ProductEquipment
         Public Function AddNewRowToEmptyDV() As ProductBenefitsSearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ProductBenefitsSearchDV.COL_NAME_PROD_ITEM_MANUF_EQUIP_ID) = Guid.NewGuid.ToByteArray
-            row(ProductBenefitsSearchDV.COL_NAME_PRODUCT_CODE_ID) = Guid.Empty.ToByteArray
-            row(ProductBenefitsSearchDV.COL_NAME_MANUFACTURER_ID) = DBNull.Value
-            row(ProductBenefitsSearchDV.COL_NAME_EFFECTIVE_DATE) = DBNull.Value
-            row(ProductBenefitsSearchDV.COL_NAME_EXPIRATION_DATE) = DBNull.Value
+            row(COL_NAME_PROD_ITEM_MANUF_EQUIP_ID) = Guid.NewGuid.ToByteArray
+            row(COL_NAME_PRODUCT_CODE_ID) = Guid.Empty.ToByteArray
+            row(COL_NAME_MANUFACTURER_ID) = DBNull.Value
+            row(COL_NAME_EFFECTIVE_DATE) = DBNull.Value
+            row(COL_NAME_EXPIRATION_DATE) = DBNull.Value
             dt.Rows.Add(row)
             Return New ProductBenefitsSearchDV(dt)
         End Function

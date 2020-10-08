@@ -38,13 +38,13 @@
                 Dim dtMaxExpiration As Date = .IMaxExpiration.Value
                 If (dtMaxExpiration <> GenericConstants.INFINITE_DATE) AndAlso _
                                                 (.IEffective.Value <> dtMaxExpiration.AddDays(1)) Then
-                    MyBase.Message = moErrMax
+                    Message = moErrMax
                     bValid = False
                 End If
             ElseIf (.IIsDeleted = True) Then
                 ' For  deleting
                 If .IExpiration.Value <> .IMaxExpiration.Value Then
-                    MyBase.Message = moErrDelete
+                    Message = moErrDelete
                     bValid = False
                 End If
             End If

@@ -53,7 +53,7 @@ Public Class ProductCodeConversion
         Try
             Dim dal As New ProductCodeConversionDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -415,8 +415,7 @@ Public Class ProductCodeConversion
             Dim dal As New ProductCodeConversionDAL
             Dim odealer As New Dealer(obj.DealerId)
 
-            If (LookupListNew.GetCodeFromId(LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_PROD_CONV_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), odealer.ConvertProductCodeId) = "EXT") Or
-                LookupListNew.GetCodeFromId(LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_PROD_CONV_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), odealer.ConvertProductCodeId) <> "EXT" Then
+            If (LookupListNew.GetCodeFromId(LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_PROD_CONV_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), odealer.ConvertProductCodeId) = "EXT") OrElse LookupListNew.GetCodeFromId(LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_PROD_CONV_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), odealer.ConvertProductCodeId) <> "EXT" Then
 
                 'If LookupListNew.GetCodeFromId(LookupListNew.LK_USE_FULLFILE_PROCESS, odealer.UseFullFileProcessId) <> Codes.FULLFILE_NONE Then
 

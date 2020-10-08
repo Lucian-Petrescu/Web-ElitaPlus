@@ -57,7 +57,7 @@
         Try
             Dim dal As New ConfigQuestionSetDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -405,10 +405,7 @@
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ConfigQuestionSet = CType(objectToValidate, ConfigQuestionSet)
 
-            If (Guid.Empty = obj.CompanyGroupId) And (Guid.Empty = obj.CompanyId) And
-                (Guid.Empty = obj.DealerGroupId) And (Guid.Empty = obj.DealerId) And
-                (Guid.Empty = obj.ProductCodeId) And (Guid.Empty = obj.CoverageTypeId) And
-                (Guid.Empty = obj.RiskTypeId) And (Guid.Empty = obj.DeviceTypeId) Then
+            If (Guid.Empty = obj.CompanyGroupId) AndAlso (Guid.Empty = obj.CompanyId) AndAlso (Guid.Empty = obj.DealerGroupId) AndAlso (Guid.Empty = obj.DealerId) AndAlso (Guid.Empty = obj.ProductCodeId) AndAlso (Guid.Empty = obj.CoverageTypeId) AndAlso (Guid.Empty = obj.RiskTypeId) AndAlso (Guid.Empty = obj.DeviceTypeId) Then
                 Return False
             Else
                 Return True

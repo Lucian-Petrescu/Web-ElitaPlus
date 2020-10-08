@@ -59,7 +59,7 @@ Public Class ClaimStatusLetter
         Try
             Dim dal As New ClaimStatusLetterDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -363,13 +363,13 @@ Public Class ClaimStatusLetter
             Dim obj As ClaimStatusLetter = CType(objectToValidate, ClaimStatusLetter)
             Dim bValid As Boolean = True
 
-            If obj.EmailTo Is Nothing Or obj.EmailTo = "" Then
+            If obj.EmailTo Is Nothing OrElse obj.EmailTo = "" Then
                 bValid = True
             Else
                 Dim arrEmail As String() = obj.EmailTo.Split(New Char() {","})
                 Dim email As String
                 For Each email In arrEmail
-                    If Not (email Is Nothing Or email = "") Then
+                    If Not (email Is Nothing OrElse email = "") Then
                         bValid = MiscUtil.EmailAddressValidation(email)
                         If bValid = False Then
                             Exit For
@@ -398,10 +398,10 @@ Public NotInheritable Class ValidEmailTo
 
             If obj.UseServiceCenterEmail.Equals(Guid.Empty) Then
                 bValid = False
-            ElseIf yesOrNo = "N" AndAlso (obj.EmailTo Is Nothing Or obj.EmailTo = "") Then
+            ElseIf yesOrNo = "N" AndAlso (obj.EmailTo Is Nothing OrElse obj.EmailTo = "") Then
                 bValid = False
                 Message = "RECIPIENT_REQUIRED"
-            ElseIf yesOrNo = "Y" AndAlso Not obj.EmailTo Is Nothing And obj.EmailTo <> "" Then
+            ElseIf yesOrNo = "Y" AndAlso obj.EmailTo IsNot Nothing AndAlso obj.EmailTo <> "" Then
                 bValid = False
                 Message = "RECIPIENT_ONLY_REQUIRED_WHEN_SERVICE_CENTER_RECIPIENT_NO"
             End If
@@ -506,7 +506,7 @@ Public NotInheritable Class ValidEmailTo
         Public Function AddNewRowToEmptyDV() As ClaimStatusLetterSearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ClaimStatusLetterSearchDV.COL_STATUS_LETTER_ID) = (New Guid()).ToByteArray
+            row(COL_STATUS_LETTER_ID) = (New Guid()).ToByteArray
             dt.Rows.Add(row)
             Return New ClaimStatusLetterSearchDV(dt)
         End Function

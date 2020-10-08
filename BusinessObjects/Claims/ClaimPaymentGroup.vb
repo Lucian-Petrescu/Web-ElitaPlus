@@ -59,7 +59,7 @@ Public Class ClaimPaymentGroup
         Try
             Dim dal As New ClaimPaymentGroupDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -300,7 +300,7 @@ Public Class ClaimPaymentGroup
                 For Each ClaimAuthItem As ClaimAuthItem In oClaimAuth.ClaimAuthorizationItemChildren
                     If Not ClaimAuthItem.InvoiceReconciliationId = Guid.Empty Then
                         oInvRecon = New InvoiceReconciliation(ClaimAuthItem.InvoiceReconciliationId, Dataset)
-                        oInvRecon.ReconciliationStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_INV_RECON_STAT, _
+                        oInvRecon.ReconciliationStatusId = LookupListNew.GetIdFromCode(LookupListCache.LK_INV_RECON_STAT, _
                                                                                        Codes.INVOICE_RECON_STATUS_PAID)
                         oInvRecon.Save()
                     End If
@@ -312,7 +312,7 @@ Public Class ClaimPaymentGroup
             Next
 
             'Change the Status of the Claim Payment Group as Paid and Save
-            PaymentGroupStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYMENT_GRP_STAT, Codes.PYMNT_GRP_STATUS_APPROVED_FOR_PAYMENT)
+            PaymentGroupStatusId = LookupListNew.GetIdFromCode(LookupListCache.LK_PAYMENT_GRP_STAT, Codes.PYMNT_GRP_STATUS_APPROVED_FOR_PAYMENT)
 
             'Invoice Recon/Claim Auth should Save in the same Transaction as that of Claim and Claim Invoice/Disbursement.
             Save(Transaction)
@@ -384,7 +384,7 @@ Public Class ClaimPaymentGroup
         For Each ClaimAuthItem As ClaimAuthItem In oClaimAuthBO.ClaimAuthorizationItemChildren
             If Not ClaimAuthItem.InvoiceReconciliationId = Guid.Empty Then
                 oInvRecon = New InvoiceReconciliation(ClaimAuthItem.InvoiceReconciliationId, Dataset)
-                oInvRecon.ReconciliationStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_INV_RECON_STAT, _
+                oInvRecon.ReconciliationStatusId = LookupListNew.GetIdFromCode(LookupListCache.LK_INV_RECON_STAT, _
                                                                                Codes.INVOICE_RECON_STATUS_TO_BE_PAID)
                 oInvRecon.Save()
             End If

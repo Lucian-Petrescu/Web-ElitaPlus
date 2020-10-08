@@ -59,7 +59,7 @@ Public Class PickupListHeader
         Try
             Dim dal As New PickupListHeaderDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -225,9 +225,9 @@ Public Class PickupListHeader
         Dim dal As New PickupListHeaderDAL
         Dim ds As DataSet = dal.GetClaimIDByCode(ElitaPlusIdentity.Current.ActiveUser.Companies, claimNumber, certItemCoverageCode)
 
-        If (ds.Tables.Count > 0 And ds.Tables(0).Rows.Count > 0) Then
+        If (ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0) Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
-            claimID = New Guid(CType(dr(DALObjects.ClaimDAL.COL_NAME_CLAIM_ID), Byte()))
+            claimID = New Guid(CType(dr(ClaimDAL.COL_NAME_CLAIM_ID), Byte()))
         End If
 
         Return claimID

@@ -59,7 +59,7 @@ Public Class AcctTransLog
         Try
             Dim dal As New AcctTransLogDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -922,7 +922,7 @@ Public Class AcctTransLog
 
             'Check the accounting type to determine the type of grouping if any
             _AcctCompany = New AcctCompany(oFelitaEngineData.AccountingCompanyId)
-            _acctExtension = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), _AcctCompany.AcctSystemId)
+            _acctExtension = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), _AcctCompany.AcctSystemId)
 
             If BusinessUnitDV.Count > 0 Then
                 For Each dvRow As System.Data.DataRowView In BusinessUnitDV
@@ -961,7 +961,7 @@ Public Class AcctTransLog
                                     dsTempAP = dal.GetJournalEntriesAP(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(AcctEvent.AcctEventSearchDV.COL_ACCT_EVENT_TYPE_ID), Byte())),
                                     GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), AcctEvent.AcctEventSearchDV.COL_EVENT_CODE)
 
-                                    If Not dsTempAP Is Nothing AndAlso dsTempAP.Tables.Count > 0 AndAlso dsTempAP.Tables(0).Rows.Count > 0 Then
+                                    If dsTempAP IsNot Nothing AndAlso dsTempAP.Tables.Count > 0 AndAlso dsTempAP.Tables(0).Rows.Count > 0 Then
                                         If ds.Tables(AcctTransLogDAL.Table_AP_LINEITEM) Is Nothing Then
                                             ds.Tables.Add(dsTempAP.Tables(0).Copy)
                                         Else
@@ -996,9 +996,9 @@ Public Class AcctTransLog
                                 boAcctExecLog = New AcctExecLog(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(AcctEvent.AcctEventSearchDV.COL_ACCT_EVENT_TYPE_ID), Byte())))
                                 boAcctExecLog.UpdateExecStatus(isBalanced)
 
-                                If ((Not dsTemp.Tables(dal.Table_LINEITEM) Is Nothing AndAlso dsTemp.Tables(dal.Table_LINEITEM).Rows.Count > 0) _
+                                If ((dsTemp.Tables(dal.Table_LINEITEM) IsNot Nothing AndAlso dsTemp.Tables(dal.Table_LINEITEM).Rows.Count > 0) _
                                     OrElse
-                                    (Not dsTemp.Tables(dal.Table_AP_LINEITEM) Is Nothing AndAlso dsTemp.Tables(dal.Table_AP_LINEITEM).Rows.Count > 0)) Then
+                                    (dsTemp.Tables(dal.Table_AP_LINEITEM) IsNot Nothing AndAlso dsTemp.Tables(dal.Table_AP_LINEITEM).Rows.Count > 0)) Then
 
                                     If ds.Tables(dal.TABLE_POSTINGPARAMETERS) Is Nothing Then
                                         ds.Tables.Add(dal.GetJournalPostingParams(oFelitaEngineData.AccountingCompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(AcctEvent.AcctEventSearchDV.COL_ACCT_EVENT_TYPE_ID), Byte())), GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte()))).Tables(0).Copy)
@@ -1016,14 +1016,14 @@ Public Class AcctTransLog
                     ElseIf Not oFelitaEngineData.EventId = Guid.Empty Then
 
                         Dim dsTemp As DataSet
-                        Dim eventCode As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oFelitaEngineData.EventId)
+                        Dim eventCode As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oFelitaEngineData.EventId)
 
                         dsTemp = New DataSet(dal.DatasetName)
                         dsTemp = dal.GetJournalEntries(oFelitaEngineData.CompanyId, oFelitaEngineData.EventId,
                         GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), eventCode, ElitaPlusIdentity.Current.ActiveUser.NetworkId, BatchNumber, False)
 
                         'Check if items balance before adding to our dataset.
-                        isBalanced = MergeDataSets(oFelitaEngineData.CompanyId, _acctExtension, LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oFelitaEngineData.EventId), ds, dsTemp, oFelitaEngineData.EventId)
+                        isBalanced = MergeDataSets(oFelitaEngineData.CompanyId, _acctExtension, LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oFelitaEngineData.EventId), ds, dsTemp, oFelitaEngineData.EventId)
                         'Update the exec log table with a success or failure based on balancing
                         boAcctExecLog = New AcctExecLog(oFelitaEngineData.CompanyId, oFelitaEngineData.EventId)
                         boAcctExecLog.UpdateExecStatus(isBalanced)
@@ -1040,7 +1040,7 @@ Public Class AcctTransLog
                             dsTempAP = dal.GetJournalEntriesAP(oFelitaEngineData.CompanyId, oFelitaEngineData.EventId,
                             GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), eventCode)
 
-                            If Not dsTempAP Is Nothing AndAlso dsTempAP.Tables.Count > 0 AndAlso dsTempAP.Tables(0).Rows.Count > 0 Then
+                            If dsTempAP IsNot Nothing AndAlso dsTempAP.Tables.Count > 0 AndAlso dsTempAP.Tables(0).Rows.Count > 0 Then
                                 If ds.Tables(AcctTransLogDAL.Table_AP_LINEITEM) Is Nothing Then
                                     ds.Tables.Add(dsTempAP.Tables(0).Copy)
                                 Else
@@ -1059,9 +1059,9 @@ Public Class AcctTransLog
 
                         End If
 
-                        If ((Not dsTemp.Tables(dal.Table_LINEITEM) Is Nothing AndAlso dsTemp.Tables(dal.Table_LINEITEM).Rows.Count > 0) _
+                        If ((dsTemp.Tables(dal.Table_LINEITEM) IsNot Nothing AndAlso dsTemp.Tables(dal.Table_LINEITEM).Rows.Count > 0) _
                                    OrElse
-                                   (Not dsTemp.Tables(dal.Table_AP_LINEITEM) Is Nothing AndAlso dsTemp.Tables(dal.Table_AP_LINEITEM).Rows.Count > 0)) Then
+                                   (dsTemp.Tables(dal.Table_AP_LINEITEM) IsNot Nothing AndAlso dsTemp.Tables(dal.Table_AP_LINEITEM).Rows.Count > 0)) Then
 
                             If ds.Tables(dal.TABLE_POSTINGPARAMETERS) Is Nothing Then
                                 ds.Tables.Add(dal.GetJournalPostingParams(oFelitaEngineData.AccountingCompanyId, oFelitaEngineData.EventId, GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte()))).Tables(0).Copy)
@@ -1114,12 +1114,12 @@ Public Class AcctTransLog
     'Function to determine whether or not the dataset contains valid tables that will require we gather the header information
     Public Shared Function isDSValid(ds As DataSet, Optional ByVal CheckVendors As Boolean = True) As Boolean
 
-        If (Not ds.Tables(AcctTransLogDAL.Table_LINEITEM) Is Nothing AndAlso ds.Tables(AcctTransLogDAL.Table_LINEITEM).Rows.Count > 0) _
-         OrElse (Not ds.Tables(AcctTransLogDAL.Table_AP_LINEITEM) Is Nothing AndAlso ds.Tables(AcctTransLogDAL.Table_AP_LINEITEM).Rows.Count > 0) Then
+        If (ds.Tables(AcctTransLogDAL.Table_LINEITEM) IsNot Nothing AndAlso ds.Tables(AcctTransLogDAL.Table_LINEITEM).Rows.Count > 0) _
+         OrElse (ds.Tables(AcctTransLogDAL.Table_AP_LINEITEM) IsNot Nothing AndAlso ds.Tables(AcctTransLogDAL.Table_AP_LINEITEM).Rows.Count > 0) Then
             Return True
         End If
 
-        If CheckVendors AndAlso Not ds.Tables(AcctTransLogDAL.Table_VENDOR) Is Nothing AndAlso ds.Tables(AcctTransLogDAL.Table_VENDOR).Rows.Count > 0 Then
+        If CheckVendors AndAlso ds.Tables(AcctTransLogDAL.Table_VENDOR) IsNot Nothing AndAlso ds.Tables(AcctTransLogDAL.Table_VENDOR).Rows.Count > 0 Then
             Return True
         End If
 
@@ -1197,7 +1197,7 @@ Public Class AcctTransLog
         Dim _dal As New AcctTransLogDAL
 
         Try
-            Dim dv As DataView = LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False)
+            Dim dv As DataView = LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False)
 
             If AcctEventId = Guid.Empty Then
                 For Each dvItem As System.Data.DataRowView In dv
@@ -1232,7 +1232,7 @@ Public Class AcctTransLog
         If ext = FelitaEngine.SMARTSTREAM_PREFIX Then
 
             'SmartStream GL
-            If eventType <> "CLAIM" And eventType <> "REFUNDS" Then
+            If eventType <> "CLAIM" AndAlso eventType <> "REFUNDS" Then
 
                 isBalanced = IsJournalBalanced(newDs)
                 If isBalanced Then
@@ -1249,7 +1249,7 @@ Public Class AcctTransLog
                         Else
                             ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Merge(dtTemp)
                         End If
-                        If Not ds.Tables(AcctTransLogDAL.Table_AP_PURGE) Is Nothing Then
+                        If ds.Tables(AcctTransLogDAL.Table_AP_PURGE) IsNot Nothing Then
                             lsCol = New Generic.List(Of DataColumn)
                             For Each col As DataColumn In ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Columns
                                 If Not col.ColumnName.ToLower.Equals(AcctTransLogDAL.COL_NAME_ACCT_TRANS_LOG_ID.ToLower) Then
@@ -1343,7 +1343,7 @@ Public Class AcctTransLog
                     Else
                         ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Merge(dtTemp)
                     End If
-                    If Not ds.Tables(AcctTransLogDAL.Table_AP_PURGE) Is Nothing Then
+                    If ds.Tables(AcctTransLogDAL.Table_AP_PURGE) IsNot Nothing Then
                         lsCol = New Generic.List(Of DataColumn)
                         For Each col As DataColumn In ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Columns
                             If Not col.ColumnName.ToLower.Equals(AcctTransLogDAL.COL_NAME_ACCT_TRANS_LOG_ID.ToLower) Then
@@ -1380,7 +1380,7 @@ Public Class AcctTransLog
                     Else
                         ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Merge(dtTemp)
                     End If
-                    If Not ds.Tables(AcctTransLogDAL.Table_AP_PURGE) Is Nothing Then
+                    If ds.Tables(AcctTransLogDAL.Table_AP_PURGE) IsNot Nothing Then
                         lsCol = New Generic.List(Of DataColumn)
                         For Each col As DataColumn In ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Columns
                             If Not col.ColumnName.ToLower.Equals(AcctTransLogDAL.COL_NAME_ACCT_TRANS_LOG_ID.ToLower) Then

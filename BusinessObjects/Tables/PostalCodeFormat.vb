@@ -53,7 +53,7 @@ Public Class PostalCodeFormat
         Try
             Dim dal As New PostalCodeFormatDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -268,7 +268,7 @@ Public Class PostalCodeFormat
             If obj.LocatorStartPosition Is Nothing Then
                 Return False
             Else
-                If (obj.LocatorStartPosition.Value < 1) Or (obj.LocatorStartPosition.Value > GetRegExLength(obj.RegularExpressionBO.Format.Trim())) AndAlso Not obj.ComunaEnabled Then
+                If (obj.LocatorStartPosition.Value < 1) OrElse (obj.LocatorStartPosition.Value > GetRegExLength(obj.RegularExpressionBO.Format.Trim())) AndAlso Not obj.ComunaEnabled Then
                     Return False
                 Else
                     Return True
@@ -300,7 +300,7 @@ Public Class PostalCodeFormat
                 Return False
             End If
 
-            If (obj.LocatorLength.Value < 0) Or (obj.LocatorLength.Value > (GetRegExLength(obj.RegularExpressionBO.Format.Trim()) - obj.LocatorStartPosition.Value + 1)) Then
+            If (obj.LocatorLength.Value < 0) OrElse (obj.LocatorLength.Value > (GetRegExLength(obj.RegularExpressionBO.Format.Trim()) - obj.LocatorStartPosition.Value + 1)) Then
                 Return False
             Else
                 Return True
@@ -316,7 +316,7 @@ Public Class PostalCodeFormat
         Try
             MyBase.Save()
             If IsFamilyDirty Then RegularExpressionBO.Save()
-            If _isDSCreator AndAlso (IsDirty Or IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso (IsDirty OrElse IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New PostalCodeFormatDAL
                 dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB

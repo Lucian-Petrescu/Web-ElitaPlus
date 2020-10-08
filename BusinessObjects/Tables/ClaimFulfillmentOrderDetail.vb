@@ -58,7 +58,7 @@ Public Class ClaimFulfillmentOrderDetail
         Try
             Dim dal As New ClaimFulfillmentOrderDetailDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -331,8 +331,8 @@ Public Class ClaimFulfillmentOrderDetail
         Inherits DataView
 
 #Region "Constants"
-        Public Const COL_NAME_CODE As String = ClaimFulfillmentOrderDetailDAL.COL_NAME_CODE
-        Public Const COL_NAME_DESCRIPTION As String = ClaimFulfillmentOrderDetailDAL.COL_NAME_DESCRIPTION
+        Public Const COL_NAME_CODE As String = DALBase.COL_NAME_CODE
+        Public Const COL_NAME_DESCRIPTION As String = DALBase.COL_NAME_DESCRIPTION
         Public Const COL_NAME_PRICE_LIST_SOURCE As String = ClaimFulfillmentOrderDetailDAL.COL_NAME_PRICE_LIST_SOURCE
         Public Const COL_NAME_COUNTRY As String = ClaimFulfillmentOrderDetailDAL.COL_NAME_COUNTRY
         Public Const COL_NAME_PRICE_LIST_CODE As String = ClaimFulfillmentOrderDetailDAL.COL_NAME_PRICE_LIST_CODE

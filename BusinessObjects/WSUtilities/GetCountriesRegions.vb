@@ -105,7 +105,7 @@ Public Class GetCountriesRegions
 
     Public Property CountryCodesList As ArrayList
         Get
-            If Not _countryCodesList Is Nothing Then
+            If _countryCodesList IsNot Nothing Then
                 Return _countryCodesList
             Else
                 _countryCodesList = New ArrayList
@@ -119,7 +119,7 @@ Public Class GetCountriesRegions
 
     Public Property UserCountriesIDs As ArrayList
         Get
-            If Not _userCountriesIDs Is Nothing Then
+            If _userCountriesIDs IsNot Nothing Then
                 Return _userCountriesIDs
             Else
                 _userCountriesIDs = New ArrayList
@@ -136,14 +136,14 @@ Public Class GetCountriesRegions
         'if the country code(s) were provided, validate them to be within the countries of the user's companies.
         Dim userCountriesDv As DataView = User.GetUserCountries(ElitaPlusIdentity.Current.ActiveUser.Id)
 
-        If Not CountryCodesList Is Nothing AndAlso CountryCodesList.Count > 0 Then
+        If CountryCodesList IsNot Nothing AndAlso CountryCodesList.Count > 0 Then
 
             Dim i, index, intCodesNotFound As Integer
             Dim blnInTheList As Boolean = False
             For i = 0 To CountryCodesList.Count - 1
                 blnInTheList = False
                 For index = 0 To userCountriesDv.Table.Rows.Count - 1
-                    If Not userCountriesDv.Table.Rows(index)("code") Is System.DBNull.Value Then
+                    If userCountriesDv.Table.Rows(index)("code") IsNot DBNull.Value Then
                         If CountryCodesList.Item(i).ToString.ToUpper.Equals(CType(userCountriesDv.Table.Rows(index)("code"), String).ToUpper) Then
                             blnInTheList = True
                             UserCountriesIDs.Add(New Guid(CType(userCountriesDv.Table.Rows(index)("COUNTRY_ID"), Byte())))

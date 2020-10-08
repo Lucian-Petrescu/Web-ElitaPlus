@@ -273,7 +273,7 @@
         Dim dsCert As DataSet = dal.GetCertIDWithCertNumAndDealer(CertificateNumber, _dealerId)
         Dim strResult As String = String.Empty
 
-        If Not dsCert Is Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
+        If dsCert IsNot Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
             If dsCert.Tables(0).Rows(0).Item("Cert_ID") Is DBNull.Value Then
                 Throw New BOValidationException("UpdateClaimDeviceInfo Error: ", Common.ErrorCodes.ERR_NO_CERTIFICATE_FOUND)
             Else
@@ -302,7 +302,7 @@
         Dim strResult As String = String.Empty
         Dim ResponseStatus As DataTable
 
-        If Not dsClaim Is Nothing AndAlso dsClaim.Tables.Count > 0 AndAlso dsClaim.Tables(0).Rows.Count = 1 Then
+        If dsClaim IsNot Nothing AndAlso dsClaim.Tables.Count > 0 AndAlso dsClaim.Tables(0).Rows.Count = 1 Then
             If dsClaim.Tables(0).Rows(0).Item("Claim_ID") Is DBNull.Value Then
                 Throw New BOValidationException("UpdateClaimDeviceInfo Error: ", Common.ErrorCodes.WS_CLAIM_NOT_FOUND)
             Else
@@ -328,7 +328,7 @@
 
             Dim dsMakeModel As DataSet = WMDAL.GetMakeAndModelForDealerFromWM(SKU, _dealerId)
             Dim dsMfgModel As DataSet
-            If Not dsMakeModel Is Nothing AndAlso dsMakeModel.Tables.Count > 0 AndAlso dsMakeModel.Tables(0).Rows.Count = 1 Then
+            If dsMakeModel IsNot Nothing AndAlso dsMakeModel.Tables.Count > 0 AndAlso dsMakeModel.Tables(0).Rows.Count = 1 Then
 
                 _manufacturerId = New Guid(CType(dsMakeModel.Tables(0).Rows(0)("Internal_manufacturer_id"), Byte()))
                 _model = dsMakeModel.Tables(0).Rows(0)("Model_Number")
@@ -339,7 +339,7 @@
                 dsMfgModel = MfgModelDAL.GetMakeAndModelForDealer(_manufacturerId, _model, _dealerId)
 
                 'reject if the make and model are available in the table
-                If Not dsMfgModel Is Nothing AndAlso dsMfgModel.Tables.Count > 0 AndAlso dsMfgModel.Tables(0).Rows.Count = 1 Then
+                If dsMfgModel IsNot Nothing AndAlso dsMfgModel.Tables.Count > 0 AndAlso dsMfgModel.Tables(0).Rows.Count = 1 Then
                     Throw New BOValidationException("UpdateClaimDeviceInfo Error: ", Common.ErrorCodes.INVALID_MAKE_MODEL_ERR)
                 End If
 
@@ -365,17 +365,17 @@
             Validate()
 
             'validate the dealer code
-            If Not DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty Then
+            If DealerCode IsNot Nothing AndAlso DealerCode.Trim <> String.Empty Then
                 FindDealer()
             End If
 
             'validate the certificate number
-            If Not CertificateNumber Is Nothing AndAlso CertificateNumber.Trim <> String.Empty Then
+            If CertificateNumber IsNot Nothing AndAlso CertificateNumber.Trim <> String.Empty Then
                 FindCertificate()
             End If
 
             'validate the claim number
-            If Not ClaimNumber Is Nothing AndAlso ClaimNumber.Trim <> String.Empty Then
+            If ClaimNumber IsNot Nothing AndAlso ClaimNumber.Trim <> String.Empty Then
                 FindClaim()
             End If
 
@@ -400,9 +400,9 @@
 
             'set the claim type 
             If (ClaimType = CLAIM_TYPE_REPAIR) Then
-                myBO.MethodOfRepairId = LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__CARRY_IN)
+                myBO.MethodOfRepairId = LookupListNew.GetIdFromCode(LookupListCache.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__CARRY_IN)
             ElseIf (ClaimType = CLAIM_TYPE_REPLACEMENT) Then
-                myBO.MethodOfRepairId = LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)
+                myBO.MethodOfRepairId = LookupListNew.GetIdFromCode(LookupListCache.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)
             Else
                 Throw New BOValidationException("UpdateClaimDeviceInfo Error: ", Common.ErrorCodes.INVALID_CLAIM_TYPE_CODE)
             End If

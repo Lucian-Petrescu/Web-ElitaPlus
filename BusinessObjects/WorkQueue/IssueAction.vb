@@ -60,10 +60,10 @@ Public NotInheritable Class IssueAction
         issueActionView.InsuredName = claim.CustomerName
         issueActionView.IssueDate = If(claimIssue Is Nothing, TranslationBase.TranslateLabelOrMessage(NO_DATA), claimIssue.CreatedDate.ToString())
         issueActionView.IssueDescription = If(claimIssue Is Nothing, TranslationBase.TranslateLabelOrMessage(NO_DATA), claimIssue.IssueDescription)
-        issueActionView.TypeOfLoss = LookupListNew.GetDescriptionFromId(LookupListNew.LK_RISKTYPES, certItem.RiskTypeId)
+        issueActionView.TypeOfLoss = LookupListNew.GetDescriptionFromId(LookupListCache.LK_RISKTYPES, certItem.RiskTypeId)
 
         Dim claimIssueView As Claim.ClaimIssuesView = claim.GetClaimIssuesView()
-        If (Not claimIssue Is Nothing) Then
+        If (claimIssue IsNot Nothing) Then
             claimIssueView.RowFilter = " Issue_description <> '" & claimIssue.IssueDescription & "'"
         End If
 

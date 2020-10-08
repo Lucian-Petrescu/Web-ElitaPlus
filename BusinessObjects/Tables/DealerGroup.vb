@@ -48,7 +48,7 @@ Public Class DealerGroup
     Protected Sub Load(id As Guid)
         'This code was added manually. Begin
         If _isDSCreator Then
-            If Not Row Is Nothing Then
+            If Row IsNot Nothing Then
                 Dataset.Tables(DealerGroupDAL.TABLE_NAME).Rows.Remove(Row)
             End If
         End If
@@ -227,7 +227,7 @@ Public Class DealerGroup
     'Initialization code for new objects
     Private Sub Initialize()
         'default value for accting by group
-        AcctingByGroupId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "N")
+        AcctingByGroupId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, "N")
     End Sub
 #End Region
 
@@ -261,7 +261,7 @@ Public Class DealerGroup
             row(DealerGroupDAL.COL_NAME_DEALER_GROUP_ID) = bo.Id.ToByteArray
             row(DealerGroupDAL.COL_NAME_ACCTING_BY_GROUP_ID) = bo.AcctingByGroupId.ToByteArray
             row(DealerGroupDAL.COL_NAME_BANK_INFO_ID) = bo.BankInfoId.ToByteArray
-            row(DealerGroupDAL.COL_NAME_ACCTING_BY_GROUP_DESC) = LookupListNew.GetDescriptionFromId(LookupListNew.LK_YESNO, bo.AcctingByGroupId)
+            row(DealerGroupDAL.COL_NAME_ACCTING_BY_GROUP_DESC) = LookupListNew.GetDescriptionFromId(LookupListCache.LK_YESNO, bo.AcctingByGroupId)
             dt.Rows.Add(row)
         End If
 

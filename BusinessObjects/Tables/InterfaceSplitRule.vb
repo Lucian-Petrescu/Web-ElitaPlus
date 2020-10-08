@@ -51,7 +51,7 @@
         Try
             Dim dal As New InterfaceSplitRuleDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -75,7 +75,7 @@
     Public Property HeaderSourceCode As String
         Get
             For Each dr As DataRow In Row.Table.Rows
-                If (Not dr(InterfaceSplitRuleDAL.COL_NAME_SOURCE_CODE).ToString() Is Nothing) Then
+                If (dr(InterfaceSplitRuleDAL.COL_NAME_SOURCE_CODE).ToString() IsNot Nothing) Then
                     Return dr(InterfaceSplitRuleDAL.COL_NAME_SOURCE_CODE).ToString()
                 End If
             Next
@@ -92,7 +92,7 @@
     Public Property HeaderSource As String
         Get
             For Each dr As DataRow In Row.Table.Rows
-                If (Not dr(InterfaceSplitRuleDAL.COL_NAME_SOURCE).ToString() Is Nothing) Then
+                If (dr(InterfaceSplitRuleDAL.COL_NAME_SOURCE).ToString() IsNot Nothing) Then
                     Return dr(InterfaceSplitRuleDAL.COL_NAME_SOURCE).ToString()
                 End If
             Next
@@ -279,13 +279,13 @@
         Try
             Dim dal As New InterfaceSplitRuleDAL
 
-            If (Not (sourceCode.Contains(DALBase.WILDCARD_CHAR) Or sourceCode.Contains(DALBase.ASTERISK)) And String.IsNullOrEmpty(sourceCode.Trim)) Then
+            If (Not (sourceCode.Contains(DALBase.WILDCARD_CHAR) Or sourceCode.Contains(DALBase.ASTERISK)) AndAlso String.IsNullOrEmpty(sourceCode.Trim)) Then
                 sourceCode = sourceCode & DALBase.ASTERISK
             End If
 
             If (source Is Nothing) Then source = String.Empty
 
-            If (Not (source.Contains(DALBase.WILDCARD_CHAR) Or source.Contains(DALBase.ASTERISK)) And String.IsNullOrEmpty(source.Trim)) Then
+            If (Not (source.Contains(DALBase.WILDCARD_CHAR) Or source.Contains(DALBase.ASTERISK)) AndAlso String.IsNullOrEmpty(source.Trim)) Then
                 source = sourceCode & DALBase.ASTERISK
             End If
             Return New InterfaceSplitRuleSearchDV(dal.LoadList(source, sourceCode).Tables(0))
@@ -351,7 +351,7 @@
         Dim dt As DataTable = InterfaceSplitRuleSelectionView.CreateTable()
         Dim vdr As DataRow
         For Each dr As DataRow In Row.Table.Rows()
-            If ((Not dr(InterfaceSplitRuleDAL.COL_NAME_ACTIVE) Is Nothing) AndAlso (dr(InterfaceSplitRuleDAL.COL_NAME_ACTIVE).ToString() = "Y")) Then
+            If ((dr(InterfaceSplitRuleDAL.COL_NAME_ACTIVE) IsNot Nothing) AndAlso (dr(InterfaceSplitRuleDAL.COL_NAME_ACTIVE).ToString() = "Y")) Then
                 vdr = dt.NewRow()
                 vdr(InterfaceSplitRuleSelectionView.COL_NAME_INTERFACE_SPLIT_RULE_ID) = dr(InterfaceSplitRuleDAL.COL_NAME_INTERFACE_SPLIT_RULE_ID)
                 vdr(InterfaceSplitRuleSelectionView.COL_NAME_FIELD_NAME) = dr(InterfaceSplitRuleDAL.COL_NAME_FIELD_NAME)

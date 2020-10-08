@@ -176,17 +176,17 @@ Public Class GetSvcClaims
         Try
             If ds.GetSvcClaims.Count = 0 Then Exit Sub
             With ds.GetSvcClaims.Item(0)
-                If .IsService_Center_CodeNull And .IsCertificate_NumberNull And .IsClaim_NumberNull Then
+                If .IsService_Center_CodeNull AndAlso .IsCertificate_NumberNull AndAlso .IsClaim_NumberNull Then
                     Throw New BOValidationException("GetSvcClaims Error: ", Common.ErrorCodes.WS_SERVICE_CENTER_IS_REQUIRED)
-                ElseIf Not .IsService_Center_CodeNull And .IsClaim_StatusNull Then
+                ElseIf Not .IsService_Center_CodeNull AndAlso .IsClaim_StatusNull Then
                     Throw New BOValidationException("GetSvcClaims Error: ", Common.ErrorCodes.WS_CLAIM_STATUS_IS_REQUIRED)
-                ElseIf Not .IsService_Center_CodeNull And Not .IsClaim_StatusNull And .IsClaim_TypeNull Then
+                ElseIf Not .IsService_Center_CodeNull AndAlso Not .IsClaim_StatusNull AndAlso .IsClaim_TypeNull Then
                     Throw New BOValidationException("GetSvcClaims Error: ", Common.ErrorCodes.WS_CLAIM_TYPE_IS_REQUIRED)
-                ElseIf Not .IsService_Center_CodeNull And Not .IsClaim_StatusNull And Not .IsClaim_TypeNull And .IsMethod_Of_RepairNull Then
+                ElseIf Not .IsService_Center_CodeNull AndAlso Not .IsClaim_StatusNull AndAlso Not .IsClaim_TypeNull AndAlso .IsMethod_Of_RepairNull Then
                     Throw New BOValidationException("GetSvcClaims Error: ", Common.ErrorCodes.WS_METHOD_OF_REPAIR_IS_REQUIRED)
-                ElseIf .IsService_Center_CodeNull And Not .IsClaim_NumberNull And .IsCompany_CodeNull Then
+                ElseIf .IsService_Center_CodeNull AndAlso Not .IsClaim_NumberNull AndAlso .IsCompany_CodeNull Then
                     Throw New BOValidationException("GetSvcClaims Error: ", Common.ErrorCodes.WS_COMPANY_CODE_IS_REQUIRED)
-                ElseIf .IsService_Center_CodeNull And Not .IsCertificate_NumberNull And .IsCompany_CodeNull Then
+                ElseIf .IsService_Center_CodeNull AndAlso Not .IsCertificate_NumberNull AndAlso .IsCompany_CodeNull Then
                     Throw New BOValidationException("GetSvcClaims Error: ", Common.ErrorCodes.WS_COMPANY_CODE_IS_REQUIRED)
                 End If
                 If Not .IsService_Center_CodeNull Then ServiceCenterCode = .Service_Center_Code
@@ -257,7 +257,7 @@ Public Class GetSvcClaims
             End If
 
             If Not CompanyCode = Nothing AndAlso GetCompanyId(CompanyCode) = Nothing Then
-                Throw New BOValidationException("GetPreInvoice Error: Invalid Company Code ", Assurant.ElitaPlus.Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
+                Throw New BOValidationException("GetPreInvoice Error: Invalid Company Code ", Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
             End If
 
             If Not ClaimStatus = Nothing Then
@@ -297,7 +297,7 @@ Public Class GetSvcClaims
                 dsClaims = Claim.GetActiveClaimsForSvcGeneric(oServiceCenterClaimsSearchData, oServiceCenterClaimsSearchData.PageNumber = 1)
                 dsClaims.DataSetName = "GetSvcClaims"
 
-                If Not dsClaims Is Nothing AndAlso dsClaims.Tables.Count > 0 AndAlso dsClaims.Tables(0).Rows.Count > 0 Then
+                If dsClaims IsNot Nothing AndAlso dsClaims.Tables.Count > 0 AndAlso dsClaims.Tables(0).Rows.Count > 0 Then
                     If oServiceCenterClaimsSearchData.PageNumber = 1 Then
                         If CType(dsClaims.Tables(0).Rows(0).Item("COUNT"), Integer) = 0 Then
                             dsClaims.Tables.Remove(ClaimDAL.TABLE_NAME_SVC_COUNT)
@@ -310,7 +310,7 @@ Public Class GetSvcClaims
                 dsClaims = Claim.GetActiveClaimsByClaimNumberorCertificate(oServiceCenterClaimsSearchData, oServiceCenterClaimsSearchData.PageNumber = 1)
                 dsClaims.DataSetName = "GetSvcClaims"
 
-                If Not dsClaims Is Nothing AndAlso dsClaims.Tables.Count > 0 AndAlso dsClaims.Tables(0).Rows.Count > 0 Then
+                If dsClaims IsNot Nothing AndAlso dsClaims.Tables.Count > 0 AndAlso dsClaims.Tables(0).Rows.Count > 0 Then
                     If oServiceCenterClaimsSearchData.PageNumber = 1 Then
                         If CType(dsClaims.Tables(0).Rows(0).Item("COUNT"), Integer) = 0 Then
                             dsClaims.Tables.Remove(ClaimDAL.TABLE_NAME_SVC_COUNT)

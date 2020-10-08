@@ -54,7 +54,7 @@ Public Class CountryTax
             With ElitaPlusIdentity.Current.ActiveUser
                 CountryId = .Country(.FirstCompanyID).Id
             End With
-            CompanyTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMPANY_TYPE, COMPANY_TYPE_SERVICES)
+            CompanyTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMPANY_TYPE, COMPANY_TYPE_SERVICES)
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -65,7 +65,7 @@ Public Class CountryTax
         Try
             Dim dal As New CountryTaxDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -679,8 +679,8 @@ Public Class CountryTax
         Get
             Try
                 Dim dv As DataView
-                dv = CountryTax.getList(ElitaPlusIdentity.Current.ActiveUser.Countries, ElitaPlusIdentity.Current.ActiveUser.Companies, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-                If Not dv Is Nothing AndAlso dv.Count > 0 Then
+                dv = getList(ElitaPlusIdentity.Current.ActiveUser.Countries, ElitaPlusIdentity.Current.ActiveUser.Companies, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                If dv IsNot Nothing AndAlso dv.Count > 0 Then
                     dv.RowFilter = String.Format("{0} = '{1}'", CountryTaxDAL.COL_NAME_LIST_TAX_CODE, TaxTypeCode.INVOICE)
                     If dv.Count > 0 Then Return True
                 End If
@@ -843,7 +843,7 @@ Public Class CountryTax
             dsv = dv.Table().DataSet
 
             Dim row As DataRow = dsv.Tables(0).NewRow()
-            row.Item("country_tax_id") = System.Guid.NewGuid.ToByteArray
+            row.Item("country_tax_id") = Guid.NewGuid.ToByteArray
             dsv.Tables(0).Rows.Add(row)
             Return New System.Data.DataView(dsv.Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -1011,7 +1011,7 @@ Public Class CountryTax
             Dim obj As CountryTax = CType(objectToValidate, CountryTax)
 
             If Not obj.IsDeleted Then 'Edit or add new
-                If (Not obj.EffectiveDate Is Nothing) And (Not obj.ExpirationDate Is Nothing) Then
+                If (obj.EffectiveDate IsNot Nothing) And (obj.ExpirationDate IsNot Nothing) Then
                     If (obj.EffectiveDate.Value >= obj.ExpirationDate.Value) Then
                         Return False
                     End If
@@ -1035,7 +1035,7 @@ Public Class CountryTax
 
             If obj.IsNew Then ' when add new 
                 Dim dtMaxExpiration As Date = obj.GetMaxExpirationDate()
-                If (dtMaxExpiration <> Date.Parse(CountryTaxDAL.INFINITE_DATE_STR, System.Globalization.CultureInfo.InvariantCulture)) _
+                If (dtMaxExpiration <> Date.Parse(CountryTaxDAL.INFINITE_DATE_STR, CultureInfo.InvariantCulture)) _
                     AndAlso (obj.EffectiveDate <> dtMaxExpiration.AddDays(1)) Then
                     Return False
                 End If
@@ -1058,7 +1058,7 @@ Public Class CountryTax
             Dim i As Integer, blnFound As Boolean
 
             blnFound = False
-            For i = 1 To CountryTax.NumberOfTaxGroups
+            For i = 1 To NumberOfTaxGroups
                 If Not obj.TaxGroup(i).CompMethod.Equals(Guid.Empty) Then
                     blnFound = True
                     Exit For

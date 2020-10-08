@@ -59,7 +59,7 @@ Public Class ProductGroup
         Try
             Dim dal As New ProductGroupDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_PRODUCT_GROUP_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -189,7 +189,7 @@ Public Class ProductGroup
         Dim pgPcIdStr As String
         For Each pgPcIdStr In selectedProductCodeStrCollection
             Dim pgPcBO As ProductGroupPrc = New ProductGroupPrc(Dataset)
-            If Not pgPcIdStr Is Nothing Then
+            If pgPcIdStr IsNot Nothing Then
                 pgPcBO.ProductGroupId = Id
                 pgPcBO.ProductCodeId = New Guid(pgPcIdStr)
                 pgPcBO.Save()
@@ -201,7 +201,7 @@ Public Class ProductGroup
         Dim pgPcIdStr As String
         For Each pgPcIdStr In selectedProductCodeGuidStrCollection
             Dim pgPcBO As ProductGroupPrc = New ProductGroupPrc(Dataset, Id, New Guid(pgPcIdStr))
-            If Not pgPcBO Is Nothing Then
+            If pgPcBO IsNot Nothing Then
                 pgPcBO.Delete()
                 pgPcBO.Save()
             End If

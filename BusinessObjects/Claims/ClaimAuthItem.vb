@@ -78,7 +78,7 @@ Public NotInheritable Class ClaimAuthItem
         Try
             Dim dal As New ClaimAuthItemDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -109,7 +109,7 @@ Public NotInheritable Class ClaimAuthItem
 
     Friend Function GetNewLineItemNumber() As Integer
         Dim i As Integer = 1
-        If (Not ClaimAuthorization Is Nothing) Then i = ClaimAuthorization.ClaimAuthorizationItemChildren.Count
+        If (ClaimAuthorization IsNot Nothing) Then i = ClaimAuthorization.ClaimAuthorizationItemChildren.Count
 
         Return i
     End Function
@@ -448,7 +448,7 @@ Public Class ClaimAuthorizationItemList
 
     Public ReadOnly Property HasCollectionChanged As Boolean
         Get
-            If Where(Function(item) item.IsDeleted Or (item.IsNew And item.AdjustmentReasonId.Equals(Guid.Empty))).Count > 0 Then Return True Else Return False
+            If Where(Function(item) item.IsDeleted OrElse (item.IsNew AndAlso item.AdjustmentReasonId.Equals(Guid.Empty))).Count > 0 Then Return True Else Return False
         End Get
     End Property
 

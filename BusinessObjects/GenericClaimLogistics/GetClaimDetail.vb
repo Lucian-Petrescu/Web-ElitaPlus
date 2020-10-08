@@ -214,28 +214,28 @@ Public Class GetClaimDetail
             'Get Claim detail
             Dim dsClaim As DataSet = Claim.GetClaimDetailForWS(ClaimStringId, ClaimNumber, CompanyId)
             dsClaim.DataSetName = "GET_CLAIM_DETAIL"
-            If dsClaim Is Nothing Or dsClaim.Tables.Count <= 0 Or dsClaim.Tables(0).Rows.Count = 0 Then
+            If dsClaim Is Nothing OrElse dsClaim.Tables.Count <= 0 OrElse dsClaim.Tables(0).Rows.Count = 0 Then
                 Throw New BOValidationException("GetClaimDetail Error: ", Common.ErrorCodes.INVALID_CLAIM_NOT_FOUND)
             Else
                 'Get Sub_lists
                 dsClaim.Tables(0).TableName = ClaimDAL.TABLE_NAME_WS
                 Dim ClaimIdGuid = New Guid(CType(dsClaim.Tables(ClaimDAL.TABLE_NAME_WS).Rows(0)(ClaimDAL.COL_NAME_CLAIMID), Byte()))
-                Dim oRiskTypeId As Guid = New Guid(CType(dsClaim.Tables(0).Rows(0)(DALObjects.ClaimDAL.COL_NAME_RISK_TYPE_ID), Byte()))
+                Dim oRiskTypeId As Guid = New Guid(CType(dsClaim.Tables(0).Rows(0)(ClaimDAL.COL_NAME_RISK_TYPE_ID), Byte()))
                 dsClaim.Tables(ClaimDAL.TABLE_NAME_WS).Columns.Remove(ClaimDAL.COL_NAME_RISK_TYPE_ID)
                 dsClaim.Tables(ClaimDAL.TABLE_NAME_WS).Columns.Remove(ClaimDAL.COL_NAME_CLAIMID)
                 If ForSvcUse.ToUpper.Equals("N") Then
                     'Get Claim comments list
                     Dim dsComments As DataSet = Comment.GetCommentsForClaim(ClaimIdGuid)
-                    If Not dsComments Is Nothing AndAlso dsComments.Tables.Count > 0 AndAlso dsComments.Tables(CommentDAL.TABLE_NAME).Rows.Count <> 0 Then
+                    If dsComments IsNot Nothing AndAlso dsComments.Tables.Count > 0 AndAlso dsComments.Tables(CommentDAL.TABLE_NAME).Rows.Count <> 0 Then
                         Dim commentsTable As DataTable = dsComments.Tables(CommentDAL.TABLE_NAME).Copy
                         commentsTable.TableName = CommentDAL.TABLE_NAME_WS
                         commentsTable.Columns.Remove(CommentDAL.COL_NAME_CERT_ID)
                         commentsTable.Columns.Remove(CommentDAL.COL_NAME_CLAIM_ID)
                         commentsTable.Columns.Remove(CommentDAL.COL_NAME_CALLER_NAME)
                         commentsTable.Columns.Remove(CommentDAL.COL_NAME_COMMENT_TYPE_ID)
-                        commentsTable.Columns.Remove(CommentDAL.COL_NAME_CREATED_BY)
-                        commentsTable.Columns.Remove(CommentDAL.COL_NAME_MODIFIED_DATE)
-                        commentsTable.Columns.Remove(CommentDAL.COL_NAME_MODIFIED_BY)
+                        commentsTable.Columns.Remove(DALBase.COL_NAME_CREATED_BY)
+                        commentsTable.Columns.Remove(DALBase.COL_NAME_MODIFIED_DATE)
+                        commentsTable.Columns.Remove(DALBase.COL_NAME_MODIFIED_BY)
                         commentsTable.Columns.Remove(CommentDAL.COL_NAME_COMMENT_ID)
                         dsClaim.Tables.Add(commentsTable)
                     End If
@@ -243,14 +243,14 @@ Public Class GetClaimDetail
 
                 'Get Claim Extended Status List
                 Dim dvClaimExtendedStatus As DataView = ClaimStatus.GetClaimStatusList(ClaimIdGuid)
-                If Not dvClaimExtendedStatus Is Nothing AndAlso dvClaimExtendedStatus.Count > 0 Then
+                If dvClaimExtendedStatus IsNot Nothing AndAlso dvClaimExtendedStatus.Count > 0 Then
                     Dim ClaimExtendedStatusTable As DataTable = dvClaimExtendedStatus.Table.Copy
                     ClaimExtendedStatusTable.TableName = ClaimStatusDAL.TABLE_NAME_WS
                     ClaimExtendedStatusTable.Columns.Remove(ClaimStatusDAL.COL_NAME_CLAIM_ID)
-                    ClaimExtendedStatusTable.Columns.Remove(ClaimStatusDAL.COL_NAME_CREATED_BY)
-                    ClaimExtendedStatusTable.Columns.Remove(ClaimStatusDAL.COL_NAME_CREATED_DATE)
-                    ClaimExtendedStatusTable.Columns.Remove(ClaimStatusDAL.COL_NAME_MODIFIED_DATE)
-                    ClaimExtendedStatusTable.Columns.Remove(ClaimStatusDAL.COL_NAME_MODIFIED_BY)
+                    ClaimExtendedStatusTable.Columns.Remove(DALBase.COL_NAME_CREATED_BY)
+                    ClaimExtendedStatusTable.Columns.Remove(DALBase.COL_NAME_CREATED_DATE)
+                    ClaimExtendedStatusTable.Columns.Remove(DALBase.COL_NAME_MODIFIED_DATE)
+                    ClaimExtendedStatusTable.Columns.Remove(DALBase.COL_NAME_MODIFIED_BY)
                     ClaimExtendedStatusTable.Columns.Remove(ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID)
                     ClaimExtendedStatusTable.Columns.Remove(ClaimStatusDAL.COL_NAME_STATUS_ORDER)
                     dsClaim.Tables.Add(ClaimExtendedStatusTable)
@@ -258,7 +258,7 @@ Public Class GetClaimDetail
 
                 'Get Claim Parts Info List
                 Dim dvClaimPartsInfo As DataView = PartsInfo.getSelectedList(ClaimIdGuid)
-                If Not dvClaimPartsInfo Is Nothing AndAlso dvClaimPartsInfo.Count > 0 Then
+                If dvClaimPartsInfo IsNot Nothing AndAlso dvClaimPartsInfo.Count > 0 Then
                     Dim ClaimPartsInfoTable As DataTable = dvClaimPartsInfo.Table.Copy
                     ClaimPartsInfoTable.TableName = PartsInfoDAL.TABLE_NAME_WS
                     ClaimPartsInfoTable.Columns.Remove(PartsInfoDAL.COL_NAME_PARTS_INFO_ID)
@@ -269,10 +269,10 @@ Public Class GetClaimDetail
                 End If
 
                 'ClaimFacade.Instance.GetClaim(Of Claim)DetailForWS(Me.ClaimId, Me.ClaimNumber, Me.CompanyId)
-                If Not IncludePartDescription Is Nothing AndAlso IncludePartDescription.ToUpper = "Y" Then
+                If IncludePartDescription IsNot Nothing AndAlso IncludePartDescription.ToUpper = "Y" Then
                     Dim riskTypeBO As RiskType = New RiskType(oRiskTypeId)
                     Dim partsDataTable As DataTable = PartsDescription.getListForWS(riskTypeBO.RiskGroupId).Copy
-                    If Not partsDataTable Is Nothing AndAlso partsDataTable.Rows.Count > 0 Then
+                    If partsDataTable IsNot Nothing AndAlso partsDataTable.Rows.Count > 0 Then
                         partsDataTable.TableName = PartsDescriptionDAL.TABLE_NAME_WS
                         partsDataTable.Columns.Remove(PartsDescriptionDAL.COL_NAME_PARTS_DESCRIPTION_ID)
                         partsDataTable.Columns.Remove(PartsDescriptionDAL.COL_NAME_RISK_GROUP_ID)
@@ -304,7 +304,7 @@ Public Class GetClaimDetail
         Dim i As Integer
         For i = 0 To objCompaniesAL.Count - 1
             Dim objCompany As New Company(CType(objCompaniesAL.Item(i), Guid))
-            If Not objCompany Is Nothing AndAlso objCompany.Code.Equals(CompanyCode.ToUpper) Then
+            If objCompany IsNot Nothing AndAlso objCompany.Code.Equals(CompanyCode.ToUpper) Then
                 CompanyId = objCompany.Id
             End If
         Next

@@ -61,7 +61,7 @@
         Try
             Dim dal As New StageEndStatusDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -175,7 +175,7 @@
         Dim i As Integer
         For i = 0 To ds.Tables(StageEndStatusDAL.TABLE_NAME).Rows.Count - 1
             Dim row As DataRow = ds.Tables(StageEndStatusDAL.TABLE_NAME).Rows(i)
-            If Not (row.RowState = DataRowState.Deleted Or row.RowState = DataRowState.Detached) Then
+            If Not (row.RowState = DataRowState.Deleted OrElse row.RowState = DataRowState.Detached) Then
                 Dim stgEndStatus As New StageEndStatus(row)
                 If stgEndStatus.StageId.Equals(stageid) AndAlso stgEndStatus.EndStatusId.Equals(endStatusId) Then
                     Return stgEndStatus

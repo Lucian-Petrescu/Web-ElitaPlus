@@ -71,7 +71,7 @@ Public Class InvoiceTrans
         Try
             Dim dal As New InvoiceTransDAL(ElitaPlusIdentity.Current.ActiveUser.Id)
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -430,7 +430,7 @@ Public Class InvoiceTrans
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As InvoiceTrans = CType(objectToValidate, InvoiceTrans)
 
-            If Not obj.InvoiceDate Is Nothing Then
+            If obj.InvoiceDate IsNot Nothing Then
 
                 If obj.InvoiceDate.Value <= DateTime.Today Then
                     Return True

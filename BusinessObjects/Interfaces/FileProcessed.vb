@@ -32,7 +32,7 @@
         Try
             Dim dal As New FileProcessedDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -296,49 +296,49 @@
     Public ReadOnly Property DealerCode As String
         Get
             If FileProcessId.Equals(Guid.Empty) Then Return Nothing
-            Return LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, DealerId)
+            Return LookupListNew.GetCodeFromId(LookupListCache.LK_DEALERS, DealerId)
         End Get
     End Property
 
     Public ReadOnly Property DealerNameLoad As String
         Get
             If FileProcessId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_DEALERS)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_DEALERS)
             Return LookupListNew.GetDescriptionFromId(dv, DealerId)
         End Get
     End Property
     Public ReadOnly Property CompanyGroupCode As String
         Get
             If FileProcessId.Equals(Guid.Empty) Then Return Nothing
-            Return LookupListNew.GetCodeFromId(LookupListNew.LK_COMPANY_GROUP, CompanyGroupId)
+            Return LookupListNew.GetCodeFromId(LookupListCache.LK_COMPANY_GROUP, CompanyGroupId)
         End Get
     End Property
 
     Public ReadOnly Property CompanyGroupLoad As String
         Get
             If FileProcessId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_COMPANY_GROUP)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_COMPANY_GROUP)
             Return LookupListNew.GetDescriptionFromId(dv, CompanyGroupId)
         End Get
     End Property
     Public ReadOnly Property CompanyCode As String
         Get
             If FileProcessId.Equals(Guid.Empty) Then Return Nothing
-            Return LookupListNew.GetCodeFromId(LookupListNew.LK_COMPANY, CompanyId)
+            Return LookupListNew.GetCodeFromId(LookupListCache.LK_COMPANY, CompanyId)
         End Get
     End Property
 
     Public ReadOnly Property CompanyLoad As String
         Get
             If FileProcessId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_COMPANY)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_COMPANY)
             Return LookupListNew.GetDescriptionFromId(dv, CompanyId)
         End Get
     End Property
     Public ReadOnly Property CountryName As String
         Get
             If FileProcessId.Equals(Guid.Empty) OrElse CountryId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_COUNTRIES)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_COUNTRIES)
             Return LookupListNew.GetDescriptionFromId(dv, CountryId)
         End Get
     End Property

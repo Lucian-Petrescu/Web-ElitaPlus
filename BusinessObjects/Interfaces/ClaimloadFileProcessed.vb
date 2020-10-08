@@ -75,7 +75,7 @@ Public Class ClaimloadFileProcessed
         Try
             Dim dal As New ClaimloadFileProcessedDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -294,7 +294,7 @@ Public Class ClaimloadFileProcessed
             MyBase.Save()
             If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim tr As IDbTransaction = DBHelper.GetNewTransaction()
-                If (Not oClaim Is Nothing) Then
+                If (oClaim IsNot Nothing) Then
                     oClaim.Save(tr)
                 End If
                 Dim dal As New ClaimloadFileProcessedDAL
@@ -348,7 +348,7 @@ Public Class ClaimloadFileProcessed
                         If (FileType = Codes.CLAIM_LOAD_FILE_TYPE__VENDOR_INVOICE) Then
                             Dim invoiceReconWork As InvoiceReconWrk
                             Dim invoiceReconWorkId As Guid
-                            ClaimloadFileProcessed.LoadList(Dataset, Id, FileType)
+                            LoadList(Dataset, Id, FileType)
                             For Each row As DataRow In (Dataset.Tables(InvoiceReconWrkDAL.TABLE_NAME).Rows)
                                 invoiceReconWorkId = New Guid(CType(row(InvoiceReconWrkDAL.COL_NAME_INVOICE_RECON_WRK_ID), Byte()))
                                 invoiceReconWork = New InvoiceReconWrk(invoiceReconWorkId, Dataset)
@@ -357,7 +357,7 @@ Public Class ClaimloadFileProcessed
                         Else
                             Dim claimLoadReconWork As ClaimloadReconWrk
                             Dim claimLoadReconWorkId As Guid
-                            ClaimloadFileProcessed.LoadList(Dataset, Id, FileType)
+                            LoadList(Dataset, Id, FileType)
                             For Each row As DataRow In (Dataset.Tables(ClaimloadReconWrkDAL.TABLE_NAME).Rows)
                                 claimLoadReconWorkId = New Guid(CType(row(ClaimloadReconWrkDAL.COL_NAME_CLAIMLOAD_RECON_WRK_ID), Byte()))
                                 claimLoadReconWork = New ClaimloadReconWrk(claimLoadReconWorkId, Dataset)

@@ -8,19 +8,19 @@ Public Class PublishedTask
 
     Public Shared ReadOnly Property TaskStatusFailedId As Guid
         Get
-            LookupListNew.GetIdFromCode(LookupListNew.LK_TASK_STATUS, TASK_STATUS__FAILED)
+            LookupListNew.GetIdFromCode(LookupListCache.LK_TASK_STATUS, TASK_STATUS__FAILED)
         End Get
     End Property
 
     Public Shared ReadOnly Property TaskStatusOpenId As Guid
         Get
-            LookupListNew.GetIdFromCode(LookupListNew.LK_TASK_STATUS, TASK_STATUS__OPEN)
+            LookupListNew.GetIdFromCode(LookupListCache.LK_TASK_STATUS, TASK_STATUS__OPEN)
         End Get
     End Property
 
     Public Shared ReadOnly Property TaskStatusInProgress As Guid
         Get
-            LookupListNew.GetIdFromCode(LookupListNew.LK_TASK_STATUS, TASK_STATUS__IN_PROGRESS)
+            LookupListNew.GetIdFromCode(LookupListCache.LK_TASK_STATUS, TASK_STATUS__IN_PROGRESS)
         End Get
     End Property
 
@@ -80,7 +80,7 @@ Public Class PublishedTask
         Try
             Dim dal As New PublishedTaskDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -582,10 +582,10 @@ Public Class PublishedTask
             End If
             Return p_task
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Logger.AddError(ex)
+            AddError(ex)
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         Catch ex As Exception
-            Logger.AddError(ex)
+            AddError(ex)
             Throw
         End Try
     End Function

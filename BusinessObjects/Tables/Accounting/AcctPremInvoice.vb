@@ -59,7 +59,7 @@ Public Class AcctPremInvoice
         Try
             Dim dal As New AcctPremInvoiceDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -609,7 +609,7 @@ Public Class AcctPremInvoice
 
         Try
             ds = dal.LoadList(CompanyIds, DealerID, InvNum, BeginDate, EndDate)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView

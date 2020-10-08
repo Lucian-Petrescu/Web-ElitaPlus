@@ -70,7 +70,7 @@ Public Class CaseBase
     Protected Sub Load(id As Guid)
         Try
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(CaseDAL.TableName).Rows.Remove(Row)
                 End If
             End If
@@ -93,7 +93,7 @@ Public Class CaseBase
     Protected Overridable Sub Load(caseNumber As String, companyCode As String)
         Try
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(CaseDAL.TableName).Rows.Remove(Row)
                 End If
             End If
@@ -452,8 +452,8 @@ Public Class CaseBase
                 End If
 
                 If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) OrElse (CultureInfo.CurrentCulture.Name.Equals("zh-CN")) Then
-                    fromdate = Common.DateHelper.convertDateFrmt(caseOpenDateFrom)
-                    todate = Common.DateHelper.convertDateFrmt(caseOpenDateTo)
+                    fromdate = DateHelper.convertDateFrmt(caseOpenDateFrom)
+                    todate = DateHelper.convertDateFrmt(caseOpenDateTo)
                 Else
                     fromdate = DateTime.Parse(caseOpenDateFrom.ToString(),
                                           Thread.CurrentThread.CurrentCulture,
@@ -547,19 +547,19 @@ Public Class CaseBase
             Dim lstItm As New ListItem()
             Dim lstItems As List(Of ListItem) = New List(Of ListItem)()
             Dim dlrlist As ListItem()
-            If Not ds Is Nothing Then
-                If Not ds.Tables(0) Is Nothing Then
+            If ds IsNot Nothing Then
+                If ds.Tables(0) IsNot Nothing Then
                     For Each dr As DataRow In ds.Tables(0).Rows
-                        If Not dr("DEALER_ID") Is DBNull.Value Then
+                        If dr("DEALER_ID") IsNot DBNull.Value Then
                             lstItm.ListItemId = New Guid(CType(dr("DEALER_ID"), Byte()))
                         End If
-                        If Not dr("COMPANY_CODE") Is DBNull.Value Then
+                        If dr("COMPANY_CODE") IsNot DBNull.Value Then
                             lstItm.ExtendedCode = dr("COMPANY_CODE").ToString()
                         End If
-                        If Not dr("DEALER") Is DBNull.Value Then
+                        If dr("DEALER") IsNot DBNull.Value Then
                             lstItm.Code = dr("DEALER").ToString()
                         End If
-                        If Not dr("DEALER_NAME") Is DBNull.Value Then
+                        If dr("DEALER_NAME") IsNot DBNull.Value Then
                             lstItm.Translation = dr("DEALER_NAME").ToString()
                         End If
                         lstItems.Add(lstItm)
@@ -585,7 +585,7 @@ Public Class CaseBase
     Public Shared Function DisplaySecField(exclSecFieldsDt As DataTable, callerAuthenticationNeeded As Boolean,
                                            secFieldTableName As String, secField As String, isCallerAuthenticated As Boolean) As Boolean
 
-        If Not exclSecFieldsDt Is Nothing AndAlso callerAuthenticationNeeded AndAlso Not isCallerAuthenticated Then
+        If exclSecFieldsDt IsNot Nothing AndAlso callerAuthenticationNeeded AndAlso Not isCallerAuthenticated Then
             If secField Is String.Empty OrElse (exclSecFieldsDt.AsEnumerable().Where(Function(p) p.Field(Of String)("table_name") = secFieldTableName And p.Field(Of String)("column_name") = secField).Count > 0) Then
                 Return False
             End If
@@ -599,7 +599,7 @@ Public Class CaseBase
 
             Dim exclSecFieildsDv As DataSet
 
-            exclSecFieildsDv = CaseBase.GetExclSecFieldsList(Guid.Empty, dealerId)
+            exclSecFieildsDv = GetExclSecFieldsList(Guid.Empty, dealerId)
             'Populate User Roles
             Dim oUser As User
             Dim selectedDs As DataView = oUser.GetUserRoles(New User(Authentication.CurrentUser.NetworkId).Id)

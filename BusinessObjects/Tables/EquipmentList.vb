@@ -55,7 +55,7 @@ Public Class EquipmentList
         Try
             Dim dal As New EquipmentListDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -214,7 +214,7 @@ Public Class EquipmentList
             Throw New BOInvalidOperationException("You cannot copy into an existing Detail List")
         End If
 
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
         'copy the childrens 
 
         Dim SelectedEquipmetExpiration As DateTime
@@ -379,7 +379,7 @@ Public Class EquipmentList
             oCompanyGroupIds = New ArrayList
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-            If Not code Is String.Empty Then
+            If code IsNot String.Empty Then
                 Dim ds As DataSet = dal.CheckOverlap(code, effective, _
                     expiration, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId, listId)
 
@@ -406,7 +406,7 @@ Public Class EquipmentList
             oCompanyGroupIds = New ArrayList
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-            If Not code Is String.Empty Then
+            If code IsNot String.Empty Then
                 Dim ds As DataSet = dal.CheckDurationOverlap(code, effective, _
                     expiration, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId, listId)
 
@@ -532,11 +532,11 @@ Public Class EquipmentList
         oCompanyGroupIds = New ArrayList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-        If Not Code Is String.Empty And Not Effective Is Nothing Then
+        If Code IsNot String.Empty And Effective IsNot Nothing Then
             Dim dv As EquipmentList.EquipmentSearchDV = New EquipmentList.EquipmentSearchDV(EquipDal.LoadList(Code, String.Empty, Effective, _
                    String.Empty, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
-            If Not Code Is Nothing And Not Effective Is Nothing Then
+            If Code IsNot Nothing And Effective IsNot Nothing Then
                 For Each dr As DataRow In dv.Table.Rows
                     If ((dr(EquipmentListDAL.COL_NAME_CODE).ToString.ToUpper = Code.ToUpper) And _
                         (dr(EquipmentListDAL.COL_NAME_EFFECTIVE) = DateHelper.GetDateValue(Effective).ToString("dd-MMM-yyyy")) And _
@@ -556,12 +556,12 @@ Public Class EquipmentList
         oCompanyGroupIds = New ArrayList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-        If Not Code Is String.Empty And Not Description Is String.Empty And Not Effective Is Nothing And Nothing And Not Expiration Is Nothing Then
+        If Code IsNot String.Empty And Description IsNot String.Empty And Effective IsNot Nothing And Nothing And Expiration IsNot Nothing Then
             Dim dv As EquipmentList.EquipmentSearchDV = New EquipmentList.EquipmentSearchDV(EquipDal.LoadList(Code, String.Empty, Effective, _
                    String.Empty, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
             For Each dr As DataRow In dv.Table.Rows
-                If ((Not dr(EquipmentDAL.COL_NAME_CODE) = Code) And _
+                If ((Not dr(DALBase.COL_NAME_CODE) = Code) And _
                     (Not dr(EquipmentDAL.COL_NAME_EFFECTIVE) >= Equals(Effective)) And _
                     (Not dr(EquipmentDAL.COL_NAME_EXPIRATION) <= Equals(Expiration))) Then
                     Return True
@@ -577,7 +577,7 @@ Public Class EquipmentList
         oCompanyGroupIds = New ArrayList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-        If Not Code Is String.Empty Then
+        If Code IsNot String.Empty Then
             If EquipDal.IsListToDealer(Code, Id).Tables(0).Rows.Count > 0 Then
                 Return True
             End If
@@ -605,11 +605,11 @@ Public Class EquipmentList
         oCompanyGroupIds = New ArrayList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-        If Not vCode Is String.Empty And Not vEffective Is Nothing Then
+        If vCode IsNot String.Empty And vEffective IsNot Nothing Then
             Dim dv As EquipmentList.EquipmentSearchDV = New EquipmentList.EquipmentSearchDV(EquipDal.LoadList(vCode, String.Empty, vEffective, _
                    String.Empty, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
-            If Not vCode Is Nothing And Not vEffective Is Nothing Then
+            If vCode IsNot Nothing And vEffective IsNot Nothing Then
                 For Each dr As DataRow In dv.Table.Rows
                     If ((dr(EquipmentListDAL.COL_NAME_CODE).ToString.ToUpper = vCode.ToUpper) And _
                         (dr(EquipmentListDAL.COL_NAME_EFFECTIVE) = vEffective) And _

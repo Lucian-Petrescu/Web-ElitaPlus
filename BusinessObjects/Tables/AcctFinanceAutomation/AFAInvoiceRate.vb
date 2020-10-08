@@ -60,7 +60,7 @@ Public Class AfaInvoiceRate
         Try
             Dim dal As New AFAInvoiceRateDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -421,35 +421,35 @@ Public Class AfaInvoiceRate
             row(InvRateSearchDV.COL_INSURANCE_CODE) = NewBO.InsuranceCode
             row(InvRateSearchDV.COL_TIER) = NewBO.Tier
 
-            If Not NewBO.RegulatoryState Is Nothing Then
+            If NewBO.RegulatoryState IsNot Nothing Then
                 row(InvRateSearchDV.COL_REGULATORY_STATE) = NewBO.RegulatoryState
             End If
 
-            If Not NewBO.LossType Is Nothing Then
+            If NewBO.LossType IsNot Nothing Then
                 row(InvRateSearchDV.COL_LOSS_TYPE) = NewBO.LossType
             End If
-            If Not NewBO.RetailAmt Is Nothing Then
+            If NewBO.RetailAmt IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.RetailAmt.Value
             End If
-            If Not NewBO.PremiumAmt Is Nothing Then
+            If NewBO.PremiumAmt IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.PremiumAmt.Value
             End If
-            If Not NewBO.CommAmt Is Nothing Then
+            If NewBO.CommAmt IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.CommAmt.Value
             End If
-            If Not NewBO.AdminAmt Is Nothing Then
+            If NewBO.AdminAmt IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.AdminAmt.Value
             End If
-            If Not NewBO.AncillaryAmt Is Nothing Then
+            If NewBO.AncillaryAmt IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.AncillaryAmt.Value
             End If
-            If Not NewBO.OtherAmt Is Nothing Then
+            If NewBO.OtherAmt IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.OtherAmt.Value
             End If
-            If Not NewBO.Effective Is Nothing Then
+            If NewBO.Effective IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.Effective.Value
             End If
-            If Not NewBO.Expiration Is Nothing Then
+            If NewBO.Expiration IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.Expiration.Value
             End If
 
@@ -661,7 +661,7 @@ Public Class AfaInvoiceRate
             Try
                 Dim dal As New AFAInvoiceRateDAL
                 Dim minMaxDs As DataSet = dal.LoadMinEffectiveMaxExpiration(obj.AfaProductId, obj.InsuranceCode, obj.LossType, obj.Tier, obj.RegulatoryState)
-                If minMaxDs.Tables(0).Rows.Count > 0 AndAlso (Not minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE) Is DBNull.Value) AndAlso (Not minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION) Is DBNull.Value) Then
+                If minMaxDs.Tables(0).Rows.Count > 0 AndAlso (minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE) IsNot DBNull.Value) AndAlso (minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION) IsNot DBNull.Value) Then
                     MinEffective = CType(minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE), Date)
                     MaxExpiration = CType(minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION), Date)
 

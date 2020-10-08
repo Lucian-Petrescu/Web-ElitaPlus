@@ -46,7 +46,7 @@ Friend NotInheritable Class PRCalculateFinancialBalance
 
         'Dim dv As CertItemSearchDV = pCertificate.CertItems
 
-        If Not pCertificate.Items.Where(Function(i) i.SerialNumber = SerialNumber).OrderByDescending(Function(i) i.EffectiveDate).First().OriginalRetailPrice Is Nothing Then
+        If pCertificate.Items.Where(Function(i) i.SerialNumber = SerialNumber).OrderByDescending(Function(i) i.EffectiveDate).First().OriginalRetailPrice IsNot Nothing Then
             originalRetailPrice = pCertificate.Items.Where(Function(i) i.SerialNumber = SerialNumber).OrderByDescending(Function(i) i.EffectiveDate).First().OriginalRetailPrice
         Else
             originalRetailPrice = 0.0
@@ -57,7 +57,7 @@ Friend NotInheritable Class PRCalculateFinancialBalance
 
 
         'originalRetailPrice = dv.GetOriginalRetailPrice(Me.SerialNumber)
-        If originalRetailPrice.HasValue AndAlso Not pCertificate.FinanceDate Is Nothing Then
+        If originalRetailPrice.HasValue AndAlso pCertificate.FinanceDate IsNot Nothing Then
 
             Dim noOfMonthsPassed As Double
 
@@ -90,7 +90,7 @@ Friend NotInheritable Class BRCalculateFinancialBalance
         Dim noOfMonthsRemaining As Double
         noOfMonthsRemaining = 24 - ((DateTime.Now.Month - pCertificate.WarrantySalesDate.Value.Month) + 12 * (DateTime.Now.Year - pCertificate.WarrantySalesDate.Value.Year))
         Dim finInstallAmount As Decimal
-        If Not pCertificate.Finance_Installment_Amount Is Nothing Then
+        If pCertificate.Finance_Installment_Amount IsNot Nothing Then
             finInstallAmount = pCertificate.Financed_installment_Amount.Value
         End If
 
@@ -160,13 +160,13 @@ Friend NotInheritable Class H3GITCalculateFinancialBalance
         pymtActDate = New DateTime(pymtActDate.Year, pymtActDate.Month, 1)
 
         noOfMonthsPassed = pCertificate.GetMonthsPassedForH3GI(pymtActDate) '(DateTime.Now.Month - pymtActDate.Month) + 12 * (DateTime.Now.Year - pymtActDate.Year)
-        If Not pCertificate.PaymentShiftNumber Is Nothing Then
+        If pCertificate.PaymentShiftNumber IsNot Nothing Then
             paymentShift = pCertificate.PaymentShiftNumber.Value
         Else
             paymentShift = 0
         End If
 
-        If Not pCertificate.Finance_Installment_Amount Is Nothing Then
+        If pCertificate.Finance_Installment_Amount IsNot Nothing Then
             finInstallAmount = pCertificate.Financed_installment_Amount.Value
         End If
 

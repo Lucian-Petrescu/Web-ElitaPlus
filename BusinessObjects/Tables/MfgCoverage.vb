@@ -65,7 +65,7 @@ Public Class MfgCoverage
         Try
             Dim dal As New MfgCoverageDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -90,7 +90,7 @@ Public Class MfgCoverage
         Try
             Dim dal As New MfgCoverageDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -356,7 +356,7 @@ Public Class MfgCoverage
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As MfgCoverage = CType(objectToValidate, MfgCoverage)
 
-            If Not obj.RiskTypeId.Equals(Guid.Empty) AndAlso Not obj.Model Is Nothing Then
+            If Not obj.RiskTypeId.Equals(Guid.Empty) AndAlso obj.Model IsNot Nothing Then
                 Return False
             End If
 

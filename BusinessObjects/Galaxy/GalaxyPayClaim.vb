@@ -101,7 +101,7 @@ Public Class GalaxyPayClaim
                 If Not .IsAUTHORIZATION_NUMBERNull Then AuthorizationNumber = .AUTHORIZATION_NUMBER
 
                 PayeeCode = .PAYEE_CODE
-                PayeeOptionId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYEE, PayeeCode)
+                PayeeOptionId = LookupListNew.GetIdFromCode(LookupListCache.LK_PAYEE, PayeeCode)
                 If PayeeOptionId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("GalaxyPayClaim Error: ", Common.ErrorCodes.INVALID_PAYEE_OPTION_CODE)
                 End If
@@ -146,7 +146,7 @@ Public Class GalaxyPayClaim
                 If Not .IsACCOUNT_NUMBERNull Then AccountNumber = .ACCOUNT_NUMBER
                 If Not .IsPAYMENT_METHODNull Then
                     PaymentMethod = .PAYMENT_METHOD
-                    PaymentMethodId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYMENTMETHOD, PaymentMethod)
+                    PaymentMethodId = LookupListNew.GetIdFromCode(LookupListCache.LK_PAYMENTMETHOD, PaymentMethod)
 
                     If (PaymentMethodId.Equals(Guid.Empty)) Then
                         Throw New BOValidationException("GalaxyPayClaim Error: ", Common.ErrorCodes.INVALID_PAYMENT_METHOD)
@@ -181,7 +181,7 @@ Public Class GalaxyPayClaim
                     Dim deductible As Decimal
                     Dim IsDeductibleNull As Boolean = True
 
-                    If Not CType(ds.COVERAGES(i).AMOUNT, DecimalType) Is Nothing Then
+                    If CType(ds.COVERAGES(i).AMOUNT, DecimalType) IsNot Nothing Then
                         amount = ds.COVERAGES(i).AMOUNT
                     End If
 
@@ -193,9 +193,9 @@ Public Class GalaxyPayClaim
                     Dim companyId As Guid = Guid.Empty
                     Dim customerName As String
 
-                    If Not dsItemCoverages Is Nothing AndAlso dsItemCoverages.Tables.Count > 0 AndAlso dsItemCoverages.Tables(0).Rows.Count > 0 Then
+                    If dsItemCoverages IsNot Nothing AndAlso dsItemCoverages.Tables.Count > 0 AndAlso dsItemCoverages.Tables(0).Rows.Count > 0 Then
                         Dim dr() As DataRow = dsItemCoverages.Tables(0).Select(CertItemCoverageDAL.COL_NAME_COVERAGE_TYPE_CODE & "='" & coverageCode & "'")
-                        If Not dr Is Nothing AndAlso dr.Length > 0 Then
+                        If dr IsNot Nothing AndAlso dr.Length > 0 Then
                             certItemCoverageId = New Guid(CType(dr(0)(CertItemCoverageDAL.COL_NAME_CERT_ITEM_COVERAGE_ID), Byte()))
                             customerName = CType(dr(0)(CertItemCoverageDAL.COL_NAME_CUSTOMER_NAME), String)
                             companyId = New Guid(CType(dr(0)(CertItemCoverageDAL.COL_NAME_COMPANY_ID), Byte()))
@@ -323,7 +323,7 @@ Public Class GalaxyPayClaim
 
                 ClaimInvoiceBO.Validate()
 
-                If Not ClaimInvoiceBO.PayeeBankInfo Is Nothing Then
+                If ClaimInvoiceBO.PayeeBankInfo IsNot Nothing Then
                     ValidateBankUserControl(ClaimInvoiceBO.PayeeBankInfo)
                 End If
 
@@ -418,7 +418,7 @@ Public Class GalaxyPayClaim
         PayeeOtherName = ClaimInvoiceBO.CustomerName
         If ClaimInvoiceBO.IsInsuranceCompany Then
             Dim objCertificate As Certificate = New Certificate(ClaimInvoiceBO.Invoiceable.CertificateId)
-            DocumentType = LookupListNew.GetCodeFromId(LookupListNew.LK_DOCUMENT_TYPES, objCertificate.DocumentTypeID)
+            DocumentType = LookupListNew.GetCodeFromId(LookupListCache.LK_DOCUMENT_TYPES, objCertificate.DocumentTypeID)
             IdentityDocumentNo = objCertificate.IdentificationNumber
             ClaimInvoiceBO.CapturePayeeTaxDocumentation(PayeeCode, Nothing, ClaimInvoiceBO, DisbursementBO, objCertificate, Nothing, Nothing)
         End If
@@ -475,7 +475,7 @@ Public Class GalaxyPayClaim
                         ClaimInvoiceBO.PayeeBankInfo.InternationalTransfer = False
                     Else
                         Dim objCountry As New Country(CountryId)
-                        If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objCountry.EuropeanCountryId) = Codes.YESNO_Y Then
+                        If LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, objCountry.EuropeanCountryId) = Codes.YESNO_Y Then
                             'International transfer & Destination is European country
                             ClaimInvoiceBO.PayeeBankInfo.Bank_Id = Nothing
                             ClaimInvoiceBO.PayeeBankInfo.Account_Number = Nothing
@@ -513,7 +513,7 @@ Public Class GalaxyPayClaim
                 'Dim PayeeOptionCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, selectedPayee)
                 If PayeeCode = ClaimInvoice.PAYEE_OPTION_CUSTOMER Then
 
-                    If (Not CtcAddress1 Is Nothing) AndAlso (Not CtcCity Is Nothing) AndAlso (Not CtcPostalCode Is Nothing) AndAlso (Not RegionId.Equals(Guid.Empty)) Then
+                    If (CtcAddress1 IsNot Nothing) AndAlso (CtcCity IsNot Nothing) AndAlso (CtcPostalCode IsNot Nothing) AndAlso (Not RegionId.Equals(Guid.Empty)) Then
                         PayeeAddress = ClaimInvoiceBO.Add_Address()
                         PayeeAddress.Address1 = CtcAddress1
                         PayeeAddress.Address2 = CtcAddress2
@@ -546,7 +546,7 @@ Public Class GalaxyPayClaim
     End Sub
 
     Private Sub ValidateBankUserControl(payeeBankInfo As BankInfo)
-        If Not payeeBankInfo Is Nothing Then
+        If payeeBankInfo IsNot Nothing Then
             If payeeBankInfo.DomesticTransfer = True Then
                 If payeeBankInfo.Account_Name Is Nothing Then
                     Throw New BOValidationException("GalaxyPayClaim Error: ", Common.ErrorCodes.INVALID_BANKACCNAME_REQD)

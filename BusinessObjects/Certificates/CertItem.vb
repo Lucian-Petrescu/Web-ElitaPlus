@@ -62,7 +62,7 @@ Public Class CertItem
         Try
             Dim dal As New CertItemDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -318,7 +318,7 @@ Public Class CertItem
             Dim coverageDV As DataView
 
             coverageDV = LookupListNew.GetCoverageTypeLookupList(langId)
-            coverageTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_COVERAGE_TYPES, coverageID)
+            coverageTypeCode = LookupListNew.GetCodeFromId(LookupListCache.LK_COVERAGE_TYPES, coverageID)
 
             Return coverageTypeCode
         End Get
@@ -495,7 +495,7 @@ Public Class CertItem
                 If oContract.DeductibleByManufacturerId.Equals(Guid.Empty) Then
                     Return False
                 Else
-                    Dim code As String = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.DeductibleByManufacturerId)
+                    Dim code As String = LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, oContract.DeductibleByManufacturerId)
                     If code.Equals(Codes.YESNO_Y) Then
                         Return True
                     Else
@@ -515,11 +515,11 @@ Public Class CertItem
                 dr = Dataset.Tables(CertItemDAL.TABLE_NAME_MFG_DEDUCT).Rows(0)
             End If
             CheckDeleted()
-            If Not dr Is Nothing AndAlso dr(CertItemDAL.COL_NAME_MFG_DEDUCTIBLE) Is DBNull.Value Then
+            If dr IsNot Nothing AndAlso dr(CertItemDAL.COL_NAME_MFG_DEDUCTIBLE) Is DBNull.Value Then
                 Return False
 
             Else
-                If Not dr Is Nothing Then
+                If dr IsNot Nothing Then
                     Return True
                 Else
                     Return False
@@ -611,7 +611,7 @@ Public Class CertItem
             CheckDeleted()
             Dim cert As Certificate = New Certificate(CertId, Dataset)
             Dim dealer As Dealer = New Dealer(cert.DealerId, Dataset)
-            If (dealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
+            If (dealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, "Y")) Then
                 Return True
             Else
                 Return False
@@ -805,7 +805,7 @@ Public Class CertItem
         If (bMakeModelChanged) Then
             ' Check if SKU can be resolved
             If (Not ManufacturerId.Equals(Guid.Empty)) AndAlso Len(Trim(Model)) > 0 Then
-                SkuNumber = ListPrice.GetSKU(Cert.DealerId, LookupListNew.GetDescriptionFromId(LookupListNew.LK_MANUFACTURERS, ManufacturerId), Model)
+                SkuNumber = ListPrice.GetSKU(Cert.DealerId, LookupListNew.GetDescriptionFromId(LookupListCache.LK_MANUFACTURERS, ManufacturerId), Model)
             End If
         End If
     End Sub
@@ -866,7 +866,7 @@ Public Class CertItem
                 '.EquipmentId = Me.EquipmentId
                 .SerialNumber = SerialNumber
                 .IMEINumber = IMEINumber
-                .ClaimEquipmentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_EQUIPMENT_TYPE, "C")
+                .ClaimEquipmentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_EQUIPMENT_TYPE, "C")
                 .EquipmentId = EquipmentId
             End With
             Return objClaimedEquipment
@@ -1171,7 +1171,7 @@ Public Class CertItem
 
         Try
             dv = dal.LoadSKUs(equipmentId, dealerId)
-            If (Not dv Is Nothing) Then
+            If (dv IsNot Nothing) Then
                 dv.Sort = dv.Table.Columns(0).ColumnName
             End If
             Return dv
@@ -1214,7 +1214,7 @@ Public Class CertItem
             Dim obj As CertItem = CType(objectToValidate, CertItem)
             Dim dal As New CertItemDAL
 
-            If (Not obj.SerialNumber Is Nothing) AndAlso (obj.SerialNumber.Trim <> String.Empty) Then
+            If (obj.SerialNumber IsNot Nothing) AndAlso (obj.SerialNumber.Trim <> String.Empty) Then
 
                 If Not dal.IsSerialNumberUnique(obj.Cert.DealerId, obj.Id, obj.SerialNumber.Trim) Then
                     Return False

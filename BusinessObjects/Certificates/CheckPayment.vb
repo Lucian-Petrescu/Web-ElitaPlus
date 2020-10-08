@@ -60,7 +60,7 @@
         Try
             Dim dal As New CheckPaymentDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -134,7 +134,7 @@
 
     Public ReadOnly Property CertificateNumber As String
         Get
-            If Not Certificate Is Nothing Then
+            If Certificate IsNot Nothing Then
                 Return Certificate.CertNumber
             Else
                 Return Nothing
@@ -240,8 +240,8 @@
 
     Public ReadOnly Property Dealer As String
         Get
-            If Not Certificate Is Nothing Then
-                Return LookupListNew.GetDescriptionFromId(LookupListNew.LK_DEALERS, Certificate.DealerId)
+            If Certificate IsNot Nothing Then
+                Return LookupListNew.GetDescriptionFromId(LookupListCache.LK_DEALERS, Certificate.DealerId)
             Else
                 Return Nothing
             End If

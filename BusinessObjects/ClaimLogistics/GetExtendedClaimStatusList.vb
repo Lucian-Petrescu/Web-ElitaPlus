@@ -102,7 +102,7 @@ Public Class GetExtendedClaimStatusList
 
     Private ReadOnly Property CompanyGroupID As Guid
         Get
-            If _company_group_id.Equals(Guid.Empty) AndAlso Not CompanyGroupCode Is Nothing AndAlso CompanyGroupCode <> "" Then
+            If _company_group_id.Equals(Guid.Empty) AndAlso CompanyGroupCode IsNot Nothing AndAlso CompanyGroupCode <> "" Then
 
                 Dim list As DataView = LookupListNew.GetCompanyGroupLookupList()
                 If list Is Nothing Then

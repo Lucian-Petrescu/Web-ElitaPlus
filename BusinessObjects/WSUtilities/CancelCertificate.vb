@@ -514,7 +514,7 @@ Public Class CancelCertificate
             If _certId.Equals(Guid.Empty) Then
                 Dim dsCert As DataSet = Certificate.ClaimLogisticsGetCert(CertNumber, DealerCode)
 
-                If Not dsCert Is Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
+                If dsCert IsNot Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
                     If dsCert.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
                         Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_NOT_FOUND)
                     Else
@@ -580,11 +580,11 @@ Public Class CancelCertificate
             Dim oCert As Certificate
             Dim oCertsDataSet As DataSet
 
-            If Not CancelAllByInvoice Is Nothing AndAlso CancelAllByInvoice.Equals("Y") Then
-                If Not InvoiceNumber Is Nothing AndAlso Not InvoiceNumber.Equals(String.Empty) Then
+            If CancelAllByInvoice IsNot Nothing AndAlso CancelAllByInvoice.Equals("Y") Then
+                If InvoiceNumber IsNot Nothing AndAlso Not InvoiceNumber.Equals(String.Empty) Then
                     'List of certificates BY Invocie number
                     oCertsDataSet = Certificate.GetCertListByInvoiceNumber(InvoiceNumber)
-                    If Not oCertsDataSet Is Nothing AndAlso oCertsDataSet.Tables.Count > 0 AndAlso oCertsDataSet.Tables(0).Rows.Count > 0 Then
+                    If oCertsDataSet IsNot Nothing AndAlso oCertsDataSet.Tables.Count > 0 AndAlso oCertsDataSet.Tables(0).Rows.Count > 0 Then
                         If oCertsDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
                             Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_NOT_FOUND)
                         Else
@@ -706,7 +706,7 @@ Public Class CancelCertificate
 
                 certCancellationBO.ComputedRefund = RefundAmount
                 certCancellationBO.InstallmentsPaid = InstallmentsPaid
-                If Not _CommentBO Is Nothing Then
+                If _CommentBO IsNot Nothing Then
                     _CommentBO.CallerName = oCert.CustomerName
                 End If
                 oCert.ProcessCancellation(certCancellationBO, _bankInfoBO, oContract, _CommentBO, oCancelCertRstData)
@@ -717,7 +717,7 @@ Public Class CancelCertificate
 
                 If Not oCancelCertificateData.errorExist Then
                     If oCancelCertificateData.errorExist2 = False Then
-                        If Not CancelAllByInvoice Is Nothing AndAlso CancelAllByInvoice.Equals("Y") Then
+                        If CancelAllByInvoice IsNot Nothing AndAlso CancelAllByInvoice.Equals("Y") Then
                             ' Cancel Certificates by invoice number off-line
                             Dim objCancellationReason = New CancellationReason(oContract.CancellationReasonId)
                             CancellationCode = objCancellationReason.Code

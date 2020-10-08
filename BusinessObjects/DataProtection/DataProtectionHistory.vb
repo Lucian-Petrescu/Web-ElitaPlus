@@ -59,7 +59,7 @@ Public Class DataProtectionHistory
         Try
             Dim dal As New DataProtectionHistoryDAL            
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -326,7 +326,7 @@ Public Class DataProtectionHistory
         Inherits DataView
         Public Const COL_COMMENT_ID As String = DataProtectionHistoryDAL.COL_NAME_COMMENT_ID
         Public Const COL_ADDED_BY As String = DataProtectionHistoryDAL.COL_NAME_CREATED_BY
-        Public Const COL_CREATED_DATE As String = DataProtectionHistoryDAL.COL_NAME_CREATED_DATE
+        Public Const COL_CREATED_DATE As String = DALBase.COL_NAME_CREATED_DATE
         Public Const COL_REQUEST_ID As String = DataProtectionHistoryDAL.COL_NAME_REQUEST_ID
         Public Const COL_COMMENTS As String = DataProtectionHistoryDAL.COL_NAME_COMMENTS
         Public Const COL_STATUS As String = DataProtectionHistoryDAL.COL_NAME_STATUS

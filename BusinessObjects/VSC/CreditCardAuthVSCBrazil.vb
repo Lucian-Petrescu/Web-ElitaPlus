@@ -605,14 +605,14 @@ Public Class CreditCardAuthVSCBrazil
         Dim isCardNumberTokenize As Boolean = True
         Dim strTokenizeCreditCardNumber As String  = CardNum
 
-        If Not CardNum Is Nothing Then
+        If CardNum IsNot Nothing Then
             Try
                 ' reveal the credit card number
                 Reveal()
                 ' de-Tokenize credit card number if valid token is available
                 strCreditCardNumber = CardNum
             Catch ex As Exception
-                If Not ex.InnerException Is Nothing AndAlso ex.InnerException.GetType() Is GetType(FaultException) Then
+                If ex.InnerException IsNot Nothing AndAlso ex.InnerException.GetType() Is GetType(FaultException) Then
                     Dim faultExcep As FaultException
                     faultExcep = DirectCast(ex.InnerException, FaultException)
                     If faultExcep.Code.Name.Equals("110") Then
@@ -624,7 +624,7 @@ Public Class CreditCardAuthVSCBrazil
                         Throw New ElitaPlusException(faultExcep.Message, faultExcep.Code.Name, ex.InnerException)
                     End If
                 Else
-                    Throw New ElitaPlusException(ex.Message, ElitaPlus.Common.ErrorCodes.PCI_SECURE_ERR, ex)
+                    Throw New ElitaPlusException(ex.Message, Common.ErrorCodes.PCI_SECURE_ERR, ex)
                 End If
             End Try
         End If
@@ -635,12 +635,12 @@ Public Class CreditCardAuthVSCBrazil
                 Secure()
                 strTokenizeCreditCardNumber = CardNum
             Catch ex As Exception
-                If Not ex.InnerException Is Nothing AndAlso ex.InnerException.GetType() Is GetType(FaultException) Then
+                If ex.InnerException IsNot Nothing AndAlso ex.InnerException.GetType() Is GetType(FaultException) Then
                     Dim faultExcep As FaultException
                     faultExcep = DirectCast(ex.InnerException, FaultException)
                     Throw New ElitaPlusException(faultExcep.Message, faultExcep.Code.Name, ex.InnerException)
                 Else
-                    Throw New ElitaPlusException(ex.Message, ElitaPlus.Common.ErrorCodes.PCI_SECURE_ERR, ex)
+                    Throw New ElitaPlusException(ex.Message, Common.ErrorCodes.PCI_SECURE_ERR, ex)
                 End If
             End Try
         End If
@@ -671,7 +671,7 @@ Public Class CreditCardAuthVSCBrazil
         Catch ex As Exception
             strRejectMsg = ex.Message
         Finally
-            If Not dbs Is Nothing Then
+            If dbs IsNot Nothing Then
                 dbs.Close()
             End If
         End Try

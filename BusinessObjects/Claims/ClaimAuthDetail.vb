@@ -71,7 +71,7 @@ Public Class ClaimAuthDetail
             If blnLoadByClaimID Then keyColName = dal.COL_NAME_CLAIM_ID
 
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -325,7 +325,7 @@ Public Class ClaimAuthDetail
                 dal.UpdateFamily(Dataset)
                 ' Trigger extended status
                 Dim claim As ClaimBase = AddClaim(ClaimId)
-                If ((Not claim.LatestClaimStatus Is Nothing) AndAlso (claim.ClaimStatusesCount > 0)) Then
+                If ((claim.LatestClaimStatus IsNot Nothing) AndAlso (claim.ClaimStatusesCount > 0)) Then
                     If claim.LatestClaimStatus.ClaimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(Codes.CLAIM_EXTENDED_STATUS__BUDGET_APPROVED) Then
                         With claim
                             PublishedTask.AddEvent(companyGroupId:=.Company.CompanyGroupId, _
@@ -397,21 +397,21 @@ Public Class ClaimAuthDetail
 
         If Not IsDeleted Then
             objClaim = AddClaim(ClaimId)
-            If Not LaborAmount Is Nothing Then subTotal += LaborAmount.Value
-            If Not PartAmount Is Nothing Then subTotal += PartAmount.Value
-            If Not ServiceCharge Is Nothing Then subTotal += ServiceCharge.Value
-            If Not TripAmount Is Nothing Then subTotal += TripAmount.Value
-            If Not OtherAmount Is Nothing Then subTotal += OtherAmount.Value
-            If Not ShippingAmount Is Nothing Then subTotal += ShippingAmount.Value
-            If Not DispositionAmount Is Nothing Then subTotal += DispositionAmount.Value
-            If Not DiagnosticsAmount Is Nothing Then subTotal += DiagnosticsAmount.Value
-            If Not TotalTaxAmount Is Nothing Then tax += TotalTaxAmount.Value
+            If LaborAmount IsNot Nothing Then subTotal += LaborAmount.Value
+            If PartAmount IsNot Nothing Then subTotal += PartAmount.Value
+            If ServiceCharge IsNot Nothing Then subTotal += ServiceCharge.Value
+            If TripAmount IsNot Nothing Then subTotal += TripAmount.Value
+            If OtherAmount IsNot Nothing Then subTotal += OtherAmount.Value
+            If ShippingAmount IsNot Nothing Then subTotal += ShippingAmount.Value
+            If DispositionAmount IsNot Nothing Then subTotal += DispositionAmount.Value
+            If DiagnosticsAmount IsNot Nothing Then subTotal += DiagnosticsAmount.Value
+            If TotalTaxAmount IsNot Nothing Then tax += TotalTaxAmount.Value
         Else
             objClaim = AddClaim(TempClaimId)
         End If
 
         oCompany = New Company(objClaim.CompanyId)
-        If Not oCompany Is Nothing And oCompany.AuthDetailRqrdId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_AUTH_DTL, "ADR")) Then
+        If oCompany IsNot Nothing And oCompany.AuthDetailRqrdId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_AUTH_DTL, "ADR")) Then
             Total = subTotal + tax
             DirectCast(objClaim, Claim).AuthorizedAmount = Total
         End If
@@ -462,31 +462,31 @@ Public Class ClaimAuthDetail
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimAuthDetail = CType(objectToValidate, ClaimAuthDetail)
             Dim oClaim As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(obj.ClaimId, obj.Dataset)
-            If (oClaim.Company.AuthDetailRqrdId <> LookupListNew.GetIdFromCode(LookupListNew.LK_AUTH_DTL, Codes.AUTHORIZATION_DETAIL__REQUIRED)) Then
+            If (oClaim.Company.AuthDetailRqrdId <> LookupListNew.GetIdFromCode(LookupListCache.LK_AUTH_DTL, Codes.AUTHORIZATION_DETAIL__REQUIRED)) Then
                 Return True
             End If
 
-            If Not obj.PartAmount Is Nothing AndAlso obj.PartAmount.Value > 0 Then
+            If obj.PartAmount IsNot Nothing AndAlso obj.PartAmount.Value > 0 Then
                 Return True
             End If
 
-            If Not obj.LaborAmount Is Nothing AndAlso obj.LaborAmount.Value > 0 Then
+            If obj.LaborAmount IsNot Nothing AndAlso obj.LaborAmount.Value > 0 Then
                 Return True
             End If
 
-            If Not obj.ServiceCharge Is Nothing AndAlso obj.ServiceCharge.Value > 0 Then
+            If obj.ServiceCharge IsNot Nothing AndAlso obj.ServiceCharge.Value > 0 Then
                 Return True
             End If
 
-            If Not obj.TripAmount Is Nothing AndAlso obj.TripAmount.Value > 0 Then
+            If obj.TripAmount IsNot Nothing AndAlso obj.TripAmount.Value > 0 Then
                 Return True
             End If
 
-            If Not obj.ShippingAmount Is Nothing AndAlso obj.ShippingAmount.Value > 0 Then
+            If obj.ShippingAmount IsNot Nothing AndAlso obj.ShippingAmount.Value > 0 Then
                 Return True
             End If
 
-            If Not obj.OtherAmount Is Nothing AndAlso obj.OtherAmount.Value > 0 Then
+            If obj.OtherAmount IsNot Nothing AndAlso obj.OtherAmount.Value > 0 Then
                 Return True
             End If
 

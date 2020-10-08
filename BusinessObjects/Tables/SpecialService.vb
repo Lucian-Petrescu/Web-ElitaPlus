@@ -60,7 +60,7 @@ Public Class SpecialService
         Try
             Dim dal As New SpecialServiceDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -316,7 +316,7 @@ Public Class SpecialService
             If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New SpecialServiceDAL
                 'dal.Update(Me.Row)
-                MyBase.UpdateFamily(Dataset)
+                UpdateFamily(Dataset)
                 dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
                 If Row.RowState <> DataRowState.Detached Then
@@ -560,7 +560,7 @@ Public Class SpecialService
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, PSplSvcBO.ProductCodeId)
         Next
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause
         Else
@@ -635,7 +635,7 @@ Public Class SpecialService
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As SpecialService = CType(objectToValidate, SpecialService)
             Dim ds As DataSet, strAvailableServiceCenter As String
-            strAvailableServiceCenter = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, New Guid(valueToCheck.ToString))
+            strAvailableServiceCenter = LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, New Guid(valueToCheck.ToString))
             If strAvailableServiceCenter = Codes.YESNO_N Then
                 'Return True
             ElseIf strAvailableServiceCenter = Codes.YESNO_Y Then
@@ -661,7 +661,7 @@ Public Class SpecialService
 
             If LookupListNew.GetCodeFromId(LookupListNew.GetPriceGroupDPLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), _
                    obj.PriceGroupFieldId) = Codes.PRICEGROUP_SPL_SVC_PRICE_LIST Then
-                If GuidControl.Equals(obj.ServiceClassId, Guid.Empty) Or GuidControl.Equals(obj.ServiceTypeId, Guid.Empty) Then Return False
+                If Equals(obj.ServiceClassId, Guid.Empty) Or Equals(obj.ServiceTypeId, Guid.Empty) Then Return False
 
             End If
             Return True

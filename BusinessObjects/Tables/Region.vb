@@ -89,7 +89,7 @@ Public Class Region
         End Get
         Set
             CheckDeleted()
-            If Not Value Is Nothing Then
+            If Value IsNot Nothing Then
                 SetValue(RegionDAL.COL_NAME_DESCRIPTION, Value.Trim())
             Else
                 SetValue(RegionDAL.COL_NAME_DESCRIPTION, Value)
@@ -125,7 +125,7 @@ Public Class Region
         End Get
         Set
             CheckDeleted()
-            If Not Value Is Nothing Then
+            If Value IsNot Nothing Then
                 SetValue(RegionDAL.COL_NAME_SHORT_DESC, Value.Trim())
             Else
                 SetValue(RegionDAL.COL_NAME_SHORT_DESC, Value)
@@ -146,7 +146,7 @@ Public Class Region
         End Get
         Set
             CheckDeleted()
-            If Not Value Is Nothing Then
+            If Value IsNot Nothing Then
                 SetValue(RegionDAL.COL_NAME_ACCOUNTING_CODE, Value.Trim())
             Else
                 SetValue(RegionDAL.COL_NAME_ACCOUNTING_CODE, Value)
@@ -167,7 +167,7 @@ Public Class Region
         End Get
         Set
             CheckDeleted()
-            If Not Value Is Nothing Then
+            If Value IsNot Nothing Then
                 SetValue(RegionDAL.COL_NAME_INVOICE_TAX_GL, Value.Trim())
             Else
                 SetValue(RegionDAL.COL_NAME_INVOICE_TAX_GL, Value)
@@ -188,7 +188,7 @@ Public Class Region
         End Get
         Set
             CheckDeleted()
-            If Not Value Is Nothing Then
+            If Value IsNot Nothing Then
                 SetValue(RegionDAL.COL_NAME_EXTENDED_CODE, Value.Trim())
             Else
                 SetValue(RegionDAL.COL_NAME_EXTENDED_CODE, Value)
@@ -264,7 +264,7 @@ Public Class Region
             If userCompanies.Count > 0 Then
                 ds = dal.LoadList(descriptionMask, codeMask, Country.GetCountries(userCompanies))
             Else
-                Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COMPANYID_REQUIRED, GetType(Region), Nothing, "CompanyID", Nothing)
+                Dim err As New ValidationError(Common.ErrorCodes.INVALID_COMPANYID_REQUIRED, GetType(Region), Nothing, "CompanyID", Nothing)
                 Throw New BOValidationException(New ValidationError() {err}, "Company ID")
             End If
 
@@ -331,7 +331,7 @@ Public Class Region
             Dim obj As Region = CType(objectToValidate, Region)
             Dim dal As New RegionDAL
 
-            If (Not obj.ShortDesc Is Nothing) AndAlso (obj.ShortDesc.Trim <> String.Empty) Then
+            If (obj.ShortDesc IsNot Nothing) AndAlso (obj.ShortDesc.Trim <> String.Empty) Then
 
                 If Not dal.IsRegionCodeUnique(obj.CountryId, obj.ShortDesc.Trim, obj.Id) Then
                     Return False
@@ -355,7 +355,7 @@ Public Class Region
             Dim obj As Region = CType(objectToValidate, Region)
             Dim dal As New RegionDAL
 
-            If (Not obj.Description Is Nothing) AndAlso (obj.Description.Trim <> String.Empty) Then
+            If (obj.Description IsNot Nothing) AndAlso (obj.Description.Trim <> String.Empty) Then
 
                 If Not dal.IsRegionDescriptionUnique(obj.CountryId, obj.Description.Trim, obj.Id) Then
                     Return False

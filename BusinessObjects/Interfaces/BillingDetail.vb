@@ -59,7 +59,7 @@ Public Class BillingDetail
         Try
             Dim dal As New BillingDetailDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -404,7 +404,7 @@ Public Class BillingDetail
         Try
             ds = dal.LoadList(BillingHeaderId)
 
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView
@@ -419,7 +419,7 @@ Public Class BillingDetail
         Try
             ds = dal.LoadListForNonBillingByDealer(BillingHeaderId, Authentication.CurrentUser.LanguageId)
 
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView
@@ -505,7 +505,7 @@ Public Class BillingDetail
         Dim ds As DataSet
         Try
             ds = dal.GetAllRejInstNoForCert(CertId)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView

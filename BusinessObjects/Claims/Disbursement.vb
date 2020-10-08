@@ -73,7 +73,7 @@ Public Class Disbursement
         Try
             Dim dal As New DisbursementDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -1279,9 +1279,9 @@ Public Class Disbursement
             'For Each row In parentClaim.Dataset.Tables(CommentDAL.TABLE_NAME).Rows
             For rowIndex = 0 To parentClaim.Dataset.Tables(CommentDAL.TABLE_NAME).Rows.Count - 1
                 row = parentClaim.Dataset.Tables(CommentDAL.TABLE_NAME).Rows.Item(rowIndex)
-                If Not (row.RowState = DataRowState.Deleted) Or (row.RowState = DataRowState.Detached) Then
+                If Not (row.RowState = DataRowState.Deleted) OrElse (row.RowState = DataRowState.Detached) Then
                     Dim c As Comment = New Comment(row)
-                    If parentClaim.Id.Equals(c.ClaimId) And c.IsNew Then
+                    If parentClaim.Id.Equals(c.ClaimId) AndAlso c.IsNew Then
                         c.Delete()
                     End If
                 End If
@@ -1312,7 +1312,7 @@ Public Class Disbursement
             Dim ManufacturerBO As New Manufacturer(CertItemBO.ManufacturerId)
             ManufacturerDescription = ManufacturerBO.Description
         End If
-        If Not CertItemBO.Model Is Nothing Then
+        If CertItemBO.Model IsNot Nothing Then
             If CertItemBO.Model.Trim.Length > 40 Then
                 Model = CertItemBO.Model.Substring(0, 40)
             Else
@@ -1374,7 +1374,7 @@ Public Class Disbursement
         StatusDate = New DateType(System.DateTime.Now)
 
         If PayeeOptionId.Equals(Guid.Empty) AndAlso ClaimInvoiceBO.PayeeOptionCode <> "" Then
-            PayeeOptionId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYEE, ClaimInvoiceBO.PayeeOptionCode)
+            PayeeOptionId = LookupListNew.GetIdFromCode(LookupListCache.LK_PAYEE, ClaimInvoiceBO.PayeeOptionCode)
         End If
 
         'claim details, withholdings and taxes
@@ -1482,10 +1482,8 @@ Public Class Disbursement
 
     Private Sub CapturePayeeInfo(ClaimInvoiceBO As ClaimInvoice)
 
-        If ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_MASTER_CENTER Or _
-           ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_SERVICE_CENTER Or _
-           ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_LOANER_CENTER Then
-            If Not ClaimInvoiceBO.PayeeBankInfo Is Nothing Then
+        If ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_MASTER_CENTER OrElse ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_SERVICE_CENTER OrElse ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_LOANER_CENTER Then
+            If ClaimInvoiceBO.PayeeBankInfo IsNot Nothing Then
                 'bank info:
                 CopyBankInfoData(ClaimInvoiceBO.PayeeBankInfo)
             Else
@@ -1495,8 +1493,7 @@ Public Class Disbursement
             If Not ClaimAuthorizationId.Equals(Guid.Empty) Then
                 PaymentMethod = ClaimInvoiceBO.PaymentMethodCode
             End If
-        ElseIf ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_CUSTOMER Or _
-               ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_OTHER Then
+        ElseIf ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_CUSTOMER OrElse ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_OTHER Then
             If ClaimInvoiceBO.PaymentMethodCode = Codes.PAYMENT_METHOD__CHECK_TO_CONSUMER Then
                 'address info:
                 CopyAddressData(ClaimInvoiceBO.PayeeAddress)
@@ -1513,7 +1510,7 @@ Public Class Disbursement
             End If
         End If
 
-        If ClaimInvoiceBO.IsInsuranceCompany And (ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_OTHER) Then
+        If ClaimInvoiceBO.IsInsuranceCompany AndAlso (ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_OTHER) Then
             DocumentType = ClaimInvoiceBO.DocumentType
             IdentificationNumber = ClaimInvoiceBO.TaxId
         End If
@@ -1526,13 +1523,13 @@ Public Class Disbursement
         SwiftCode = objPayeeBankInfo.SwiftCode
         IbanNumber = objPayeeBankInfo.IbanNumber
         If Not (objPayeeBankInfo.AccountTypeId.Equals(Guid.Empty)) Then
-            AccountType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_ACCOUNT_TYPES, objPayeeBankInfo.AccountTypeId)
+            AccountType = LookupListNew.GetDescriptionFromId(LookupListCache.LK_ACCOUNT_TYPES, objPayeeBankInfo.AccountTypeId)
         End If
-        Country = LookupListNew.GetDescriptionFromId(LookupListNew.LK_COUNTRIES, objPayeeBankInfo.CountryID)
+        Country = LookupListNew.GetDescriptionFromId(LookupListCache.LK_COUNTRIES, objPayeeBankInfo.CountryID)
         Dim objcompany As New Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
         Dim dv As DataView = LookupListNew.GetPaymentReasonLookupList(objcompany.LanguageId)
         PaymentReason = LookupListNew.GetDescriptionFromId(dv, objPayeeBankInfo.PaymentReasonID)
-        If Not PaymentReason Is Nothing AndAlso PaymentReason.Trim.Length > 40 Then
+        If PaymentReason IsNot Nothing AndAlso PaymentReason.Trim.Length > 40 Then
             PaymentReason = PaymentReason.Substring(0, 40)
         End If
 
@@ -1556,7 +1553,7 @@ Public Class Disbursement
             regionBO = New Region(objPayeeAddress.RegionId)
             RegionDesc = regionBO.Description
         End If
-        Country = LookupListNew.GetDescriptionFromId(LookupListNew.LK_COUNTRIES, objPayeeAddress.CountryId)
+        Country = LookupListNew.GetDescriptionFromId(LookupListCache.LK_COUNTRIES, objPayeeAddress.CountryId)
         PayeeMailingLabel = objPayeeAddress.MailingAddressLabel
     End Sub
 
@@ -1633,7 +1630,7 @@ Public Class Disbursement
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Disbursement = CType(objectToValidate, Disbursement)
 
-            If (Not obj.perceptionIIBB Is Nothing AndAlso obj.perceptionIIBB.Value > 0) And obj.VendorRegionDesc = Nothing Then Return False
+            If (obj.perceptionIIBB IsNot Nothing AndAlso obj.perceptionIIBB.Value > 0) And obj.VendorRegionDesc = Nothing Then Return False
 
             Return True
 

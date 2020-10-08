@@ -165,10 +165,10 @@ Public Class OlitaSerialNumberUpdate
             'find dealer
             Dim dvDealrs As DataView = LookupListNew.GetDealerLookupList(compIds)
             Dim dealerId As Guid = Guid.Empty
-            If Not dvDealrs Is Nothing AndAlso dvDealrs.Count > 0 Then
+            If dvDealrs IsNot Nothing AndAlso dvDealrs.Count > 0 Then
                 dealerId = LookupListNew.GetIdFromCode(dvDealrs, DealerCode)
                 If dealerId.Equals(Guid.Empty) Then
-                    Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_CODE)
+                    Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", Common.ErrorCodes.INVALID_DEALER_CODE)
                 End If
             End If
 
@@ -176,7 +176,7 @@ Public Class OlitaSerialNumberUpdate
                 CertNumber += "*"
             End If
             Dim _CertListDataSet As DataSet = Certificate.GetCertificatesList(CertNumber, "", "", "", "", DealerCode).Table.DataSet
-            If Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count > 0 Then
+            If _CertListDataSet IsNot Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count > 0 Then
                 If _CertListDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
                     Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", CERTIFICATE_NOT_FOUND)
                 Else
@@ -198,7 +198,7 @@ Public Class OlitaSerialNumberUpdate
 
             ElseIf _CertListDataSet Is Nothing Then
                 Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", ERROR_ACCESSING_DATABASE)
-            ElseIf Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count = 0 Then
+            ElseIf _CertListDataSet IsNot Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count = 0 Then
                 Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", CERTIFICATE_NOT_FOUND)
             End If
 

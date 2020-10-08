@@ -114,7 +114,7 @@ Public Class GalaxyUpdateClaim
                 ClaimNumber = .CLAIM_NUMBER  ' Galaxy Claim Number
                 UnitNumber = .UNIT_NUMBER
                 CauseOfLossCode = .CAUSE_OF_LOSS_CODE
-                CauseOfLossId = LookupListNew.GetIdFromCode(LookupListNew.LK_CAUSES_OF_LOSS, CauseOfLossCode)
+                CauseOfLossId = LookupListNew.GetIdFromCode(LookupListCache.LK_CAUSES_OF_LOSS, CauseOfLossCode)
 
                 If CauseOfLossId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("GalaxyUpdateClaim Error: ", INVALID_CAUSE_OF_LOSS_CODE)
@@ -184,7 +184,7 @@ Public Class GalaxyUpdateClaim
                     Dim assurant_pay_amount As Decimal
                     Dim deductible As Decimal
 
-                    If Not CType(ds.COVERAGES(i).ASSURANT_PAY_AMOUNT, DecimalType) Is Nothing Then
+                    If CType(ds.COVERAGES(i).ASSURANT_PAY_AMOUNT, DecimalType) IsNot Nothing Then
                         assurant_pay_amount = ds.COVERAGES(i).ASSURANT_PAY_AMOUNT
                     End If
 
@@ -200,9 +200,9 @@ Public Class GalaxyUpdateClaim
                     Dim certItemCoverageId As Guid = Guid.Empty
                     Dim companyId As Guid = Guid.Empty
 
-                    If Not dsItemCoverages Is Nothing AndAlso dsItemCoverages.Tables.Count > 0 AndAlso dsItemCoverages.Tables(0).Rows.Count > 0 Then
+                    If dsItemCoverages IsNot Nothing AndAlso dsItemCoverages.Tables.Count > 0 AndAlso dsItemCoverages.Tables(0).Rows.Count > 0 Then
                         Dim dr() As DataRow = dsItemCoverages.Tables(0).Select(CertItemCoverageDAL.COL_NAME_COVERAGE_TYPE_CODE & "='" & coverageCode & "'")
-                        If Not dr Is Nothing AndAlso dr.Length > 0 Then
+                        If dr IsNot Nothing AndAlso dr.Length > 0 Then
                             companyId = New Guid(CType(dr(0)(CertItemCoverageDAL.COL_NAME_COMPANY_ID), Byte()))
                             certItemCoverageId = New Guid(CType(dr(0)(CertItemCoverageDAL.COL_NAME_CERT_ITEM_COVERAGE_ID), Byte()))
                             If certItemCoverageId.Equals(Guid.Empty) Then
@@ -261,7 +261,7 @@ Public Class GalaxyUpdateClaim
             Dim defaultServiceCenterID As Guid = Guid.Empty
 
             'Close claims that not passed for update
-            If (Not dsCloseClaims Is Nothing) AndAlso (dsCloseClaims.Tables.Count > 0) AndAlso (Not dsCloseClaims.Tables(0) Is Nothing AndAlso (dsCloseClaims.Tables(0).Rows.Count > 0)) Then
+            If (dsCloseClaims IsNot Nothing) AndAlso (dsCloseClaims.Tables.Count > 0) AndAlso (dsCloseClaims.Tables(0) IsNot Nothing AndAlso (dsCloseClaims.Tables(0).Rows.Count > 0)) Then
                 claimFamilyBO = ClaimFacade.Instance.GetClaim(Of Claim)(New Guid(CType(dsCloseClaims.Tables(0).Rows(0)(SOURCE_COL_CLAIM_ID), Byte())))
                 defaultServiceCenterID = claimFamilyBO.ServiceCenterId
             Else
@@ -304,7 +304,7 @@ Public Class GalaxyUpdateClaim
                 Dim claimID As Guid = Guid.Empty
                 Dim claimBO As Claim
 
-                If (Not row(SOURCE_COL_CLAIM_NUMBER) Is DBNull.Value) Then
+                If (row(SOURCE_COL_CLAIM_NUMBER) IsNot DBNull.Value) Then
                     claimID = claimFamilyBO.GetClaimID(ElitaPlusIdentity.Current.ActiveUser.Companies, CType(row(SOURCE_COL_CLAIM_NUMBER), String))
                 End If
 
@@ -371,12 +371,12 @@ Public Class GalaxyUpdateClaim
                 End If
 
                 If (IsServiceCenterCodeNull = False) Then
-                    If Not claimBO.RepairDate Is Nothing Then
+                    If claimBO.RepairDate IsNot Nothing Then
                         selfThrownException = True
                         Throw New BOValidationException("GalaxyUpdateClaim Error: ", ERR_SERVICE_CENTER_CODE_NOT_UPDATABLE)
                     Else
                         Dim dvServiceCenter As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
-                        If Not dvServiceCenter Is Nothing AndAlso dvServiceCenter.Count > 0 Then
+                        If dvServiceCenter IsNot Nothing AndAlso dvServiceCenter.Count > 0 Then
                             Dim ServiceCenterId As Guid = LookupListNew.GetIdFromCode(dvServiceCenter, ServiceCenterCode)
                             If ServiceCenterId.Equals(Guid.Empty) Then
                                 selfThrownException = True
@@ -436,17 +436,17 @@ Public Class GalaxyUpdateClaim
 
                     If claimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Then
                         If LiabilityLimit <> 0 Then
-                            Throw New BOValidationException("GalaxyUpdateClaim Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_LIABILITY_LIMIT_ERR)
+                            Throw New BOValidationException("GalaxyUpdateClaim Error: ", Common.ErrorCodes.INVALID_LIABILITY_LIMIT_ERR)
                         End If
                     End If
 
                     If LiabilityLimit < 0 Then
-                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_LIABILITY_LIMIT_ERR)
+                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", Common.ErrorCodes.INVALID_LIABILITY_LIMIT_ERR)
                     End If
 
                     'if entered amount > existing liability limit then
                     If LiabilityLimit > claimBO.LiabilityLimit.Value Then
-                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_LIABILITY_LIMIT_ERR)
+                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", Common.ErrorCodes.INVALID_LIABILITY_LIMIT_ERR)
                     End If
 
                     claimBO.LiabilityLimit = CType(LiabilityLimit, DecimalType)

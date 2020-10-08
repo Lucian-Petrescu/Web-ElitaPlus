@@ -150,7 +150,7 @@ Public Class ClaimsByPicklist
 
                 Dim dvPicklist As DataView = LookupListNew.GetPicklistLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-                If Not dvPicklist Is Nothing AndAlso dvPicklist.Count > 0 Then
+                If dvPicklist IsNot Nothing AndAlso dvPicklist.Count > 0 Then
                     _headerId = LookupListNew.GetIdFromCode(dvPicklist, PickListNumber)
 
                     If _headerId.Equals(Guid.Empty) Then
@@ -168,11 +168,11 @@ Public Class ClaimsByPicklist
 
     Public ReadOnly Property ServiceCenterID As Guid
         Get
-            If _serviceCenterId.Equals(Guid.Empty) AndAlso Not ServiceCenterCode Is Nothing AndAlso ServiceCenterCode <> "" Then
+            If _serviceCenterId.Equals(Guid.Empty) AndAlso ServiceCenterCode IsNot Nothing AndAlso ServiceCenterCode <> "" Then
 
                 Dim dvServiceCenter As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
 
-                If Not dvServiceCenter Is Nothing AndAlso dvServiceCenter.Count > 0 Then
+                If dvServiceCenter IsNot Nothing AndAlso dvServiceCenter.Count > 0 Then
                     _serviceCenterId = LookupListNew.GetIdFromCode(dvServiceCenter, ServiceCenterCode)
 
                     If _serviceCenterId.Equals(Guid.Empty) Then
@@ -190,11 +190,11 @@ Public Class ClaimsByPicklist
 
     Public ReadOnly Property StoreServiceCenterID As Guid
         Get
-            If _storeServiceCenterId.Equals(Guid.Empty) AndAlso Not StoreNumber Is Nothing AndAlso StoreNumber <> "" Then
+            If _storeServiceCenterId.Equals(Guid.Empty) AndAlso StoreNumber IsNot Nothing AndAlso StoreNumber <> "" Then
 
                 Dim dvStore As DataView = LookupListNew.GetStoreLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
 
-                If Not dvStore Is Nothing AndAlso dvStore.Count > 0 Then
+                If dvStore IsNot Nothing AndAlso dvStore.Count > 0 Then
                     _storeServiceCenterId = LookupListNew.GetIdFromCode(dvStore, StoreNumber)
 
                     If _storeServiceCenterId.Equals(Guid.Empty) Then

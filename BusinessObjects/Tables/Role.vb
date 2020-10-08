@@ -65,7 +65,7 @@ Public Class Role
         Try
             Dim dal As New RoleDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -192,7 +192,7 @@ Public Class Role
                 'For Getting ID in Remote Service need to pass Original Code else no information will be available 
                 Dim originalRoleCode As String = CType(Row(RoleDAL.COL_NAME_CODE, DataRowVersion.Original), String)
 
-                If (Not remoteRoleProvider Is Nothing AndAlso Not String.IsNullOrEmpty(originalRoleCode.Trim())) Then
+                If (remoteRoleProvider IsNot Nothing AndAlso Not String.IsNullOrEmpty(originalRoleCode.Trim())) Then
                     Return remoteRoleProvider.GetRoleId(originalRoleCode.Trim())
                 End If
 
@@ -221,7 +221,7 @@ Public Class Role
             If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New RoleDAL
                 ' Call Web Service to Manage Role on Remote System
-                If Assurant.Elita.Configuration.ElitaConfig.Current.General.IntegrateWorkQueueImagingServices = True Then
+                If Elita.Configuration.ElitaConfig.Current.General.IntegrateWorkQueueImagingServices = True Then
                     UpdateRemoteRole()
                 End If
                 dal.UpdateFamily(Dataset)
@@ -266,7 +266,7 @@ Public Class Role
             Case DataRowState.Deleted
                 ' Check if Remote Provider is in original version, if not clear remote role ID in original record
                 Dim roleProviderId As Guid = Guid.Empty
-                If (Not Row.Item(RoleDAL.COL_NAME_ROLE_PROVIDER_ID, DataRowVersion.Original) Is DBNull.Value) Then
+                If (Row.Item(RoleDAL.COL_NAME_ROLE_PROVIDER_ID, DataRowVersion.Original) IsNot DBNull.Value) Then
                     roleProviderId = New Guid(CType(Row.Item(RoleDAL.COL_NAME_ROLE_PROVIDER_ID, DataRowVersion.Original), Byte()))
                 End If
                 If (roleProviderId.Equals(Guid.Empty)) Then

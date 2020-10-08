@@ -1,6 +1,6 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (6/18/2015)  ********************
 Imports System.Configuration
-Imports Assurant.ElitaPlus.DALObjects.Documents
+Imports System.Security.Cryptography
 Imports Microsoft.WindowsAzure.Storage
 Imports Microsoft.WindowsAzure.Storage.Blob
 
@@ -47,11 +47,11 @@ Namespace Documents
 
         Public Sub Upload(pDocument As Document)
             pDocument.RepositoryCode = Code
-            If (Not pDocument.FileName Is Nothing) AndAlso (pDocument.FileType.Length > 0) Then
+            If (pDocument.FileName IsNot Nothing) AndAlso (pDocument.FileType.Length > 0) Then
                 pDocument.FileType = pDocument.FileName.Split(New Char() {"."}).Last().ToUpper()
             End If
-            If (Not pDocument.Data Is Nothing) AndAlso (pDocument.Data.Length > 0) Then
-                pDocument.HashValue = Convert.ToBase64String(System.Security.Cryptography.SHA256Managed.Create().ComputeHash(pDocument.Data))
+            If (pDocument.Data IsNot Nothing) AndAlso (pDocument.Data.Length > 0) Then
+                pDocument.HashValue = Convert.ToBase64String(New SHA256CryptoServiceProvider().ComputeHash(pDocument.Data))
             End If
 
             pDocument.Validate()
@@ -82,7 +82,7 @@ Namespace Documents
         End Sub
         Private Sub FileSystemUpload(pDocument As Document)
             Dim fileName As String = pDocument.AbsoluteFileName
-            System.IO.File.WriteAllBytes(fileName, pDocument.Data)
+            IO.File.WriteAllBytes(fileName, pDocument.Data)
         End Sub
 
         Public Function Download(pDocumentId As Guid) As Document
@@ -249,32 +249,29 @@ Namespace Documents
                     Return False
                 End If
 
-                If (Not System.IO.Directory.Exists(obj.StoragePath)) Then
+                If (Not IO.Directory.Exists(obj.StoragePath)) Then
                     Return False
                 End If
 
-                Dim buffer() As Byte = New Byte(100) {}
+                Dim buffer = New Byte(100) {}
                 Dim rnd As New Random
                 rnd.NextBytes(buffer)
-                Dim fileName As String = String.Format("{0}{1}Dummy.bin", obj.StoragePath, System.IO.Path.DirectorySeparatorChar)
+                Dim fileName As String = String.Format("{0}{1}Dummy.bin", obj.StoragePath, IO.Path.DirectorySeparatorChar)
 
                 Try
-                    If (System.IO.File.Exists(fileName)) Then
-                        System.IO.File.Delete(fileName)
+                    If (IO.File.Exists(fileName)) Then
+                        IO.File.Delete(fileName)
                     End If
 
-                    System.IO.File.WriteAllBytes(fileName, buffer)
+                    IO.File.WriteAllBytes(fileName, buffer)
 
                     Dim newBuffer As Byte() = New Byte(100) {}
-                    newBuffer = System.IO.File.ReadAllBytes(fileName)
+                    newBuffer = IO.File.ReadAllBytes(fileName)
 
                     Return buffer.SequenceEqual(newBuffer)
                 Catch ex As Exception
                     Return False
                 End Try
-
-                Return True
-
             End Function
         End Class
 

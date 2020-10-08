@@ -59,7 +59,7 @@ Public Class RuleListDetail
         Try
             Dim dal As New RuleListDetailDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -204,7 +204,7 @@ Public Class RuleListDetail
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 #End Region
 

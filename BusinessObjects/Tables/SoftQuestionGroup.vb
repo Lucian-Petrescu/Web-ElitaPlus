@@ -61,7 +61,7 @@ Public Class SoftQuestionGroup
         Try
             Dim dal As New SoftQuestionGroupDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -246,7 +246,7 @@ Public Class SoftQuestionGroup
         For Each riskTypeID In selectedRiskTypeGuidStrCollection
             'update to new soft question GUID
             Dim newBO As RiskType = New RiskType(New Guid(riskTypeID), Dataset)
-            If Not newBO Is Nothing Then
+            If newBO IsNot Nothing Then
                 newBO.SoftQuestionGroupId = Id
                 newBO.Save()
             End If
@@ -258,7 +258,7 @@ Public Class SoftQuestionGroup
         For Each riskTypeID In selectedRiskTypeGuidStrCollection
             'update to new soft question GUID
             Dim newBO As RiskType = New RiskType(New Guid(riskTypeID), Dataset)
-            If Not newBO Is Nothing Then
+            If newBO IsNot Nothing Then
                 newBO.SoftQuestionGroupId = Guid.Empty
                 newBO.Save()
             End If

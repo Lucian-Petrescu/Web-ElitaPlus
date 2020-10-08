@@ -59,7 +59,7 @@ Public Class ServiceNetwork
         Try
             Dim dal As New ServiceNetworkDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -277,7 +277,7 @@ Public Class ServiceNetwork
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, snSrvBO.ServiceCenterId)
         Next
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause
         Else

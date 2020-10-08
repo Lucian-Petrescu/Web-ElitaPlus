@@ -59,7 +59,7 @@ Public Class BillingHeader
         Try
             Dim dal As New BillingHeaderDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -208,14 +208,14 @@ Public Class BillingHeader
     Public ReadOnly Property DealerCode As String
         Get
             If DealerId.Equals(Guid.Empty) Then Return Nothing
-            Return LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, DealerId)
+            Return LookupListNew.GetCodeFromId(LookupListCache.LK_DEALERS, DealerId)
         End Get
     End Property
 
     Public ReadOnly Property DealerNameLoad As String
         Get
             If DealerId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_DEALERS)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_DEALERS)
             Return LookupListNew.GetDescriptionFromId(dv, DealerId)
         End Get
     End Property
@@ -274,7 +274,7 @@ Public Class BillingHeader
         Try
             ds = dal.LoadList(CompanyIds, DealerId, BeginDate, EndDate)
 
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView
@@ -290,7 +290,7 @@ Public Class BillingHeader
         Try
             ds = dal.LoadListByCompany(CompanyIds, BeginDate, EndDate)
 
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView

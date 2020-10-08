@@ -64,7 +64,7 @@ Public Class CommissionTolerance
         Try
             Dim dal As New CommissionToleranceDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -88,7 +88,7 @@ Public Class CommissionTolerance
         Try
             Dim dal As New CommissionToleranceDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -188,7 +188,7 @@ Public Class CommissionTolerance
 
         Dim newBO As AssociateCommissions = New AssociateCommissions(familyDS)
 
-        If Not newBO Is Nothing Then
+        If newBO IsNot Nothing Then
             newBO.CommissionToleranceId = Id
             newBO.CommissionPercent = NewObject.CommissionPercent
             newBO.MarkupPercent = NewObject.MarkupPercent

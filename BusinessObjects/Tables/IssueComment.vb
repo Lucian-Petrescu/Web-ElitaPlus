@@ -60,7 +60,7 @@ Public Class IssueComment
         Try
             Dim dal As New IssueCommentDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -230,7 +230,7 @@ Public Class IssueComment
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Issue Comment.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
     Public Shared Function IsChild(IssueId As Guid, IssueCommentId As Guid) As Byte()
@@ -243,7 +243,7 @@ Public Class IssueComment
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.IsChild(IssueCommentId, IssueId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(IssueCommentDAL.TABLE_NAME).Rows.Count > 0 Then
                     Return ds.Tables(IssueCommentDAL.TABLE_NAME).Rows(0)(IssueCommentDAL.COL_NAME_ISSUE_COMMENT_ID)
                 Else

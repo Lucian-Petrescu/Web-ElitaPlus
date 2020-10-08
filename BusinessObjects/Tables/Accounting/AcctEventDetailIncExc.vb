@@ -60,7 +60,7 @@ Public Class AcctEventDetailIncExc
         Try
             Dim dal As New AcctEventDetailIncexcDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -154,7 +154,7 @@ Public Class AcctEventDetailIncExc
     Public ReadOnly Property CoverageTypeDescription As String
         Get
             If _CoverageTypeDescription = String.Empty AndAlso CoverageTypeId <> Guid.Empty Then
-                _CoverageTypeDescription = LookupListNew.GetDescriptionFromId(LookupListNew.LK_COVERAGE_TYPES, CoverageTypeId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                _CoverageTypeDescription = LookupListNew.GetDescriptionFromId(LookupListCache.LK_COVERAGE_TYPES, CoverageTypeId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             End If
             Return _CoverageTypeDescription
         End Get

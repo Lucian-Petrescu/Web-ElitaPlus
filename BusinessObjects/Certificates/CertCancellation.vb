@@ -59,7 +59,7 @@ Public Class CertCancellation
         Try
             Dim dal As New CertCancellationDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -930,7 +930,7 @@ Public Class CertCancellation
             .cancellationCode = oCancellatioReason.Code
             .quote = "N"
             .payment_method_Id = oCertCanc.PaymentMethodId
-            If Not oCertCanc.ComputedRefund Is Nothing Then
+            If oCertCanc.ComputedRefund IsNot Nothing Then
                 .refundAmountRcvd = oCertCanc.ComputedRefund
             End If
             If Not IsDBNull(oCertCanc.InstallmentsPaid) Then

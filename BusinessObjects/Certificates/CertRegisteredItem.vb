@@ -60,7 +60,7 @@ Public Class CertRegisteredItem
         Try
             Dim dal As New CertRegisteredItemDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -85,7 +85,7 @@ Public Class CertRegisteredItem
         Dim ds As DataSet
         Dim strDeviceTypeDesc As String = String.Empty
         ds = dal.getDeviceTypeDesc(languageId, deviceTypeId)
-        If (Not ds.Tables(0) Is Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
+        If (ds.Tables(0) IsNot Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
             strDeviceTypeDesc = ds.Tables(0).Rows(0)("device_type_desc").ToString()
         End If
         Return strDeviceTypeDesc
@@ -571,7 +571,7 @@ Public Class CertRegisteredItem
                 '.EquipmentId = Me.EquipmentId
                 .SerialNumber = SerialNumber
                 .IMEINumber = SerialNumber
-                .ClaimEquipmentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_EQUIPMENT_TYPE, "C")
+                .ClaimEquipmentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_EQUIPMENT_TYPE, "C")
             End With
             Return objClaimedEquipment
         Catch ex As Exception

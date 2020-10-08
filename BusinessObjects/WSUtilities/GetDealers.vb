@@ -117,8 +117,8 @@ Public Class GetDealers
 
             dealerList = dealerBO.getList(Nothing, Nothing, Guid.Empty, Guid.Empty)
 
-            If Not dealerList Is Nothing AndAlso dealerList.Count > 0 Then
-                If Not CompanyCode Is Nothing AndAlso Not CompanyCode.Equals(String.Empty) Then
+            If dealerList IsNot Nothing AndAlso dealerList.Count > 0 Then
+                If CompanyCode IsNot Nothing AndAlso Not CompanyCode.Equals(String.Empty) Then
                     dealerList.RowFilter = Dealer.DealerSearchDV.COL_COMPANY & " = '" & CompanyCode & "'"
                     'Sort on Description by default
                     If dealerList.Table.Columns.IndexOf(LookupListNew.COL_DESCRIPTION_NAME) >= 0 Then

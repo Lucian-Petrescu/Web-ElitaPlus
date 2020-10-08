@@ -43,8 +43,7 @@ Public Class ElitaWSException
         'MyBase.New("Elita Web Service Error: " & innerException.Message, message, innerException)
         MyBase.New(innerException.Message, message, innerException)
 
-        If message = ErrorCodes.WS_INVALID_REQUEST Or _
-           message = ErrorCodes.WS_XML_INVALID Then
+        If message = ErrorCodes.WS_INVALID_REQUEST OrElse message = ErrorCodes.WS_XML_INVALID Then
 
             SourceException = SoapException.ClientFaultCode
 
@@ -135,7 +134,7 @@ Public Class ElitaWSException
     Public Function Raise(Optional ByVal bTranslate As Boolean = True) As SoapException
 
         Dim err As String = String.Empty
-        If Not InnerException Is Nothing Then err = InnerException.Source
+        If InnerException IsNot Nothing Then err = InnerException.Source
         Throw New SoapException(IIf(bTranslate, TranslationBase.TranslateLabelOrMessage(Code), Code), _
                                 SourceException, _
                                 SourceApplicationName, _

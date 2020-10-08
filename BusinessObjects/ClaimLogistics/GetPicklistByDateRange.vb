@@ -91,30 +91,30 @@ Public Class GetPicklistByDateRange
     <ValueMandatory("")> _
     Public Property StartDate As DateTime
         Get
-            If Row(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE) Is DBNull.Value Then
+            If Row(PickupListHeaderDAL.COL_NAME_START_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE), String)
+                Return CType(Row(PickupListHeaderDAL.COL_NAME_START_DATE), String)
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE, Value)
+            SetValue(PickupListHeaderDAL.COL_NAME_START_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property EndDate As DateTime
         Get
-            If Row(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE) Is DBNull.Value Then
+            If Row(PickupListHeaderDAL.COL_NAME_END_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE), String)
+                Return CType(Row(PickupListHeaderDAL.COL_NAME_END_DATE), String)
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE, Value)
+            SetValue(PickupListHeaderDAL.COL_NAME_END_DATE, Value)
         End Set
     End Property
 

@@ -61,7 +61,7 @@ Public Class ClaimBonusSettings
         Try
             Dim dal As New ClaimBonusSettingsDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -130,7 +130,7 @@ Public Class ClaimBonusSettings
             If Row(ClaimBonusSettingsDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
                 Return String.Empty
             Else
-                Return LookupListNew.GetCodeFromId(LookupListNew.LK_SERVICE_CENTERS, New Guid(CType(Row(ClaimBonusSettingsDAL.COL_NAME_SERVICE_CENTER_ID), Byte())))
+                Return LookupListNew.GetCodeFromId(LookupListCache.LK_SERVICE_CENTERS, New Guid(CType(Row(ClaimBonusSettingsDAL.COL_NAME_SERVICE_CENTER_ID), Byte())))
             End If
         End Get
     End Property
@@ -156,7 +156,7 @@ Public Class ClaimBonusSettings
             If Row(ClaimBonusSettingsDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
                 Return String.Empty
             Else
-                Return LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, New Guid(CType(Row(ClaimBonusSettingsDAL.COL_NAME_DEALER_ID), Byte())))
+                Return LookupListNew.GetCodeFromId(LookupListCache.LK_DEALERS, New Guid(CType(Row(ClaimBonusSettingsDAL.COL_NAME_DEALER_ID), Byte())))
             End If
         End Get
     End Property
@@ -180,7 +180,7 @@ Public Class ClaimBonusSettings
             If Row(ClaimBonusSettingsDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
                 Return String.Empty
             Else
-                Return LookupListNew.GetCodeFromId(LookupListNew.LK_PRODUCTCODE_BY_DEALER, New Guid(CType(Row(ClaimBonusSettingsDAL.COL_NAME_PRODUCT_CODE_ID), Byte())))
+                Return LookupListNew.GetCodeFromId(LookupListCache.LK_PRODUCTCODE_BY_DEALER, New Guid(CType(Row(ClaimBonusSettingsDAL.COL_NAME_PRODUCT_CODE_ID), Byte())))
             End If
         End Get
     End Property
@@ -207,7 +207,7 @@ Public Class ClaimBonusSettings
             If Row(ClaimBonusSettingsDAL.COL_NAME_BONUS_COMPUTE_METHOD_ID) Is DBNull.Value Then
                 Return String.Empty
             Else
-                Return LookupListNew.GetCodeFromId(LookupListNew.LK_BONUS_COMPUTATION_METHOD, New Guid(CType(Row(ClaimBonusSettingsDAL.COL_NAME_BONUS_COMPUTE_METHOD_ID), Byte())))
+                Return LookupListNew.GetCodeFromId(LookupListCache.LK_BONUS_COMPUTATION_METHOD, New Guid(CType(Row(ClaimBonusSettingsDAL.COL_NAME_BONUS_COMPUTE_METHOD_ID), Byte())))
             End If
         End Get
     End Property

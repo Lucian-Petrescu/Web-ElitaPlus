@@ -76,7 +76,7 @@ Public Class ClaimFileProcessed
         Try
             Dim dal As New ClaimFileProcessedDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -286,7 +286,7 @@ Public Class ClaimFileProcessed
     Public ReadOnly Property ClaimNameLoad As String
         Get
             If SplitSystemId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_SPLIT_SYSTEM)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_SPLIT_SYSTEM)
             Return LookupListNew.GetDescriptionFromId(dv, SplitSystemId)
         End Get
     End Property

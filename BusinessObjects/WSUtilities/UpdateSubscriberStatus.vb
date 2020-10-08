@@ -174,7 +174,7 @@ Public Class UpdateSubscriberStatus
         Dim dsCert As DataSet = dal.GetCertIDWithCertNumAndDealer(CertificateNumber, _dealerId)
         Dim strResult As String = String.Empty
 
-        If Not dsCert Is Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
+        If dsCert IsNot Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
             If dsCert.Tables(0).Rows(0).Item("Cert_ID") Is DBNull.Value Then
                 Throw New BOValidationException("UpdateSubscriberStatus Error: ", Common.ErrorCodes.ERR_NO_CERTIFICATE_FOUND)
             Else
@@ -213,12 +213,12 @@ Public Class UpdateSubscriberStatus
             Validate()
 
             'validate the dealer code
-            If Not DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty Then
+            If DealerCode IsNot Nothing AndAlso DealerCode.Trim <> String.Empty Then
                 FindDealer()
             End If
 
             'validate the certificate number
-            If Not CertificateNumber Is Nothing AndAlso CertificateNumber.Trim <> String.Empty Then
+            If CertificateNumber IsNot Nothing AndAlso CertificateNumber.Trim <> String.Empty Then
                 FindCertificate()
             End If
 

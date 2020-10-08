@@ -59,7 +59,7 @@ Public Class EquipmentListDetail
         Try
             Dim dal As New EquipmentListDetailDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -200,7 +200,7 @@ Public Class EquipmentListDetail
         Dim cmpEquipmentIdStr As String
         For Each cmpEquipmentIdStr In selectedEquipmentGuidStrCollection
             Dim newBO As EquipmentListDetail = New EquipmentListDetail(Dataset)
-            If Not newBO Is Nothing Then
+            If newBO IsNot Nothing Then
                 newBO.EquipmentId = ID
                 newBO.EquipmentId = New Guid(cmpEquipmentIdStr)
                 newBO.Save()
@@ -225,7 +225,7 @@ Public Class EquipmentListDetail
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.IsChild(EquipListId, EquipId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(EquipmentListDetailDAL.TABLE_NAME).Rows.Count > 0 Then
                     Return ds.Tables(EquipmentListDetailDAL.TABLE_NAME).Rows(0)(EquipmentListDetailDAL.COL_NAME_EQUIPMENT_LIST_DETAIL_ID)
                 Else
@@ -241,7 +241,7 @@ Public Class EquipmentListDetail
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
     'Public Shared Function ExpireExistingListEquipments(ByVal EquipmentListId As Guid) As Boolean
@@ -294,7 +294,7 @@ Public Class EquipmentListDetail
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.GetEquipmentExpiration(EquipmentId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(0).Rows.Count > 0 Then
                     Return ds.Tables(0).Rows(0)("EXPIRATION")
                 Else
@@ -317,7 +317,7 @@ Public Class EquipmentListDetail
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.GetEquipmentEffective(EquipmentId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(0).Rows.Count > 0 Then
                     Return ds.Tables(0).Rows(0)("EFFECTIVE")
                 Else

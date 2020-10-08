@@ -208,7 +208,7 @@ Public NotInheritable Class ClaimFacade
     Public Function CreateClaim(Of TClaim As ClaimBase)(dealerId As Guid, Optional ByVal pDataSet As DataSet = Nothing) As TClaim
         Dim claim As ClaimBase = Nothing
         Dim dealer As Dealer = New Dealer(dealerId)
-        If (dealer.UseClaimAuthorizationId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)) Then
+        If (dealer.UseClaimAuthorizationId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)) Then
             If (pDataSet Is Nothing) Then
                 claim = New Claim()
             Else
@@ -256,9 +256,9 @@ Public NotInheritable Class ClaimFacade
 
     Private Function IsClaimLoaded(claimId As Guid, dataSet As DataSet) As Boolean
         Dim flag As Boolean = False
-        If (Not dataSet Is Nothing) Then
+        If (dataSet IsNot Nothing) Then
             Dim row As DataRow = FindRow(claimId, dataSet)
-            If Not row Is Nothing Then flag = True
+            If row IsNot Nothing Then flag = True
         End If
         Return flag
     End Function
@@ -266,7 +266,7 @@ Public NotInheritable Class ClaimFacade
     Private Function GetClaimType(claimId As Guid, dataSet As DataSet) As String
         Dim claimAuthTypeCode As String = String.Empty
         Dim row As DataRow = FindRow(claimId, dataSet)
-        If (Not row Is Nothing) Then
+        If (row IsNot Nothing) Then
             Dim claimAuthTypeId As Guid = New Guid(CType(row(ClaimDAL.COL_NAME_CLAIM_AUTH_TYPE_ID), Byte()))
             claimAuthTypeCode = LookupListNew.GetCodeFromId(Codes.CLAIM_AUTHORIZATION_TYPE, claimAuthTypeId)
         End If
@@ -277,7 +277,7 @@ Public NotInheritable Class ClaimFacade
         Dim dal As New ClaimDAL
         Dim row As DataRow = Nothing
         If dataSet.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-            row = ClaimBase.FindRow(claimId, dal.TABLE_KEY_NAME, dataSet.Tables(dal.TABLE_NAME))
+            row = BusinessObjectBase.FindRow(claimId, dal.TABLE_KEY_NAME, dataSet.Tables(dal.TABLE_NAME))
         End If
         Return row
     End Function

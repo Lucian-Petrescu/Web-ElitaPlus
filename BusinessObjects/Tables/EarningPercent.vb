@@ -59,7 +59,7 @@ Public Class EarningPercent
         Try
             Dim dal As New EarningPercentDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -132,7 +132,7 @@ Public Class EarningPercent
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("EarningTerm", MIN:=MIN_TERM, Max:=MAX_TERM, Message:=ElitaPlus.Common.ErrorCodes.EARNING_MONTH_MUST_BE_BETWEEN_1_AND_999), ValidTerm("")> _
+    <ValueMandatory(""), ValidNumericRange("EarningTerm", MIN:=MIN_TERM, Max:=MAX_TERM, Message:=Common.ErrorCodes.EARNING_MONTH_MUST_BE_BETWEEN_1_AND_999), ValidTerm("")> _
     Public Property EarningTerm As LongType
         Get
             CheckDeleted()
@@ -149,7 +149,7 @@ Public Class EarningPercent
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("EarningPercent", MIN:=MIN_PERCENT, Max:=MAX_PERCENT, Message:=ElitaPlus.Common.ErrorCodes.EARNING_PERCENT_MUST_BE_LESS_THAN_100), ValidPercent(""), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=EARNING_PERCENT_FORM012)> _
+    <ValueMandatory(""), ValidNumericRange("EarningPercent", MIN:=MIN_PERCENT, Max:=MAX_PERCENT, Message:=Common.ErrorCodes.EARNING_PERCENT_MUST_BE_LESS_THAN_100), ValidPercent(""), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=EARNING_PERCENT_FORM012)> _
     Public Property EarningPercent As DecimalType
         Get
             CheckDeleted()
@@ -205,7 +205,7 @@ Public Class EarningPercent
         Dim obj As EarningPercent = Me
 
         Dim bValid As Boolean = True
-        If Not obj.EarningTerm Is Nothing Then
+        If obj.EarningTerm IsNot Nothing Then
             Dim dal As New EarningPercentDAL
             Dim termCnt As Integer = dal.TermCount(obj.MAX_TERM, obj.EarningPatternId, Guid.Empty)
             If termCnt <> obj.EarningTerm.Value Then bValid = False
@@ -223,14 +223,14 @@ Public Class EarningPercent
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.EARNING_MONTH_IS_INVALID)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.EARNING_MONTH_IS_INVALID)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As EarningPercent = CType(objectToValidate, EarningPercent)
 
             Dim bValid As Boolean = True
-            If Not obj.EarningTerm Is Nothing Then
+            If obj.EarningTerm IsNot Nothing Then
                 Dim dal As New EarningPercentDAL
                 Dim termCnt As Integer = dal.TermCount(obj.EarningTerm.Value, obj.EarningPatternId, obj.Id)
                 If termCnt <> obj.EarningTerm.Value - 1 Then bValid = False
@@ -248,7 +248,7 @@ Public Class EarningPercent
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.EARNING_PERCENT_IS_INVALID)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.EARNING_PERCENT_IS_INVALID)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean

@@ -59,7 +59,7 @@ Public Class RegistrationLetter
         Try
             Dim dal As New RegistrationLetterDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -303,7 +303,7 @@ Public Class RegistrationLetter
                 Dim dal As New RegistrationLetterDAL
                 Dim maxDs As DataSet = dal.LoadMaxDay(obj.DealerId)
                 If maxDs.Tables(0).Rows.Count > 0 AndAlso _
-                    (Not maxDs.Tables(0).Rows(0)(dal.COL_NAME_NUMBER_OF_DAYS) Is DBNull.Value) Then
+                    (maxDs.Tables(0).Rows(0)(dal.COL_NAME_NUMBER_OF_DAYS) IsNot DBNull.Value) Then
                     maxDay = CType(maxDs.Tables(0).Rows(0)(dal.COL_NAME_NUMBER_OF_DAYS), Integer)
 
                     isLast = Not obj.IsNew AndAlso (obj.OriginalNumberOfDays.Value = maxDay)
@@ -335,7 +335,7 @@ Public Class RegistrationLetter
             dsv = dv.Table().DataSet
 
             Dim row As DataRow = dsv.Tables(0).NewRow()
-            row.Item(RegistrationLetterDAL.COL_NAME_REGISTRATION_LETTER_ID) = System.Guid.NewGuid.ToByteArray
+            row.Item(RegistrationLetterDAL.COL_NAME_REGISTRATION_LETTER_ID) = Guid.NewGuid.ToByteArray
 
             dsv.Tables(0).Rows.Add(row)
             Return New System.Data.DataView(dsv.Tables(0))

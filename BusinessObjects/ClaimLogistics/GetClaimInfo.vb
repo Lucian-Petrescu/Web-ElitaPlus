@@ -185,7 +185,7 @@ Public Property CustomerPhone As String
 
     Private ReadOnly Property ClaimID As Guid
         Get
-            If _claimId.Equals(Guid.Empty) AndAlso Not ClaimNumber Is Nothing Then
+            If _claimId.Equals(Guid.Empty) AndAlso ClaimNumber IsNot Nothing Then
                 _claimId = Claim.GetClaimID(ElitaPlusIdentity.Current.ActiveUser.Companies, ClaimNumber)
 
                 If _claimId.Equals(Guid.Empty) Then
@@ -213,14 +213,14 @@ Public Property CustomerPhone As String
             Else
                 'Dim oClaim As New Claim(New Guid(CType(dsClaim.Tables(0).Rows(0)(DALObjects.ClaimDAL.COL_NAME_CLAIM_ID), Byte())))
                 Dim oClaim As Claim
-                oClaim = ClaimFacade.Instance.GetClaim(Of Claim)((New Guid(CType(dsClaim.Tables(0).Rows(0)(DALObjects.ClaimDAL.COL_NAME_CLAIM_ID), Byte()))))
+                oClaim = ClaimFacade.Instance.GetClaim(Of Claim)((New Guid(CType(dsClaim.Tables(0).Rows(0)(ClaimDAL.COL_NAME_CLAIM_ID), Byte()))))
                 Dim assurantPay As String = CType(oClaim.AssurantPays, String)
                 dsClaim.DataSetName = DATASET_NAME
                 Dim excludeTags As ArrayList = New ArrayList()
                 excludeTags.Add("/GetClaimInfo/CLAIM/CLAIM_ID")
                 excludeTags.Add("/GetClaimInfo/CLAIM/CREATED_DATE")
 
-                If Not IncludeStatusHistory Is Nothing AndAlso IncludeStatusHistory = "Y" Then
+                If IncludeStatusHistory IsNot Nothing AndAlso IncludeStatusHistory = "Y" Then
                     excludeTags.Add("/GetClaimInfo/CLAIM_STATUS_HISTORY/CLAIM_ID")
                     excludeTags.Add("/GetClaimInfo/CLAIM_STATUS_HISTORY/CLAIM_NUMBER")
                 End If

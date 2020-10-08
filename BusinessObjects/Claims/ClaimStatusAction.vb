@@ -59,7 +59,7 @@ Public Class ClaimStatusAction
         Try
             Dim dal As New ClaimStatusActionDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -242,7 +242,7 @@ Public Class ClaimStatusAction
             dsv = dv.Table().DataSet
 
             Dim row As DataRow = dsv.Tables(0).NewRow()
-            row.Item(ClaimStatusActionDAL.COL_NAME_CLAIM_STATUS_ACTION_ID) = System.Guid.NewGuid.ToByteArray
+            row.Item(ClaimStatusActionDAL.COL_NAME_CLAIM_STATUS_ACTION_ID) = Guid.NewGuid.ToByteArray
 
             row(ClaimStatusActionDAL.COL_NAME_ACTION_ID) = Guid.Empty.ToByteArray
             row(ClaimStatusActionDAL.COL_NAME_CURRENT_STATUS_ID) = Guid.Empty.ToByteArray

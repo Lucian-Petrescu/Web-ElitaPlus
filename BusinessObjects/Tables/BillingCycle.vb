@@ -59,7 +59,7 @@ Public Class BillingCycle
         Try
             Dim dal As New BillingCycleDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -121,7 +121,7 @@ Public Class BillingCycle
             If Row(BillingCycleDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
                 Return String.Empty
             Else
-                Return LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, New Guid(CType(Row(BillingCycleDAL.COL_NAME_DEALER_ID), Byte())))
+                Return LookupListNew.GetCodeFromId(LookupListCache.LK_DEALERS, New Guid(CType(Row(BillingCycleDAL.COL_NAME_DEALER_ID), Byte())))
             End If
         End Get
     End Property

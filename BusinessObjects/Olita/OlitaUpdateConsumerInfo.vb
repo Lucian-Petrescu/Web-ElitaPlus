@@ -138,7 +138,7 @@ Public Class OlitaUpdateConsumerInfo
         Dim salutationDesc As String
         Dim list As DataView = LookupListNew.GetSalutationLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
-        salutationDesc = LookupListNew.GetDescriptionFromCode(LookupListNew.LK_SALUTATION, originalSalutationCode)
+        salutationDesc = LookupListNew.GetDescriptionFromCode(LookupListCache.LK_SALUTATION, originalSalutationCode)
 
         Return salutationDesc
     End Function
@@ -185,8 +185,8 @@ Public Class OlitaUpdateConsumerInfo
                 If ((Not .Isproduct_sales_dateNull) OrElse (Not .Iswarranty_sales_dateNull) OrElse _
                     (Not .Issales_priceNull)) Then
                     _CertListDataSet = Certificate.GetCertificatesList(CertNumber, "", "", "", "", DealerCode).Table.DataSet
-                    If (Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count > 0) AndAlso _
-                        (Not _CertListDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) Is DBNull.Value) Then
+                    If (_CertListDataSet IsNot Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count > 0) AndAlso _
+                        (_CertListDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) IsNot DBNull.Value) Then
                         oCert = New Certificate(New Guid(CType(_CertListDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID), Byte())))
                     Else
                         Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", CERTIFICATE_NOT_FOUND)
@@ -851,7 +851,7 @@ Public Class OlitaUpdateConsumerInfo
                 CertNumber += "*"
             End If
             Dim _CertListDataSet As DataSet = Certificate.GetCertificatesList(CertNumber, "", "", "", "", DealerCode).Table.DataSet
-            If Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count > 0 Then
+            If _CertListDataSet IsNot Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count > 0 Then
                 If _CertListDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
                     Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", CERTIFICATE_NOT_FOUND)
                 Else
@@ -893,7 +893,7 @@ Public Class OlitaUpdateConsumerInfo
 
             ElseIf _CertListDataSet Is Nothing Then
                 Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", ERROR_ACCESSING_DATABASE)
-            ElseIf Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count = 0 Then
+            ElseIf _CertListDataSet IsNot Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count = 0 Then
                 Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", CERTIFICATE_NOT_FOUND)
             End If
 
@@ -1021,13 +1021,13 @@ Public Class OlitaUpdateConsumerInfo
                     firstCertItem = New CertItem(New Guid(CType(certItemTable.Rows(0).Item(DATA_COL_NAME_CERT_ITEM_ID), Byte())))
                 End If
             End If
-            If (Not firstCertItem Is Nothing) Then
+            If (firstCertItem IsNot Nothing) Then
                 'Create an Endorsement
                 With TheCertEndorse
                     .PopulateWithDefaultValues(certBO.Id, firstCertItem.Id)
-                    If Not ProductSalesDate Is Nothing Then .ProductSalesDatePost = ProductSalesDate
-                    If Not WarrantySalesDate Is Nothing Then .WarrantySalesDatePost = WarrantySalesDate
-                    If Not SalesPrice Is Nothing Then .SalesPricePost = SalesPrice
+                    If ProductSalesDate IsNot Nothing Then .ProductSalesDatePost = ProductSalesDate
+                    If WarrantySalesDate IsNot Nothing Then .WarrantySalesDatePost = WarrantySalesDate
+                    If SalesPrice IsNot Nothing Then .SalesPricePost = SalesPrice
                 End With
             End If
 
@@ -1057,26 +1057,26 @@ Public Class OlitaUpdateConsumerInfo
         objAddress.RegionId = RegionId
         objAddress.PostalCode = PostalCode
         objAddress.CountryId = CountryId
-        If Not WorkPhone Is Nothing Then certBO.WorkPhone = WorkPhone
-        If Not MembershipNumber Is Nothing Then certBO.MembershipNumber = MembershipNumber
-        If Not PrimaryMemberName Is Nothing Then certBO.PrimaryMemberName = PrimaryMemberName
-        If Not WarrantySalesDate Is Nothing Then certBO.WarrantySalesDate = WarrantySalesDate
-        If Not ProductSalesDate Is Nothing Then certBO.ProductSalesDate = ProductSalesDate
-        If Not MembershipType Is Nothing Then certBO.MembershipTypeId = MembershipTypeId(MembershipType)
-        If Not SalesPrice Is Nothing Then certBO.SalesPrice = SalesPrice
-        If Not VATNum Is Nothing Then certBO.VatNum = VATNum
-        If Not IdentificationNumber Is Nothing Then certBO.IdentificationNumber = IdentificationNumber
+        If WorkPhone IsNot Nothing Then certBO.WorkPhone = WorkPhone
+        If MembershipNumber IsNot Nothing Then certBO.MembershipNumber = MembershipNumber
+        If PrimaryMemberName IsNot Nothing Then certBO.PrimaryMemberName = PrimaryMemberName
+        If WarrantySalesDate IsNot Nothing Then certBO.WarrantySalesDate = WarrantySalesDate
+        If ProductSalesDate IsNot Nothing Then certBO.ProductSalesDate = ProductSalesDate
+        If MembershipType IsNot Nothing Then certBO.MembershipTypeId = MembershipTypeId(MembershipType)
+        If SalesPrice IsNot Nothing Then certBO.SalesPrice = SalesPrice
+        If VATNum IsNot Nothing Then certBO.VatNum = VATNum
+        If IdentificationNumber IsNot Nothing Then certBO.IdentificationNumber = IdentificationNumber
 
-        If ((Not MailingAddress1 Is Nothing) OrElse (Not MailingAddress2 Is Nothing) OrElse _
-            (Not MailingCity Is Nothing) OrElse (Not MailingRegionId.Equals(Guid.Empty)) OrElse _
-             (Not MailingPostalCode Is Nothing) OrElse (Not MailingCountryId.Equals(Guid.Empty))) Then
+        If ((MailingAddress1 IsNot Nothing) OrElse (MailingAddress2 IsNot Nothing) OrElse _
+            (MailingCity IsNot Nothing) OrElse (Not MailingRegionId.Equals(Guid.Empty)) OrElse _
+             (MailingPostalCode IsNot Nothing) OrElse (Not MailingCountryId.Equals(Guid.Empty))) Then
             ' The user put info in one of the mailing fields
             Dim objMailingAddress As Address = certBO.MailingAddress
             If certBO.MailingAddressId.Equals(Guid.Empty) Then
                 'New Address Record
-                If ((Not MailingAddress1 Is Nothing) AndAlso _
-                (Not MailingCity Is Nothing) AndAlso (Not MailingRegionId.Equals(Guid.Empty)) AndAlso _
-                 (Not MailingPostalCode Is Nothing) AndAlso (Not MailingCountryId.Equals(Guid.Empty))) Then
+                If ((MailingAddress1 IsNot Nothing) AndAlso _
+                (MailingCity IsNot Nothing) AndAlso (Not MailingRegionId.Equals(Guid.Empty)) AndAlso _
+                 (MailingPostalCode IsNot Nothing) AndAlso (Not MailingCountryId.Equals(Guid.Empty))) Then
                     certBO.MailingAddressId = objMailingAddress.Id
                     objMailingAddress.Address1 = MailingAddress1
                     objMailingAddress.Address2 = MailingAddress2
@@ -1089,11 +1089,11 @@ Public Class OlitaUpdateConsumerInfo
                 End If
             ElseIf (Not certBO.MailingAddressId.Equals(Guid.Empty)) Then
                 ' Current Address Record
-                If Not MailingAddress1 Is Nothing Then objMailingAddress.Address1 = MailingAddress1
+                If MailingAddress1 IsNot Nothing Then objMailingAddress.Address1 = MailingAddress1
                 objMailingAddress.Address2 = MailingAddress2
-                If Not MailingCity Is Nothing Then objMailingAddress.City = MailingCity
+                If MailingCity IsNot Nothing Then objMailingAddress.City = MailingCity
                 If Not MailingRegionId.Equals(Guid.Empty) Then objMailingAddress.RegionId = MailingRegionId
-                If Not MailingPostalCode Is Nothing Then objMailingAddress.PostalCode = MailingPostalCode
+                If MailingPostalCode IsNot Nothing Then objMailingAddress.PostalCode = MailingPostalCode
                 If Not MailingCountryId.Equals(Guid.Empty) Then objMailingAddress.CountryId = MailingCountryId
             End If
         End If

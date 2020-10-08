@@ -27,11 +27,11 @@
 #Region "Public Members"
 
     Public Sub Validate()
-        If InForceDate = Nothing Or CompanyCode = Nothing Or ClaimNumber = Nothing Then
-            Throw New BOValidationException("GetPriceList Error: Must provide In Force Date, Company Code and Claim Number", Assurant.ElitaPlus.Common.ErrorCodes.WS_PRICELIST_INVALID_CLAIM_DTLS_INPUT)
+        If InForceDate = Nothing OrElse CompanyCode = Nothing OrElse ClaimNumber = Nothing Then
+            Throw New BOValidationException("GetPriceList Error: Must provide In Force Date, Company Code and Claim Number", Common.ErrorCodes.WS_PRICELIST_INVALID_CLAIM_DTLS_INPUT)
         End If
         If GetCompanyId(CompanyCode).Equals(Guid.Empty) Then
-            Throw New BOValidationException("GetPriceList Error: Invalid Company Code ", Assurant.ElitaPlus.Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
+            Throw New BOValidationException("GetPriceList Error: Invalid Company Code ", Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
         End If
     End Sub
 

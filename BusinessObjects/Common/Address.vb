@@ -1,4 +1,6 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (10/28/2004)  ********************
+Imports System.Collections.Generic
+Imports System.Text.RegularExpressions
 
 Public Class Address
     Inherits BusinessObjectBase
@@ -16,7 +18,7 @@ Public Class Address
 
 
 #Region "Constructors"
-    Private _dataSet As Data.DataSet
+    Private _dataSet As DataSet
     Private _addressID As Guid
 
     'Exiting BO
@@ -63,7 +65,7 @@ Public Class Address
         Me.Row = row
     End Sub
 
-    Sub New(familyDS As Data.DataSet)
+    Sub New(familyDS As DataSet)
         ' TODO: Complete member initialization 
         '_dataSet = dataSet
         MyBase.New(False)
@@ -71,7 +73,7 @@ Public Class Address
         Load()
     End Sub
 
-    Sub New(addressid As Guid, dataset As Data.DataSet)
+    Sub New(addressid As Guid, dataset As DataSet)
         ' todo: complete member initialization 
 
         MyBase.New(False)
@@ -94,7 +96,7 @@ Public Class Address
             Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             'Initialize()
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
@@ -103,7 +105,7 @@ Public Class Address
         Try
             Dim dal As New AddressDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -118,7 +120,7 @@ Public Class Address
             If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
@@ -432,8 +434,8 @@ Public Class Address
         Try
             If IsDirty Then
                 'Me.SetPostalCodeLocator()
-                If Not _userObj Is Nothing Then
-                    If IsNew And IsEmpty Then
+                If _userObj IsNot Nothing Then
+                    If IsNew AndAlso IsEmpty Then
                         _userObj.AddressId = Guid.Empty
                         Delete()
                     End If
@@ -451,7 +453,7 @@ Public Class Address
                     Load(objId)
                 End If
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
@@ -500,7 +502,7 @@ Public NotInheritable Class MandatoryForVscAttribute
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -512,7 +514,7 @@ Public NotInheritable Class MandatoryForVscAttribute
                         Return False
                     End If
                 Else
-                    If valueToCheck Is Nothing Or valueToCheck Is String.Empty Then
+                    If valueToCheck Is Nothing OrElse valueToCheck Is String.Empty Then
                         Return False
                     End If
                 End If
@@ -531,7 +533,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -543,7 +545,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
                         Return False
                     End If
                 Else
-                    If valueToCheck Is Nothing Or valueToCheck Is String.Empty Then
+                    If valueToCheck Is Nothing OrElse valueToCheck Is String.Empty Then
                         Return False
                     End If
                 End If
@@ -559,7 +561,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -609,7 +611,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
             'ALR - REQ-400 - Check for mismatch between CountryID and Region.countryId.  If mismatched, set country to the region's country
             If Not obj.CountryId.Equals(Guid.Empty) AndAlso Not obj.RegionId.Equals(Guid.Empty) Then
                 Dim oReg As New Region(obj.RegionId)
-                If Not oReg Is Nothing Then
+                If oReg IsNot Nothing Then
                     If Not oReg.CountryId.Equals(obj.CountryId) Then
                         obj.CountryId = oReg.CountryId
                     End If
@@ -678,13 +680,13 @@ Public NotInheritable Class MandatoryForServCenterAttribute
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Address = CType(objectToValidate, Address)
 
-            If (Not obj.PayeeId.Equals(Guid.Empty) And Not obj.PaymentMethodId.Equals(Guid.Empty)) Then
+            If (Not obj.PayeeId.Equals(Guid.Empty) AndAlso Not obj.PaymentMethodId.Equals(Guid.Empty)) Then
                 If TypeOf valueToCheck Is Guid Then
                     If valueToCheck.Equals(Guid.Empty) Then
                         Return False
@@ -734,14 +736,14 @@ Public NotInheritable Class MandatoryForServCenterAttribute
             End Set
         End Property
     End Class
-    Public Shared Sub SplitMailingAddressFormatString(MailAddrFmtStr As String, ByRef AddressComponents As Collections.Generic.List(Of MailAddressItem))
+    Public Shared Sub SplitMailingAddressFormatString(MailAddrFmtStr As String, ByRef AddressComponents As List(Of MailAddressItem))
         MailAddrFmtStr = MailAddrFmtStr.Trim
         'MailAddrFmtStr = "[ADR1][-][\n][ADR2][\n][ZIP][Space][CITY][Space][COU][\n][RGNAME]*[,][Space][RGCODE]"
         If MailAddrFmtStr.Trim <> "" Then
-            AddressComponents = New Collections.Generic.List(Of MailAddressItem)(15)
-            Dim RegExp As Text.RegularExpressions.Regex, blnRequired As Boolean
-            RegExp = New Text.RegularExpressions.Regex("\[(.)+?\](\*)*")
-            Dim m As Text.RegularExpressions.Match = RegExp.Match(MailAddrFmtStr)
+            AddressComponents = New List(Of MailAddressItem)(15)
+            Dim regExp As Regex, blnRequired As Boolean
+            regExp = New Regex("\[(.)+?\](\*)*", RegexOptions.None, new TimeSpan(0,0,0,0, 100))
+            Dim m As Match = regExp.Match(MailAddrFmtStr)
             While (m.Success)
                 blnRequired = True
                 If m.Value.Trim.EndsWith("]*") Then blnRequired = False
@@ -754,8 +756,8 @@ Public NotInheritable Class MandatoryForServCenterAttribute
         Dim blnRequired As Boolean = False
         MailAddrFmtStr = MailAddrFmtStr.Trim
         If MailAddrFmtStr.Trim <> "" Then
-            Dim RegExp As Text.RegularExpressions.Regex = New Text.RegularExpressions.Regex("\[(.+?)\](\*)*")
-            Dim m As Text.RegularExpressions.Match = RegExp.Match(MailAddrFmtStr)
+            Dim regExp = New Regex("\[(.+?)\](\*)*", RegexOptions.None, new TimeSpan(0,0,0,0, 100))
+            Dim m As Match = regExp.Match(MailAddrFmtStr)
             While (m.Success)
                 If m.Groups(1).Value.Trim = strComponent.Trim AndAlso (Not m.Value.Trim.EndsWith("]*")) Then
                     blnRequired = True

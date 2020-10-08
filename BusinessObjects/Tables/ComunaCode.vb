@@ -59,7 +59,7 @@ Public Class ComunaCode
         Try
             Dim dal As New ComunaCodeDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -238,7 +238,7 @@ Public Class ComunaCode
 
 #Region "Constants"
         Public Const COL_COMUNA_CODE_ID As String = ComunaCodeDAL.COL_NAME_COMUNA_CODE_ID
-        Public Const COL_CODE As String = ComunaCodeDAL.COL_NAME_CODE
+        Public Const COL_CODE As String = DALBase.COL_NAME_CODE
         Public Const COL_COMUNA As String = ComunaCodeDAL.COL_NAME_COMUNA
         Public Const COL_POSTALCODE As String = ComunaCodeDAL.COL_NAME_POSTALCODE
         Public Const COL_REGION_ID As String = ComunaCodeDAL.COL_NAME_REGION_ID
@@ -258,11 +258,11 @@ Public Class ComunaCode
         Public Function AddNewRowToEmptyDV() As ComunaCodeSearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ComunaCodeSearchDV.COL_COMUNA_CODE_ID) = (New Guid()).ToByteArray
-            row(ComunaCodeSearchDV.COL_COMUNA) = ""
-            row(ComunaCodeSearchDV.COL_POSTALCODE) = ""
-            row(ComunaCodeSearchDV.COL_REGION_ID) = Guid.Empty.ToByteArray
-            row(ComunaCodeSearchDV.COL_REGION_DESC) = ""
+            row(COL_COMUNA_CODE_ID) = (New Guid()).ToByteArray
+            row(COL_COMUNA) = ""
+            row(COL_POSTALCODE) = ""
+            row(COL_REGION_ID) = Guid.Empty.ToByteArray
+            row(COL_REGION_DESC) = ""
             dt.Rows.Add(row)
             Return New ComunaCodeSearchDV(dt)
         End Function

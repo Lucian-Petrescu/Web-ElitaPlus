@@ -60,7 +60,7 @@ Public Class Branch
         Try
             Dim dal As New BranchDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -561,8 +561,8 @@ Public Class Branch
         Try
             Dim dal As New BranchDAL
             Dim objDealer As New Dealer(DealerId)
-            Dim EditBranch_Flag As String = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objDealer.EditBranchId)
-            Dim Branch_Validation_Flag As String = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objDealer.BranchValidationId)
+            Dim EditBranch_Flag As String = LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, objDealer.EditBranchId)
+            Dim Branch_Validation_Flag As String = LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, objDealer.BranchValidationId)
             If EditBranch_Flag.Equals(Codes.YESNO_Y) Then
                 Return New BranchSearchDV(dal.LoadListFromBranchStandardizationByDealerForWS(DealerId).Tables(0))
             ElseIf EditBranch_Flag.Equals(Codes.YESNO_N) AndAlso Branch_Validation_Flag.Equals(Codes.YESNO_Y) Then

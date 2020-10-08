@@ -135,7 +135,7 @@ Public Class ContractValidation
         Try
             'Load the pre-validated Contract records
             Dim dsPreValidatedContractRecords As DataSet = ContractUpload.GetPreValidatedContractsForUpload(UploadSessionId)
-            If Not dsPreValidatedContractRecords Is Nothing AndAlso Not dsPreValidatedContractRecords.Tables(0) Is Nothing AndAlso dsPreValidatedContractRecords.Tables(0).Rows.Count > 0 Then
+            If dsPreValidatedContractRecords IsNot Nothing AndAlso dsPreValidatedContractRecords.Tables(0) IsNot Nothing AndAlso dsPreValidatedContractRecords.Tables(0).Rows.Count > 0 Then
                 Dim preValidatedContractRow As DataRow
                 Dim objContract As Contract
 
@@ -149,7 +149,7 @@ Public Class ContractValidation
 
                     BuildContract(objContract, objContractUpload)
 
-                    If Not objContract Is Nothing Then
+                    If objContract IsNot Nothing Then
                         contractErrors = objContract.ValidationErrors()
                         If contractErrors.Length > 0 Then
                             strValidationErrors = "Record Number " & preValidatedContractRow.Item("record_number").ToString & ": "
@@ -206,7 +206,7 @@ Public Class ContractValidation
         If errorCode Is Nothing Or errorCode = "" Then
             result = "OK"
         Else
-            If Not propertyName Is Nothing AndAlso propertyName <> "" Then
+            If propertyName IsNot Nothing AndAlso propertyName <> "" Then
                 propertyName = propertyName & ": "
             End If
 
@@ -234,7 +234,7 @@ Public Class ContractValidation
                                          </TRANSACTION_DATA_RECORD>
 
 
-        If Not errXml Is Nothing AndAlso errXml.HasElements Then
+        If errXml IsNot Nothing AndAlso errXml.HasElements Then
             tranDataRecXml.Add(errXml)
         End If
 
@@ -243,7 +243,7 @@ Public Class ContractValidation
 
     Public Sub BuildContract(ByRef objContract As Contract, objContractUpload As ContractUpload)
 
-        If Not objContractUpload Is Nothing Then
+        If objContractUpload IsNot Nothing Then
             objContract = New Contract
             With objContract
 

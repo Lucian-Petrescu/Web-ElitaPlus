@@ -84,7 +84,7 @@ Public NotInheritable Class LookupListNew
     Private Shared Function RetrieveList(listName As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
         Dim dv As DataView = Nothing
 
-        dv = LookupListCache.RetrieveFromCache(listName, displayNothingSelected)
+        dv = RetrieveFromCache(listName, displayNothingSelected)
         If (dv Is Nothing) Then
             Try 
                 dv = LookupListDALNew.Load(listName)
@@ -96,10 +96,10 @@ Public NotInheritable Class LookupListNew
 
             Try 
                 SyncLock _syncLock
-                    If (LookupListCache.RetrieveFromCache(listName, displayNothingSelected) Is Nothing) Then
-                        LookupListCache.AddToCache(listName, dv, displayNothingSelected)
+                    If (RetrieveFromCache(listName, displayNothingSelected) Is Nothing) Then
+                        AddToCache(listName, dv, displayNothingSelected)
                     Else
-                        dv = LookupListCache.RetrieveFromCache(listName, displayNothingSelected)
+                        dv = RetrieveFromCache(listName, displayNothingSelected)
                     End If
 
                 End SyncLock
@@ -198,7 +198,7 @@ Public NotInheritable Class LookupListNew
         Dim dv As DataView = RetrieveList(listName, displayNothingSelected, orderByColumn)
 
         Dim rowFilter As String
-        If ((Not filterField1 Is Nothing) And (filterField1.Length > 0) And (Not filterField2 Is Nothing) And (filterField2.Length > 0)) Then
+        If ((filterField1 IsNot Nothing) And (filterField1.Length > 0) And (filterField2 IsNot Nothing) AndAlso (filterField2.Length > 0)) Then
             'standardize the wild card char
             If (filterValue1.IndexOf("%") > 0) Then filterValue1 = filterValue1.Replace("%", "*")
             If (filterValue2.IndexOf("%") > 0) Then filterValue2 = filterValue2.Replace("%", "*")
@@ -223,7 +223,7 @@ Public NotInheritable Class LookupListNew
 
     Public Shared Function FilteredView(listName As String, filterField As String, filterValue As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
         Dim dv As DataView = RetrieveList(listName, displayNothingSelected, orderByColumn)
-        If ((Not filterField Is Nothing) And (filterField.Length > 0)) Then
+        If ((filterField IsNot Nothing) And (filterField.Length > 0)) Then
 
             'standardize the wild card char
             If (filterValue.IndexOf("%") > 0) Then filterValue = filterValue.Replace("%", "*")
@@ -279,7 +279,7 @@ Public NotInheritable Class LookupListNew
 
         Dim dv As DataView = LookupListDALNew.Load(listName, inClauseConditions)
 
-        If Not filterField Is Nothing And Not filterValue Is Nothing Then
+        If filterField IsNot Nothing And filterValue IsNot Nothing Then
             dv.RowFilter = filterField & " LIKE '" & filterValue & "'"
         End If
 
@@ -330,8 +330,8 @@ Public NotInheritable Class LookupListNew
         Dim i As Integer
 
         For i = 0 To dv.Count - 1
-            If New Guid(CType(dv(i)(LookupListNew.COL_ID_NAME), Byte())).Equals(id) Then
-                Return dv(i)(LookupListNew.COL_CODE_NAME).ToString
+            If New Guid(CType(dv(i)(COL_ID_NAME), Byte())).Equals(id) Then
+                Return dv(i)(COL_CODE_NAME).ToString
             End If
         Next
 
@@ -342,7 +342,7 @@ Public NotInheritable Class LookupListNew
         Dim i As Integer
 
         For i = 0 To dv.Count - 1
-            If New Guid(CType(dv(i)(LookupListNew.COL_ID_NAME), Byte())).Equals(id) Then
+            If New Guid(CType(dv(i)(COL_ID_NAME), Byte())).Equals(id) Then
                 Return CType(dv(i)(BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME), Long)
             End If
         Next
@@ -354,8 +354,8 @@ Public NotInheritable Class LookupListNew
         Dim i As Integer
 
         For i = 0 To dv.Count - 1
-            If New Guid(CType(dv(i)(LookupListNew.COL_ID_NAME), Byte())).Equals(id) Then
-                Return CType(dv(i)(LookupListNew.COL_DESCRIPTION_NAME), String)
+            If New Guid(CType(dv(i)(COL_ID_NAME), Byte())).Equals(id) Then
+                Return CType(dv(i)(COL_DESCRIPTION_NAME), String)
             End If
         Next
 
@@ -367,10 +367,10 @@ Public NotInheritable Class LookupListNew
         Dim i As Integer
 
         For i = 0 To dv.Count - 1
-            If New Guid(CType(dv(i)(LookupListNew.COL_ID_NAME), Byte())).Equals(id) Then
+            If New Guid(CType(dv(i)(COL_ID_NAME), Byte())).Equals(id) Then
 
-                If GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(CType(dv(i)(LookupListNew.COL_LANGUAGE_ID_NAME), String))).Equals(languageId) Then
-                    Return dv(i)(LookupListNew.COL_DESCRIPTION_NAME).ToString
+                If GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(CType(dv(i)(COL_LANGUAGE_ID_NAME), String))).Equals(languageId) Then
+                    Return dv(i)(COL_DESCRIPTION_NAME).ToString
                 End If
             End If
         Next
@@ -382,10 +382,10 @@ Public NotInheritable Class LookupListNew
         Dim i As Integer
 
         For i = 0 To dv.Count - 1
-            If New Guid(CType(dv(i)(LookupListNew.COL_ID_NAME), Byte())).Equals(id) Then
+            If New Guid(CType(dv(i)(COL_ID_NAME), Byte())).Equals(id) Then
 
-                If New Guid(CType(dv(i)(LookupListNew.COL_LANGUAGE_ID_NAME), Byte())).Equals(languageId) Then
-                    Return CType(dv(i)(LookupListNew.COL_DESCRIPTION_NAME), String)
+                If New Guid(CType(dv(i)(COL_LANGUAGE_ID_NAME), Byte())).Equals(languageId) Then
+                    Return CType(dv(i)(COL_DESCRIPTION_NAME), String)
                 End If
             End If
         Next
@@ -396,8 +396,8 @@ Public NotInheritable Class LookupListNew
         Dim i As Integer
 
         For i = 0 To dv.Count - 1
-            If New Guid(CType(dv(i)(LookupListNew.COL_ID_NAME), Byte())).Equals(id) Then
-                Return CType(dv(i)(LookupListNew.COL_CODE_NAME), String)
+            If New Guid(CType(dv(i)(COL_ID_NAME), Byte())).Equals(id) Then
+                Return CType(dv(i)(COL_CODE_NAME), String)
             End If
         Next
 
@@ -411,14 +411,14 @@ Public NotInheritable Class LookupListNew
         Dim i As Integer
 
         For i = 0 To dv.Count - 1
-            If New Guid(CType(dv(i)(LookupListNew.COL_ID_NAME), Byte())).Equals(id) Then
+            If New Guid(CType(dv(i)(COL_ID_NAME), Byte())).Equals(id) Then
                 If blnFilterByUserLangauge = True Then
                     'return only the description of the user language
                     If dv(i)("language_id") = GuidControl.GuidToHexString(languageId) Then
-                        Return dv(i)(LookupListNew.COL_DESCRIPTION_NAME).ToString
+                        Return dv(i)(COL_DESCRIPTION_NAME).ToString
                     End If
                 Else
-                    Return dv(i)(LookupListNew.COL_DESCRIPTION_NAME).ToString
+                    Return dv(i)(COL_DESCRIPTION_NAME).ToString
                 End If
             End If
 
@@ -442,10 +442,10 @@ Public NotInheritable Class LookupListNew
         Dim dv As DataView = DataView(listName)
 
         For i = 0 To dv.Count - 1
-            If CType(dv(i)(LookupListNew.COL_CODE_NAME), String).Equals(code) Then
+            If CType(dv(i)(COL_CODE_NAME), String).Equals(code) Then
 
-                If GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(CType(dv(i)(LookupListNew.COL_LANGUAGE_ID_NAME), String))).Equals(languageId) Then
-                    Return dv(i)(LookupListNew.COL_DESCRIPTION_NAME).ToString
+                If GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(CType(dv(i)(COL_LANGUAGE_ID_NAME), String))).Equals(languageId) Then
+                    Return dv(i)(COL_DESCRIPTION_NAME).ToString
                 End If
             End If
         Next
@@ -456,7 +456,7 @@ Public NotInheritable Class LookupListNew
         Dim desc As String = Nothing
         dv.Sort = "code"
         Dim idx As Integer = dv.Find(code)
-        If (idx >= 0) Then desc = dv(idx)(LookupListNew.COL_DESCRIPTION_NAME)
+        If (idx >= 0) Then desc = dv(idx)(COL_DESCRIPTION_NAME)
         dv.Sort = ""
 
         Return desc
@@ -468,7 +468,7 @@ Public NotInheritable Class LookupListNew
 
         dv.Sort = "code"
         Dim idx As Integer = dv.Find(code)
-        If (idx >= 0) Then desc = dv(idx)(LookupListNew.COL_DESCRIPTION_NAME)
+        If (idx >= 0) Then desc = dv(idx)(COL_DESCRIPTION_NAME)
         dv.Sort = ""
 
         Return desc
@@ -479,7 +479,7 @@ Public NotInheritable Class LookupListNew
         Dim dv As DataView = DropdownLookupList(listName, languageId)
         dv.RowFilter = dv.RowFilter & " and ExtCode= '" & extcode & "'"
         If dv.Count > 0 Then
-            desc = dv(0)(LookupListNew.COL_DESCRIPTION_NAME)
+            desc = dv(0)(COL_DESCRIPTION_NAME)
         End If
         Return desc
     End Function
@@ -488,7 +488,7 @@ Public NotInheritable Class LookupListNew
 
         dv.Sort = "description"
         Dim idx As Integer = dv.Find(desc)
-        If (idx >= 0) Then code = dv(idx)(LookupListNew.COL_CODE_NAME)
+        If (idx >= 0) Then code = dv(idx)(COL_CODE_NAME)
         dv.Sort = ""
 
         Return code
@@ -1413,7 +1413,7 @@ Public NotInheritable Class LookupListNew
 
     Public Shared Function GetPendingClaimSearchFieldsLookupList(languageId As Guid) As DataView
 
-        Dim dv As DataView = FilteredView(LookupListNew.LK_PENDING_CLAIM_SEARCH_FIELDS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
+        Dim dv As DataView = FilteredView(LK_PENDING_CLAIM_SEARCH_FIELDS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
         Return (dv)
 
@@ -1421,7 +1421,7 @@ Public NotInheritable Class LookupListNew
 
     Public Shared Function GetMonthsLookupList(languageId As Guid) As DataView
 
-        Dim dv As DataView = FilteredView(LookupListNew.LK_MONTHS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
+        Dim dv As DataView = FilteredView(LK_MONTHS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
         Return (dv)
 
@@ -1979,11 +1979,11 @@ Public NotInheritable Class LookupListNew
     '5623
     Public Shared Function GetExtendedStatusByGroupId(oCompanyGroupId As Guid, languageId As Guid, oExtClmStatusId As Guid) As guid
 
-        Dim dvExtendedStatus As DataView = LookupListNew.GetExtendedStatusByGroupLookupList(oCompanyGroupId, languageId)
+        Dim dvExtendedStatus As DataView = GetExtendedStatusByGroupLookupList(oCompanyGroupId, languageId)
         Dim i As Integer, extendedStatusByGroupId As Guid
 
         For i = 0 To dvExtendedStatus.Count - 1
-            If New Guid(CType(dvExtendedStatus(i)(LookupListNew.COL_LIST_ITEM_ID), Byte())).Equals(oExtClmStatusId) Then
+            If New Guid(CType(dvExtendedStatus(i)(COL_LIST_ITEM_ID), Byte())).Equals(oExtClmStatusId) Then
                 extendedStatusByGroupId = New Guid(CType(dvExtendedStatus(i)(COL_ID_NAME), Byte()))
                 Return extendedStatusByGroupId
             End If
@@ -2191,7 +2191,7 @@ Public NotInheritable Class LookupListNew
     Public Shared Function getCertNumberFormatDescription(CertNumberFormatId As Guid) As String
         Dim CertNumberFormatDesc As String
         Dim dv As DataView = DataView(LK_CERT_NUMBER_FORMAT)
-        CertNumberFormatDesc = LookupListNew.GetDescriptionFromId(dv, CertNumberFormatId)
+        CertNumberFormatDesc = GetDescriptionFromId(dv, CertNumberFormatId)
         Return CertNumberFormatDesc
 
     End Function
@@ -2625,7 +2625,7 @@ Public NotInheritable Class LookupListNew
         Dim i As Integer
         Dim data As DataView = DropdownLookupList(Listcode, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
-        If Not data Is Nothing Then
+        If data IsNot Nothing Then
 
             For i = 0 To data.Count - 1
                 If data(i)("code").ToString = code Then
@@ -2769,7 +2769,7 @@ Public NotInheritable Class LookupListNew
 
     Public Shared Function GetRoleProviderList(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
-        Return DropdownLookupList(Codes.ROLE_PROVIDER, languageId, displayNothingSelected)
+        Return DropdownLookupList(ROLE_PROVIDER, languageId, displayNothingSelected)
 
 
 
@@ -3083,10 +3083,10 @@ Public NotInheritable Class LookupListNew
     Public Shared Function getAccountingEvents(AccountingCompanyId As Guid, LanguageId As Guid) As DataView
 
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                         {New DBHelper.DBHelperParameter(AcctEventDAL.PAR_NAME_COMPANY_ID, DALBase.GuidToSQLString(AccountingCompanyId)) _
+                         {New DBHelper.DBHelperParameter(DALBase.PAR_NAME_COMPANY_ID, DALBase.GuidToSQLString(AccountingCompanyId)) _
                           , New DBHelper.DBHelperParameter(TranslationDAL.COL_NAME_LANGUAGE_ID, DALBase.GuidToSQLString(LanguageId))}
 
-        Dim dv As DataView = FilteredParamView(LookupListNew.LK_ACCOUNTING_EVENTS, Nothing, params)
+        Dim dv As DataView = FilteredParamView(LK_ACCOUNTING_EVENTS, Nothing, params)
 
         Return (dv)
     End Function
@@ -3096,7 +3096,7 @@ Public NotInheritable Class LookupListNew
         Dim params() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                          {New DBHelper.DBHelperParameter(UserDAL.COL_NAME_USER_ID, DALBase.GuidToSQLString(UserId))}
 
-        Dim dv As DataView = FilteredParamView(LookupListNew.LK_ACCOUNTING_COMPANIES, IIf(IncludeInactive, Nothing, AcctCompanyDAL.COL_NAME_USE_ACCOUNTING & "='Y'"), params)
+        Dim dv As DataView = FilteredParamView(LK_ACCOUNTING_COMPANIES, IIf(IncludeInactive, Nothing, AcctCompanyDAL.COL_NAME_USE_ACCOUNTING & "='Y'"), params)
         Return (dv)
 
     End Function
@@ -3108,7 +3108,7 @@ Public NotInheritable Class LookupListNew
                         , New DBHelper.DBHelperParameter(COL_BEGIN_DATE, BeginDate) _
                         , New DBHelper.DBHelperParameter(COL_END_DATE, EndDate)}
 
-        Dim dv As DataView = FilteredParamView(LookupListNew.LK_ACCOUNTING_FILENAMES, sFilterCondition, params)
+        Dim dv As DataView = FilteredParamView(LK_ACCOUNTING_FILENAMES, sFilterCondition, params)
         Return (dv)
 
     End Function
@@ -3119,7 +3119,7 @@ Public NotInheritable Class LookupListNew
                        {New DBHelper.DBHelperParameter(COL_ACCT_COMPANY_ID_NAME, DALBase.GuidToSQLString(AcctCompanyId)) _
                        , New DBHelper.DBHelperParameter(COL_LANGUAGE_ID_NAME, languageID)}
 
-        Dim dv As DataView = FilteredParamView(LookupListNew.LK_BUSINESS_ENTITY_COV, Nothing, params)
+        Dim dv As DataView = FilteredParamView(LK_BUSINESS_ENTITY_COV, Nothing, params)
         Return (dv)
 
     End Function
@@ -3157,10 +3157,10 @@ Public NotInheritable Class LookupListNew
                         , New DBHelper.DBHelperParameter(COL_REPORTRUNDATE, ReportRun_date) _
                         , New DBHelper.DBHelperParameter(COL_COMPANY_ID_NAME, CompanyId)}
 
-        Dim dv As DataView = FilteredParamView(LookupListNew.LK_CHECK_REPORT_RUNDATE, Nothing, params)
+        Dim dv As DataView = FilteredParamView(LK_CHECK_REPORT_RUNDATE, Nothing, params)
 
         If (dv.Count > 0) Then
-            If dv.Item(0)(LookupListNew.COL_STATUS).ToString = "Running" Then
+            If dv.Item(0)(COL_STATUS).ToString = "Running" Then
                 Return True
             Else
                 Return False
@@ -3200,7 +3200,7 @@ Public NotInheritable Class LookupListNew
         If (equipmentTypeId.HasValue) Then
             filterExpression &= " AND " & EquipmentDAL.COL_NAME_EQUIPMENT_TYPE_ID & " = '" & DALBase.GuidToSQLString(equipmentTypeId.Value) & "'"
         End If
-        If (Not masterModel Is Nothing) Then
+        If (masterModel IsNot Nothing) Then
             Dim isMasterModel As Guid
             If (masterModel.Value) Then
                 isMasterModel = GetIdFromCode(LK_YESNO, "Y")
@@ -3209,7 +3209,7 @@ Public NotInheritable Class LookupListNew
             End If
             filterExpression &= " AND " & COL_IS_MASTER_MODEL & " = '" & DALBase.GuidToSQLString(isMasterModel) & "'"
         End If
-        If (Not model Is Nothing) Then
+        If (model IsNot Nothing) Then
             If (Trim(model) <> String.Empty) Then
                 filterExpression &= " AND " & COL_CODE_NAME & " = '" & model & "'"
             End If
@@ -3248,7 +3248,7 @@ Public NotInheritable Class LookupListNew
         If (equipmentTypeId.HasValue) Then
             filterExpression &= " AND " & EquipmentDAL.COL_NAME_EQUIPMENT_TYPE_ID & " = '" & DALBase.GuidToSQLString(equipmentTypeId.Value) & "'"
         End If
-        If (Not masterModel Is Nothing) Then
+        If (masterModel IsNot Nothing) Then
             Dim isMasterModel As Guid
             If (masterModel.Value) Then
                 isMasterModel = GetIdFromCode(LK_YESNO, "Y")
@@ -3257,7 +3257,7 @@ Public NotInheritable Class LookupListNew
             End If
             filterExpression &= " AND " & COL_IS_MASTER_MODEL & " = '" & DALBase.GuidToSQLString(isMasterModel) & "'"
         End If
-        If (Not model Is Nothing) Then
+        If (model IsNot Nothing) Then
             If (Trim(model) <> String.Empty) Then
                 filterExpression &= " AND " & COL_CODE_NAME & " = '" & model & "'"
             End If
@@ -3326,7 +3326,7 @@ Public NotInheritable Class LookupListNew
     Public Shared Function GetEventTaskStatus(languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
 
 
-        Return DropdownLookupList(Codes.TASK_STATUS, languageId, displayNothingSelected)
+        Return DropdownLookupList(TASK_STATUS, languageId, displayNothingSelected)
 
     End Function
 
@@ -3430,8 +3430,8 @@ Public NotInheritable Class LookupListNew
         Dim i As Integer
 
         For i = 0 To dv.Count - 1
-            If New Guid(CType(dv(i)(LookupListNew.COL_ID_NAME), Byte())).Equals(id) Then
-                Return dv(i)(LookupListNew.COL_CODE_NAME).ToString
+            If New Guid(CType(dv(i)(COL_ID_NAME), Byte())).Equals(id) Then
+                Return dv(i)(COL_CODE_NAME).ToString
             End If
         Next
 
@@ -3443,8 +3443,8 @@ Public NotInheritable Class LookupListNew
         Dim i As Integer
 
         For i = 0 To dv.Count - 1
-            If dv(i)(LookupListNew.COL_CODE_NAME).ToString.Equals(code) Then
-                Return New Guid(CType(dv(i)(LookupListNew.COL_ID_NAME), Byte()))
+            If dv(i)(COL_CODE_NAME).ToString.Equals(code) Then
+                Return New Guid(CType(dv(i)(COL_ID_NAME), Byte()))
             End If
         Next
 
@@ -3681,11 +3681,11 @@ Public NotInheritable Class LookupListNew
 #Region "ClaimsProcess"
     Public Shared Function GetClaimStatusFromCode(languageId As Guid, code As String) As String
         Dim desc As String = Nothing
-        Dim dv As DataView = FilteredView(LookupListCache.LK_CLAIM_STATUS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
+        Dim dv As DataView = FilteredView(LK_CLAIM_STATUS, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
         dv.Sort = "code"
         Dim idx As Integer = dv.Find(code)
-        If (idx >= 0) Then desc = dv(idx)(LookupListNew.COL_DESCRIPTION_NAME)
+        If (idx >= 0) Then desc = dv(idx)(COL_DESCRIPTION_NAME)
         dv.Sort = ""
 
         Return desc
@@ -3694,11 +3694,11 @@ Public NotInheritable Class LookupListNew
 
     Public Shared Function GetTranslatedQuestionFromCode(languageId As Guid, code As String) As String
         Dim desc As String = Nothing
-        Dim dv As DataView = FilteredView(LookupListCache.LK_QUESTION, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
+        Dim dv As DataView = FilteredView(LK_QUESTION, COL_LANGUAGE_ID_NAME, DALBase.GuidToSQLString(languageId))
 
         dv.Sort = "code"
         Dim idx As Integer = dv.Find(code)
-        If (idx >= 0) Then desc = dv(idx)(LookupListNew.COL_DESCRIPTION_NAME)
+        If (idx >= 0) Then desc = dv(idx)(COL_DESCRIPTION_NAME)
         dv.Sort = ""
 
         Return desc

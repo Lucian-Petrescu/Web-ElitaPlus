@@ -73,7 +73,7 @@ Public Class CommissionPeriod
         Try
             Dim dal As New CommissionPeriodDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -188,7 +188,7 @@ Public Class CommissionPeriod
     Public Sub AttachPeriodEntity(newEntityId As Guid, position As Integer, PayeeTypeId As Guid, Optional ByVal newObject As CommissionPeriodEntity = Nothing)
 
         Dim newBO As CommissionPeriodEntity = New CommissionPeriodEntity(Dataset)
-        If Not newBO Is Nothing Then
+        If newBO IsNot Nothing Then
             newBO.CommissionPeriodId = Id
             newBO.EntityId = newEntityId
             newBO.Position = position
@@ -200,7 +200,7 @@ Public Class CommissionPeriod
 
     Public Sub DetachPeriodEntity(periodEntity As CommissionPeriodEntity)
 
-        If Not periodEntity Is Nothing Then
+        If periodEntity IsNot Nothing Then
             periodEntity.Delete()
             periodEntity.Save()
         End If
@@ -230,7 +230,7 @@ Public Class CommissionPeriod
         Dim newBO As CommissionTolerance = New CommissionTolerance(Dataset)
         newBO.Copy(NewObject, Dataset)
 
-        If Not newBO Is Nothing Then
+        If newBO IsNot Nothing Then
             newBO.CommissionPeriodId = Id
             newBO.Save()
         End If
@@ -432,7 +432,7 @@ Public Class CommissionPeriod
             Throw New BOValidationException(errors, GetType(CommissionPeriod).FullName)
         End If
         oRestrictMarkupId = oContract.RestrictMarkupId
-        oYesRestrictMarkupId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "Y")
+        oYesRestrictMarkupId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "Y")
 
         Return oRestrictMarkupId.Equals(oYesRestrictMarkupId)
     End Function

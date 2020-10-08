@@ -67,7 +67,7 @@ Public Class ServiceOrdersAddress
         Try
             Dim dal As New ServiceOrdersAddressDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -90,7 +90,7 @@ Public Class ServiceOrdersAddress
         Try
             Dim dal As New ServiceOrdersAddressDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -274,8 +274,8 @@ Public Class ServiceOrdersAddress
     Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty OrElse IsChildrenDirty OrElse _
-            (Not Address.IsNew And Address.IsDirty) OrElse _
-            (Address.IsNew And Not Address.IsEmpty)
+            (Not Address.IsNew AndAlso Address.IsDirty) OrElse _
+            (Address.IsNew AndAlso Not Address.IsEmpty)
         End Get
     End Property
 

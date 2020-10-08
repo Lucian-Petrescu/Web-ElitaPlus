@@ -59,7 +59,7 @@ Public Class Process
         Try
             Dim dal As New ProcessDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -203,10 +203,10 @@ Public Class Process
             oCompanyGroupIds = New ArrayList
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-            If (description.Contains(DALBase.WILDCARD_CHAR) Or description.Contains(DALBase.ASTERISK)) Then
+            If (description.Contains(DALBase.WILDCARD_CHAR) OrElse description.Contains(DALBase.ASTERISK)) Then
                 description = description & DALBase.ASTERISK
             End If
-            If (code.Contains(DALBase.WILDCARD_CHAR) Or code.Contains(DALBase.ASTERISK)) Then
+            If (code.Contains(DALBase.WILDCARD_CHAR) OrElse code.Contains(DALBase.ASTERISK)) Then
                 code = code & DALBase.ASTERISK
             End If
 

@@ -333,7 +333,7 @@ Public Class SVCUpdateClaim
 
         If (blockInvoice = YES) Then
             If Claim.CheckClaimPaymentInProgress(Id, ClaimBO.Company.CompanyGroupId) Then
-                Throw New BOValidationException("CLAIM_PROCESS_IN_PROGRESS_ERR", Assurant.ElitaPlus.Common.ErrorCodes.CLAIM_PROCESS_IN_PROGRESS_ERR)
+                Throw New BOValidationException("CLAIM_PROCESS_IN_PROGRESS_ERR", Common.ErrorCodes.CLAIM_PROCESS_IN_PROGRESS_ERR)
             End If
         End If
     End Sub

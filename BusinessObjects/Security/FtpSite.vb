@@ -59,7 +59,7 @@ Public Class FtpSite
         Try
             Dim dal As New FtpSiteDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -298,7 +298,7 @@ Public Class FtpSite
         Public Function AddNewRowToEmptyDV() As FtpSiteSearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(FtpSiteSearchDV.COL_FTP_SITE_ID) = (New Guid()).ToByteArray
+            row(COL_FTP_SITE_ID) = (New Guid()).ToByteArray
             dt.Rows.Add(row)
             Return New FtpSiteSearchDV(dt)
         End Function

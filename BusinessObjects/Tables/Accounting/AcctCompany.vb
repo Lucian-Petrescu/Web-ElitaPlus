@@ -59,7 +59,7 @@ Public Class AcctCompany
         Try
             Dim dal As New AcctCompanyDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -321,7 +321,7 @@ Public Class AcctCompany
             Dim ds As Dataset = _AcctDAL.GetByCompanies(Companies)
             Dim _acctCo(0) As AcctCompany
 
-            If Not ds Is Nothing AndAlso ds.Tables.Count = 1 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count = 1 Then
 
                 'If no acctCompanies are found, return 1 new acct_company in the object.
                 If ds.Tables(0).Rows.Count = 0 Then

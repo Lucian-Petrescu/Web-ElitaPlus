@@ -199,7 +199,7 @@ Public Class DealerReconWrk
         Try
             Dim dal As New DealerReconWrkDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -2168,13 +2168,13 @@ Public Class DealerReconWrk
             End If
 
             If obj.BankAccountNumber.ToString.Trim.Length > 29 Then
-                MyBase.Message = Common.ErrorCodes.INVALID_ACCOUNT_NUMBER
+                Message = Common.ErrorCodes.INVALID_ACCOUNT_NUMBER
                 Return False
             End If
 
             For i = 0 To obj.BankAccountNumber.Length - 1
                 If Not IsNumeric(obj.BankAccountNumber.Chars(i)) Then
-                    MyBase.Message = Common.ErrorCodes.INVALID_ACCOUNT_NUMBER
+                    Message = Common.ErrorCodes.INVALID_ACCOUNT_NUMBER
                     Return False
                 End If
             Next

@@ -63,7 +63,7 @@ Public Class ConsumerSearchRequest
         Try
             Dim dal As New ReportRequestsDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If

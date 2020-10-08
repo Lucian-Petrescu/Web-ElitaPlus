@@ -60,7 +60,7 @@ Public Class BestReplacement
         Try
             Dim dal As New BestReplacementDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -294,7 +294,7 @@ Public Class BestReplacement
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
 #End Region
@@ -342,7 +342,7 @@ Public Class BestReplacement
         For Each row In Dataset.Tables(BestReplacementDAL.TABLE_NAME).Rows
             If row.RowState <> DataRowState.Deleted And row.RowState <> DataRowState.Detached Then
                 Dim bo As New BestReplacement(row)
-                If Not Priority Is Nothing AndAlso Not bo.Priority Is Nothing Then 'DEF-2109
+                If Priority IsNot Nothing AndAlso bo.Priority IsNot Nothing Then 'DEF-2109
                     ' Check if combination of Equipment ID and Priority is Unique
                     If (not bo.Id.Equals(Id)) AndAlso Priority.Value = bo.Priority.Value andalso bo.EquipmentId = EquipmentId Then
                         Return True
@@ -401,7 +401,7 @@ Public Class BestReplacement
             Propinfo = type_BestRepOpt.GetProperties
             For Each prop As PropertyInfo In Propinfo
                 Dim columnValue As Object = dtrow(prop.Name.ToLower)
-                If Not columnValue Is Nothing Then
+                If columnValue IsNot Nothing Then
                     Select Case prop.PropertyType.Name
                         Case "Guid"
                             Dim GuidValue1 As New Guid(CType(columnValue, Byte()))

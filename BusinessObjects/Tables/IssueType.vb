@@ -71,7 +71,7 @@ Public Class IssueType
         Try
             Dim dal As New IssueTypeDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -201,7 +201,7 @@ Public Class IssueType
             MyBase.Save()
             If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
 
-                If MyDropDownParentCode.Equals(String.Empty) Or MyDropDownParentCode.Equals(Nothing) Then
+                If MyDropDownParentCode.Equals(String.Empty) OrElse MyDropDownParentCode.Equals(Nothing) Then
                     MyDropDownParentCode = IssueTypeCode
                 End If
 
@@ -267,10 +267,10 @@ Public Class IssueType
         Try
             Dim dal As New IssueTypeDAL
 
-            If (description.Contains(DALBase.WILDCARD_CHAR) Or description.Contains(DALBase.ASTERISK)) Then
+            If (description.Contains(DALBase.WILDCARD_CHAR) OrElse description.Contains(DALBase.ASTERISK)) Then
                 description = description & DALBase.ASTERISK
             End If
-            If (code.Contains(DALBase.WILDCARD_CHAR) Or code.Contains(DALBase.ASTERISK)) Then
+            If (code.Contains(DALBase.WILDCARD_CHAR) OrElse code.Contains(DALBase.ASTERISK)) Then
                 code = code & DALBase.ASTERISK
             End If
 

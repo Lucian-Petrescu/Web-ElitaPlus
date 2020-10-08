@@ -14,7 +14,7 @@ Module BOExtentions
     Public Function Validate(Of TBusinessObject As IBusinessObjectBase)(objectToValidate As TBusinessObject) As ValidationError()
         Dim errors() As ValidationError = objectToValidate.FindValidationErrors()
 
-        If Not errors Is Nothing AndAlso errors.Length > 0 Then
+        If errors IsNot Nothing AndAlso errors.Length > 0 Then
             Throw New BOValidationException(errors, objectToValidate.GetType.FullName, objectToValidate.UniqueId)
         End If
     End Function
@@ -58,7 +58,7 @@ Module BOExtentions
     <Extension> _
     Public Function ToRejectReason(ex As BOValidationException) As String
         Dim sb As New StringBuilder
-        If (Not ex Is Nothing) Then
+        If (ex IsNot Nothing) Then
             For Each oValidationError As ValidationError In ex.ValidationErrorList()
                 If sb.Length > 0 Then sb.Append(", ")
                 sb.AppendFormat("{0} : {1}", oValidationError.PropertyName, TranslationBase.TranslateLabelOrMessage(oValidationError.Message))

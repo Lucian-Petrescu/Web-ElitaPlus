@@ -204,7 +204,7 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
                         response = ProcessResult.NotProcessed
                     End If
                 Catch ex As Exception
-                    Common.AppConfig.Log(ex)
+                    AppConfig.Log(ex)
                     RaiseEvent LogException(ex)
                     response = ProcessResult.None
                 Finally
@@ -251,7 +251,7 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
                 End With
             End If
         Catch ex As Exception
-            Common.AppConfig.Log(ex)
+            AppConfig.Log(ex)
             ' Update Interface Status to Failed
             If (InterfaceStatusId.HasValue) Then
                 With InterfaceStatus

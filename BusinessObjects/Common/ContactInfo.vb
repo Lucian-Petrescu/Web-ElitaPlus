@@ -1,4 +1,6 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (11/2/2011)  ********************
+Imports System.Collections.Generic
+Imports System.Text.RegularExpressions
 
 Public Class ContactInfo
     Inherits BusinessObjectBase
@@ -86,7 +88,7 @@ Public Class ContactInfo
             Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
@@ -95,7 +97,7 @@ Public Class ContactInfo
         Try
             Dim dal As New ContactInfoDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -110,7 +112,7 @@ Public Class ContactInfo
             If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
@@ -309,7 +311,7 @@ Public Class ContactInfo
     Public ReadOnly Property ContactInfoReqFields As String
         Get
             If _countryObject Is Nothing Then
-                If Not _address Is Nothing AndAlso Not _address.CountryId.Equals(Guid.Empty) Then
+                If _address IsNot Nothing AndAlso Not _address.CountryId.Equals(Guid.Empty) Then
                     _countryObject = New Country(_address.CountryId)
                 Else
                     _countryObject = ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID)
@@ -402,7 +404,7 @@ Public Class ContactInfo
                     Load(objId)
                 End If
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
@@ -441,14 +443,14 @@ Public Class ContactInfo
             End Set
         End Property
     End Class
-    Public Shared Sub SplitContactInfoRequiredFieldsString(ContactInfoReqFieldsStr As String, ByRef AddressComponents As Collections.Generic.List(Of ContactInfoRequiredFieldsItem))
+    Public Shared Sub SplitContactInfoRequiredFieldsString(ContactInfoReqFieldsStr As String, ByRef AddressComponents As List(Of ContactInfoRequiredFieldsItem))
         ContactInfoReqFieldsStr = ContactInfoReqFieldsStr.Trim
         'MailAddrFmtStr = "[ADR1][-][\n][ADR2][\n][ZIP][Space][CITY][Space][COU][\n][RGNAME]*[,][Space][RGCODE]"
         If ContactInfoReqFieldsStr.Trim <> "" Then
-            AddressComponents = New Collections.Generic.List(Of ContactInfoRequiredFieldsItem)(15)
-            Dim RegExp As Text.RegularExpressions.Regex, blnRequired As Boolean
-            RegExp = New Text.RegularExpressions.Regex("\[(.)+?\](\*)*")
-            Dim m As Text.RegularExpressions.Match = RegExp.Match(ContactInfoReqFieldsStr)
+            AddressComponents = New List(Of ContactInfoRequiredFieldsItem)(15)
+            Dim regExp As Regex, blnRequired As Boolean
+            regExp = New Regex("\[(.)+?\](\*)*", RegexOptions.None, new TimeSpan(0,0,0,0, 100))
+            Dim m As Match = regExp.Match(ContactInfoReqFieldsStr)
             While (m.Success)
                 blnRequired = True
                 If m.Value.Trim.EndsWith("]*") Then blnRequired = False
@@ -461,8 +463,8 @@ Public Class ContactInfo
         Dim blnRequired As Boolean = False
         MailAddrFmtStr = MailAddrFmtStr.Trim
         If MailAddrFmtStr.Trim <> "" Then
-            Dim RegExp As Text.RegularExpressions.Regex = New Text.RegularExpressions.Regex("\[(.+?)\](\*)*")
-            Dim m As Text.RegularExpressions.Match = RegExp.Match(MailAddrFmtStr)
+            Dim regExp = New Regex("\[(.+?)\](\*)*", RegexOptions.None, new TimeSpan(0,0,0,0, 100))
+            Dim m As Match = regExp.Match(MailAddrFmtStr)
             While (m.Success)
                 If m.Groups(1).Value.Trim = strComponent.Trim AndAlso (Not m.Value.Trim.EndsWith("]*")) Then
                     blnRequired = True

@@ -89,10 +89,10 @@ Public Class GetManufacturers
     End Sub
     Private Sub getCompanyGroupId(Code As String)
         Dim dvCompanyGroups As DataView = LookupListNew.GetCompanyGroupLookupList()
-        If Not dvCompanyGroups Is Nothing AndAlso dvCompanyGroups.Count > 0 Then
+        If dvCompanyGroups IsNot Nothing AndAlso dvCompanyGroups.Count > 0 Then
             _companyGroupId = LookupListNew.GetIdFromCode(dvCompanyGroups, Code)
             If _companyGroupId.Equals(Guid.Empty) Then
-                Throw New BOValidationException("GetManufacturers Error: ", Assurant.ElitaPlus.Common.ErrorCodes.ERR_INVALID_COMPANY_GROUP)
+                Throw New BOValidationException("GetManufacturers Error: ", Common.ErrorCodes.ERR_INVALID_COMPANY_GROUP)
             End If
         End If
     End Sub

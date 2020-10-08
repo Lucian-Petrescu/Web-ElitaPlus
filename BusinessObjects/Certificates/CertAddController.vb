@@ -828,7 +828,7 @@ Public Class CertAddController
 #Region "Private methods"
     Private Sub SetProductConversion()
         Dim objDealer As Dealer = New Dealer(DealerID)
-        Dim strConvertProdCode As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_TRANSLATE_PRODUCT_CODE, Authentication.CurrentUser.LanguageId), objDealer.ConvertProductCodeId)
+        Dim strConvertProdCode As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_TRANSLATE_PRODUCT_CODE, Authentication.CurrentUser.LanguageId), objDealer.ConvertProductCodeId)
         If strConvertProdCode = "N" Then 'Get Assurant Product Code
             _ProductConversion = False
         Else 'external product code
@@ -842,7 +842,7 @@ Public Class CertAddController
 
     Private Function SetCustomerProfile() As String
         Dim attvalue As AttributeValue = CertDealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = "MANUAL_CERT_USE_CUSTOMER_PROFILE").FirstOrDefault
-        If Not attvalue Is Nothing AndAlso attvalue.Value = Codes.YESNO_Y Then
+        If attvalue IsNot Nothing AndAlso attvalue.Value = Codes.YESNO_Y Then
             return Codes.YESNO_Y
         Else
             return Codes.YESNO_N
@@ -986,7 +986,7 @@ Public Class CertAddController
                                  .Code = ItemCode
                                  })
                 ' Add bundle item
-                If Not BundledItems Is Nothing Then
+                If BundledItems IsNot Nothing Then
                     For Each o As BundledItem In BundledItems
                         certItems.Add(New ItemInfo With {
                                          .ManufacturerWarrantyMonths = o.MfgWarranty,
@@ -1064,7 +1064,7 @@ Public Class CertAddController
                         }
                 End If
 
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, CertDealer.DealerTypeId) = "3" Then 'Mobile dealer
+                If LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, CertDealer.DealerTypeId) = "3" Then 'Mobile dealer
                     .DealerReferenceData = New MobileDealerReferenceDataInfo() With {
                         .DealerSourceSystem = "ElitaWeb",
                         .MarketingPromotionNumber = MarketingPromoNum,
@@ -1147,7 +1147,7 @@ Public Class CertAddController
         If Not isAutoGenFlagOn Then
             If CertNum.Trim = String.Empty Then
                 isValid = False
-                strErrMsg = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CERTIFICATE_NUMBER_IS_REQUIRED_ERRR)
+                strErrMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.GUI_CERTIFICATE_NUMBER_IS_REQUIRED_ERRR)
                 ErrMsg.Add(strErrMsg)
             End If
         End If
@@ -1156,35 +1156,35 @@ Public Class CertAddController
         If objContract IsNot Nothing AndAlso objContract.MarketingPromotionId.Equals(yesId) Then
             If String.IsNullOrEmpty(MarketingPromoNum) Then
                 isValid = False
-                strErrMsg = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.ERR_MARKETING_PROMO_NUM_IS_REQUIRED)
+                strErrMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.ERR_MARKETING_PROMO_NUM_IS_REQUIRED)
                 ErrMsg.Add(strErrMsg)
             End If
             If String.IsNullOrEmpty(MarketingPromoSer) Then
                 isValid = False
-                strErrMsg = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.ERR_MARKETING_PROMO_SER_IS_REQUIRED)
+                strErrMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.ERR_MARKETING_PROMO_SER_IS_REQUIRED)
                 ErrMsg.Add(strErrMsg)
             End If
         End If
 
         If (Not String.IsNullOrEmpty(MarketingPromoNum)) AndAlso MarketingPromoNum.Length > 6 Then
             isValid = False
-            strErrMsg = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.ERR_INVALID_MARKETING_PROMO_NUM)
+            strErrMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.ERR_INVALID_MARKETING_PROMO_NUM)
             ErrMsg.Add(strErrMsg)
         End If
 
         If (Not String.IsNullOrEmpty(MarketingPromoSer)) AndAlso MarketingPromoSer.Length > 3 Then
             isValid = False
-            strErrMsg = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.ERR_INVALID_MARKETING_PROMO_SER)
+            strErrMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.ERR_INVALID_MARKETING_PROMO_SER)
             ErrMsg.Add(strErrMsg)
         End If
 
         If ProductCode.Trim = String.Empty Then
             isValid = False
-            strErrMsg = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.ERR_PRODUCT_CODE_IS_REQUIRED)
+            strErrMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.ERR_PRODUCT_CODE_IS_REQUIRED)
             ErrMsg.Add(strErrMsg)
         End If
 
-        If (Not BundledItems Is Nothing) AndAlso (BundledItems.Count) > 10 Then
+        If (BundledItems IsNot Nothing) AndAlso (BundledItems.Count) > 10 Then
             isValid = False
             strErrMsg = TranslationBase.TranslateLabelOrMessage(ERR_TOO_MANY_BUNDLED_ITEMS)
             ErrMsg.Add(strErrMsg)
@@ -1193,7 +1193,7 @@ Public Class CertAddController
         Dim AddressRequiredFields As String = String.Empty
         Dim objCtry As Country = GetDealerCountry()
 
-        If (Not objCtry Is Nothing AndAlso Not objCtry.AddressInfoReqFields Is Nothing) Then
+        If (objCtry IsNot Nothing AndAlso objCtry.AddressInfoReqFields IsNot Nothing) Then
             AddressRequiredFields = objCtry.AddressInfoReqFields.ToUpper()
         End If
 
@@ -1299,7 +1299,7 @@ Public Class CertAddController
 
     Public Function DeleteBundledItem(index As Integer) As BundledItem
         Dim objItem As BundledItem = GetBundledItem(index)
-        If Not objItem Is Nothing Then
+        If objItem IsNot Nothing Then
             BundledItems.RemoveAt(index - 1)
         End If
     End Function

@@ -102,7 +102,7 @@ Public Class CancellationReason
         Set
             CheckDeleted()
             Dim tempValue As String = Value
-            If Not tempValue Is Nothing Then
+            If tempValue IsNot Nothing Then
                 tempValue = tempValue.Trim().ToUpper()
             End If
             SetValue(CancellationReasonDAL.COL_NAME_DESCRIPTION, tempValue)
@@ -128,7 +128,7 @@ Public Class CancellationReason
         Set
             CheckDeleted()
             Dim tempValue As String = Value
-            If Not tempValue Is Nothing Then
+            If tempValue IsNot Nothing Then
                 tempValue = tempValue.Trim().ToUpper()
             End If
             SetValue(CancellationReasonDAL.COL_NAME_CODE, tempValue)
@@ -279,7 +279,7 @@ Public Class CancellationReason
             MyBase.Save()
             Dim dal As New CancellationReasonDAL
             'dal.Update(Me.Dataset)
-            MyBase.UpdateFamily(Dataset)
+            UpdateFamily(Dataset)
             dal.UpdateFamily(Dataset)
             'Reload the Data
             If _isDSCreator AndAlso Row.RowState <> DataRowState.Detached Then
@@ -506,7 +506,7 @@ Public Class CancellationReason
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, ProdRoleBO.RoleId)
         Next
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause
         Else

@@ -69,7 +69,7 @@ Public Class BankInfo
         Try
             Dim dal As New BankInfoDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -278,7 +278,7 @@ Public Class BankInfo
             If Row(BankInfoDAL.COL_NAME_PAYMENT_REASON_ID) Is DBNull.Value Then
 
                 Dim dv As DataView = LookupListNew.GetPaymentReasonLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-                If Not dv Is Nothing AndAlso dv.Count > 0 Then
+                If dv IsNot Nothing AndAlso dv.Count > 0 Then
                     Return New Guid(CType(dv(0)(LookupListNew.COL_ID_NAME), Byte()))
                 Else
                     Return Nothing
@@ -638,7 +638,7 @@ Public Class BankInfo
             Dim objCountry As New Country(obj.CountryID)
 
             If Not obj.SourceCountryID.Equals(obj.CountryID) Then
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objCountry.EuropeanCountryId) = Codes.YESNO_Y Then
+                If LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, objCountry.EuropeanCountryId) = Codes.YESNO_Y Then
                     'international transfer --Bank ID is optional
                     Return True
                 End If
@@ -652,28 +652,28 @@ Public Class BankInfo
             '        Return False
             '    End If
             'Next
-            If (LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) <> Codes.Country_Code_France) and obj.ValidateBankFields = True Then
+            If (LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) <> Codes.Country_Code_France) AndAlso obj.ValidateBankFields = True Then
                 If obj.Bank_Id Is Nothing Then
-                    MyBase.Message = Common.ErrorCodes.INVALID_BANKID_REQD
+                    Message = Common.ErrorCodes.INVALID_BANKID_REQD
                     Return False
                 Else
                     Dim _result As Integer = 0
                     If Int32.TryParse(obj.Bank_Id, _result) Then
                         obj.Bank_Id = obj.Bank_Id.ToString.Trim
                     Else
-                        MyBase.Message = Common.ErrorCodes.INVALID_BANKID
+                        Message = Common.ErrorCodes.INVALID_BANKID
                         Return False
                     End If
                     'obj.Bank_Id = obj.Bank_Id.ToString.Trim
                 End If
 
-                If (Not objCountry.BankIDLength Is Nothing) AndAlso objCountry.BankIDLength.Value > 0 Then
+                If (objCountry.BankIDLength IsNot Nothing) AndAlso objCountry.BankIDLength.Value > 0 Then
                     'ToString.Length > 0 Then
                     If (obj.Bank_Id.ToString.Trim.Length <> objCountry.BankIDLength.Value) Then
-                        MyBase.Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
+                        Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
                         Return False
                     Else
-                        If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Argentina Then
+                        If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Argentina Then
                             Dim BankId(6) As Integer, strConstant As String = "7139713"
                             Dim Total As Integer = 0, checkDigit As Integer
                             For i = 0 To 6
@@ -686,14 +686,14 @@ Public Class BankInfo
                                 checkDigit = 0
                             End If
                             If checkDigit <> CInt(obj.Bank_Id.ToString.Substring(obj.Bank_Id.ToString.Length - 1, 1)) Then
-                                MyBase.Message = Common.ErrorCodes.POPULATE_BO_ERR
+                                Message = Common.ErrorCodes.POPULATE_BO_ERR
                                 Return False
                             End If
                         End If
                     End If
                 Else
                     If obj.Bank_Id.ToString.Trim.Length > 10 Then
-                        MyBase.Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
+                        Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
                         Return False
                     End If
                 End If
@@ -722,15 +722,15 @@ Public Class BankInfo
 
             If Not obj.SourceCountryID.Equals(obj.CountryID) Then
 
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objCountry.EuropeanCountryId) = Codes.YESNO_Y Then
+                If LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, objCountry.EuropeanCountryId) = Codes.YESNO_Y Then
                     'international transfer --Bank Account # is optional
                     Return True
                 End If
             End If
 
-            If (LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) <> Codes.Country_Code_France) And obj.ValidateBankFields = True Then
+            If (LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) <> Codes.Country_Code_France) And obj.ValidateBankFields = True Then
                 If obj.Account_Number Is Nothing Then
-                    MyBase.Message = Common.ErrorCodes.INVALID_BANKACCNO_REQD
+                    Message = Common.ErrorCodes.INVALID_BANKACCNO_REQD
                     Return False
                 Else
                     obj.Account_Number = obj.Account_Number.ToString.Trim
@@ -743,19 +743,19 @@ Public Class BankInfo
                 '    End If
                 'Next
 
-                If (Not objCountry.BankAcctNoLength.ToString Is Nothing) AndAlso objCountry.BankAcctNoLength > 0 Then
+                If (objCountry.BankAcctNoLength.ToString IsNot Nothing) AndAlso objCountry.BankAcctNoLength > 0 Then
                     'ToString.Length > 0 Then
 
-                    If LookupListNew.GetCodeFromId(LookupListNew.LK_COUNTRIES, objCountry.Id) = Codes.Country_Code_Argentina Then
+                    If LookupListNew.GetCodeFromId(LookupListCache.LK_COUNTRIES, objCountry.Id) = Codes.Country_Code_Argentina Then
                         If (obj.Account_Number.ToString.Trim.Length <> objCountry.BankAcctNoLength) Then
-                            MyBase.Message = Common.ErrorCodes.INVALID_ACCTNO_LENGTH
+                            Message = Common.ErrorCodes.INVALID_ACCTNO_LENGTH
                             Return False
                         Else
-                            If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Argentina Then
+                            If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Argentina Then
                                 Dim AccNumber(12) As Integer, strConstant As String = "39713971397139713"
                                 Dim Total As Integer = 0, checkDigit As Integer
-                                If System.Text.RegularExpressions.Regex.IsMatch(obj.Account_Number, "\D") Then
-                                    MyBase.Message = Common.ErrorCodes.POPULATE_BO_ERR
+                                If Text.RegularExpressions.Regex.IsMatch(obj.Account_Number, "\D") Then
+                                    Message = Common.ErrorCodes.POPULATE_BO_ERR
                                     Return False
                                 End If
                                 For i = 0 To 12
@@ -768,20 +768,20 @@ Public Class BankInfo
                                     checkDigit = 0
                                 End If
                                 If checkDigit <> CInt(obj.Account_Number.ToString.Substring(obj.Account_Number.ToString.Length - 1, 1)) Then
-                                    MyBase.Message = Common.ErrorCodes.POPULATE_BO_ERR
+                                    Message = Common.ErrorCodes.POPULATE_BO_ERR
                                     Return False
                                 End If
                             End If
                         End If
                     Else
                         If (obj.Account_Number.ToString.Trim.Length > objCountry.BankAcctNoLength) Then
-                            MyBase.Message = Common.ErrorCodes.INVALID_ACCTNO_LENGTH
+                            Message = Common.ErrorCodes.INVALID_ACCTNO_LENGTH
                             Return False
                         End If
                     End If
                 Else
                     If obj.Account_Number.ToString.Trim.Length > 29 Then
-                        MyBase.Message = Common.ErrorCodes.INVALID_ACCTNO_LENGTH
+                        Message = Common.ErrorCodes.INVALID_ACCTNO_LENGTH
                         Return False
                     End If
                 End If
@@ -818,7 +818,7 @@ Public Class BankInfo
             End If
 
             If obj.SwiftCode Is Nothing Then
-                MyBase.Message = Common.ErrorCodes.INVALID_BANKSWIFTCODE_REQD
+                Message = Common.ErrorCodes.INVALID_BANKSWIFTCODE_REQD
                 Return False
             End If
 
@@ -838,22 +838,22 @@ Public Class BankInfo
             Dim obj As BankInfo = CType(objectToValidate, BankInfo)
             Dim retVal As Boolean = True
             Dim objCountry As New Country(obj.CountryID)
-            If Not LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_France Then
+            If Not LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_France Then
                 If obj.DomesticTransfer Then
-                    If (Not obj.SwiftCode Is Nothing Or obj.SwiftCode <> "") Or (Not obj.IbanNumber Is Nothing Or obj.IbanNumber <> "") Then
+                    If (obj.SwiftCode IsNot Nothing Or obj.SwiftCode <> "") Or (obj.IbanNumber IsNot Nothing Or obj.IbanNumber <> "") Then
                         retVal = False
                     End If
                 Else
                     If (Not obj.SourceCountryID.Equals(Guid.Empty)) And (Not obj.CountryID.Equals(Guid.Empty)) Then
                         If obj.SourceCountryID.Equals(obj.CountryID) Then
                             'Domestic transfer
-                            If (Not obj.SwiftCode Is Nothing Or obj.SwiftCode <> "") Or (Not obj.IbanNumber Is Nothing Or obj.IbanNumber <> "") Then
+                            If (obj.SwiftCode IsNot Nothing Or obj.SwiftCode <> "") Or (obj.IbanNumber IsNot Nothing Or obj.IbanNumber <> "") Then
                                 retVal = False
                             End If
                         End If
                     Else
                         'Domestic transfer
-                        If (Not obj.SwiftCode Is Nothing Or obj.SwiftCode <> "") Or (Not obj.IbanNumber Is Nothing Or obj.IbanNumber <> "") Then
+                        If (obj.SwiftCode IsNot Nothing Or obj.SwiftCode <> "") Or (obj.IbanNumber IsNot Nothing Or obj.IbanNumber <> "") Then
                             retVal = False
                         End If
                     End If
@@ -877,16 +877,16 @@ Public Class BankInfo
             Dim retVal As Boolean = True
 
             If obj.InternationalTransfer Then
-                If (Not obj.IbanNumber Is Nothing Or obj.IbanNumber <> "") Then
+                If (obj.IbanNumber IsNot Nothing Or obj.IbanNumber <> "") Then
                     retVal = False
                 End If
             Else
                 If (Not obj.SourceCountryID.Equals(Guid.Empty)) And (Not obj.CountryID.Equals(Guid.Empty)) Then
                     If Not obj.SourceCountryID.Equals(obj.CountryID) Then
                         Dim objCountry As New Country(obj.CountryID)
-                        If Not (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objCountry.EuropeanCountryId) = Codes.YESNO_Y) Then
+                        If Not (LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, objCountry.EuropeanCountryId) = Codes.YESNO_Y) Then
                             'International transfer & Destination is not a European country
-                            If (Not obj.IbanNumber Is Nothing Or obj.IbanNumber <> "") Then
+                            If (obj.IbanNumber IsNot Nothing Or obj.IbanNumber <> "") Then
                                 retVal = False
                             End If
                         End If
@@ -913,16 +913,16 @@ Public Class BankInfo
 
             If obj.DomesticTransfer Then
             ElseIf obj.InternationalEUTransfer Then
-                If (Not obj.Bank_Id Is Nothing) Or (Not obj.Account_Number Is Nothing) Then
+                If (obj.Bank_Id IsNot Nothing) Or (obj.Account_Number IsNot Nothing) Then
                     retVal = False
                 End If
             Else
                 If (Not obj.SourceCountryID.Equals(Guid.Empty)) And (Not obj.CountryID.Equals(Guid.Empty)) Then
                     If Not obj.SourceCountryID.Equals(obj.CountryID) Then
                         Dim objCountry As New Country(obj.CountryID)
-                        If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objCountry.EuropeanCountryId) = Codes.YESNO_Y Then
+                        If LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, objCountry.EuropeanCountryId) = Codes.YESNO_Y Then
                             'International transfer & Destination is European country
-                            If (Not obj.Bank_Id Is Nothing) Or (Not obj.Account_Number Is Nothing) Then
+                            If (obj.Bank_Id IsNot Nothing) Or (obj.Account_Number IsNot Nothing) Then
                                 retVal = False
                             End If
                         End If
@@ -951,46 +951,46 @@ Public Class BankInfo
 
             Dim objCountry As New Country(obj.CountryID)
 
-            If Not LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_France Then
+            If Not LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_France Then
                 If obj.SourceCountryID.Equals(obj.CountryID) Then
                     'domestic transfer --Bank swift code is optional
                     Return True
                 Else
-                    If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objCountry.EuropeanCountryId) = Codes.YESNO_N Then
+                    If LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, objCountry.EuropeanCountryId) = Codes.YESNO_N Then
                         Return True
                     End If
                 End If
 
                 If obj.IbanNumber Is Nothing Then
-                    MyBase.Message = Common.ErrorCodes.INVALID_BANKIBANNO_REQD
+                    Message = Common.ErrorCodes.INVALID_BANKIBANNO_REQD
                     Return False
                 End If
             Else
 
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_France Then
+                If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_France Then
 
                     ' if the Iban number changed
                     If Not obj.OriginalIbanNumber.Equals(obj.IbanNumber) Then
 
                         If String.IsNullOrEmpty(obj.IbanNumber) Then
-                            MyBase.Message = Common.ErrorCodes.INVALID_BANKIBANNO_INVALID
+                            Message = Common.ErrorCodes.INVALID_BANKIBANNO_INVALID
                             Return False
                         End If
 
                         Dim bankInfoDAL As BankInfoDAL = New BankInfoDAL
                         If Not bankInfoDAL.IbanIsValid(obj.IbanNumber, objCountry.Code) Then
-                            MyBase.Message = Common.ErrorCodes.INVALID_BANKIBANNO_INVALID
+                            Message = Common.ErrorCodes.INVALID_BANKIBANNO_INVALID
                             Return False
                         End If
                     End If
 
                 End If
 
-                If (LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_France And
-                    LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, obj.PayeeId) = ClaimInvoice.PAYEE_OPTION_CUSTOMER And
-                    LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, obj.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER) Then
+                If (LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_France And
+                    LookupListNew.GetCodeFromId(LookupListCache.LK_PAYEE, obj.PayeeId) = ClaimInvoice.PAYEE_OPTION_CUSTOMER And
+                    LookupListNew.GetCodeFromId(LookupListCache.LK_PAYMENTMETHOD, obj.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER) Then
                     If obj.IbanNumber Is Nothing Then
-                        MyBase.Message = Common.ErrorCodes.INVALID_BANKIBANNO_REQD
+                        Message = Common.ErrorCodes.INVALID_BANKIBANNO_REQD
                         Return False
                     End If
                 End If
@@ -1009,7 +1009,7 @@ Public Class BankInfo
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As BankInfo = CType(objectToValidate, BankInfo)
-            If (Not obj.TransactionLimit Is Nothing) Then
+            If (obj.TransactionLimit IsNot Nothing) Then
                 If obj.TransactionLimit.Value < 0 OrElse obj.TransactionLimit.Value > 999999999999999.99D Then
                     Return False
                 End If
@@ -1035,24 +1035,24 @@ Public Class BankInfo
             End If
 
             Dim objCountry As New Country(obj.CountryID)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
                 And obj.ValidateFieldsforBR = True Then
 
                 'Branch Digit
                 If Not obj.IsEmptyNumber(obj.BranchDigit) Then
 
                     If obj.BranchDigit.ToString.Length > 1 Then
-                        MyBase.Message = Common.ErrorCodes.INVALID_BRANCHDIGIT_LENGTH
+                        Message = Common.ErrorCodes.INVALID_BRANCHDIGIT_LENGTH
                         Return False
                     End If
 
                     If Not IsNumeric(obj.BranchDigit.Value) Then
-                        MyBase.Message = Common.ErrorCodes.GUI_BRANCHDIGIT_ONLY_NUMERIC_ALLOWED
+                        Message = Common.ErrorCodes.GUI_BRANCHDIGIT_ONLY_NUMERIC_ALLOWED
                         Return False
                     End If
                 Else
 
-                    MyBase.Message = Common.ErrorCodes.ERR_BRANCHDIGIT_IS_REQUIRED
+                    Message = Common.ErrorCodes.ERR_BRANCHDIGIT_IS_REQUIRED
                     Return False
                 End If
 
@@ -1079,23 +1079,23 @@ Public Class BankInfo
             End If
 
             Dim objCountry As New Country(obj.CountryID)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
                  And obj.ValidateFieldsforBR = True Then
 
                 'Account Digit
                 If Not obj.IsEmptyNumber(obj.AccountDigit) Then
 
                     If obj.AccountDigit.ToString.Length > 1 Then
-                        MyBase.Message = Common.ErrorCodes.INVALID_ACCOUNTDIGIT_LENGTH
+                        Message = Common.ErrorCodes.INVALID_ACCOUNTDIGIT_LENGTH
                         Return False
                     End If
 
                     If Not IsNumeric(obj.AccountDigit.Value) Then
-                        MyBase.Message = Common.ErrorCodes.GUI_ACCOUNTDIGIT_ONLY_NUMERIC_ALLOWED
+                        Message = Common.ErrorCodes.GUI_ACCOUNTDIGIT_ONLY_NUMERIC_ALLOWED
                         Return False
                     End If
                 Else
-                    MyBase.Message = Common.ErrorCodes.ERR_ACCOUNTDIGIT_IS_REQUIRED
+                    Message = Common.ErrorCodes.ERR_ACCOUNTDIGIT_IS_REQUIRED
                     Return False
                 End If
 
@@ -1122,23 +1122,23 @@ Public Class BankInfo
             End If
 
             Dim objCountry As New Country(obj.CountryID)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
                  And obj.ValidateFieldsforBR = True Then
 
                 'Branch Number
                 If Not obj.IsEmptyNumber(obj.BranchNumber) Then
 
                     If obj.BranchNumber.ToString.Length > 4 Then
-                        MyBase.Message = Common.ErrorCodes.INVALID_BRANCHNUMBER_LENGTH
+                        Message = Common.ErrorCodes.INVALID_BRANCHNUMBER_LENGTH
                         Return False
                     End If
 
                     If Not IsNumeric(obj.BranchNumber.Value) Then
-                        MyBase.Message = Common.ErrorCodes.GUI_BRANCHNUMBER_ONLY_NUMERIC_ALLOWED
+                        Message = Common.ErrorCodes.GUI_BRANCHNUMBER_ONLY_NUMERIC_ALLOWED
                         Return False
                     End If
                 Else
-                    MyBase.Message = Common.ErrorCodes.ERR_BRANCHNUMBER_IS_REQUIRED
+                    Message = Common.ErrorCodes.ERR_BRANCHNUMBER_IS_REQUIRED
                     Return False
                 End If
             End If
@@ -1165,12 +1165,12 @@ Public Class BankInfo
             End If
 
             Dim objCountry As New Country(obj.CountryID)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil And obj.ValidateBankFields = True _
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil And obj.ValidateBankFields = True _
                  And obj.ValidateFieldsforBR = True Then
 
                 'Bank Number
                 If obj.IsEmptyString(obj.BankName) Then
-                    MyBase.Message = Common.ErrorCodes.ERR_BANKNAME_IS_REQUIRED
+                    Message = Common.ErrorCodes.ERR_BANKNAME_IS_REQUIRED
                     Return False
                 End If
 
@@ -1198,17 +1198,17 @@ Public Class BankInfo
             End If
 
             Dim objCountry As New Country(obj.CountryID)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
                  And obj.ValidateFieldsforBR = True Then
 
                 'Bank Id
                 If obj.IsEmptyString(obj.Bank_Id) Then
-                    MyBase.Message = Common.ErrorCodes.ERR_BANKID_IS_REQUIRED
+                    Message = Common.ErrorCodes.ERR_BANKID_IS_REQUIRED
                     Return False
                 End If
 
                 If obj.Bank_Id.ToString.Length > 3 Then
-                    MyBase.Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
+                    Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
                     Return False
                 End If
 
@@ -1235,17 +1235,17 @@ Public Class BankInfo
             End If
 
             Dim objCountry As New Country(obj.CountryID)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
                  And obj.ValidateFieldsforBR = True Then
 
                 'Accout Number
                 If obj.IsEmptyString(obj.Account_Number) Then
-                    MyBase.Message = Common.ErrorCodes.ERR_MSG_ACCOUNT_NUMBER_IS_REQUIRED
+                    Message = Common.ErrorCodes.ERR_MSG_ACCOUNT_NUMBER_IS_REQUIRED
                     Return False
                 End If
 
                 If obj.Account_Number.ToString.Length > 10 Then
-                    MyBase.Message = Common.ErrorCodes.INVALID_ACCOUNT_NUMBER_LENGTH
+                    Message = Common.ErrorCodes.INVALID_ACCOUNT_NUMBER_LENGTH
                     Return False
                 End If
 
@@ -1273,12 +1273,12 @@ Public Class BankInfo
             End If
 
             Dim objCountry As New Country(obj.CountryID)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
                  And obj.ValidateFieldsforBR = True Then
 
                 'Account Type
                 If obj.AccountTypeId.Equals(Guid.Empty) Then
-                    MyBase.Message = Common.ErrorCodes.ERR_ACCOUNTTYPE_IS_REQUIRED
+                    Message = Common.ErrorCodes.ERR_ACCOUNTTYPE_IS_REQUIRED
                     Return False
                 End If
             End If
@@ -1307,12 +1307,12 @@ Public Class BankInfo
             End If
 
             Dim objCountry As New Country(obj.CountryID)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_France Or obj.ValidateBankFields = False Then
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_France Or obj.ValidateBankFields = False Then
                 ' No run validation "Account Name" for French
                 Return True
             Else
                 If obj.Account_Name Is Nothing AndAlso obj.SepaEUBankTransfer = False Then
-                    MyBase.Message = Common.ErrorCodes.INVALID_BANKACCNAME_REQD
+                    Message = Common.ErrorCodes.INVALID_BANKACCNAME_REQD
                     Return False
                 End If
             End If
@@ -1342,7 +1342,7 @@ Public Class BankInfo
             ' Move here from UserControlBankInfo.ascx.vb 02/08/2008
             If Not (IsDeleted) Then SetPaymentReasonID()
 
-            If Not addressObj Is Nothing Then
+            If addressObj IsNot Nothing Then
                 addressObj.SourceId = Id
             End If
 
@@ -1375,9 +1375,9 @@ Public Class BankInfo
 
     Public Sub SetPaymentReasonID()
 
-        If PaymentReasonID.Equals(System.Guid.Empty) Then
+        If PaymentReasonID.Equals(Guid.Empty) Then
             Dim dv As DataView = LookupListNew.GetPaymentReasonLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not dv Is Nothing AndAlso dv.Count > 0 Then
+            If dv IsNot Nothing AndAlso dv.Count > 0 Then
                 PaymentReasonID = New Guid(CType(dv(0)(LookupListNew.COL_ID_NAME), Byte()))
             End If
         End If
@@ -1410,23 +1410,23 @@ Public Class BankInfo
                                                  oBankInfo As BankInfo)
         With oBankInfoData
             .bankinfoId = oBankInfo.Id
-            If Not oBankInfo.Account_Name Is Nothing Then
+            If oBankInfo.Account_Name IsNot Nothing Then
                 .AccountName = oBankInfo.Account_Name
             End If
-            If Not oBankInfo.Account_Number Is Nothing Then
+            If oBankInfo.Account_Number IsNot Nothing Then
                 .AccountNumber = oBankInfo.Account_Number
             Else
                 .AccountNumber = Nothing
             End If
-            If Not oBankInfo.Bank_Id Is Nothing Then
+            If oBankInfo.Bank_Id IsNot Nothing Then
                 .BankID = oBankInfo.Bank_Id
             Else
                 .BankID = Nothing
             End If
-            If Not oBankInfo.SwiftCode Is Nothing Then
+            If oBankInfo.SwiftCode IsNot Nothing Then
                 .SwiftCode = oBankInfo.SwiftCode
             End If
-            If Not oBankInfo.IbanNumber Is Nothing Then
+            If oBankInfo.IbanNumber IsNot Nothing Then
                 .IBAN_Number = oBankInfo.IbanNumber
             End If
             If Not IsNothing(oBankInfo.CountryID) Then
@@ -1444,16 +1444,16 @@ Public Class BankInfo
             If Not IsNothing(oBankInfo.AccountTypeId) Then
                 .AccountTypeId = oBankInfo.AccountTypeId
             End If
-            If Not oBankInfo.BankName Is Nothing Then
+            If oBankInfo.BankName IsNot Nothing Then
                 .BankName = oBankInfo.BankName
             End If
-            If Not oBankInfo.BranchDigit Is Nothing Then
+            If oBankInfo.BranchDigit IsNot Nothing Then
                 .BranchDigit = oBankInfo.BranchDigit
             End If
-            If Not oBankInfo.AccountDigit Is Nothing Then
+            If oBankInfo.AccountDigit IsNot Nothing Then
                 .AccountDigit = oBankInfo.AccountDigit
             End If
-            If Not oBankInfo.BranchNumber Is Nothing Then
+            If oBankInfo.BranchNumber IsNot Nothing Then
                 .BranchNumber = oBankInfo.BranchNumber
             End If
             '.AccountDigit = oBankInfo.AccountDigit

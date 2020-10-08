@@ -6,7 +6,7 @@ Imports System.Runtime.Serialization
     Inherits ElitaPlusException
 
     Public Sub New()
-        MyBase.New(Assurant.ElitaPlus.Common.ErrorCodes.BO_DATA_NOT_FOUND, ErrorTypes.ERROR_BO)
+        MyBase.New(Common.ErrorCodes.BO_DATA_NOT_FOUND, ErrorTypes.ERROR_BO)
     End Sub
 
     Public Sub New(message As String)

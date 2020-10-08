@@ -134,7 +134,7 @@ Public Class GalaxyUpdateServiceCenter
             'If Not Me._ServiceTypeIdIsNull Then serviceCenterBO.ServiceTypeId = Me.ServiceTypeId
 
             'Added by REQ-452
-            If Not ServiceType Is Nothing AndAlso Not ServiceType.Equals(String.Empty) Then
+            If ServiceType IsNot Nothing AndAlso Not ServiceType.Equals(String.Empty) Then
 
                 'delet old MOR if exist
                 serviceCenterBO.DeletAllMethodOfRepairs()
@@ -308,7 +308,7 @@ Public Class GalaxyUpdateServiceCenter
     Public Function GetYesOrNo(yesOrNoStr As String) As Boolean
         Dim yesOrNo As Boolean = False
 
-        If (Not yesOrNoStr Is Nothing And yesOrNoStr.Equals("Y")) Then
+        If (yesOrNoStr IsNot Nothing AndAlso yesOrNoStr.Equals("Y")) Then
             yesOrNo = True
         End If
 
@@ -382,7 +382,7 @@ Public Class GalaxyUpdateServiceCenter
     Public Function SetDataToNotNull(data As String, replaceWith As String) As String
         Dim retStr As String
 
-        If (data Is Nothing Or data = "") Then
+        If (data Is Nothing OrElse data = "") Then
             retStr = replaceWith
         Else
             retStr = data
@@ -511,7 +511,7 @@ Public Class GalaxyUpdateServiceCenter
                         ' this logic is based on the Service Center form. dealer code can only be assigned to one service center.
                         Dim dv As DataView = LookupListNew.GetOriginalDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyId, Guid.Empty)
                         Dim dealerCode As String = LookupListNew.GetCodeFromId(dv, OriginalDealerId)
-                        If dealerCode Is Nothing Or dealerCode = "" Then
+                        If dealerCode Is Nothing OrElse dealerCode = "" Then
                             Throw New BOValidationException("Service Center Invalid Parameters Error", Common.ErrorCodes.ERR_ORIGINAL_DEALER_CODE_IN_USE)
                         End If
                     End If

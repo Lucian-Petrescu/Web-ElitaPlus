@@ -59,7 +59,7 @@ Public Class ClaimStatus
         Try
             Dim dal As New ClaimStatusDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -277,7 +277,7 @@ Public Class ClaimStatus
             Dim dal As New ClaimStatusDAL
             Dim dtClaim As DataTable = dal.GetLatestClaimStatus(claimID, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0)
 
-            If Not dtClaim Is Nothing AndAlso dtClaim.Rows.Count > 0 Then
+            If dtClaim IsNot Nothing AndAlso dtClaim.Rows.Count > 0 Then
                 oClaimStatus = New ClaimStatus(New Guid(CType(dtClaim.Rows(0)(ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID), Byte())))
             End If
 
@@ -302,7 +302,7 @@ Public Class ClaimStatus
         If claimId <> Guid.Empty Then
             Dim dal As New ClaimStatusDAL
             Dim dtClaim As DataTable = dal.GetLatestClaimStatus(claimId, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0)
-            If Not dtClaim Is Nothing And dtClaim.Rows.Count > 0 Then
+            If dtClaim IsNot Nothing AndAlso dtClaim.Rows.Count > 0 Then
                 Dim dtTable As DataTable = dal.GetExtendedMVStatus(claimId).Tables(0)
                 If dtClaim.Rows(0)(ClaimStatusDAL.COL_NAME_STATUS_CODE) <> dtTable.Rows(0)(ClaimStatusDAL.COL_NAME_CLAIM_STATUS) Then
                     dal.UpdateExtendedMV(claimId, New Guid(CType(dtClaim.Rows(0)(ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID), Byte())), dtClaim.Rows(0)(ClaimStatusDAL.COL_NAME_STATUS_CODE))
@@ -388,8 +388,8 @@ Public Class ClaimStatus
         If objClaimBO Is Nothing Then
             objClaimBO = ClaimBO(ClaimId)
         End If
-        If Not objClaimBO.Company.TimeZoneNameId.Equals(System.Guid.Empty) Then
-            Dim strTimeZonename As String = LookupListNew.GetDescriptionFromId(LookupListNew.LK_TIME_ZONE_NAMES, objClaimBO.Company.TimeZoneNameId)
+        If Not objClaimBO.Company.TimeZoneNameId.Equals(Guid.Empty) Then
+            Dim strTimeZonename As String = LookupListNew.GetDescriptionFromId(LookupListCache.LK_TIME_ZONE_NAMES, objClaimBO.Company.TimeZoneNameId)
             UpdateStatusDateOnFamily(strTimeZonename)
         Else
             Exit Sub

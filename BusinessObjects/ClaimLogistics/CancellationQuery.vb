@@ -157,7 +157,7 @@ Public Class CancellationQuery
             If _certId.Equals(Guid.Empty) Then
                 Dim dsCert As DataSet = Certificate.ClaimLogisticsGetCert(CertNumber, DealerCode)
 
-                If Not dsCert Is Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
+                If dsCert IsNot Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
                     If dsCert.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
                         Throw New BOValidationException("CancellationQuery Error: ", CERTIFICATE_NOT_FOUND)
                     Else

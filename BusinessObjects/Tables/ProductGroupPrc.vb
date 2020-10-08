@@ -66,7 +66,7 @@ Public Class ProductGroupPrc
         Try
             Dim dal As New ProductGroupPrcDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -92,7 +92,7 @@ Public Class ProductGroupPrc
             Dim dal As New ProductGroupPrcDAL
 
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -233,7 +233,7 @@ Public Class ProductGroupPrc
                 Dim index As Integer
                 ' Create Array
                 For index = 0 To oPrcDv.Table.Rows.Count - 1
-                    If Not oPrcDv.Table.Rows(index)(ProductGroupPrcDAL.COL_NAME_PRODUCT_CODE_ID) Is System.DBNull.Value Then
+                    If oPrcDv.Table.Rows(index)(ProductGroupPrcDAL.COL_NAME_PRODUCT_CODE_ID) IsNot DBNull.Value Then
                         moProductCodeIDs.Add(New Guid(CType(oPrcDv.Table.Rows(index)(ProductGroupPrcDAL.COL_NAME_PRODUCT_CODE_ID), Byte())))
                     End If
                 Next

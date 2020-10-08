@@ -71,7 +71,7 @@ Public Class CustRegistration
         Try
             Dim dal As New CustRegistrationDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -264,7 +264,7 @@ Public Class CustRegistration
 
             If IsEmailIDValid(customerRegistration.EmailID) Then
                 countryId = GetCountryID(customerRegistration.CountryCode)
-                If Not customerRegistration.State Is Nothing Then
+                If customerRegistration.State IsNot Nothing Then
                     regionID = GetRegionID(customerRegistration.State, countryId)
                 End If
                 dealerId = GetDealerID(customerRegistration.DealerCode)
@@ -319,7 +319,7 @@ Public Class CustRegistration
 
             If IsEmailIDValid(customerRegistration.EmailID) Then
                 countryId = GetCountryID(customerRegistration.CountryCode)
-                If Not customerRegistration.State Is Nothing Then
+                If customerRegistration.State IsNot Nothing Then
                     regionID = GetRegionID(customerRegistration.State, countryId)
                 End If
                 'dealerId = GetDealerID(customerRegistration.DealerCode)

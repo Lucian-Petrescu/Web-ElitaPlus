@@ -62,7 +62,7 @@ Public Class Question
         Try
             Dim dal As New QuestionDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -387,7 +387,7 @@ Public Class Question
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Question")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
         Effective = Date.Now
         Expiration = New Date(2499, 12, 31, 23, 59, 59)
         'copy the childrens        

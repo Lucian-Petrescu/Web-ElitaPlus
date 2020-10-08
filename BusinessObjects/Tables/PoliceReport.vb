@@ -71,7 +71,7 @@ Public Class PoliceReport
         Try
             Dim dal As New PoliceReportDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -96,7 +96,7 @@ Public Class PoliceReport
         Try
             Dim dal As New PoliceReportDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -270,9 +270,9 @@ Public Class PoliceReport
             'For Each row In parentClaim.Dataset.Tables(PoliceReportDAL.TABLE_NAME).Rows
             For rowIndex = 0 To parentClaim.Dataset.Tables(PoliceReportDAL.TABLE_NAME).Rows.Count - 1
                 row = parentClaim.Dataset.Tables(PoliceReportDAL.TABLE_NAME).Rows.Item(rowIndex)
-                If Not (row.RowState = DataRowState.Deleted) Or (row.RowState = DataRowState.Detached) Then
+                If Not (row.RowState = DataRowState.Deleted) OrElse (row.RowState = DataRowState.Detached) Then
                     Dim p As PoliceReport = New PoliceReport(row)
-                    If parentClaim.Id.Equals(p.ClaimId) And p.IsNew Then
+                    If parentClaim.Id.Equals(p.ClaimId) AndAlso p.IsNew Then
                         p.Delete()
                     End If
                 End If
@@ -285,7 +285,7 @@ Public Class PoliceReport
         Dim blnInUser As Boolean = False
         Dim dal As New PoliceReportDAL
         Dim ds As DataSet = dal.GetClaimsByPoliceRptNumber(PoliceStationId, ReportNumber)
-        If (Not ds Is Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
+        If (ds IsNot Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
             blnInUser = True
             If lstClaimNum Is Nothing Then lstClaimNum = New Collections.Generic.List(Of String)
             Dim dr As DataRow
@@ -299,7 +299,7 @@ Public Class PoliceReport
         Dim blnInUser As Boolean = False
         Dim dal As New PoliceReportDAL
         Dim ds As DataSet = dal.GetClaimsByPoliceRptNumber(policeStationId, policeReportNumber)
-        If (Not ds Is Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
+        If (ds IsNot Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
             blnInUser = True
             If lstClaimNum Is Nothing Then lstClaimNum = New Collections.Generic.List(Of String)
             Dim dr As DataRow

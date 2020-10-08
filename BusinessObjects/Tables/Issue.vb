@@ -63,7 +63,7 @@ Public Class Issue
         Try
             Dim dal As New IssueDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -137,17 +137,17 @@ Public Class Issue
     Public Property Description As String
         Get
             CheckDeleted()
-            If Row(IssueDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
+            If Row(DALBase.COL_NAME_DESCRIPTION) Is DBNull.Value Then
                 Return Nothing
             Else
                 Dim desc As String = LookupListNew.GetDescriptionFromId(ISSUE_DESCRIPTION, LookupListNew.GetIdFromCode(ISSUE_DESCRIPTION, Code), ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-                If String.IsNullOrEmpty(desc) Then desc = CType(Row(IssueDAL.COL_NAME_DESCRIPTION), String)
+                If String.IsNullOrEmpty(desc) Then desc = CType(Row(DALBase.COL_NAME_DESCRIPTION), String)
                 Return desc
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(IssueDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(DALBase.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -353,12 +353,12 @@ Public Class Issue
         DropdownId = QuestionList.GetDropdownId(ICTYP)
         If Not DropdownId = Guid.Empty Then
             If MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows.Count > 0 Then
-                If Not MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Added) Is Nothing Then
+                If MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Added) IsNot Nothing Then
                     For Each TECrow As DataRow In MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Added).Rows
                         retVal = dropdownBO.AddDropdownItem(TECrow(_CODE).ToString, Codes.YESNO_Y, Codes.YESNO_Y, DropdownId, TECrow(_TEXT).ToString, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
                     Next
                 End If
-                If Not MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Modified) Is Nothing Then
+                If MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Modified) IsNot Nothing Then
                     For Each TECrow As DataRow In MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Modified).Rows
                         If Not GetDropdownCodeToUpdate(TECrow(ISSUE_COMMENT_ID)) = String.Empty Then
                             retVal = dropdownBO.UpdateDropdownItem(QuestionList.GetDropdownItemId(DropdownId,
@@ -367,7 +367,7 @@ Public Class Issue
                         End If
                     Next
                 End If
-                If Not MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Deleted) Is Nothing Then
+                If MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Deleted) IsNot Nothing Then
                     For Each TECrow As DataRow In MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Deleted).Rows
                         'If Not QuestionList.GetDropdownItemId(DropdownId, TECrow(_CODE).ToString) = Guid.Empty Then
                         '    retVal = dropdownBO.DeleteDropdownItem(QuestionList.GetDropdownItemId(DropdownId, TECrow(_CODE).ToString))
@@ -441,7 +441,7 @@ Public Class Issue
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.GetQuestionExpiration(IssueId, IssueQuestionId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(0).Rows.Count > 0 Then
                     Return ds.Tables(0).Rows(0)("EXPIRATION")
                 Else
@@ -462,7 +462,7 @@ Public Class Issue
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.GetRuleExpiration(IssueId, RuleId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(0).Rows.Count > 0 Then
                     Return ds.Tables(0).Rows(0)("EXPIRATION")
                 Else
@@ -484,7 +484,7 @@ Public Class Issue
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.GetSoftQuestionID(IssueId, IssueQuestionId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(0).Rows.Count > 0 Then
                     Return ds.Tables(0).Rows(0)(0)
                 Else
@@ -506,7 +506,7 @@ Public Class Issue
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.GetRuleID(IssueId, RuleIssueId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(0).Rows.Count > 0 Then
                     Return New Guid(CType(ds.Tables(0).Rows(0)(0), Byte()))
                 Else
@@ -523,7 +523,7 @@ Public Class Issue
 
 #Region "Constants"
         Public Const COL_NAME_ISSUE_ID As String = IssueDAL.COL_NAME_ISSUE_ID
-        Public Const COL_NAME_DESCRIPTION As String = IssueDAL.COL_NAME_DESCRIPTION
+        Public Const COL_NAME_DESCRIPTION As String = DALBase.COL_NAME_DESCRIPTION
         Public Const COL_NAME_ISSUE_TYPE As String = IssueDAL.COL_NAME_ISSUE_TYPE
         Public Const COL_NAME_CODE As String = IssueDAL.COL_NAME_CODE
         Public Const COL_NAME_EFFECTIVE As String = IssueDAL.COL_NAME_EFFECTIVE
@@ -806,8 +806,8 @@ Public Class Issue
                                    Where wq.Id = WorkqueueId
                                    Select wq.CompanyCode).First
 
-        If Not Comp_Code Is Nothing And Comp_Code <> "" Then
-            Return LookupListNew.GetIdFromCode(LookupListNew.LK_COMPANY, Comp_Code)
+        If Comp_Code IsNot Nothing And Comp_Code <> "" Then
+            Return LookupListNew.GetIdFromCode(LookupListCache.LK_COMPANY, Comp_Code)
         End If
     End Function
 
@@ -827,7 +827,7 @@ Public Class Issue
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Detail List")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
         'copy the childrens        
         Dim ChildIssueComment As IssueComment
         For Each ChildIssueComment In original.IssueNotesChildren
@@ -911,11 +911,11 @@ Public Class Issue
         oCompanyGroupIds = New ArrayList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-        If Not Code Is String.Empty And Not Effective Is Nothing Then
+        If Code IsNot String.Empty And Effective IsNot Nothing Then
             Dim dv As Issue.IssueSearchDV = New Issue.IssueSearchDV(EquipDal.LoadList(Code, String.Empty,
                    ActiveOn, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
-            If Not Code Is Nothing And Not Effective Is Nothing Then
+            If Code IsNot Nothing And Effective IsNot Nothing Then
                 For Each dr As DataRow In dv.Table.Rows
                     If ((dr(IssueDAL.COL_NAME_CODE).ToString.ToUpper = Code.ToUpper) And
                         (dr(IssueDAL.COL_NAME_EFFECTIVE) = Date.Parse(Effective).ToString("dd-MMM-yyyy")) And
@@ -934,12 +934,12 @@ Public Class Issue
         oCompanyGroupIds = New ArrayList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-        If Not Code Is String.Empty And Not Description Is String.Empty And Not Effective Is Nothing And Nothing And Not Expiration Is Nothing Then
+        If Code IsNot String.Empty And Description IsNot String.Empty And Effective IsNot Nothing And Nothing And Expiration IsNot Nothing Then
             Dim dv As Issue.IssueSearchDV = New Issue.IssueSearchDV(IssueDal.LoadList(Code, String.Empty,
                    ActiveOn, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
             For Each dr As DataRow In dv.Table.Rows
-                If ((Not dr(EquipmentDAL.COL_NAME_CODE) = Code) And
+                If ((Not dr(DALBase.COL_NAME_CODE) = Code) And
                     (Not dr(EquipmentDAL.COL_NAME_EFFECTIVE) >= Equals(Effective)) And
                     (Not dr(EquipmentDAL.COL_NAME_EXPIRATION) <= Equals(Expiration))) Then
                     Return True
@@ -955,11 +955,11 @@ Public Class Issue
         oCompanyGroupIds = New ArrayList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-        If Not vCode Is String.Empty And Not vEffective Is Nothing Then
+        If vCode IsNot String.Empty And vEffective IsNot Nothing Then
             Dim dv As Issue.IssueSearchDV = New Issue.IssueSearchDV(IssueDal.LoadList(vCode, String.Empty,
                    String.Empty, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
-            If Not vCode Is Nothing And Not vEffective Is Nothing Then
+            If vCode IsNot Nothing And vEffective IsNot Nothing Then
                 For Each dr As DataRow In dv.Table.Rows
                     If ((dr(IssueDAL.COL_NAME_CODE).ToString.ToUpper = vCode.ToUpper) And
                         (dr(IssueDAL.COL_NAME_EFFECTIVE) = vEffective) And
@@ -1006,7 +1006,7 @@ Public Class Issue
             oCompanyGroupIds = New ArrayList
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-            If Not code Is String.Empty Then
+            If code IsNot String.Empty Then
                 Dim ds As DataSet = dal.CheckOverlap(code, effective, _
                     expiration, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId, listId)
 
@@ -1033,7 +1033,7 @@ Public Class Issue
             oCompanyGroupIds = New ArrayList
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-            If Not code Is String.Empty Then
+            If code IsNot String.Empty Then
                 Dim ds As DataSet = dal.CheckDurationOverlap(code, effective, _
                     expiration, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId, listId)
 

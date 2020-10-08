@@ -63,7 +63,7 @@ Public Class AttributeValue
         Try
             Dim dal As New AttributeValueDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -241,7 +241,7 @@ Public Class AttributeValue
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Object.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
 #End Region
@@ -485,7 +485,7 @@ Public Class AttributeValueList(Of TParent As {IAttributable})
 
             Dim oAttributeValue As AttributeValue = Where(Function(av) av.AttributeId = oAttribute.Id).FirstOrDefault()
 
-            If (((value Is Nothing) OrElse (value.Trim.Length = 0)) AndAlso (Not oAttributeValue Is Nothing)) Then
+            If (((value Is Nothing) OrElse (value.Trim.Length = 0)) AndAlso (oAttributeValue IsNot Nothing)) Then
                 oAttributeValue.Delete()
                 oAttributeValue.Save()
             ElseIf (Not ((value Is Nothing) OrElse (value.Trim.Length = 0))) Then

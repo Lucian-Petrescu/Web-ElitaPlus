@@ -59,7 +59,7 @@ Public Class OcTemplateGroup
         Try
             Dim dal As New OcTemplateGroupDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -186,7 +186,7 @@ Public Class OcTemplateGroup
             If _isDSCreator AndAlso (IsDirty OrElse IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New OcTemplateGroupDAL
                 'dal.Update(Me.Row)
-                MyBase.UpdateFamily(Dataset)
+                UpdateFamily(Dataset)
                 dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
                 If Row.RowState <> DataRowState.Detached Then
@@ -271,7 +271,7 @@ Public Class OcTemplateGroup
         Try
             Dim dal As New OcTemplateGroupDAL
             Dim dataSet As DataSet = dal.GetAssociatedTemplateCount(templateGroupId)
-            If Not dataSet Is Nothing AndAlso dataSet.Tables.Count > 0 AndAlso dataSet.Tables(0).Rows.Count > 0 Then
+            If dataSet IsNot Nothing AndAlso dataSet.Tables.Count > 0 AndAlso dataSet.Tables(0).Rows.Count > 0 Then
                 If dataSet.Tables(0).Rows(0)(OcTemplateGroupDAL.COL_NAME_NUMBER_OF_TEMPLATES) Is DBNull.Value Then
                     Return 0
                 Else
@@ -352,7 +352,7 @@ Public Class OcTemplateGroup
         Next
 
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
 
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause

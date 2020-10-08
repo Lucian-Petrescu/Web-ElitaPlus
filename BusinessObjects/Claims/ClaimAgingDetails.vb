@@ -49,7 +49,7 @@
         Try
             Dim dal As New ClaimAgingDetailsDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -122,7 +122,7 @@
                     Return String.Empty
                 End If
 
-                Return DateHelper.GetDateValue(row(COL_AGING_START_DATETIME).ToString()).ToString("dd-MMM-yyyy hh:mm:ss tt", System.Threading.Thread.CurrentThread.CurrentCulture)
+                Return DateHelper.GetDateValue(row(COL_AGING_START_DATETIME).ToString()).ToString("dd-MMM-yyyy hh:mm:ss tt", Threading.Thread.CurrentThread.CurrentCulture)
             End Get
         End Property
 
@@ -131,7 +131,7 @@
                 If (row(COL_AGING_END_DATETIME) Is DBNull.Value) Then
                     Return String.Empty
                 End If
-                Return DateHelper.GetDateValue(row(COL_AGING_END_DATETIME).ToString()).ToString("dd-MMM-yyyy hh:mm:ss tt", System.Threading.Thread.CurrentThread.CurrentCulture)
+                Return DateHelper.GetDateValue(row(COL_AGING_END_DATETIME).ToString()).ToString("dd-MMM-yyyy hh:mm:ss tt", Threading.Thread.CurrentThread.CurrentCulture)
             End Get
         End Property
 

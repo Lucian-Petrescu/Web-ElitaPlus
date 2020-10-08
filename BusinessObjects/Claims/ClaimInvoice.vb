@@ -143,7 +143,7 @@ Public Class ClaimInvoice
         Try
             Dim dal As New ClaimInvoiceDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -225,7 +225,7 @@ Public Class ClaimInvoice
 
     Public Sub CreateDisbursement()
         Dim oRegion As Region
-        If ClaimAuthorizationId = Guid.Empty And Dataset.Tables(ClaimInvoiceDAL.TABLE_NAME).Rows.Count > 1 Then
+        If ClaimAuthorizationId = Guid.Empty AndAlso Dataset.Tables(ClaimInvoiceDAL.TABLE_NAME).Rows.Count > 1 Then
             Dim row As DataRow
             For Each row In Dataset.Tables(ClaimInvoiceDAL.TABLE_NAME).Rows
                 Dim ci As New ClaimInvoice(row)
@@ -264,7 +264,7 @@ Public Class ClaimInvoice
 
         ClaimTax.ClaimInvoiceId = Id
         ClaimTax.DisbursementId = DisbursementId
-        ClaimTax.TaxTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_TYPES, "4")
+        ClaimTax.TaxTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_TAX_TYPES, "4")
         ClaimTax.Tax1Amount = PerceptionIVA
         ClaimTax.Tax1Description = "Peception_IVA"
         ClaimTax.Tax2Amount = PerceptionIIBB
@@ -281,7 +281,7 @@ Public Class ClaimInvoice
                                       strTax6Desc As String, dTax6Amt As DecimalType)
         ClaimTaxManual.ClaimInvoiceId = Id
         ClaimTaxManual.DisbursementId = DisbursementId
-        ClaimTaxManual.TaxTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_TYPES, "7")
+        ClaimTaxManual.TaxTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_TAX_TYPES, "7")
         If strTax1Desc <> String.Empty OrElse dTax1Amt.Value > 0 Then
             ClaimTaxManual.Tax1Description = strTax1Desc
             ClaimTaxManual.Tax1Amount = dTax1Amt
@@ -335,11 +335,11 @@ Public Class ClaimInvoice
                 ci.Invoiceable.RepairCodeId = ci.RepairCodeId
                 ci.Invoiceable.PickUpDate = ci.PickUpDate
                 'ci.CurrentClaim.SalvageAmount = ci.SalvageAmt
-                If Not ci.InvoiceDate Is Nothing Then
+                If ci.InvoiceDate IsNot Nothing Then
                     ci.Invoiceable.InvoiceDate = ci.InvoiceDate
                 End If
                 ci.CloseClaim = True
-                ci.Invoiceable.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_PAID)
+                ci.Invoiceable.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListCache.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_PAID)
                 ci.Invoiceable.IsComingFromPayClaim = True
                 ci.Invoiceable.CloseTheClaim()
 
@@ -379,20 +379,20 @@ Public Class ClaimInvoice
             'Logic to Decide whether to Close the Claim along with the current Payment
             If ClaimAuthorizationId = Guid.Empty Then 'Single Auth Claims
                 If Invoiceable.ClaimActivityCode = Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT And RemainingAmount.Value = 0 Then  'And Me.CloseClaim Then
-                    Invoiceable.ClaimActivityId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__REPLACED)
-                    Invoiceable.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_REPAIRED)
+                    Invoiceable.ClaimActivityId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__REPLACED)
+                    Invoiceable.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListCache.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_REPAIRED)
                     Invoiceable.CloseTheClaim()
                 ElseIf CloseClaim Or (Invoiceable.ClaimActivityCode <> Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT And RemainingAmount.Value = 0) Then
-                    Invoiceable.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_PAID)
+                    Invoiceable.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListCache.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_PAID)
                     Invoiceable.CloseTheClaim()
                 End If
             Else 'Multi Auth Claims
                 If CloseClaim And Invoiceable.ClaimActivityCode = Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT And RemainingAmount.Value = 0 Then
-                    Invoiceable.ClaimActivityId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__REPLACED)
-                    Invoiceable.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_REPAIRED)
+                    Invoiceable.ClaimActivityId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__REPLACED)
+                    Invoiceable.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListCache.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_REPAIRED)
                     Invoiceable.CloseTheClaim()
                 ElseIf CloseClaim And (Invoiceable.ClaimActivityCode <> Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT And RemainingAmount.Value = 0) Then
-                    Invoiceable.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_PAID)
+                    Invoiceable.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListCache.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_PAID)
                     Invoiceable.CloseTheClaim()
                 End If
             End If
@@ -403,7 +403,7 @@ Public Class ClaimInvoice
 
             'disable the loss date check for cancelled certification when paying claim
             Invoiceable.IsRequiredCheckLossDateForCancelledCert = False
-            If Invoiceable.StatusCode = Codes.CLAIM_STATUS__CLOSED And Not InvoiceDate Is Nothing Then
+            If Invoiceable.StatusCode = Codes.CLAIM_STATUS__CLOSED And InvoiceDate IsNot Nothing Then
                 Invoiceable.InvoiceDate = InvoiceDate
                 CurrentDisbursement.InvoiceDate = InvoiceDate
             End If
@@ -442,12 +442,12 @@ Public Class ClaimInvoice
     Private Sub HandelExtendedStatusForGVS(blnForPayClaim As Boolean, blnForAdjustment As Boolean, blnForReversal As Boolean)
         'Add an INVOICE_PAID extended claim status when open paying a claim with GVS integrated
         ' Create transaction log header if the service center is integrated with GVS
-        If Not Invoiceable.ServiceCenterObject Is Nothing AndAlso Invoiceable.ServiceCenterObject.IntegratedWithGVS AndAlso Not Invoiceable.ServiceCenterObject.IntegratedAsOf Is Nothing AndAlso Invoiceable.CreatedDateTime.Value >= Invoiceable.ServiceCenterObject.IntegratedAsOf.Value Then
+        If Invoiceable.ServiceCenterObject IsNot Nothing AndAlso Invoiceable.ServiceCenterObject.IntegratedWithGVS AndAlso Invoiceable.ServiceCenterObject.IntegratedAsOf IsNot Nothing AndAlso Invoiceable.CreatedDateTime.Value >= Invoiceable.ServiceCenterObject.IntegratedAsOf.Value Then
             Dim newClaimStatusByGroupId As Guid = Guid.Empty
             If blnForPayClaim Then
-                newClaimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(DALObjects.ClaimStatusDAL.INVOICE_PAID_EXTENDED_CLAIM_STATUS)
+                newClaimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(ClaimStatusDAL.INVOICE_PAID_EXTENDED_CLAIM_STATUS)
             ElseIf blnForReversal Then
-                newClaimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(DALObjects.ClaimStatusDAL.WAITING_DOCUMENTATION)
+                newClaimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(ClaimStatusDAL.WAITING_DOCUMENTATION)
             ElseIf blnForAdjustment Then
                 'no action
             End If
@@ -543,7 +543,7 @@ Public Class ClaimInvoice
         End If
 
 
-        If contractBo.ReplacementPolicyId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_REPLACEMENT_POLICIES, Codes.REPLACEMENT_POLICY__CNCL)) Then
+        If contractBo.ReplacementPolicyId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_REPLACEMENT_POLICIES, Codes.REPLACEMENT_POLICY__CNCL)) Then
             'Cancel Certificate'
             'Changes for REQ-1333, cancel cert after X number of replacement claims when cancel after paid
 
@@ -577,7 +577,7 @@ Public Class ClaimInvoice
                     Next
                 End If
             End If
-        ElseIf contractBo.ReplacementPolicyId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_REPLACEMENT_POLICIES, Codes.REPLACEMENT_POLICY__CLAST)) Then
+        ElseIf contractBo.ReplacementPolicyId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_REPLACEMENT_POLICIES, Codes.REPLACEMENT_POLICY__CLAST)) Then
             'Cancel Certificate in last 12 months'
             Dim certItemCoverageBO As CertItemCoverage = New CertItemCoverage(Invoiceable.CertItemCoverageId)
             If Invoiceable.CreatedDate.Value >= certItemCoverageBO.EndDate.Value.AddYears(-1).AddDays(1) Then
@@ -585,8 +585,8 @@ Public Class ClaimInvoice
             Else
                 Return False
             End If
-        ElseIf contractBo.ReplacementPolicyId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_REPLACEMENT_POLICIES, Codes.REPLACEMENT_POLICY__KEEP)) _
-            OrElse contractBo.ReplacementPolicyId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_REPLACEMENT_POLICIES, Codes.REPLACEMENT_POLICY__CNCLAF)) Then
+        ElseIf contractBo.ReplacementPolicyId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_REPLACEMENT_POLICIES, Codes.REPLACEMENT_POLICY__KEEP)) _
+            OrElse contractBo.ReplacementPolicyId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_REPLACEMENT_POLICIES, Codes.REPLACEMENT_POLICY__CNCLAF)) Then
             'Keep Certificate or cancel cert after fulfillment'
             Return False
         Else
@@ -619,7 +619,7 @@ Public Class ClaimInvoice
 
         objclaimAuth = DirectCast(New ClaimAuthorization(ClaimAuthorizationId, Dataset), ClaimAuthorization)
 
-        If objclaimAuth.ContainsDeductible And objclaimAuth.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.AUTH_LESS_DEDUCT_Y) Then
+        If objclaimAuth.ContainsDeductible AndAlso objclaimAuth.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_PAY_DEDUCTIBLE, Codes.AUTH_LESS_DEDUCT_Y) Then
 
             'The Payment Amount and the IVA Tax Calculation should not contain PayDeductible Amount
             Amount = ReconciledAmount.Value - objclaimAuth.PayDeductibleAmount
@@ -664,13 +664,13 @@ Public Class ClaimInvoice
         Dim invMethodDesc As String = LookupListNew.GetDescriptionFromId(invMethodDV, Company.InvoiceMethodId)
 
         Dim methodOfRepair As String
-        If Invoiceable.MethodOfRepairCode = Codes.METHOD_OF_REPAIR_REPLACEMENT Or Invoiceable.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT Then
+        If Invoiceable.MethodOfRepairCode = Codes.METHOD_OF_REPAIR_REPLACEMENT OrElse Invoiceable.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT Then
             methodOfRepair = "RPL"
         Else
             methodOfRepair = "RPR"
         End If
 
-        If invMethodDesc = INVOICE_METHOD_DETAIL Or Company.AuthDetailRqrdId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_AUTH_DTL, "ADR")) Then  ' detail entry
+        If invMethodDesc = INVOICE_METHOD_DETAIL OrElse Company.AuthDetailRqrdId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_AUTH_DTL, "ADR")) Then  ' detail entry
             Dim subTotalAmt As Decimal = getDecimalValue(LaborAmt) +
                             getDecimalValue(LaborTax) +
                             getDecimalValue(PartAmount) +
@@ -703,7 +703,7 @@ Public Class ClaimInvoice
             End If
 
             Amount = New DecimalType(subTotalAmt + taxAmt)
-            If Company.AuthDetailRqrdId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_AUTH_DTL, "ADR")) Then
+            If Company.AuthDetailRqrdId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_AUTH_DTL, "ADR")) Then
                 Dim dblDeductible As Decimal
                 Try
                     dblDeductible = Invoiceable.Deductible.Value
@@ -790,41 +790,41 @@ Public Class ClaimInvoice
         Else
             RegionId = PayeeAddress.RegionId
         End If
-        If Not ClaimTaxRatesData(RegionId, MethodOfRepair) Is Nothing Then
+        If ClaimTaxRatesData(RegionId, MethodOfRepair) IsNot Nothing Then
 
             With ClaimTaxRatesData(RegionId, MethodOfRepair)
 
-                If invMethodDesc = INVOICE_METHOD_DETAIL Or Company.AuthDetailRqrdId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_AUTH_DTL, "ADR")) Then ' detail entry
+                If invMethodDesc = INVOICE_METHOD_DETAIL Or Company.AuthDetailRqrdId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_AUTH_DTL, "ADR")) Then ' detail entry
                     'apply each line detail tax rate as they have been assigned the default/super default value if none was found for the given line (this was done in Oracle pkg)
-                    If Not LaborAmt Is Nothing AndAlso LaborAmt.Value > 0 AndAlso .taxRateClaimLabor > 0 Then
+                    If LaborAmt IsNot Nothing AndAlso LaborAmt.Value > 0 AndAlso .taxRateClaimLabor > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(LaborAmt), .taxRateClaimLabor, .computeMethodCodeClaimLabor)
                         If .applyWithholdingFlagClaimLabor.Equals("Y") Then WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(LaborAmt), ServiceCenterWithholdingRate, "N")
                     End If
-                    If Not PartAmount Is Nothing AndAlso PartAmount.Value > 0 AndAlso .taxRateClaimParts > 0 Then
+                    If PartAmount IsNot Nothing AndAlso PartAmount.Value > 0 AndAlso .taxRateClaimParts > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(PartAmount), .taxRateClaimParts, .computeMethodCodeClaimParts)
                         If .applyWithholdingFlagClaimParts.Equals("Y") Then WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(PartAmount), ServiceCenterWithholdingRate, "N")
                     End If
-                    If Not ServiceCharge Is Nothing AndAlso ServiceCharge.Value > 0 AndAlso .taxRateClaimService > 0 Then
+                    If ServiceCharge IsNot Nothing AndAlso ServiceCharge.Value > 0 AndAlso .taxRateClaimService > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(ServiceCharge), .taxRateClaimService, .computeMethodCodeClaimService)
                         If .applyWithholdingFlagClaimService.Equals("Y") Then WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(ServiceCharge), ServiceCenterWithholdingRate, "N")
                     End If
-                    If Not TripAmount Is Nothing AndAlso TripAmount.Value > 0 AndAlso .taxRateClaimTrip > 0 Then
+                    If TripAmount IsNot Nothing AndAlso TripAmount.Value > 0 AndAlso .taxRateClaimTrip > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(TripAmount), .taxRateClaimTrip, .computeMethodCodeClaimTrip)
                         If .applyWithholdingFlagClaimTrip.Equals("Y") Then WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(TripAmount), ServiceCenterWithholdingRate, "N")
                     End If
-                    If Not ShippingAmount Is Nothing AndAlso ShippingAmount.Value > 0 AndAlso .taxRateClaimShipping > 0 Then
+                    If ShippingAmount IsNot Nothing AndAlso ShippingAmount.Value > 0 AndAlso .taxRateClaimShipping > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(ShippingAmount), .taxRateClaimShipping, .computeMethodCodeClaimShipping)
                         If .applyWithholdingFlagClaimShipping.Equals("Y") Then WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(ShippingAmount), ServiceCenterWithholdingRate, "N")
                     End If
-                    If Not DispositionAmount Is Nothing AndAlso DispositionAmount.Value > 0 AndAlso .taxRateClaimDisposition > 0 Then
+                    If DispositionAmount IsNot Nothing AndAlso DispositionAmount.Value > 0 AndAlso .taxRateClaimDisposition > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(DispositionAmount), .taxRateClaimDisposition, .computeMethodCodeClaimDisposition)
                         If .applyWithholdingFlagClaimDisposition.Equals("Y") Then WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(DispositionAmount), ServiceCenterWithholdingRate, "N")
                     End If
-                    If Not DiagnosticsAmount Is Nothing AndAlso DiagnosticsAmount.Value > 0 AndAlso .taxRateClaimDiagnostics > 0 Then
+                    If DiagnosticsAmount IsNot Nothing AndAlso DiagnosticsAmount.Value > 0 AndAlso .taxRateClaimDiagnostics > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(DiagnosticsAmount), .taxRateClaimDiagnostics, .computeMethodCodeClaimDiagnostics)
                         If .applyWithholdingFlagClaimDiagnostics.Equals("Y") Then WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(DiagnosticsAmount), ServiceCenterWithholdingRate, "N")
                     End If
-                    If Not OtherAmount Is Nothing AndAlso OtherAmount.Value > 0 AndAlso .taxRateClaimOther > 0 Then
+                    If OtherAmount IsNot Nothing AndAlso OtherAmount.Value > 0 AndAlso .taxRateClaimOther > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(OtherAmount), .taxRateClaimOther, .computeMethodCodeClaimOther)
                         If .applyWithholdingFlagClaimOther.Equals("Y") Then WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(OtherAmount), ServiceCenterWithholdingRate, "N")
                     End If
@@ -924,7 +924,7 @@ Public Class ClaimInvoice
         RepairEstimate = invoiceable.RepairEstimate
 
         If ClaimAuthorizationId = Guid.Empty Then
-            If Not invoiceable.PickUpDate Is Nothing AndAlso Not invoiceable.RepairDate Is Nothing Then
+            If invoiceable.PickUpDate IsNot Nothing AndAlso invoiceable.RepairDate IsNot Nothing Then
                 'if backend claim
                 SvcControlNumber = invoiceable.AuthorizationNumber
             End If
@@ -949,7 +949,7 @@ Public Class ClaimInvoice
 
     Public Sub PrepopulateDisbursment()
 
-        CurrentDisbursement.PayeeOptionId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYEE, PAYEE_OPTION_SERVICE_CENTER)
+        CurrentDisbursement.PayeeOptionId = LookupListNew.GetIdFromCode(LookupListCache.LK_PAYEE, PAYEE_OPTION_SERVICE_CENTER)
 
         CurrentDisbursement.ClaimAuthorizationId = ClaimAuthorizationId
 
@@ -959,12 +959,12 @@ Public Class ClaimInvoice
 
         Dim svcCenterBO As ServiceCenter = New ServiceCenter(Invoiceable.ServiceCenterId)
         If Not ClaimAuthorizationId = Guid.Empty Then
-            PayeeOptionCode = ClaimInvoice.PAYEE_OPTION_SERVICE_CENTER
+            PayeeOptionCode = PAYEE_OPTION_SERVICE_CENTER
             If Not svcCenterBO.BankInfoId.Equals(Guid.Empty) Then
                 PayeeBankInfo = New BankInfo(svcCenterBO.BankInfoId, Dataset)
             End If
             If Not svcCenterBO.PaymentMethodId.Equals(Guid.Empty) Then
-                PaymentMethodCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, svcCenterBO.PaymentMethodId)
+                PaymentMethodCode = LookupListNew.GetCodeFromId(LookupListCache.LK_PAYMENTMETHOD, svcCenterBO.PaymentMethodId)
             End If
         End If
 
@@ -973,21 +973,21 @@ Public Class ClaimInvoice
             PayeeAddress = New Address(masterCenterBO.AddressId)
             CurrentDisbursement.Payee = masterCenterBO.Description
             If Not ClaimAuthorizationId = Guid.Empty Then
-                PayeeOptionCode = ClaimInvoice.PAYEE_OPTION_MASTER_CENTER
+                PayeeOptionCode = PAYEE_OPTION_MASTER_CENTER
                 If Not masterCenterBO.BankInfoId.Equals(Guid.Empty) Then
                     PayeeBankInfo = New BankInfo(masterCenterBO.BankInfoId, Dataset)
                 End If
                 If Not masterCenterBO.PaymentMethodId.Equals(Guid.Empty) Then
-                    PaymentMethodCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, masterCenterBO.PaymentMethodId)
+                    PaymentMethodCode = LookupListNew.GetCodeFromId(LookupListCache.LK_PAYMENTMETHOD, masterCenterBO.PaymentMethodId)
                 End If
             End If
         ElseIf Not Invoiceable.LoanerCenterId.Equals(Guid.Empty) Then
-            CurrentDisbursement.PayeeOptionId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYEE, PAYEE_OPTION_LOANER_CENTER)
+            CurrentDisbursement.PayeeOptionId = LookupListNew.GetIdFromCode(LookupListCache.LK_PAYEE, PAYEE_OPTION_LOANER_CENTER)
             Dim loanerCenterBO As ServiceCenter = New ServiceCenter(Invoiceable.LoanerCenterId)
             PayeeAddress = New Address(loanerCenterBO.AddressId)
             CurrentDisbursement.Payee = loanerCenterBO.Description
             If Not ClaimAuthorizationId = Guid.Empty Then
-                PayeeOptionCode = ClaimInvoice.PAYEE_OPTION_LOANER_CENTER
+                PayeeOptionCode = PAYEE_OPTION_LOANER_CENTER
             End If
         End If
     End Sub
@@ -1038,8 +1038,8 @@ Public Class ClaimInvoice
         TripAmount = New DecimalType((TripAmount).Value * REVERSE_MULTIPLIER)
         OtherAmount = New DecimalType((OtherAmount).Value * REVERSE_MULTIPLIER)
         IvaAmount = New DecimalType((IvaAmount).Value * REVERSE_MULTIPLIER)
-        If Not DispositionAmount Is Nothing AndAlso DispositionAmount.Value > 0 Then DispositionAmount = New DecimalType((DispositionAmount).Value * REVERSE_MULTIPLIER)
-        If Not DiagnosticsAmount Is Nothing AndAlso DiagnosticsAmount.Value > 0 Then DiagnosticsAmount = New DecimalType((DiagnosticsAmount).Value * REVERSE_MULTIPLIER)
+        If DispositionAmount IsNot Nothing AndAlso DispositionAmount.Value > 0 Then DispositionAmount = New DecimalType((DispositionAmount).Value * REVERSE_MULTIPLIER)
+        If DiagnosticsAmount IsNot Nothing AndAlso DiagnosticsAmount.Value > 0 Then DiagnosticsAmount = New DecimalType((DiagnosticsAmount).Value * REVERSE_MULTIPLIER)
         Amount = New DecimalType((Amount).Value * REVERSE_MULTIPLIER)
 
     End Sub
@@ -1056,8 +1056,8 @@ Public Class ClaimInvoice
             TripAmount = New DecimalType((TripAmount).Value * adjustmentPercentage)
             ShippingAmount = New DecimalType((ShippingAmount).Value * adjustmentPercentage)
             OtherAmount = New DecimalType((OtherAmount).Value * adjustmentPercentage)
-            If Not DispositionAmount Is Nothing AndAlso DispositionAmount.Value > 0 Then DispositionAmount = New DecimalType((DispositionAmount).Value * adjustmentPercentage)
-            If Not DiagnosticsAmount Is Nothing AndAlso DiagnosticsAmount.Value > 0 Then DiagnosticsAmount = New DecimalType((DiagnosticsAmount).Value * adjustmentPercentage)
+            If DispositionAmount IsNot Nothing AndAlso DispositionAmount.Value > 0 Then DispositionAmount = New DecimalType((DispositionAmount).Value * adjustmentPercentage)
+            If DiagnosticsAmount IsNot Nothing AndAlso DiagnosticsAmount.Value > 0 Then DiagnosticsAmount = New DecimalType((DiagnosticsAmount).Value * adjustmentPercentage)
             IvaAmount = New DecimalType((IvaAmount).Value * adjustmentPercentage)
             Amount = New DecimalType((Amount).Value * adjustmentPercentage)
         Catch ex As Exception
@@ -1077,21 +1077,21 @@ Public Class ClaimInvoice
                                             objClaimInvoice As ClaimInvoice, objDisbursement As Disbursement,
                                             objCertificate As Certificate, txtDocumentType As String, txtIdentificationNumber As String)
         Select Case PayeeOptionCode
-            Case ClaimInvoice.PAYEE_OPTION_MASTER_CENTER, ClaimInvoice.PAYEE_OPTION_SERVICE_CENTER, ClaimInvoice.PAYEE_OPTION_LOANER_CENTER
+            Case PAYEE_OPTION_MASTER_CENTER, PAYEE_OPTION_SERVICE_CENTER, PAYEE_OPTION_LOANER_CENTER
                 If objClaimInvoice.IsInsuranceCompany Then
                     objDisbursement.DocumentType = Codes.DOCUMENT_TYPE__CNPJ
                     objClaimInvoice.DocumentType = Codes.DOCUMENT_TYPE__CNPJ
                     objDisbursement.IdentificationNumber = objServiceCenter.TaxId
                     objClaimInvoice.TaxId = objServiceCenter.TaxId
                 End If
-            Case ClaimInvoice.PAYEE_OPTION_CUSTOMER
+            Case PAYEE_OPTION_CUSTOMER
                 If objClaimInvoice.IsInsuranceCompany Then
-                    objDisbursement.DocumentType = LookupListNew.GetCodeFromId(LookupListNew.LK_DOCUMENT_TYPES, objCertificate.DocumentTypeID)
+                    objDisbursement.DocumentType = LookupListNew.GetCodeFromId(LookupListCache.LK_DOCUMENT_TYPES, objCertificate.DocumentTypeID)
                     objDisbursement.IdentificationNumber = objCertificate.IdentificationNumber
                     objClaimInvoice.DocumentType = objDisbursement.DocumentType
                     objClaimInvoice.TaxId = objDisbursement.IdentificationNumber
                 End If
-            Case ClaimInvoice.PAYEE_OPTION_OTHER
+            Case PAYEE_OPTION_OTHER
                 If objClaimInvoice.IsInsuranceCompany Then
                     objDisbursement.DocumentType = txtDocumentType
                     objDisbursement.IdentificationNumber = txtIdentificationNumber
@@ -1916,7 +1916,7 @@ Public Class ClaimInvoice
 
     Public Property ServiceCenterWithholdingRate As DecimalType
         Get
-            If Not _service_center_withhodling_rate Is Nothing Then
+            If _service_center_withhodling_rate IsNot Nothing Then
                 If _service_center_withhodling_rate.Value > 0 Then
                     Return _service_center_withhodling_rate * (-1D)
                 Else
@@ -1946,7 +1946,7 @@ Public Class ClaimInvoice
     End Property
 
     Public Function Add_Address(Optional ByVal addressId As Object = Nothing) As Address
-        If Not addressId Is Nothing Then
+        If addressId IsNot Nothing Then
             Return New Address(CType(addressId, Guid), Dataset, Nothing, True)
         Else
             Return New Address(Dataset, Nothing)
@@ -1955,7 +1955,7 @@ Public Class ClaimInvoice
 
     Public Function Add_BankInfo(Optional ByVal objBankInfoId As Object = Nothing) As BankInfo
         Dim BankInfoId As Guid = Guid.Empty
-        If Not objBankInfoId Is Nothing Then BankInfoId = CType(objBankInfoId, Guid)
+        If objBankInfoId IsNot Nothing Then BankInfoId = CType(objBankInfoId, Guid)
 
         If Not BankInfoId.Equals(Guid.Empty) Then
             Return New BankInfo(BankInfoId, Dataset)
@@ -2022,8 +2022,8 @@ Public Class ClaimInvoice
             Dim objclaimAuth As ClaimAuthorization
             'For MultiAuth Claims, if the Authorization contains deductible then Invoiceable.Deductible.Value would contain the deductible value at claim level 
             Dim deductiblePaidByAssurant As Decimal = 0D
-            If (Invoiceable.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.AUTH_LESS_DEDUCT_Y)) Or
-                   (Invoiceable.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
+            If (Invoiceable.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_PAY_DEDUCTIBLE, Codes.AUTH_LESS_DEDUCT_Y)) Or
+                   (Invoiceable.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
                 If ClaimAuthorizationId.Equals(Guid.Empty) Then
                     If Invoiceable.ConsumerPays.Value > Invoiceable.Deductible.Value Then
                         'Check Contains Deductible
@@ -2227,10 +2227,10 @@ Public Class ClaimInvoice
         Get
             Dim PayeeOptionCode As String
 
-            If Not Me.PayeeOptionCode Is Nothing AndAlso Me.PayeeOptionCode <> "" Then
+            If Me.PayeeOptionCode IsNot Nothing AndAlso Me.PayeeOptionCode <> "" Then
                 PayeeOptionCode = Me.PayeeOptionCode
             Else
-                PayeeOptionCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, CurrentDisbursement.PayeeOptionId)
+                PayeeOptionCode = LookupListNew.GetCodeFromId(LookupListCache.LK_PAYEE, CurrentDisbursement.PayeeOptionId)
             End If
 
             If PayeeOptionCode = PAYEE_OPTION_SERVICE_CENTER Or PayeeOptionCode = PAYEE_OPTION_MASTER_CENTER Or PayeeOptionCode = PAYEE_OPTION_LOANER_CENTER Then
@@ -2285,8 +2285,8 @@ Public Class ClaimInvoice
 
         If (taxOnDeductible) Then
             Dim oDealer As New Dealer(oCert.DealerId)
-            If (oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)) Or
-                (oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
+            If (oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)) Or
+                (oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
                 Return retval
             End If
         End If
@@ -2322,7 +2322,7 @@ Public Class ClaimInvoice
                     End If
                     If (taxOnDeductible) Then
                         ' taxtype code - 9 = Deductible...
-                        .taxtypeID = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_TYPES, "9")
+                        .taxtypeID = LookupListNew.GetIdFromCode(LookupListCache.LK_TAX_TYPES, "9")
                     Else
                         ' taxtype code - 7 = Repairs...
                         If Invoiceable.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT Then
@@ -2332,12 +2332,12 @@ Public Class ClaimInvoice
                             Dim ProductPrice As Decimal = certBO.SalesPrice.Value
                             dal.GetReplacementTaxType(Invoiceable.ServiceCenterId, Invoiceable.RiskTypeId, .salesDate, ProductPrice, ReplacementTaxId)
                             If ReplacementTaxId = Guid.Empty Then
-                                .taxtypeID = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_TYPES, "7")
+                                .taxtypeID = LookupListNew.GetIdFromCode(LookupListCache.LK_TAX_TYPES, "7")
                             Else
                                 .taxtypeID = ReplacementTaxId
                             End If
                         Else
-                            .taxtypeID = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_TYPES, "7")
+                            .taxtypeID = LookupListNew.GetIdFromCode(LookupListCache.LK_TAX_TYPES, "7")
                         End If
                     End If
                 End With
@@ -2446,7 +2446,7 @@ Public Class ClaimInvoice
                         .salesDate = Invoiceable.InvoiceProcessDate.Value
                     End If
                     ' taxtype code - 4 = Manual...
-                    .taxtypeID = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_TYPES, "4")
+                    .taxtypeID = LookupListNew.GetIdFromCode(LookupListCache.LK_TAX_TYPES, "4")
                 End With
 
                 Dim dal As ClaimInvoiceDAL = New ClaimInvoiceDAL
@@ -2513,7 +2513,7 @@ Public Class ClaimInvoice
     Public ReadOnly Property IsInsuranceCompany As Boolean
         Get
             Dim objCompany As New Company(Invoiceable.CompanyId)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_COMPANY_TYPE, objCompany.CompanyTypeId) = objCompany.COMPANY_TYPE_INSURANCE Then
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_COMPANY_TYPE, objCompany.CompanyTypeId) = objCompany.COMPANY_TYPE_INSURANCE Then
                 Return True
             Else
                 Return False
@@ -2578,11 +2578,11 @@ Public Class ClaimInvoice
         Try
             If ClaimAuthorizationId = Guid.Empty Then
                 objDataBaseClaim = ClaimFacade.Instance.GetClaim(Of Claim)(Invoiceable.Claim_Id)
-                If Not objDataBaseClaim.ModifiedDate Is Nothing Then Invoiceable.VerifyConcurrency(objDataBaseClaim.ModifiedDate.ToString)
+                If objDataBaseClaim.ModifiedDate IsNot Nothing Then Invoiceable.VerifyConcurrency(objDataBaseClaim.ModifiedDate.ToString)
                 'If Not objDataBaseClaim.ModifiedDate Is Nothing Then objDataBaseClaim.VerifyConcurrency(objDataBaseClaim.ModifiedDate.ToString)
             Else
                 objclaimAuth = DirectCast(New ClaimAuthorization(ClaimAuthorizationId, Dataset), ClaimAuthorization)
-                If Not objclaimAuth.Claim.ModifiedDate Is Nothing Then Invoiceable.VerifyConcurrency(objclaimAuth.Claim.ModifiedDate.ToString)
+                If objclaimAuth.Claim.ModifiedDate IsNot Nothing Then Invoiceable.VerifyConcurrency(objclaimAuth.Claim.ModifiedDate.ToString)
                 'If Not objclaimAuth.Claim.ModifiedDate Is Nothing Then objclaimAuth.Claim.VerifyConcurrency(objclaimAuth.Claim.ModifiedDate.ToString)
             End If
 
@@ -2629,7 +2629,7 @@ Public Class ClaimInvoice
 
                 Dim dal As New ClaimInvoiceDAL
 
-                MyBase.UpdateFamily(Dataset)
+                UpdateFamily(Dataset)
                 dal.UpdateFamily(Dataset, _cancelCertificateData, IsPaymentAdjustment Or IsPaymentReversal, Transaction)
                 'Reload the Data from the DB
                 If Row.RowState <> DataRowState.Detached AndAlso Transaction Is Nothing Then
@@ -2667,7 +2667,7 @@ Public Class ClaimInvoice
                            createdDate As String, invoiceAmount As String, Optional ByVal sortBy As String = ClaimInvoiceSearchDV.COL_INVOICE_NUMBER) As ClaimInvoiceSearchDV
 
         Try
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(ClaimInvoice), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(ClaimInvoice), Nothing, "Search", Nothing)}
             'Check if the user has entered any search criteria... if NOT, then display an error
             If (ClaimNumber.Equals(String.Empty) AndAlso payee.Equals(String.Empty) AndAlso _
                 createdDate.Equals(String.Empty) AndAlso invoiceNumber.Equals(String.Empty) AndAlso _
@@ -2694,7 +2694,7 @@ Public Class ClaimInvoice
     Public Shared Function getPaymentsList(oCompanyId As Guid, claimNumber As String) As ClaimInvoicesDV
 
         Try
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(ClaimInvoice), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(ClaimInvoice), Nothing, "Search", Nothing)}
             'Check if the user has entered any search criteria... if NOT, then display an error
             If (claimNumber.Equals(String.Empty)) Then
                 Throw New BOValidationException(errors, GetType(Claim).FullName)
@@ -2794,7 +2794,7 @@ Public Class ClaimInvoice
             Dim obj As ClaimInvoice = CType(objectToValidate, ClaimInvoice)
             If (Not obj.IsPaymentAdjustment) And (Not obj.IsPaymentReversal) Then
                 If obj.Invoiceable.AssurantPays.Value > 0 Then
-                    If ((Not obj.RemainingAmount Is Nothing) AndAlso obj.RemainingAmount.Value < 0) Or ((Not obj.Amount Is Nothing) AndAlso obj.Amount.Value <= 0) Then
+                    If ((obj.RemainingAmount IsNot Nothing) AndAlso obj.RemainingAmount.Value < 0) Or ((obj.Amount IsNot Nothing) AndAlso obj.Amount.Value <= 0) Then
                         Return False
                     End If
                 ElseIf obj.Invoiceable.AssurantPays.Value < 0 Then
@@ -2803,13 +2803,13 @@ Public Class ClaimInvoice
                     Else
                         obj.CalculateAmounts()
                     End If
-                    If ((Not obj.RemainingAmount Is Nothing) AndAlso obj.RemainingAmount.Value > 0) Or ((Not obj.Amount Is Nothing) AndAlso obj.Amount.Value >= 0) Then
+                    If ((obj.RemainingAmount IsNot Nothing) AndAlso obj.RemainingAmount.Value > 0) Or ((obj.Amount IsNot Nothing) AndAlso obj.Amount.Value >= 0) Then
                         Return False
                     End If
                 End If
 
             Else
-                If ((Not obj.Amount Is Nothing) AndAlso obj.Amount.Value = 0) Then
+                If ((obj.Amount IsNot Nothing) AndAlso obj.Amount.Value = 0) Then
                     Return False
                 End If
             End If
@@ -2829,7 +2829,7 @@ Public Class ClaimInvoice
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimInvoice = CType(objectToValidate, ClaimInvoice)
 
-            If ((Not obj.Amount Is Nothing) AndAlso obj.Amount.Value = 0) Then
+            If ((obj.Amount IsNot Nothing) AndAlso obj.Amount.Value = 0) Then
                 Return True
             End If
 
@@ -2863,7 +2863,7 @@ Public Class ClaimInvoice
                     Return False
                 End If
             End If
-            If Not claimBO.Source Is Nothing Then
+            If claimBO.Source IsNot Nothing Then
                 If ((obj.RepairDate.Value >= claimBO.LossDate.Value) AndAlso
                     (obj.RepairDate.Value <= System.DateTime.Now)) Then
                     Return True
@@ -2892,7 +2892,7 @@ Public Class ClaimInvoice
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimInvoice = CType(objectToValidate, ClaimInvoice)
 
-            If Not obj.InvoiceDate Is Nothing Then
+            If obj.InvoiceDate IsNot Nothing Then
 
                 If obj.InvoiceDate.Value <= System.DateTime.Today Then
                     Return True
@@ -2980,7 +2980,7 @@ Public Class ClaimInvoice
             If obj.PickUpDate Is Nothing Then Return True
             Dim pickUpDate As Date = obj.GetShortDate(obj.PickUpDate.Value)
             Dim createdDate As Date = Today
-            If Not obj.CreatedDate Is Nothing Then
+            If obj.CreatedDate IsNot Nothing Then
                 createdDate = obj.GetShortDate(obj.CreatedDate.Value)
             End If
 
@@ -2994,7 +2994,7 @@ Public Class ClaimInvoice
                 Return False
             End If
 
-            If Not obj.RepairDate Is Nothing Then
+            If obj.RepairDate IsNot Nothing Then
                 If pickUpDate < obj.GetShortDate(obj.RepairDate.Value) Then
                     Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR2  '"Pick-Up Date Must Be Greater Than Or Equal To Repair Date."
                     Return False
@@ -3020,7 +3020,7 @@ Public Class ClaimInvoice
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimInvoice = CType(objectToValidate, ClaimInvoice)
             If obj.PickUpDate Is Nothing And obj.Invoiceable.CanDisplayVisitAndPickUpDates Then
-                If obj.IsPaymentAdjustment Or obj.IsPaymentReversal Or obj.IsNewPaymentFromPaymentAdjustment Then
+                If obj.IsPaymentAdjustment Or obj.IsPaymentReversal OrElse obj.IsNewPaymentFromPaymentAdjustment Then
                     Return True
                 Else
                     Return False
@@ -3087,7 +3087,7 @@ Public Class ClaimInvoice
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimInvoice = CType(objectToValidate, ClaimInvoice)
             Dim objCompany As New Company(obj.CompanyId)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_COMPANY_TYPE, objCompany.CompanyTypeId) = objCompany.COMPANY_TYPE_INSURANCE _
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_COMPANY_TYPE, objCompany.CompanyTypeId) = objCompany.COMPANY_TYPE_INSURANCE _
                 AndAlso obj.PayeeOptionCode = obj.PAYEE_OPTION_OTHER AndAlso _
                (obj.DocumentType Is Nothing OrElse obj.DocumentType.Equals(String.Empty)) Then
                 Return False
@@ -3108,7 +3108,7 @@ Public Class ClaimInvoice
             Dim obj As ClaimInvoice = CType(objectToValidate, ClaimInvoice)
             Dim objCompany As New Company(obj.CompanyId)
 
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_COMPANY_TYPE, objCompany.CompanyTypeId) = objCompany.COMPANY_TYPE_INSURANCE _
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_COMPANY_TYPE, objCompany.CompanyTypeId) = objCompany.COMPANY_TYPE_INSURANCE _
                 AndAlso obj.PayeeOptionCode = obj.PAYEE_OPTION_OTHER Then
 
                 If (obj.DocumentType Is Nothing OrElse obj.DocumentType.Equals(String.Empty)) Then Return False
@@ -3117,8 +3117,8 @@ Public Class ClaimInvoice
                 Dim oErrMess As String
                 Try
                     oErrMess = dal.ExecuteSP(obj.DocumentType, obj.TaxId)
-                    If Not oErrMess Is Nothing Then
-                        MyBase.Message = UCase(oErrMess)
+                    If oErrMess IsNot Nothing Then
+                        Message = UCase(oErrMess)
                         Return False
                     End If
 
@@ -3145,7 +3145,7 @@ Public Class ClaimInvoice
             Dim obj As ClaimInvoice = CType(objectToValidate, ClaimInvoice)
             'Dim oClaim As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(obj.ClaimId)
             Dim ctCovLoss As CoverageLoss = New CoverageLoss(obj.CauseOfLossID, (New CertItemCoverage(obj.Invoiceable.CertItemCoverageId)).CoverageTypeId)
-            If Not ctCovLoss.Row Is Nothing Then
+            If ctCovLoss.Row IsNot Nothing Then
                 If ctCovLoss.Active = "N" Then
                     Return False
                 End If
@@ -3199,9 +3199,9 @@ Public Class ClaimInvoice
         _comment = New Comment(Dataset)
         CurrentComment.PopulateWithDefaultValues(Invoiceable.CertificateId)
         If IsPaymentAdjustment Then
-            CurrentComment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__PAYMENT_ADJUSTMENT)
+            CurrentComment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__PAYMENT_ADJUSTMENT)
         ElseIf IsPaymentReversal Then
-            CurrentComment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__PAYMENT_REVERSAL)
+            CurrentComment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__PAYMENT_REVERSAL)
         End If
 
         _comment.ClaimId = Invoiceable.Claim_Id

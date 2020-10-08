@@ -60,7 +60,7 @@ Public Class ServiceClassType
         Try
             Dim dal As New ServiceClassTypeDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -315,7 +315,7 @@ Public Class ServiceCLassTypeList
     Public Shared Function GetDetails(serviceClassCode As String, serviceTypeCode As String) As ServiceClassType
         Dim record As ServiceClassType
         For Each item As ServiceClassType In Instance
-            If (item.ServiceClassCode = serviceClassCode) And item.ServiceTypeCode = serviceTypeCode Then
+            If (item.ServiceClassCode = serviceClassCode) AndAlso item.ServiceTypeCode = serviceTypeCode Then
                 record = item
                 Exit For
             End If
@@ -326,7 +326,7 @@ Public Class ServiceCLassTypeList
     Public Shared Function GetDetails(serviceClassId As Guid, serviceTypeId As Guid) As ServiceClassType
         Dim record As ServiceClassType
         For Each item As ServiceClassType In Instance
-            If (item.ServiceClassId = serviceClassId) And item.ServiceTypeId = serviceTypeId Then
+            If (item.ServiceClassId = serviceClassId) AndAlso item.ServiceTypeId = serviceTypeId Then
                 record = item
                 Exit For
             End If

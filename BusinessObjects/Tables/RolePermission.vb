@@ -19,6 +19,6 @@ Public Class RolePermissionList
     End Sub
 
     Public Overloads Overrides Function GetNewChild(parentId As System.Guid) As BusinessObjectBase
-        Return New RolePermission(MyBase.Parent.Dataset) With {.EntityId = parentId}
+        Return New RolePermission(Parent.Dataset) With {.EntityId = parentId}
     End Function
 End Class

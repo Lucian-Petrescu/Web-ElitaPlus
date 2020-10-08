@@ -59,7 +59,7 @@ Public Class MerchantCode
         Try
             Dim dal As New MerchantCodeDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -111,10 +111,10 @@ Public Class MerchantCode
         Public Function AddNewRowToEmptyDV() As MerchantCodeSearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(MerchantCodeSearchDV.COL_MERCHANT_CODE_ID) = (New Guid()).ToByteArray
-            row(MerchantCodeSearchDV.COL_COMPANY_CREDIT_CARD_ID) = Guid.Empty.ToByteArray
-            row(MerchantCodeSearchDV.COL_COMPANY_CREDIT_CARD_TYPE) = ""
-            row(MerchantCodeSearchDV.COL_MERCHANT_CODE) = DBNull.Value
+            row(COL_MERCHANT_CODE_ID) = (New Guid()).ToByteArray
+            row(COL_COMPANY_CREDIT_CARD_ID) = Guid.Empty.ToByteArray
+            row(COL_COMPANY_CREDIT_CARD_TYPE) = ""
+            row(COL_MERCHANT_CODE) = DBNull.Value
             dt.Rows.Add(row)
             Return New MerchantCodeSearchDV(dt)
         End Function

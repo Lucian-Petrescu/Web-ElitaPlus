@@ -1,4 +1,5 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (8/15/2017)  ********************
+Imports System.Text.RegularExpressions
 
 Public Class OcTemplateRecipient
     Inherits BusinessObjectBase
@@ -59,7 +60,7 @@ Public Class OcTemplateRecipient
         Try
             Dim dal As New OcTemplateRecipientDAL            
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -239,16 +240,16 @@ Public Class OcTemplateRecipient
         Public Function AddNewRowToEmptyDV() As TemplateRecipientsDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(TemplateRecipientsDV.COL_OC_TEMPLATE_RECIPIENT_ID) = (New Guid()).ToByteArray
-            row(TemplateRecipientsDV.COL_OC_TEMPLATE_ID) = Guid.Empty.ToByteArray
-            row(TemplateRecipientsDV.COL_RECIPIENT_SOURCE_FIELD_XCD) = DBNull.Value
-            row(TemplateRecipientsDV.COL_RECIPIENT_SOURCE_FIELD_DESCRIPTION) = DBNull.Value
-            row(TemplateRecipientsDV.COL_RECIPIENT_ADDRESS) = DBNull.Value
-            row(TemplateRecipientsDV.COL_DESCRIPTION) = DBNull.Value
-            row(TemplateRecipientsDV.COL_CREATED_BY) = DBNull.Value
-            row(TemplateRecipientsDV.COL_CREATED_DATE) = DBNull.Value
-            row(TemplateRecipientsDV.COL_MODIFIED_BY) = DBNull.Value
-            row(TemplateRecipientsDV.COL_MODIFIED_DATE) = DBNull.Value
+            row(COL_OC_TEMPLATE_RECIPIENT_ID) = (New Guid()).ToByteArray
+            row(COL_OC_TEMPLATE_ID) = Guid.Empty.ToByteArray
+            row(COL_RECIPIENT_SOURCE_FIELD_XCD) = DBNull.Value
+            row(COL_RECIPIENT_SOURCE_FIELD_DESCRIPTION) = DBNull.Value
+            row(COL_RECIPIENT_ADDRESS) = DBNull.Value
+            row(COL_DESCRIPTION) = DBNull.Value
+            row(COL_CREATED_BY) = DBNull.Value
+            row(COL_CREATED_DATE) = DBNull.Value
+            row(COL_MODIFIED_BY) = DBNull.Value
+            row(COL_MODIFIED_DATE) = DBNull.Value
             dt.Rows.Add(row)
             Return New TemplateRecipientsDV(dt)
         End Function
@@ -288,7 +289,7 @@ Public Class OcTemplateRecipient
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As OcTemplateRecipient = CType(objectToValidate, OcTemplateRecipient)
-            Dim emailExpression As New System.Text.RegularExpressions.Regex("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$")
+            Dim emailExpression As New Regex("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$", RegexOptions.None, new TimeSpan(0,0,0,0, 100))
 
             If Not String.IsNullOrEmpty(obj.RecipientAddress) AndAlso Not emailExpression.IsMatch(obj.RecipientAddress) Then
                 Return False

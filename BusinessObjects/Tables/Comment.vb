@@ -78,7 +78,7 @@ Public Class Comment
         Try
             Dim dal As New CommentDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -255,14 +255,14 @@ Public Class Comment
             If userCode Is Nothing Then
                 userCode = ElitaPlusIdentity.Current.ActiveUser.NetworkId
             End If
-            Return LookupListNew.GetDescriptionFromCode(LookupListNew.LK_USERS, userCode)
+            Return LookupListNew.GetDescriptionFromCode(LookupListCache.LK_USERS, userCode)
         End Get
     End Property
 
 
     Public ReadOnly Property CertificateNumber As String
         Get
-            If Not Certificate Is Nothing Then
+            If Certificate IsNot Nothing Then
                 Return Certificate.CertNumber
             Else
                 Return Nothing
@@ -272,7 +272,7 @@ Public Class Comment
 
     Public ReadOnly Property ClaimNumber As String
         Get
-            If Not Claim Is Nothing Then
+            If Claim IsNot Nothing Then
                 Return Claim.ClaimNumber
             Else
                 Return Nothing
@@ -282,7 +282,7 @@ Public Class Comment
 
     Public ReadOnly Property ClaimStatus As String
         Get
-            If Not Claim Is Nothing Then
+            If Claim IsNot Nothing Then
                 Return Claim.StatusCode
             Else
                 Return Nothing
@@ -292,8 +292,8 @@ Public Class Comment
 
     Public ReadOnly Property Dealer As String
         Get
-            If Not Certificate Is Nothing Then
-                Return LookupListNew.GetDescriptionFromId(LookupListNew.LK_DEALERS, Certificate.DealerId)
+            If Certificate IsNot Nothing Then
+                Return LookupListNew.GetDescriptionFromId(LookupListCache.LK_DEALERS, Certificate.DealerId)
             Else
                 Return Nothing
             End If
@@ -337,7 +337,7 @@ Public Class Comment
                 Dim dal As New CommentDAL
                 UpdateFamily(Dataset)
                 dal.UpdateFamily(Dataset)
-                If (Not Claim Is Nothing) AndAlso (Me.Claim.ClaimAuthorizationType = ClaimAuthorizationType.Single) Then
+                If (Claim IsNot Nothing) AndAlso (Me.Claim.ClaimAuthorizationType = ClaimAuthorizationType.Single) Then
                     CType(Claim, Claim).HandleGVSTransactionCreation(Id, Nothing)
                 End If
                 'Reload the Data from the DB
@@ -357,7 +357,7 @@ Public Class Comment
         Me.CertId = certId
         CallerName = cert.CustomerName
         SetValue(DALBase.COL_NAME_CREATED_BY, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
-        If Not claimId Is Nothing Then
+        If claimId IsNot Nothing Then
             Me.ClaimId = CType(claimId, Guid)
         End If
     End Sub
@@ -379,7 +379,7 @@ Public Class Comment
     Public Shared Function GetLatestComment(parentClaim As ClaimBase) As Comment
         Dim dal As New CommentDAL
         Dim ds As DataSet = dal.LoadListForClaim(parentClaim.Id)
-        If Not ds.Tables(dal.TABLE_NAME) Is Nothing AndAlso ds.Tables(dal.TABLE_NAME).Rows.Count > 0 Then
+        If ds.Tables(dal.TABLE_NAME) IsNot Nothing AndAlso ds.Tables(dal.TABLE_NAME).Rows.Count > 0 Then
             Dim c As New Comment(ds.Tables(dal.TABLE_NAME).Rows(0))
             c._isDSCreator = True
             Return c
@@ -466,7 +466,7 @@ Public Class Comment
 #Region "Constants"
         Public Const COL_COMMENT_ID As String = CommentDAL.COL_NAME_COMMENT_ID
         Public Const COL_ADDED_BY As String = CommentDAL.COL_NAME_ADDED_BY
-        Public Const COL_CREATED_DATE As String = CommentDAL.COL_NAME_CREATED_DATE
+        Public Const COL_CREATED_DATE As String = DALBase.COL_NAME_CREATED_DATE
         Public Const COL_CALLER_NAME As String = CommentDAL.COL_NAME_CALLER_NAME
         Public Const COL_COMMENTS As String = CommentDAL.COL_NAME_COMMENTS
 #End Region
@@ -482,7 +482,7 @@ Public Class Comment
 #Region "ExtConstants"
         Public Const COL_EXT_COMMENT_ID As String = CommentDAL.COL_NAME_EXT_STATUS_ID
         Public Const COL_EXT_ADDED_BY As String = CommentDAL.COL_NAME_ADDED_BY
-        Public Const COL_EXT_CREATED_DATE As String = CommentDAL.COL_NAME_CREATED_DATE
+        Public Const COL_EXT_CREATED_DATE As String = DALBase.COL_NAME_CREATED_DATE
         Public Const COL_EXT_CALLER_NAME As String = CommentDAL.COL_NAME_CALLER_NAME
         Public Const COL_EXT_COMMENTS As String = CommentDAL.COL_NAME_COMMENTS
 #End Region

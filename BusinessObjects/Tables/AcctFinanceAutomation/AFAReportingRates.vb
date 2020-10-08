@@ -59,7 +59,7 @@ Public Class AfaReportingRates
         Try
             Dim dal As New AFARepRateDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -375,34 +375,34 @@ Public Class AfaReportingRates
             row(RptRateSearchDV.COL_AFA_REPORTING_RATE_ID) = NewBO.Id.ToByteArray
             row(RptRateSearchDV.COL_AFA_INVOICE_RATE_ID) = NewBO.AfaInvoiceRateId.ToByteArray
 
-            If Not NewBO.RiskFee Is Nothing Then
+            If NewBO.RiskFee IsNot Nothing Then
                 row(RptRateSearchDV.COL_RISK_FEE) = NewBO.RiskFee.Value
             End If
-            If Not NewBO.SpmCoe Is Nothing Then
+            If NewBO.SpmCoe IsNot Nothing Then
                 row(RptRateSearchDV.COL_SPM_COE) = NewBO.SpmCoe.Value
             End If
-            If Not NewBO.FullfillmentNotification Is Nothing Then
+            If NewBO.FullfillmentNotification IsNot Nothing Then
                 row(RptRateSearchDV.COL_FULLFILLMENT_NOTIFICATION) = NewBO.FullfillmentNotification.Value
             End If
-            If Not NewBO.MarketingExpenses Is Nothing Then
+            If NewBO.MarketingExpenses IsNot Nothing Then
                 row(RptRateSearchDV.COL_MARKETING_EXPENSES) = NewBO.MarketingExpenses.Value
             End If
-            If Not NewBO.PremiumTaxes Is Nothing Then
+            If NewBO.PremiumTaxes IsNot Nothing Then
                 row(RptRateSearchDV.COL_PREMIUM_TAXES) = NewBO.PremiumTaxes.Value
             End If
-            If Not NewBO.LossReserveCost Is Nothing Then
+            If NewBO.LossReserveCost IsNot Nothing Then
                 row(RptRateSearchDV.COL_LOSS_RESERVE_COST) = NewBO.LossReserveCost.Value
             End If
-            If Not NewBO.Overhead Is Nothing Then
+            If NewBO.Overhead IsNot Nothing Then
                 row(RptRateSearchDV.COL_OVERHEAD) = NewBO.Overhead.Value
             End If
-            If Not NewBO.GeneralExpenses Is Nothing Then
+            If NewBO.GeneralExpenses IsNot Nothing Then
                 row(RptRateSearchDV.COL_GENERAL_EXPENSES) = NewBO.GeneralExpenses.Value
             End If
-            If Not NewBO.Assessments Is Nothing Then
+            If NewBO.Assessments IsNot Nothing Then
                 row(RptRateSearchDV.COL_ASSESSMENTS) = NewBO.Assessments.Value
             End If
-            If Not NewBO.Lae Is Nothing Then
+            If NewBO.Lae IsNot Nothing Then
                 row(RptRateSearchDV.COL_LAE) = NewBO.Lae.Value
             End If
             dt.Rows.Add(row)

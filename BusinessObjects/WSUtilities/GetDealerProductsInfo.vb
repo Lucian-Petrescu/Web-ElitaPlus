@@ -57,7 +57,11 @@ Public Class GetDealerProductsInfo
     'End Sub
 
     Private Function RemoveExcessData(xmlStringOutput As String) As String
-        xmlStringOutput = Regex.Replace(xmlStringOutput, "<PRODUCT_CODE_ID>[^>]+</PRODUCT_CODE_ID>|<ITEM_ID>[^>]+</ITEM_ID>|<COVERAGE_ID>[^>]+</COVERAGE_ID>|<COVERAGE_RATE_ID>[^>]+</COVERAGE_RATE_ID>", String.Empty)
+        xmlStringOutput = Regex.Replace(xmlStringOutput, 
+                                        "<PRODUCT_CODE_ID>[^>]+</PRODUCT_CODE_ID>|<ITEM_ID>[^>]+</ITEM_ID>|<COVERAGE_ID>[^>]+</COVERAGE_ID>|<COVERAGE_RATE_ID>[^>]+</COVERAGE_RATE_ID>", 
+                                        String.Empty,
+                                        RegexOptions.None, 
+                                        new TimeSpan(0,0,0,0, 100))
         Return xmlStringOutput
     End Function
 
@@ -149,10 +153,10 @@ Public Class GetDealerProductsInfo
             Validate()
 
             Dim dvDealrs As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
-            If Not dvDealrs Is Nothing AndAlso dvDealrs.Count > 0 Then
+            If dvDealrs IsNot Nothing AndAlso dvDealrs.Count > 0 Then
                 dealerId = LookupListNew.GetIdFromCode(dvDealrs, DealerCode)
                 If dealerId.Equals(Guid.Empty) Then
-                    Throw New BOValidationException("GetDealerProductsInfo Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_CODE)
+                    Throw New BOValidationException("GetDealerProductsInfo Error: ", Common.ErrorCodes.INVALID_DEALER_CODE)
                 End If
             End If
 
@@ -161,7 +165,7 @@ Public Class GetDealerProductsInfo
             'Get Products
             ds = ProductCode.getDealerProductsInfo(ds, dealerId)
             If ds.Tables.Count <= 0 OrElse ds.Tables(0).Rows.Count = 0 Then
-                Throw New BOValidationException("GetDealerProductsInfo Error: ", Assurant.ElitaPlus.Common.ErrorCodes.NO_PRODUCTCODES_FOUND_ERR)
+                Throw New BOValidationException("GetDealerProductsInfo Error: ", Common.ErrorCodes.NO_PRODUCTCODES_FOUND_ERR)
             End If
 
             ''get Items :table count should be 2

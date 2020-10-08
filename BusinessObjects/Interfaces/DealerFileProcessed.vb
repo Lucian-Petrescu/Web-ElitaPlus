@@ -82,7 +82,7 @@ Public Class DealerFileProcessed
         Try
             Dim dal As New DealerFileProcessedDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -106,7 +106,7 @@ Public Class DealerFileProcessed
         Try
             Dim dal As New DealerFileProcessedDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -374,14 +374,14 @@ Public Class DealerFileProcessed
     Public ReadOnly Property DealerCode As String
         Get
             If DealerId.Equals(Guid.Empty) Then Return Nothing
-            Return LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, DealerId)
+            Return LookupListNew.GetCodeFromId(LookupListCache.LK_DEALERS, DealerId)
         End Get
     End Property
 
     Public ReadOnly Property DealerNameLoad As String
         Get
             If DealerId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_DEALERS)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_DEALERS)
             Return LookupListNew.GetDescriptionFromId(dv, DealerId)
         End Get
     End Property
@@ -389,14 +389,14 @@ Public Class DealerFileProcessed
     Public ReadOnly Property DealerGroupCode As String
         Get
             If DealerGroupId.Equals(Guid.Empty) Then Return Nothing
-            Return LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_GROUPS, DealerGroupId)
+            Return LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_GROUPS, DealerGroupId)
         End Get
     End Property
 
     Public ReadOnly Property DealerGroupNameLoad As String
         Get
             If DealerGroupId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_DEALER_GROUPS)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_DEALER_GROUPS)
             Return LookupListNew.GetDescriptionFromId(dv, DealerGroupId)
         End Get
     End Property
@@ -528,7 +528,7 @@ Public Class DealerFileProcessed
 
         oDealer = New Dealer(oContract.DealerId)
         sLayout = oContract.Layout
-        If Not sLayout Is Nothing Then
+        If sLayout IsNot Nothing Then
             If oInterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.PAYM Then
                 sLayout = sLayout.Remove(sLayout.Length - 1, 1) & "p"
             End If

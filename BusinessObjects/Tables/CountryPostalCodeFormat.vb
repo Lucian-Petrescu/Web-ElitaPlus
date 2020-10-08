@@ -62,7 +62,7 @@ Public Class CountryPostalCodeFormat
         Try
             Dim dal As New CountryPostalCodeFormatDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -177,7 +177,7 @@ Public Class CountryPostalCodeFormat
         Dim i As Integer
         For i = 0 To ds.Tables(CountryPostalCodeFormatDAL.TABLE_NAME).Rows.Count - 1
             Dim row As DataRow = ds.Tables(CountryPostalCodeFormatDAL.TABLE_NAME).Rows(i)
-            If Not (row.RowState = DataRowState.Deleted Or row.RowState = DataRowState.Detached) Then
+            If Not (row.RowState = DataRowState.Deleted OrElse row.RowState = DataRowState.Detached) Then
                 Dim couPosCode As New CountryPostalCodeFormat(row)
                 If couPosCode.CountryId.Equals(countryID) AndAlso couPosCode.PostalCodeFormatId.Equals(postalCodeID) Then
                     Return couPosCode
@@ -210,7 +210,7 @@ Public Class CountryPostalCodeFormat
         Dim inClause As String = "-1"
         For i = 0 To ds.Tables(CountryPostalCodeFormatDAL.TABLE_NAME).Rows.Count - 1
             Dim row As DataRow = ds.Tables(CountryPostalCodeFormatDAL.TABLE_NAME).Rows(i)
-            If Not (row.RowState = DataRowState.Deleted Or row.RowState = DataRowState.Detached) Then
+            If Not (row.RowState = DataRowState.Deleted OrElse row.RowState = DataRowState.Detached) Then
                 Dim pCode As New CountryPostalCodeFormat(row)
                 If pCode.CountryId.Equals(countryID) Then
                     inClause &= "," & LookupListNew.GetSequenceFromId(dv, pCode.PostalCodeFormatId)
@@ -218,12 +218,12 @@ Public Class CountryPostalCodeFormat
             End If
         Next
         Dim rowFilter As String = dv.RowFilter
-        If Not rowFilter Is Nothing AndAlso dv.RowFilter.Trim.Length > 0 Then
+        If rowFilter IsNot Nothing AndAlso dv.RowFilter.Trim.Length > 0 Then
             rowFilter = "(" & rowFilter & ") AND"
         Else
             rowFilter = ""
         End If
-        rowFilter &= BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        rowFilter &= SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN (" & inClause & ")"
         Else
@@ -248,7 +248,7 @@ Public Class CountryPostalCodeFormat
         Dim retPostalCodeFormatResult As PostalCodeFormatResult = New PostalCodeFormatResult
         retPostalCodeFormatResult.IsValid = False
         retPostalCodeFormatResult.PostalCode = postalCode
-        retPostalCodeFormatResult.ErrorMessage = Assurant.ElitaPlus.Common.ErrorCodes.INVALID_POSTALCODEFORMAT_ERR
+        retPostalCodeFormatResult.ErrorMessage = Common.ErrorCodes.INVALID_POSTALCODEFORMAT_ERR
 
         Try
             Dim ds As Dataset = New Dataset

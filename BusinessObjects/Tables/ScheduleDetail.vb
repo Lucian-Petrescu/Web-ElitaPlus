@@ -90,7 +90,7 @@ Public Class ScheduleDetail
         Try
             Dim dal As New ScheduleDetailDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -120,7 +120,7 @@ Public Class ScheduleDetail
         Try
             Dim dal As New ScheduleDetailDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -163,20 +163,20 @@ Public Class ScheduleDetail
             Dim row As DataRow = dt.NewRow
 
             If bo.FromTime Is Nothing Then
-                row(ScheduleDetail.ScheduleDetailSearchDV.COL_FROM_TIME) = DBNull.Value
+                row(ScheduleDetailSearchDV.COL_FROM_TIME) = DBNull.Value
             Else
-                row(ScheduleDetail.ScheduleDetailSearchDV.COL_FROM_TIME) = bo.FromTime
+                row(ScheduleDetailSearchDV.COL_FROM_TIME) = bo.FromTime
             End If
 
             If bo.ToTime Is Nothing Then
-                row(ScheduleDetail.ScheduleDetailSearchDV.COL_TO_TIME) = DBNull.Value
+                row(ScheduleDetailSearchDV.COL_TO_TIME) = DBNull.Value
             Else
-                row(ScheduleDetail.ScheduleDetailSearchDV.COL_TO_TIME) = bo.ToTime
+                row(ScheduleDetailSearchDV.COL_TO_TIME) = bo.ToTime
             End If
 
-            row(ScheduleDetail.ScheduleDetailSearchDV.COL_DAY_OF_WEEK_ID) = bo.DayOfWeekId.ToByteArray
-            row(ScheduleDetail.ScheduleDetailSearchDV.COL_SCHEDULE_DETAIL_ID) = bo.Id.ToByteArray
-            row(ScheduleDetail.ScheduleDetailSearchDV.COL_SCHEDULE_ID) = bo.ScheduleId.ToByteArray
+            row(ScheduleDetailSearchDV.COL_DAY_OF_WEEK_ID) = bo.DayOfWeekId.ToByteArray
+            row(ScheduleDetailSearchDV.COL_SCHEDULE_DETAIL_ID) = bo.Id.ToByteArray
+            row(ScheduleDetailSearchDV.COL_SCHEDULE_ID) = bo.ScheduleId.ToByteArray
 
             dt.Rows.Add(row)
         End If
@@ -257,7 +257,7 @@ Public Class ScheduleDetail
         End Set
     End Property
 
-    <ValueMandatory(""), DateCompareValidator("", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_FROM_TIME_HIGHER_THAN_TO_TIME, "FromTime", DateCompareValidatorAttribute.CompareType.GreaterThan), _
+    <ValueMandatory(""), DateCompareValidator("", Common.ErrorCodes.INVALID_FROM_TIME_HIGHER_THAN_TO_TIME, "FromTime", DateCompareValidatorAttribute.CompareType.GreaterThan), _
          OverlapValidator("", DataRowPropertyName:="DataRow", DataTablePropertyName:="DataTable", EffectiveDateColumnName:=ScheduleDetailDAL.COL_NAME_FROM_TIME, ExpirationDateColumnName:=ScheduleDetailDAL.COL_NAME_TO_TIME, _
         KeyColumns:=New String() {ScheduleDetailDAL.COL_NAME_DAY_OF_WEEK_ID})> _
     Public Property ToTime As DateType

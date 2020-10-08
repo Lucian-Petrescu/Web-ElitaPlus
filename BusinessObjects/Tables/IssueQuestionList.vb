@@ -49,7 +49,7 @@ Public Class IssueQuestionList
             Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
             Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
             Row = newRow
-            SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
+            SetValue(dal.TABLE_KEY_NAME, NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -60,7 +60,7 @@ Public Class IssueQuestionList
         Try
             Dim dal As New IssueQuestionListDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -212,7 +212,7 @@ Public Class IssueQuestionList
         Dim cmpEquipmentIdStr As String
         For Each cmpEquipmentIdStr In selectedEquipmentGuidStrCollection
             Dim newBO As EquipmentListDetail = New EquipmentListDetail(Dataset)
-            If Not newBO Is Nothing Then
+            If newBO IsNot Nothing Then
                 newBO.EquipmentId = ID
                 newBO.EquipmentId = New Guid(cmpEquipmentIdStr)
                 newBO.Save()
@@ -238,11 +238,11 @@ Public Class IssueQuestionList
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.IsChild(QuestionListId, QuestionId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(IssueQuestionListDAL.TABLE_NAME).Rows.Count > 0 Then
                     Return ds.Tables(IssueQuestionListDAL.TABLE_NAME).Rows(0)(IssueQuestionListDAL.COL_NAME_ISSUE_QUESTION_LIST_ID)
                 Else
-                    Return Guid.Empty.ToByteArray
+                    Return Empty.ToByteArray
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -260,11 +260,11 @@ Public Class IssueQuestionList
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.IsChild(EquipListId, EquipId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(IssueQuestionListDAL.TABLE_NAME).Rows.Count > 0 Then
                     Return ds.Tables(IssueQuestionListDAL.TABLE_NAME).Rows(0)(IssueQuestionListDAL.COL_NAME_ISSUE_QUESTION_LIST_ID)
                 Else
-                    Return Guid.Empty.ToByteArray
+                    Return Empty.ToByteArray
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -276,7 +276,7 @@ Public Class IssueQuestionList
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
     Public Shared Function GetQuestionInList(QuestionListId As Guid) As ArrayList
@@ -375,7 +375,7 @@ Public Class IssueQuestionList
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.GetQuestionExpiration(IssueQuestionListId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(0).Rows.Count > 0 Then
                     Return ds.Tables(0).Rows(0)("EXPIRATION")
                 Else

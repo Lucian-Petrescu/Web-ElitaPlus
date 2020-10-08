@@ -59,7 +59,7 @@ Public Class VSCCoverageLimit
         Try
             Dim dal As New VSCCoverageLimitDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -221,7 +221,7 @@ Public Class VSCCoverageLimit
                 Dim dal As New VSCCoverageLimitDAL
                 Dim covOptDs As DataSet = dal.GetOptionalCoverage(id, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-                If covOptDs.Tables(0).Rows.Count > 0 AndAlso (Not covOptDs.Tables(0).Rows(0)(dal.COL_NAME_COVERAGE_OPT) Is DBNull.Value) Then
+                If covOptDs.Tables(0).Rows.Count > 0 AndAlso (covOptDs.Tables(0).Rows(0)(dal.COL_NAME_COVERAGE_OPT) IsNot DBNull.Value) Then
                     isOptional = (covOptDs.Tables(0).Rows(0)(dal.COL_NAME_COVERAGE_OPT) > 0)
                 End If
             Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

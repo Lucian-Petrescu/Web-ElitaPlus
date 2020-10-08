@@ -61,7 +61,7 @@ Public Class Rule
         Try
             Dim dal As New RuleDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -279,7 +279,7 @@ Public Class Rule
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Rule")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
         Effective = Date.Now
         Expiration = New Date(2499, 12, 31, 23, 59, 59)
         'copy the children
@@ -646,7 +646,7 @@ Public Class Rule
         Public Const COL_NAME_RULE_PROCESS_ID As String = RuleProcessDAL.COL_NAME_RULE_PROCESS_ID
         Public Const COL_NAME_PROCESS_ID As String = RuleProcessDAL.COL_NAME_PROCESS_ID
         Public Const COL_NAME_RULE_ID As String = RuleProcessDAL.COL_NAME_RULE_ID
-        Public Const COL_NAME_DESCRIPTION As String = RuleProcessDAL.COL_NAME_DESCRIPTION
+        Public Const COL_NAME_DESCRIPTION As String = DALBase.COL_NAME_DESCRIPTION
         Public Const COL_NAME_EFFECTIVE As String = RuleProcessDAL.COL_NAME_EFFECTIVE
         Public Const COL_NAME_EXPIRATION As String = RuleProcessDAL.COL_NAME_EXPIRATION
         Public Const COL_NAME_PROCESS_ORDER As String = RuleProcessDAL.COL_NAME_PROCESS_ORDER

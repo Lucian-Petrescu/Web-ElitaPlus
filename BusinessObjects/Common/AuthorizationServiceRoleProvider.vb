@@ -10,9 +10,9 @@ Public Class AuthorizationServiceRoleProvider
     Private Shared ReadOnly Property AuthorizationClientProxy As Auth.AuthorizationClient
         Get
             Dim authClient As Auth.AuthorizationClient
-            If (oAuthorizationServiceClient Is Nothing OrElse oAuthorizationServiceClient.State <> ServiceModel.CommunicationState.Opened) Then
+            If (oAuthorizationServiceClient Is Nothing OrElse oAuthorizationServiceClient.State <> CommunicationState.Opened) Then
                 SyncLock syncRoot
-                    If (oAuthorizationServiceClient Is Nothing OrElse oAuthorizationServiceClient.State <> ServiceModel.CommunicationState.Opened) Then
+                    If (oAuthorizationServiceClient Is Nothing OrElse oAuthorizationServiceClient.State <> CommunicationState.Opened) Then
                         oAuthorizationServiceClient = ServiceHelper.CreateAuthorizationClient()
                     End If
                 End SyncLock
@@ -39,7 +39,7 @@ Public Class AuthorizationServiceRoleProvider
             count = (From r In remoteRoles Where r.Name.ToUpper().Trim() = roleCode.ToUpper().Trim() Select r).Count
             If (count > 0) Then ' If data available for passed code 
                 remoteRole = (From r In remoteRoles Where r.Name.ToUpper().Trim() = roleCode.ToUpper().Trim() Select r).First()
-                If (Not remoteRole Is Nothing) Then
+                If (remoteRole IsNot Nothing) Then
                     Return remoteRole.Id
                 End If
             End If
@@ -148,7 +148,7 @@ Public Class AuthorizationServiceRoleProvider
                 Throw New ServiceException("Authorization", "GetGroup", ex)
             End Try
 
-            If (Not oGroupExt.Permissions Is Nothing AndAlso oGroupExt.Permissions.Length > 0) Then
+            If (oGroupExt.Permissions IsNot Nothing AndAlso oGroupExt.Permissions.Length > 0) Then
                 Try
                     AuthorizationClientProxy.RemovePermissionsFromGroup((From per In oGroupExt.Permissions Select per.Id).ToArray(), oGroupExt.Id)
                 Catch ex As FaultException(Of Auth.ValidationFault)
@@ -380,7 +380,7 @@ Public Class AuthorizationServiceRoleProvider
                 Throw New ServiceException("Authorization", "GetUserForServiceById", ex)
             End Try
 
-            If (Not remoteUserExt.Permissions Is Nothing AndAlso remoteUserExt.Permissions.Length > 0) Then
+            If (remoteUserExt.Permissions IsNot Nothing AndAlso remoteUserExt.Permissions.Length > 0) Then
                 Try
                     AuthorizationClientProxy.RemovePermissionsFromUser((From per In remoteUserExt.Permissions Select per.Id).ToArray(), remoteUserExt.Id)
                 Catch ex As FaultException(Of WrkQueue.ValidationFault)

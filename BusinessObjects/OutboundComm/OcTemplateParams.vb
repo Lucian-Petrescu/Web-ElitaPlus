@@ -59,7 +59,7 @@ Public Class OcTemplateParams
         Try
             Dim dal As New OcTemplateParamsDAL            
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -341,21 +341,21 @@ Public Class OcTemplateParams
         Public Function AddNewRowToEmptyDV() As TemplateParamsDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(TemplateParamsDV.COL_OC_TEMPLATE_PARAMS_ID) = (New Guid()).ToByteArray
-            row(TemplateParamsDV.COL_OC_TEMPLATE_ID) = Guid.Empty.ToByteArray
-            row(TemplateParamsDV.COL_PARAM_NAME) = DBNull.Value
-            row(TemplateParamsDV.COL_PARAM_VALUE_SOURCE_XCD) = DBNull.Value
-            row(TemplateParamsDV.COL_PARAM_VALUE_SOURCE_DESCRIPTION) = DBNull.Value
-            row(TemplateParamsDV.COL_PARAM_VALUE) = DBNull.Value
-            row(TemplateParamsDV.COL_PARAM_TYPE) = DBNull.Value
-            row(TemplateParamsDV.COL_PARAM_DATA_TYPE_XCD) = DBNull.Value
-            row(TemplateParamsDV.COL_PARAM_DATA_TYPE_DESCRIPTION) = DBNull.Value
-            row(TemplateParamsDV.COL_DATE_FORMAT_STRING) = DBNull.Value
-            row(TemplateParamsDV.COL_ALLOW_EMPTY_VALUE_XCD) = DBNull.Value
-            row(TemplateParamsDV.COL_CREATED_BY) = DBNull.Value
-            row(TemplateParamsDV.COL_CREATED_DATE) = DBNull.Value
-            row(TemplateParamsDV.COL_MODIFIED_BY) = DBNull.Value
-            row(TemplateParamsDV.COL_MODIFIED_DATE) = DBNull.Value
+            row(COL_OC_TEMPLATE_PARAMS_ID) = (New Guid()).ToByteArray
+            row(COL_OC_TEMPLATE_ID) = Guid.Empty.ToByteArray
+            row(COL_PARAM_NAME) = DBNull.Value
+            row(COL_PARAM_VALUE_SOURCE_XCD) = DBNull.Value
+            row(COL_PARAM_VALUE_SOURCE_DESCRIPTION) = DBNull.Value
+            row(COL_PARAM_VALUE) = DBNull.Value
+            row(COL_PARAM_TYPE) = DBNull.Value
+            row(COL_PARAM_DATA_TYPE_XCD) = DBNull.Value
+            row(COL_PARAM_DATA_TYPE_DESCRIPTION) = DBNull.Value
+            row(COL_DATE_FORMAT_STRING) = DBNull.Value
+            row(COL_ALLOW_EMPTY_VALUE_XCD) = DBNull.Value
+            row(COL_CREATED_BY) = DBNull.Value
+            row(COL_CREATED_DATE) = DBNull.Value
+            row(COL_MODIFIED_BY) = DBNull.Value
+            row(COL_MODIFIED_DATE) = DBNull.Value
             dt.Rows.Add(row)
             Return New TemplateParamsDV(dt)
         End Function

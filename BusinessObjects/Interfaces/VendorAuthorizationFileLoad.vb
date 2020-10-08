@@ -14,16 +14,16 @@ Public NotInheritable Class VendorAuthorizationFileLoad
 #Region "Constructor"
     Public Sub New(threadCount As Integer, transactionSize As Integer)
         MyBase.New(True) '' Custom Save Constructor
-        YesId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
-        ServiceClassRepairId = LookupListNew.GetIdFromCode(LookupListNew.LK_SERVICE_CLASS, Codes.SERVICE_CLASS__REPAIR)
-        ServiceTypeDiagnosticId = LookupListNew.GetIdFromCode(LookupListNew.LK_SERVICE_TYPE_NEW, Codes.SERVICE_TYPE__DIAGNOSTIC_AMOUNT)
+        YesId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)
+        ServiceClassRepairId = LookupListNew.GetIdFromCode(LookupListCache.LK_SERVICE_CLASS, Codes.SERVICE_CLASS__REPAIR)
+        ServiceTypeDiagnosticId = LookupListNew.GetIdFromCode(LookupListCache.LK_SERVICE_TYPE_NEW, Codes.SERVICE_TYPE__DIAGNOSTIC_AMOUNT)
     End Sub
 
     Public Sub New()
         MyBase.New(True) '' Custom Save Constructor
-        YesId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
-        ServiceClassRepairId = LookupListNew.GetIdFromCode(LookupListNew.LK_SERVICE_CLASS, Codes.SERVICE_CLASS__REPAIR)
-        ServiceTypeDiagnosticId = LookupListNew.GetIdFromCode(LookupListNew.LK_SERVICE_TYPE_NEW, Codes.SERVICE_TYPE__DIAGNOSTIC_AMOUNT)
+        YesId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)
+        ServiceClassRepairId = LookupListNew.GetIdFromCode(LookupListCache.LK_SERVICE_CLASS, Codes.SERVICE_CLASS__REPAIR)
+        ServiceTypeDiagnosticId = LookupListNew.GetIdFromCode(LookupListCache.LK_SERVICE_TYPE_NEW, Codes.SERVICE_TYPE__DIAGNOSTIC_AMOUNT)
     End Sub
 #End Region
 
@@ -97,14 +97,14 @@ Public NotInheritable Class VendorAuthorizationFileLoad
         For Each dvr As DataRowView In dv
             Dim listItemId As Guid
             listItemId = New Guid(DirectCast(dvr(ClaimStatusByGroupDAL.COL_NAME_LIST_ITEM_ID), Byte()))
-            If (LookupListNew.GetCodeFromId(LookupListNew.LK_EXTENDED_CLAIM_STATUSES, listItemId) = Codes.CLAIM_EXTENDED_STATUS__PENDING_REVIEW_FOR_PAYMENT) Then
+            If (LookupListNew.GetCodeFromId(LookupListCache.LK_EXTENDED_CLAIM_STATUSES, listItemId) = Codes.CLAIM_EXTENDED_STATUS__PENDING_REVIEW_FOR_PAYMENT) Then
                 _pendingReviewForPaymentId = New Guid(DirectCast(dvr(ClaimStatusByGroupDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID), Byte()))
             Else
-                If ((Not dvr(ClaimStatusByGroupDAL.COL_NAME_GROUP_NUMBER) Is DBNull.Value) AndAlso (DirectCast(dvr(ClaimStatusByGroupDAL.COL_NAME_GROUP_NUMBER), Short) = FINAL_STATUS_GROUP_NUMBER)) Then
+                If ((dvr(ClaimStatusByGroupDAL.COL_NAME_GROUP_NUMBER) IsNot DBNull.Value) AndAlso (DirectCast(dvr(ClaimStatusByGroupDAL.COL_NAME_GROUP_NUMBER), Short) = FINAL_STATUS_GROUP_NUMBER)) Then
                     Dim claimStatusByGroupId As Guid
                     claimStatusByGroupId = New Guid(DirectCast(dvr(ClaimStatusByGroupDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID), Byte()))
                     _finalStatusList.Add(claimStatusByGroupId)
-                    _finalStatusLookupList.Add(LookupListNew.GetCodeFromId(LookupListNew.LK_EXTENDED_CLAIM_STATUSES, listItemId), claimStatusByGroupId)
+                    _finalStatusLookupList.Add(LookupListNew.GetCodeFromId(LookupListCache.LK_EXTENDED_CLAIM_STATUSES, listItemId), claimStatusByGroupId)
                 End If
             End If
         Next
@@ -145,10 +145,10 @@ Public NotInheritable Class VendorAuthorizationFileLoad
         claimAuthorization.ProblemFound = reconRecord.ProblemFound
         claimAuthorization.TechnicalReport = reconRecord.TechnicalReport
         claimAuthorization.DeliveryDate = reconRecord.DeliveryDate
-        claimAuthorization.ServiceLevelId = LookupListNew.GetIdFromCode(LookupListNew.LK_SERVICE_LEVEL, reconRecord.ServiceLevel)
+        claimAuthorization.ServiceLevelId = LookupListNew.GetIdFromCode(LookupListCache.LK_SERVICE_LEVEL, reconRecord.ServiceLevel)
         claimAuthorization.ServiceCenterReferenceNumber = reconRecord.AuthorizationNum
         claimAuthorization.Source = ClaimLoadFileProcessed.Filename
-        If ((Not reconRecord.BatchNumber Is Nothing) AndAlso (reconRecord.BatchNumber.Trim().Length > 0)) Then
+        If ((reconRecord.BatchNumber IsNot Nothing) AndAlso (reconRecord.BatchNumber.Trim().Length > 0)) Then
             claimAuthorization.BatchNumber = reconRecord.BatchNumber
         End If
     End Sub
@@ -179,7 +179,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
 
             UpdateClaimAuthorization(claimAuthorization, reconRecord)
 
-            If ((Not reconRecord.CoverageCode Is Nothing) AndAlso (reconRecord.CoverageCode.Trim().Length > 0)) Then
+            If ((reconRecord.CoverageCode IsNot Nothing) AndAlso (reconRecord.CoverageCode.Trim().Length > 0)) Then
                 ' Change of Coverage Code
                 If (Not reconRecord.CoverageCode.ToUpperInvariant().Equals(claim.CoverageTypeCode)) Then
                     Dim certificateItemCoverageId As Guid = Guid.Empty
@@ -234,8 +234,8 @@ Public NotInheritable Class VendorAuthorizationFileLoad
             If (claim.Certificate.Dealer.UseEquipmentId = YesId) Then
                 equipmentId = claim.ClaimedEquipment.EquipmentId
                 equipmentClassId = claim.ClaimedEquipment.EquipmentBO.EquipmentClassId
-                If (Not reconRecord.ReplacementType Is Nothing AndAlso reconRecord.ReplacementType.Trim.Length > 0) Then
-                    conditionId = LookupListNew.GetIdFromCode(LookupListNew.LK_CONDITION, GetEquipmentTypeCode(reconRecord.ReplacementType))
+                If (reconRecord.ReplacementType IsNot Nothing AndAlso reconRecord.ReplacementType.Trim.Length > 0) Then
+                    conditionId = LookupListNew.GetIdFromCode(LookupListCache.LK_CONDITION, GetEquipmentTypeCode(reconRecord.ReplacementType))
                 End If
             End If
 
@@ -289,13 +289,13 @@ Public NotInheritable Class VendorAuthorizationFileLoad
             oFinalStatus = reconRecord.FinalStatus.Trim().ToUpper()
 
             ' Build Trace
-            MyBase.AppendTraceLine(String.Format("@ClaimId = {0}, @ClaimAuthorizationId = {1}, @CertificateId = {2}, @FinalStatus = {3}, @Serial# = {4}",
+            AppendTraceLine(String.Format("@ClaimId = {0}, @ClaimAuthorizationId = {1}, @CertificateId = {2}, @FinalStatus = {3}, @Serial# = {4}",
                                                   GuidControl.GuidToHexString(claim.Id), GuidControl.GuidToHexString(claimAuthorization.Id),
                                                   GuidControl.GuidToHexString(claim.Certificate.Id), oFinalStatus, reconRecord.SerialNumber))
-            MyBase.AppendTraceLine(String.Format("@Max Labor = {0}, @Max Parts = {1}, @Max Shipping = {2}, @Max Diagnostic = {3}, @Max Replacement = {4}",
+            AppendTraceLine(String.Format("@Max Labor = {0}, @Max Parts = {1}, @Max Shipping = {2}, @Max Diagnostic = {3}, @Max Replacement = {4}",
                                                  DecimalTypeToString(oMaximumLabor), DecimalTypeToString(oMaximumParts), DecimalTypeToString(oMaximumShipping),
                                                  DecimalTypeToString(oMaximumDiagnostic), DecimalTypeToString(oMaximumReplacement)))
-            MyBase.AppendTraceLine(String.Format("@Before Auth Amount = {0}, @Incoming Amount = {1}",
+            AppendTraceLine(String.Format("@Before Auth Amount = {0}, @Incoming Amount = {1}",
                                                  DecimalTypeToString(claimAuthorization.AuthorizedAmount.ToString()), DecimalTypeToString(reconRecord.Amount)))
 
             '  Update Validation Switches
@@ -312,7 +312,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                     If (claimAuthorization.Claim.ClaimAuthorizationChildren.OrderBy(Function(item) item.CreatedDateTime).First().ClaimAuthorizationItemChildren.Where(Function(item) item.ServiceTypeCode = Codes.SERVICE_TYPE__REPLACEMENT_PRICE).Count() > 0) Then
                         ' Original Replacement
                         Dim cai As ClaimAuthItem
-                        cai = claimAuthorization.ClaimAuthorizationItemChildren().Where(Function(item) item.ServiceTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_SERVICE_TYPE_NEW, Codes.SERVICE_TYPE__REPLACEMENT_PRICE)).FirstOrDefault()
+                        cai = claimAuthorization.ClaimAuthorizationItemChildren().Where(Function(item) item.ServiceTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_SERVICE_TYPE_NEW, Codes.SERVICE_TYPE__REPLACEMENT_PRICE)).FirstOrDefault()
                         cai.Amount = Math.Min(cai.Amount.Value, reconRecord.Amount.Value)
                         cai.Save()
                         claimAuthorization.Save()
@@ -332,7 +332,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                             claim.Status = BasicClaimStatus.Denied
                             claim.DenyClaim()
                             claim.VoidAuthorizations()
-                            claim.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_CLOSED__DENIED_UNDER_DEDUCTIBLE)
+                            claim.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListCache.LK_DENIED_REASON, Codes.REASON_CLOSED__DENIED_UNDER_DEDUCTIBLE)
 
                             ' Set Validation Switches
                             oValidateLaborAmount = False
@@ -345,7 +345,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                             ' Reprocessing Scenario
                             Dim authorizedAmount As Decimal = claimAuthorization.AuthorizedAmount
                             If (claim.Status = BasicClaimStatus.Denied AndAlso
-                                claim.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_CLOSED__DENIED_UNDER_DEDUCTIBLE)) Then
+                                claim.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListCache.LK_DENIED_REASON, Codes.REASON_CLOSED__DENIED_UNDER_DEDUCTIBLE)) Then
                                 claim.Status = BasicClaimStatus.Active
                                 claim.DeniedReasonId = Nothing
                             End If
@@ -380,7 +380,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                         '  Get Replacement Claim
                         Dim oClaim As MultiAuthClaim = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(claim.Id, claim.Dataset)
                         oClaim.CreateReplacementFromRepair(reconRecord.ServiceCenterId)
-                        claimAuthorization = claim.ClaimAuthorizationChildren.Where(Function(item) item.ServiceCenterId = reconRecord.ServiceCenterId And item.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized).First()
+                        claimAuthorization = claim.ClaimAuthorizationChildren.Where(Function(item) item.ServiceCenterId = reconRecord.ServiceCenterId AndAlso item.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized).First()
                     Else
                         claimAuthorization.Void()
                         claimAuthorization = claim.AddClaimAuthorization(reconRecord.ServiceCenterId)
@@ -396,8 +396,8 @@ Public NotInheritable Class VendorAuthorizationFileLoad
 
                     Dim oClaimAuthItem As ClaimAuthItem
                     Dim authorizedAmount As Decimal = claimAuthorization.AuthorizedAmount
-                    If (((oFinalStatus = Codes.CLAIM_EXTENDED_STATUS__NOT_REPAIRED_BEYOND_ECONOMICAL_REPAIR) AndAlso (Not oMaximumLabor Is Nothing)) OrElse
-                        (((oFinalStatus = Codes.CLAIM_EXTENDED_STATUS__NOT_REPAIRED_LACK_OF_SERVICE_LEVEL) OrElse (oFinalStatus = Codes.CLAIM_EXTENDED_STATUS__NOT_REPAIRED_OTHER_CAUSES)) AndAlso (Not oMaximumDiagnostic Is Nothing))) Then
+                    If (((oFinalStatus = Codes.CLAIM_EXTENDED_STATUS__NOT_REPAIRED_BEYOND_ECONOMICAL_REPAIR) AndAlso (oMaximumLabor IsNot Nothing)) OrElse
+                        (((oFinalStatus = Codes.CLAIM_EXTENDED_STATUS__NOT_REPAIRED_LACK_OF_SERVICE_LEVEL) OrElse (oFinalStatus = Codes.CLAIM_EXTENDED_STATUS__NOT_REPAIRED_OTHER_CAUSES)) AndAlso (oMaximumDiagnostic IsNot Nothing))) Then
                         ' Original Claim Active with Auth Amount Replaced with Diag Cost
                         If (claimAuthorization.ClaimAuthorizationItemChildren.Where(Function(item) item.ServiceTypeCode = Codes.SERVICE_TYPE__DIAGNOSTIC_AMOUNT).Count() = 1) Then
                             oClaimAuthItem = claimAuthorization.ClaimAuthorizationItemChildren.Where(Function(item) item.ServiceTypeCode = Codes.SERVICE_TYPE__DIAGNOSTIC_AMOUNT).First()
@@ -486,7 +486,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                         ' Deny Original Claim
                         claim.Status = BasicClaimStatus.Denied
                         claim.VoidAuthorizations()
-                        claim.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED__NO_COVERAGE)
+                        claim.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListCache.LK_DENIED_REASON, Codes.REASON_DENIED__NO_COVERAGE)
                     End If
 
                     '  Update Validation Switches
@@ -540,7 +540,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                         ' Deny Original Claim
                         claim.Status = BasicClaimStatus.Denied
                         claim.VoidAuthorizations()
-                        claim.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED__NO_COVERAGE)
+                        claim.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListCache.LK_DENIED_REASON, Codes.REASON_DENIED__NO_COVERAGE)
 
                         ' Add Comment to Callback Customer
                         oAddComment = True
@@ -557,7 +557,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                     ' Deny Original Claim
                     claim.Status = BasicClaimStatus.Denied
                     claim.VoidAuthorizations()
-                    claim.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED__MANUFACTURER_WARRANTY)
+                    claim.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListCache.LK_DENIED_REASON, Codes.REASON_DENIED__MANUFACTURER_WARRANTY)
 
                     ' Update Validation Switches
                     oValidateLaborAmount = False
@@ -607,7 +607,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                         ' Deny Original Claim
                         claim.Status = BasicClaimStatus.Denied
                         claim.VoidAuthorizations()
-                        claim.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED__NO_COVERAGE)
+                        claim.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListCache.LK_DENIED_REASON, Codes.REASON_DENIED__NO_COVERAGE)
 
                         ' Add Comment to Callback Customer
                         oAddComment = True
@@ -623,7 +623,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
             End Select
 
             ' Build Trace
-            MyBase.AppendTraceLine(String.Format("@Validate Labor = {0}, @Validate Parts = {1}, @Validate Shipping = {2}, @Validate Diagnostic = {3}, @Validate Auth = {4}",
+            AppendTraceLine(String.Format("@Validate Labor = {0}, @Validate Parts = {1}, @Validate Shipping = {2}, @Validate Diagnostic = {3}, @Validate Auth = {4}",
                                                   oValidateLaborAmount.ToString(), oValidatePartsAmount.ToString(),
                                                   oValidateShippingAmount.ToString(), oValidateDiagnosticAmount.ToString(), oValidateAuthorizationAmount.ToString()))
 
@@ -642,9 +642,9 @@ Public NotInheritable Class VendorAuthorizationFileLoad
             Dim oPendingForPay As Boolean = False
 
             ' Validate Parts Amount
-            If (Not reconRecord.PartsAmount Is Nothing AndAlso reconRecord.PartsAmount.Value > oMaximumParts.GetValueOrDefault(0D)) Then
+            If (reconRecord.PartsAmount IsNot Nothing AndAlso reconRecord.PartsAmount.Value > oMaximumParts.GetValueOrDefault(0D)) Then
                 oPendingForPay = True
-                MyBase.AppendTraceLine("#Pending for Payment because of Parts")
+                AppendTraceLine("#Pending for Payment because of Parts")
             End If
 
             ' Validate Labor Amount
@@ -655,21 +655,21 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                 oFinalStatus = Codes.CLAIM_EXTENDED_STATUS__NOT_REPAIRED_CLAIM_MISMATCH OrElse
                 oFinalStatus = Codes.CLAIM_EXTENDED_STATUS__NOT_REPAIRED_NO_ORIGINAL_ACCESSORIES) Then
 
-                If (Not reconRecord.LaborAmount Is Nothing AndAlso reconRecord.LaborAmount.Value > oMaximumDiagnostic.GetValueOrDefault(0D)) Then
+                If (reconRecord.LaborAmount IsNot Nothing AndAlso reconRecord.LaborAmount.Value > oMaximumDiagnostic.GetValueOrDefault(0D)) Then
                     oPendingForPay = True
-                    MyBase.AppendTraceLine("#Pending for Payment because of Diagnostic")
+                    AppendTraceLine("#Pending for Payment because of Diagnostic")
                 End If
             Else
-                If (Not reconRecord.LaborAmount Is Nothing AndAlso reconRecord.LaborAmount.Value > oMaximumLabor.GetValueOrDefault(0D)) Then
+                If (reconRecord.LaborAmount IsNot Nothing AndAlso reconRecord.LaborAmount.Value > oMaximumLabor.GetValueOrDefault(0D)) Then
                     oPendingForPay = True
-                    MyBase.AppendTraceLine("#Pending for Payment because of Labor")
+                    AppendTraceLine("#Pending for Payment because of Labor")
                 End If
             End If
 
             ' Validate Shipping Amount
-            If (Not reconRecord.ShippingAmount Is Nothing AndAlso reconRecord.ShippingAmount.Value > oMaximumShipping.GetValueOrDefault(0D)) Then
+            If (reconRecord.ShippingAmount IsNot Nothing AndAlso reconRecord.ShippingAmount.Value > oMaximumShipping.GetValueOrDefault(0D)) Then
                 oPendingForPay = True
-                MyBase.AppendTraceLine("#Pending for Payment because of Shipping")
+                AppendTraceLine("#Pending for Payment because of Shipping")
             End If
 
             '-- Validate Max Authorized Amount (Replacement) Amount
@@ -678,7 +678,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                     With claimAuthorization.ClaimAuthorizationItemChildren.Where(Function(item) item.ServiceTypeCode = Codes.SERVICE_TYPE__REPLACEMENT_PRICE).First()
                         If (.Amount.Value > oMaximumReplacement.GetValueOrDefault(0)) Then
                             oPendingForPay = True
-                            MyBase.AppendTraceLine(", #Pending for Payment because of Replacement Amount")
+                            AppendTraceLine(", #Pending for Payment because of Replacement Amount")
                         End If
                     End With
                 End If
@@ -725,7 +725,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
             ' *** End - Replacement Parts
 
             ' *** Start - Update Replacement Details
-            If (Not reconRecord.ReplacementSerialNumber Is Nothing AndAlso reconRecord.ReplacementSerialNumber.Trim().Length > 0) Then
+            If (reconRecord.ReplacementSerialNumber IsNot Nothing AndAlso reconRecord.ReplacementSerialNumber.Trim().Length > 0) Then
                 Dim replacedEquipment As ClaimEquipment
                 Dim claimEquipmentReplacementId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_EQUIPMENT_TYPE, Codes.CLAIM_EQUIP_TYPE__REPLACEMENT)
                 replacedEquipment = claim.ClaimEquipmentChildren.Where(Function(ce) ce.ClaimEquipmentTypeId = claimEquipmentReplacementId).FirstOrDefault()
@@ -800,7 +800,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                     End With
                 End If
             Else
-                If (Not oClaimStatus Is Nothing) Then
+                If (oClaimStatus IsNot Nothing) Then
                     oClaimStatus.Delete()
                 End If
             End If
@@ -809,11 +809,11 @@ Public NotInheritable Class VendorAuthorizationFileLoad
 
             ' Check if Comment needs to be Created for Claim
             Dim comment As Comment
-            If (Not reconRecord.Comments Is Nothing AndAlso reconRecord.Comments.Trim().Length > 0) Then
+            If (reconRecord.Comments IsNot Nothing AndAlso reconRecord.Comments.Trim().Length > 0) Then
                 If (comment Is Nothing) Then comment = claim.AddNewComment()
                 With comment
                     .ClaimId = claim.Id
-                    .CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__OTHER)
+                    .CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__OTHER)
                     .CertId = claim.Certificate.Id
                     .Comments = reconRecord.Comments
                     .Save()
@@ -844,7 +844,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                     commentText.Append(claim.Certificate.WorkPhone)
                 End If
 
-                If (Not oAdditionalComments Is Nothing AndAlso oAdditionalComments.Trim().Length > 0) Then
+                If (oAdditionalComments IsNot Nothing AndAlso oAdditionalComments.Trim().Length > 0) Then
                     commentText.Append(", ").Append(oAdditionalComments)
                 End If
 
@@ -852,13 +852,13 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                     .ClaimId = claim.Id
                     .CertId = claim.Certificate.Id
                     .Comments = .Comments + commentText.ToString()
-                    .CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CALL_BACK_CUSTOMER)
+                    .CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CALL_BACK_CUSTOMER)
                     .Save()
                     claim.IsUpdatedComment = True
                 End With
             Else
                 For Each oComment As Comment In claim.ClaimCommentsList
-                    If (oComment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CALL_BACK_CUSTOMER)) Then
+                    If (oComment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CALL_BACK_CUSTOMER)) Then
                         oComment.Delete()
                         claim.IsUpdatedComment = True
                     End If
@@ -869,7 +869,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
 
             Return ProcessResult.Loaded
         Catch ex As DataBaseAccessException
-            Common.AppConfig.Log(DirectCast(ex, Exception))
+            AppConfig.Log(DirectCast(ex, Exception))
             If (ex.ErrorType = DataBaseAccessException.DatabaseAccessErrorType.BusinessErr) Then
                 If (ex.Code Is Nothing OrElse ex.Code.Trim().Length = 0) Then
                     reconRecord.RejectReason = "Rejected During Load process"
@@ -883,13 +883,13 @@ Public NotInheritable Class VendorAuthorizationFileLoad
             reconRecord.RejectCode = "000"
             Return ProcessResult.Rejected
         Catch ex As BOValidationException
-            Common.AppConfig.Log(DirectCast(ex, Exception))
+            AppConfig.Log(DirectCast(ex, Exception))
             reconRecord.RejectCode = "000"
             reconRecord.RejectReason = ex.ToRejectReason()
             reconRecord.RejectReason = reconRecord.RejectReason.Substring(0, Math.Min(60, reconRecord.RejectReason.Length))
             Return ProcessResult.Rejected
         Catch ex As Exception
-            Common.AppConfig.Log(ex)
+            AppConfig.Log(ex)
             reconRecord.RejectCode = "000"
             reconRecord.RejectReason = "Rejected During Load process"
             Return ProcessResult.Rejected

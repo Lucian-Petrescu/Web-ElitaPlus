@@ -66,7 +66,7 @@ Public Class CompanyCreditCard
         Try
             Dim dal As New CompanyCreditCardDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -90,7 +90,7 @@ Public Class CompanyCreditCard
         Try
             Dim dal As New CompanyCreditCardDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -232,12 +232,12 @@ Public Class CompanyCreditCard
         Public Function AddNewRowToEmptyDV() As CompanyCreditCardSearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(CompanyCreditCardSearchDV.COL_COMPANY_CREDIT_CARD_ID) = (New Guid()).ToByteArray
-            row(CompanyCreditCardSearchDV.COL_CREDIT_CARD_FORMAT_ID) = Guid.Empty.ToByteArray
-            row(CompanyCreditCardSearchDV.COL_COMPANY_ID) = Guid.Empty.ToByteArray
-            row(CompanyCreditCardSearchDV.COL_COMPANY_CODE) = ""
-            row(CompanyCreditCardSearchDV.COL_CREDIT_CARD_TYPE) = ""
-            row(CompanyCreditCardSearchDV.COL_BILLING_DATE) = Long.MinValue
+            row(COL_COMPANY_CREDIT_CARD_ID) = (New Guid()).ToByteArray
+            row(COL_CREDIT_CARD_FORMAT_ID) = Guid.Empty.ToByteArray
+            row(COL_COMPANY_ID) = Guid.Empty.ToByteArray
+            row(COL_COMPANY_CODE) = ""
+            row(COL_CREDIT_CARD_TYPE) = ""
+            row(COL_BILLING_DATE) = Long.MinValue
             dt.Rows.Add(row)
             Return New CompanyCreditCardSearchDV(dt)
         End Function

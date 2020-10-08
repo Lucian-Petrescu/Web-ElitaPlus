@@ -71,9 +71,9 @@ Public Class ServiceOrder
                 Dim rowIndex As Integer
                 For rowIndex = 0 To Dataset.Tables(dal.TABLE_NAME).Rows.Count - 1
                     Row = Dataset.Tables(dal.TABLE_NAME).Rows.Item(rowIndex)
-                    If Not (Row.RowState = DataRowState.Deleted) Or (Row.RowState = DataRowState.Detached) Then
+                    If Not (Row.RowState = DataRowState.Deleted) OrElse (Row.RowState = DataRowState.Detached) Then
                         Dim serviceOrderBO As ServiceOrder = New ServiceOrder(Row)
-                        If claimBO.Id.Equals(serviceOrderBO.ClaimId) And serviceOrderBO.IsNew Then
+                        If claimBO.Id.Equals(serviceOrderBO.ClaimId) AndAlso serviceOrderBO.IsNew Then
                             serviceOrderBO.Delete()
                         End If
                     End If
@@ -105,7 +105,7 @@ Public Class ServiceOrder
         Try
             Dim dal As New ServiceOrderDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -129,7 +129,7 @@ Public Class ServiceOrder
         Try
             Dim dal As New ServiceOrderDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -261,7 +261,7 @@ Public Class ServiceOrder
             MyBase.Save()
             If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ServiceOrderDAL
-                If Not Dataset.Tables(ClaimStatusDAL.TABLE_NAME) Is Nothing AndAlso Dataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
+                If Dataset.Tables(ClaimStatusDAL.TABLE_NAME) IsNot Nothing AndAlso Dataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
                     dal.UpdateFamily(Dataset)
                 ElseIf Not (claimAuthorizationId.Equals(Guid.Empty)) Then
                     dal.UpdateFamily(Dataset)
@@ -402,7 +402,7 @@ Public Class ServiceOrder
             Return xsltString
 
         Finally
-            If (Not resourceStream Is Nothing) Then
+            If (resourceStream IsNot Nothing) Then
                 resourceStream.Dispose()
             End If
         End Try
@@ -452,7 +452,7 @@ Public Class ServiceOrder
             If GetLatestServiceOrderID(claimBO.Id).Equals(Guid.Empty) Then
                 'create a New claim extended status "Work Order Opened"
                 Dim newClaimStatusByGroupId As Guid = Guid.Empty
-                newClaimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(DALObjects.ClaimStatusDAL.WORK_ORDER_OPENED)
+                newClaimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(ClaimStatusDAL.WORK_ORDER_OPENED)
                 If Not newClaimStatusByGroupId.Equals(Guid.Empty) Then
                     Dim objClaimStatusBO As ClaimStatus = oServiceOrder.AddExtendedClaimStatus(Guid.Empty)
                     objClaimStatusBO.ClaimId = claimBO.Id

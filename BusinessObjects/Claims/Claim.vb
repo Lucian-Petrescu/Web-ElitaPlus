@@ -75,8 +75,8 @@ Public NotInheritable Class Claim
 
             Return retClaimNumber
         Catch ex As DataBaseAccessException
-            If ex.Code = Common.ErrorCodes.ERR_NO_CLAIM_INFO_FOUND Then
-                Throw New BOValidationException("Claim Error: ", Common.ErrorCodes.ERR_NO_CLAIM_INFO_FOUND)
+            If ex.Code = ErrorCodes.ERR_NO_CLAIM_INFO_FOUND Then
+                Throw New BOValidationException("Claim Error: ", ErrorCodes.ERR_NO_CLAIM_INFO_FOUND)
             Else
                 Throw ex
             End If
@@ -307,7 +307,7 @@ Public NotInheritable Class Claim
             CheckDeleted()
 
             'Added logic to default to "Y" for spare parts if the current value is "Y", else default to "N"
-            If (Not Row(ClaimDAL.COL_NAME_SPARE_PARTS) Is DBNull.Value) AndAlso (Row(ClaimDAL.COL_NAME_SPARE_PARTS) = "Y") Then
+            If (Row(ClaimDAL.COL_NAME_SPARE_PARTS) IsNot DBNull.Value) AndAlso (Row(ClaimDAL.COL_NAME_SPARE_PARTS) = "Y") Then
                 SetValue(ClaimDAL.COL_NAME_SPARE_PARTS, "Y")
             ElseIf Value = Nothing Then
                 SetValue(ClaimDAL.COL_NAME_SPARE_PARTS, "N")
@@ -469,15 +469,15 @@ Public NotInheritable Class Claim
             'Since the RepairDate for the new Service Warranty Claim is Blank, we need to get the 
             'RepairDate for the parent Repair Claim.
             'BEGIN - New logic - Ravi
-            If (parentClaim Is Nothing AndAlso Not ClaimNumber Is Nothing AndAlso ClaimNumber.EndsWith("S")) Then
+            If (parentClaim Is Nothing AndAlso ClaimNumber IsNot Nothing AndAlso ClaimNumber.EndsWith("S")) Then
                 parentClaim = ClaimFacade.Instance.GetClaim(Of Claim)(ClaimNumber.TrimEnd("S"), CompanyId)
             End If
-            If (parentClaim Is Nothing OrElse (Not ClaimNumber Is Nothing AndAlso Not ClaimNumber.EndsWith("S"))) Then
+            If (parentClaim Is Nothing OrElse (ClaimNumber IsNot Nothing AndAlso Not ClaimNumber.EndsWith("S"))) Then
                 Return False
             End If
-            If Not ClaimActivityCode Is Nothing AndAlso ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK AndAlso Not parentClaim.RepairDate Is Nothing AndAlso Not ServiceCenterObject Is Nothing Then
+            If ClaimActivityCode IsNot Nothing AndAlso ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK AndAlso parentClaim.RepairDate IsNot Nothing AndAlso ServiceCenterObject IsNot Nothing Then
                 Dim elpasedDaysSinceRepaired As Long
-                If Not parentClaim.PickUpDate Is Nothing Then
+                If parentClaim.PickUpDate IsNot Nothing Then
                     elpasedDaysSinceRepaired = Date.Now.Subtract(parentClaim.PickUpDate.Value).Days
                 Else
                     elpasedDaysSinceRepaired = Date.Now.Subtract(parentClaim.RepairDate.Value).Days
@@ -894,8 +894,8 @@ Public NotInheritable Class Claim
 
             If Not (NotificationTypeId.Equals(Guid.Empty)) Then
                 Return True
-            ElseIf ((Source Is Nothing) Or (Not Source Is Nothing AndAlso Source.Equals(String.Empty))) _
-                             And ((ClaimActivityCode Is Nothing) Or ((Not ClaimActivityCode Is Nothing) AndAlso
+            ElseIf ((Source Is Nothing) Or (Source IsNot Nothing AndAlso Source.Equals(String.Empty))) _
+                             And ((ClaimActivityCode Is Nothing) Or ((ClaimActivityCode IsNot Nothing) AndAlso
                              ((ClaimActivityCode <> Codes.CLAIM_ACTIVITY__REPLACED) And
                                ClaimActivityCode <> Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT))) Then
                 Return True
@@ -1055,7 +1055,7 @@ Public NotInheritable Class Claim
 
     Public ReadOnly Property CustomerName As String Implements IInvoiceable.CustomerName
         Get
-            Return MyBase.Certificate.CustomerName
+            Return Certificate.CustomerName
         End Get
     End Property
 
@@ -1107,7 +1107,7 @@ Public NotInheritable Class Claim
 
     Public ReadOnly Property PayDeductibleId As Guid Implements IInvoiceable.PayDeductibleId
         Get
-            Return MyBase.Dealer.PayDeductibleId
+            Return Dealer.PayDeductibleId
         End Get
     End Property
 
@@ -1178,12 +1178,12 @@ Public NotInheritable Class Claim
     'KDDDI Changes 
     Public ReadOnly Property IsReshipmentAllowed As String Implements IInvoiceable.IsReshipmentAllowed
         Get
-            Return MyBase.Dealer.Is_Reshipment_Allowed
+            Return Dealer.Is_Reshipment_Allowed
         End Get
     End Property
     Public ReadOnly Property IsCancelShipmentAllowed As String Implements IInvoiceable.IsCancelShipmentAllowed
         Get
-            Return MyBase.Dealer.Is_Cancel_Shipment_Allowed
+            Return Dealer.Is_Cancel_Shipment_Allowed
         End Get
     End Property
 
@@ -1199,13 +1199,13 @@ Public NotInheritable Class Claim
 #Region "Public Members"
     Public Sub CancelCertBasedOnContractReplacementPolicy()
 
-        If MethodOfRepairCode = "R" AndAlso (Not RepairDate Is Nothing) Then 'Replacement claim is fulfilled
+        If MethodOfRepairCode = "R" AndAlso (RepairDate IsNot Nothing) Then 'Replacement claim is fulfilled
             'Get a refreshed the certificate BO
             Dim certBO As Certificate = New Certificate(Certificate.Id)
             If certBO.StatusCode = "A" Then 'certificate is still active
                 Dim contractBO As Contract = New Contract(Contract.GetContractID(CertificateId))
                 Dim blnCancelCert As Boolean = False
-                If contractBO.ReplacementPolicyId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_REPLACEMENT_POLICIES, Codes.REPLACEMENT_POLICY__CNCLAF)) Then
+                If contractBO.ReplacementPolicyId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_REPLACEMENT_POLICIES, Codes.REPLACEMENT_POLICY__CNCLAF)) Then
 
                     Dim lngRepPolicyClaimCnt As Long = ReppolicyClaimCount.GetReplacementPolicyClaimCntByClaim(contractBO.Id, Id)
 
@@ -1296,9 +1296,9 @@ Public NotInheritable Class Claim
 
         If claimExsists = True Then
 
-            If Not MasterClaimNumber Is Nothing Then
+            If MasterClaimNumber IsNot Nothing Then
                 IsUpdatedMasterClaimComment = True
-                Dim ds As DataSet = Claim.GetClaimDetailbyClaimNumAndDealer(MasterClaimNumber, cert.DealerId)
+                Dim ds As DataSet = GetClaimDetailbyClaimNumAndDealer(MasterClaimNumber, cert.DealerId)
                 MasterClaimId = GuidControl.ByteArrayToGuid(ds.Tables(0).Rows(0)(ClaimDAL.COL_NAME_CLAIM_ID))
 
                 Dim claimBO As Claim = AddClaim(MasterClaimId)
@@ -1338,7 +1338,7 @@ Public NotInheritable Class Claim
         Dim cert As New Certificate(certItem.CertId)
         'Dim dlr As New Dealer(cert.DealerId)
         Dim dvProductCodeID As DataView = boPrdcode.GetProductCodeId(cert.DealerId, cert.ProductCode)
-        If Not dvProductCodeID Is Nothing AndAlso dvProductCodeID.Count > 0 Then
+        If dvProductCodeID IsNot Nothing AndAlso dvProductCodeID.Count > 0 Then
             If Not dvProductCodeID.Item(0)(DATE_COL_NAME_PRODUCT_CODE_ID).Equals(Guid.Empty) Then
                 ProductCodeID = GuidControl.ByteArrayToGuid(dvProductCodeID.Item(0)(DATE_COL_NAME_PRODUCT_CODE_ID))
             End If
@@ -1348,7 +1348,7 @@ Public NotInheritable Class Claim
             Dim dsCovLoss As DataSet = boCovloss.LoadSelectedCovLossFromCovandCauseOfLoss(CauseOfLossId, certItemCoverage.CoverageTypeId)
             If dsCovLoss.Tables(0).Rows.Count > 0 Then
                 Dim dsSplSvc As DataSet = boSplSvc.ValidateCoverageLoss(cert.DealerId, GuidControl.ByteArrayToGuid(dsCovLoss.Tables(0).Rows(0)(dalCovloss.COL_NAME_COVERAGE_LOSS_ID)))
-                If Not dsSplSvc Is Nothing Then
+                If dsSplSvc IsNot Nothing Then
                     If dsSplSvc.Tables(0).Rows.Count > 0 Then
                         SpecialServiceOccurrenceType = LookupListNew.GetCodeFromId(LookupListNew.GetOccurancesAllowedLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), GuidControl.ByteArrayToGuid(dsSplSvc.Tables(0).Rows(0)(dalSplSvc.COL_NAME_ALLOWED_OCCURRENCES_ID)))
                         If dsSplSvc.Tables(0).Rows(0)(dalSplSvc.DB_COL_NAME_SERVICE_CLASS_ID).ToString() <> "" Then
@@ -1362,7 +1362,7 @@ Public NotInheritable Class Claim
                         ''SpecialServicePriceGroupType = LookupListNew.GetCodeFromId(LookupListNew.GetPriceGroupDPLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), GuidControl.ByteArrayToGuid(dsSplSvc.Tables(0).Rows(0)(dalSplSvc.DB_COL_NAME_SERVICE_TYPE_ID)))
                         SpecialServiceDesc = dsSplSvc.Tables(0).Rows(0)(dalSplSvc.COL_NAME_DESCRIPTION).ToString
                         Dim dsProdSplSvc As DataSet = boPrdSplSvc.LoadProdSplSvcList(GuidControl.ByteArrayToGuid(dsSplSvc.Tables(0).Rows(0)(COL_NAME_SPECIAL_SERVICE_ID)), ProductCodeID)
-                        If Not dsProdSplSvc Is Nothing AndAlso dsProdSplSvc.Tables(0).Rows.Count > 0 Then
+                        If dsProdSplSvc IsNot Nothing AndAlso dsProdSplSvc.Tables(0).Rows.Count > 0 Then
                             Return yesId
                             'Else
                             '   Return noId
@@ -1393,10 +1393,10 @@ Public NotInheritable Class Claim
         Dim blnGVSCall As Boolean = False
         If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
             ' Create transaction log header if the service center is integrated with GVS 
-            If Not ServiceCenterObject Is Nothing AndAlso ServiceCenterObject.IntegratedWithGVS AndAlso Not ServiceCenterObject.IntegratedAsOf Is Nothing AndAlso (IsNew Or (Not IsNew AndAlso CreatedDateTime.Value >= ServiceCenterObject.IntegratedAsOf.Value)) Then
+            If ServiceCenterObject IsNot Nothing AndAlso ServiceCenterObject.IntegratedWithGVS AndAlso ServiceCenterObject.IntegratedAsOf IsNot Nothing AndAlso (IsNew Or (Not IsNew AndAlso CreatedDateTime.Value >= ServiceCenterObject.IntegratedAsOf.Value)) Then
                 If IsNew Then
                     ' Add a NEW extended claim status when open a new claim with GVS integrated
-                    Dim newClaimStatusByGroupId As Guid = ClaimStatusByGroup.GetClaimStatusByGroupID(DALObjects.ClaimStatusDAL.NEW_EXTENDED_CLAIM_STATUS)
+                    Dim newClaimStatusByGroupId As Guid = ClaimStatusByGroup.GetClaimStatusByGroupID(ClaimStatusDAL.NEW_EXTENDED_CLAIM_STATUS)
                     If _claimStatusBO Is Nothing Then
                         AddExtendedClaimStatus(Guid.Empty)
                         _claimStatusBO.ClaimId = Id
@@ -1440,7 +1440,7 @@ Public NotInheritable Class Claim
             If Not objCountry.DefaultSCId.Equals(Guid.Empty) Then
                 Me.ServiceCenterId = objCountry.DefaultSCId
             Else
-                Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.SERVICE_CENTER_IS_REQUIRED_ERROR, GetType(Claim), Nothing, "Search", Nothing)}
+                Dim errors() As ValidationError = {New ValidationError(ErrorCodes.SERVICE_CENTER_IS_REQUIRED_ERROR, GetType(Claim), Nothing, "Search", Nothing)}
                 Throw New BOValidationException(errors, GetType(Claim).FullName)
                 'Throw New ElitaPlusException("Claim Loading Data", Common.ErrorCodes.SERVICE_CENTER_IS_REQUIRED_ERROR)
             End If
@@ -1452,7 +1452,7 @@ Public NotInheritable Class Claim
         Dim dv As DataView = GetRePairPricesByMethodOfRepair
 
         Me.AuthorizedAmount = 0
-        If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
+        If dv IsNot Nothing AndAlso dv.Table.Rows.Count > 0 Then
             AuthorizedAmount = CDec(dv.Table.Rows(0)(COL_PRICE_DV))
             'Else
             '   Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, Messages.PRICE_LIST_NOT_FOUND)
@@ -1462,7 +1462,7 @@ Public NotInheritable Class Claim
             Deductible = New DecimalType(0)
             LiabilityLimit = New DecimalType(0)
             DeductiblePercent = New DecimalType(0)
-            DeductiblePercentID = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+            DeductiblePercentID = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
         Else
             LiabilityLimit = CertificateItemCoverage.LiabilityLimits
             PrepopulateDeductible()
@@ -1479,13 +1479,13 @@ Public NotInheritable Class Claim
         'Dim servCenter As ServiceCenter
 
         'get the equipment information'if equipment not used then get the prices based on risktypeid
-        If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
-            equipConditionid = LookupListNew.GetIdFromCode(LookupListNew.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
+        If (LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
+            equipConditionid = LookupListNew.GetIdFromCode(LookupListCache.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
             If ClaimedEquipment Is Nothing OrElse ClaimedEquipment.EquipmentBO Is Nothing Then
                 CreateClaimedEquipment(CertificateItem.CopyEnrolledEquip_into_ClaimedEquip())
             End If
 
-            If Not ClaimedEquipment Is Nothing AndAlso Not ClaimedEquipment.EquipmentBO Is Nothing Then
+            If ClaimedEquipment IsNot Nothing AndAlso ClaimedEquipment.EquipmentBO IsNot Nothing Then
                 equipmentId = ClaimedEquipment.EquipmentId
                 equipClassId = ClaimedEquipment.EquipmentBO.EquipmentClassId
                 dv = PriceListDetail.GetRepairPricesforMethodofRepair(MethodOfRepairId, CompanyId, servCenter.Code, RiskTypeId, DateTime.Now,
@@ -1539,9 +1539,9 @@ Public NotInheritable Class Claim
         Dim equipClassId As Guid
 
         'get the equipment information'if equipment not used then get the prices based on risktypeid
-        If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
-            equipConditionid = LookupListNew.GetIdFromCode(LookupListNew.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
-            If Not ClaimedEquipment Is Nothing AndAlso Not ClaimedEquipment.EquipmentBO Is Nothing Then
+        If (LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
+            equipConditionid = LookupListNew.GetIdFromCode(LookupListCache.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
+            If ClaimedEquipment IsNot Nothing AndAlso ClaimedEquipment.EquipmentBO IsNot Nothing Then
                 equipmentId = ClaimedEquipment.EquipmentId
                 equipClassId = ClaimedEquipment.EquipmentBO.EquipmentClassId
                 dv = PriceListDetail.GetPricesForServiceType(CompanyId, ServiceCenterObject.Code, RiskTypeId,
@@ -1584,14 +1584,14 @@ Public NotInheritable Class Claim
     Private Sub PopulateRequiredData()
 
         Dim _CertificateDetailDataSet As DataSet = Certificate.GalaxyGetCertificateDetail(CertificateNumber, DealerCode)
-        If Not _CertificateDetailDataSet Is Nothing AndAlso _CertificateDetailDataSet.Tables.Count > 0 AndAlso _CertificateDetailDataSet.Tables(0).Rows.Count > 0 Then
+        If _CertificateDetailDataSet IsNot Nothing AndAlso _CertificateDetailDataSet.Tables.Count > 0 AndAlso _CertificateDetailDataSet.Tables(0).Rows.Count > 0 Then
             _MFG_MAX_Mileage_Limit = CType(_CertificateDetailDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_MFG_MAX_MILEAGE_LIMIT), Integer)
             _vehicle_condition = _CertificateDetailDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_MFG_NEW_USED)
             _cert_RemainingBalance = _CertificateDetailDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_REMAINING_BALANCE)
 
             Dim dsItemCoverages As DataSet = CertItemCoverage.LoadAllItemCoveragesForGalaxyClaim(CertificateId)
 
-            If Not dsItemCoverages Is Nothing AndAlso dsItemCoverages.Tables.Count > 0 AndAlso dsItemCoverages.Tables(0).Rows.Count > 0 Then
+            If dsItemCoverages IsNot Nothing AndAlso dsItemCoverages.Tables.Count > 0 AndAlso dsItemCoverages.Tables(0).Rows.Count > 0 Then
                 _coverage_mi_km = dsItemCoverages.Tables(0).Compute("Max(coverage_km_mi)", "")
             End If
 
@@ -1608,8 +1608,8 @@ Public NotInheritable Class Claim
         'Generate a New Comment if the ClaimBO is Dirty and no new comment has already been added
         Dim commentBO As Comment = AddNewComment()
         commentBO.CallerName = CallerName
-        commentBO.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CUSTOMER_CALL)
-        commentBO.Comments = LookupListNew.GetDescriptionFromId(LookupListNew.LK_COMMENT_TYPES, commentBO.CommentTypeId)
+        commentBO.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CUSTOMER_CALL)
+        commentBO.Comments = LookupListNew.GetDescriptionFromId(LookupListCache.LK_COMMENT_TYPES, commentBO.CommentTypeId)
     End Sub
 
     Public Function CreateNewClaim(Optional ByVal oldClaimId As Guid = Nothing) As Claim
@@ -1644,7 +1644,7 @@ Public NotInheritable Class Claim
 
         'REQ 1106 start
         newClaimBO.CreateEnrolledEquipment()
-        If ((Not newClaimBO.CertificateItem Is Nothing) _
+        If ((newClaimBO.CertificateItem IsNot Nothing) _
              AndAlso (Not newClaimBO.CertificateItem.ManufacturerId.Equals(Guid.Empty))) Then
             newClaimBO.CreateClaimedEquipment(newClaimBO.CertificateItem.CopyEnrolledEquip_into_ClaimedEquip())
             newClaimBO.CreateReplacementOptions()
@@ -1669,8 +1669,8 @@ Public NotInheritable Class Claim
                 .ClaimNumber = .ClaimNumber.Substring(0, .ClaimNumber.Length - 1)
             End If
             .ClaimNumber &= "R"
-            .ClaimActivityId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT)
-            .MethodOfRepairId = LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)
+            .ClaimActivityId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT)
+            .MethodOfRepairId = LookupListNew.GetIdFromCode(LookupListCache.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)
             newClaimBO.PrepopulateDeductible()
             '.StatusCode = Codes.CLAIM_STATUS__ACTIVE
             .ReasonClosedId = Guid.Empty
@@ -1691,7 +1691,7 @@ Public NotInheritable Class Claim
                 .ClaimNumber = .ClaimNumber.Substring(0, .ClaimNumber.Length - 1)
             End If
             .ClaimNumber &= "S"
-            .ClaimActivityId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__REWORK)
+            .ClaimActivityId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__REWORK)
             .StatusCode = Codes.CLAIM_STATUS__ACTIVE
             .ReasonClosedId = Guid.Empty
             .RepairDate = Nothing
@@ -1756,7 +1756,7 @@ Public NotInheritable Class Claim
                 price = 0
                 Dim dvEstimate As DataView = GetPricesForServiceType(Codes.SERVICE_CLASS__REPAIR, Codes.SERVICE_TYPE__ESTIMATE_PRICE)
 
-                If Not dvEstimate Is Nothing AndAlso dvEstimate.Count > 0 Then
+                If dvEstimate IsNot Nothing AndAlso dvEstimate.Count > 0 Then
                     price = CDec(dvEstimate(0)(COL_PRICE_DV))
                     nEstimatePrice = price
                 End If
@@ -1768,7 +1768,7 @@ Public NotInheritable Class Claim
 
                 If (nEstimatePrice = 0) Then
                     If Not PreserveAuthAmount() Then
-                        ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_REPLACED)
+                        ReasonClosedId = LookupListNew.GetIdFromCode(LookupListCache.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_REPLACED)
                         CloseTheClaim()
                     End If
                     If Not PreserveAuthAmount() Then
@@ -1776,7 +1776,7 @@ Public NotInheritable Class Claim
                     End If
                 Else
                     'EstimatePrice <> 0, so set the ClaimActivityCode for the Existing RepairClaim = "TBREP"
-                    ClaimActivityId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Assurant.ElitaPlus.BusinessObjectsNew.Codes.CLAIM_ACTIVITY__TO_BE_REPLACED)
+                    ClaimActivityId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__TO_BE_REPLACED)
                 End If
                 If Deductible.Value > 0 Then
                     Deductible = New DecimalType(ZERO_DECIMAL)
@@ -1865,7 +1865,7 @@ Public NotInheritable Class Claim
 
         Dim dv As DataView = GetRePairPricesByMethodOfRepair
         'Me.AuthorizedAmount = 0
-        If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
+        If dv IsNot Nothing AndAlso dv.Table.Rows.Count > 0 Then
             AuthorizedAmount = CDec(dv.Table.Rows(0)(COL_PRICE_DV))
             'Else
             '   Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, Messages.PRICE_LIST_NOT_FOUND)
@@ -1891,10 +1891,10 @@ Public NotInheritable Class Claim
             Dim dal As ClaimInvoiceDAL = New ClaimInvoiceDAL
             dal.GetReplacementTaxType(ServiceCenterId, RiskTypeId, dtEff, ProductPrice, taxtypeID)
             If taxtypeID = Guid.Empty Then
-                taxtypeID = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_TYPES, CountryTax.TaxTypeCode.REPAIRS)
+                taxtypeID = LookupListNew.GetIdFromCode(LookupListCache.LK_TAX_TYPES, CountryTax.TaxTypeCode.REPAIRS)
             End If
         Else
-            taxtypeID = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_TYPES, CountryTax.TaxTypeCode.REPAIRS)
+            taxtypeID = LookupListNew.GetIdFromCode(LookupListCache.LK_TAX_TYPES, CountryTax.TaxTypeCode.REPAIRS)
         End If
 
         'REQ 1150
@@ -1924,7 +1924,7 @@ Public NotInheritable Class Claim
 
     Public Sub SetPickUpDateFromLoanerReturnedDate() Implements IInvoiceable.SetPickUpDateFromLoanerReturnedDate
 
-        If Not LoanerReturnedDate Is Nothing Then PickUpDate = LoanerReturnedDate
+        If LoanerReturnedDate IsNot Nothing Then PickUpDate = LoanerReturnedDate
 
     End Sub
 
@@ -1933,23 +1933,23 @@ Public NotInheritable Class Claim
         Dim tax As Decimal = 0
         Dim Total As Decimal
         With objClaimAuthDetail
-            If Not .LaborAmount Is Nothing Then subTotal += .LaborAmount.Value
-            If Not .PartAmount Is Nothing Then subTotal += .PartAmount.Value
-            If Not .ServiceCharge Is Nothing Then subTotal += .ServiceCharge.Value
-            If Not .TripAmount Is Nothing Then subTotal += .TripAmount.Value
-            If Not .OtherAmount Is Nothing Then subTotal += .OtherAmount.Value
-            If Not .ShippingAmount Is Nothing Then subTotal += .ShippingAmount.Value
-            If Not .DispositionAmount Is Nothing Then subTotal += .DispositionAmount.Value
-            If Not .DiagnosticsAmount Is Nothing Then subTotal += .DiagnosticsAmount.Value
-            If Not .TotalTaxAmount Is Nothing Then tax = .TotalTaxAmount.Value
+            If .LaborAmount IsNot Nothing Then subTotal += .LaborAmount.Value
+            If .PartAmount IsNot Nothing Then subTotal += .PartAmount.Value
+            If .ServiceCharge IsNot Nothing Then subTotal += .ServiceCharge.Value
+            If .TripAmount IsNot Nothing Then subTotal += .TripAmount.Value
+            If .OtherAmount IsNot Nothing Then subTotal += .OtherAmount.Value
+            If .ShippingAmount IsNot Nothing Then subTotal += .ShippingAmount.Value
+            If .DispositionAmount IsNot Nothing Then subTotal += .DispositionAmount.Value
+            If .DiagnosticsAmount IsNot Nothing Then subTotal += .DiagnosticsAmount.Value
+            If .TotalTaxAmount IsNot Nothing Then tax = .TotalTaxAmount.Value
 
         End With
         Total = subTotal + tax
         AuthorizedAmount = Total
 
         '' Auth amt is being changed, calculate the new deductible amt if by percent
-        If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, DeductiblePercentID) = Codes.YESNO_Y Then
-            If Not DeductiblePercent Is Nothing Then
+        If LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, DeductiblePercentID) = Codes.YESNO_Y Then
+            If DeductiblePercent IsNot Nothing Then
                 If DeductiblePercent.Value > 0 Then
                     Calculate_deductible_if_by_percentage()
                 End If
@@ -2013,7 +2013,7 @@ Public NotInheritable Class Claim
         'Get the price
         Dim dv As DataView = GetRePairPricesByMethodOfRepair
         Dim price As Decimal = 0
-        If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
+        If dv IsNot Nothing AndAlso dv.Table.Rows.Count > 0 Then
             price = CDec(dv.Table.Rows(0)(COL_PRICE_DV))
 
             Select Case dv.Table.Rows(0)(PriceListDetailDAL.COL_NAME_SERVICE_TYPE_CODE).ToString()
@@ -2037,7 +2037,7 @@ Public NotInheritable Class Claim
         price = 0
         Dim dvEstimate As DataView = GetPricesForServiceType(Codes.SERVICE_CLASS__REPAIR, Codes.SERVICE_TYPE__ESTIMATE_PRICE)
 
-        If Not dvEstimate Is Nothing AndAlso dvEstimate.Count > 0 Then
+        If dvEstimate IsNot Nothing AndAlso dvEstimate.Count > 0 Then
             price = CDec(dvEstimate(0)(COL_PRICE_DV))
             nEstimatePrice = price
         End If
@@ -2086,7 +2086,7 @@ Public NotInheritable Class Claim
 
     Public Function AddNewComment() As Comment
         Dim c As Comment = MyBase.AddNewComment
-        If Not SpecialInstruction Is Nothing Then c.Comments &= Environment.NewLine & SpecialInstruction
+        If SpecialInstruction IsNot Nothing Then c.Comments &= Environment.NewLine & SpecialInstruction
         Return c
     End Function
 
@@ -2096,7 +2096,7 @@ Public NotInheritable Class Claim
 
     Public Sub HandleGVSTransactionCreation(commentId As Guid, pIsNew As Nullable(Of Boolean)) Implements IInvoiceable.HandleGVSTransactionCreation
         ' Create transaction log header if the service center is integrated with GVS
-        If Not ServiceCenterObject Is Nothing AndAlso ServiceCenterObject.IntegratedWithGVS AndAlso Not ServiceCenterObject.IntegratedAsOf Is Nothing AndAlso (IsNew Or (Not IsNew AndAlso CreatedDateTime.Value >= ServiceCenterObject.IntegratedAsOf.Value)) Then
+        If ServiceCenterObject IsNot Nothing AndAlso ServiceCenterObject.IntegratedWithGVS AndAlso ServiceCenterObject.IntegratedAsOf IsNot Nothing AndAlso (IsNew Or (Not IsNew AndAlso CreatedDateTime.Value >= ServiceCenterObject.IntegratedAsOf.Value)) Then
             ' GVS Function Type = NEW_CLAIM or UPDATE_CLAIM
             ' Question: need to create the log for Replace or Service Warranty claim?
             Dim dal As New ClaimDAL
@@ -2131,7 +2131,7 @@ Public NotInheritable Class Claim
                 End If
             End With
 
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
             'Convert the Claim Number to UPPER Case
             If (Not (claimNumber Is Nothing)) Then
@@ -2233,7 +2233,7 @@ Public NotInheritable Class Claim
                 End If
             End With
 
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
             'Convert the Claim Number to UPPER Case
             If (Not (claimNumber.Equals(String.Empty))) Then
@@ -2293,7 +2293,7 @@ Public NotInheritable Class Claim
                 End If
             End With
 
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
             'Convert the Claim Number to UPPER Case
             If (Not (claimNumber.Equals(String.Empty))) Then
@@ -2370,7 +2370,7 @@ Public NotInheritable Class Claim
         Try
             Dim dal As New ClaimDAL
             Dim userNetworkId As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
             'Convert the Claim Number to UPPER Case
             If (Not (claimNumber.Equals(String.Empty))) Then
@@ -2448,7 +2448,7 @@ Public NotInheritable Class Claim
                 End If
             End With
 
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
             'Convert the Claim Number to UPPER Case
             If (Not (claimNumber.Equals(String.Empty))) Then
@@ -2506,7 +2506,7 @@ Public NotInheritable Class Claim
                 End If
             End With
 
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
             'Convert the Claim Number to UPPER Case
             If (Not (claimNumber.Equals(String.Empty))) Then
@@ -2566,7 +2566,7 @@ Public NotInheritable Class Claim
             Dim dal As New ClaimDAL
             Dim certIdStr As String
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
             'Convert the Master Claim Number to UPPER Case
             If (Not (masterClaimNumber.Equals(String.Empty))) Then
@@ -2595,7 +2595,7 @@ Public NotInheritable Class Claim
             Dim dal As New ClaimDAL
             Dim certIdStr As String
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
             'Convert the Master Claim Number to UPPER Case
             If (Not (masterClaimNumber.Equals(String.Empty))) Then
@@ -2644,7 +2644,7 @@ Public NotInheritable Class Claim
 
             Dim dal As New ClaimDAL
             Dim ds As DataSet
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
             'Check if the user has entered any search criteria... if NOT, then display an error
             If (followUpDate.Equals(String.Empty) AndAlso
@@ -2732,7 +2732,7 @@ Public NotInheritable Class Claim
         Try
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
             Dim dal As New ClaimDAL
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
             If (claimNumber.Equals(String.Empty) AndAlso srlNumber.Equals(String.Empty) AndAlso certNumber.Equals(String.Empty) AndAlso
                 serviceCenterId.Equals(Guid.Empty) AndAlso countryid.Equals(Guid.Empty) AndAlso manufacturerid.Equals(Guid.Empty) AndAlso
@@ -2771,11 +2771,11 @@ Public NotInheritable Class Claim
             Dim language_id As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Return New PendingReviewPaymentClaimSearchDV(dal.LoadPendingReviewPaymentClaimList(claimNumber, srlNumber, certNumber, serviceCenterId, countryid, manufacturerid, model, skuclaimed,
                                 skureplaced, claimstatus, extclaimstatusid, coveragetypeId, servicelevelid, Risktypeid, skureppart, ReplacementtypeId, ClaimCreatedDate, language_id,
-                                ElitaPlusIdentity.Current.ActiveUser.Id, LookupListNew.GetCodeFromId(LookupListNew.LK_SERVICE_LEVEL, servicelevelid),
-                                LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_AUTHORIZATION_TYPE, Codes.CLAIM_AUTHORIZATION_TYPE__MULTIPLE),
-                                LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_AUTHORIZATION_TYPE, Codes.CLAIM_AUTHORIZATION_TYPE__SINGLE),
-                                LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__VOID),
-                                LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_EQUIPMENT_TYPE, Codes.CLAIM_EQUIP_TYPE__CLAIMED)).Tables(0))
+                                ElitaPlusIdentity.Current.ActiveUser.Id, LookupListNew.GetCodeFromId(LookupListCache.LK_SERVICE_LEVEL, servicelevelid),
+                                LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_AUTHORIZATION_TYPE, Codes.CLAIM_AUTHORIZATION_TYPE__MULTIPLE),
+                                LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_AUTHORIZATION_TYPE, Codes.CLAIM_AUTHORIZATION_TYPE__SINGLE),
+                                LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__VOID),
+                                LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_EQUIPMENT_TYPE, Codes.CLAIM_EQUIP_TYPE__CLAIMED)).Tables(0))
 
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -2793,7 +2793,7 @@ Public NotInheritable Class Claim
             Dim dal As New ClaimDAL
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
 
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
             'Convert the Claim Number to UPPER Case
             If (Not (claimNumber.Equals(String.Empty))) Then
@@ -3230,7 +3230,7 @@ Public NotInheritable Class Claim
         Public Const COL_NAME_CLAIM_ID As String = ClaimDAL.COL_NAME_CLAIM_ID
         Public Const COL_NAME_CLAIM_NUMBER As String = ClaimDAL.COL_NAME_CLAIM_NUMBER
         Public Const COL_NAME_DEALER_CODE As String = ClaimDAL.COL_NAME_DEALER_CODE
-        Public Const COL_NAME_DATE_ADDED As String = ClaimDAL.COL_NAME_CREATED_DATE
+        Public Const COL_NAME_DATE_ADDED As String = DALBase.COL_NAME_CREATED_DATE
         Public Const COL_NAME_CERTIFICATE_NUMBER As String = ClaimDAL.COL_NAME_CERTIFICATE_NUMBER
         Public Const COL_NAME_PRODUCT_CODE As String = ClaimDAL.COL_NAME_PRODUCT_CODE
         Public Const COL_NAME_AUTHORIZED_AMOUNT As String = ClaimDAL.COL_NAME_AUTHORIZED_AMOUNT
@@ -3371,8 +3371,8 @@ Public NotInheritable Class Claim
         Public Const COL_NAME_CLAIM_ID As String = ClaimDAL.COL_NAME_CLAIM_ID
         Public Const COL_NAME_CLAIM_NUMBER As String = ClaimDAL.COL_NAME_CLAIM_NUMBER
         Public Const COL_NAME_CONTACT_NAME As String = ClaimDAL.COL_NAME_CONTACT_NAME
-        Public Const COL_NAME_MODIFIED_DATE As String = ClaimDAL.COL_NAME_MODIFIED_DATE
-        Public Const COL_NAME_MODIFIED_BY As String = ClaimDAL.COL_NAME_MODIFIED_BY
+        Public Const COL_NAME_MODIFIED_DATE As String = DALBase.COL_NAME_MODIFIED_DATE
+        Public Const COL_NAME_MODIFIED_BY As String = DALBase.COL_NAME_MODIFIED_BY
         Public Const COL_NAME_RESERVE_AMOUNT As String = ClaimDAL.COL_CAL_RESERVE_AMOUNT
         Public Const COL_NAME_PAYMENT_AMOUNT As String = ClaimDAL.COL_CAL_PAYMENT_AMOUNT
         Public Const COL_NAME_PICKUP_DATE As String = ClaimDAL.COL_NAME_PICKUP_DATE
@@ -3409,7 +3409,7 @@ Public NotInheritable Class Claim
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_REPAIR_DATE_ERR2)
+            MyBase.New(fieldDisplayName, ErrorCodes.INVALID_REPAIR_DATE_ERR2)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -3419,7 +3419,7 @@ Public NotInheritable Class Claim
             If obj.RepairDate Is Nothing Then Return True
 
             'if backend claim then both dates will be not null...then skip validation
-            If Not obj.RepairDate Is Nothing And Not obj.PickUpDate Is Nothing Then
+            If obj.RepairDate IsNot Nothing And obj.PickUpDate IsNot Nothing Then
                 Return True
             End If
 
@@ -3428,14 +3428,14 @@ Public NotInheritable Class Claim
 
             Dim createdDate As Date = Today
 
-            If Not obj.CreatedDate Is Nothing Then
+            If obj.CreatedDate IsNot Nothing Then
                 createdDate = obj.GetShortDate(obj.CreatedDate.Value)
             End If
 
             ' WR 757668: For a claim that is added from a claim interface:
             ' Repair Date is EQ to or LT the current date and EQ to or GT the Date of Loss
             ' A claim is originated from an interface when the Source field in the Claim record is not null
-            If Not obj.Source Is Nothing Then
+            If obj.Source IsNot Nothing Then
                 If ((repairDate >= obj.GetShortDate(obj.LossDate.Value)) AndAlso
                 (repairDate <= obj.GetShortDate(Today))) Then
                     Return True
@@ -3446,7 +3446,7 @@ Public NotInheritable Class Claim
                     Return True
                 End If
             End If
-            If Not obj.LoanerReturnedDate Is Nothing AndAlso repairDate <= obj.GetShortDate(obj.LoanerReturnedDate.Value) Then
+            If obj.LoanerReturnedDate IsNot Nothing AndAlso repairDate <= obj.GetShortDate(obj.LoanerReturnedDate.Value) Then
                 Return True
             End If
 
@@ -3460,7 +3460,7 @@ Public NotInheritable Class Claim
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_LOANER_RETURNED_DATE_ERR)
+            MyBase.New(fieldDisplayName, ErrorCodes.INVALID_LOANER_RETURNED_DATE_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -3473,22 +3473,22 @@ Public NotInheritable Class Claim
 
             Dim createdDate As Date = Today
 
-            If Not obj.CreatedDate Is Nothing Then
+            If obj.CreatedDate IsNot Nothing Then
                 createdDate = obj.GetShortDate(obj.CreatedDate.Value)
             End If
 
             If loanerReturnedDate < createdDate Then
-                Message = Common.ErrorCodes.INVALID_LOANER_RETURN_DATE_ERR1 '"Loaner Return Date Must Be Greater Than Or Equal To Date Added."
+                Message = ErrorCodes.INVALID_LOANER_RETURN_DATE_ERR1 '"Loaner Return Date Must Be Greater Than Or Equal To Date Added."
                 Return False
             End If
 
             If loanerReturnedDate > obj.GetShortDate(Today) Then
-                Message = Common.ErrorCodes.INVALID_LOANER_RETURN_DATE_ERR2 '"Loaner Return Date Must Be Less Than Or Equal To Today."
+                Message = ErrorCodes.INVALID_LOANER_RETURN_DATE_ERR2 '"Loaner Return Date Must Be Less Than Or Equal To Today."
                 Return False
             End If
 
-            If Not obj.RepairDate Is Nothing AndAlso loanerReturnedDate < obj.GetShortDate(obj.RepairDate.Value) Then
-                Message = Common.ErrorCodes.INVALID_LOANER_RETURN_DATE_ERR3 '"Loaner Return Date Must Be Greater Than Or Equal To Repair Date."
+            If obj.RepairDate IsNot Nothing AndAlso loanerReturnedDate < obj.GetShortDate(obj.RepairDate.Value) Then
+                Message = ErrorCodes.INVALID_LOANER_RETURN_DATE_ERR3 '"Loaner Return Date Must Be Greater Than Or Equal To Repair Date."
                 Return False
             End If
 
@@ -3509,14 +3509,14 @@ Public NotInheritable Class Claim
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.AUTHORIZED_AMOUNT_HAS_EXCEEDED_YOUR_AUTHORIZATION_LIMIT_ERR)
+            MyBase.New(fieldDisplayName, ErrorCodes.AUTHORIZED_AMOUNT_HAS_EXCEEDED_YOUR_AUTHORIZATION_LIMIT_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Claim = CType(objectToValidate, Claim)
 
             If obj.AuthorizedAmount Is Nothing Then
-                MyBase.Message = Common.ErrorCodes.INVALID_AUTHORIZED_AMOUNT_ERR
+                Message = ErrorCodes.INVALID_AUTHORIZED_AMOUNT_ERR
                 Return False
             End If
 
@@ -3539,7 +3539,7 @@ Public NotInheritable Class Claim
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_VISIT_DATE_ERR)
+            MyBase.New(fieldDisplayName, ErrorCodes.INVALID_VISIT_DATE_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -3547,7 +3547,7 @@ Public NotInheritable Class Claim
             If obj.VisitDate Is Nothing Then Return True
             Dim visitDate As Date = obj.GetShortDate(obj.VisitDate.Value)
             Dim createdDate As Date = Today
-            If Not obj.CreatedDate Is Nothing Then
+            If obj.CreatedDate IsNot Nothing Then
                 createdDate = obj.GetShortDate(obj.CreatedDate.Value)
             End If
 
@@ -3559,19 +3559,19 @@ Public NotInheritable Class Claim
             ' Must be LT or EQ to Pick-Up Date if not NULL. 
 
             If visitDate > Today Then
-                Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR1 ' "Visit Date Must Be Less Than Or Equal To Today."
+                Message = ErrorCodes.INVALID_VISIT_DATE_ERR1 ' "Visit Date Must Be Less Than Or Equal To Today."
                 Return False
             End If
-            If Not obj.LossDate Is Nothing AndAlso visitDate < obj.GetShortDate(obj.LossDate.Value) Then
-                Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR4 ' "Visit Date Must Be Greater Than Or Equal To Date Of Loss."
+            If obj.LossDate IsNot Nothing AndAlso visitDate < obj.GetShortDate(obj.LossDate.Value) Then
+                Message = ErrorCodes.INVALID_VISIT_DATE_ERR4 ' "Visit Date Must Be Greater Than Or Equal To Date Of Loss."
                 Return False
             End If
-            If Not obj.RepairDate Is Nothing AndAlso visitDate > obj.GetShortDate(obj.RepairDate.Value) Then
-                Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR2 ' "Visit Date Must Be Less Than Or Equal To Repair Date."
+            If obj.RepairDate IsNot Nothing AndAlso visitDate > obj.GetShortDate(obj.RepairDate.Value) Then
+                Message = ErrorCodes.INVALID_VISIT_DATE_ERR2 ' "Visit Date Must Be Less Than Or Equal To Repair Date."
                 Return False
             End If
-            If Not obj.PickUpDate Is Nothing AndAlso visitDate > obj.GetShortDate(obj.PickUpDate.Value) Then
-                Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR3 ' "Visit Date Must Be Less Than Or Equal To Pick-Up Date."
+            If obj.PickUpDate IsNot Nothing AndAlso visitDate > obj.GetShortDate(obj.PickUpDate.Value) Then
+                Message = ErrorCodes.INVALID_VISIT_DATE_ERR3 ' "Visit Date Must Be Less Than Or Equal To Pick-Up Date."
                 Return False
             End If
 
@@ -3585,7 +3585,7 @@ Public NotInheritable Class Claim
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR)
+            MyBase.New(fieldDisplayName, ErrorCodes.INVALID_PICK_UP_DATE_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -3593,7 +3593,7 @@ Public NotInheritable Class Claim
             If obj.PickUpDate Is Nothing Then Return True
             Dim pickUpDate As Date = obj.GetShortDate(obj.PickUpDate.Value)
             Dim createdDate As Date = Today
-            If Not obj.CreatedDate Is Nothing Then
+            If obj.CreatedDate IsNot Nothing Then
                 createdDate = obj.GetShortDate(obj.CreatedDate.Value)
             End If
 
@@ -3607,28 +3607,28 @@ Public NotInheritable Class Claim
             If obj.LoanerTaken Then Return True
 
             If pickUpDate > Today Then
-                Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR1 '"Pick-Up Date Must Be Less Than Or Equal To Today."
+                Message = ErrorCodes.INVALID_PICK_UP_DATE_ERR1 '"Pick-Up Date Must Be Less Than Or Equal To Today."
                 Return False
                 'End If
-            ElseIf Not obj.RepairDate Is Nothing Then
+            ElseIf obj.RepairDate IsNot Nothing Then
                 If pickUpDate < obj.GetShortDate(obj.RepairDate.Value) Then
-                    Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR2  '"Pick-Up Date Must Be Greater Than Or Equal To Repair Date."
+                    Message = ErrorCodes.INVALID_PICK_UP_DATE_ERR2  '"Pick-Up Date Must Be Greater Than Or Equal To Repair Date."
                     Return False
                 End If
                 'ElseIf pickUpDate > Today AndAlso pickUpDate < obj.GetShortDate(obj.RepairDate.Value) Then
                 '    Me.Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR6 '"Pick-Up Date Must Be Between Repair Date and Today."
                 '    Return False
             Else
-                Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR5  '"Pick-Up Date Requires The Entry Of A Repair Date."
+                Message = ErrorCodes.INVALID_PICK_UP_DATE_ERR5  '"Pick-Up Date Requires The Entry Of A Repair Date."
                 Return False
             End If
 
-            If Not obj.LoanerReturnedDate Is Nothing AndAlso pickUpDate < obj.GetShortDate(obj.LoanerReturnedDate.Value) Then
-                Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR4 '"Pick-Up Date Must Be Greater Than Or Equal To Loaner Returned Date."
+            If obj.LoanerReturnedDate IsNot Nothing AndAlso pickUpDate < obj.GetShortDate(obj.LoanerReturnedDate.Value) Then
+                Message = ErrorCodes.INVALID_PICK_UP_DATE_ERR4 '"Pick-Up Date Must Be Greater Than Or Equal To Loaner Returned Date."
                 Return False
             End If
-            If Not obj.VisitDate Is Nothing AndAlso pickUpDate < obj.GetShortDate(obj.VisitDate.Value) Then
-                Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR3 '"Pick-Up Date Must Be Greater Than Or Equal To Visit Date."
+            If obj.VisitDate IsNot Nothing AndAlso pickUpDate < obj.GetShortDate(obj.VisitDate.Value) Then
+                Message = ErrorCodes.INVALID_PICK_UP_DATE_ERR3 '"Pick-Up Date Must Be Greater Than Or Equal To Visit Date."
                 Return False
             End If
 
@@ -3648,7 +3648,7 @@ Public NotInheritable Class Claim
 
         Public Sub New(fieldDisplayName As String)
             'MyBase.New(fieldDisplayName, Common.ErrorCodes.AUTHORIZED_AMOUNT_HAS_EXCEEDED_YOUR_AUTHORIZATION_LIMIT_ERR)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.NEW_AUTHORIZED_AMOUNT_LESS_DEDUCTIBLE_WOULD_BE_LOWER_THAN_SUM_OF_PAYMENTS_ALREADY_MADE)
+            MyBase.New(fieldDisplayName, ErrorCodes.NEW_AUTHORIZED_AMOUNT_LESS_DEDUCTIBLE_WOULD_BE_LOWER_THAN_SUM_OF_PAYMENTS_ALREADY_MADE)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean

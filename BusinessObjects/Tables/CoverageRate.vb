@@ -59,7 +59,7 @@ Public Class CoverageRate
         Try
             Dim dal As New CoverageRateDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -531,7 +531,7 @@ Public Class CoverageRate
                 oLow = Math.Round(Convert.ToDouble(oRow(LOW_PRICE)), 2)
                 oHigh = Math.Round(Convert.ToDouble(oRow(HIGH_PRICE)), 2)
 
-                If (oLow = covRateLow And oHigh = covRateHigh) And Not (Id.Equals(oCoverageRateId)) Then
+                If (oLow = covRateLow AndAlso oHigh = covRateHigh) AndAlso Not (Id.Equals(oCoverageRateId)) Then
                     oCount = oCount + 1
                 End If
                 If (oLow < oLowestVal) Then
@@ -542,10 +542,10 @@ Public Class CoverageRate
                 End If
             Next
 
-            If oCount > 0 And RenewalNumber.Value > 0 Then
+            If oCount > 0 AndAlso RenewalNumber.Value > 0 Then
                 ' You can delete if more than one records exists for the target combination
                 deleteOk = True
-            ElseIf (oCount = 0 And RenewalNumber.Value = 0 And (covRateLow = oLowestVal Or covRateHigh = oHighestVal)) Then
+            ElseIf (oCount = 0 AndAlso RenewalNumber.Value = 0 AndAlso (covRateLow = oLowestVal OrElse covRateHigh = oHighestVal)) Then
                 ' You can delete only the first or last coverage rate to avoid gaps in case only one record exists for the target combination
                 deleteOk = True
             End If
@@ -610,14 +610,14 @@ Public Class CoverageRate
 
         If HasDealerConfiguredForAcctBucket(coverageId) Then
             With pCoverage
-                If Not (.Effective Is Nothing And .Expiration Is Nothing) Then
+                If Not (.Effective Is Nothing AndAlso .Expiration Is Nothing) Then
                     oContract = oContract.GetContract(.DealerId, .Effective.Value, .Expiration.Value)
                 End If
 
-                If Not oContract Is Nothing Then
+                If oContract IsNot Nothing Then
                     If oContract.IgnoreIncomingPremiumID.ToString() <> "00000000-0000-0000-0000-000000000000" Then
                         Dim str As String
-                        str = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.IgnoreIncomingPremiumID)
+                        str = LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, oContract.IgnoreIncomingPremiumID)
 
                         If str.Equals(Codes.YESNO_Y) Then
                             isIgnorePremiumYesForContract = True
@@ -647,7 +647,7 @@ Public Class CoverageRate
         Dim isDealerConfiguredForAcctBucket As Boolean = False
 
         If (pCoverage.DealerId <> Guid.Empty) Then
-            If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
+            If oDealer.AcctBucketsWithSourceXcd IsNot Nothing Then
                 If Not String.IsNullOrWhiteSpace(oDealer.AcctBucketsWithSourceXcd) Then
                     If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
                         isDealerConfiguredForAcctBucket = True
@@ -674,7 +674,7 @@ Public Class CoverageRate
         Dim isDealerConfiguredForAcctBucket As Boolean = False
 
         If (pCoverage.DealerId <> Guid.Empty) Then
-            If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
+            If oDealer.AcctBucketsWithSourceXcd IsNot Nothing Then
                 If Not String.IsNullOrWhiteSpace(oDealer.AcctBucketsWithSourceXcd) Then
                     If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
                         isDealerConfiguredForAcctBucket = True
@@ -709,7 +709,7 @@ Public Class CoverageRate
 
             Dim bValid As Boolean = True
 
-            If Not obj.LowPrice Is Nothing And Not obj.HighPrice Is Nothing Then
+            If obj.LowPrice IsNot Nothing AndAlso obj.HighPrice IsNot Nothing Then
                 If Convert.ToSingle(obj.LowPrice.Value) > Convert.ToSingle(obj.HighPrice.Value) Then
                     Message = COVERAGE_RATE_FORM009
                     bValid = False
@@ -794,9 +794,9 @@ Public Class CoverageRate
 
             'US 521697 check if dealer is configured for Account Bucket, if not then only validate for > 100% calculation
             If obj.HasDealerConfiguredForAcctBucket(obj.CoverageId) = False Then
-                If Not obj.CommissionsPercent Is Nothing And Not obj.MarketingPercent Is Nothing And
-                        Not obj.AdminExpense Is Nothing And Not obj.ProfitExpense Is Nothing And
-                        Not obj.LossCostPercent Is Nothing Then
+                If obj.CommissionsPercent IsNot Nothing And obj.MarketingPercent IsNot Nothing And
+obj.AdminExpense IsNot Nothing And obj.ProfitExpense IsNot Nothing And
+obj.LossCostPercent IsNot Nothing Then
                     'If (Convert.ToSingle(obj.CommissionsPercent.Value) + Convert.ToSingle(obj.MarketingPercent.Value) + _
                     '        Convert.ToSingle(obj.AdminExpense.Value) + Convert.ToSingle(obj.ProfitExpense.Value) + _
                     '        Convert.ToSingle(obj.LossCostPercent.Value) > Convert.ToSingle(100)) Then
@@ -826,7 +826,7 @@ Public Class CoverageRate
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CoverageRate = CType(objectToValidate, CoverageRate)
-            If Not obj.GrossAmountPercent Is Nothing Then
+            If obj.GrossAmountPercent IsNot Nothing Then
                 If ((obj.GrossAmountPercent.Value) > Convert.ToDecimal(100)) Then
                     Return False
                 End If

@@ -11,7 +11,7 @@ Public NotInheritable Class OverlapValidatorAttribute
     Private _dataTablePropertyName As String
     Private _dataRowPropertyName As String
 
-    Public Sub New(fieldDisplayName As String, Optional ByVal message As String = Assurant.ElitaPlus.Common.ErrorCodes.OVERLAPPING_SCHEDULE_ERR)
+    Public Sub New(fieldDisplayName As String, Optional ByVal message As String = Common.ErrorCodes.OVERLAPPING_SCHEDULE_ERR)
         MyBase.New(fieldDisplayName, message)
 
     End Sub
@@ -88,7 +88,7 @@ Public NotInheritable Class OverlapValidatorAttribute
         End If
         oLhsRow = CType(oPropertyInfo.GetValue(context, Nothing), DataRow)
 
-        If (Not KeyColumns Is Nothing AndAlso KeyColumns.Length > 0) Then
+        If (KeyColumns IsNot Nothing AndAlso KeyColumns.Length > 0) Then
             expression = New StringBuilder()
             For Each key As String In KeyColumns
                 If (expression.Length > 0) Then

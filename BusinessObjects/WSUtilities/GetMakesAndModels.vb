@@ -111,7 +111,7 @@ Public Class GetMakesAndModels
         Try
             Validate()
 
-            If Not DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty Then
+            If DealerCode IsNot Nothing AndAlso DealerCode.Trim <> String.Empty Then
                 Dim strErrorFindingDealer As String = FindDealer
                 If strErrorFindingDealer <> String.Empty Then
                     Return strErrorFindingDealer
@@ -121,7 +121,7 @@ Public Class GetMakesAndModels
             Dim oDealer As New Dealer(_dealerId)
             Dim makesList As New DataSet(DATASET_NAME__GET_MAKE_AND_MODEL_RESPONSE)
             Dim ResponseStatus As DataTable
-            If (oDealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
+            If (oDealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, "Y")) Then
                 If oDealer.EquipmentListCode Is Nothing OrElse oDealer.EquipmentListCode.Equals(String.Empty) Then
                     ResponseStatus = BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.EQUIPMENT_LIST_CODE_NULL), _
                                                                                Common.ErrorCodes.EQUIPMENT_LIST_CODE_NULL, _
@@ -131,7 +131,7 @@ Public Class GetMakesAndModels
                     Return (XMLHelper.FromDatasetToXML(_errorDataSet, Nothing, True, True, True, False, True))
                 End If
                 makesList = Equipment.LoadEquipmentListForWS(oDealer.EquipmentListCode, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
-            ElseIf (oDealer.UseWarrantyMasterID = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
+            ElseIf (oDealer.UseWarrantyMasterID = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, "Y")) Then
                 makesList = Manufacturer.GetMakesForWSByWarrantyMaster(_dealerId, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
             Else
                 makesList = Manufacturer.GetMakesForWS(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
@@ -159,7 +159,7 @@ Public Class GetMakesAndModels
     End Function
 
     Private Function FindDealer() As String
-        If _dealerId.Equals(Guid.Empty) AndAlso (Not DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty) Then
+        If _dealerId.Equals(Guid.Empty) AndAlso (DealerCode IsNot Nothing AndAlso DealerCode.Trim <> String.Empty) Then
             Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
             If list Is Nothing Then
                 Dim ResponseStatus As DataTable = BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE), _

@@ -23,24 +23,24 @@ Public Class ElitaPlusIdentity
     Private Function BuildClaims() As List(Of System.IdentityModel.Claims.Claim)
         Dim returnValue As New List(Of System.IdentityModel.Claims.Claim)
         ' Add Network ID Claim
-        returnValue.Add(New System.IdentityModel.Claims.Claim(ClaimTypes.NetworkId, _user.NetworkId, System.IdentityModel.Claims.Rights.PossessProperty))
+        returnValue.Add(New System.IdentityModel.Claims.Claim(ClaimTypes.NetworkId, _user.NetworkId, IdentityModel.Claims.Rights.PossessProperty))
         ' Add Language Code Claims
         Dim language As New Language(_user.LanguageId)
-        returnValue.Add(New IdentityModel.Claims.Claim(ClaimTypes.LanguageCode, language.Code, System.IdentityModel.Claims.Rights.PossessProperty))
-        returnValue.Add(New IdentityModel.Claims.Claim(ClaimTypes.LanguageId, _user.LanguageId.ToString(), System.IdentityModel.Claims.Rights.PossessProperty))
+        returnValue.Add(New IdentityModel.Claims.Claim(ClaimTypes.LanguageCode, language.Code, IdentityModel.Claims.Rights.PossessProperty))
+        returnValue.Add(New IdentityModel.Claims.Claim(ClaimTypes.LanguageId, _user.LanguageId.ToString(), IdentityModel.Claims.Rights.PossessProperty))
         ' Add Company Claims
         Dim userCompanyAssignedDv As UserCompanyAssigned.UserCompanyAssignedDV = User.GetSelectedAssignedCompanies(_user.Id)
         For Each dr As DataRowView In userCompanyAssignedDv
-            returnValue.Add(New IdentityModel.Claims.Claim(ClaimTypes.CompanyId, New Guid(CType(dr(UserCompanyAssigned.COL_COMPANY_ID), Byte())).ToString(), System.IdentityModel.Claims.Rights.PossessProperty))
-            returnValue.Add(New IdentityModel.Claims.Claim(ClaimTypes.CompanyCode, CType(dr(CompanyDAL.COL_NAME_CODE), String), System.IdentityModel.Claims.Rights.PossessProperty))
+            returnValue.Add(New IdentityModel.Claims.Claim(ClaimTypes.CompanyId, New Guid(CType(dr(UserCompanyAssigned.COL_COMPANY_ID), Byte())).ToString(), IdentityModel.Claims.Rights.PossessProperty))
+            returnValue.Add(New IdentityModel.Claims.Claim(ClaimTypes.CompanyCode, CType(dr(CompanyDAL.COL_NAME_CODE), String), IdentityModel.Claims.Rights.PossessProperty))
             returnValue.Add(New IdentityModel.Claims.Claim(ClaimTypes.CompanyAuthorizationLimit, CType(dr(CompanyDAL.COL_NAME_CODE), String), CType(dr(UserCompanyAssigned.COL_AUTHORIZATION_LIMIT), Decimal).ToString()))
             returnValue.Add(New IdentityModel.Claims.Claim(ClaimTypes.CompanyPaymentLimit, CType(dr(CompanyDAL.COL_NAME_CODE), String), CType(dr(UserCompanyAssigned.COL_PAYMENT_LIMIT), Decimal).ToString()))
         Next
-        Dim dvPermission As DataView = LookupListNew.DropdownLanguageLookupList(LookupListNew.LK_USER_ROLE_PERMISSION, _user.LanguageId)
+        Dim dvPermission As DataView = LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_USER_ROLE_PERMISSION, _user.LanguageId)
         ' Add Permissions
         For Each up As UserPermission In _user.UserPermission
-            returnValue.Add(New System.IdentityModel.Claims.Claim(ClaimTypes.PermissionId, up.PermissionId.ToString(), System.IdentityModel.Claims.Rights.PossessProperty))
-            returnValue.Add(New System.IdentityModel.Claims.Claim(ClaimTypes.PermissionCode, LookupListNew.GetCodeFromId(dvPermission, up.PermissionId).ToUpperInvariant(), System.IdentityModel.Claims.Rights.PossessProperty))
+            returnValue.Add(New System.IdentityModel.Claims.Claim(ClaimTypes.PermissionId, up.PermissionId.ToString(), IdentityModel.Claims.Rights.PossessProperty))
+            returnValue.Add(New System.IdentityModel.Claims.Claim(ClaimTypes.PermissionCode, LookupListNew.GetCodeFromId(dvPermission, up.PermissionId).ToUpperInvariant(), IdentityModel.Claims.Rights.PossessProperty))
         Next
         ''X509 Thumbprints
         Dim dvSpClaims As DataView = User.GetSpUserClaims(_user.Id, _user.LanguageId, X509_Claim_Type_Code)
@@ -159,7 +159,7 @@ Public Class ElitaPlusIdentity
         Get
             '  Dim sUserName As String = "DB Connection Problem Or the User is Invalid "
             Dim sUserName As String = Nothing
-            If Not _user Is Nothing Then
+            If _user IsNot Nothing Then
                 sUserName = _user.UserName
             End If
             Return sUserName
@@ -177,7 +177,7 @@ Public Class ElitaPlusIdentity
     Public Function IsValidUser() As Boolean
         Dim bValid As Boolean = False
 
-        If ((Not ActiveUser() Is Nothing) AndAlso (ActiveUser().Active = "Y")) Then
+        If ((ActiveUser() IsNot Nothing) AndAlso (ActiveUser().Active = "Y")) Then
             bValid = True
         End If
         Return bValid

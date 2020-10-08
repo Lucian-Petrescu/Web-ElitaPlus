@@ -11,7 +11,7 @@ Public NotInheritable Class ValidateDuplicateCode
         If objectToCheck Is Nothing Then Return True
 
         'check if the same code and effective date exist if found then its a duplicate
-        If Not context.GetType.GetInterface("IExpirable", True) Is Nothing Then
+        If context.GetType.GetInterface("IExpirable", True) IsNot Nothing Then
             Dim iface As IExpirable = DirectCast(context, IExpirable)
             If iface.IsNew Then
                 Dim ValDupDal As New ValidateDuplicateCodeDAL

@@ -56,7 +56,7 @@ Public Class Contract
             Dim dal As New ContractDAL
             'This code was added manually. Begin
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(ContractDAL.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -110,16 +110,16 @@ Public Class Contract
         Deductible = New DecimalType(0)
         DeductiblePercent = New DecimalType(0)
         MinReplacementCost = New DecimalType(0)
-        RestrictMarkupId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")
-        AllowCoverageMarkupDistribution = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")
-        ClaimControlID = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")
-        IgnoreIncomingPremiumID = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")
-        CoinsuranceId = LookupListNew.GetIdFromCode(LookupListNew.LK_COINSURANCE, COINSURANCE_DIRECT)
-        CurrencyConversionId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")
-        PayOutstandingPremiumId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")
-        DeductibleBasedOnId = LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, "FIXED")
-        ProRataMethodId = LookupListNew.GetIdFromCode(LookupListNew.LK_PRO_RATA_METHOD, Codes.PRO_RATA_METHOD_NPR)
-        AllowMultipleRejectionsId = LookupListNew.GetIdFromCode(LookupListNew.LK_ALLOW_CC_REJECTIONS, Codes.ALLOW_CC_REJECTIONS_NO)
+        RestrictMarkupId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "N")
+        AllowCoverageMarkupDistribution = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "N")
+        ClaimControlID = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "N")
+        IgnoreIncomingPremiumID = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "N")
+        CoinsuranceId = LookupListNew.GetIdFromCode(LookupListCache.LK_COINSURANCE, COINSURANCE_DIRECT)
+        CurrencyConversionId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "N")
+        PayOutstandingPremiumId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "N")
+        DeductibleBasedOnId = LookupListNew.GetIdFromCode(LookupListCache.LK_DEDUCTIBLE_BASED_ON, "FIXED")
+        ProRataMethodId = LookupListNew.GetIdFromCode(LookupListCache.LK_PRO_RATA_METHOD, Codes.PRO_RATA_METHOD_NPR)
+        AllowMultipleRejectionsId = LookupListNew.GetIdFromCode(LookupListCache.LK_ALLOW_CC_REJECTIONS, Codes.ALLOW_CC_REJECTIONS_NO)
         RdoPercent = New DecimalType(0)
 
     End Sub
@@ -2187,7 +2187,7 @@ Public Class Contract
             Try
                 Dim dal As New ContractDAL
                 Dim minMaxDs As DataSet = dal.LoadMinEffectiveMaxExpiration(obj.DealerId)
-                If minMaxDs.Tables(0).Rows.Count > 0 AndAlso (Not minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE) Is DBNull.Value) AndAlso (Not minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION) Is DBNull.Value) Then
+                If minMaxDs.Tables(0).Rows.Count > 0 AndAlso (minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE) IsNot DBNull.Value) AndAlso (minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION) IsNot DBNull.Value) Then
                     MinEffective = CType(minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE), Date)
                     MaxExpiration = CType(minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION), Date)
 
@@ -2204,7 +2204,7 @@ Public Class Contract
                 Dim dal As New ContractDAL
                 Dim minMaxDs As DataSet = dal.LoadMinEffectiveMaxExpiration(dealerId)
 
-                If minMaxDs.Tables(0).Rows.Count > 0 AndAlso (Not minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE) Is DBNull.Value) AndAlso (Not minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION) Is DBNull.Value) Then
+                If minMaxDs.Tables(0).Rows.Count > 0 AndAlso (minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE) IsNot DBNull.Value) AndAlso (minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION) IsNot DBNull.Value) Then
                     MinEffective = CType(minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE), Date)
                     MaxExpiration = CType(minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION), Date)
                 End If
@@ -2278,14 +2278,14 @@ Public Class Contract
 
         Dim contractID As Guid
         Dim dv As DataView = getList(dealerID, loggedinuserspecific)
-        dv.Sort = Contract.ContractSearchDV.COL_EFFECTIVE & " DESC," & Contract.ContractSearchDV.COL_EXPIRATION & " DESC"
+        dv.Sort = ContractSearchDV.COL_EFFECTIVE & " DESC," & ContractSearchDV.COL_EXPIRATION & " DESC"
         Dim dt As DataTable = dv.Table
 
         For Each row As DataRow In dt.Rows
-            Dim MinEffective As Date = CType(row(Contract.ContractSearchDV.COL_EFFECTIVE), Date)
-            Dim MaxExpiration As Date = CType(row(Contract.ContractSearchDV.COL_EXPIRATION), Date)
+            Dim MinEffective As Date = CType(row(ContractSearchDV.COL_EFFECTIVE), Date)
+            Dim MaxExpiration As Date = CType(row(ContractSearchDV.COL_EXPIRATION), Date)
             If (contractDate.Date >= MinEffective) And (contractDate.Date <= MaxExpiration) Then
-                contractID = New Guid(CType(row(Contract.ContractSearchDV.COL_CONTRACT_ID), Byte()))
+                contractID = New Guid(CType(row(ContractSearchDV.COL_CONTRACT_ID), Byte()))
                 Return New Contract(contractID)
             End If
         Next
@@ -2300,13 +2300,13 @@ Public Class Contract
             Dim dal As New ContractDAL
 
             Dim dt As DataTable = dal.GetContract(ElitaPlusIdentity.Current.ActiveUser.Companies, certID).Tables(0)
-            If (Not dt Is Nothing AndAlso dt.Rows.Count = 1) Then
+            If (dt IsNot Nothing AndAlso dt.Rows.Count = 1) Then
                 contractID = GuidControl.ByteArrayToGuid(dt.Rows(0)(0))
             Else
                 contractID = Nothing
                 'Throw New BOValidationException(Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND, Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND)
 
-                Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND, GetType(Contract), Nothing, "", Nothing)}
+                Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND, GetType(Contract), Nothing, "", Nothing)}
                 Throw New BOValidationException(errors, GetType(Contract).FullName, contractID.ToString)
 
             End If
@@ -2325,14 +2325,14 @@ Public Class Contract
 
         Dim contractID As Guid
         Dim dv As DataView = getList(dealerID)
-        dv.Sort = Contract.ContractSearchDV.COL_EFFECTIVE & " DESC," & Contract.ContractSearchDV.COL_EXPIRATION & " DESC"
+        dv.Sort = ContractSearchDV.COL_EFFECTIVE & " DESC," & ContractSearchDV.COL_EXPIRATION & " DESC"
         Dim dt As DataTable = dv.Table
         For Each row As DataRow In dt.Rows
-            Dim contractEffective As Date = CType(row(Contract.ContractSearchDV.COL_EFFECTIVE), Date)
-            Dim contractExpiration As Date = CType(row(Contract.ContractSearchDV.COL_EXPIRATION), Date)
+            Dim contractEffective As Date = CType(row(ContractSearchDV.COL_EFFECTIVE), Date)
+            Dim contractExpiration As Date = CType(row(ContractSearchDV.COL_EXPIRATION), Date)
             If (effectiveDate >= contractEffective) And (effectiveDate <= contractExpiration) And
                 (expirationDate >= contractEffective) And (expirationDate <= contractExpiration) Then
-                contractID = New Guid(CType(row(Contract.ContractSearchDV.COL_CONTRACT_ID), Byte()))
+                contractID = New Guid(CType(row(ContractSearchDV.COL_CONTRACT_ID), Byte()))
                 Return New Contract(contractID)
             End If
         Next
@@ -2348,9 +2348,9 @@ Public Class Contract
 
         Dim contractID As Guid
         Dim ds As DataSet = dal.LoadMaxExpirationContract(ElitaPlusIdentity.Current.ActiveUser.CompanyId, dealerID)
-        If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
-            If Not ds.Tables(0).Rows(0)(Contract.ContractSearchDV.COL_CONTRACT_ID) Is System.DBNull.Value Then
-                contractID = New Guid(CType(ds.Tables(0).Rows(0)(Contract.ContractSearchDV.COL_CONTRACT_ID), Byte()))
+        If ds IsNot Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
+            If ds.Tables(0).Rows(0)(ContractSearchDV.COL_CONTRACT_ID) IsNot DBNull.Value Then
+                contractID = New Guid(CType(ds.Tables(0).Rows(0)(ContractSearchDV.COL_CONTRACT_ID), Byte()))
                 Return New Contract(contractID)
             Else
                 Return Nothing
@@ -2364,7 +2364,7 @@ Public Class Contract
 
         Dim contractID As Guid
         Dim dv As ContractSearchDV = getList(dealerID)
-        dv.Sort = Contract.ContractSearchDV.COL_EFFECTIVE & " DESC," & Contract.ContractSearchDV.COL_EXPIRATION & " DESC"
+        dv.Sort = ContractSearchDV.COL_EFFECTIVE & " DESC," & ContractSearchDV.COL_EXPIRATION & " DESC"
 
         Return dv
     End Function
@@ -2375,16 +2375,16 @@ Public Class Contract
         dt.Columns.Add("Description", GetType(String))
 
         Dim dv As ContractSearchDV = getList(dealerID)
-        dv.Sort = Contract.ContractSearchDV.COL_EFFECTIVE & " DESC," & Contract.ContractSearchDV.COL_EXPIRATION & " DESC"
+        dv.Sort = ContractSearchDV.COL_EFFECTIVE & " DESC," & ContractSearchDV.COL_EXPIRATION & " DESC"
 
         For Each row As DataRow In dv.Table.Rows
-            Dim MinEffective As Date = CType(row(Contract.ContractSearchDV.COL_EFFECTIVE), Date)
-            Dim MaxExpiration As Date = CType(row(Contract.ContractSearchDV.COL_EXPIRATION), Date)
+            Dim MinEffective As Date = CType(row(ContractSearchDV.COL_EFFECTIVE), Date)
+            Dim MaxExpiration As Date = CType(row(ContractSearchDV.COL_EXPIRATION), Date)
 
             Dim dr As DataRow = dt.NewRow()
-            dr(0) = CType(row(Contract.ContractSearchDV.COL_CONTRACT_ID), Byte())
-            dr(1) = MinEffective.ToString("dd-MMM-yyyy", System.Threading.Thread.CurrentThread.CurrentCulture) &
-                    " - " & MaxExpiration.ToString("dd-MMM-yyyy", System.Threading.Thread.CurrentThread.CurrentCulture)
+            dr(0) = CType(row(ContractSearchDV.COL_CONTRACT_ID), Byte())
+            dr(1) = MinEffective.ToString("dd-MMM-yyyy", Threading.Thread.CurrentThread.CurrentCulture) &
+                    " - " & MaxExpiration.ToString("dd-MMM-yyyy", Threading.Thread.CurrentThread.CurrentCulture)
             dt.Rows.Add(dr)
         Next
 
@@ -2408,7 +2408,7 @@ Public Class Contract
 
     Public Shared Function HasContract(dealerId As Guid, warrantySalesDate As Date) As Boolean
         Dim oContract As Contract
-        oContract = Contract.GetContract(dealerId, warrantySalesDate)
+        oContract = GetContract(dealerId, warrantySalesDate)
 
         If oContract Is Nothing Then
             Return False
@@ -2420,8 +2420,8 @@ Public Class Contract
     Public Sub GetAutoGeneratedSequenceNum()
 
                ' If policy is not Collective and Auto generate then exit.
-        If Not PolicyTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_CONTRACT_POLICY_TYPE, Codes.CONTRACT_POLTYPE_COLLECTIVE)) OrElse
-          Not PolicyGenerationId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_CONTRACT_POLICY_GEN_TYPE, Codes.CONTRACT_POLGEN_AUTOGENERATE)) Then
+        If Not PolicyTypeId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CONTRACT_POLICY_TYPE, Codes.CONTRACT_POLTYPE_COLLECTIVE)) OrElse
+          Not PolicyGenerationId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CONTRACT_POLICY_GEN_TYPE, Codes.CONTRACT_POLGEN_AUTOGENERATE)) Then
             Return
         End If
 
@@ -2431,7 +2431,7 @@ Public Class Contract
 
             _autoGeneratedSequenceNum = 0
 
-            Dim subRamoCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_COUNTRY_LINE_OF_BUSINESS, LineOfBusinessId)
+            Dim subRamoCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_COUNTRY_LINE_OF_BUSINESS, LineOfBusinessId)
             _autoGenerateSequenceKey = objCountry.Code + "_" + subRamoCode + "_" + AUTO_GEN_SEQ_POL_NUM_KEY + "_" + DateTime.Today.Year.ToString().Substring(2, 2)
 
             _autoGeneratedSequenceNum = dal.GetAutoGenSequenceNumber(LineOfBusinessId, AUTO_GEN_SEQ_POL_NUM_SOURCE, _autoGenerateSequenceKey)
@@ -2531,7 +2531,7 @@ Public Class Contract
             'Req-1016 Start 
             Dim yesValueId As Guid = LookupListNew.GetIdFromCode("YES_NO", "Y")
             Dim emptyGuid As Guid = Guid.Empty
-            Dim singlePremiumId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_PERIOD_RENEW, Codes.PERIOD_RENEW__SINGLE_PREMIUM)
+            Dim singlePremiumId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_PERIOD_RENEW, Codes.PERIOD_RENEW__SINGLE_PREMIUM)
 
             'If obj.MonthlyBillingId.Equals(yesValueId) AndAlso obj.DealerMarkupId.Equals(yesValueId) Then
             'REQ5804
@@ -2570,7 +2570,7 @@ Public Class Contract
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -2578,7 +2578,7 @@ Public Class Contract
             'Req-1016 Start 
             'Dim yesValueId As Guid = LookupListNew.GetIdFromCode("YES_NO", "Y")
             Dim emptyGuid As Guid = Guid.Empty
-            Dim singlePremiumId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_PERIOD_RENEW, Codes.PERIOD_RENEW__SINGLE_PREMIUM)
+            Dim singlePremiumId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_PERIOD_RENEW, Codes.PERIOD_RENEW__SINGLE_PREMIUM)
 
             'If obj.MonthlyBillingId.Equals(yesValueId) Then
             'REQ5804
@@ -2598,7 +2598,7 @@ Public Class Contract
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -2607,7 +2607,7 @@ Public Class Contract
                 Dim dealer As New Dealer(obj.DealerId)
                 Dim oCompany As Company = New Company(dealer.CompanyId)
 
-                If oCompany.CompanyTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_COMPANY_TYPE, COMPANY_TYPE_INSURANCE)) Then
+                If oCompany.CompanyTypeId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_COMPANY_TYPE, COMPANY_TYPE_INSURANCE)) Then
                     Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                     Return mandatAttr.IsValid(valueToCheck, objectToValidate)
                 Else
@@ -2637,7 +2637,7 @@ Public Class Contract
             If ClipMethodId = Guid.Empty Then
                 Return True
             Else
-                Dim CLIPMethodCode As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_CLIPMETHOD, ElitaPlusIdentity.Current.ActiveUser.LanguageId), ClipMethodId)
+                Dim CLIPMethodCode As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_CLIPMETHOD, ElitaPlusIdentity.Current.ActiveUser.LanguageId), ClipMethodId)
                 If CLIPMethodCode = Company.CLIP_METHOD_NONE Then
                     Return True
                 Else 'CLIP value required
@@ -2659,7 +2659,7 @@ Public Class Contract
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -2684,12 +2684,12 @@ Public Class Contract
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
-            If Not obj.NumOfClaims Is Nothing And obj.NumOfRepairClaims Is Nothing Then
+            If obj.NumOfClaims IsNot Nothing And obj.NumOfRepairClaims Is Nothing Then
                 Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
@@ -2711,7 +2711,7 @@ Public Class Contract
 
             If obj.NumOfClaims Is Nothing Or obj.NumOfRepairClaims Is Nothing Then
                 Return True
-            ElseIf Not obj.NumOfClaims Is Nothing And Not obj.NumOfRepairClaims Is Nothing Then
+            ElseIf obj.NumOfClaims IsNot Nothing And obj.NumOfRepairClaims IsNot Nothing Then
                 If obj.NumOfRepairClaims.Value > obj.NumOfClaims.Value Then
                     Return False
                 Else
@@ -2725,12 +2725,12 @@ Public Class Contract
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
-            If Not obj.NumOfClaims Is Nothing And obj.NumOfReplacementClaims Is Nothing Then
+            If obj.NumOfClaims IsNot Nothing And obj.NumOfReplacementClaims Is Nothing Then
                 Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
@@ -2751,7 +2751,7 @@ Public Class Contract
 
             If obj.NumOfClaims Is Nothing Or obj.NumOfReplacementClaims Is Nothing Then
                 Return True
-            ElseIf Not obj.NumOfClaims Is Nothing And Not obj.NumOfReplacementClaims Is Nothing Then
+            ElseIf obj.NumOfClaims IsNot Nothing And obj.NumOfReplacementClaims IsNot Nothing Then
                 If obj.NumOfReplacementClaims.Value > obj.NumOfClaims.Value Then
                     Return False
                 Else
@@ -2772,7 +2772,7 @@ Public Class Contract
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
-            If (Not obj.NumOfClaims Is Nothing) AndAlso obj.NumOfClaims.Value > 0 Then
+            If (obj.NumOfClaims IsNot Nothing) AndAlso obj.NumOfClaims.Value > 0 Then
                 If obj.ClaimLimitBasedOnId = Guid.Empty Then
                     Return False
                 End If
@@ -2859,11 +2859,11 @@ Public Class Contract
             Dim obj As Contract = CType(objectToValidate, Contract)
             Dim SinglePremiumRenewable As String = "4"
 
-            If (Not obj Is Nothing) Then
-                Dim sVal As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PERIOD_RENEW, obj.RecurringPremiumId)
+            If (obj IsNot Nothing) Then
+                Dim sVal As String = LookupListNew.GetCodeFromId(LookupListCache.LK_PERIOD_RENEW, obj.RecurringPremiumId)
 
-                If (Not obj.RecurringWarrantyPeriod Is Nothing) And (obj.RecurringWarrantyPeriod <> 0) Then
-                    If (Not sVal Is Nothing) And (CType(sVal, Long) <> 0) Then
+                If (obj.RecurringWarrantyPeriod IsNot Nothing) And (obj.RecurringWarrantyPeriod <> 0) Then
+                    If (sVal IsNot Nothing) And (CType(sVal, Long) <> 0) Then
                         If Not sVal = SinglePremiumRenewable Then
                             If CType(obj.RecurringWarrantyPeriod, Long) Mod CType(sVal, Long) = 0 Then
                                 Return True
@@ -2891,9 +2891,9 @@ Public Class Contract
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
-            If (Not obj Is Nothing) Then
-                If (Not obj.OffsetBeforeDueDate Is Nothing) Then
-                    Dim sVal As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PERIOD_RENEW, obj.RecurringPremiumId)
+            If (obj IsNot Nothing) Then
+                If (obj.OffsetBeforeDueDate IsNot Nothing) Then
+                    Dim sVal As String = LookupListNew.GetCodeFromId(LookupListCache.LK_PERIOD_RENEW, obj.RecurringPremiumId)
 
                     Select Case sVal
                         Case 0
@@ -2922,7 +2922,7 @@ Public Class Contract
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -2949,7 +2949,7 @@ Public Class Contract
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -2978,7 +2978,7 @@ Public Class Contract
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -2989,7 +2989,7 @@ Public Class Contract
             Dim oCompanyGroup As CompanyGroup = New CompanyGroup(oCompany.CompanyGroupId)
 
 
-            If oCompanyGroup.UseCommEntityTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
+            If oCompanyGroup.UseCommEntityTypeId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)) Then
                 If Not obj.DealerId.Equals(Guid.Empty) Then
                     Dim objDealer As Dealer = New Dealer(obj.DealerId)
                     Dim DealerTypeCode As String
@@ -3024,7 +3024,7 @@ Public Class Contract
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
 
             Dim obj As Contract = CType(objectToValidate, Contract)
-            If obj.PolicyGenerationId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_CONTRACT_POLICY_GEN_TYPE, Codes.CONTRACT_POLGEN_AUTOGENERATE)) AndAlso
+            If obj.PolicyGenerationId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CONTRACT_POLICY_GEN_TYPE, Codes.CONTRACT_POLGEN_AUTOGENERATE)) AndAlso
                                              obj.LineOfBusinessId.Equals(Guid.Empty) Then
                 Return False
             End If

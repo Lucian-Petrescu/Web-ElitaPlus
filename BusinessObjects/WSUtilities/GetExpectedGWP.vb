@@ -236,28 +236,28 @@ Public Class GetExpectedGWP
             Validate()
 
             Dim dvDealrs As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
-            If Not dvDealrs Is Nothing AndAlso dvDealrs.Count > 0 Then
+            If dvDealrs IsNot Nothing AndAlso dvDealrs.Count > 0 Then
                 dealerId = LookupListNew.GetIdFromCode(dvDealrs, DealerCode)
                 If dealerId.Equals(Guid.Empty) Then
-                    Throw New BOValidationException("GetExpectedGWP Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_CODE)
+                    Throw New BOValidationException("GetExpectedGWP Error: ", Common.ErrorCodes.INVALID_DEALER_CODE)
                 End If
             End If
 
 
             dvProductCodeID = productBO.GetProductCodeId(dealerId, ProductCode)
 
-            If Not dvProductCodeID Is Nothing AndAlso dvProductCodeID.Count > 0 Then
+            If dvProductCodeID IsNot Nothing AndAlso dvProductCodeID.Count > 0 Then
                 If Not dvProductCodeID.Item(0)(DATE_COL_NAME_PRODUCT_CODE_ID).Equals(Guid.Empty) Then
                     ProductCodeID = GuidControl.ByteArrayToGuid(dvProductCodeID.Item(0)(DATE_COL_NAME_PRODUCT_CODE_ID))
                 Else
-                    Throw New BOValidationException("GetExpectedGWP Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PRODUCT_CODE)
+                    Throw New BOValidationException("GetExpectedGWP Error: ", Common.ErrorCodes.INVALID_PRODUCT_CODE)
                 End If
             Else
-                Throw New BOValidationException("GetExpectedGWP Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PRODUCT_CODE)
+                Throw New BOValidationException("GetExpectedGWP Error: ", Common.ErrorCodes.INVALID_PRODUCT_CODE)
             End If
 
             If Len((CertificateDuration.ToString)) > 3 Or CertificateDuration = MIN_DURATION Or CertificateDuration > MAX_DURATION Then
-                Throw New BOValidationException("GetExpectedGWP Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_CERTIFICATE_DURATION)
+                Throw New BOValidationException("GetExpectedGWP Error: ", Common.ErrorCodes.INVALID_CERTIFICATE_DURATION)
             End If
 
 
@@ -274,10 +274,10 @@ Public Class GetExpectedGWP
                 Dim expcetedGWP As Object = CoverageRate.GetExpectedGWP(dealerId, ProductCode, CertificateDuration, WarrantySalesDate, PurchasePrice, _
                                                                  CoverageDuration, ProductPurchaseDate)
 
-                If Not expcetedGWP Is Nothing Then
+                If expcetedGWP IsNot Nothing Then
                     row("ExpectedGWP") = Convert.ToDouble(expcetedGWP)
                 Else
-                    row("ExpectedGWP") = System.DBNull.Value
+                    row("ExpectedGWP") = DBNull.Value
                 End If
             End If
 
@@ -305,7 +305,7 @@ Public Class GetExpectedGWP
         Try
             Dim oPercentOfRetailDataview As DataView = LookupListNew.GetPercentOfRetailLookup(oProductCodeID)
             If oPercentOfRetailDataview.Count > 0 Then
-                If oPercentOfRetailDataview.Item(0).Item("CODE") Is System.DBNull.Value Then
+                If oPercentOfRetailDataview.Item(0).Item("CODE") Is DBNull.Value Then
                     percentOfRetail = New DecimalType(0)
                 Else
                     percentOfRetail = New DecimalType(CType(oPercentOfRetailDataview.Item(0).Item("CODE"), Decimal))
@@ -315,7 +315,7 @@ Public Class GetExpectedGWP
 
             Return decExpectedGWP
         Catch ex As Exception
-            Throw New StoredProcedureGeneratedException("GetExpectedGWP Error: ", Assurant.ElitaPlus.Common.ErrorCodes.WS_PERCENT_OF_RETAIL_COMPUTE_ERROR)
+            Throw New StoredProcedureGeneratedException("GetExpectedGWP Error: ", Common.ErrorCodes.WS_PERCENT_OF_RETAIL_COMPUTE_ERROR)
         End Try
 
     End Function

@@ -162,7 +162,7 @@ Public Class WSUtility
         Dim err As Assurant.Common.Validation.ValidationError
         Dim errStrList As String
         For Each err In validationExc.ValidationErrorList
-            If Not errStrList Is Nothing Then errStrList &= " :: "
+            If errStrList IsNot Nothing Then errStrList &= " :: "
             If Translate Then
                 errStrList &= TranslationBase.TranslateLabelOrMessage(err.Message)
             Else

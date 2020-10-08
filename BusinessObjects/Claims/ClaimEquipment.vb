@@ -59,7 +59,7 @@ Public Class ClaimEquipment
         Try
             Dim dal As New ClaimEquipmentDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -192,7 +192,7 @@ Public Class ClaimEquipment
     Public ReadOnly Property Manufacturer As String
         Get
             CheckDeleted()
-            Return LookupListNew.GetDescriptionFromId(LookupListNew.LK_MANUFACTURERS, ManufacturerId)
+            Return LookupListNew.GetDescriptionFromId(LookupListCache.LK_MANUFACTURERS, ManufacturerId)
         End Get
     End Property
 
@@ -545,7 +545,7 @@ Public Class ClaimEquipment
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Claim Equipment.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
     Public Function ValidateForClaimProcess(ByRef msgList As List(Of String)) As Boolean
@@ -709,7 +709,7 @@ Public Class ClaimEquipment
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -720,7 +720,7 @@ Public Class ClaimEquipment
                 Return True
             End If
 
-            If ((LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objClaim.Dealer.UseEquipmentId) = Codes.YESNO_Y) AndAlso
+            If ((LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, objClaim.Dealer.UseEquipmentId) = Codes.YESNO_Y) AndAlso
             ((objclaimEquip.IsNew OrElse
             (Not objclaimEquip.IsNew AndAlso
             Not String.IsNullOrEmpty(objclaimEquip.OriginalModel))))) Then

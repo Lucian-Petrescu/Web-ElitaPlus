@@ -59,7 +59,7 @@ Public Class OcMessage
         Try
             Dim dal As New OcMessageDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -406,22 +406,22 @@ Public Class OcMessage
         Public Function AddNewRowToEmptyDV() As MessageDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(MessageDV.COL_MESSAGE_ID) = (New Guid()).ToByteArray
-            row(MessageDV.COL_TEMPLATE_ID) = Guid.Empty.ToByteArray
-            row(MessageDV.COL_TEMPLATE_CODE) = DBNull.Value
-            row(MessageDV.COL_DESCRIPTION) = DBNull.Value
-            row(MessageDV.COL_SENDER_REASON) = DBNull.Value
-            row(MessageDV.COL_RECIPIENT_ADDRESS) = DBNull.Value
-            row(MessageDV.COL_CERTIFICATE_NUMBER) = DBNull.Value
-            row(MessageDV.COL_CERT_ID) = DBNull.Value
-            row(MessageDV.COL_CLAIM_NUMBER) = DBNull.Value
-            row(MessageDV.COL_CLAIM_ID) = DBNull.Value
-            row(MessageDV.COL_CASE_NUMBER) = DBNull.Value
-            row(MessageDV.COL_CASE_ID) = DBNull.Value
-            row(MessageDV.COL_CREATED_BY) = DBNull.Value
-            row(MessageDV.COL_CREATED_DATE) = DBNull.Value
-            row(MessageDV.COL_MODIFIED_BY) = DBNull.Value
-            row(MessageDV.COL_MODIFIED_DATE) = DBNull.Value
+            row(COL_MESSAGE_ID) = (New Guid()).ToByteArray
+            row(COL_TEMPLATE_ID) = Guid.Empty.ToByteArray
+            row(COL_TEMPLATE_CODE) = DBNull.Value
+            row(COL_DESCRIPTION) = DBNull.Value
+            row(COL_SENDER_REASON) = DBNull.Value
+            row(COL_RECIPIENT_ADDRESS) = DBNull.Value
+            row(COL_CERTIFICATE_NUMBER) = DBNull.Value
+            row(COL_CERT_ID) = DBNull.Value
+            row(COL_CLAIM_NUMBER) = DBNull.Value
+            row(COL_CLAIM_ID) = DBNull.Value
+            row(COL_CASE_NUMBER) = DBNull.Value
+            row(COL_CASE_ID) = DBNull.Value
+            row(COL_CREATED_BY) = DBNull.Value
+            row(COL_CREATED_DATE) = DBNull.Value
+            row(COL_MODIFIED_BY) = DBNull.Value
+            row(COL_MODIFIED_DATE) = DBNull.Value
             dt.Rows.Add(row)
             Return New MessageDV(dt)
         End Function

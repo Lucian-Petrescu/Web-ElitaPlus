@@ -56,7 +56,7 @@
 
         helpData = dal.getScreenHelpData(FormName)
 
-        If String.IsNullOrEmpty(helpData) Or helpData.Equals(Codes.ERROR_FLAG) Then
+        If String.IsNullOrEmpty(helpData) OrElse helpData.Equals(Codes.ERROR_FLAG) Then
             helpData = Codes.NO_HELP_COMTS_FOUND
         End If
 

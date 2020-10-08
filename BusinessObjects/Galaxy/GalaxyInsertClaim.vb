@@ -154,7 +154,7 @@ Public Class GalaxyInsertClaim
                     ServiceCenterCode = .SERVICE_CENTER_CODE
 
                     Dim dvServiceCenter As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
-                    If Not dvServiceCenter Is Nothing AndAlso dvServiceCenter.Count > 0 Then
+                    If dvServiceCenter IsNot Nothing AndAlso dvServiceCenter.Count > 0 Then
                         'dvServiceCenter.RowFilter = "code=" & Me.ServiceCenterCode
                         ServiceCenterId = LookupListNew.GetIdFromCode(dvServiceCenter, ServiceCenterCode)
                         If ServiceCenterId.Equals(Guid.Empty) Then
@@ -165,7 +165,7 @@ Public Class GalaxyInsertClaim
                     End If
                 End If
 
-                If Not (StatusCode.Equals(Codes.CLAIM_STATUS__PENDING) Or StatusCode.Equals(Codes.CLAIM_STATUS__ACTIVE)) Then
+                If Not (StatusCode.Equals(Codes.CLAIM_STATUS__PENDING) OrElse StatusCode.Equals(Codes.CLAIM_STATUS__ACTIVE)) Then
                     Throw New BOValidationException("GalaxyInsertClaim Error: ", INVALID_STATUS_CODE)
                 End If
 
@@ -189,7 +189,7 @@ Public Class GalaxyInsertClaim
 
                 ' Get certificate item coverage id
                 Dim _CertificateDetailDataSet As DataSet = Certificate.GalaxyGetCertificateDetail(CertificateNumber, DealerCode)
-                If Not _CertificateDetailDataSet Is Nothing AndAlso _CertificateDetailDataSet.Tables.Count > 0 AndAlso _CertificateDetailDataSet.Tables(0).Rows.Count > 0 Then
+                If _CertificateDetailDataSet IsNot Nothing AndAlso _CertificateDetailDataSet.Tables.Count > 0 AndAlso _CertificateDetailDataSet.Tables(0).Rows.Count > 0 Then
                     If _CertificateDetailDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
                         Throw New BOValidationException("GalaxyInsertClaim Error: ", CERTIFICATE_NOT_FOUND)
                     Else
@@ -217,7 +217,7 @@ Public Class GalaxyInsertClaim
                     Throw New BOValidationException("GalaxyInsertClaim Error: ", CERTIFICATE_NOT_FOUND)
                 End If
 
-                CauseOfLossId = LookupListNew.GetIdFromCode(LookupListNew.LK_CAUSES_OF_LOSS, CauseOfLossCode)
+                CauseOfLossId = LookupListNew.GetIdFromCode(LookupListCache.LK_CAUSES_OF_LOSS, CauseOfLossCode)
 
                 If CauseOfLossId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("GalaxyInsertClaim Error: ", INVALID_CAUSE_OF_LOSS_CODE)
@@ -228,7 +228,7 @@ Public Class GalaxyInsertClaim
                     Dim assurant_pay_amount As Decimal
                     Dim deductible As Decimal
 
-                    If Not CType(ds.COVERAGES(i).ASSURANT_PAY_AMOUNT, DecimalType) Is Nothing Then
+                    If CType(ds.COVERAGES(i).ASSURANT_PAY_AMOUNT, DecimalType) IsNot Nothing Then
                         assurant_pay_amount = ds.COVERAGES(i).ASSURANT_PAY_AMOUNT
                     End If
 
@@ -236,9 +236,9 @@ Public Class GalaxyInsertClaim
 
                     Dim certItemCoverageId As Guid = Guid.Empty
 
-                    If Not dsItemCoverages Is Nothing AndAlso dsItemCoverages.Tables.Count > 0 AndAlso dsItemCoverages.Tables(0).Rows.Count > 0 Then
+                    If dsItemCoverages IsNot Nothing AndAlso dsItemCoverages.Tables.Count > 0 AndAlso dsItemCoverages.Tables(0).Rows.Count > 0 Then
                         Dim dr() As DataRow = dsItemCoverages.Tables(0).Select(CertItemCoverageDAL.COL_NAME_COVERAGE_TYPE_CODE & "='" & coverageCode & "'")
-                        If Not dr Is Nothing AndAlso dr.Length > 0 Then
+                        If dr IsNot Nothing AndAlso dr.Length > 0 Then
                             certItemCoverageId = New Guid(CType(dr(0)(CertItemCoverageDAL.COL_NAME_CERT_ITEM_COVERAGE_ID), Byte()))
                             If certItemCoverageId.Equals(Guid.Empty) Then
                                 Throw New BOValidationException("GalaxyInsertClaim Error: ", CERTIFICATE_COVERAGES_NOT_FOUND)

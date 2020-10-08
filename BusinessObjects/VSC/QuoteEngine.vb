@@ -475,7 +475,11 @@ Public Class QuoteEngine
     End Function
 
     Private Function RemoveExcessData(xmlStringOutput As String) As String
-        xmlStringOutput = Regex.Replace(xmlStringOutput, "<QUOTE_ITEM_ID>[^>]+</QUOTE_ITEM_ID>|<QUOTE_ITEM_PARENT_ID>[^>]+</QUOTE_ITEM_PARENT_ID>|<Quote_Item_id_String>[^>]+</Quote_Item_id_String>|<QUOTE_ID>[^>]+</QUOTE_ID>", String.Empty)
+        xmlStringOutput = Regex.Replace(xmlStringOutput, 
+                                        "<QUOTE_ITEM_ID>[^>]+</QUOTE_ITEM_ID>|<QUOTE_ITEM_PARENT_ID>[^>]+</QUOTE_ITEM_PARENT_ID>|<Quote_Item_id_String>[^>]+</Quote_Item_id_String>|<QUOTE_ID>[^>]+</QUOTE_ID>", 
+                                        String.Empty,
+                                        RegexOptions.None, 
+                                        new TimeSpan(0,0,0,0, 100))
         Return xmlStringOutput
     End Function
 
@@ -517,7 +521,7 @@ Public Class QuoteEngine
     Public ReadOnly Property ModelObject As VSCModel
         Get
             If _modelObject Is Nothing Then
-                If Not Manufacturer Is Nothing AndAlso Not Model Is Nothing AndAlso Not Year = 0 Then
+                If Manufacturer IsNot Nothing AndAlso Model IsNot Nothing AndAlso Not Year = 0 Then
                     _modelObject = New VSCModel(Manufacturer, Model, Year)
                 End If
             End If
@@ -528,7 +532,7 @@ Public Class QuoteEngine
     Public ReadOnly Property DealerObject As Dealer
         Get
             If _DealerObject Is Nothing Then
-                If Not DealerCode Is Nothing Then
+                If DealerCode IsNot Nothing Then
                     _DealerObject = New Dealer(Authentication.CurrentUser.CompanyId, DealerCode)
                 End If
             End If
@@ -550,7 +554,7 @@ Public Class QuoteEngine
     Public ReadOnly Property DealerPlansIDs As ArrayList
         Get
             If _dealerPlansIDs Is Nothing Then
-                If Not DealerCode Is Nothing AndAlso Not DealerObject Is Nothing Then
+                If DealerCode IsNot Nothing AndAlso DealerObject IsNot Nothing Then
                     _dealerPlansIDs = ProductCode.GetProductCodeIDs(DealerObject.Id)
                 End If
             End If
@@ -561,7 +565,7 @@ Public Class QuoteEngine
     Public ReadOnly Property CoveragesIDs As ArrayList
         Get
             If _coveragesIDs Is Nothing Then
-                If Not DealerCode Is Nothing AndAlso Not DealerObject Is Nothing Then
+                If DealerCode IsNot Nothing AndAlso DealerObject IsNot Nothing Then
                     _dealerPlansIDs = ProductCode.GetProductCodeIDs(DealerObject.Id)
                 End If
             End If

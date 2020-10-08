@@ -12,7 +12,7 @@ Public MustInherit Class BusinessObjectListEnumerableBase(Of TParent As Business
         Dim list As New List(Of TChild)
         Dim row As DataRow
         For Each row In Table.Rows
-            If Not (row.RowState = DataRowState.Deleted Or row.RowState = DataRowState.Detached) Then
+            If Not (row.RowState = DataRowState.Deleted OrElse row.RowState = DataRowState.Detached) Then
                 Dim bo As BusinessObjectBase = GetChild(row)
                 If Belong(bo) Then
                     list.Add(DirectCast(bo, TChild))

@@ -59,7 +59,7 @@ Public Class WorkQueueItemStatusReason
         If (_workQueueItemStatusReason.Reason Is Nothing OrElse String.IsNullOrEmpty(_workQueueItemStatusReason.Reason)) Then
             _description = String.Empty
         Else
-            _description = LookupListNew.GetDescriptionFromCode(LookupListNew.LK_REASON_CODE, _workQueueItemStatusReason.Reason)
+            _description = LookupListNew.GetDescriptionFromCode(LookupListCache.LK_REASON_CODE, _workQueueItemStatusReason.Reason)
         End If
     End Sub
 #End Region
@@ -163,7 +163,7 @@ End Namespace
 Public NotInheritable Class ValidateDuplicateReasons
     Inherits ValidBaseAttribute
     Public Sub New(fieldDisplayName As String)
-        MyBase.New(fieldDisplayName, Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_WQ_DUPLICATE_STATUS_REASON)
+        MyBase.New(fieldDisplayName, Common.ErrorCodes.BO_ERROR_WQ_DUPLICATE_STATUS_REASON)
     End Sub
 
     Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean

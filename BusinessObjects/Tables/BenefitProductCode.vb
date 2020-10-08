@@ -53,7 +53,7 @@ Public Class BenefitProductCode
             Dim dal As New BenefitProductCodeDAL
 
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -82,7 +82,7 @@ Public Class BenefitProductCode
         Try
             Dim dal As New BenefitProductCodeDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(BenefitProductCodeDAL.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -404,7 +404,7 @@ Public Class BenefitProductCode
             MyBase.Save()
             If _isDSCreator AndAlso (IsDirty OrElse IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New BenefitProductCodeDAL
-                Dim createLogRecord As Boolean = Not (IsNew Or _originalEffectiveDate Is Nothing Or _originalExpirationDate Is Nothing)
+                Dim createLogRecord As Boolean = Not (IsNew OrElse _originalEffectiveDate Is Nothing OrElse _originalExpirationDate Is Nothing)
 
                 If createLogRecord Then
                     ' the record is current
@@ -569,7 +569,7 @@ Public Class BenefitProductCode
 
             Dim bValid As Boolean = True
 
-            If Not obj.ExpirationDate Is Nothing And Not obj.EffectiveDate Is Nothing Then
+            If obj.ExpirationDate IsNot Nothing AndAlso obj.EffectiveDate IsNot Nothing Then
                 If Convert.ToDateTime(obj.EffectiveDate.Value) > Convert.ToDateTime(obj.ExpirationDate.Value) Then
                     Message = BENEFIT_PRODUCT_CODE_FORM001
                     bValid = False

@@ -66,7 +66,7 @@ Public Class ServiceNetworkSvc
         Try
             Dim dal As New ServiceNetworkSvcDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -92,7 +92,7 @@ Public Class ServiceNetworkSvc
             Dim dal As New ServiceNetworkSvcDAL
 
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -233,7 +233,7 @@ Public Class ServiceNetworkSvc
                 Dim index As Integer
                 ' Create Array
                 For index = 0 To oSvcDv.Table.Rows.Count - 1
-                    If Not oSvcDv.Table.Rows(index)(ServiceNetworkSvcDAL.COL_NAME_SERVICE_CENTER_ID) Is System.DBNull.Value Then
+                    If oSvcDv.Table.Rows(index)(ServiceNetworkSvcDAL.COL_NAME_SERVICE_CENTER_ID) IsNot DBNull.Value Then
                         moServiceCenterIDs.Add(New Guid(CType(oSvcDv.Table.Rows(index)(ServiceNetworkSvcDAL.COL_NAME_SERVICE_CENTER_ID), Byte())))
                     End If
                 Next

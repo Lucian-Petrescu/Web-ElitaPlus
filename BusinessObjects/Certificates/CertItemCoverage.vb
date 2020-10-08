@@ -47,7 +47,7 @@ Public Class CertItemCoverage
             End Get
             Set
                 m_deductibleBasedOnId = value
-                m_deductibleBasedOn = LookupListNew.GetCodeFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, DeductibleBasedOnId)
+                m_deductibleBasedOn = LookupListNew.GetCodeFromId(LookupListCache.LK_DEDUCTIBLE_BASED_ON, DeductibleBasedOnId)
             End Set
         End Property
 
@@ -134,7 +134,7 @@ Public Class CertItemCoverage
         Try
             Dim dal As New CertItemCoverageDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -240,7 +240,7 @@ Public Class CertItemCoverage
 
     Public ReadOnly Property CoverageTypeCode As String
         Get
-            Return LookupListNew.GetCodeFromId(LookupListNew.LK_COVERAGE_TYPES, CoverageTypeId)
+            Return LookupListNew.GetCodeFromId(LookupListCache.LK_COVERAGE_TYPES, CoverageTypeId)
         End Get
     End Property
 
@@ -251,7 +251,7 @@ Public Class CertItemCoverage
         End Get
         Set
             CheckDeleted()
-            SetValue(CertItemCoverageDAL.COL_NAME_MODIFIED_BY, Value)
+            SetValue(DALBase.COL_NAME_MODIFIED_BY, Value)
         End Set
     End Property
 
@@ -889,7 +889,7 @@ Public Class CertItemCoverage
 
     Public ReadOnly Property IsCoverageEffective As Boolean
         Get
-            If (Not BeginDate Is Nothing AndAlso Not EndDate Is Nothing) Then
+            If (BeginDate IsNot Nothing AndAlso EndDate IsNot Nothing) Then
                 If Date.Today >= BeginDate.Value AndAlso Date.Today <= EndDate.Value Then
                     Return True
                 Else
@@ -911,7 +911,7 @@ Public Class CertItemCoverage
         Dim gracePeriodMonths As Integer = If(oDealer.GracePeriodMonths, 0)
 
         Dim dtGracePeriodEndDate As Date = EndDate.Value.AddMonths(gracePeriodMonths).AddDays(gracePeriodDays)
-        If (Not BeginDate Is Nothing AndAlso Not EndDate Is Nothing) Then
+        If (BeginDate IsNot Nothing AndAlso EndDate IsNot Nothing) Then
 
             If ReportedDate >= BeginDate.Value AndAlso ReportedDate <= dtGracePeriodEndDate Then
                 Return True
@@ -1158,16 +1158,16 @@ Public Class CertItemCoverage
     Public Shared Function GetDeductible(certItemCoverageId As Guid, methodOfRepairId As Guid) As DeductibleType
         Try
             Dim returnValue As New DeductibleType
-            returnValue.DeductibleBasedOnId = LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, "FIXED")
+            returnValue.DeductibleBasedOnId = LookupListNew.GetIdFromCode(LookupListCache.LK_DEDUCTIBLE_BASED_ON, "FIXED")
             returnValue.Deductible = 0
             returnValue.ExpressionId = Nothing
 
-            If (LookupListNew.GetCodeFromId(LookupListNew.LK_METHODS_OF_REPAIR, methodOfRepairId) <> Codes.METHOD_OF_REPAIR__RECOVERY) Then
+            If (LookupListNew.GetCodeFromId(LookupListCache.LK_METHODS_OF_REPAIR, methodOfRepairId) <> Codes.METHOD_OF_REPAIR__RECOVERY) Then
                 Dim oCertItemCoverageDed As CertItemCoverageDeductible
                 oCertItemCoverageDed = CertItemCoverageDeductible.GetDeductible(certItemCoverageId, methodOfRepairId)
                 If (oCertItemCoverageDed Is Nothing) Then
                     Dim oCertItemCoverage As New CertItemCoverage(certItemCoverageId)
-                    If (Not oCertItemCoverage Is Nothing) Then
+                    If (oCertItemCoverage IsNot Nothing) Then
                         returnValue.DeductibleBasedOnId = oCertItemCoverage.DeductibleBasedOnId
 
                         If (returnValue.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__FIXED) Then
@@ -1283,9 +1283,9 @@ Public Class CertItemCoverage
     Public Property Dealer As Dealer
         Get
             If (_dealer Is Nothing) Then
-                If Not Certificate Is Nothing Then
+                If Certificate IsNot Nothing Then
                     Me.Dealer = New Dealer(Certificate.DealerId, Dataset)
-                ElseIf Not CertificateItem Is Nothing Then
+                ElseIf CertificateItem IsNot Nothing Then
                     Certificate = New Certificate(CertificateItem.CertId, Dataset)
                     Me.Dealer = New Dealer(Certificate.DealerId, Dataset)
                 Else
@@ -1304,7 +1304,7 @@ Public Class CertItemCoverage
     Public Property Certificate As Certificate
         Get
             If (_certificate Is Nothing) Then
-                If Not CertificateItem Is Nothing Then
+                If CertificateItem IsNot Nothing Then
                     Me.Certificate = New Certificate(CertificateItem.CertId, Dataset)
                 Else
                     CertificateItem = New CertItem(CertItemId, Dataset)
@@ -1347,8 +1347,8 @@ Public Class CertItemCoverage
         Dim susp As Int32
         Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")
         Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "N")
-        Dim isclaimselected As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        Dim isRequiredItemDescription As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
+        Dim isclaimselected As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
+        Dim isRequiredItemDescription As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)
         Dim coverageType, networkId As String
         Dim flag = True
         Dim claimsManager, officeManager, IHQSup As Boolean
@@ -1373,7 +1373,7 @@ Public Class CertItemCoverage
 
         'Req-1016 - Start
         Dim emptyGuid As Guid = Guid.Empty
-        Dim singlePremiumId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_PERIOD_RENEW, Codes.PERIOD_RENEW__SINGLE_PREMIUM)
+        Dim singlePremiumId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_PERIOD_RENEW, Codes.PERIOD_RENEW__SINGLE_PREMIUM)
         'Req-1016 - end
 
         If Certificate.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE OrElse (Certificate.StatusCode <> Codes.CERTIFICATE_STATUS__ACTIVE AndAlso (claimsManager OrElse IHQSup OrElse otherAllowedRoles)) Then
@@ -1394,17 +1394,18 @@ Public Class CertItemCoverage
                     End If
                 End If
             ElseIf coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER AndAlso coverageType <> Codes.COVERAGE_TYPE__MANUFACTURER_MAIN_PARTS AndAlso Not (IsCoverageEffective) Then
-                If Date.Today > BeginDate.Value Then
-                    If ((Not claimsManager) AndAlso (Not officeManager) AndAlso (Not IHQSup) AndAlso (Not otherAllowedRoles)) Then
-                        flag = False
-                    End If
+                If _
+                    Date.Today > BeginDate.Value AndAlso
+                    ((Not claimsManager) AndAlso (Not officeManager) AndAlso (Not IHQSup) AndAlso
+                     (Not otherAllowedRoles)) Then
+                    flag = False
                 End If
                 'errMsg.Add("COVERAGE IS NOT IN EFFECT")
                 If Not warningMsg.Contains("COVERAGE IS NOT IN EFFECT") Then
                     warningMsg.Add("COVERAGE IS NOT IN EFFECT")
                 End If
 
-            ElseIf Not ((LookupListNew.GetDescriptionFromId(LookupListNew.LK_YESNO, IsClaimAllowed()) = "Y") OrElse (IsClaimAllowed = Nothing)) Then
+            ElseIf Not ((LookupListNew.GetDescriptionFromId(LookupListCache.LK_YESNO, IsClaimAllowed()) = "Y") OrElse (IsClaimAllowed = Nothing)) Then
                 flag = False
                 errMsg.Add("Claim Not Allowed")
             End If
@@ -1433,7 +1434,7 @@ Public Class CertItemCoverage
             End If
 
             ' Check if Compute Deductible by List Price and SKU is Missing
-            If (DeductibleBasedOnId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, "LIST"))) Then
+            If (DeductibleBasedOnId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_DEDUCTIBLE_BASED_ON, "LIST"))) Then
                 If Not CertificateItem.IsEquipmentRequired Then
                     If (Len(Trim(CertificateItem.SkuNumber)) = 0) Then
                         flag = False
@@ -1445,7 +1446,7 @@ Public Class CertItemCoverage
 
             'Suspended contract
             'oContract = Contract.GetCurrentContract(Me.moCertificate.DealerId)
-            If Not oContract Is Nothing Then
+            If oContract IsNot Nothing Then
                 Dim ignoreWaitingPeriodID As Guid
                 Dim intClaimWaitingPeriod As Integer = GetClaimWaitingPeriod(Id, ignoreWaitingPeriodID)
                 tempDate = Certificate.WarrantySalesDate.Value
@@ -1459,7 +1460,7 @@ Public Class CertItemCoverage
                 End If
 
                 If ((Not oContract.RecurringPremiumId.Equals(emptyGuid)) AndAlso (Not oContract.RecurringPremiumId.Equals(singlePremiumId))) Then
-                    If Not Certificate.DatePaidFor Is Nothing Then
+                    If Certificate.DatePaidFor IsNot Nothing Then
                         susp = Date.Today.Subtract(Certificate.DatePaidFor.Value).Days
                     Else
                         susp = Date.Today.Subtract(Certificate.CreatedDate.Value).Days
@@ -1504,10 +1505,8 @@ Public Class CertItemCoverage
             If Date.Today > BeginDate.Value AndAlso Date.Today > EndDate.Value Then
                 If oContract Is Nothing Then
                     flag = False
-                    errMsg.Add(ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND)
-                'ElseIf (oContract.BackEndClaimsAllowedId.Equals(yesId)) Then
-                '    flag = flag And True
-                Else
+                    errMsg.Add(Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND)
+                ElseIf Not oContract.BackEndClaimsAllowedId.Equals(yesId) Then
                     If ((Not claimsManager) AndAlso (Not officeManager) AndAlso (Not IHQSup) AndAlso Not otherAllowedRoles) Then
                         flag = False
                     End If
@@ -1517,7 +1516,7 @@ Public Class CertItemCoverage
 
         If oContract Is Nothing Then
             flag = False
-            errMsg.Add(ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND)
+            errMsg.Add(Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND)
         ElseIf IsDepreciationScheduleNotDefined(oContract.Id) Then
             flag = False
             errMsg.Add("DEPRECIATION_SCHEDULE_NOT_DEFINED")
@@ -1569,7 +1568,7 @@ Public Class CertItemCoverage
         Dim addr As Address
 
         addr = Certificate.AddressChild(False)
-        If Not addr Is Nothing Then
+        If addr IsNot Nothing Then
             If Certificate.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE AndAlso _
                 addr.PostalCode = "" Then
                 Return True
@@ -1626,7 +1625,7 @@ Public Class CertItemCoverage
 
     Public Function IsDepreciationScheduleNotDefined(ContractID As Guid) As Boolean
 
-        Dim al As ArrayList = Claim.CalculateLiabilityLimit(CertId, ContractID, Id)
+        Dim al As ArrayList = ClaimBase.CalculateLiabilityLimit(CertId, ContractID, Id)
         If CType(al(1), Integer) <> 0 Then
             Return True
         Else
@@ -1651,10 +1650,10 @@ Public Class CertItemCoverage
 
                 elpasedDaysSinceRepaired = CType(oClaim, Claim).ServiceCenterObject.ServiceWarrantyDays.Value
 
-                If Not oClaim.MethodOfRepairId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)) Then
-                    If Not CType(oClaim, Claim).PickUpDate Is Nothing Then
+                If Not oClaim.MethodOfRepairId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)) Then
+                    If CType(oClaim, Claim).PickUpDate IsNot Nothing Then
                         elpasedDaysSinceRepaired = Date.Now.Subtract(CType(oClaim, Claim).PickUpDate.Value).Days
-                    ElseIf Not CType(oClaim, Claim).RepairDate Is Nothing Then
+                    ElseIf CType(oClaim, Claim).RepairDate IsNot Nothing Then
                         elpasedDaysSinceRepaired = Date.Now.Subtract(CType(oClaim, Claim).RepairDate.Value).Days
                     End If
                     If elpasedDaysSinceRepaired < CType(oClaim, Claim).ServiceCenterObject.ServiceWarrantyDays.Value Then
@@ -1670,10 +1669,10 @@ Public Class CertItemCoverage
                 For Each auth As ClaimAuthorization In claim.NonVoidClaimAuthorizationList
                     elpasedDaysSinceRepaired = auth.ServiceCenterObject.ServiceWarrantyDays.Value
 
-                    If Not claim.MethodOfRepairId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)) Then
-                        If Not auth.PickUpDate Is Nothing Then
+                    If Not claim.MethodOfRepairId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)) Then
+                        If auth.PickUpDate IsNot Nothing Then
                             elpasedDaysSinceRepaired = Date.Now.Subtract(auth.PickUpDate.Value).Days
-                        ElseIf Not auth.RepairDate Is Nothing Then
+                        ElseIf auth.RepairDate IsNot Nothing Then
                             elpasedDaysSinceRepaired = Date.Now.Subtract(auth.RepairDate.Value).Days
                         End If
 
@@ -1697,14 +1696,14 @@ Public Class CertItemCoverage
 
         Dim ClaimControl As Boolean = False
 
-        If Not oContract Is Nothing Then
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, oContract.ClaimControlID) = "Y" Then
+        If oContract IsNot Nothing Then
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, oContract.ClaimControlID) = "Y" Then
                 ClaimControl = True
             End If
         End If
 
         If CoverageType <> Codes.COVERAGE_TYPE__MANUFACTURER Then
-            If Not Certificate.MethodOfRepairId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)) _
+            If Not Certificate.MethodOfRepairId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)) _
                AndAlso ClaimControl Then
                 msg = Messages.MSG_DEALER_USER_CLAIM_INTERFACES
                 Return True

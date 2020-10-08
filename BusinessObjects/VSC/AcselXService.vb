@@ -30,7 +30,7 @@ Public Class AcselXService
         bind.MaxBufferPoolSize = 524288
         bind.MaxReceivedMessageSize = 262144
         bind.MessageEncoding = WSMessageEncoding.Text
-        bind.TextEncoding = Text.Encoding.UTF8
+        bind.TextEncoding = Encoding.UTF8
         bind.TransferMode = TransferMode.Buffered
         bind.UseDefaultWebProxy = True
         ' readerQuotas
@@ -101,7 +101,7 @@ Public Class AcselXService
             If Not tempTransId.Equals(Guid.Empty) Then
                 Dim transObj As TransactionLogHeader = New TransactionLogHeader(tempTransId)
                 xmlIn = transObj.TransactionXml
-                If Not xmlIn Is Nothing Then
+                If xmlIn IsNot Nothing Then
                     xmlIn = xmlIn.Replace("<?xml version='1.0' encoding='utf-8' ?>", "")
                 End If
             End If

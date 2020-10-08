@@ -53,7 +53,7 @@
         Try
             Dim dal As New BillingPayDetailDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.BILLPAY_TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -185,7 +185,7 @@
         Try
             ds = dal.loadBillpayList(BillingHeaderId)
 
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView
@@ -200,7 +200,7 @@
         Try
             ds = dal.loadBillpayListForNonBillingDealer(BillingHeaderId, Authentication.CurrentUser.LanguageId)
 
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView
@@ -285,7 +285,7 @@
         Dim ds As DataSet
         Try
             ds = dal.GetAllRejInstNoForCert(CertId)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView

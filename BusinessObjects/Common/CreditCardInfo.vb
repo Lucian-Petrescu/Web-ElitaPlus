@@ -61,7 +61,7 @@ Public Class CreditCardInfo
         Try
             Dim dal As New CreditCardInfoDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -215,9 +215,9 @@ Public Class CreditCardInfo
             Dim rowIndex As Integer
             For rowIndex = 0 To parentCertInstallment.Dataset.Tables(CreditCardInfoDAL.TABLE_NAME).Rows.Count - 1
                 row = parentCertInstallment.Dataset.Tables(CreditCardInfoDAL.TABLE_NAME).Rows.Item(rowIndex)
-                If Not (row.RowState = DataRowState.Deleted) Or (row.RowState = DataRowState.Detached) Then
+                If Not (row.RowState = DataRowState.Deleted) OrElse (row.RowState = DataRowState.Detached) Then
                     Dim cc As CreditCardInfo = New CreditCardInfo(row)
-                    If parentCertInstallment.CreditCardInfoId.Equals(cc.Id) And cc.IsNew Then
+                    If parentCertInstallment.CreditCardInfoId.Equals(cc.Id) AndAlso cc.IsNew Then
                         cc.Delete()
                     End If
                 End If

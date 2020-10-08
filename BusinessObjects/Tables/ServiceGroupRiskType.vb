@@ -68,7 +68,7 @@ Public Class ServiceGroupRiskType
         Try
             Dim dal As New ServiceGroupRiskTypeDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -290,7 +290,7 @@ Public Class ServiceGroupRiskType
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, sgRtMan.ManufacturerId)
         Next
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause
         Else

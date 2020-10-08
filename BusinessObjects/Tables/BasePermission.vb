@@ -59,7 +59,7 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
         Try
             Dim dal As New TDataAccessType
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -159,7 +159,7 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 #End Region
 
@@ -177,9 +177,9 @@ Public MustInherit Class PermissionList(Of _
     Public Sub New(parent As TParentType)
         MyBase.New(LoadTable(Of TPermissionList)(parent), parent)
         If (ElitaPlusIdentity.Current Is Nothing) OrElse (ElitaPlusIdentity.Current.ActiveUser Is Nothing) Then
-            dvPermissions = LookupListNew.DropdownLanguageLookupList(LookupListNew.LK_USER_ROLE_PERMISSION, CType(CType(parent, Object), User).LanguageId)
+            dvPermissions = LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_USER_ROLE_PERMISSION, CType(CType(parent, Object), User).LanguageId)
         Else
-            dvPermissions = LookupListNew.DropdownLanguageLookupList(LookupListNew.LK_USER_ROLE_PERMISSION, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            dvPermissions = LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_USER_ROLE_PERMISSION, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         End If
 
 
@@ -211,7 +211,7 @@ Public MustInherit Class PermissionList(Of _
     End Function
 
     Public Sub Grant(permissionId As Guid)
-        Dim permission As TPermission = GetNewChild(DirectCast(MyBase.Parent, TParentType).Id)
+        Dim permission As TPermission = GetNewChild(DirectCast(Parent, TParentType).Id)
         permission.PermissionId = permissionId
         permission.Save()
     End Sub

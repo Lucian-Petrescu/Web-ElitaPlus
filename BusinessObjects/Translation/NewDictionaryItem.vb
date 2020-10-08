@@ -59,7 +59,7 @@ Public Class NewDictionaryItem
         Try
             Dim dal As New NewDictionaryItemDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -186,31 +186,31 @@ Public Class NewDictionaryItem
 
     Public ReadOnly Property ModifiedDate As DateType
         Get
-            If Row(NewDictionaryItemDAL.COL_NAME_MODIFIED_DATE) Is DBNull.Value Then Return Nothing
-            Return New DateType(CType(Row(NewDictionaryItemDAL.COL_NAME_MODIFIED_DATE), Date))
+            If Row(DALBase.COL_NAME_MODIFIED_DATE) Is DBNull.Value Then Return Nothing
+            Return New DateType(CType(Row(DALBase.COL_NAME_MODIFIED_DATE), Date))
         End Get
     End Property
 
     Public ReadOnly Property ModifiedById As String
         Get
-            If Row(NewDictionaryItemDAL.COL_NAME_MODIFIED_BY) Is DBNull.Value Then Return Nothing
-            Return CType(Row(NewDictionaryItemDAL.COL_NAME_MODIFIED_BY), String)
+            If Row(DALBase.COL_NAME_MODIFIED_BY) Is DBNull.Value Then Return Nothing
+            Return CType(Row(DALBase.COL_NAME_MODIFIED_BY), String)
         End Get
     End Property
 
 
     Public ReadOnly Property CreatedDate As DateType
         Get
-            If Row(NewDictionaryItemDAL.COL_NAME_CREATED_DATE) Is DBNull.Value Then Return Nothing
-            Return New DateType(CType(Row(NewDictionaryItemDAL.COL_NAME_CREATED_DATE), Date))
+            If Row(DALBase.COL_NAME_CREATED_DATE) Is DBNull.Value Then Return Nothing
+            Return New DateType(CType(Row(DALBase.COL_NAME_CREATED_DATE), Date))
         End Get
     End Property
 
     '<ValueMandatory("")> _
     Public ReadOnly Property CreatedById As String
         Get
-            If Row(NewDictionaryItemDAL.COL_NAME_CREATED_BY) Is DBNull.Value Then Return Nothing
-            Return CType(Row(NewDictionaryItemDAL.COL_NAME_CREATED_BY), String)
+            If Row(DALBase.COL_NAME_CREATED_BY) Is DBNull.Value Then Return Nothing
+            Return CType(Row(DALBase.COL_NAME_CREATED_BY), String)
         End Get
     End Property
 
@@ -397,10 +397,10 @@ Public Class NewDictionaryItem
         row(NewDictionaryItemDAL.COL_NAME_DICT_ITEM_ID) = bo.DictItemId.ToByteArray
         row(NewDictionaryItemDAL.COL_NAME_IMPORTED) = bo.Imported
         row(NewDictionaryItemDAL.COL_NAME_APPROVED) = bo.Approved
-        row(NewDictionaryItemDAL.COL_NAME_CREATED_DATE) = DBNull.Value
-        row(NewDictionaryItemDAL.COL_NAME_MODIFIED_DATE) = DBNull.Value
-        row(NewDictionaryItemDAL.COL_NAME_CREATED_BY) = bo.CreatedById
-        row(NewDictionaryItemDAL.COL_NAME_MODIFIED_BY) = bo.ModifiedById
+        row(DALBase.COL_NAME_CREATED_DATE) = DBNull.Value
+        row(DALBase.COL_NAME_MODIFIED_DATE) = DBNull.Value
+        row(DALBase.COL_NAME_CREATED_BY) = bo.CreatedById
+        row(DALBase.COL_NAME_MODIFIED_BY) = bo.ModifiedById
         row(NewDictionaryItemDAL.COL_NAME_MSG_CODE) = DBNull.Value
         row(NewDictionaryItemDAL.COL_NAME_MSG_TYPE) = DBNull.Value
         row(NewDictionaryItemDAL.COL_NAME_MSG_PARAMETER_COUNT) = 0
@@ -423,10 +423,10 @@ Public Class NewDictionaryItem
         Public Const COL_NAME_IMPORTED As String = NewDictionaryItemDAL.COL_NAME_IMPORTED
         Public Const COL_NAME_DICT_ITEM_ID = NewDictionaryItemDAL.COL_NAME_DICT_ITEM_ID
         Public Const COL_NAME_NEW_DICT_ITEM_ID = NewDictionaryItemDAL.COL_NAME_NEW_DICT_ITEM_ID
-        Public Const COL_NAME_CREATED_DATE = NewDictionaryItemDAL.COL_NAME_CREATED_DATE
-        Public Const COL_NAME_MODIFIED_DATE = NewDictionaryItemDAL.COL_NAME_MODIFIED_DATE
-        Public Const COL_NAME_CREATED_BY = NewDictionaryItemDAL.COL_NAME_CREATED_BY
-        Public Const COL_NAME_MODIFIED_BY = NewDictionaryItemDAL.COL_NAME_MODIFIED_BY
+        Public Const COL_NAME_CREATED_DATE = DALBase.COL_NAME_CREATED_DATE
+        Public Const COL_NAME_MODIFIED_DATE = DALBase.COL_NAME_MODIFIED_DATE
+        Public Const COL_NAME_CREATED_BY = DALBase.COL_NAME_CREATED_BY
+        Public Const COL_NAME_MODIFIED_BY = DALBase.COL_NAME_MODIFIED_BY
         Public Const COL_NAME_MSG_TYPE = NewDictionaryItemDAL.COL_NAME_MSG_TYPE
         Public Const COL_NAME_MSG_CODE = NewDictionaryItemDAL.COL_NAME_MSG_CODE
         Public Const COL_NAME_MSG_PARAM_COUNT = NewDictionaryItemDAL.COL_NAME_MSG_PARAMETER_COUNT

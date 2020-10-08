@@ -69,7 +69,7 @@ Public Class ClaimStage
         Try
             Dim dal As New ClaimStageDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -371,7 +371,7 @@ Public Class ClaimStage
     Public Sub AttachStageEndStatus(stageEndStatusGuidStr As String, _languageid As Guid)
         LoadChildren(False, _languageid)
 
-        If Not stageEndStatusGuidStr Is Nothing AndAlso stageEndStatusGuidStr.Length > 0 Then
+        If stageEndStatusGuidStr IsNot Nothing AndAlso stageEndStatusGuidStr.Length > 0 Then
             Dim i As Integer
             Dim StgEndStatusId As Guid = New Guid(stageEndStatusGuidStr)
             Dim stgEndStatus As StageEndStatus = StageEndStatus.Find(Dataset, Id, StgEndStatusId)
@@ -387,11 +387,11 @@ Public Class ClaimStage
     Public Sub DetachStageEndStatus(stageEndStatusGuidStr As String, _languageid As Guid)
         LoadChildren(False, _languageid)
 
-        If Not stageEndStatusGuidStr Is Nothing AndAlso stageEndStatusGuidStr.Length > 0 Then
+        If stageEndStatusGuidStr IsNot Nothing AndAlso stageEndStatusGuidStr.Length > 0 Then
             Dim i As Integer
             Dim stgEndStatus As StageEndStatus = StageEndStatus.Find(Dataset, Id, New Guid(stageEndStatusGuidStr))
 
-            If Not stgEndStatus Is Nothing Then
+            If stgEndStatus IsNot Nothing Then
                 stgEndStatus.Delete()
                 stgEndStatus.Save()
             End If
@@ -533,7 +533,7 @@ Public Class ClaimStage
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
-            If (Not valueToCheck Is Nothing) AndAlso valueToCheck <> Guid.Empty Then
+            If (valueToCheck IsNot Nothing) AndAlso valueToCheck <> Guid.Empty Then
                 Dim obj As ClaimStage = CType(objectToValidate, ClaimStage)
 
                 If valueToCheck Is Nothing Then Return True
@@ -658,7 +658,7 @@ Public Class ClaimStage
 
             Try
                 Dim objDate As DateTime? = CType(objectToCheck, DateTime?)
-                If Not objDate = Nothing And Not obj.EffectiveDate Is Nothing Then
+                If Not objDate = Nothing And obj.EffectiveDate IsNot Nothing Then
                     If obj.EffectiveDate.Value > objDate.Value Then Return False
                 End If
             Catch ex As FormatException

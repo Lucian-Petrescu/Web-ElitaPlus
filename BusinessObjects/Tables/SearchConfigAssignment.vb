@@ -58,7 +58,7 @@ Public Class SearchConfigAssignment
     Protected Sub Load(id As Guid)               
         Try
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(SearchConfigAssignmentDAL.TableName).Rows.Remove(Row)
                 End If
             End If

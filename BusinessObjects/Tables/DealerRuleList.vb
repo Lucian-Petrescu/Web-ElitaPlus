@@ -60,7 +60,7 @@ Public Class DealerRuleList
         Try
             Dim dal As New DealerRuleListDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -167,10 +167,10 @@ Public Class DealerRuleList
 
     Public Property Description As String
         Get
-            If Row(DealerRuleListDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
+            If Row(DALBase.COL_NAME_DESCRIPTION) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(DealerRuleListDAL.COL_NAME_DESCRIPTION), String)
+                Return CType(Row(DALBase.COL_NAME_DESCRIPTION), String)
             End If
         End Get
         Set
@@ -211,7 +211,7 @@ Public Class DealerRuleList
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 #End Region
 

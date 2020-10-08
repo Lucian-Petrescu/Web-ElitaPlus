@@ -100,7 +100,7 @@ Public Class ClaimSuspense
         Try
             Dim dal As New ClaimSuspenseDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -529,7 +529,7 @@ Public Class ClaimSuspense
         'Next
 
         Try
-            For Each ds As DataSet In MyBase.SplitDatasetForXML(dsXmlFile, ClaimReconWrkDAL.COL_NAME_CERTIFICATE)
+            For Each ds As DataSet In SplitDatasetForXML(dsXmlFile, ClaimReconWrkDAL.COL_NAME_CERTIFICATE)
                 DAL.Process(ds, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
             Next
         Catch ex As Exception
@@ -551,8 +551,8 @@ Public Class ClaimSuspense
             End If
 
             'ds.Tables(0).Constraints.Add("PK", ds.Tables(0).Columns(ClaimSuspense.COL_NAME_CLAIM_RECON_WRK_ID), True)
-            ds.Tables(0).Columns(ClaimSuspense.COL_NAME_KEY_FIELD).Unique = True
-            ds.Tables(0).PrimaryKey = New DataColumn() {ds.Tables(0).Columns(ClaimSuspense.COL_NAME_KEY_FIELD)}
+            ds.Tables(0).Columns(COL_NAME_KEY_FIELD).Unique = True
+            ds.Tables(0).PrimaryKey = New DataColumn() {ds.Tables(0).Columns(COL_NAME_KEY_FIELD)}
             Return ds
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

@@ -59,7 +59,7 @@ Public Class MfgStandardization
         Try
             Dim dal As New MfgStandardizationDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -195,8 +195,8 @@ Public Class MfgStandardization
             dsv = dv.Table().DataSet
 
             Dim row As DataRow = dsv.Tables(0).NewRow()
-            row.Item(MfgStandardizationDAL.COL_NAME_MFG_STANDARDIZATION_ID) = System.Guid.NewGuid.ToByteArray
-            row.Item(MfgStandardizationDAL.COL_NAME_COMPANY_GROUP_ID) = System.Guid.NewGuid.ToByteArray
+            row.Item(MfgStandardizationDAL.COL_NAME_MFG_STANDARDIZATION_ID) = Guid.NewGuid.ToByteArray
+            row.Item(MfgStandardizationDAL.COL_NAME_COMPANY_GROUP_ID) = Guid.NewGuid.ToByteArray
 
             dsv.Tables(0).Rows.Add(row)
             Return New System.Data.DataView(dsv.Tables(0))

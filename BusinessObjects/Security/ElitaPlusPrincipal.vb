@@ -32,7 +32,7 @@ Public NotInheritable Class ElitaPlusPrincipal
     Public Sub New(identity As ElitaPlusIdentity)
         Initialize()
 
-        If (Not identity Is Nothing) Then
+        If (identity IsNot Nothing) Then
             _identity = identity
         End If
 
@@ -117,21 +117,21 @@ Public NotInheritable Class ElitaPlusPrincipal
 
     Public Shared ReadOnly Property Current As ElitaPlusPrincipal
         Get
-            If (TypeOf System.Threading.Thread.CurrentPrincipal Is ElitaPlusPrincipal) Then
-                Return CType(System.Threading.Thread.CurrentPrincipal, ElitaPlusPrincipal)
+            If (TypeOf Thread.CurrentPrincipal Is ElitaPlusPrincipal) Then
+                Return CType(Thread.CurrentPrincipal, ElitaPlusPrincipal)
             Else
                 If (TypeOf HttpContext.Current.User Is ElitaPlusPrincipal) Then
-                    System.Threading.Thread.CurrentPrincipal = HttpContext.Current.User
+                    Thread.CurrentPrincipal = HttpContext.Current.User
                     Authentication.SetCulture()
                 Else
                     If (TypeOf HttpContext.Current.Session("PRINCIPAL_SESSION_KEY") Is ElitaPlusPrincipal) Then
-                        System.Threading.Thread.CurrentPrincipal = DirectCast(HttpContext.Current.Session("PRINCIPAL_SESSION_KEY"), ElitaPlusPrincipal)
-                        HttpContext.Current.User = System.Threading.Thread.CurrentPrincipal
+                        Thread.CurrentPrincipal = DirectCast(HttpContext.Current.Session("PRINCIPAL_SESSION_KEY"), ElitaPlusPrincipal)
+                        HttpContext.Current.User = Thread.CurrentPrincipal
                         Authentication.SetCulture()
                     End If
                 End If
 
-                Return CType(System.Threading.Thread.CurrentPrincipal, ElitaPlusPrincipal)
+                Return CType(Thread.CurrentPrincipal, ElitaPlusPrincipal)
             End If
         End Get
     End Property

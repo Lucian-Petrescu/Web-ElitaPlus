@@ -101,7 +101,7 @@ Public Module Logger
         sb.AppendLine()
         sb.AppendLine(exception.StackTrace)
         sb.AppendLine("*** End of Exception ***")
-        If (Not exception.InnerException Is Nothing) Then
+        If (exception.InnerException IsNot Nothing) Then
             BuildExceptionString(exception.InnerException, sb)
         End If
     End Sub
@@ -139,16 +139,16 @@ Public Module Logger
         Dim traceLevel As String = Nothing
 
         Select Case level
-            Case Diagnostics.TraceEventType.Error
+            Case TraceEventType.Error
                 traceLevel = "ERROR: "
 
-            Case Diagnostics.TraceEventType.Warning
+            Case TraceEventType.Warning
                 traceLevel = "WARNING: "
 
-            Case Diagnostics.TraceEventType.Information
+            Case TraceEventType.Information
                 traceLevel = "INFO: "
 
-            Case Diagnostics.TraceEventType.Verbose
+            Case TraceEventType.Verbose
                 traceLevel = "DEBUG: "
 
             Case Else

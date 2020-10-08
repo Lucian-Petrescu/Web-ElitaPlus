@@ -84,7 +84,7 @@ Public Class VSCModel
         Try
             Dim dal As New VSCModelDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -107,7 +107,7 @@ Public Class VSCModel
         Try
             Dim dal As New VSCModelDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -381,7 +381,7 @@ Public Class VSCModel
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing VSC MODEL")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 #End Region
 
@@ -398,7 +398,7 @@ Public Class VSCModel
             Dim dv As VSCModelSearchDV = New VSCModelSearchDV(dal.LoadList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, _
                                                     make, model, trim, year).Tables(0))
 
-            If Not coverageSupport Is Nothing AndAlso Not coverageSupport.Equals(String.Empty) Then
+            If coverageSupport IsNot Nothing AndAlso Not coverageSupport.Equals(String.Empty) Then
                 If coverageSupport = VAL_NEW Then
                     dv.RowFilter = COL_NAME_ACTIVE_NEW & " ='" & VAL_YES & "'"
                 ElseIf coverageSupport = VAL_USED Then
@@ -426,7 +426,7 @@ Public Class VSCModel
             Dim dv As VSCModelSearchDV = New VSCModelSearchDV(dal.LoadDistinctList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, _
                                                     make, model, trim, year, requestedfield).Tables(0))
 
-            If Not coverageSupport Is Nothing AndAlso Not coverageSupport.Equals(String.Empty) Then
+            If coverageSupport IsNot Nothing AndAlso Not coverageSupport.Equals(String.Empty) Then
                 If coverageSupport = VAL_NEW Then
                     dv.RowFilter = COL_NAME_ACTIVE_NEW & " ='" & VAL_YES & "'"
                 ElseIf coverageSupport = VAL_USED Then
@@ -672,7 +672,7 @@ Public Class VSCModel
         Dim count As Integer
         dal = New VSCModelDAL()
         ds = dal.LoadExternalCardCode(companyGroupId, externalCarCode, ManufacturerId, model, engineVersion)
-        If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
+        If ds IsNot Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
             count = CType(ds.Tables(0).Rows(0)(0).ToString, Integer)
             If count > 0 Then
                 isValid = False

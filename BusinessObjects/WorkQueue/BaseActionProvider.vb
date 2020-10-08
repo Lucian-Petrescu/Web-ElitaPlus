@@ -78,8 +78,8 @@ Public MustInherit Class BaseActionProvider
     Shared Function GetAction() As BaseActionProvider
         Dim wqItem As WorkQueueItem = WorkQueueItem.GetNextValidWorkQueueItem(ElitaPlusIdentity.Current.ActiveUser.NetworkId)
         Dim actionProvider As BaseActionProvider
-        If (Not wqItem Is Nothing) Then
-            actionProvider = BaseActionProvider.CreateActionProvider(wqItem)
+        If (wqItem IsNot Nothing) Then
+            actionProvider = CreateActionProvider(wqItem)
         End If
         Return actionProvider
     End Function

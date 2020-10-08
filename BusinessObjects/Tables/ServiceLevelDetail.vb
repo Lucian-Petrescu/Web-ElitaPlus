@@ -59,7 +59,7 @@ Public Class ServiceLevelDetail
         Try
             Dim dal As New ServiceLevelDetailDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -323,7 +323,7 @@ Public Class ServiceLevelDetail
         Dim isValid As Boolean = True
         Dim intCnt As Integer = 0
         ds = dal.IsServiceLevelDetailValid(slgId, sCode, riskypeId, costTypeId, effectiveDate)
-        If (Not ds.Tables(0) Is Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
+        If (ds.Tables(0) IsNot Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
             intCnt = CType(ds.Tables(0).Rows(0)("sld_count"), Integer)
             If intCnt > 0 Then
                 isValid = False

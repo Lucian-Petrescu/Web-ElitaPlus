@@ -59,7 +59,7 @@ Public Class EntityIssue
         Try
             Dim dal As New EntityIssueDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -151,7 +151,7 @@ Public Class EntityIssue
         Get
             CheckDeleted()
             If Row(EntityIssueDAL.COL_NAME_WORKQUEUE_ITEM_CREATED_ID) Is DBNull.Value Then
-                Return LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+                Return LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
             Else
                 Return New Guid(CType(Row(EntityIssueDAL.COL_NAME_WORKQUEUE_ITEM_CREATED_ID), Byte()))
             End If

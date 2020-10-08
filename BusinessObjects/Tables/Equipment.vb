@@ -59,7 +59,7 @@ Public Class Equipment
         Try
             Dim dal As New EquipmentDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -203,11 +203,11 @@ Public Class Equipment
                     manufacurerCoverage.Save()
                 End If
             Else
-                If (Not value Is Nothing) Then
+                If (value IsNot Nothing) Then
                     manufacurerCoverage = New MfgCoverage(Row.Table.DataSet)
                 End If
             End If
-            If (Not value Is Nothing) Then
+            If (value IsNot Nothing) Then
                 manufacurerCoverage.BeginEdit()
                 manufacurerCoverage.MfgWarranty = CInt(value.Value)
                 manufacurerCoverage.EquipmentTypeId = EquipmentTypeId
@@ -411,7 +411,7 @@ Public Class Equipment
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Equipment")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
         'copy the childrens        
         For Each detail As EquipmentComment In original.EquipmentCommentChildren
             Dim newDetail As EquipmentComment = EquipmentCommentChildren.GetNewChild
@@ -725,13 +725,13 @@ Public Class Equipment
             If Not detail.IsNew Then
                 row(RelatedEquipmentSelectionView.COL_NAME_EQUIPMENT_TYPE) = LookupListNew.GetDescriptionFromId(LookupListNew.GetEquipmentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), detail.EquipmentTypeID)
                 row(RelatedEquipmentSelectionView.COL_NAME_DESCRIPTION) = detail.EquipmentDescription
-                row(RelatedEquipmentSelectionView.COL_NAME_MANUFACTURER) = LookupListNew.GetDescriptionFromId(LookupListNew.LK_MANUFACTURERS, detail.MakeID)
+                row(RelatedEquipmentSelectionView.COL_NAME_MANUFACTURER) = LookupListNew.GetDescriptionFromId(LookupListCache.LK_MANUFACTURERS, detail.MakeID)
                 row(RelatedEquipmentSelectionView.COL_NAME_MODEL) = detail.Model
             Else
                 Dim equip As New Equipment(detail.ChildEquipmentId)
                 row(RelatedEquipmentSelectionView.COL_NAME_EQUIPMENT_TYPE) = LookupListNew.GetDescriptionFromId(LookupListNew.GetEquipmentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), equip.EquipmentTypeId)
                 row(RelatedEquipmentSelectionView.COL_NAME_DESCRIPTION) = equip.Description
-                row(RelatedEquipmentSelectionView.COL_NAME_MANUFACTURER) = LookupListNew.GetDescriptionFromId(LookupListNew.LK_MANUFACTURERS, equip.ManufacturerId)
+                row(RelatedEquipmentSelectionView.COL_NAME_MANUFACTURER) = LookupListNew.GetDescriptionFromId(LookupListCache.LK_MANUFACTURERS, equip.ManufacturerId)
                 row(RelatedEquipmentSelectionView.COL_NAME_MODEL) = equip.Model
             End If
             row(RelatedEquipmentSelectionView.COL_NAME_IN_OEM_BOX) = LookupListNew.GetDescriptionFromId(LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), detail.IsInOemBoxId)
@@ -789,8 +789,8 @@ Public Class Equipment
         t.Columns.Add(DESCRIPTION_COL, GetType(String))
         For Each RE As DataRowView In GetEquipmentSelectionView()
             Dim dtrow As DataRow = t.Rows.Add
-            dtrow(ID_COL) = RE(Equipment.RelatedEquipmentSelectionView.COL_NAME_CHILD_EQUIPMENT_ID)
-            dtrow(DESCRIPTION_COL) = RE(Equipment.RelatedEquipmentSelectionView.COL_NAME_DESCRIPTION)
+            dtrow(ID_COL) = RE(RelatedEquipmentSelectionView.COL_NAME_CHILD_EQUIPMENT_ID)
+            dtrow(DESCRIPTION_COL) = RE(RelatedEquipmentSelectionView.COL_NAME_DESCRIPTION)
         Next
         Return t.DefaultView
     End Function
@@ -833,13 +833,13 @@ Public Class Equipment
         Inherits ValidBaseAttribute
         Private _fieldDisplayName As String
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
             _fieldDisplayName = fieldDisplayName
         End Sub
 
         Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Equipment = CType(objectToValidate, Equipment)
-            If (obj.IsMasterEquipment = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "N")) Then
+            If (obj.IsMasterEquipment = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, "N")) Then
                 Dim vma As ValueMandatoryAttribute = New ValueMandatoryAttribute(_fieldDisplayName)
                 Return vma.IsValid(objectToCheck, objectToValidate)
             Else

@@ -29,9 +29,9 @@ Partial Public Class WorkQueue
     Private Shared ReadOnly Property WorkQueueClientProxy As WrkQueue.WorkQueueServiceClient
         Get
             Dim wrkQueClient As WrkQueue.WorkQueueServiceClient
-            If (oWorkQueueServiceClient Is Nothing OrElse oWorkQueueServiceClient.State <> ServiceModel.CommunicationState.Opened) Then
+            If (oWorkQueueServiceClient Is Nothing OrElse oWorkQueueServiceClient.State <> CommunicationState.Opened) Then
                 SyncLock syncRoot
-                    If (oWorkQueueServiceClient Is Nothing OrElse oWorkQueueServiceClient.State <> ServiceModel.CommunicationState.Opened) Then
+                    If (oWorkQueueServiceClient Is Nothing OrElse oWorkQueueServiceClient.State <> CommunicationState.Opened) Then
                         oWorkQueueServiceClient = ServiceHelper.CreateWorkQueueServiceClient()
                     End If
                 End SyncLock
@@ -43,9 +43,9 @@ Partial Public Class WorkQueue
     Private Shared ReadOnly Property AuthorizationClientProxy As Auth.AuthorizationClient
         Get
             Dim authClient As Auth.AuthorizationClient
-            If (oAuthorizationServiceClient Is Nothing OrElse oAuthorizationServiceClient.State <> ServiceModel.CommunicationState.Opened) Then
+            If (oAuthorizationServiceClient Is Nothing OrElse oAuthorizationServiceClient.State <> CommunicationState.Opened) Then
                 SyncLock syncRoot
-                    If (oAuthorizationServiceClient Is Nothing OrElse oAuthorizationServiceClient.State <> ServiceModel.CommunicationState.Opened) Then
+                    If (oAuthorizationServiceClient Is Nothing OrElse oAuthorizationServiceClient.State <> CommunicationState.Opened) Then
                         oAuthorizationServiceClient = ServiceHelper.CreateAuthorizationClient()
                     End If
                 End SyncLock
@@ -341,7 +341,7 @@ Partial Public Class WorkQueue
             Return New DateTimeType(WorkQueue.Effective)
         End Get
         Set
-            If (Not value Is Nothing) Then
+            If (value IsNot Nothing) Then
                 WorkQueue.ActiveOn = value.Value.AddMilliseconds(-1 * value.Value.Millisecond)
             End If
         End Set
@@ -436,8 +436,8 @@ Partial Public Class WorkQueue
             If (WorkQueue.InActiveOn.HasValue AndAlso WorkQueue.InActiveOn.Value < DateTime.UtcNow) Then Return False
             If IsWorkQueueDirty(originalWorkQueue) Then Return True
             If IsChildrenDirty Then Return True
-            If (Not originalWorkQueue Is Nothing) Then
-                If (Not StatusReasons Is Nothing) Then
+            If (originalWorkQueue IsNot Nothing) Then
+                If (StatusReasons IsNot Nothing) Then
                     For Each wqisr As WorkQueueItemStatusReason In StatusReasons
                         ' If New Reason is Added and Not Deleted
                         If (wqisr.IsNew AndAlso Not wqisr.IsDeleted) Then Return True
@@ -485,9 +485,9 @@ Partial Public Class WorkQueue
 #Region "Time Zone Conversion"
     Public ReadOnly Property TimeZone As TimeZoneInfo
         Get
-            If (Not _timeZoneInfo Is Nothing AndAlso _workQueue Is Nothing AndAlso _timeZoneInfo.StandardName <> _workQueue.TimeZoneCode) Then _timeZoneInfo = Nothing
+            If (_timeZoneInfo IsNot Nothing AndAlso _workQueue Is Nothing AndAlso _timeZoneInfo.StandardName <> _workQueue.TimeZoneCode) Then _timeZoneInfo = Nothing
             If (_workQueue Is Nothing OrElse _workQueue.TimeZoneCode Is Nothing OrElse String.IsNullOrEmpty(_workQueue.TimeZoneCode)) Then _timeZoneInfo = Nothing
-            If (_timeZoneInfo Is Nothing AndAlso Not _workQueue Is Nothing) Then
+            If (_timeZoneInfo Is Nothing AndAlso _workQueue IsNot Nothing) Then
                 If ((From tzi In TimeZoneInfo.GetSystemTimeZones() Where tzi.StandardName = _workQueue.TimeZoneCode Select tzi).Count() = 1) Then
                     _timeZoneInfo = (From tzi In TimeZoneInfo.GetSystemTimeZones() Where tzi.StandardName = _workQueue.TimeZoneCode Select tzi).First()
                 End If
@@ -537,7 +537,7 @@ Partial Public Class WorkQueue
                             Dim timeSlot As New WrkQueue.TimeSlot
                             timeSlot.ActivateOn = ConvertTimeToUtc(oEntitySchedule.Effective.Value)
                             timeSlot.DeactivateOn = ConvertTimeToUtc(oEntitySchedule.Expiration.Value)
-                            timeSlot.Day = CType(Int32.Parse(LookupListNew.GetCodeFromId(LookupListNew.LK_DAYS_OF_WEEK, oScheduleDetail.DayOfWeekId)), DayOfWeek)
+                            timeSlot.Day = CType(Int32.Parse(LookupListNew.GetCodeFromId(LookupListCache.LK_DAYS_OF_WEEK, oScheduleDetail.DayOfWeekId)), DayOfWeek)
                             timeSlot.StartTime = New TimeSpan(oScheduleDetail.FromTime.Value.Hour, oScheduleDetail.FromTime.Value.Minute, oScheduleDetail.FromTime.Value.Second)
                             timeSlot.EndTime = New TimeSpan(oScheduleDetail.ToTime.Value.Hour, oScheduleDetail.ToTime.Value.Minute, oScheduleDetail.ToTime.Value.Second)
                             timeSlot.CreatedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
@@ -565,7 +565,7 @@ Partial Public Class WorkQueue
                 Try
                     WorkQueueClientProxy.CreateWorkQueue(_workQueue, userId)
                 Catch ex As FaultException(Of WrkQueue.DuplicateWorkQueueFault)
-                    Throw New BOValidationException(New ValidationError() {New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_DUPLICATE_WORKQUEUE_NAME, _workQueue.GetType(), Nothing, "Name", _workQueue.Name)}, _workQueue.GetType().Name)
+                    Throw New BOValidationException(New ValidationError() {New ValidationError(Common.ErrorCodes.BO_ERROR_DUPLICATE_WORKQUEUE_NAME, _workQueue.GetType(), Nothing, "Name", _workQueue.Name)}, _workQueue.GetType().Name)
                 Catch ex As FaultException(Of WrkQueue.NotAuthorizedFault)
                     Throw New UnauthorizedException("WorkQueue", "CreateWorkQueue", ex)
                 Catch ex As FaultException(Of WrkQueue.ValidationFault)
@@ -723,7 +723,7 @@ Partial Public Class WorkQueue
                 Dim orgEntitySchedule As EntitySchedule
                 Dim targetEntitySchedule As EntitySchedule
                 orgEntitySchedule = New EntitySchedule(dr, target)
-                If (Not orgEntitySchedule.Expiration Is Nothing AndAlso orgEntitySchedule.Expiration.Value < target.ConvertTimeFromUtc(DateTime.UtcNow)) Then
+                If (orgEntitySchedule.Expiration IsNot Nothing AndAlso orgEntitySchedule.Expiration.Value < target.ConvertTimeFromUtc(DateTime.UtcNow)) Then
                     ' Already Expirted Schedules
                     Continue For
                 End If
@@ -785,7 +785,7 @@ Partial Public Class WorkQueue
         newReason = New WorkQueueItemStatusReason(Me)
         newReason.ItemStatusReason.Status = workQueueItemStatusReasonType
         Dim length As Integer = 0
-        If (Not _statusReasons Is Nothing) Then length = _statusReasons.Length
+        If (_statusReasons IsNot Nothing) Then length = _statusReasons.Length
         ReDim Preserve _statusReasons(length)
         _statusReasons(_statusReasons.Length - 1) = newReason
         Return newReason
@@ -919,7 +919,7 @@ Namespace WrkQueue
             End Get
         End Property
 
-        <ValueMandatory(""), DateCompareValidatorAttribute("", Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, _
+        <ValueMandatory(""), DateCompareValidatorAttribute("", Common.ErrorCodes.GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, _
             "Expiration", DateCompareValidatorAttribute.CompareType.LessThan, DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.MaxDate, _
             DefaultCompareValue:=DateCompareValidatorAttribute.DefaultType.MinDate)> _
         Public Property Effective As Date
@@ -931,7 +931,7 @@ Namespace WrkQueue
             End Set
         End Property
 
-        <ValueMandatory(""), DateCompareValidatorAttribute("", Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, _
+        <ValueMandatory(""), DateCompareValidatorAttribute("", Common.ErrorCodes.GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, _
             "Effective", DateCompareValidatorAttribute.CompareType.GreaterThan, DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.MinDate, _
             DefaultCompareValue:=DateCompareValidatorAttribute.DefaultType.MaxDate)> _
         Public Property Expiration As Nullable(Of Date)
@@ -1058,7 +1058,7 @@ Namespace WrkQueue
         End Property
         'DEF-3035 End
 
-        <ValueMandatory(""), ValidNumericRange("", Min:=15, MinExclusive:=False, Message:=Assurant.ElitaPlus.Common.ErrorCodes.GUI_TIME_TO_COMPLETE_MIN_VALUE)> _
+        <ValueMandatory(""), ValidNumericRange("", Min:=15, MinExclusive:=False, Message:=Common.ErrorCodes.GUI_TIME_TO_COMPLETE_MIN_VALUE)> _
         Public Property TimeToCompleteMinutes As Object
             Get
                 Throw New InvalidOperationException()
@@ -1068,7 +1068,7 @@ Namespace WrkQueue
             End Set
         End Property
 
-        <DateCompareValidator("", Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, "", _
+        <DateCompareValidator("", Common.ErrorCodes.GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, "", _
             DateCompareValidatorAttribute.CompareType.GreaterThan, CheckWhenNew:=True, CompareToType:=DateCompareValidatorAttribute.CompareToPropertyType.Nothing, _
             DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.UtcToday)> _
         Public Property ActiveOn As DateTime
@@ -1088,7 +1088,7 @@ Public NotInheritable Class ValidateTransformationFile
     Inherits ValidBaseAttribute
     Private _fieldDisplayName As String
     Public Sub New(fieldDisplayName As String)
-        MyBase.New(fieldDisplayName, Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_TRANSFORMATION_FILE_NOT_FOUND)
+        MyBase.New(fieldDisplayName, Common.ErrorCodes.BO_ERROR_TRANSFORMATION_FILE_NOT_FOUND)
     End Sub
 
     Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
@@ -1101,7 +1101,7 @@ End Class
 Public NotInheritable Class ValidateScheduleCount
     Inherits ValidBaseAttribute
     Public Sub New(fieldDisplayName As String)
-        MyBase.New(fieldDisplayName, Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_WQ_SCHEDULE_REQUIRED)
+        MyBase.New(fieldDisplayName, Common.ErrorCodes.BO_ERROR_WQ_SCHEDULE_REQUIRED)
     End Sub
 
     Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
@@ -1114,7 +1114,7 @@ End Class
 Public NotInheritable Class ValidateReDirectReasonCount
     Inherits ValidBaseAttribute
     Public Sub New(fieldDisplayName As String)
-        MyBase.New(fieldDisplayName, Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_WQ_REDIRECT_REQUIRED)
+        MyBase.New(fieldDisplayName, Common.ErrorCodes.BO_ERROR_WQ_REDIRECT_REQUIRED)
     End Sub
 
     Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
@@ -1127,7 +1127,7 @@ End Class
 Public NotInheritable Class ValidateReQueueReasonCount
     Inherits ValidBaseAttribute
     Public Sub New(fieldDisplayName As String)
-        MyBase.New(fieldDisplayName, Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_WQ_REQUEUE_REQUIRED)
+        MyBase.New(fieldDisplayName, Common.ErrorCodes.BO_ERROR_WQ_REQUEUE_REQUIRED)
     End Sub
 
     Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean

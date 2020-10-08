@@ -62,7 +62,7 @@ Public Class CaseConseqDamage
         Try
 
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(CaseConseqDamageDal.TableName).Rows.Remove(Row)
                 End If
             End If
@@ -367,7 +367,7 @@ Public Class CaseConseqDamage
                 issuesStatus = Codes.CONSEQUENTIAL_DAMAGE_STATUS__DENIED
                 Exit For
             End If
-            If (Item.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Or Item.StatusCode = Codes.CLAIMISSUE_STATUS__PENDING) Then
+            If (Item.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN OrElse Item.StatusCode = Codes.CLAIMISSUE_STATUS__PENDING) Then
                 issuesStatus = Codes.CONSEQUENTIAL_DAMAGE_STATUS__REQUESTED
             End If
         Next

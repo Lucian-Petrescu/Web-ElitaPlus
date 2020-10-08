@@ -70,7 +70,7 @@ Public Class Dealer
         Try
             Dim dal As New DealerDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -94,7 +94,7 @@ Public Class Dealer
         Try
             Dim dal As New DealerDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -181,25 +181,25 @@ Public Class Dealer
     'Initialization code for new objects
     Private Sub Initialize()
         'default the STAT compute mthd to GAAP and that for LAE to NO while creating a new dealer
-        STATIBNRComputationMethodId = LookupListNew.GetIdFromCode(LookupListNew.LK_STAT_IBNR_COMPUTE_METHODS, STATCOMPUTMTHD)
-        LAEIBNRComputationMethodId = LookupListNew.GetIdFromCode(LookupListNew.LK_LAE_IBNR_COMPUTE_METHODS, LAECOMPUTMTHD)
-        CertCancelById = LookupListNew.GetIdFromCode(LookupListNew.LK_CERT_CANCEL_BY, Codes.CCANBY_CERTNO)
-        ClaimSystemId = LookupListNew.GetIdFromDescription(LookupListNew.LK_CLAIM_SYSTEM, CLMSYS_ELITA)
-        ValidateBillingCycleId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        ValidateSerialNumberId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        UseNewBillForm = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+        STATIBNRComputationMethodId = LookupListNew.GetIdFromCode(LookupListCache.LK_STAT_IBNR_COMPUTE_METHODS, STATCOMPUTMTHD)
+        LAEIBNRComputationMethodId = LookupListNew.GetIdFromCode(LookupListCache.LK_LAE_IBNR_COMPUTE_METHODS, LAECOMPUTMTHD)
+        CertCancelById = LookupListNew.GetIdFromCode(LookupListCache.LK_CERT_CANCEL_BY, Codes.CCANBY_CERTNO)
+        ClaimSystemId = LookupListNew.GetIdFromDescription(LookupListCache.LK_CLAIM_SYSTEM, CLMSYS_ELITA)
+        ValidateBillingCycleId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
+        ValidateSerialNumberId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
+        UseNewBillForm = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
         'REQ-1294
         'Me.CustInfoMandatoryId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        BankInfoMandatoryId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        DeductibleCollectionId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        ClaimExtendedStatusEntryId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_EXTENDED_STATUS_ENTRY, USER_SYSTEM_SELECT)
+        BankInfoMandatoryId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
+        DeductibleCollectionId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
+        ClaimExtendedStatusEntryId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_EXTENDED_STATUS_ENTRY, USER_SYSTEM_SELECT)
 
         'New device sku required added for TIMS
-        NewDeviceSkuRequiredId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        UseClaimAuthorizationId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-        ReuseSerialNumberId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
-        AutoGenerateRejectedPaymentFileId = LookupListNew.GetIdFromCode(LookupListNew.LK_AUTO_GEN_REJ_PYMT_FILE, Codes.AUOT_GEN_REJ_PYMT_FILE__NONE)
-        PaymentRejectedRecordReconcileId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+        NewDeviceSkuRequiredId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
+        UseClaimAuthorizationId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
+        ReuseSerialNumberId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)
+        AutoGenerateRejectedPaymentFileId = LookupListNew.GetIdFromCode(LookupListCache.LK_AUTO_GEN_REJ_PYMT_FILE, Codes.AUOT_GEN_REJ_PYMT_FILE__NONE)
+        PaymentRejectedRecordReconcileId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
         Dim DvClaimRecording As DataView = LookupListNew.DropdownLookupList("CLMREC", Authentication.LangId)
         ClaimRecordingXcd = "CLMREC-" + LookupListNew.GetCodeFromDescription(DvClaimRecording, CLMREC_ELITA)
     End Sub
@@ -565,7 +565,7 @@ Public Class Dealer
         Get
             CheckDeleted()
             If Row(DealerDAL.COL_NAME_PAY_DEDUCTIBLE_ID) Is DBNull.Value Then
-                Return LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)
+                Return LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)
             Else
                 Return New Guid(CType(Row(DealerDAL.COL_NAME_PAY_DEDUCTIBLE_ID), Byte()))
             End If
@@ -892,7 +892,7 @@ Public Class Dealer
     Public ReadOnly Property DealerGroupName As String
         Get
             If Not (DealerGroupId.Equals(Guid.Empty)) Then
-                _DealerGroupName = LookupListNew.GetDescriptionFromId(LookupListNew.LK_DEALER_GROUPS, DealerGroupId)
+                _DealerGroupName = LookupListNew.GetDescriptionFromId(LookupListCache.LK_DEALER_GROUPS, DealerGroupId)
             Else
                 _DealerGroupName = String.Empty
             End If
@@ -903,7 +903,7 @@ Public Class Dealer
     Dim _DealerTypeDesc As String
     Public ReadOnly Property DealerTypeDesc As String
         Get
-            _DealerTypeDesc = LookupListNew.GetDescriptionFromId(LookupListNew.LK_DEALER_TYPE, DealerTypeId)
+            _DealerTypeDesc = LookupListNew.GetDescriptionFromId(LookupListCache.LK_DEALER_TYPE, DealerTypeId)
             Return _DealerTypeDesc
         End Get
     End Property
@@ -996,7 +996,7 @@ Public Class Dealer
         Get
             CheckDeleted()
             If Row(DealerDAL.COL_NAME_USE_NEWBILLFORM) Is DBNull.Value Then
-                Return LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "N")
+                Return LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, "N")
             Else
                 Return New Guid(CType(Row(DealerDAL.COL_NAME_USE_NEWBILLFORM), Byte()))
             End If
@@ -1770,7 +1770,7 @@ Public Class Dealer
         Get
             CheckDeleted()
             If Row(DealerDAL.COL_NAME_USE_CLAIM_AUTHORIZATION_ID) Is DBNull.Value Then
-                Return LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+                Return LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
             Else
                 Return New Guid(CType(Row(DealerDAL.COL_NAME_USE_CLAIM_AUTHORIZATION_ID), Byte()))
             End If
@@ -2156,7 +2156,7 @@ Public Class Dealer
 
     Public ReadOnly Property IsGracePeriodSpecified As Boolean
         Get
-            If Not GracePeriodDays Is Nothing Or Not GracePeriodMonths Is Nothing Then
+            If GracePeriodDays IsNot Nothing Or GracePeriodMonths IsNot Nothing Then
                 Return True
 
             Else
@@ -2666,7 +2666,7 @@ Public Class Dealer
                 blnIsDirty = True
             ElseIf (Not MailingAddress.IsNew AndAlso MailingAddress.IsDirty) OrElse (MailingAddress.IsNew AndAlso Not MailingAddress.IsEmpty) Then
                 blnIsDirty = True
-            ElseIf (Not _SvcOrdersAddress Is Nothing) Then
+            ElseIf (_SvcOrdersAddress IsNot Nothing) Then
                 If ((Not SvcOrdersAddress.IsNew) AndAlso SvcOrdersAddress.IsDirty) OrElse (SvcOrdersAddress.IsNew AndAlso Not SvcOrdersAddress.IsEmpty) Then
                     blnIsDirty = True
                 End If
@@ -2762,8 +2762,8 @@ Public Class Dealer
 
         Dim dealerTypeID As Guid
         Dim ds As DataSet = dal.GetDealerTypeId(dealerID)
-        If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
-            If Not ds.Tables(0).Rows(0)(DealerDAL.COL_NAME_DEALER_TYPE_ID) Is System.DBNull.Value Then
+        If ds IsNot Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
+            If ds.Tables(0).Rows(0)(DealerDAL.COL_NAME_DEALER_TYPE_ID) IsNot DBNull.Value Then
                 dealerTypeID = New Guid(CType(ds.Tables(0).Rows(0)(DealerDAL.COL_NAME_DEALER_TYPE_ID), Byte()))
                 Return dealerTypeID
             Else
@@ -2783,25 +2783,25 @@ Public Class Dealer
     Public Shared Function GetOlitaSearchType(companyIds As ArrayList, dealerCode As String) As String
         Dim dealerId As Guid
         Dim dvDealrs As DataView = LookupListNew.GetDealerLookupList(companyIds)
-        If Not dvDealrs Is Nothing AndAlso dvDealrs.Count > 0 Then
+        If dvDealrs IsNot Nothing AndAlso dvDealrs.Count > 0 Then
             dealerId = LookupListNew.GetIdFromCode(dvDealrs, dealerCode)
             If dealerId.Equals(Guid.Empty) Then
-                Throw New StoredProcedureGeneratedException("Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_CODE)
+                Throw New StoredProcedureGeneratedException("Error: ", Common.ErrorCodes.INVALID_DEALER_CODE)
             End If
         End If
 
         Dim objDealer As New Dealer(dealerId)
         If objDealer Is Nothing Then
-            Throw New StoredProcedureGeneratedException("Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_CODE)
+            Throw New StoredProcedureGeneratedException("Error: ", Common.ErrorCodes.INVALID_DEALER_CODE)
         End If
-        Dim dv As DataView = LookupListNew.DropdownLookupList(LookupListNew.LK_OLITA_SEARCH, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+        Dim dv As DataView = LookupListNew.DropdownLookupList(LookupListCache.LK_OLITA_SEARCH, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         Return LookupListNew.GetCodeFromId(dv, objDealer.OlitaSearch)
 
     End Function
 
     Public Shared Function GetOlitaSearchType(dealerId As Guid) As String
         Dim objDealer As New Dealer(dealerId)
-        Dim dv As DataView = LookupListNew.DropdownLookupList(LookupListNew.LK_OLITA_SEARCH, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+        Dim dv As DataView = LookupListNew.DropdownLookupList(LookupListCache.LK_OLITA_SEARCH, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         Return LookupListNew.GetCodeFromId(dv, objDealer.OlitaSearch)
     End Function
 
@@ -2817,7 +2817,7 @@ Public Class Dealer
             If ds.Tables(0).Rows.Count > 0 Then
                 ' Create Array
                 For index As Integer = 0 To ds.Tables(0).Rows.Count - 1
-                    If Not ds.Tables(0).Rows(index)("country_id") Is System.DBNull.Value Then
+                    If ds.Tables(0).Rows(index)("country_id") IsNot DBNull.Value Then
                         countryId = New Guid(CType(ds.Tables(0).Rows(index)("country_id"), Byte()))
                     End If
                 Next
@@ -2894,8 +2894,8 @@ Public Class Dealer
             Return False
         End If
 
-        If dealerContract?.PolicyTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_CONTRACT_POLICY_TYPE, Codes.CONTRACT_POLTYPE_INDIVIDUAL)) AndAlso
-           dealerContract?.PolicyGenerationId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_CONTRACT_POLICY_GEN_TYPE, Codes.CONTRACT_POLGEN_AUTOGENERATE)) Then
+        If dealerContract?.PolicyTypeId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CONTRACT_POLICY_TYPE, Codes.CONTRACT_POLTYPE_INDIVIDUAL)) AndAlso
+           dealerContract?.PolicyGenerationId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CONTRACT_POLICY_GEN_TYPE, Codes.CONTRACT_POLGEN_AUTOGENERATE)) Then
             Return True
         End If
 
@@ -2949,7 +2949,7 @@ Public Class Dealer
             Dim dal As New DealerDAL
             Dim ds As DataSet
 
-            If Not Dealer Is Nothing AndAlso Not business_country.Equals(Guid.Empty) AndAlso company_type_id.Equals(Guid.Empty) Then
+            If Dealer IsNot Nothing AndAlso Not business_country.Equals(Guid.Empty) AndAlso company_type_id.Equals(Guid.Empty) Then
                 ds = dal.GetDupicateDealerCount(Dealer, business_country, company_type_id)
             Else
                 Return False
@@ -2971,7 +2971,7 @@ Public Class Dealer
             Dim dal As New DealerDAL
             Dim ds As DataSet
 
-            If Not Dealer Is Nothing Then
+            If Dealer IsNot Nothing Then
                 ds = dal.LoadDealerCountByCode(Dealer)
             Else
                 Return False
@@ -3241,7 +3241,7 @@ Public Class Dealer
         For Each dealerClmApproveClmtypeIdStr In selectedClaimTypeGuidStrCollection
             'update to new DealerClmAproveClmtype GUID
             Dim newBO As DealerClmAproveClmtype = New DealerClmAproveClmtype(Dataset)
-            If Not newBO Is Nothing Then
+            If newBO IsNot Nothing Then
                 newBO.DealerId = Id
                 newBO.ClaimTypeId = New Guid(dealerClmApproveClmtypeIdStr)
                 newBO.Save()
@@ -3254,7 +3254,7 @@ Public Class Dealer
         For Each dealerClmApproveClmtypeIdStr In selectedClaimTypeGuidStrCollection
             'update to new DealerClmAproveClmtype GUID
             Dim newBO As DealerClmAproveClmtype = New DealerClmAproveClmtype(Dataset, Id, New Guid(dealerClmApproveClmtypeIdStr))
-            If Not newBO Is Nothing Then
+            If newBO IsNot Nothing Then
                 newBO.Delete()
                 newBO.Save()
             End If
@@ -3266,7 +3266,7 @@ Public Class Dealer
         For Each dealerClmAproveCovtypeIdStr In selectedCoverageTypeGuidStrCollection
             'update to new DealerClmAproveCovtype GUID
             Dim newBO As DealerClmAproveCovtype = New DealerClmAproveCovtype(Dataset)
-            If Not newBO Is Nothing Then
+            If newBO IsNot Nothing Then
                 newBO.DealerId = Id
                 newBO.CoverageTypeId = New Guid(dealerClmAproveCovtypeIdStr)
                 newBO.Save()
@@ -3279,7 +3279,7 @@ Public Class Dealer
         For Each dealerClmAproveCovtypeIdStr In selectedCoverageTypeGuidStrCollection
             'update to new DealerClmAproveCovtype GUID
             Dim newBO As DealerClmAproveCovtype = New DealerClmAproveCovtype(Dataset, Id, New Guid(dealerClmAproveCovtypeIdStr))
-            If Not newBO Is Nothing Then
+            If newBO IsNot Nothing Then
                 newBO.Delete()
                 newBO.Save()
             End If
@@ -3358,8 +3358,8 @@ Public Class Dealer
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             If obj.ExpectedPremiumIsWPId.Equals(Guid.Empty) Then Return True
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, obj.ExpectedPremiumIsWPId) = Codes.YESNO_Y Then
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, obj.PriceMatrixUsesWpId) <> Codes.YESNO_Y Then
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, obj.ExpectedPremiumIsWPId) = Codes.YESNO_Y Then
+                If LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, obj.PriceMatrixUsesWpId) <> Codes.YESNO_Y Then
                     Return False
                 End If
             End If
@@ -3384,8 +3384,8 @@ Public Class Dealer
 
                 If LookupListNew.GetCodeFromId(LookupListCache.LK_COMPANY_TYPE, obj.Company.CompanyTypeId) = obj.Company.COMPANY_TYPE_INSURANCE Then
                     oErrMess = dal.ExecuteSP(Codes.DOCUMENT_TYPE__CNPJ, obj.TaxIdNumber)
-                    If Not oErrMess Is Nothing Then
-                        MyBase.Message = UCase(oErrMess)
+                    If oErrMess IsNot Nothing Then
+                        Message = UCase(oErrMess)
                         Return False
                     End If
                 End If
@@ -3405,7 +3405,7 @@ Public Class Dealer
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -3430,7 +3430,7 @@ Public Class Dealer
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
-            Dim isclaimselected As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
+            Dim isclaimselected As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)
 
             If obj.InvoiceByBranchId = isclaimselected AndAlso obj.BranchValidationId <> isclaimselected Then
                 Return False
@@ -3445,14 +3445,14 @@ Public Class Dealer
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             Dim sVal As String
 
-            sVal = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, obj.RegistrationProcessFlagId)
+            sVal = LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, obj.RegistrationProcessFlagId)
             If sVal = Codes.YESNO_Y Then
                 Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
@@ -3488,19 +3488,19 @@ Public Class Dealer
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             Dim sVal As String
 
-            sVal = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, obj.CertificatesAutonumberId)
+            sVal = LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, obj.CertificatesAutonumberId)
             If sVal = Codes.YESNO_Y AndAlso obj.MaximumCertNumberLengthAllowed Is Nothing Then
-                MyBase.Message = Common.ErrorCodes.ERR_MSG_MAX_CERT_NUMBER_LENGTH_IS_REQUIRED
+                Message = Common.ErrorCodes.ERR_MSG_MAX_CERT_NUMBER_LENGTH_IS_REQUIRED
                 Return False
             ElseIf sVal = Codes.YESNO_Y AndAlso (obj.MaximumCertNumberLengthAllowed.Value) - Len(obj.CertificatesAutonumberPrefix) < 6 Then
-                MyBase.Message = Common.ErrorCodes.ERR_MSG_MAX_CERT_NUMBER_LENGTH_IS_NOT_VALID
+                Message = Common.ErrorCodes.ERR_MSG_MAX_CERT_NUMBER_LENGTH_IS_NOT_VALID
                 Return False
             Else
                 Return True
@@ -3518,7 +3518,7 @@ Public Class Dealer
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
-            Dim yesGuid As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "Y")
+            Dim yesGuid As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "Y")
             If Not obj.CertificatesAutonumberId.Equals(Guid.Empty) AndAlso obj.CertificatesAutonumberId.Equals(yesGuid) Then
                 If Not obj.Company.UniqueCertificateNumbersId.Equals(Guid.Empty) AndAlso obj.Company.UniqueCertificateNumbersId.Equals(yesGuid) Then
                     If obj.GetDuplicatePrefixCount(obj.CompanyId, 0, obj.CertificatesAutonumberPrefix) > 0 Then
@@ -3539,12 +3539,12 @@ Public Class Dealer
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim DealerObject As Dealer = CType(objectToValidate, Dealer)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_FLP, DealerObject.UseFullFileProcessId) <> Codes.FLP_NO Then
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_FLP, DealerObject.UseFullFileProcessId) <> Codes.FLP_NO Then
                 If DealerObject.MaxNCRecords Is Nothing Then
                     Return False
                 End If
@@ -3564,7 +3564,7 @@ Public Class Dealer
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
 
-            If Not obj.ClaimAutoApproveId.Equals(Guid.Empty) AndAlso obj.ClaimAutoApproveId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) AndAlso obj.DealerClaimTypeSelectionCount = 0 Then
+            If Not obj.ClaimAutoApproveId.Equals(Guid.Empty) AndAlso obj.ClaimAutoApproveId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)) AndAlso obj.DealerClaimTypeSelectionCount = 0 Then
                 Return False
             End If
             Return True
@@ -3582,7 +3582,7 @@ Public Class Dealer
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
-            If Not obj.ClaimAutoApproveId.Equals(Guid.Empty) AndAlso obj.ClaimAutoApproveId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) AndAlso obj.DealerCoverageTypeSelectionCount = 0 Then
+            If Not obj.ClaimAutoApproveId.Equals(Guid.Empty) AndAlso obj.ClaimAutoApproveId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)) AndAlso obj.DealerCoverageTypeSelectionCount = 0 Then
                 Return False
             End If
             Return True
@@ -3600,7 +3600,7 @@ Public Class Dealer
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, obj.CertificatesAutonumberId) = Codes.YESNO_Y AndAlso obj.CertnumlookupbyId.Equals(Guid.Empty) AndAlso obj.Company.CertnumlookupbyId.Equals(Guid.Empty) Then
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, obj.CertificatesAutonumberId) = Codes.YESNO_Y AndAlso obj.CertnumlookupbyId.Equals(Guid.Empty) AndAlso obj.Company.CertnumlookupbyId.Equals(Guid.Empty) Then
                 Return False
             End If
 
@@ -3619,9 +3619,9 @@ Public Class Dealer
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Dealer = CType(objectToValidate, Dealer)
 
-            If Not obj.Is_Cancel_Shipment_Allowed Is Nothing AndAlso obj.Is_Cancel_Shipment_Allowed = "YESNO-Y" AndAlso String.IsNullOrEmpty(obj.Cancel_Shipment_Grace_Period) Then
+            If obj.Is_Cancel_Shipment_Allowed IsNot Nothing AndAlso obj.Is_Cancel_Shipment_Allowed = "YESNO-Y" AndAlso String.IsNullOrEmpty(obj.Cancel_Shipment_Grace_Period) Then
                 Return False
-            ElseIf Not obj.Is_Cancel_Shipment_Allowed Is Nothing AndAlso obj.Is_Cancel_Shipment_Allowed = "YESNO-N" Then
+            ElseIf obj.Is_Cancel_Shipment_Allowed IsNot Nothing AndAlso obj.Is_Cancel_Shipment_Allowed = "YESNO-N" Then
                 Return True
             End If
 

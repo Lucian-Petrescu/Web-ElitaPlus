@@ -16,9 +16,9 @@ Partial Public Class DRP
     Private Shared ReadOnly Property ClientProxy As MaxValueRecoveryClient
         Get
 
-            If (oDRPSystemService Is Nothing OrElse oDRPSystemService.State <> ServiceModel.CommunicationState.Opened) Then
+            If (oDRPSystemService Is Nothing OrElse oDRPSystemService.State <> CommunicationState.Opened) Then
                 SyncLock syncRoot
-                    If (oDRPSystemService Is Nothing OrElse oDRPSystemService.State <> ServiceModel.CommunicationState.Opened) Then
+                    If (oDRPSystemService Is Nothing OrElse oDRPSystemService.State <> CommunicationState.Opened) Then
                         oDRPSystemService = ServiceHelper.CreateDRPClient()
                     End If
                 End SyncLock

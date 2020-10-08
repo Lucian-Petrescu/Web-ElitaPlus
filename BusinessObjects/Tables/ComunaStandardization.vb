@@ -59,7 +59,7 @@ Public Class ComunaStandardization
         Try
             Dim dal As New ComunaStandardizationDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -249,10 +249,10 @@ Public Class ComunaStandardization
         Public Function AddNewRowToEmptyDV() As ComunaStdSearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ComunaStdSearchDV.COL_COMUNA_ALIAS_ID) = (New Guid()).ToByteArray
-            row(ComunaStdSearchDV.COL_COMUNA) = ""
-            row(ComunaStdSearchDV.COL_COMUNA_ALIAS) = ""
-            row(ComunaStdSearchDV.COL_COMUNA_CODE_ID) = Guid.Empty.ToByteArray
+            row(COL_COMUNA_ALIAS_ID) = (New Guid()).ToByteArray
+            row(COL_COMUNA) = ""
+            row(COL_COMUNA_ALIAS) = ""
+            row(COL_COMUNA_CODE_ID) = Guid.Empty.ToByteArray
             dt.Rows.Add(row)
             Return New ComunaStdSearchDV(dt)
         End Function

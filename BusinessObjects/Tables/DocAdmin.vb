@@ -11,9 +11,9 @@ Namespace DocAdminImaging
         Private Shared ReadOnly Property ClientProxy As DocumentAdminClient
             Get
                 Dim wrkQueClient As DocumentAdminClient
-                If (oDocAdminServiceClient Is Nothing OrElse oDocAdminServiceClient.State <> ServiceModel.CommunicationState.Opened) Then
+                If (oDocAdminServiceClient Is Nothing OrElse oDocAdminServiceClient.State <> CommunicationState.Opened) Then
                     SyncLock syncRoot
-                        If (oDocAdminServiceClient Is Nothing OrElse oDocAdminServiceClient.State <> ServiceModel.CommunicationState.Opened) Then
+                        If (oDocAdminServiceClient Is Nothing OrElse oDocAdminServiceClient.State <> CommunicationState.Opened) Then
                             oDocAdminServiceClient = ServiceHelper.CreateDocumentAdminClient()
                         End If
                     End SyncLock

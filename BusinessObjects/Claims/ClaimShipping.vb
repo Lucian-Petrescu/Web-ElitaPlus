@@ -59,7 +59,7 @@ Public Class ClaimShipping
         Try
             Dim dal As New ClaimShippingDAL            
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -204,12 +204,12 @@ Public Class ClaimShipping
         Get
             If (Row.HasVersion(DataRowVersion.Original)) Then
                 If (Row(ClaimShippingDAL.COL_NAME_RECEIVED_DATE, DataRowVersion.Original) Is DBNull.Value) Then
-                    Return Not ReceivedDate Is Nothing
+                    Return ReceivedDate IsNot Nothing
                 Else
                     Return ReceivedDate <> DirectCast(Row(ClaimShippingDAL.COL_NAME_RECEIVED_DATE, DataRowVersion.Original), Date)
                 End If
             Else
-                Return Not ReceivedDate Is Nothing
+                Return ReceivedDate IsNot Nothing
             End If
 
         End Get

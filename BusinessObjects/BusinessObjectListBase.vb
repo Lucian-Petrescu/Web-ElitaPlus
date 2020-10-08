@@ -48,7 +48,7 @@ Public MustInherit Class BusinessObjectListBase
         Get
             Dim bo As BusinessObjectBase
             Dim deletions As DataTable = Table.GetChanges(DataRowState.Added Or DataRowState.Deleted)
-            If Not deletions Is Nothing Then
+            If deletions IsNot Nothing Then
                 Dim row As DataRow
                 For Each row In deletions.Rows
                     If row.RowState = DataRowState.Deleted Then
@@ -77,7 +77,7 @@ Public MustInherit Class BusinessObjectListBase
                                         BindingFlags.Public, Nothing, _
                                         New Type() {GetType(Guid), GetType(DataSet)}, Nothing).Invoke(New Object() {childId, _table.DataSet})
         Catch ex As Exception
-            If Not ex.InnerException Is Nothing AndAlso ex.InnerException.GetType Is GetType(DataNotFoundException) Then
+            If ex.InnerException IsNot Nothing AndAlso ex.InnerException.GetType Is GetType(DataNotFoundException) Then
                 Throw ex.InnerException
             Else
                 Throw

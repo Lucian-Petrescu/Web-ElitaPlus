@@ -66,7 +66,7 @@ Public Class CommPCode
         Try
             Dim dal As New CommPCodeDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -344,7 +344,7 @@ Public Class CommPCode
 
             If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CommPCodeDAL
-                MyBase.UpdateFamily(Dataset)
+                UpdateFamily(Dataset)
                 '   dal.Update(Me.Row)
                 dal.UpdateFamily(Dataset)  'New Code Added Manually                
                 'Reload the Data from the DB
@@ -451,11 +451,11 @@ Public Class CommPCode
         If errIndex > 0 Then
             Dim errors(errIndex - 1) As ValidationError
             Dim errCurrIndex As Integer = 0
-            If Not err1 Is Nothing Then
+            If err1 IsNot Nothing Then
                 errors(errCurrIndex) = err1
                 errCurrIndex += 1
             End If
-            If Not err2 Is Nothing Then
+            If err2 IsNot Nothing Then
                 errors(errCurrIndex) = err2
                 errCurrIndex += 1
             End If

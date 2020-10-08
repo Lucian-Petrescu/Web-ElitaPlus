@@ -63,7 +63,7 @@ Public Class AccountingCloseInfo
         Try
             Dim dal As New AccountingCloseInfoDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -184,7 +184,7 @@ Public Class AccountingCloseInfo
     Private Shared Function GetAccountingCloseInfoList(parent As Company, cmpId As Guid) As DataTable
 
         Try
-            If Not parent.IsChildrenCollectionLoaded(GetType(AccountingCloseInfoList)) Or If(parent.Dataset.Tables(AccountingCloseInfoDAL.TABLE_NAME) Is Nothing, True, parent.Dataset.Tables(AccountingCloseInfoDAL.TABLE_NAME).Rows.Count <= 0) Then
+            If Not parent.IsChildrenCollectionLoaded(GetType(AccountingCloseInfoList)) OrElse If(parent.Dataset.Tables(AccountingCloseInfoDAL.TABLE_NAME) Is Nothing, True, parent.Dataset.Tables(AccountingCloseInfoDAL.TABLE_NAME).Rows.Count <= 0) Then
                 Dim dal As New AccountingCloseInfoDAL
                 dal.LoadList(cmpId, parent.Dataset)
                 parent.AddChildrenCollection(GetType(AccountingCloseInfoList))
@@ -267,14 +267,14 @@ Public Class AccountingCloseInfo
             Dim dtInqAccountingCloseDate As Date
 
             If minCloseDate = True Then
-                If Not dateRow Is Nothing AndAlso Not dateRow.Item(dal.COL_NAME_CLOSING_DATE) Is System.DBNull.Value Then
+                If dateRow IsNot Nothing AndAlso dateRow.Item(dal.COL_NAME_CLOSING_DATE) IsNot DBNull.Value Then
                     Return CType(dateRow.Item(dal.COL_NAME_CLOSING_DATE), Date)
                 Else
                     dtInqAccountingCloseDate = GetMinAccountingCloseDate(companyId)
                     Return dtInqAccountingCloseDate                    
                 End If
             Else
-                If Not dateRow Is Nothing AndAlso Not dateRow.Item(dal.COL_NAME_CLOSING_DATE) Is System.DBNull.Value Then
+                If dateRow IsNot Nothing AndAlso dateRow.Item(dal.COL_NAME_CLOSING_DATE) IsNot DBNull.Value Then
                     Return CType(dateRow.Item(dal.COL_NAME_CLOSING_DATE), Date)
                 Else
                     'Throw New BOValidationException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLOSED_ACCOUNTING_MONTH_NOT_FOUND)
@@ -291,7 +291,7 @@ Public Class AccountingCloseInfo
         Try
             Dim dal As New AccountingCloseInfoDAL
             Dim dateRow As DataRow = dal.GetMinAccountingCloseDate(companyId)
-            If Not dateRow Is Nothing AndAlso Not dateRow.Item(dal.COL_NAME_CLOSING_DATE) Is System.DBNull.Value Then
+            If dateRow IsNot Nothing AndAlso dateRow.Item(dal.COL_NAME_CLOSING_DATE) IsNot DBNull.Value Then
                 Return CType(dateRow.Item(dal.COL_NAME_CLOSING_DATE), Date)
             Else
                 'Throw New BOValidationException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLOSED_ACCOUNTING_MONTH_NOT_FOUND)

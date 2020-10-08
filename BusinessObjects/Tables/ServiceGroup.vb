@@ -61,7 +61,7 @@ Public Class ServiceGroup
         Try
             Dim dal As New ServiceGroupDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -264,7 +264,7 @@ Public Class ServiceGroup
             sgRt.ServiceGroupId = Id
             sgRt.Save()
         End If
-        If Not sgRt Is Nothing Then
+        If sgRt IsNot Nothing Then
             sgRt.UpdateManufaturers(selectedManufacturerGuidStrCollection)
         End If
     End Sub
@@ -277,14 +277,14 @@ Public Class ServiceGroup
             sgRt.ServiceGroupId = Id
             sgRt.Save()
         End If
-        If Not sgRt Is Nothing Then
+        If sgRt IsNot Nothing Then
             sgRt.AttachManufaturers(selectedManufacturerGuidStrCollection)
         End If
     End Sub
 
     Public Sub DetachManufacturers(riskTypeId As Guid, selectedManufacturerGuidStrCollection As ArrayList)
         Dim sgRt As ServiceGroupRiskType = ServiceGroupRiskTypeChildren.Find(riskTypeId)
-        If Not sgRt Is Nothing Then
+        If sgRt IsNot Nothing Then
             sgRt.DetachManufaturers(selectedManufacturerGuidStrCollection)
             If sgRt.SgRtManufacturerChildren.Count = 0 Then
                 sgRt.Delete()
@@ -325,7 +325,7 @@ Public Class ServiceGroup
 
     Public Sub DetachRiskType(riskTypeId As Guid)
         Dim sgRt As ServiceGroupRiskType = ServiceGroupRiskTypeChildren.Find(riskTypeId)
-        If Not sgRt Is Nothing Then
+        If sgRt IsNot Nothing Then
             sgRt.Delete()
             sgRt.Save()
         End If

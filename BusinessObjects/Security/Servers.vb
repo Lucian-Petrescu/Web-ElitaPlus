@@ -76,7 +76,7 @@ Public Class Servers
         Try
             Dim dal As New ServersDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -101,7 +101,7 @@ Public Class Servers
         Try
             Dim dal As New ServersDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -613,7 +613,7 @@ Public Class Servers
         Public Function AddNewRowToEmptyDV() As SearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(SearchDV.COL_SERVER_ID) = (New Guid()).ToByteArray
+            row(COL_SERVER_ID) = (New Guid()).ToByteArray
 
             dt.Rows.Add(row)
             Return New SearchDV(dt)
@@ -644,7 +644,7 @@ Public Class Servers
             Dim _bind As New BasicHttpBinding
 
             eab = New EndpointAddressBuilder
-            eab.Uri = New Uri(String.Format(Servers.BatchTestURL, URL))
+            eab.Uri = New Uri(String.Format(BatchTestURL, URL))
             ea = eab.ToEndpointAddress
             Dim wc As New TestBatchService.TestServiceClient(_bind, ea)
             response = wc.HealthCheck(UserName, Password, Group)

@@ -67,7 +67,7 @@ Public Class CustItem
         Try
             Dim dal As New CustItemDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -359,7 +359,7 @@ Public Class CustItem
     Public Property Dealer As Dealer
         Get
             If (_dealer Is Nothing) Then
-                If (Not CustomerRegistration Is Nothing) Then
+                If (CustomerRegistration IsNot Nothing) Then
                     _dealer = New Dealer(CustomerRegistration.DealerId)
                 End If
             End If
@@ -373,7 +373,7 @@ Public Class CustItem
     Public Property EquipmentId As Guid
         Get
             If (_equipmentId = Guid.Empty) Then
-                If (Not Dealer Is Nothing) Then
+                If (Dealer IsNot Nothing) Then
                     _equipmentId = Equipment.FindEquipment(Dealer.Dealer, Make, Model, RegistrationDate)
                 End If
             End If
@@ -406,16 +406,16 @@ Public Class CustItem
             Dim equipmentId As Guid
             Dim cellNumber As String
 
-            noId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-            regStatusActiveId = LookupListNew.GetIdFromCode(LookupListNew.LK_REGSTATUS, Codes.REGSTATUS_ACTIVE)
-            regStatusPendingId = LookupListNew.GetIdFromCode(LookupListNew.LK_REGSTATUS, Codes.REGSTATUS_PENDING)
+            noId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
+            regStatusActiveId = LookupListNew.GetIdFromCode(LookupListCache.LK_REGSTATUS, Codes.REGSTATUS_ACTIVE)
+            regStatusPendingId = LookupListNew.GetIdFromCode(LookupListCache.LK_REGSTATUS, Codes.REGSTATUS_PENDING)
 
             If IsIMEINumberValid(customerItem.IMEINumber) Then
                 equipmentId = Equipment.FindEquipment(customerItem.DealerCode, customerItem.Make, customerItem.Model, customerItem.RegistrationDate)
 
                 If (equipmentId <> Guid.Empty) Then
                     'check if enrollment came in for the customer's device & is in active state
-                    If Not customerItem.CellPhone Is Nothing Then
+                    If customerItem.CellPhone IsNot Nothing Then
                         cellNumber = customerItem.CellPhone.Trim()
                     End If
                     certItemId = GetCertItemIDforTaxImei(custRegBO.TaxId, customerItem.IMEINumber, custRegBO.DealerId, cellNumber)
@@ -452,7 +452,7 @@ Public Class CustItem
                         objInsertCustItem.Save()
                         Return OK_RESPONSE
                     Else
-                        If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, New Guid(CType(ds.Tables(0).Rows(0)("is_deleted_id"), Byte()))) = Codes.YESNO_N) Then
+                        If (LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, New Guid(CType(ds.Tables(0).Rows(0)("is_deleted_id"), Byte()))) = Codes.YESNO_N) Then
                             'IMEI already added by the current user under the current dealer and is not deleted
                             Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.ITEM_ALREADY_EXISTS_ERR, GetType(CustItem), Nothing, "", Nothing)}
                             Throw New BOValidationException(errors, GetType(CustItem).FullName)
@@ -496,7 +496,7 @@ Public Class CustItem
         Try
             Dim yesId As Guid
 
-            yesId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
+            yesId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)
 
             custItemBO.IsDeletedId = yesId
 
@@ -553,16 +553,16 @@ Public Class CustItem
             Dim evntReactivateId As Guid
             Dim argumentsToAddEvent As String
 
-            regStatusActiveId = LookupListNew.GetIdFromCode(LookupListNew.LK_REGSTATUS, Codes.REGSTATUS_ACTIVE)
-            regStatusPendingId = LookupListNew.GetIdFromCode(LookupListNew.LK_REGSTATUS, Codes.REGSTATUS_PENDING)
-            regStatusInActiveId = LookupListNew.GetIdFromCode(LookupListNew.LK_REGSTATUS, Codes.REGSTATUS_INACTIVE)
+            regStatusActiveId = LookupListNew.GetIdFromCode(LookupListCache.LK_REGSTATUS, Codes.REGSTATUS_ACTIVE)
+            regStatusPendingId = LookupListNew.GetIdFromCode(LookupListCache.LK_REGSTATUS, Codes.REGSTATUS_PENDING)
+            regStatusInActiveId = LookupListNew.GetIdFromCode(LookupListCache.LK_REGSTATUS, Codes.REGSTATUS_INACTIVE)
 
-            evntActivateId = LookupListNew.GetIdFromCode(LookupListNew.LK_EVNT_TYPE, Codes.EVNT_TYPE_ACTIVATE)
-            evntReactivateId = LookupListNew.GetIdFromCode(LookupListNew.LK_EVNT_TYPE, Codes.EVNT_TYPE_REACTIVATE)
+            evntActivateId = LookupListNew.GetIdFromCode(LookupListCache.LK_EVNT_TYPE, Codes.EVNT_TYPE_ACTIVATE)
+            evntReactivateId = LookupListNew.GetIdFromCode(LookupListCache.LK_EVNT_TYPE, Codes.EVNT_TYPE_REACTIVATE)
 
             argumentsToAddEvent = PublishedTask.REGISTRATION_ID & ":" & DALBase.GuidToSQLString(custRegBO.Id) & ";" & PublishedTask.REGISTRATION_ITEM_ID & ":" & DALBase.GuidToSQLString(custItemBO.Id)
 
-            If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, custItemBO.IsDeletedId) = Codes.YESNO_N) Then
+            If (LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, custItemBO.IsDeletedId) = Codes.YESNO_N) Then
 
                 If (custItemBO.RegistrationStatusId = regStatusActiveId Or custItemBO.RegistrationStatusId = regStatusPendingId) Then
                     'Raise Activate and Reactive events based on the status, product key
@@ -676,8 +676,8 @@ Public Class CustItem
             Dim returnVal As Boolean = True
             If (Not obj.EquipmentId.Equals(Guid.Empty)) Then
                 Dim eqp As New Equipment(obj.EquipmentId)
-                If (LookupListNew.GetCodeFromId(LookupListNew.LK_EQUIPMENT_TYPE, eqp.EquipmentTypeId) = Codes.EQUIPMENT_TYPE__SMARTPHONE _
-                        OrElse LookupListNew.GetCodeFromId(LookupListNew.LK_EQUIPMENT_TYPE, eqp.EquipmentTypeId) = Codes.EQUIPMENT_TYPE__FEATUREPHONE) Then
+                If (LookupListNew.GetCodeFromId(LookupListCache.LK_EQUIPMENT_TYPE, eqp.EquipmentTypeId) = Codes.EQUIPMENT_TYPE__SMARTPHONE _
+                        OrElse LookupListNew.GetCodeFromId(LookupListCache.LK_EQUIPMENT_TYPE, eqp.EquipmentTypeId) = Codes.EQUIPMENT_TYPE__FEATUREPHONE) Then
                     If (obj.CellPhone Is Nothing OrElse obj.CellPhone.Trim = String.Empty) Then
                         returnVal = False
                     End If

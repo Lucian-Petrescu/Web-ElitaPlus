@@ -71,7 +71,7 @@ Public NotInheritable Class ClaimAuthorization
         Try
             Dim dal As New ClaimAuthorizationDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -602,7 +602,7 @@ Public NotInheritable Class ClaimAuthorization
         Get
             Dim amount As Decimal = New Decimal(0)
             For Each Item As ClaimAuthItem In ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False _
-                AndAlso (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE And i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE))
+                AndAlso (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE AndAlso i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE))
 
                 amount = amount + If(Item.Amount Is Nothing, New Decimal(0D), Item.Amount.Value)
 
@@ -648,7 +648,7 @@ Public NotInheritable Class ClaimAuthorization
 
     Public ReadOnly Property IsAuthorizationLimitExceeded As Boolean
         Get
-            If Not AuthorizedAmount Is Nothing AndAlso Claim.AuthorizedAmount.Value > Claim.AuthorizationLimit.Value Then
+            If AuthorizedAmount IsNot Nothing AndAlso Claim.AuthorizedAmount.Value > Claim.AuthorizationLimit.Value Then
                 Return True
             End If
             Return False
@@ -981,7 +981,7 @@ Public NotInheritable Class ClaimAuthorization
             If Row(ClaimAuthorizationDAL.COL_NAME_AUTH_TYPE_XCD) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return LookupListNew.GetDescriptionFromExtCode(LookupListNew.LK_AUTH_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, AuthTypeXcd).ToString()
+                Return LookupListNew.GetDescriptionFromExtCode(LookupListCache.LK_AUTH_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, AuthTypeXcd).ToString()
             End If
         End Get
     End Property
@@ -991,7 +991,7 @@ Public NotInheritable Class ClaimAuthorization
             If Row(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return LookupListNew.GetDescriptionFromExtCode(LookupListNew.LK_RFM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, RefundMethodXcd)
+                Return LookupListNew.GetDescriptionFromExtCode(LookupListCache.LK_RFM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, RefundMethodXcd)
             End If
         End Get
     End Property
@@ -1240,7 +1240,7 @@ Public NotInheritable Class ClaimAuthorization
     End Property
 
     Public Sub SetPickUpDateFromLoanerReturnedDate() Implements IInvoiceable.SetPickUpDateFromLoanerReturnedDate
-        If Not LoanerReturnedDate Is Nothing Then PickUpDate = LoanerReturnedDate
+        If LoanerReturnedDate IsNot Nothing Then PickUpDate = LoanerReturnedDate
     End Sub
 
     'Salvage Amount is currently not supported for Multi Auth Claims
@@ -1259,11 +1259,11 @@ Public NotInheritable Class ClaimAuthorization
             Dim assurPays As Decimal = 0D
             Dim liabLimit As Decimal = LiabilityLimit.Value
 
-            If Not Claim.DiscountPercent Is Nothing Then
+            If Claim.DiscountPercent IsNot Nothing Then
                 DiscountAmount = AuthorizedAmount * (CType(Claim.DiscountPercent, Decimal) / 100)
             End If
 
-            If (liabLimit = 0D And CType(Claim.Certificate.ProductLiabilityLimit.ToString, Decimal) = 0 And CType(Claim.CertificateItemCoverage.CoverageLiabilityLimit, Decimal) = 0) Then
+            If (liabLimit = 0D AndAlso CType(Claim.Certificate.ProductLiabilityLimit.ToString, Decimal) = 0 AndAlso CType(Claim.CertificateItemCoverage.CoverageLiabilityLimit, Decimal) = 0) Then
                 liabLimit = 999999999.99
             End If
 
@@ -1381,8 +1381,7 @@ Public NotInheritable Class ClaimAuthorization
         Validate()
         Claim.Validate()
 
-        If (Not IsNew And (IsAuthorizedAmountChanged Or ClaimAuthorizationItemChildren.HasCollectionChanged) And
-            (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized Or Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending)) Then
+        If (Not IsNew AndAlso (IsAuthorizedAmountChanged OrElse ClaimAuthorizationItemChildren.HasCollectionChanged) AndAlso (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized OrElse Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending)) Then
             'Create New Auth with line Items in original Auth
             Dim claimAuth As ClaimAuthorization = CType(Claim.ClaimAuthorizationChildren().GetNewChild(), ClaimAuthorization)
             claimAuth.CopyClaimAuthFromExiting(Me)
@@ -1398,11 +1397,11 @@ Public NotInheritable Class ClaimAuthorization
                 ClaimAuthStatus = ClaimAuthorizationStatus.Pending
             End If
 
-            If (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso Not RepairDate Is Nothing) Then
+            If (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso RepairDate IsNot Nothing) Then
 
                 ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled
             End If
-            If (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized Or Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending) AndAlso Not IsSupervisorAuthorizationRequired AndAlso IsAuthorizationDeductibleRefund() Then
+            If (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized OrElse Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending) AndAlso Not IsSupervisorAuthorizationRequired AndAlso IsAuthorizationDeductibleRefund() Then
                 ClaimAuthStatus = ClaimAuthorizationStatus.Pending
             End If
         End If
@@ -1430,9 +1429,9 @@ Public NotInheritable Class ClaimAuthorization
         Me.ServiceCenterId = serviceCenterId
         Me.ClaimId = claimid
         WhoPaysId = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
-        IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-        ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-        ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
         Try
             Dim dv As PriceListDetail.PriceListResultsDV = GetRepairPricesforMethodofRepair(Me.ServiceCenterId)
             PopulateClaimAuthItems(dv)
@@ -1448,8 +1447,8 @@ Public NotInheritable Class ClaimAuthorization
         Me.ServiceCenterId = serviceCenterId
         Me.ClaimId = claimid
         WhoPaysId = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
-        IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-        ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
 
         Try
             PopulateClaimAuthItems(dv)
@@ -1484,9 +1483,9 @@ Public NotInheritable Class ClaimAuthorization
     Public Sub PrepopulateClaimAuthForDeductibleRefund(serviceCenterId As Guid, claimid As Guid, certid As Guid, refundMethod As String)
         Me.ServiceCenterId = serviceCenterId
         Me.ClaimId = claimid
-        IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-        ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-        ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
         AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE
         PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER
         PartyReferenceId = certid
@@ -1621,10 +1620,10 @@ Public NotInheritable Class ClaimAuthorization
         Dim ServiceCenter As ServiceCenter = New ServiceCenter(serviceCenterId)
 
         If (Claim.Dealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) Then
-            If Not Claim.ClaimedEquipment Is Nothing Or Not Claim.ClaimedEquipment.EquipmentBO Is Nothing Then
+            If Claim.ClaimedEquipment IsNot Nothing Or Claim.ClaimedEquipment.EquipmentBO IsNot Nothing Then
                 equipmentId = Claim.ClaimedEquipment.EquipmentId
                 equipmentclassId = Claim.ClaimedEquipment.EquipmentBO.EquipmentClassId
-                conditionId = LookupListNew.GetIdFromCode(LookupListNew.LK_CONDITION, Codes.EQUIPMENT_COND__NEW)
+                conditionId = LookupListNew.GetIdFromCode(LookupListCache.LK_CONDITION, Codes.EQUIPMENT_COND__NEW)
             Else
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, "NO_CLAIMED_EQUIPMENT_FOUND")
             End If
@@ -1686,7 +1685,7 @@ Public NotInheritable Class ClaimAuthorization
         If Not ContainsDeductible Then
             Dim item As ClaimAuthItem = ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False AndAlso (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE And
                                                                   i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE)).FirstOrDefault()
-            If Not item Is Nothing Then item.IsDeleted = True
+            If item IsNot Nothing Then item.IsDeleted = True
         End If
     End Sub
 #End Region
@@ -1781,7 +1780,7 @@ Public NotInheritable Class ClaimAuthorization
             If obj.VisitDate Is Nothing Then Return True
             Dim visitDate As Date = obj.GetShortDate(obj.VisitDate.Value)
             Dim createdDate As Date = Today
-            If Not obj.CreatedDate Is Nothing Then
+            If obj.CreatedDate IsNot Nothing Then
                 createdDate = obj.GetShortDate(obj.CreatedDate.Value)
             End If
 
@@ -1796,15 +1795,15 @@ Public NotInheritable Class ClaimAuthorization
                 Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR1 ' "Visit Date Must Be Less Than Or Equal To Today."
                 Return False
             End If
-            If Not obj.Claim.LossDate Is Nothing AndAlso visitDate < obj.GetShortDate(obj.Claim.LossDate.Value) Then
+            If obj.Claim.LossDate IsNot Nothing AndAlso visitDate < obj.GetShortDate(obj.Claim.LossDate.Value) Then
                 Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR4 ' "Visit Date Must Be Greater Than Or Equal To Date Of Loss."
                 Return False
             End If
-            If Not obj.RepairDate Is Nothing AndAlso visitDate > obj.GetShortDate(obj.RepairDate.Value) Then
+            If obj.RepairDate IsNot Nothing AndAlso visitDate > obj.GetShortDate(obj.RepairDate.Value) Then
                 Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR2 ' "Visit Date Must Be Less Than Or Equal To Repair Date."
                 Return False
             End If
-            If Not obj.PickUpDate Is Nothing AndAlso visitDate > obj.GetShortDate(obj.PickUpDate.Value) Then
+            If obj.PickUpDate IsNot Nothing AndAlso visitDate > obj.GetShortDate(obj.PickUpDate.Value) Then
                 Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR3 ' "Visit Date Must Be Less Than Or Equal To Pick-Up Date."
                 Return False
             End If
@@ -1839,14 +1838,14 @@ Public NotInheritable Class ClaimAuthorization
 
             Dim createdDate As Date = Today
 
-            If Not obj.CreatedDate Is Nothing Then
+            If obj.CreatedDate IsNot Nothing Then
                 createdDate = obj.GetShortDate(obj.CreatedDate.Value)
             End If
 
             ' WR 757668: For a claim that is added from a claim interface:
             ' Repair Date is EQ to or LT the current date and EQ to or GT the Date of Loss
             ' A claim is originated from an interface when the Source field in the Claim record is not null
-            If Not obj.Source Is Nothing Then
+            If obj.Source IsNot Nothing Then
                 If ((repairDate >= obj.GetShortDate(obj.Claim.LossDate.Value)) AndAlso
                 (repairDate <= obj.GetShortDate(Today))) Then
                     Return True
@@ -1857,7 +1856,7 @@ Public NotInheritable Class ClaimAuthorization
                     Return True
                 End If
             End If
-            If Not obj.LoanerReturnedDate Is Nothing AndAlso repairDate <= obj.GetShortDate(obj.LoanerReturnedDate.Value) Then
+            If obj.LoanerReturnedDate IsNot Nothing AndAlso repairDate <= obj.GetShortDate(obj.LoanerReturnedDate.Value) Then
                 Return True
             End If
 
@@ -1879,7 +1878,7 @@ Public NotInheritable Class ClaimAuthorization
             If obj.PickUpDate Is Nothing Then Return True
             Dim pickUpDate As Date = obj.GetShortDate(obj.PickUpDate.Value)
             Dim createdDate As Date = Today
-            If Not obj.CreatedDate Is Nothing Then
+            If obj.CreatedDate IsNot Nothing Then
                 createdDate = obj.GetShortDate(obj.CreatedDate.Value)
             End If
 
@@ -1896,7 +1895,7 @@ Public NotInheritable Class ClaimAuthorization
                 Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR1 '"Pick-Up Date Must Be Less Than Or Equal To Today."
                 Return False
                 'End If
-            ElseIf Not obj.RepairDate Is Nothing Then
+            ElseIf obj.RepairDate IsNot Nothing Then
                 If pickUpDate < obj.GetShortDate(obj.RepairDate.Value) Then
                     Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR2  '"Pick-Up Date Must Be Greater Than Or Equal To Repair Date."
                     Return False
@@ -1909,11 +1908,11 @@ Public NotInheritable Class ClaimAuthorization
                 Return False
             End If
 
-            If Not obj.LoanerReturnedDate Is Nothing AndAlso pickUpDate < obj.GetShortDate(obj.LoanerReturnedDate.Value) Then
+            If obj.LoanerReturnedDate IsNot Nothing AndAlso pickUpDate < obj.GetShortDate(obj.LoanerReturnedDate.Value) Then
                 Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR4 '"Pick-Up Date Must Be Greater Than Or Equal To Loaner Returned Date."
                 Return False
             End If
-            If Not obj.VisitDate Is Nothing AndAlso pickUpDate < obj.GetShortDate(obj.VisitDate.Value) Then
+            If obj.VisitDate IsNot Nothing AndAlso pickUpDate < obj.GetShortDate(obj.VisitDate.Value) Then
                 Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR3 '"Pick-Up Date Must Be Greater Than Or Equal To Visit Date."
                 Return False
             End If

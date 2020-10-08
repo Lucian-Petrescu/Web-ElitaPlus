@@ -57,7 +57,7 @@
         Try
             Dim dal As New ListPriceDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -124,7 +124,7 @@
     End Function
     Public Shared Function IsSKUValid(dealerId As Guid, strSKU As String, dtEffective As Date, ByRef dListPrice As DecimalType) As Boolean
         Dim blnValid As Boolean = False
-        dListPrice = ListPrice.GetListPrice(dealerId, strSKU, dtEffective.ToString("yyyyMMdd"))
+        dListPrice = GetListPrice(dealerId, strSKU, dtEffective.ToString("yyyyMMdd"))
         If (dListPrice <> Nothing) Then
             blnValid = True
         End If

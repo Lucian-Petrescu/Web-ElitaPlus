@@ -59,7 +59,7 @@ Public Class Notification
         Try
             Dim dal As New NotificationDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -331,9 +331,9 @@ Public Class Notification
 
         Try
 
-            Dim AudianceTypeExternalId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__EXTERNAL_USER)
-            Dim AudianceTypeInternalId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__INTERNAL_USER)
-            Dim AudianceTypeAllId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__ALL_USERS)
+            Dim AudianceTypeExternalId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__EXTERNAL_USER)
+            Dim AudianceTypeInternalId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__INTERNAL_USER)
+            Dim AudianceTypeAllId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__ALL_USERS)
 
             Return New NotificationSearchDV((New NotificationDAL).LoadList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, _
                                                                             NotificationNameMask, _
@@ -361,9 +361,9 @@ Public Class Notification
 
         Try
 
-            Dim AudianceTypeExternalId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__EXTERNAL_USER)
-            Dim AudianceTypeInternalId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__INTERNAL_USER)
-            Dim AudianceTypeAllId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__ALL_USERS)
+            Dim AudianceTypeExternalId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__EXTERNAL_USER)
+            Dim AudianceTypeInternalId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__INTERNAL_USER)
+            Dim AudianceTypeAllId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__ALL_USERS)
 
 
 

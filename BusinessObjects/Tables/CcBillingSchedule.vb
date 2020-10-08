@@ -59,7 +59,7 @@ Public Class CcBillingSchedule
         Try
             Dim dal As New CcBillingScheduleDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -249,14 +249,14 @@ Public Class CcBillingSchedule
             Dim dtInqAccountingCloseDate As Date
 
             If minCloseDate = True Then
-                If Not dateRow Is Nothing AndAlso Not dateRow.Item(dal.COL_NAME_BILLING_DATE) Is System.DBNull.Value Then
+                If dateRow IsNot Nothing AndAlso dateRow.Item(dal.COL_NAME_BILLING_DATE) IsNot DBNull.Value Then
                     Return CType(dateRow.Item(dal.COL_NAME_BILLING_DATE), Date)
                 Else
                     dtInqAccountingCloseDate = GetMinCCSchedulingBillDate(companyCreditCardId)
                     Return dtInqAccountingCloseDate
                 End If
             Else
-                If Not dateRow Is Nothing AndAlso Not dateRow.Item(dal.COL_NAME_BILLING_DATE) Is System.DBNull.Value Then
+                If dateRow IsNot Nothing AndAlso dateRow.Item(dal.COL_NAME_BILLING_DATE) IsNot DBNull.Value Then
                     Return CType(dateRow.Item(dal.COL_NAME_BILLING_DATE), Date)
                 Else
                     'Throw New BOValidationException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLOSED_ACCOUNTING_MONTH_NOT_FOUND)
@@ -273,7 +273,7 @@ Public Class CcBillingSchedule
         Try
             Dim dal As New CcBillingScheduleDAL
             Dim dateRow As DataRow = dal.GetMinCCSchedulingBillDate(companyCreditCardId)
-            If Not dateRow Is Nothing AndAlso Not dateRow.Item(dal.COL_NAME_BILLING_DATE) Is System.DBNull.Value Then
+            If dateRow IsNot Nothing AndAlso dateRow.Item(dal.COL_NAME_BILLING_DATE) IsNot DBNull.Value Then
                 Return CType(dateRow.Item(dal.COL_NAME_BILLING_DATE), Date)
             Else
                 'Throw New BOValidationException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLOSED_ACCOUNTING_MONTH_NOT_FOUND)

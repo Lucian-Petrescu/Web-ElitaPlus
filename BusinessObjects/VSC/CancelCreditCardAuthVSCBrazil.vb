@@ -94,7 +94,7 @@ Public Class CancelCreditCardAuthVSCBrazil
         bind.MaxBufferPoolSize = 524288
         bind.MaxReceivedMessageSize = 65536
         bind.MessageEncoding = WSMessageEncoding.Text
-        bind.TextEncoding = Text.Encoding.UTF8
+        bind.TextEncoding = Encoding.UTF8
         bind.TransferMode = TransferMode.Buffered
         bind.UseDefaultWebProxy = True
         ' readerQuotas
@@ -160,7 +160,7 @@ Public Class CancelCreditCardAuthVSCBrazil
             If Not tempTransId.Equals(Guid.Empty) Then
                 Dim transObj As TransactionLogHeader = New TransactionLogHeader(tempTransId)
                 InputXml = transObj.TransactionXml
-                If Not InputXml Is Nothing Then
+                If InputXml IsNot Nothing Then
                     InputXml = InputXml.Replace("<?xml version='1.0' encoding='utf-8' ?>", "")
                 End If
             End If

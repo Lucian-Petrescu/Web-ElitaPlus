@@ -162,12 +162,12 @@ Public Class Enrollment
             'Ticket # 1,412,358 
             Dim objCompany As New Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
             If LookupListNew.GetCodeFromId("COMPANY_TYPE", objCompany.CompanyTypeId) = objCompany.COMPANY_TYPE_INSURANCE AndAlso
-                LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATION_TYPES, oContract.ID_Validation_Id) <> Codes.ID_VALIDATION_FULL Then
+                LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATION_TYPES, oContract.ID_Validation_Id) <> Codes.ID_VALIDATION_FULL Then
                 Throw New BOValidationException("VSC Enrollment Error: ", Common.ErrorCodes.WS_XML_INVALID)
             End If
 
             If LookupListNew.GetCodeFromId("COMPANY_TYPE", objCompany.CompanyTypeId) = objCompany.COMPANY_TYPE_INSURANCE AndAlso
-                LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATION_TYPES, oContract.ID_Validation_Id) = Codes.ID_VALIDATION_FULL Then
+                LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATION_TYPES, oContract.ID_Validation_Id) = Codes.ID_VALIDATION_FULL Then
                 ' Verify RG_No, ID_Type, Issuing Agency, Document_Issue_Date if document type is CPF
                 If (.IsDocument_TypeNull) OrElse (.Document_Type = DOC_TYPE_CPF AndAlso
                   ((.IsRG_NoNull OrElse .RG_No.Trim.Length = 0) _
@@ -1320,7 +1320,7 @@ Public Class Enrollment
 
             Validate()
 
-            If IsNew AndAlso Not CreditCardNumber Is Nothing Then
+            If IsNew AndAlso CreditCardNumber IsNot Nothing Then
                 Try
                     ' secure the credit card number
                     Secure()
@@ -1331,7 +1331,7 @@ Public Class Enrollment
                     '    faultExcep = DirectCast(ex.InnerException,FaultException)
                     '    Throw New ElitaPlusException(faultExcep.Message, faultExcep.Code.Name, ex.InnerException)
                     'End If
-                    Throw New ElitaPlusException(ex.Message, ElitaPlus.Common.ErrorCodes.PCI_SECURE_ERR, ex)
+                    Throw New ElitaPlusException(ex.Message, Common.ErrorCodes.PCI_SECURE_ERR, ex)
                 End Try
 
                 oEnrollmentData.CreditCardNumber = CreditCardNumber
@@ -1392,7 +1392,7 @@ Public Class Enrollment
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Enrollment = CType(objectToValidate, Enrollment)
 
-            If Not obj.CreditCardNumber Is Nothing AndAlso Not CreditCardFormat.IsCreditCardValid(obj.CreditCardTypeCode, obj.CreditCardNumber) Then
+            If obj.CreditCardNumber IsNot Nothing AndAlso Not CreditCardFormat.IsCreditCardValid(obj.CreditCardTypeCode, obj.CreditCardNumber) Then
                 Return False
             End If
             Return True

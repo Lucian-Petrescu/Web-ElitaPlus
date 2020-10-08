@@ -201,11 +201,11 @@ Public Class GetMarkupAndCommission
             Dim cert As New Certificate
 
             Dim _CertListDataSet As DataSet
-            If Not BeginDate Is Nothing AndAlso Not EndDate Is Nothing Then
+            If BeginDate IsNot Nothing AndAlso EndDate IsNot Nothing Then
                 _CertListDataSet = cert.GetMarkupAndCommissionList(RequestNumber, DealerId, BeginDate, EndDate, CertificateNumber)
-            ElseIf Not BeginDate Is Nothing Then
+            ElseIf BeginDate IsNot Nothing Then
                 _CertListDataSet = cert.GetMarkupAndCommissionList(RequestNumber, DealerId, BeginDate, Nothing, CertificateNumber)
-            ElseIf Not EndDate Is Nothing Then
+            ElseIf EndDate IsNot Nothing Then
                 _CertListDataSet = cert.GetMarkupAndCommissionList(RequestNumber, DealerId, Nothing, EndDate, CertificateNumber)
             Else
                 _CertListDataSet = cert.GetMarkupAndCommissionList(RequestNumber, DealerId, Nothing, Nothing, CertificateNumber)
@@ -233,7 +233,7 @@ Public Class GetMarkupAndCommission
 
     Private ReadOnly Property DealerId As Guid
         Get
-            If _dealerId.Equals(Guid.Empty) AndAlso Not DealerCode Is Nothing AndAlso Not DealerCode.Equals(String.Empty) Then
+            If _dealerId.Equals(Guid.Empty) AndAlso DealerCode IsNot Nothing AndAlso Not DealerCode.Equals(String.Empty) Then
 
                 Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
                 If list Is Nothing Then

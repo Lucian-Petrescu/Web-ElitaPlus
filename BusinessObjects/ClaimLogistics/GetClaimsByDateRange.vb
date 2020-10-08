@@ -94,30 +94,30 @@ Public Class GetClaimsByDateRange
     <ValueMandatory("")> _
     Public Property StartDate As DateTime
         Get
-            If Row(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE) Is DBNull.Value Then
+            If Row(PickupListHeaderDAL.COL_NAME_START_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE), String)
+                Return CType(Row(PickupListHeaderDAL.COL_NAME_START_DATE), String)
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE, Value)
+            SetValue(PickupListHeaderDAL.COL_NAME_START_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property EndDate As DateTime
         Get
-            If Row(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE) Is DBNull.Value Then
+            If Row(PickupListHeaderDAL.COL_NAME_END_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE), String)
+                Return CType(Row(PickupListHeaderDAL.COL_NAME_END_DATE), String)
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE, Value)
+            SetValue(PickupListHeaderDAL.COL_NAME_END_DATE, Value)
         End Set
     End Property
 
@@ -139,11 +139,11 @@ Public Class GetClaimsByDateRange
 
     Public ReadOnly Property ServiceCenterID As Guid
         Get
-            If _serviceCenterId.Equals(Guid.Empty) AndAlso Not ServiceCenterCode Is Nothing AndAlso ServiceCenterCode <> "" Then
+            If _serviceCenterId.Equals(Guid.Empty) AndAlso ServiceCenterCode IsNot Nothing AndAlso ServiceCenterCode <> "" Then
 
                 Dim dvServiceCenter As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
 
-                If Not dvServiceCenter Is Nothing AndAlso dvServiceCenter.Count > 0 Then
+                If dvServiceCenter IsNot Nothing AndAlso dvServiceCenter.Count > 0 Then
                     _serviceCenterId = LookupListNew.GetIdFromCode(dvServiceCenter, ServiceCenterCode)
 
                     If _serviceCenterId.Equals(Guid.Empty) Then
@@ -180,7 +180,7 @@ Public Class GetClaimsByDateRange
 
             For Each dr As DataRow In dsClaim.Tables(0).Rows
                 Dim oClaim As Claim = ClaimFacade.Instance.CreateClaim(Of Claim)()
-                oClaim = ClaimFacade.Instance.GetClaim(Of Claim)(New Guid(CType(dr(DALObjects.ClaimDAL.COL_NAME_CLAIM_ID), Byte())))
+                oClaim = ClaimFacade.Instance.GetClaim(Of Claim)(New Guid(CType(dr(ClaimDAL.COL_NAME_CLAIM_ID), Byte())))
                 Dim assurantPay As String = CType(oClaim.AssurantPays, String)
                 dr("assurant_pay_amount") = assurantPay
             Next

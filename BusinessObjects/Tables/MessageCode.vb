@@ -58,7 +58,7 @@ Public Class MessageCode
         Try
             Dim dal As New MessageCodeDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -192,7 +192,7 @@ Public Class MessageCode
     Public Shared Function IsNewMsgCode(strMsgCode As String, strMsgType As String, strUIProgCode As String) As Boolean
         Dim blnResult As Boolean = True, dal As New MessageCodeDAL
         Dim ds As DataSet = dal.getExistingMSGCode(strMsgCode, strMsgType, strUIProgCode)
-        If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
+        If ds IsNot Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
             blnResult = False
         End If
         Return blnResult
@@ -202,7 +202,7 @@ Public Class MessageCode
         Dim dal As New MessageCodeDAL, guidID As Guid
         Dim ds As DataSet = dal.loadMsgIdFromMsgCode(strMsgCode, strMsgType)
         guidID = Guid.Empty
-        If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
+        If ds IsNot Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
             guidID = New Guid(CType(ds.Tables(0).Rows(0).Item(0), Byte()))
         End If
         Return guidID

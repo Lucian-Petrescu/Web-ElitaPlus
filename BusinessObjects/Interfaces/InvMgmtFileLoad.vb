@@ -66,15 +66,15 @@ Public Class InvMgmtFileLoad
             Dim Claim As Claim
             Dim claimShipping As ClaimShipping
 
-            Dim ShipType_To_SC_Id As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_SHIPPING_TYPES, Codes.SHIP_TYPE_TO_SC)
-            Dim ShipType_To_CUST_Id As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_SHIPPING_TYPES, Codes.SHIP_TYPE_TO_CUST)
+            Dim ShipType_To_SC_Id As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_SHIPPING_TYPES, Codes.SHIP_TYPE_TO_SC)
+            Dim ShipType_To_CUST_Id As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_SHIPPING_TYPES, Codes.SHIP_TYPE_TO_CUST)
 
             ' Create Instance of Claim based on Recon Record
             Claim = ClaimFacade.Instance.GetClaimByDealerCodeandClaimNumber(Of Claim)(reconRecord.DealerCode, reconRecord.ClaimNumber) '' Create New DataSet
             Claim.RepairDate = reconRecord.RepairDate
 
             'check if the claim type is replacement
-            If ((reconRecord.ClaimType = claim_type_Replacement) AndAlso (Not reconRecord.DeliveryDate Is Nothing)) Then
+            If ((reconRecord.ClaimType = claim_type_Replacement) AndAlso (reconRecord.DeliveryDate IsNot Nothing)) Then
                 Dim replacedEquipment As ClaimEquipment
                 Dim claimEquipmentReplacementId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_EQUIPMENT_TYPE, Codes.CLAIM_EQUIP_TYPE__REPLACEMENT)
                 replacedEquipment = Claim.ClaimEquipmentChildren.Where(Function(ce) ce.ClaimEquipmentTypeId = claimEquipmentReplacementId).FirstOrDefault()
@@ -106,12 +106,12 @@ Public Class InvMgmtFileLoad
 
             claimShipping.ClaimId = Claim.Id
             'Date device shipped to customer
-            If (Not reconRecord.DeliveryDate Is Nothing) Then
+            If (reconRecord.DeliveryDate IsNot Nothing) Then
                 claimShipping.ShippingTypeId = ShipType_To_CUST_Id
                 claimShipping.TrackingNumber = reconRecord.TrackingNumberToCust
                 claimShipping.ShippingDate = reconRecord.DeliveryDate
                 claimShipping.ReceivedDate = reconRecord.PickupDate
-            ElseIf (Not reconRecord.DateDeviceShippedToSC Is Nothing) Then 'Date device shipped to SC
+            ElseIf (reconRecord.DateDeviceShippedToSC IsNot Nothing) Then 'Date device shipped to SC
                 claimShipping.ShippingTypeId = ShipType_To_SC_Id
                 claimShipping.TrackingNumber = reconRecord.TrackingNumberToSC
                 claimShipping.ShippingDate = reconRecord.DateDeviceShippedToSC
@@ -121,7 +121,7 @@ Public Class InvMgmtFileLoad
             Claim.Save()
 
             ' Trigger extended statuses
-            If (Not reconRecord.DeliveryDate Is Nothing) Then
+            If (reconRecord.DeliveryDate IsNot Nothing) Then
                 'Date device shipped to customer
                 With Claim
                     PublishedTask.AddEvent(companyGroupId:=.Company.CompanyGroupId, _
@@ -136,7 +136,7 @@ Public Class InvMgmtFileLoad
                                            eventTypeId:=LookupListNew.GetIdFromCode(Codes.EVNT_TYP, Codes.EVNT_TYP__PRD_SHPD_C), _
                                            eventArgumentId:=Nothing)
                 End With
-            ElseIf (Not reconRecord.DateDeviceShippedToSC Is Nothing) Then
+            ElseIf (reconRecord.DateDeviceShippedToSC IsNot Nothing) Then
                 'Date device shipped to SC
                 With Claim
                     PublishedTask.AddEvent(companyGroupId:=.Company.CompanyGroupId, _
@@ -155,7 +155,7 @@ Public Class InvMgmtFileLoad
 
             Return (ProcessResult.Loaded)
         Catch ex As DataBaseAccessException
-            Common.AppConfig.Log(DirectCast(ex, Exception))
+            AppConfig.Log(DirectCast(ex, Exception))
             If (ex.ErrorType = DataBaseAccessException.DatabaseAccessErrorType.BusinessErr) Then
                 If (ex.Code Is Nothing OrElse ex.Code.Trim().Length = 0) Then
                     reconRecord.RejectReason = "Rejected During Load process"
@@ -169,13 +169,13 @@ Public Class InvMgmtFileLoad
             reconRecord.RejectCode = "000"
             Return ProcessResult.Rejected
         Catch ex As BOValidationException
-            Common.AppConfig.Log(DirectCast(ex, Exception))
+            AppConfig.Log(DirectCast(ex, Exception))
             reconRecord.RejectCode = "000"
             reconRecord.RejectReason = ex.ToRejectReason()
             reconRecord.RejectReason = reconRecord.RejectReason.Substring(0, Math.Min(60, reconRecord.RejectReason.Length))
             Return ProcessResult.Rejected
         Catch ex As Exception
-            Common.AppConfig.Log(ex)
+            AppConfig.Log(ex)
             reconRecord.RejectCode = "000"
             reconRecord.RejectReason = "Rejected During Load process"
             Return ProcessResult.Rejected

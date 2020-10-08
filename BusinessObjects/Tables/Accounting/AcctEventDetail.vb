@@ -59,7 +59,7 @@ Public Class AcctEventDetail
         Try
             Dim dal As New AcctEventDetailDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -163,7 +163,7 @@ Public Class AcctEventDetail
         End Get
         Set
             CheckDeleted()
-            If Not Value Is Nothing Then Value = Value.Trim
+            If Value IsNot Nothing Then Value = Value.Trim
             SetValue(AcctEventDetailDAL.COL_NAME_ACCOUNT_CODE, Value)
         End Set
     End Property
@@ -413,7 +413,7 @@ Public Class AcctEventDetail
         End Get
         Set
             CheckDeleted()
-            If Not Value Is Nothing Then Value = Value.Trim
+            If Value IsNot Nothing Then Value = Value.Trim
             SetValue(AcctEventDetailDAL.COL_NAME_JOURNAL_TYPE, Value)
         End Set
     End Property
@@ -430,7 +430,7 @@ Public Class AcctEventDetail
         End Get
         Set
             CheckDeleted()
-            If Not Value Is Nothing Then Value = Value.Trim
+            If Value IsNot Nothing Then Value = Value.Trim
             SetValue(AcctEventDetailDAL.COL_NAME_JOURNAL_ID_SUFFIX, Value)
         End Set
     End Property
@@ -729,7 +729,7 @@ Public Class AcctEventDetail
             Dim bIsOk As Boolean = True
 
             Try
-                If Not valueToCheck Is Nothing Then
+                If valueToCheck IsNot Nothing Then
                     If valueToCheck.ToString = YES_STRING Then
                         Dim oAcctEventDetail As AcctEventDetail = CType(objectToValidate, AcctEventDetail)
                         Dim oBU As New AcctBusinessUnit(oAcctEventDetail.AcctBusinessUnitId)
@@ -762,13 +762,13 @@ Public Class AcctEventDetail
             Dim bIsOk As Boolean = True
 
             Try
-                If Not valueToCheck Is Nothing Then
+                If valueToCheck IsNot Nothing Then
                     Dim oAcctEventDetail As AcctEventDetail = CType(objectToValidate, AcctEventDetail)
                     Dim oBU As New AcctBusinessUnit(oAcctEventDetail.AcctBusinessUnitId)
                     Dim oAc As New AcctCompany(oBU.AcctCompanyId)
-                    Dim _acctExtension As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oAc.AcctSystemId)
+                    Dim _acctExtension As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oAc.AcctSystemId)
                     If _acctExtension = FelitaEngine.SMARTSTREAM_PREFIX Then
-                        If Not oAcctEventDetail.AccountCode Is Nothing AndAlso oAcctEventDetail.AccountCode.Trim.Length > 8 Then
+                        If oAcctEventDetail.AccountCode IsNot Nothing AndAlso oAcctEventDetail.AccountCode.Trim.Length > 8 Then
                             Return Not bIsOk
                         End If
                     End If

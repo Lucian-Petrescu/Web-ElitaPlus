@@ -90,7 +90,7 @@ Public Class ServiceCenter
         Try
             Dim dal As New ServiceCenterDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -114,7 +114,7 @@ Public Class ServiceCenter
         Try
             Dim dal As New ServiceCenterDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -125,7 +125,7 @@ Public Class ServiceCenter
             If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
                 Dim oCountryIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Countries
                 dal.Load(Dataset, code, oCountryIds)
-                If Not Dataset.Tables(dal.TABLE_NAME) Is Nothing AndAlso Dataset.Tables(dal.TABLE_NAME).Rows.Count > 0 Then
+                If Dataset.Tables(dal.TABLE_NAME) IsNot Nothing AndAlso Dataset.Tables(dal.TABLE_NAME).Rows.Count > 0 Then
                     Row = FindRow(New Guid(CType(Dataset.Tables(dal.TABLE_NAME).Rows(0)(dal.TABLE_KEY_NAME), Byte())),
                                     dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
                 Else
@@ -149,7 +149,7 @@ Public Class ServiceCenter
             Dim oCountryIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Countries
             dal.GetServiceCenterID(ds, code, oCountryIds)
 
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
                 serviceCenterId = New Guid(CType(ds.Tables(dal.TABLE_NAME).Rows(0)(dal.TABLE_KEY_NAME), Byte()))
             End If
 
@@ -688,10 +688,10 @@ Public Class ServiceCenter
     Public ReadOnly Property DateAdded As DateType
         Get
             CheckDeleted()
-            If Row(ServiceCenterDAL.COL_NAME_CREATED_DATE) Is DBNull.Value Then
+            If Row(DALBase.COL_NAME_CREATED_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New DateType(CType(Row(ServiceCenterDAL.COL_NAME_CREATED_DATE), Date))
+                Return New DateType(CType(Row(DALBase.COL_NAME_CREATED_DATE), Date))
             End If
         End Get
 
@@ -700,10 +700,10 @@ Public Class ServiceCenter
     Public ReadOnly Property DateModified As DateType
         Get
             CheckDeleted()
-            If Row(ServiceCenterDAL.COL_NAME_MODIFIED_DATE) Is DBNull.Value Then
+            If Row(DALBase.COL_NAME_MODIFIED_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New DateType(CType(Row(ServiceCenterDAL.COL_NAME_MODIFIED_DATE), Date))
+                Return New DateType(CType(Row(DALBase.COL_NAME_MODIFIED_DATE), Date))
             End If
         End Get
 
@@ -846,7 +846,7 @@ Public Class ServiceCenter
             If Not IntegratedWithID.Equals(Guid.Empty) Then
                 Dim code As String = LookupListNew.GetCodeFromId(LookupListNew.GetIntegratedWithLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), IntegratedWithID)
 
-                If Not code Is Nothing AndAlso code = Codes.INTEGRATED_WITH_GVS Then
+                If code IsNot Nothing AndAlso code = Codes.INTEGRATED_WITH_GVS Then
                     ret = True
                 End If
             End If
@@ -1146,7 +1146,7 @@ Public Class ServiceCenter
             If Not IsDeleted Then LastPaymentMethodId = PaymentMethodId
             If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ServiceCenterDAL '
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, LastPaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
+                If LookupListNew.GetCodeFromId(LookupListCache.LK_PAYMENTMETHOD, LastPaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
                     blnBankInfoSave = True
                     isBankInfoNeedDeletion = True
                 Else
@@ -1156,7 +1156,7 @@ Public Class ServiceCenter
                         CurrentBankInfo.Delete()
                     End If
                 End If
-                MyBase.UpdateFamily(Dataset)
+                UpdateFamily(Dataset)
                 dal.UpdateFamily(Dataset, ElitaPlusIdentity.Current.ActiveUser.Company.Id, , blnBankInfoSave) 'New Code Added Manually
                 'Reload the Data from the DB
                 If Row.RowState <> DataRowState.Detached Then
@@ -1191,10 +1191,10 @@ Public Class ServiceCenter
             (Address.IsNew And Not Address.IsEmpty)
 
             If bDirty = False Then
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
+                If LookupListNew.GetCodeFromId(LookupListCache.LK_PAYMENTMETHOD, PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
                     bDirty = bDirty OrElse
-                (Not CurrentBankInfo Is Nothing AndAlso (Not CurrentBankInfo.IsNew And CurrentBankInfo.IsDirty)) OrElse
-                (Not CurrentBankInfo Is Nothing AndAlso (CurrentBankInfo.IsNew And Not CurrentBankInfo.IsEmpty))
+                (CurrentBankInfo IsNot Nothing AndAlso (Not CurrentBankInfo.IsNew And CurrentBankInfo.IsDirty)) OrElse
+                (CurrentBankInfo IsNot Nothing AndAlso (CurrentBankInfo.IsNew And Not CurrentBankInfo.IsEmpty))
                 End If
             End If
 
@@ -1207,7 +1207,7 @@ Public Class ServiceCenter
             Throw New BOInvalidOperationException("You cannot copy into an existing Service Center")
         End If
         'Copy myself
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
 
         'copy the children       
         'Manufacturers
@@ -1265,14 +1265,14 @@ Public Class ServiceCenter
         Dim binfo As BankInfo = CurrentBankInfo
         BeginEdit()
         addr.BeginEdit()
-        If Not binfo Is Nothing Then binfo.BeginEdit()
+        If binfo IsNot Nothing Then binfo.BeginEdit()
         Try
             LastPaymentMethodId = PaymentMethodId
             'delete service center reference record first
             Delete()
             'delete address and bank info record
             addr.Delete()
-            If Not binfo Is Nothing Then binfo.Delete()
+            If binfo IsNot Nothing Then binfo.Delete()
             Save()
         Catch ex As Exception
             If ex.Message = "Integrity Constraint Violation" Then
@@ -1280,7 +1280,7 @@ Public Class ServiceCenter
             End If
             cancelEdit()
             addr.cancelEdit()
-            If Not binfo Is Nothing Then binfo.cancelEdit()
+            If binfo IsNot Nothing Then binfo.cancelEdit()
             Throw ex
         End Try
     End Sub
@@ -1400,7 +1400,7 @@ Public Class ServiceCenter
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, scManBO.ManufacturerId)
         Next
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause
         Else
@@ -1471,7 +1471,7 @@ Public Class ServiceCenter
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, snSrvBO.ServiceNetworkId)
         Next
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause
         Else
@@ -1573,7 +1573,7 @@ Public Class ServiceCenter
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, scDlrBO.DealerId)
         Next
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause
         Else
@@ -1672,7 +1672,7 @@ Public Class ServiceCenter
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, scDstBO.ZipDistrictId)
         Next
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause
         Else
@@ -1704,7 +1704,7 @@ Public Class ServiceCenter
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, scMrBO.ServCenterMorId)
         Next
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause
         Else
@@ -2074,7 +2074,7 @@ Public Class ServiceCenter
                 firstTime = False
             End If
             If dv.Count < DV_ROWS_LESS_THAT_MIN Then
-                If Not zipLocator Is Nothing Then
+                If zipLocator IsNot Nothing Then
                     Dim oLength As Integer = zipLocator.Length
                     For I As Integer = 1 To oLength - 1
                         zipLocator = zipLocator.Substring(0, zipLocator.Length - 1) + "%"
@@ -2144,7 +2144,7 @@ Public Class ServiceCenter
     End Function
     Public Shared Function GetAllServiceCenter(oCountryIds As ArrayList, MethodOfRepairId As Guid,
                                                Optional ByVal blnCheckAcctSetting As Boolean = False) As DataView
-        Dim MethodOfRepairType As String = LookupListNew.GetCodeFromId(LookupListNew.LK_METHODS_OF_REPAIR, MethodOfRepairId)
+        Dim MethodOfRepairType As String = LookupListNew.GetCodeFromId(LookupListCache.LK_METHODS_OF_REPAIR, MethodOfRepairId)
         Dim blnMethodOfRepairRLG As Boolean = False
         If MethodOfRepairType = Codes.METHOD_OF_REPAIR__RECOVERY Or
                MethodOfRepairType = Codes.METHOD_OF_REPAIR__GENERAL Or
@@ -2181,7 +2181,7 @@ Public Class ServiceCenter
         Dim row As DataRow
         For Each row In table.Rows
             row(LocateServiceCenterResultsDv.COL_NAME_SAME_ZIP_FLAG) = "n"
-            If Not zipLocator Is Nothing AndAlso Not row(LocateServiceCenterResultsDv.COL_NAME_ZIP_LOCATOR) Is DBNull.Value Then
+            If zipLocator IsNot Nothing AndAlso row(LocateServiceCenterResultsDv.COL_NAME_ZIP_LOCATOR) IsNot DBNull.Value Then
                 If CType(row(LocateServiceCenterResultsDv.COL_NAME_ZIP_LOCATOR), String).ToLower = zipLocator.ToLower Then
                     row(LocateServiceCenterResultsDv.COL_NAME_SAME_ZIP_FLAG) = "y"
                 End If
@@ -2240,7 +2240,7 @@ Public Class ServiceCenter
         Dim dvIntegratedWith As DataView = LookupListNew.GetIntegratedWithLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         Dim integratedWithCode As String = LookupListNew.GetCodeFromId(dvIntegratedWith, IntegratedWithID)
 
-        If Not integratedWithCode Is Nothing AndAlso integratedWithCode = Codes.INTEGRATED_WITH_GVS _
+        If integratedWithCode IsNot Nothing AndAlso integratedWithCode = Codes.INTEGRATED_WITH_GVS _
             AndAlso CheckColumnChanged(ServiceCenterDAL.COL_NAME_INTEGRATED_WITH_ID) Then
             ' Once turn on GVS integration, the following actions will take place:
             ' 1. Integrated With will be saved as Awaiting GVS
@@ -2252,17 +2252,17 @@ Public Class ServiceCenter
             ' Log the GVS integration into the transaction log header
             Dim logHeader As TransactionLogHeader = New TransactionLogHeader(Dataset)
             logHeader.KeyID = Id
-            logHeader.FunctionTypeID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_SVC)
-            logHeader.TransactionStatusID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSTransactionStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), DALObjects.TransactionLogHeaderDAL.TRANSACTION_STATUS_NEW)
+            logHeader.FunctionTypeID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_SVC)
+            logHeader.TransactionStatusID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSTransactionStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), TransactionLogHeaderDAL.TRANSACTION_STATUS_NEW)
             logHeader.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
             logHeader.TransactionXml = GetTransactionXML(logHeader.Id)
-        ElseIf Not integratedWithCode Is Nothing AndAlso integratedWithCode = Codes.INTEGRATED_WITH_GVS _
+        ElseIf integratedWithCode IsNot Nothing AndAlso integratedWithCode = Codes.INTEGRATED_WITH_GVS _
         AndAlso CheckColumnChanged(ServiceCenterDAL.COL_NAME_REVERSE_LOGISTICS_ID) Then
             ' Log the GVS integration into the transaction log header
             Dim logHeader As TransactionLogHeader = New TransactionLogHeader(Dataset)
             logHeader.KeyID = Id
-            logHeader.FunctionTypeID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_SVC)
-            logHeader.TransactionStatusID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSTransactionStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), DALObjects.TransactionLogHeaderDAL.TRANSACTION_STATUS_NEW)
+            logHeader.FunctionTypeID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_SVC)
+            logHeader.TransactionStatusID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSTransactionStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), TransactionLogHeaderDAL.TRANSACTION_STATUS_NEW)
             logHeader.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
             logHeader.TransactionXml = GetTransactionXML(logHeader.Id)
         End If
@@ -2278,7 +2278,7 @@ Public Class ServiceCenter
         dtHeader.Columns.Add("FUNCTION_TYPE_CODE", GetType(String))
         Dim rwHeader As DataRow = dtHeader.NewRow
         rwHeader(0) = GuidControl.GuidToHexString(transactionId)
-        rwHeader(1) = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_SVC
+        rwHeader(1) = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_SVC
         dtHeader.Rows.Add(rwHeader)
         ds.Tables.Add(dtHeader)
 
@@ -2376,7 +2376,7 @@ Public Class ServiceCenter
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ServiceCenter = CType(objectToValidate, ServiceCenter)
             'If obj.Shipping AndAlso (Not obj.ProcessingFee Is Nothing AndAlso obj.ProcessingFee.Value <= 0) Then
-            If obj.Shipping AndAlso (Not obj.ProcessingFee Is Nothing AndAlso obj.ProcessingFee.Value < 0) Then
+            If obj.Shipping AndAlso (obj.ProcessingFee IsNot Nothing AndAlso obj.ProcessingFee.Value < 0) Then
                 Return False
             Else
                 Return True
@@ -2437,7 +2437,7 @@ Public Class ServiceCenter
             Dim Statusdv As DataView = LookupListNew.GetPriceList(obj.CountryId)
 
             Dim strPriceListCode As String = obj.PriceListCode
-            Dim selectedPricelistID As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_PRICE_LIST, strPriceListCode)
+            Dim selectedPricelistID As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_PRICE_LIST, strPriceListCode)
             'check if the price list code is selected and is not in the active price list codes
             If Not String.IsNullOrEmpty(strPriceListCode) And selectedPricelistID = Guid.Empty Then
                 Return False
@@ -2461,7 +2461,7 @@ Public Class ServiceCenter
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ServiceCenter = CType(objectToValidate, ServiceCenter)
 
-            If Not obj Is Nothing Then
+            If obj IsNot Nothing Then
                 If Not String.IsNullOrWhiteSpace(obj.ClaimReservedBasedOnXcd) AndAlso obj.ClaimReservedPercent Is Nothing Then
                     Return False
                 End If
@@ -2529,8 +2529,8 @@ Public Class ServiceCenter
 
     Public Class ContactsView
         Inherits DataView
-        Public Const COL_NAME_ID As String = VendorContactDAL.COL_NAME_ID
-        Public Const COL_NAME_CODE As String = VendorContactDAL.COL_NAME_CODE
+        Public Const COL_NAME_ID As String = DALBase.COL_NAME_ID
+        Public Const COL_NAME_CODE As String = DALBase.COL_NAME_CODE
         Public Const COL_NAME_NAME As String = VendorContactDAL.COL_NAME_NAME
         Public Const COL_NAME_JOB_TITLE As String = VendorContactDAL.COL_NAME_JOB_TITLE
         Public Const COL_NAME_COMPANY As String = VendorContactDAL.COL_NAME_COMPANY
@@ -2618,7 +2618,7 @@ Public Class ServiceCenter
 
     Public Class ContactInfoView
         Inherits DataView
-        Public Const COL_NAME_ID As String = ContactInfoDAL.COL_NAME_ID
+        Public Const COL_NAME_ID As String = DALBase.COL_NAME_ID
         Public Const COL_NAME_ADDRESS_TYPE_ID As String = ContactInfoDAL.COL_NAME_ADDRESS_TYPE_ID
         Public Const COL_NAME_ADDRESS_ID As String = ContactInfoDAL.COL_NAME_ADDRESS_ID
         Public Const COL_NAME_SALUTATION_ID As String = ContactInfoDAL.COL_NAME_SALUTATION_ID
@@ -2708,7 +2708,7 @@ Public Class ServiceCenter
 
     Public Class AddressView
         Inherits DataView
-        Public Const COL_NAME_ID As String = AddressDAL.COL_NAME_ID
+        Public Const COL_NAME_ID As String = DALBase.COL_NAME_ID
         Public Const COL_NAME_ADDRESS1 As String = AddressDAL.COL_NAME_ADDRESS1
         Public Const COL_NAME_ADDRESS2 As String = AddressDAL.COL_NAME_ADDRESS2
         Public Const COL_NAME_CITY As String = AddressDAL.COL_NAME_CITY
@@ -2784,7 +2784,7 @@ Public Class ServiceCenter
 
     Public Class QuantityView
         Inherits DataView
-        Public Const COL_NAME_ID As String = VendorQuantityDAL.COL_NAME_ID
+        Public Const COL_NAME_ID As String = DALBase.COL_NAME_ID
         Public Const COL_NAME_EQUIPMENT_TYPE_ID As String = VendorQuantityDAL.COL_NAME_EQUIPMENT_TYPE_ID
         Public Const COL_NAME_MANUFACTURER_ID As String = VendorQuantityDAL.COL_NAME_MANUFACTURER_ID
         Public Const COL_NAME_JOB_MODEL As String = VendorQuantityDAL.COL_NAME_JOB_MODEL
@@ -2882,7 +2882,7 @@ Public Class ServiceCenter
 #Region "ServiceSchedule"
     Public Class ScheduleView
         Inherits DataView
-        Public Const COL_NAME_ID As String = ServiceScheduleDAL.COL_NAME_ID
+        Public Const COL_NAME_ID As String = DALBase.COL_NAME_ID
         Public Const COL_NAME_SERVICE_CLASS_ID As String = ServiceScheduleDAL.COL_NAME_SERVICE_CLASS_ID
         Public Const COL_NAME_SERVICE_TYPE_ID As String = ServiceScheduleDAL.COL_NAME_SERVICE_TYPE_ID
         Public Const COL_NAME_SCHEDULE_ID As String = ServiceScheduleDAL.COL_NAME_SCHEDULE_ID
@@ -2971,7 +2971,7 @@ Public Class ServiceCenter
 #Region "ScheduleTable"
     Public Class ScheduleTableView
         Inherits DataView
-        Public Const COL_NAME_ID As String = ScheduleDAL.COL_NAME_ID
+        Public Const COL_NAME_ID As String = DALBase.COL_NAME_ID
         Public Const COL_NAME_CODE As String = ScheduleDAL.COL_NAME_CODE
         Public Const COL_NAME_DESCRIPTION As String = ScheduleDAL.COL_NAME_DESCRIPTION
 
@@ -3026,7 +3026,7 @@ Public Class ServiceCenter
 #Region "ScheduleDetail"
     Public Class ScheduleDetailView
         Inherits DataView
-        Public Const COL_NAME_ID As String = ScheduleDetailDAL.COL_NAME_ID
+        Public Const COL_NAME_ID As String = DALBase.COL_NAME_ID
         Public Const COL_NAME_SCHEDULE_ID As String = ScheduleDetailDAL.COL_NAME_SCHEDULE_ID
         Public Const COL_NAME_DAY_OF_WEEK_ID As String = ScheduleDetailDAL.COL_NAME_DAY_OF_WEEK_ID
         Public Const COL_NAME_FROM_TIME As String = ScheduleDetailDAL.COL_NAME_FROM_TIME
@@ -3205,9 +3205,9 @@ Public Class ServiceCenter
                 ' For this Country Get Require Byte Conversion flag value 
                 Dim oCountry As Country = New Country()
                 Dim dsFlag As DataSet = oCountry.GetCountryByteFlag(CountryID)
-                If (Not dsFlag Is Nothing AndAlso dsFlag.Tables.Count > 0 AndAlso dsFlag.Tables(0).Rows.Count > 0) Then
+                If (dsFlag IsNot Nothing AndAlso dsFlag.Tables.Count > 0 AndAlso dsFlag.Tables(0).Rows.Count > 0) Then
                     Dim RequiresByteConversionId As Guid = New Guid(CType(dsFlag.Tables(CountryDAL.TABLE_NAME).Rows(0)(CountryDAL.COL_NAME_REQUIRE_BYTE_CONV_ID), Byte()))
-                    If (RequiresByteConversionId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then ' If Flag = Yes then perform Byte check else not 
+                    If (RequiresByteConversionId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)) Then ' If Flag = Yes then perform Byte check else not 
                         Dim svcDAL As ServiceCenterDAL = New ServiceCenterDAL()
                         Dim length As Int32 = svcDAL.GetServicecenterDescBytes(objectToCheck.ToString())
                         If _minLengthSet Then
@@ -3280,9 +3280,9 @@ Public NotInheritable Class ValidateByteLengthAttribute
             ' For this Country Get Require Byte Conversion flag value 
             Dim oCountry As Country = New Country()
             Dim dsFlag As DataSet = oCountry.GetCountryByteFlag(CountryID)
-            If (Not dsFlag Is Nothing AndAlso dsFlag.Tables.Count > 0 AndAlso dsFlag.Tables(0).Rows.Count > 0) Then
+            If (dsFlag IsNot Nothing AndAlso dsFlag.Tables.Count > 0 AndAlso dsFlag.Tables(0).Rows.Count > 0) Then
                 Dim RequiresByteConversionId As Guid = New Guid(CType(dsFlag.Tables(CountryDAL.TABLE_NAME).Rows(0)(CountryDAL.COL_NAME_REQUIRE_BYTE_CONV_ID), Byte()))
-                If (RequiresByteConversionId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then ' If Flag = Yes then perform Byte check else not 
+                If (RequiresByteConversionId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)) Then ' If Flag = Yes then perform Byte check else not 
                     Dim svcDAL As ServiceCenterDAL = New ServiceCenterDAL()
                     Dim length As Int32 = svcDAL.GetServicecenterDescBytes(objectToCheck.ToString())
                     If _minLengthSet Then

@@ -59,7 +59,7 @@ Public Class ProductPolicy
         Try
             Dim dal As New ProductPolicyDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -320,12 +320,12 @@ Public Class ProductPolicy
         Public Function AddNewRowToEmptyDV() As ProductPolicySearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ProductPolicySearchDV.COL_PRODUCT_POLICY_ID) = (New Guid()).ToByteArray
-            row(ProductPolicySearchDV.COL_TYPE_OF_EQUIPMENT_ID) = Guid.Empty.ToByteArray
-            row(ProductPolicySearchDV.COL_TYPE_OF_EQUIPMENT) = DBNull.Value
-            row(ProductPolicySearchDV.COL_EXTERNAL_PROD_CODE_ID) = Guid.Empty.ToByteArray
-            row(ProductPolicySearchDV.COL_EXTERNAL_PROD_CODE) = DBNull.Value
-            row(ProductPolicySearchDV.COL_POLICY_NUM) = DBNull.Value
+            row(COL_PRODUCT_POLICY_ID) = (New Guid()).ToByteArray
+            row(COL_TYPE_OF_EQUIPMENT_ID) = Guid.Empty.ToByteArray
+            row(COL_TYPE_OF_EQUIPMENT) = DBNull.Value
+            row(COL_EXTERNAL_PROD_CODE_ID) = Guid.Empty.ToByteArray
+            row(COL_EXTERNAL_PROD_CODE) = DBNull.Value
+            row(COL_POLICY_NUM) = DBNull.Value
             dt.Rows.Add(row)
             Return New ProductPolicySearchDV(dt)
         End Function

@@ -59,7 +59,7 @@ Public Class PreInvoice
         Try
             Dim dal As New PreInvoiceDAL            
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -97,7 +97,7 @@ Public Class PreInvoice
             Dim Dv As New DataView
             Try
                 Ds = dal.GetTotalBonusAndAmount(Row(PreInvoiceDAL.COL_NAME_BATCH_NUMBER))
-                If Not Ds Is Nothing AndAlso Ds.Tables.Count > 0 Then
+                If Ds IsNot Nothing AndAlso Ds.Tables.Count > 0 Then
                     Dv = Ds.Tables(dal.TABLE_NAME).DefaultView
                     If Dv(0)("total_Amount") Is DBNull.Value Then
                         _totalAmount = Decimal.Zero
@@ -345,7 +345,7 @@ Public Class PreInvoice
         Next
 
         If companyId.Equals(Guid.Empty) Then
-            Throw New BOValidationException("GetPreInvoice Error: Invalid Company Code ", Assurant.ElitaPlus.Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
+            Throw New BOValidationException("GetPreInvoice Error: Invalid Company Code ", Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
         Else
             Return companyId
         End If

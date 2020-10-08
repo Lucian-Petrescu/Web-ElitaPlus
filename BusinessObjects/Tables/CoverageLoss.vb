@@ -66,7 +66,7 @@ Public Class CoverageLoss
         Try
             Dim dal As New CoverageLossDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -91,7 +91,7 @@ Public Class CoverageLoss
             Dim dal As New CoverageLossDAL
             Dim oCompanyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -239,7 +239,7 @@ Public Class CoverageLoss
     Public Function getCoverageLossForSpecialService(splsvcCode As String, DealerCode As String) As DataView
         Dim dal As New CoverageLossDAL
         Try
-            Dim dealerid As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_DEALERS, DealerCode)
+            Dim dealerid As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_DEALERS, DealerCode)
             Dim oCompanyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
             Dim ds As DataSet = dal.getCoverageLossforSpecialService(splsvcCode, dealerid, oCompanyGroupId)
             If ds.Tables(CoverageLossDAL.TABLE_NAME).Rows.Count < 1 Then

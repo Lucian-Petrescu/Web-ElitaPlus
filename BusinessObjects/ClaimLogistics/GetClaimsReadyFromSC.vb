@@ -91,7 +91,7 @@ Public Class GetClaimsReadyFromSC
             Validate()
 
             Dim dsRoute As DataSet = Route.GetRouteByCode(RouteCode)
-            If dsRoute Is Nothing Or dsRoute.Tables.Count <= 0 Or dsRoute.Tables(0).Rows.Count <> 1 Then
+            If dsRoute Is Nothing OrElse dsRoute.Tables.Count <= 0 OrElse dsRoute.Tables(0).Rows.Count <> 1 Then
                 Throw New BOValidationException("GetClaimsReadyFromSC Error: ", Common.ErrorCodes.WS_ROUTE_NOT_FOUND)
             Else
                 RouteId = New Guid(CType(dsRoute.Tables(0).Rows(0)(RouteDAL.TABLE_KEY_NAME), Byte()))

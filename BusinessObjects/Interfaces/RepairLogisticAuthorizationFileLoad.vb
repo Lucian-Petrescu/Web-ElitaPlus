@@ -60,12 +60,12 @@ Public Class RepairLogisticAuthorizationFileLoad
             familyDataSet = claim.Dataset
             claimAuthorization = claim.ClaimAuthorizationChildren.GetChild(reconRecord.ClaimAuthorizationId)
 
-            If (Not reconRecord.BatchNumber Is Nothing AndAlso reconRecord.BatchNumber.Trim().Length > 0) Then
+            If (reconRecord.BatchNumber IsNot Nothing AndAlso reconRecord.BatchNumber.Trim().Length > 0) Then
                 claimAuthorization.BatchNumber = reconRecord.BatchNumber.Trim()
                 claimAuthorization.Save()
             End If
 
-            If (Not reconRecord.DeductibleCollected Is Nothing) Then
+            If (reconRecord.DeductibleCollected IsNot Nothing) Then
                 If (claimAuthorization.ContainsDeductible) Then
                     claimAuthorization.Claim.Deductible = reconRecord.DeductibleCollected
                 End If
@@ -75,7 +75,7 @@ Public Class RepairLogisticAuthorizationFileLoad
 
             Return ProcessResult.Loaded
         Catch ex As DataBaseAccessException
-            Common.AppConfig.Log(DirectCast(ex, Exception))
+            AppConfig.Log(DirectCast(ex, Exception))
             If (ex.ErrorType = DataBaseAccessException.DatabaseAccessErrorType.BusinessErr) Then
                 If (ex.Code Is Nothing OrElse ex.Code.Trim().Length = 0) Then
                     reconRecord.RejectReason = "Rejected During Load process"
@@ -89,13 +89,13 @@ Public Class RepairLogisticAuthorizationFileLoad
             reconRecord.RejectCode = "000"
             Return ProcessResult.Rejected
         Catch ex As BOValidationException
-            Common.AppConfig.Log(DirectCast(ex, Exception))
+            AppConfig.Log(DirectCast(ex, Exception))
             reconRecord.RejectCode = "000"
             reconRecord.RejectReason = ex.ToRejectReason()
             reconRecord.RejectReason = reconRecord.RejectReason.Substring(0, Math.Min(60, reconRecord.RejectReason.Length))
             Return ProcessResult.Rejected
         Catch ex As Exception
-            Common.AppConfig.Log(ex)
+            AppConfig.Log(ex)
             reconRecord.RejectCode = "000"
             reconRecord.RejectReason = "Rejected During Load process"
             Return ProcessResult.Rejected

@@ -99,7 +99,7 @@ Public Class AcctSetting
         Try
             Dim dal As New AcctSettingDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -253,7 +253,7 @@ Public Class AcctSetting
         End Get
         Set
             CheckDeleted()
-            If Not Value Is Nothing Then Value = Value.Trim
+            If Value IsNot Nothing Then Value = Value.Trim
             SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_CODE, Value)
         End Set
     End Property
@@ -1328,7 +1328,7 @@ Public Class AcctSetting
         Dim ds As DataSet
         Try
             ds = _dal.LoadDealerGroups(strDealerGroupName, strDealerGroupCode, ElitaPlusIdentity.Current.ActiveUser.Company.CompanyGroupId)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return New DealerGroupAcctSettingsDV(ds.Tables(0))
             Else
                 Return New DealerGroupAcctSettingsDV
@@ -1345,7 +1345,7 @@ Public Class AcctSetting
 
         Try
             ds = _dal.GetDealerGroupForAcctSetting(ElitaPlusIdentity.Current.ActiveUser.Company.CompanyGroupId)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return New DealerGroupAcctSettingsDV(ds.Tables(0))
             Else
                 Return New DealerGroupAcctSettingsDV
@@ -1394,7 +1394,7 @@ Public Class AcctSetting
         Dim ds As DataSet
         Try
             ds = _dal.LoadCommissionEntities(strCommissionEntityName, ElitaPlusIdentity.Current.ActiveUser.Company.CompanyGroupId)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return New CommissionEntityAcctSettingsDV(ds.Tables(0))
             Else
                 Return New CommissionEntityAcctSettingsDV
@@ -1410,7 +1410,7 @@ Public Class AcctSetting
 
         Try
             ds = _dal.GetCommissionEntityListForAcctSetting(ElitaPlusIdentity.Current.ActiveUser.Company.CompanyGroupId)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return New CommissionEntityAcctSettingsDV(ds.Tables(0))
             Else
                 Return New CommissionEntityAcctSettingsDV
@@ -1455,7 +1455,7 @@ Public Class AcctSetting
         Try
             'TODO -- Add code to filter Dealers by exists with acct_company or not
             ds = _dal.LoadDealers(strDealerName, strDealerCode, ElitaPlusIdentity.Current.ActiveUser.Companies)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return New DealerAcctSettingsDV(ds.Tables(0))
             Else
                 Return New DealerAcctSettingsDV
@@ -1471,7 +1471,7 @@ Public Class AcctSetting
         Dim ds As DataSet
         Try
             ds = _dal.GetDealersForAcctSetting(oCompanyIds)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return New DealerAcctSettingsDV(ds.Tables(0))
             Else
                 Return New DealerAcctSettingsDV
@@ -1488,7 +1488,7 @@ Public Class AcctSetting
         Try
             Dim _AcctDAL As New AcctCompanyDAL
             Dim ds As DataSet = _AcctDAL.GetByCompanies(Companies)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return New AcctCompanyDV(ds.Tables(0))
             Else
                 Return New AcctCompanyDV
@@ -1535,7 +1535,7 @@ Public Class AcctSetting
 
         Try
             ds = _dal.LoadServiceCenters(strSCName, strSCCode, ElitaPlusIdentity.Current.ActiveUser.Countries)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return New ServiceCenterAcctSettingsDV(ds.Tables(0))
             Else
                 Return New ServiceCenterAcctSettingsDV
@@ -1571,7 +1571,7 @@ Public Class AcctSetting
 
         Try
             ds = _dal.GetServiceCentersForAcctSetting(oCountryIds)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return New ServiceCenterAcctSettingsDV(ds.Tables(0))
             Else
                 Return New ServiceCenterAcctSettingsDV
@@ -1636,7 +1636,7 @@ Public Class AcctSetting
         Try
             'TODO -- Add code to filter Dealers by exists with acct_company or not
             ds = _dal.LoadBranches(strBranchName, strBranchCode, ElitaPlusIdentity.Current.ActiveUser.Companies)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return New BranchAcctSettingsDV(ds.Tables(0))
             Else
                 Return New BranchAcctSettingsDV
@@ -1652,7 +1652,7 @@ Public Class AcctSetting
         Dim ds As DataSet
         Try
             ds = _dal.GetDealersForBranch(oCompanyIds)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return New DealerAcctSettingsDV(ds.Tables(0))
             Else
                 Return New DealerAcctSettingsDV
@@ -1667,7 +1667,7 @@ Public Class AcctSetting
         Dim ds As DataSet
         Try
             ds = _dal.GetBranchesForAcctSetting(oDealerId)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return New BranchAcctSettingsDV(ds.Tables(0))
             Else
                 Return New BranchAcctSettingsDV
@@ -1718,14 +1718,14 @@ Public Class AcctSetting
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.ERR_BO_PAYMENT_TERMS_REQD)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.ERR_BO_PAYMENT_TERMS_REQD)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AcctSetting = CType(objectToValidate, AcctSetting)
             If (obj.PaymentTermsId = Guid.Empty) Then
                 Dim _acctCompany As New AcctCompany(obj.AcctCompanyId)
-                If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId), _acctCompany.AcctSystemId) = FelitaEngine.FELITA_PREFIX Then
+                If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId), _acctCompany.AcctSystemId) = FelitaEngine.FELITA_PREFIX Then
                     Return False 'Required for FELITA system
                 End If
             End If
@@ -1740,7 +1740,7 @@ Public Class AcctSetting
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
 
         End Sub
 
@@ -1748,7 +1748,7 @@ Public Class AcctSetting
             Dim obj As AcctSetting = CType(objectToValidate, AcctSetting)
             If (obj.AccountAnalysisCode6 Is Nothing OrElse obj.AccountAnalysisCode6.Trim = String.Empty) Then
                 Dim _acctCompany As New AcctCompany(obj.AcctCompanyId)
-                If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId), _acctCompany.AcctSystemId) = FelitaEngine.SMARTSTREAM_PREFIX Then
+                If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId), _acctCompany.AcctSystemId) = FelitaEngine.SMARTSTREAM_PREFIX Then
                     Return False 'Required for SmartStream system
                 End If
             End If
@@ -1767,7 +1767,7 @@ Public Class AcctSetting
 
                     If Not obj.AcctCompanyId.Equals(Guid.Empty) Then
                         Dim _acctCompany As New AcctCompany(obj.AcctCompanyId)
-                        If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId), _acctCompany.AcctSystemId) = FelitaEngine.SMARTSTREAM_PREFIX Then
+                        If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId), _acctCompany.AcctSystemId) = FelitaEngine.SMARTSTREAM_PREFIX Then
                             Return True 'Required for SmartStream system
                         End If
                     End If
@@ -1795,11 +1795,11 @@ Public Class AcctSetting
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim bIsOk As Boolean = True
 
-            If Not valueToCheck Is Nothing Then
+            If valueToCheck IsNot Nothing Then
                 Dim oAcctSetting As AcctSetting = CType(objectToValidate, AcctSetting)
-                If Not oAcctSetting.AccountCode Is Nothing AndAlso oAcctSetting.AccountCode.Trim.Length > 0 Then
+                If oAcctSetting.AccountCode IsNot Nothing AndAlso oAcctSetting.AccountCode.Trim.Length > 0 Then
                     Dim oAc As New AcctCompany(oAcctSetting.AcctCompanyId)
-                    Dim _acctExtension As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oAc.AcctSystemId)
+                    Dim _acctExtension As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oAc.AcctSystemId)
                     If _acctExtension = FelitaEngine.SMARTSTREAM_PREFIX Then
                         If oAcctSetting.AccountCode.Trim.Length > 8 Then
                             Return Not bIsOk
@@ -1819,7 +1819,7 @@ Public Class AcctSetting
 
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
 
         End Sub
 
@@ -1829,7 +1829,7 @@ Public Class AcctSetting
 
             If (obj.SupplierAnalysisCode1 Is Nothing OrElse obj.SupplierAnalysisCode1.Trim = String.Empty) And obj.AccountType = ACCT_TYPE_CREDITOR Then
                 Dim _acctCompany As New AcctCompany(obj.AcctCompanyId)
-                If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId), _acctCompany.AcctSystemId) = FelitaEngine.FELITA_PREFIX Then
+                If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId), _acctCompany.AcctSystemId) = FelitaEngine.FELITA_PREFIX Then
                     Return False 'Required for Felita system
                 End If
             End If
@@ -1847,7 +1847,7 @@ Public Class AcctSetting
 
                     If Not obj.AcctCompanyId.Equals(Guid.Empty) Then
                         Dim _acctCompany As New AcctCompany(obj.AcctCompanyId)
-                        If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId), _acctCompany.AcctSystemId) = FelitaEngine.FELITA_PREFIX Then
+                        If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId), _acctCompany.AcctSystemId) = FelitaEngine.FELITA_PREFIX Then
                             Return True 'Required for SmartStream system
                         End If
                     End If

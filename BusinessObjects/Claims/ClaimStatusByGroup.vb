@@ -101,7 +101,7 @@ Public Class ClaimStatusByGroup
         Try
             Dim dal As New ClaimStatusByGroupDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -375,7 +375,7 @@ Public Class ClaimStatusByGroup
             Dim dtClaim As DataTable = dal.GetClaimStatusByGroupID(statusCode, ElitaPlusIdentity.Current.ActiveUser.LanguageId, _
                                                                 ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id).Tables(0)
 
-            If Not dtClaim Is Nothing AndAlso dtClaim.Rows.Count > 0 Then
+            If dtClaim IsNot Nothing AndAlso dtClaim.Rows.Count > 0 Then
                 claimStatusByGroupId = New Guid(CType(dtClaim.Rows(0)(ClaimStatusByGroupDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID), Byte()))
             End If
 

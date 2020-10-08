@@ -59,7 +59,7 @@ Public Class ReppolicyClaimCount
         Try
             Dim dal As New ReppolicyClaimCountDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -184,7 +184,7 @@ Public Class ReppolicyClaimCount
 
     Public ReadOnly Property CoverageTypeDescription As String
         Get
-            Return LookupListNew.GetDescriptionFromId(LookupListNew.LK_COVERAGE_TYPES, ConverageTypeId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            Return LookupListNew.GetDescriptionFromId(LookupListCache.LK_COVERAGE_TYPES, ConverageTypeId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         End Get
     End Property
 
@@ -261,7 +261,7 @@ Public Class ReppolicyClaimCount
     'Verify that value allows in one and only one of the 3 fields
     Public Function OneAndOnlyOneConfigCriteriaHasValue() As Boolean
         Dim intCnt As Integer = 0
-        If (Not ProductCode Is Nothing) AndAlso ProductCode <> String.Empty Then
+        If (ProductCode IsNot Nothing) AndAlso ProductCode <> String.Empty Then
             intCnt = intCnt + 1
         End If
 
@@ -269,7 +269,7 @@ Public Class ReppolicyClaimCount
             intCnt = intCnt + 1
         End If
 
-        If (Not CertDuration Is Nothing) AndAlso CertDuration.Value > 0 Then
+        If (CertDuration IsNot Nothing) AndAlso CertDuration.Value > 0 Then
             intCnt = intCnt + 1
         End If
 
@@ -279,12 +279,12 @@ Public Class ReppolicyClaimCount
     Public Function DuplicateExists(ListToCheck As Collections.Generic.List(Of ReppolicyClaimCount)) As Boolean
         'Dim objInd As Integer = State.RepPolicyList.FindIndex(Function(r) r.Id = State.RepPolicyWorkingItem.Id)
         Dim blnDup As Boolean = False
-        If (Not CertDuration Is Nothing) AndAlso CertDuration.Value > 0 Then
-            If ListToCheck.Exists(Function(r) (Not r.CertDuration Is Nothing) AndAlso r.CertDuration = CertDuration AndAlso r.Id <> Id) Then
+        If (CertDuration IsNot Nothing) AndAlso CertDuration.Value > 0 Then
+            If ListToCheck.Exists(Function(r) (r.CertDuration IsNot Nothing) AndAlso r.CertDuration = CertDuration AndAlso r.Id <> Id) Then
                 blnDup = True
             End If
-        ElseIf (Not ProductCode Is Nothing) AndAlso ProductCode <> String.Empty Then
-            If ListToCheck.Exists(Function(r) (Not r.ProductCode Is Nothing) AndAlso r.ProductCode.Trim.ToUpper = ProductCode.Trim.ToUpper AndAlso r.Id <> Id) Then
+        ElseIf (ProductCode IsNot Nothing) AndAlso ProductCode <> String.Empty Then
+            If ListToCheck.Exists(Function(r) (r.ProductCode IsNot Nothing) AndAlso r.ProductCode.Trim.ToUpper = ProductCode.Trim.ToUpper AndAlso r.Id <> Id) Then
                 blnDup = True
             End If
         ElseIf ConverageTypeId <> Guid.Empty Then

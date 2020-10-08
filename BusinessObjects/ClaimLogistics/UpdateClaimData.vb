@@ -212,7 +212,7 @@ Public Class UpdateClaimData
         Dim covLoss As New CoverageLoss
         Dim CoverageLossdv As DataView = covLoss.getCoverageLossForSpecialService(SpecialServiceCode, oclaim.DealerCode)
 
-        Dim strAvailableforServiceCenter As String = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, New Guid(CType(CoverageLossdv(0)(SpecialServiceDAL.COL_NAME_AVAILABLE_FOR_SERV_CENTER_ID), Byte())))
+        Dim strAvailableforServiceCenter As String = LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, New Guid(CType(CoverageLossdv(0)(SpecialServiceDAL.COL_NAME_AVAILABLE_FOR_SERV_CENTER_ID), Byte())))
         If strAvailableforServiceCenter = Codes.YESNO_N Then
             Throw New BOValidationException("UpdateClaimData Error: ", INVALID_SPECIAL_SERVICE_CLAIM)
         End If
@@ -242,7 +242,7 @@ Public Class UpdateClaimData
             Throw New BOValidationException("UpdateClaimData Error: ", INVALID_COVERAGE_TYPE)
         End If
 
-        Dim coveragetypeCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_COVERAGE_TYPES, CoverageTypeID)
+        Dim coveragetypeCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_COVERAGE_TYPES, CoverageTypeID)
         searchCoverageDV.RowFilter = "coverage_type_code = '" + coveragetypeCode + "'"
 
         If searchCoverageDV.Count <> 1 Then
@@ -289,11 +289,11 @@ Public Class UpdateClaimData
                 ChildClaim.WhoPaysId = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
             End If
 
-            If Not ExternalUserName Is Nothing Then
+            If ExternalUserName IsNot Nothing Then
                 calimStat.ExternalUserName = ExternalUserName
             End If
 
-            If Not StatusComments Is Nothing Then
+            If StatusComments IsNot Nothing Then
                 calimStat.Comments = StatusComments
             End If
 
@@ -311,7 +311,7 @@ Public Class UpdateClaimData
 
             If Not ServiceCenterID.Equals(Guid.Empty) Then
                 ' Can not update service center if RepairDate exists
-                If Not ChildClaim.RepairDate Is Nothing Then
+                If ChildClaim.RepairDate IsNot Nothing Then
                     Throw New BOValidationException("UpdateClaimData Error: ", ERR_SERVICE_CENTER_CODE_NOT_UPDATABLE)
                 Else
                     ChildClaim.ServiceCenterId = ServiceCenterID
@@ -322,20 +322,20 @@ Public Class UpdateClaimData
                 ChildClaim.RepairDate = CType(calimStat.StatusDate.Value, DateType)
             End If
 
-            If Not ProblemDescription Is Nothing Then
+            If ProblemDescription IsNot Nothing Then
                 ChildClaim.ProblemDescription = ProblemDescription
             End If
 
-            If Not SpecialInstruction Is Nothing Then
+            If SpecialInstruction IsNot Nothing Then
                 ChildClaim.SpecialInstruction = SpecialInstruction
             End If
 
-            If Not VisitDate Is Nothing Then
+            If VisitDate IsNot Nothing Then
                 ChildClaim.VisitDate = VisitDate
             End If
 
             ' Create new claim comments
-            If Not ClaimComments Is Nothing AndAlso ClaimComments <> "" Then
+            If ClaimComments IsNot Nothing AndAlso ClaimComments <> "" Then
                 Dim blnExceedMaxReplacements As Boolean = False
                 'If replacement, check max replacement allowed per calendar year
                 'REQ-660 Check for both repair and replacement
@@ -347,7 +347,7 @@ Public Class UpdateClaimData
 
                 'Add comments to indicate that the claim will be closed
                 If blnExceedMaxReplacements Then
-                    c.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED_REPLACEMENT_EXCEED)
+                    c.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED_REPLACEMENT_EXCEED)
                 End If
             End If
 
@@ -358,7 +358,7 @@ Public Class UpdateClaimData
             End If
             ChildClaim.Save()       'save the child claim
             Return True
-        ElseIf Not String.IsNullOrEmpty(SpecialServiceOnlyCode) And Not SpecialServiceOnlyCode = Codes.YESNO_Y Then
+        ElseIf Not String.IsNullOrEmpty(SpecialServiceOnlyCode) AndAlso Not SpecialServiceOnlyCode = Codes.YESNO_Y Then
             Throw New BOValidationException("UpdateClaimData Error: ", Common.ErrorCodes.WS_XML_INVALID)
         End If
 
@@ -401,7 +401,7 @@ Public Class UpdateClaimData
         Try
             Validate()
 
-            If ClaimStatusCode = ATSPL_CLAIM_STATUS_CODE Or ClaimStatusCode = ATSVCPL_CLAIM_STATUS_CODE Then
+            If ClaimStatusCode = ATSPL_CLAIM_STATUS_CODE OrElse ClaimStatusCode = ATSVCPL_CLAIM_STATUS_CODE Then
                 ClaimStatus.AddClaimToNewPickList(ClaimID, ClaimStatusByGroupID, ExternalUserName, StatusComments)
             Else
                 Dim oClaim As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(ClaimID)
@@ -416,7 +416,7 @@ Public Class UpdateClaimData
                             Throw New BOValidationException("UpdateClaimData Error: ", INVALID_STATUS_COMMENTS_REQUIRED_ON_COD)
                         Else
                             ' Copy status comments to claim comments if it is blank
-                            If ClaimComments Is Nothing Or ClaimComments = "" Then
+                            If ClaimComments Is Nothing OrElse ClaimComments = "" Then
                                 ClaimComments = StatusComments
                             End If
                         End If
@@ -432,9 +432,9 @@ Public Class UpdateClaimData
 
                             ' Insert CCOD (Changed to COD) status prior to the COD (Waiting on Budget Approval) status
                             ' to differ from wheather the claim is cash repair initially or changed to COD from others.
-                            If Not notificationTypeCode Is Nothing AndAlso
-                                (notificationTypeCode = NOTIFICATION_TYPE_Z0 Or (notificationTypeCode = NOTIFICATION_TYPE_Z1 AndAlso oClaim.CoverageTypeCode <> CASH_REPAIR_COVERAGE_TYPE)) AndAlso
-                                (Not maxClaimStatus Is Nothing AndAlso maxClaimStatus.StatusCode <> COD_CLAIM_STATUS_CODE) Then
+                            If notificationTypeCode IsNot Nothing AndAlso
+                                (notificationTypeCode = NOTIFICATION_TYPE_Z0 OrElse (notificationTypeCode = NOTIFICATION_TYPE_Z1 AndAlso oClaim.CoverageTypeCode <> CASH_REPAIR_COVERAGE_TYPE)) AndAlso
+                                (maxClaimStatus IsNot Nothing AndAlso maxClaimStatus.StatusCode <> COD_CLAIM_STATUS_CODE) Then
 
                                 Dim ccodClaimStatusByGroupId As Guid = Guid.Empty
                                 ccodClaimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(CCOD_CLAIM_STATUS_CODE)
@@ -449,23 +449,23 @@ Public Class UpdateClaimData
                                 ccodClaimStatus.ClaimStatusByGroupId = ccodClaimStatusByGroupId
                                 ccodClaimStatus.StatusDate = DateTime.Now.AddMilliseconds(-1.0)
 
-                                If Not ExternalUserName Is Nothing Then
+                                If ExternalUserName IsNot Nothing Then
                                     ccodClaimStatus.ExternalUserName = ExternalUserName
                                 End If
 
-                                If Not StatusComments Is Nothing Then
+                                If StatusComments IsNot Nothing Then
                                     ccodClaimStatus.Comments = StatusComments
                                 End If
-                            ElseIf Not notificationTypeCode Is Nothing AndAlso notificationTypeCode = NOTIFICATION_TYPE_Z3 Then
+                            ElseIf notificationTypeCode IsNot Nothing AndAlso notificationTypeCode = NOTIFICATION_TYPE_Z3 Then
                                 ' Dim oPriceDetail As PriceGroupDetail = oClaim.GetCurrentPriceGroupDetail()
                                 Dim priceListdv As DataView
                                 Dim equipConditionid As Guid
                                 Dim equipmentId As Guid
                                 Dim equipClassId As Guid
 
-                                If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oClaim.Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
-                                    equipConditionid = LookupListNew.GetIdFromCode(LookupListNew.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
-                                    If oClaim.ClaimedEquipment Is Nothing Or oClaim.ClaimedEquipment.EquipmentBO Is Nothing Then
+                                If (LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, oClaim.Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
+                                    equipConditionid = LookupListNew.GetIdFromCode(LookupListCache.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
+                                    If oClaim.ClaimedEquipment Is Nothing OrElse oClaim.ClaimedEquipment.EquipmentBO Is Nothing Then
                                         Dim errors() As ValidationError = {New ValidationError(Codes.EQUIPMENT_NOT_FOUND, GetType(ClaimEquipment), Nothing, "", Nothing)}
                                         Throw New BOValidationException(errors, GetType(ClaimEquipment).FullName, "Test")
                                     End If
@@ -496,7 +496,7 @@ Public Class UpdateClaimData
                                                                       oClaim.Certificate.SalesPrice.Value, equipClassId,
                                                                      equipmentId, equipConditionid, oClaim.Dealer.Id, String.Empty)
                                 If priceListdv Is Nothing Then
-                                    Throw New BOValidationException("UpdateClaimData Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PRICE_LIST)
+                                    Throw New BOValidationException("UpdateClaimData Error: ", Common.ErrorCodes.INVALID_PRICE_LIST)
                                 End If
                                 'If oPriceDetail Is Nothing Then
                                 '    Throw New BOValidationException("UpdateClaimData Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PRICE_GROUP)
@@ -509,7 +509,7 @@ Public Class UpdateClaimData
                                                   LookupListNew.GetIdFromCode(Codes.SERVICE_CLASS_TYPE, Codes.SERVICE_TYPE__ESTIMATE_PRICE),
                                                   equipClassId, equipmentId, equipConditionid, oClaim.Dealer.Id, String.Empty)
 
-                                If Not dvEstimate Is Nothing AndAlso dvEstimate.Count > 0 Then
+                                If dvEstimate IsNot Nothing AndAlso dvEstimate.Count > 0 Then
                                     nestimatePrice = CDec(dvEstimate(0)(COL_PRICE_LIST))
                                 End If
                                 'DiagnosticFeeComment = "Tarifa Diagnostico: " & CType(oPriceDetail.EstimatePrice, String) & ". "
@@ -547,7 +547,7 @@ Public Class UpdateClaimData
                             Dim dvCauseOfLoss As DataView = LookupListNew.GetCauseOfLossByCoverageTypeLookupList(Authentication.LangId, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, accidentalCoverageTypeId, , True)
                             Dim causeOfLossId As Guid = LookupListNew.GetIdFromCode(dvCauseOfLoss, ACCIDENTAL_CAUSE_OF_LOSS_CODE)
                             If causeOfLossId.Equals(Guid.Empty) Then
-                                Throw New BOValidationException("UpdateClaimData Error: ", Assurant.ElitaPlus.Common.ErrorCodes.GUI_CAUSE_OF_LOSS_IS_REQUIRED)
+                                Throw New BOValidationException("UpdateClaimData Error: ", Common.ErrorCodes.GUI_CAUSE_OF_LOSS_IS_REQUIRED)
                             End If
 
                             oClaim.CertItemCoverageId = New Guid(CType(searchCoverageDV(0)(CertItemCoverageDAL.COL_NAME_CERT_ITEM_COVERAGE_ID), Byte()))
@@ -560,8 +560,8 @@ Public Class UpdateClaimData
                             Dim equipClassId As Guid
                             Dim equipConditionId As Guid
 
-                            If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oClaim.Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
-                                equipConditionId = LookupListNew.GetIdFromCode(LookupListNew.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
+                            If (LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, oClaim.Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
+                                equipConditionId = LookupListNew.GetIdFromCode(LookupListCache.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
                                 If oClaim.ClaimedEquipment Is Nothing Or oClaim.ClaimedEquipment.EquipmentBO Is Nothing Then
                                     Dim errors() As ValidationError = {New ValidationError(Codes.EQUIPMENT_NOT_FOUND, GetType(ClaimEquipment), Nothing, "", Nothing)}
                                     Throw New BOValidationException(errors, GetType(ClaimEquipment).FullName, "Test")
@@ -593,7 +593,7 @@ Public Class UpdateClaimData
                                                                  oClaim.Certificate.SalesPrice.Value, equipClassId, equipmentId, equipConditionId,
                                                                  oClaim.Dealer.Id, String.Empty)
                             If priceListdv Is Nothing Then
-                                Throw New BOValidationException("UpdateClaimData Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PRICE_LIST)
+                                Throw New BOValidationException("UpdateClaimData Error: ", Common.ErrorCodes.INVALID_PRICE_LIST)
                             End If
                             'If oPriceDetail Is Nothing Then
                             '    Throw New BOValidationException("UpdateClaimData Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PRICE_GROUP)
@@ -629,7 +629,7 @@ Public Class UpdateClaimData
                         'End REQ-603 
                     Else
                         ' Amount is ONLY required for COD
-                        If Not Amount Is Nothing Then
+                        If Amount IsNot Nothing Then
                             Throw New BOValidationException("UpdateClaimData Error: ", INVALID_AMOUNT_ONLY_REQUIRED_ON_COD)
                         End If
                     End If
@@ -637,11 +637,11 @@ Public Class UpdateClaimData
                     oClaimStatus.ClaimId = ClaimID
                     oClaimStatus.ClaimStatusByGroupId = ClaimStatusByGroupID
                     oClaimStatus.StatusDate = DateTime.Now
-                    If Not ExternalUserName Is Nothing Then
+                    If ExternalUserName IsNot Nothing Then
                         oClaimStatus.ExternalUserName = ExternalUserName
                     End If
 
-                    If Not StatusComments Is Nothing Then
+                    If StatusComments IsNot Nothing Then
                         oClaimStatus.Comments = DiagnosticFeeComment & StatusComments
                     Else
                         If DiagnosticFeeComment <> "" Then
@@ -666,7 +666,7 @@ Public Class UpdateClaimData
 
                 If Not ServiceCenterID.Equals(Guid.Empty) Then
                     ' Can not update service center if RepairDate exists
-                    If Not oClaim.RepairDate Is Nothing Then
+                    If oClaim.RepairDate IsNot Nothing Then
                         Throw New BOValidationException("UpdateClaimData Error: ", ERR_SERVICE_CENTER_CODE_NOT_UPDATABLE)
                     Else
                         oClaim.ServiceCenterId = ServiceCenterID
@@ -677,20 +677,20 @@ Public Class UpdateClaimData
                     oClaim.RepairDate = CType(oClaimStatus.StatusDate.Value, DateType)
                 End If
 
-                If Not ProblemDescription Is Nothing Then
+                If ProblemDescription IsNot Nothing Then
                     oClaim.ProblemDescription = ProblemDescription
                 End If
 
-                If Not SpecialInstruction Is Nothing Then
+                If SpecialInstruction IsNot Nothing Then
                     oClaim.SpecialInstruction = SpecialInstruction
                 End If
 
-                If Not VisitDate Is Nothing Then
+                If VisitDate IsNot Nothing Then
                     oClaim.VisitDate = VisitDate
                 End If
 
                 ' Create new claim comments
-                If Not ClaimComments Is Nothing AndAlso ClaimComments <> "" Then
+                If ClaimComments IsNot Nothing AndAlso ClaimComments <> "" Then
                     Dim blnExceedMaxReplacements As Boolean = False
                     'If replacement, check max replacement allowed per calendar year
                     'REQ-660 Check for both repair and replacement
@@ -702,7 +702,7 @@ Public Class UpdateClaimData
 
                     'Add comments to indicate that the claim will be closed
                     If blnExceedMaxReplacements Then
-                        c.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED_REPLACEMENT_EXCEED)
+                        c.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED_REPLACEMENT_EXCEED)
                     End If
                 End If
 
@@ -1006,11 +1006,11 @@ Public Class UpdateClaimData
 
     Public ReadOnly Property ServiceCenterID As Guid
         Get
-            If _serviceCenterId.Equals(Guid.Empty) AndAlso Not ServiceCenterCode Is Nothing AndAlso ServiceCenterCode <> "" Then
+            If _serviceCenterId.Equals(Guid.Empty) AndAlso ServiceCenterCode IsNot Nothing AndAlso ServiceCenterCode <> "" Then
 
                 Dim dvServiceCenter As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
 
-                If Not dvServiceCenter Is Nothing AndAlso dvServiceCenter.Count > 0 Then
+                If dvServiceCenter IsNot Nothing AndAlso dvServiceCenter.Count > 0 Then
                     _serviceCenterId = LookupListNew.GetIdFromCode(dvServiceCenter, ServiceCenterCode)
 
                     If _serviceCenterId.Equals(Guid.Empty) Then
@@ -1028,7 +1028,7 @@ Public Class UpdateClaimData
 
     Public ReadOnly Property ReasonCloseID As Guid
         Get
-            If _reasonCloseId.Equals(Guid.Empty) AndAlso Not ReasonClosedCode Is Nothing AndAlso ReasonClosedCode <> "" Then
+            If _reasonCloseId.Equals(Guid.Empty) AndAlso ReasonClosedCode IsNot Nothing AndAlso ReasonClosedCode <> "" Then
 
                 Dim dv As DataView = LookupListNew.GetReasonClosedLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 _reasonCloseId = LookupListNew.GetIdFromCode(dv, ReasonClosedCode)

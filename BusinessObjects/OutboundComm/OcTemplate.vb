@@ -61,7 +61,7 @@ Public Class OcTemplate
         Try
             Dim dal As New OcTemplateDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -91,7 +91,7 @@ Public Class OcTemplate
         Try
             Dim dal As New OcTemplateDAL
             Dim dataSet As DataSet = dal.GetCountOfTemplatesByCodeAndGroupExludingTemplateId(TemplateCode, Id, OcTemplateGroupId)
-            If Not dataSet Is Nothing AndAlso dataSet.Tables.Count > 0 AndAlso dataSet.Tables(0).Rows.Count > 0 Then
+            If dataSet IsNot Nothing AndAlso dataSet.Tables.Count > 0 AndAlso dataSet.Tables(0).Rows.Count > 0 Then
                 If dataSet.Tables(0).Rows(0)(OcTemplateDAL.COL_NAME_NUMBER_OF_TEMPLATES) Is DBNull.Value Then
                     Return 0
                 Else
@@ -333,7 +333,7 @@ Public Class OcTemplate
             If _isDSCreator AndAlso (IsDirty OrElse IsChildrenDirty) AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New OcTemplateDAL
                 'dal.Update(Me.Row)
-                MyBase.UpdateFamily(Dataset)
+                UpdateFamily(Dataset)
                 dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
                 If Row.RowState <> DataRowState.Detached Then
@@ -353,7 +353,7 @@ Public Class OcTemplate
             Throw New BOInvalidOperationException("You cannot copy into an existing Template")
         End If
         'Copy myself
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
         
         ''copy the childrens     
         For Each detail As OcTemplateParams In original.ParametersList
@@ -529,19 +529,19 @@ Public Class OcTemplate
         Public Function AddNewRowToEmptyDV() As TemplateDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(TemplateDV.COL_TEMPLATE_ID) = (New Guid()).ToByteArray
-            row(TemplateDV.COL_TEMPLATE_GROUP_ID) = Guid.Empty.ToByteArray
-            row(TemplateDV.COL_TEMPLATE_CODE) = DBNull.Value
-            row(TemplateDV.COL_DESCRIPTION) = DBNull.Value
-            row(TemplateDV.COL_HAS_CUSTOMIZED_PARAMS_XCD) = DBNull.Value
-            row(TemplateDV.COL_ALLOW_MANUAL_USE_XCD) = DBNull.Value
-            row(TemplateDV.COL_ALLOW_MANUAL_RESEND_XCD) = DBNull.Value
-            row(TemplateDV.COL_EFFECTIVE_DATE) = DBNull.Value
-            row(TemplateDV.COL_EXPIRATION_DATE) = DBNull.Value
-            row(TemplateDV.COL_CREATED_BY) = DBNull.Value
-            row(TemplateDV.COL_CREATED_DATE) = DBNull.Value
-            row(TemplateDV.COL_MODIFIED_BY) = DBNull.Value
-            row(TemplateDV.COL_MODIFIED_DATE) = DBNull.Value
+            row(COL_TEMPLATE_ID) = (New Guid()).ToByteArray
+            row(COL_TEMPLATE_GROUP_ID) = Guid.Empty.ToByteArray
+            row(COL_TEMPLATE_CODE) = DBNull.Value
+            row(COL_DESCRIPTION) = DBNull.Value
+            row(COL_HAS_CUSTOMIZED_PARAMS_XCD) = DBNull.Value
+            row(COL_ALLOW_MANUAL_USE_XCD) = DBNull.Value
+            row(COL_ALLOW_MANUAL_RESEND_XCD) = DBNull.Value
+            row(COL_EFFECTIVE_DATE) = DBNull.Value
+            row(COL_EXPIRATION_DATE) = DBNull.Value
+            row(COL_CREATED_BY) = DBNull.Value
+            row(COL_CREATED_DATE) = DBNull.Value
+            row(COL_MODIFIED_BY) = DBNull.Value
+            row(COL_MODIFIED_DATE) = DBNull.Value
             dt.Rows.Add(row)
             Return New TemplateDV(dt)
         End Function
@@ -552,7 +552,7 @@ Public Class OcTemplate
         Try
             Dim dal As New OcTemplateDAL
             Dim dataSet As DataSet = dal.GetAssociatedMessageCount(templateId)
-            If Not dataSet Is Nothing AndAlso dataSet.Tables.Count > 0 AndAlso dataSet.Tables(0).Rows.Count > 0 Then
+            If dataSet IsNot Nothing AndAlso dataSet.Tables.Count > 0 AndAlso dataSet.Tables(0).Rows.Count > 0 Then
                 If dataSet.Tables(0).Rows(0)(OcTemplateDAL.COL_NAME_NUMBER_OF_MESSAGES) Is DBNull.Value Then
                     Return 0
                 Else

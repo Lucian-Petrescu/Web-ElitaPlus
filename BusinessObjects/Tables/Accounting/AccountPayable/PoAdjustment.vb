@@ -69,12 +69,12 @@ Namespace Tables.Accounting.AccountPayable
             Try
                 Dim dal As New PoAdjustmentDAL
                 If _isDSCreator Then
-                    If Not Row Is Nothing Then
+                    If Row IsNot Nothing Then
                         Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME).Rows.Remove(Row)
                     End If
                 End If
                 Row = Nothing
-                If Not Dataset Is Nothing Then
+                If Dataset IsNot Nothing Then
                     If Dataset.Tables.IndexOf(PoAdjustmentDAL.PO_LINES_TABLE_NAME) >= 0 Then
                         Row = FindRow(apPoLineId.ToByteArray(), PoAdjustmentDAL.PO_LINE_ID_COL, Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME))
                     End If

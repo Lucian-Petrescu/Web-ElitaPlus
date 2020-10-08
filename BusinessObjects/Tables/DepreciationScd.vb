@@ -59,7 +59,7 @@ Public Class DepreciationScd
         Try
 
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(DepreciationScdDal.TableName).Rows.Remove(Row)
                 End If
             End If

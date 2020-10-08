@@ -65,7 +65,7 @@ Public Class ClaimStatusByUserRole
         Try
             Dim dal As New ClaimStatusByUserRoleDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -184,7 +184,7 @@ Public Class ClaimStatusByUserRole
     End Sub
 
     Public Shared Function GetData() As DataView
-        Return LookupListDALNew.Load(LookupListNew.LK_GET_CLAIM_STATUS_BY_USER_ROLE)
+        Return LookupListDALNew.Load(LookupListCache.LK_GET_CLAIM_STATUS_BY_USER_ROLE)
     End Function
 #End Region
 

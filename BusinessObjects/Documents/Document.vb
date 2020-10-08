@@ -1,6 +1,6 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (6/18/2015)  ********************
 Imports System.Configuration
-Imports Assurant.ElitaPlus.DALObjects.Documents
+Imports System.Security.Cryptography
 Imports Microsoft.WindowsAzure.Storage
 Imports Microsoft.WindowsAzure.Storage.Blob
 
@@ -64,7 +64,7 @@ Namespace Documents
                 Row = newRow
                 SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
                 Initialize()
-            Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Catch ex As DataBaseAccessException
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
             End Try
         End Sub
@@ -73,7 +73,7 @@ Namespace Documents
             Try
                 Dim dal As New DocumentDAL
                 If _isDSCreator Then
-                    If Not Row Is Nothing Then
+                    If Row IsNot Nothing Then
                         Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                     End If
                 End If
@@ -88,7 +88,7 @@ Namespace Documents
                 If Row Is Nothing Then
                     Throw New DataNotFoundException
                 End If
-            Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Catch ex As DataBaseAccessException
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
             End Try
         End Sub
@@ -206,7 +206,7 @@ Namespace Documents
                 If (RepositoryCode Is Nothing) OrElse (RepositoryCode.Trim().Length = 0) Then
                     Return Nothing
                 End If
-                Return DocumentManager.Current.Repositories.Where(Function(r) r.Code = RepositoryCode).FirstOrDefault()
+                Return DocumentManager.Current.Repositories.FirstOrDefault(Function (r) r.Code = RepositoryCode)
             End Get
         End Property
 
@@ -215,13 +215,13 @@ Namespace Documents
                 If (FileType Is Nothing) OrElse (FileType.Length = 0) Then
                     Return Nothing
                 End If
-                Return DocumentManager.Current.FileTypes.Where(Function(rt) rt.Code = FileType).FirstOrDefault()
+                Return DocumentManager.Current.FileTypes.FirstOrDefault(Function (rt) rt.Code = FileType)
             End Get
         End Property
 
         Friend ReadOnly Property AbsoluteFileName As String
             Get
-                Return String.Format("{0}{1}{2}.file", Repository.StoragePath, System.IO.Path.DirectorySeparatorChar, Id.ToString())
+                Return String.Format("{0}{1}{2}.file", Repository.StoragePath, IO.Path.DirectorySeparatorChar, Id.ToString())
             End Get
         End Property
 
@@ -238,7 +238,7 @@ Namespace Documents
                         Try
                             Select Case Repository.RepositoryTypeXcd
                                 Case Codes.DOCUMENT_REPOSITORY_TYPE & "-" & Codes.DOCUMENT_REPOSITORY_TYPE__FILE_SYSTEM
-                                    _data = System.IO.File.ReadAllBytes(AbsoluteFileName)
+                                    _data = IO.File.ReadAllBytes(AbsoluteFileName)
                                 Case Codes.DOCUMENT_REPOSITORY_TYPE & "-" & Codes.DOCUMENT_REPOSITORY_TYPE__AZURE_BLOB
                                     Dim storeageConnectionString As String = ConfigurationManager.AppSettings("AzureBlobConnectionString")
                                     Dim storageAccount As CloudStorageAccount
@@ -261,7 +261,7 @@ Namespace Documents
                             Throw New DocumentDownloadFailedException(Repository.Code, Repository.StoragePath, AbsoluteFileName, ex)
                         End Try
 
-                        Dim computedHash As String = Convert.ToBase64String(System.Security.Cryptography.SHA256Managed.Create().ComputeHash(_data))
+                        Dim computedHash As String = Convert.ToBase64String(New SHA256CryptoServiceProvider().ComputeHash(_data))
 
                         If (computedHash <> HashValue) Then
                             Throw New FileIntegrityFailedException(Repository.Code, Repository.StoragePath, AbsoluteFileName, HashValue, computedHash, Nothing)
@@ -300,7 +300,7 @@ Namespace Documents
                         Load(objId)
                     End If
                 End If
-            Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Catch ex As DataBaseAccessException
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
             End Try
         End Sub

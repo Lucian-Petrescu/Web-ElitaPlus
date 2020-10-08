@@ -11,9 +11,9 @@ Namespace DocumentImaging
         Private Shared ReadOnly Property ClientProxy As DocumentClient
             Get
                 Dim oDocClient As DocumentClient
-                If (oDocClient Is Nothing OrElse oDocClient.State <> ServiceModel.CommunicationState.Opened) Then
+                If (oDocClient Is Nothing OrElse oDocClient.State <> CommunicationState.Opened) Then
                     SyncLock syncRoot
-                        If (oDocClient Is Nothing OrElse oDocClient.State <> ServiceModel.CommunicationState.Opened) Then
+                        If (oDocClient Is Nothing OrElse oDocClient.State <> CommunicationState.Opened) Then
                             oDocClient = ServiceHelper.CreateDocumentClient()
                         End If
                     End SyncLock

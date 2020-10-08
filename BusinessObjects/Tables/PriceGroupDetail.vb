@@ -59,7 +59,7 @@ Public Class PriceGroupDetail
         Try
             Dim dal As New PriceGroupDetailDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -411,7 +411,7 @@ Public Class PriceGroupDetail
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Service Group")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 #End Region
 
@@ -472,7 +472,7 @@ Public Class PriceGroupDetail
 
             Dim bValid As Boolean = True
 
-            If Not obj.PriceBandRangeFrom Is Nothing And Not obj.PriceBandRangeTo Is Nothing Then
+            If obj.PriceBandRangeFrom IsNot Nothing And obj.PriceBandRangeTo IsNot Nothing Then
                 If Convert.ToSingle(obj.PriceBandRangeFrom.Value) > Convert.ToSingle(obj.PriceBandRangeTo.Value) Then
                     Message = COVERAGE_RATE_FORM009
                     bValid = False

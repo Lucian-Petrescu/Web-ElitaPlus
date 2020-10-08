@@ -59,7 +59,7 @@ Public Class InvoiceGroupDetail
         Try
             Dim dal As New InvoiceGroupDetailDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -183,7 +183,7 @@ Public Class InvoiceGroupDetail
             Dim languageid As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
         
 
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(InvoiceGroup), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(InvoiceGroup), Nothing, "Search", Nothing)}
 
           
          
@@ -230,15 +230,15 @@ Public Class InvoiceGroupDetail
         If bo.IsNew Then
             Dim row As DataRow = dt.NewRow
 
-            row(InvoiceGroupDetail.InvoiceLineItemsDV.COL_LINE_ITEM_TYPE) = bo.ServiceClassId 'String.Empty
-            row(InvoiceGroupDetail.InvoiceLineItemsDV.COL_LINE_ITEM_DESCRIPTION) = bo.ServiceTypeId 'String.Empty
-            row(InvoiceGroupDetail.InvoiceLineItemsDV.COL_LINE_ITEM_AMOUNT) = DBNull.Value
-            row(InvoiceGroupDetail.InvoiceLineItemsDV.COL_CLAIM_NUMBER) = String.Empty
-            row(InvoiceGroupDetail.InvoiceLineItemsDV.COL_AUTHORIZATION_NUMBER) = String.Empty
-            row(InvoiceGroupDetail.InvoiceLineItemsDV.COL_VENDOR_SKU) = String.Empty
-            row(InvoiceGroupDetail.InvoiceLineItemsDV.COL_VENDOR_SKU_DESC) = String.Empty
+            row(InvoiceLineItemsDV.COL_LINE_ITEM_TYPE) = bo.ServiceClassId 'String.Empty
+            row(InvoiceLineItemsDV.COL_LINE_ITEM_DESCRIPTION) = bo.ServiceTypeId 'String.Empty
+            row(InvoiceLineItemsDV.COL_LINE_ITEM_AMOUNT) = DBNull.Value
+            row(InvoiceLineItemsDV.COL_CLAIM_NUMBER) = String.Empty
+            row(InvoiceLineItemsDV.COL_AUTHORIZATION_NUMBER) = String.Empty
+            row(InvoiceLineItemsDV.COL_VENDOR_SKU) = String.Empty
+            row(InvoiceLineItemsDV.COL_VENDOR_SKU_DESC) = String.Empty
 
-            row(InvoiceGroupDetail.InvoiceLineItemsDV.COL_LINE_ITEM_ID) = bo.Id.ToByteArray
+            row(InvoiceLineItemsDV.COL_LINE_ITEM_ID) = bo.Id.ToByteArray
 
             dt.Rows.Add(row)
         End If

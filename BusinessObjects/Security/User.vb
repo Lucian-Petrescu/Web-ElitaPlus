@@ -37,7 +37,7 @@ Public Class User
 
             ' Create Array
             For index = 0 To oLANIdDs.Tables(0).Rows.Count - 1
-                If Not oLANIdDs.Tables(0).Rows(index)("NETWORK_ID") Is System.DBNull.Value Then
+                If oLANIdDs.Tables(0).Rows(index)("NETWORK_ID") IsNot DBNull.Value Then
                     lanIdList.Add(oLANIdDs.Tables(0).Rows(index)("NETWORK_ID").ToString())
                 End If
             Next
@@ -145,7 +145,7 @@ Public Class User
     End Sub
 
     Private Sub LoadCompanyAssigned(id As Guid)
-        If Not Row Is Nothing Then
+        If Row IsNot Nothing Then
             Dim userCompanyAssignedDv As UserCompanyAssigned.UserCompanyAssignedDV = GetSelectedAssignedCompanies(id)
             _paymentLimits = New Dictionary(Of Guid, DecimalType)
             _authorizationLimits = New Dictionary(Of Guid, DecimalType)
@@ -539,7 +539,7 @@ Public Class User
         Get
             Dim bDealerGroup As Boolean = False
             If IsExternal AndAlso _
-               ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER_GROUP)) Then
+               ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER_GROUP)) Then
                 bDealerGroup = True
             End If
             Return bDealerGroup
@@ -549,7 +549,7 @@ Public Class User
         Get
             Dim bDealer As Boolean = False
             If IsExternal AndAlso _
-               ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER)) Then
+               ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER)) Then
                 bDealer = True
             End If
             Return bDealer
@@ -560,7 +560,7 @@ Public Class User
         Get
             Dim bServiceCenter As Boolean = False
             If IsExternal AndAlso _
-               ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__SERVICE_CENTER)) Then
+               ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__SERVICE_CENTER)) Then
                 bServiceCenter = True
             End If
             Return bServiceCenter
@@ -572,7 +572,7 @@ Public Class User
             If moIsIHQRole = 0 Then
                 Dim dal As New UserDAL
                 Dim ds As DataSet = dal.LoadUserIHQRoles(Id)
-                If (Not ds Is Nothing) AndAlso ds.Tables(0).Rows.Count > 0 Then
+                If (ds IsNot Nothing) AndAlso ds.Tables(0).Rows.Count > 0 Then
                     moIsIHQRole = 1
                 Else
                     moIsIHQRole = -1
@@ -608,9 +608,9 @@ Public Class User
             Dim oRole As Role
             Dim oUserRole As UserRole
             Dim oDataTable As DataTable
-            If (Not Dataset.Tables(UserRoleDAL.TABLE_NAME) Is Nothing) Then
+            If (Dataset.Tables(UserRoleDAL.TABLE_NAME) IsNot Nothing) Then
                 oDataTable = Dataset.Tables(UserRoleDAL.TABLE_NAME).GetChanges(DataRowState.Deleted)
-                If (Not oDataTable Is Nothing) Then
+                If (oDataTable IsNot Nothing) Then
                     For Each dr As DataRow In oDataTable.Rows
                         oRole = New Role(New Guid(CType(dr(UserRoleDAL.COL_NAME_ROLE_ID, DataRowVersion.Original), Byte())))
                         If (Not oRole.RemoteRoleId.Equals(Guid.Empty)) Then
@@ -619,7 +619,7 @@ Public Class User
                     Next
                 End If
                 oDataTable = Dataset.Tables(UserRoleDAL.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified)
-                If (Not oDataTable Is Nothing) Then
+                If (oDataTable IsNot Nothing) Then
                     For Each dr As DataRow In oDataTable.Rows
                         oUserRole = New UserRole(dr)
                         oRole = New Role(oUserRole.RoleId)
@@ -639,7 +639,7 @@ Public Class User
 
         ' Call Web Service to Manage User on Remote System
 
-        If Assurant.Elita.Configuration.ElitaConfig.Current.General.IntegrateWorkQueueImagingServices = True Then
+        If Elita.Configuration.ElitaConfig.Current.General.IntegrateWorkQueueImagingServices = True Then
             UpdateRemoteUser()
         End If
 
@@ -779,7 +779,7 @@ Public Class User
             userRoles = GetUserRoles(Id)
             userRoles.Sort = UserDAL.COL_NAME_ROLE_CODE
         End If
-        If Not userRoles Is Nothing Then
+        If userRoles IsNot Nothing Then
             Return userRoles.Find(roleCode) >= 0
         End If
         Return False
@@ -797,7 +797,7 @@ Public Class User
                 ' Create BOs
                 moCompanies = New Hashtable
                 For index = 0 To oCompaniesDv.Table.Rows.Count - 1
-                    If Not oCompaniesDv.Table.Rows(index)("COMPANY_ID") Is System.DBNull.Value Then
+                    If oCompaniesDv.Table.Rows(index)("COMPANY_ID") IsNot DBNull.Value Then
                         Dim oCompanyId As New Guid(CType(oCompaniesDv.Table.Rows(index)("COMPANY_ID"), Byte()))
                         moCompanies.Add(oCompanyId.ToString, New Company(oCompanyId))
                     End If
@@ -805,7 +805,7 @@ Public Class User
 
                 ' Create Array
                 For index = 0 To oCompaniesDv.Table.Rows.Count - 1
-                    If Not oCompaniesDv.Table.Rows(index)("COMPANY_ID") Is System.DBNull.Value Then
+                    If oCompaniesDv.Table.Rows(index)("COMPANY_ID") IsNot DBNull.Value Then
                         userCompanies.Add(New Guid(CType(oCompaniesDv.Table.Rows(index)("COMPANY_ID"), Byte())))
                     End If
                 Next
@@ -823,7 +823,7 @@ Public Class User
             Dim index As Integer
             ' Create Array
             For index = 0 To oCompaniesDv.Table.Rows.Count - 1
-                If Not oCompaniesDv.Table.Rows(index)("COMPANY_ID") Is System.DBNull.Value Then
+                If oCompaniesDv.Table.Rows(index)("COMPANY_ID") IsNot DBNull.Value Then
                     oCompanies.Add(New Guid(CType(oCompaniesDv.Table.Rows(index)("COMPANY_ID"), Byte())))
                 End If
             Next
@@ -833,7 +833,7 @@ Public Class User
 
     Public Function AccountingCompanies() As AcctCompany()
 
-        If Not userAccountingCompanies Is Nothing Then
+        If userAccountingCompanies IsNot Nothing Then
             Return userAccountingCompanies
         End If
 
@@ -859,7 +859,7 @@ Public Class User
 
             ' Create Array
             For index = 0 To oCountriesDv.Table.Rows.Count - 1
-                If Not oCountriesDv.Table.Rows(index)("COUNTRY_ID") Is System.DBNull.Value Then
+                If oCountriesDv.Table.Rows(index)("COUNTRY_ID") IsNot DBNull.Value Then
                     oCountriesArr.Add(New Guid(CType(oCountriesDv.Table.Rows(index)("COUNTRY_ID"), Byte())))
                 End If
             Next
@@ -1075,7 +1075,7 @@ Public Class User
         If oCompaniesDataTable.Rows.Count > 0 Then
             ' Create Array
             For index As Integer = 0 To oCompaniesDataTable.Rows.Count - 1
-                If Not oCompaniesDataTable.Rows(index)("company_id") Is System.DBNull.Value Then
+                If oCompaniesDataTable.Rows(index)("company_id") IsNot DBNull.Value Then
                     oCompaniesArr.Add(New Guid(CType(oCompaniesDataTable.Rows(index)("company_id"), Byte())))
                 End If
             Next
@@ -1109,7 +1109,7 @@ Public Class User
     Public Function NeedPERMtoViewPrivacyData() As boolean
         Dim oRole As Role
         Dim rowRole as DataRowView        
-        Dim authNeededRolePermId as Guid = LookupListNew.GetIdFromCode(LookupListNew.DropdownLanguageLookupList(LookupListNew.LK_USER_ROLE_PERMISSION, ElitaPlusIdentity.Current.ActiveUser.LanguageId),"AUTH_NEEDED_VIEW_SEC_FIELDS")
+        Dim authNeededRolePermId as Guid = LookupListNew.GetIdFromCode(LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_USER_ROLE_PERMISSION, ElitaPlusIdentity.Current.ActiveUser.LanguageId),"AUTH_NEEDED_VIEW_SEC_FIELDS")
         dim dvRoles as dataview = GetUserRoles(New User(Authentication.CurrentUser.NetworkId).Id)
         for each rowRole In dvRoles
             oRole = New Role(New Guid(CType(rowRole("Id"), Byte())))
@@ -1153,7 +1153,7 @@ Public Class User
                 Dim index As Integer
                 ' Create Array
                 For index = 0 To oDealerOrSvcDv.Table.Rows.Count - 1
-                    If Not oDealerOrSvcDv.Table.Rows(index)(UserDAL.COL_NAME_DEALER_SERVICE_CENTER_ID) Is System.DBNull.Value Then
+                    If oDealerOrSvcDv.Table.Rows(index)(UserDAL.COL_NAME_DEALER_SERVICE_CENTER_ID) IsNot DBNull.Value Then
                         moServiceCenter_Or_DealerIDs.Add(New Guid(CType(oDealerOrSvcDv.Table.Rows(index)(UserDAL.COL_NAME_DEALER_SERVICE_CENTER_ID), Byte())))
                     End If
                 Next
@@ -1174,7 +1174,7 @@ Public Class User
             Dim ds As DataSet
             Dim dv As DataView
             Dim filterCondition As String = ""
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(User), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(User), Nothing, "Search", Nothing)}
 
             'Convert the User Network ID to UPPER Case
             If (Not (NetworkIDMask.Equals(String.Empty))) Then
@@ -1328,7 +1328,7 @@ Public Class User
 
         Dim t As DataTable = WorkQueueAssignSelectionView.CreateTable
         Dim WQ_List As WrkQueue.WorkQueue()
-        Dim CompCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_COMPANY, CompanyId)
+        Dim CompCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_COMPANY, CompanyId)
         WQ_List = WorkQueue.GetList("*", CompCode, Nothing, Nothing, False)
         For Each WQ As WrkQueue.WorkQueue In WQ_List
             Dim row As DataRow = t.NewRow

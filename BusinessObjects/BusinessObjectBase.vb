@@ -186,7 +186,7 @@ Public MustInherit Class BusinessObjectBase
                 '- let the DataColumn convert the value to its internal data type
                 Row(columnName) = newValue
             End If
-        ElseIf Not newValue Is Nothing Then
+        ElseIf newValue IsNot Nothing Then
             'new value is something and old value is also something
             '- convert current value to a string
             Dim currentValue As Object = Row(columnName)
@@ -200,7 +200,7 @@ Public MustInherit Class BusinessObjectBase
                 Dim types() As Type = {GetType(String)}
                 '- see if the 'newValue Type' has a 'Parse(String)' method taking a String parameter
                 Dim miMethodInfo As MethodInfo = newValue.GetType.GetMethod("Parse", types)
-                If Not miMethodInfo Is Nothing Then
+                If miMethodInfo IsNot Nothing Then
                     '- it does have a Parse method, newValue must be a number type.
                     '- extract the current value as a string
                     Dim args() As Object = {Row(columnName).ToString}
@@ -434,9 +434,9 @@ Public MustInherit Class BusinessObjectBase
         'Do a full scan. This will work fine only for a few records. TODO Revise this logic
         Dim row As DataRow
         For Each row In table.Rows
-            If Not (row.RowState = DataRowState.Deleted Or row.RowState = DataRowState.Detached) Then
+            If Not (row.RowState = DataRowState.Deleted OrElse row.RowState = DataRowState.Detached) Then
                 Dim rowValue As Object = row(keyColName)
-                If Not rowValue Is DBNull.Value Then
+                If rowValue IsNot DBNull.Value Then
                     If keyColValue.GetType Is GetType(Guid) Then
                         rowValue = New Guid(CType(rowValue, Byte()))
                     End If
@@ -467,7 +467,7 @@ Public MustInherit Class BusinessObjectBase
             If Not (row.RowState = DataRowState.Deleted OrElse row.RowState = DataRowState.Detached) Then
                 Dim rowValue1 As Object = row(keyColName1)
                 Dim rowValue2 As Object = row(keyColName2)
-                If ((Not rowValue1 Is DBNull.Value) AndAlso (Not rowValue2 Is DBNull.Value)) Then
+                If ((rowValue1 IsNot DBNull.Value) AndAlso (rowValue2 IsNot DBNull.Value)) Then
                     If keyColValue1.GetType Is GetType(Guid) Then
                         rowValue1 = New Guid(CType(rowValue1, Byte()))
                     End If
@@ -533,8 +533,8 @@ Public MustInherit Class BusinessObjectBase
                 Dim rowValue1 As Object = row(keyColName1)
                 Dim rowValue2 As Object = row(keyColName2)
                 Dim rowValue3 As Object = row(keyColName3)
-                If ((Not rowValue1 Is DBNull.Value) AndAlso (Not rowValue2 Is DBNull.Value) AndAlso _
-                    (Not rowValue3 Is DBNull.Value)) Then
+                If ((rowValue1 IsNot DBNull.Value) AndAlso (rowValue2 IsNot DBNull.Value) AndAlso _
+                    (rowValue3 IsNot DBNull.Value)) Then
                     If keyColValue1.GetType Is GetType(Guid) Then
                         rowValue1 = New Guid(CType(rowValue1, Byte()))
                     End If
@@ -646,7 +646,7 @@ Public MustInherit Class BusinessObjectBase
             Dim chidrenCollections As ArrayList = GetChildrenCollections
             Dim coll As BusinessObjectListBase
             For Each coll In chidrenCollections
-                If Not coll Is Nothing AndAlso coll.IsDirty Then Return True
+                If coll IsNot Nothing AndAlso coll.IsDirty Then Return True
             Next
             Return False
         End Get
@@ -675,7 +675,7 @@ Public MustInherit Class BusinessObjectBase
     Public Overridable ReadOnly Property IsValid As Boolean
         Get
             Dim errors() As ValidationError = FindValidationErrors()
-            If Not errors Is Nothing AndAlso errors.Length > 0 Then
+            If errors IsNot Nothing AndAlso errors.Length > 0 Then
                 Return False
             Else
                 Return True
@@ -797,7 +797,7 @@ Public MustInherit Class BusinessObjectBase
 
     Public Function IsChildrenCollectionLoaded(collType As Type) As Boolean
         Dim columnName As String = SYSTEM_CHILDREN_COLLECTION_COL_NAME & collType.Name
-        If Row.Table.Columns.IndexOf(columnName) >= 0 AndAlso Not Row(columnName) Is DBNull.Value Then
+        If Row.Table.Columns.IndexOf(columnName) >= 0 AndAlso Row(columnName) IsNot DBNull.Value Then
             Return True
         Else
             Return False
@@ -844,7 +844,7 @@ Public MustInherit Class BusinessObjectBase
         Dim chidrenCollections As ArrayList = GetChildrenCollections
         Dim coll As BusinessObjectListBase
         For Each coll In chidrenCollections
-            If Not coll Is Nothing Then
+            If coll IsNot Nothing Then
                 coll.DeleteAll()
             End If
         Next
@@ -918,7 +918,7 @@ Public MustInherit Class BusinessObjectBase
     Public Overridable Sub Validate()
         Dim errors() As ValidationError = FindValidationErrors()
 
-        If Not errors Is Nothing AndAlso errors.Length > 0 Then
+        If errors IsNot Nothing AndAlso errors.Length > 0 Then
             Throw New BOValidationException(errors, [GetType].FullName, UniqueId)
         End If
     End Sub
@@ -932,14 +932,14 @@ Public MustInherit Class BusinessObjectBase
     Public Sub VerifyConcurrency(sModifiedDate As String)
         Dim dtModifiedDate As DateType
 
-        If (Not sModifiedDate = String.Empty AndAlso (Not ModifiedDate Is Nothing)) Then
+        If (Not sModifiedDate = String.Empty AndAlso (ModifiedDate IsNot Nothing)) Then
             dtModifiedDate = New DateType(CType(sModifiedDate, Date))
             If ModifiedDate.Value <> dtModifiedDate.Value Then
                 ' Modified Dates are different
                 Throw New DALConcurrencyAccessException
             End If
         Else
-            If (Not ModifiedDate Is Nothing) Then
+            If (ModifiedDate IsNot Nothing) Then
                 ' First Instance does not have modified date but Second Instance has a modified date
                 Throw New DALConcurrencyAccessException
             End If
@@ -954,7 +954,7 @@ Public MustInherit Class BusinessObjectBase
         Dim fromProp As PropertyInfo
 
         For Each fromProp In fromType.GetProperties(BindingFlags.Public Or BindingFlags.Instance)
-            If fromProp.Name.ToUpper <> "ID" AndAlso Not fromProp.GetSetMethod Is Nothing Then
+            If fromProp.Name.ToUpper <> "ID" AndAlso fromProp.GetSetMethod IsNot Nothing Then
                 Dim toProp As PropertyInfo
                 If (includeParentProperties) Then
                     toProp = toType.GetProperty(fromProp.Name, BindingFlags.Public Or BindingFlags.Instance)
@@ -962,7 +962,7 @@ Public MustInherit Class BusinessObjectBase
                     toProp = toType.GetProperty(fromProp.Name, BindingFlags.Public Or BindingFlags.Instance Or BindingFlags.DeclaredOnly)
                 End If
 
-                If Not toProp Is Nothing Then
+                If toProp IsNot Nothing Then
                     toProp.SetValue(Me, fromProp.GetValue(original, Nothing), Nothing)
                 End If
             End If
@@ -978,9 +978,9 @@ Public MustInherit Class BusinessObjectBase
         Dim fromProp As PropertyInfo
 
         For Each fromProp In fromType.GetProperties(BindingFlags.Public Or BindingFlags.Instance)
-            If Not fromProp.GetSetMethod Is Nothing Then
+            If fromProp.GetSetMethod IsNot Nothing Then
                 Dim toProp As PropertyInfo = toType.GetProperty(fromProp.Name, BindingFlags.Public Or BindingFlags.Instance)
-                If Not toProp Is Nothing Then
+                If toProp IsNot Nothing Then
                     toProp.SetValue(Me, fromProp.GetValue(original, Nothing), Nothing)
                 End If
             End If
@@ -1064,7 +1064,7 @@ Public MustInherit Class BusinessObjectBase
 
                 'Check to see if there is a grouped column necessary.  If so, check the last added record
                 '  and the next record in the original ds to see if it need to come also.
-                If (Not GroupedColumn Is Nothing) AndAlso (Not GroupedColumn = String.Empty) Then
+                If (GroupedColumn IsNot Nothing) AndAlso (Not GroupedColumn = String.Empty) Then
                     While DatasetInput.Tables(0).Rows.Count > iCurrRow AndAlso ds.Tables(0).Rows(ds.Tables(0).Rows.Count - 1)(GroupedColumn) = DatasetInput.Tables(0).Rows(iCurrRow)(GroupedColumn)
                         ds.Tables(0).ImportRow(DatasetInput.Tables(0).Rows(iCurrRow))
                         iCurrRow += 1

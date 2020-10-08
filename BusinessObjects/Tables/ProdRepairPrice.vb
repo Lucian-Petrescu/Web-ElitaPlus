@@ -59,7 +59,7 @@ Public Class ProdRepairPrice
         Try
             Dim dal As New ProdRepairPriceDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -263,7 +263,7 @@ Public Class ProdRepairPrice
     Protected Function CheckForDuplicateRepairMethodRangeProductCodeRangeFromCombination() As Boolean
         Dim row As DataRow
         For Each row In Dataset.Tables(ProdRepairPriceDAL.TABLE_NAME).Rows
-            If row.RowState <> DataRowState.Deleted And row.RowState <> DataRowState.Detached Then
+            If row.RowState <> DataRowState.Deleted AndAlso row.RowState <> DataRowState.Detached Then
                 Dim bo As New ProdRepairPrice(row)
                 If Not bo.Id.Equals(Id) AndAlso bo.MethodOfRepairId.Equals(MethodOfRepairId) AndAlso bo.ProductCodeId.Equals(ProductCodeId) AndAlso bo.PriceRangeFrom.Equals(PriceRangeFrom) Then
                     Return True
@@ -286,7 +286,7 @@ Public Class ProdRepairPrice
 
             Dim bValid As Boolean = True
 
-            If Not obj.PriceRangeFrom Is Nothing And Not obj.PriceRangeTo Is Nothing Then
+            If obj.PriceRangeFrom IsNot Nothing AndAlso obj.PriceRangeTo IsNot Nothing Then
                 If Convert.ToSingle(obj.PriceRangeFrom.Value) > Convert.ToSingle(obj.PriceRangeTo.Value) Then
                     Message = COVERAGE_RATE_FORM009
                     bValid = False
@@ -327,19 +327,19 @@ Public Class ProdRepairPrice
                             ' Updating only one record
                             bValid = True
                             Exit For
-                        ElseIf oRows.Count = oCount And prevHigh + THRESHOLD = oNewLow Then
+                        ElseIf oRows.Count = oCount AndAlso prevHigh + THRESHOLD = oNewLow Then
                             ' Updating the last record
                             bValid = True
                             Exit For
                         End If
                     Else
-                        If prevHigh < MIN_DOUBLE And oNewHigh + THRESHOLD = oLow Then
+                        If prevHigh < MIN_DOUBLE AndAlso oNewHigh + THRESHOLD = oLow Then
                             bValid = True
                             Exit For
-                        ElseIf oCount = oRows.Count And oHigh + THRESHOLD = oNewLow Then
+                        ElseIf oCount = oRows.Count AndAlso oHigh + THRESHOLD = oNewLow Then
                             bValid = True
                             Exit For
-                        ElseIf prevHigh + THRESHOLD = oNewLow And oNewHigh + THRESHOLD = oLow Then
+                        ElseIf prevHigh + THRESHOLD = oNewLow AndAlso oNewHigh + THRESHOLD = oLow Then
                             bValid = True
                             Exit For
                         End If

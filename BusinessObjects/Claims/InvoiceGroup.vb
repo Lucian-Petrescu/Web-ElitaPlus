@@ -61,7 +61,7 @@ Public Class InvoiceGroup
         Try
             Dim dal As New InvoiceGroupDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -196,7 +196,7 @@ Public Class InvoiceGroup
         Try
             Dim dal As New InvoiceGroupDAL
             Dim oCountryIds As ArrayList = Nothing
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(InvoiceGroup), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(InvoiceGroup), Nothing, "Search", Nothing)}
 
             'If DALBase.IsNothing(oCountryId) Then
             '    ' Get All User Countries

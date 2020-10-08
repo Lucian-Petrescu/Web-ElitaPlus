@@ -61,7 +61,7 @@ Public Class TurnAroundTimeRange
         Try
             Dim dal As New TurnAroundTimeRangeDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -101,7 +101,7 @@ Public Class TurnAroundTimeRange
     End Sub
     Private Function IsValidAction() As Boolean
         Dim dv As DataView = LoadList ' This list is alrady ordered by min_days asc
-        If Not dv Is Nothing AndAlso dv.Count > 0 Then
+        If dv IsNot Nothing AndAlso dv.Count > 0 Then
 
             Dim minValue As Integer
             Dim maxValue As Integer
@@ -109,7 +109,7 @@ Public Class TurnAroundTimeRange
             If IsDeleted Then
                 Dim i As Integer
                 For i = 0 To dv.Count - 1
-                    If i = 0 Or i = dv.Count - 1 Then
+                    If i = 0 OrElse i = dv.Count - 1 Then
                         Dim id As Guid = New Guid(CType(dv.Table.Rows(i)(TurnAroundTimeRangeDAL.COL_NAME_TURN_AROUND_TIME_RANGE_ID), Byte()))
                         If ModefiedObjectId.Equals(id) Then
                             Return True
@@ -121,7 +121,7 @@ Public Class TurnAroundTimeRange
 
             'Check the minValue vs the maxValue
             If MinDays.Value >= MaxDays.Value Then
-                Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.MIN_VALUE_MUST_BE_LESS_THAN_MAX_VALUE, GetType(TurnAroundTimeRange), Nothing, "MIN_DAYS", Nothing)}
+                Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.MIN_VALUE_MUST_BE_LESS_THAN_MAX_VALUE, GetType(TurnAroundTimeRange), Nothing, "MIN_DAYS", Nothing)}
                 Throw New BOValidationException(errors, GetType(TurnAroundTimeRange).FullName, UniqueId)
             End If
 
@@ -165,16 +165,16 @@ Public Class TurnAroundTimeRange
 
             Dim rowValueMin As Object = rowFirst(TurnAroundTimeRangeDAL.COL_NAME_MIN_DAYS)
             Dim rowValueMax As Object = rowLast(TurnAroundTimeRangeDAL.COL_NAME_MAX_DAYS)
-            If (Not rowValueMin Is DBNull.Value) Then
+            If (rowValueMin IsNot DBNull.Value) Then
                 minValue = CType(rowValueMin, Integer)
             Else
-                Dim Errs() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.EXISTING_TAT_RECORD_IS_INVALID, GetType(TurnAroundTimeRange), Nothing, "MIN_DAYS", Nothing)}
+                Dim Errs() As ValidationError = {New ValidationError(Common.ErrorCodes.EXISTING_TAT_RECORD_IS_INVALID, GetType(TurnAroundTimeRange), Nothing, "MIN_DAYS", Nothing)}
                 Throw New BOValidationException(Errs, GetType(TurnAroundTimeRange).FullName)
             End If
-            If (Not rowValueMax Is DBNull.Value) Then
+            If (rowValueMax IsNot DBNull.Value) Then
                 maxValue = CType(rowValueMax, Integer)
             Else
-                Dim Errs() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.EXISTING_TAT_RECORD_IS_INVALID, GetType(TurnAroundTimeRange), Nothing, "MAX_DAYS", Nothing)}
+                Dim Errs() As ValidationError = {New ValidationError(Common.ErrorCodes.EXISTING_TAT_RECORD_IS_INVALID, GetType(TurnAroundTimeRange), Nothing, "MAX_DAYS", Nothing)}
                 Throw New BOValidationException(Errs, GetType(TurnAroundTimeRange).FullName)
             End If
 
@@ -326,7 +326,7 @@ Public Class TurnAroundTimeRange
         Try
             MyBase.Save()
             If Not IsValidAction Then
-                Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.OVERLAPS_OR_GAPS_NOT_ALLOWED, GetType(TurnAroundTimeRange), Nothing, "MIN_DAYS", Nothing)}
+                Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.OVERLAPS_OR_GAPS_NOT_ALLOWED, GetType(TurnAroundTimeRange), Nothing, "MIN_DAYS", Nothing)}
                 Throw New BOValidationException(errors, GetType(TurnAroundTimeRange).FullName, UniqueId)
             End If
             If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
@@ -400,14 +400,14 @@ Public Class TurnAroundTimeRange
             dsv = dv.Table().DataSet
 
             Dim row As DataRow = dsv.Tables(0).NewRow()
-            row.Item(TurnAroundTimeRangeDAL.COL_NAME_TURN_AROUND_TIME_RANGE_ID) = System.Guid.NewGuid.ToByteArray
+            row.Item(TurnAroundTimeRangeDAL.COL_NAME_TURN_AROUND_TIME_RANGE_ID) = Guid.NewGuid.ToByteArray
             ' row.Item(TurnAroundTimeRangeDAL.COL_NAME_COMPANY_GROUP_ID) = System.Guid.NewGuid.ToByteArray
 
             row.Item(TurnAroundTimeRangeDAL.COL_NAME_CODE) = String.Empty
             row.Item(TurnAroundTimeRangeDAL.COL_NAME_DESCRIPTION) = String.Empty
             row.Item(TurnAroundTimeRangeDAL.COL_NAME_MIN_DAYS) = DBNull.Value
             row.Item(TurnAroundTimeRangeDAL.COL_NAME_MAX_DAYS) = DBNull.Value
-            row.Item(TurnAroundTimeRangeDAL.COL_NAME_COLOR_ID) = System.Guid.NewGuid.ToByteArray
+            row.Item(TurnAroundTimeRangeDAL.COL_NAME_COLOR_ID) = Guid.NewGuid.ToByteArray
 
 
             dsv.Tables(0).Rows.Add(row)

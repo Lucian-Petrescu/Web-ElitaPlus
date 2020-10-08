@@ -57,7 +57,7 @@
         Try
             Dim dal As New OcMessageAttemptsDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -271,17 +271,17 @@
         Public Function AddNewRowToEmptyDV() As MessageAttemptsDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(MessageAttemptsDV.COL_OC_MESSAGE_ATTEMPS_ID) = (New Guid()).ToByteArray
-            row(MessageAttemptsDV.COL_OC_MESSAGE_ID) = Guid.Empty.ToByteArray
-            row(MessageAttemptsDV.COL_RECIPIENT_ADDRESS) = DBNull.Value
-            row(MessageAttemptsDV.COL_PROCESS_STATUS_XCD) = DBNull.Value
-            row(MessageAttemptsDV.COL_PROCESS_STATUS_DESCRIPTION) = DBNull.Value
-            row(MessageAttemptsDV.COL_MESSAGE_ATTEMPTED_ON) = DBNull.Value
-            row(MessageAttemptsDV.COL_MESSAGE_ATTEMPTED_BY) = DBNull.Value
-            row(MessageAttemptsDV.COL_RECIPIENT_DESCRIPTION) = DBNull.Value
-            row(MessageAttemptsDV.COL_MESSAGE_ERROR) = DBNull.Value
-            row(MessageAttemptsDV.COL_MODIFIED_BY) = DBNull.Value
-            row(MessageAttemptsDV.COL_MODIFIED_DATE) = DBNull.Value
+            row(COL_OC_MESSAGE_ATTEMPS_ID) = (New Guid()).ToByteArray
+            row(COL_OC_MESSAGE_ID) = Guid.Empty.ToByteArray
+            row(COL_RECIPIENT_ADDRESS) = DBNull.Value
+            row(COL_PROCESS_STATUS_XCD) = DBNull.Value
+            row(COL_PROCESS_STATUS_DESCRIPTION) = DBNull.Value
+            row(COL_MESSAGE_ATTEMPTED_ON) = DBNull.Value
+            row(COL_MESSAGE_ATTEMPTED_BY) = DBNull.Value
+            row(COL_RECIPIENT_DESCRIPTION) = DBNull.Value
+            row(COL_MESSAGE_ERROR) = DBNull.Value
+            row(COL_MODIFIED_BY) = DBNull.Value
+            row(COL_MODIFIED_DATE) = DBNull.Value
             dt.Rows.Add(row)
             Return New MessageAttemptsDV(dt)
         End Function

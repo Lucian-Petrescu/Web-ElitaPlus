@@ -59,7 +59,7 @@ Public Class Task
         Try
             Dim dal As New TaskDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -138,7 +138,7 @@ Public Class Task
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("", Min:=0, MinExclusive:=False, Max:=99, MaxExclusive:=False, Message:=Assurant.ElitaPlus.Common.ErrorCodes.GUI_TASK_RETRY_COUNT_RANGE)> _
+    <ValueMandatory(""), ValidNumericRange("", Min:=0, MinExclusive:=False, Max:=99, MaxExclusive:=False, Message:=Common.ErrorCodes.GUI_TASK_RETRY_COUNT_RANGE)> _
     Public Property RetryCount As LongType
         Get
             CheckDeleted()
@@ -155,7 +155,7 @@ Public Class Task
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("", Min:=0, MinExclusive:=False, Max:=999999, MaxExclusive:=False, Message:=Assurant.ElitaPlus.Common.ErrorCodes.GUI_TASK_RETRY_DELAY_RANGE)> _
+    <ValueMandatory(""), ValidNumericRange("", Min:=0, MinExclusive:=False, Max:=999999, MaxExclusive:=False, Message:=Common.ErrorCodes.GUI_TASK_RETRY_DELAY_RANGE)> _
     Public Property RetryDelaySeconds As LongType
         Get
             CheckDeleted()
@@ -172,7 +172,7 @@ Public Class Task
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("", Min:=0, MinExclusive:=False, Max:=999999, MaxExclusive:=False, Message:=Assurant.ElitaPlus.Common.ErrorCodes.GUI_TASK_TIMEOUT_RANGE)> _
+    <ValueMandatory(""), ValidNumericRange("", Min:=0, MinExclusive:=False, Max:=999999, MaxExclusive:=False, Message:=Common.ErrorCodes.GUI_TASK_TIMEOUT_RANGE)> _
     Public Property TimeoutSeconds As LongType
         Get
             CheckDeleted()
@@ -305,15 +305,15 @@ Public Class Task
             row(TaskSearchDV.COL_TASK_ID) = NewBO.Id.ToByteArray
             row(TaskSearchDV.COL_CODE) = NewBO.Code
             row(TaskSearchDV.COL_DESCRIPTION) = NewBO.Description
-            If Not NewBO.RetryCount Is Nothing Then
+            If NewBO.RetryCount IsNot Nothing Then
                 row(TaskSearchDV.COL_RETRY_COUNT) = NewBO.RetryCount.Value
             End If
 
-            If Not NewBO.RetryDelaySeconds Is Nothing Then
+            If NewBO.RetryDelaySeconds IsNot Nothing Then
                 row(TaskSearchDV.COL_RETRY_DELAY) = NewBO.RetryDelaySeconds.Value
             End If
 
-            If Not NewBO.TimeoutSeconds Is Nothing Then
+            If NewBO.TimeoutSeconds IsNot Nothing Then
                 row(TaskSearchDV.COL_TIMEOUT) = NewBO.TimeoutSeconds.Value
             End If
 

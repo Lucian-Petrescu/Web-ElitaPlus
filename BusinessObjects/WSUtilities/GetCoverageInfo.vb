@@ -93,7 +93,7 @@ Public Class GetCoverageInfo
 
     Private Function IsDealerWebEnabled() As Boolean
         Dim objDealer As New Dealer(_dealerId)
-        If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objDealer.DealerSupportWebClaimsId) = "Y" Then
+        If LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, objDealer.DealerSupportWebClaimsId) = "Y" Then
             Return True
         Else
             Return False
@@ -133,7 +133,7 @@ Public Class GetCoverageInfo
     'End Function
 
     Private Function FindDealer() As String
-        If _dealerId.Equals(Guid.Empty) AndAlso (Not DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty) Then
+        If _dealerId.Equals(Guid.Empty) AndAlso (DealerCode IsNot Nothing AndAlso DealerCode.Trim <> String.Empty) Then
             Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
             If list Is Nothing Then
                 Dim ResponseStatus As DataTable = BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE), _
@@ -214,7 +214,7 @@ Public Class GetCoverageInfo
         Try
             Validate()
             'Not IdentifierType Is Nothing AndAlso IdentifierType.Trim <> String.Empty
-            If Not DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty Then
+            If DealerCode IsNot Nothing AndAlso DealerCode.Trim <> String.Empty Then
                 Dim strErrorFindingDealer As String = FindDealer
                 If strErrorFindingDealer <> String.Empty Then
                     Return strErrorFindingDealer

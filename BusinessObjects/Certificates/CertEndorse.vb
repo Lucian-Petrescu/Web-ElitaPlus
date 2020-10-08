@@ -79,7 +79,7 @@ Public Class CertEndorse
         Try
             Dim dal As New CertEndorseDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -962,7 +962,7 @@ Public Class CertEndorse
 
             Dim oDealer As New Dealer(Cert.DealerId)
             Dim attValueEnableChangingMFG As AttributeValue = oDealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_ENABLE_CHANGING_MFG_TERM_If_NO_CLAIMS_EXIST_In_PARENT_CHILD).FirstOrDefault
-            If Not attValueEnableChangingMFG Is Nothing AndAlso attValueEnableChangingMFG.Value = Codes.YESNO_Y Then
+            If attValueEnableChangingMFG IsNot Nothing AndAlso attValueEnableChangingMFG.Value = Codes.YESNO_Y Then
                 Return CertItemCoverage.GetItemCovListWithChildOrParentForCertificate(CertId, Cert)
             Else
                 Return CertItemCoverage.GetItemCovListForCertificate(CertId, Cert)
@@ -988,7 +988,7 @@ Public Class CertEndorse
         Get
             If _dealerTypeCode Is Nothing Then
                 Dim oDealer As New Dealer(Cert.DealerId)
-                _dealerTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, oDealer.DealerTypeId)
+                _dealerTypeCode = LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, oDealer.DealerTypeId)
             End If
             Return _dealerTypeCode
         End Get
@@ -1230,7 +1230,7 @@ Public Class CertEndorse
     Public ReadOnly Property getDocTypeCode As String
         Get
             Dim dv As DataView = LookupListNew.GetDocumentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            documentTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_DOCUMENT_TYPES, DocumentTypeIDPost)
+            documentTypeCode = LookupListNew.GetCodeFromId(LookupListCache.LK_DOCUMENT_TYPES, DocumentTypeIDPost)
             Return documentTypeCode
         End Get
 
@@ -1239,7 +1239,7 @@ Public Class CertEndorse
     Public ReadOnly Property getDocTypePreCode As String
         Get
             Dim dv As DataView = LookupListNew.GetDocumentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            documentTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_DOCUMENT_TYPES, DocumentTypeIDPre)
+            documentTypeCode = LookupListNew.GetCodeFromId(LookupListCache.LK_DOCUMENT_TYPES, DocumentTypeIDPre)
             Return documentTypeCode
         End Get
 
@@ -1453,7 +1453,7 @@ Public Class CertEndorse
             CertItemId = cov.CertItemId
         Next
 
-        Dim EndorseDV As CertEndorse.EndorseSearchDV = CertEndorse.getList(CertId)
+        Dim EndorseDV As CertEndorse.EndorseSearchDV = getList(CertId)
         Dim oCount As New LongType(EndorseDV.Count + 1)
         EndorsementNumber = oCount
         ManufaturerWarranty = ManuWarranty
@@ -1496,7 +1496,7 @@ Public Class CertEndorse
 
         CertItemId = oCertItemId       
 
-        Dim EndorseDV As CertEndorse.EndorseSearchDV = CertEndorse.getList(CertItemId)
+        Dim EndorseDV As CertEndorse.EndorseSearchDV = getList(CertItemId)
         Dim oCount As New LongType(EndorseDV.Count + 1)
         EndorsementNumber = oCount
 
@@ -1511,7 +1511,7 @@ Public Class CertEndorse
         Dim DV As Claim.ClaimSearchDV = Claim.GetClaimslist(CertItemId, BeginDate, EndDate, ManufaturerWarranty)
 
         If DV.Count > 0 Then
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.EXISTING_CLAIMS_WILL_FALL_OUTSIDE_THE_NEW_DATE_RANGE, GetType(CertEndorse), Nothing, "LabelProductSaleDate", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.EXISTING_CLAIMS_WILL_FALL_OUTSIDE_THE_NEW_DATE_RANGE, GetType(CertEndorse), Nothing, "LabelProductSaleDate", Nothing)}
             Throw New BOValidationException(errors, GetType(CertEndorse).FullName, UniqueId)
         End If
 
@@ -1524,7 +1524,7 @@ Public Class CertEndorse
         Dim DV As Claim.ClaimSearchDV = Claim.GetClaimslistByCoverageId(CertItemCoverageId, BeginDate, EndDate, ManufaturerWarranty)
 
         If DV.Count > 0 Then
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.EXISTING_CLAIMS_WILL_FALL_OUTSIDE_THE_NEW_DATE_RANGE, GetType(CertEndorse), Nothing, "LabelProductSaleDate", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.EXISTING_CLAIMS_WILL_FALL_OUTSIDE_THE_NEW_DATE_RANGE, GetType(CertEndorse), Nothing, "LabelProductSaleDate", Nothing)}
             Throw New BOValidationException(errors, GetType(CertEndorse).FullName, UniqueId)
         End If
 
@@ -1617,8 +1617,8 @@ Public Class CertEndorse
 
 #Region "Constants"
         Public Const COL_ENDORSEMENT_ID As String = CertEndorseDAL.COL_NAME_CERT_ENDORSE_ID
-        Public Const COL_ADDED_BY As String = CertEndorseDAL.COL_NAME_CREATED_BY
-        Public Const COL_CREATED_DATE As String = CertEndorseDAL.COL_NAME_CREATED_DATE
+        Public Const COL_ADDED_BY As String = DALBase.COL_NAME_CREATED_BY
+        Public Const COL_CREATED_DATE As String = DALBase.COL_NAME_CREATED_DATE
         Public Const COL_ENDORSE_NUMB As String = CertEndorseDAL.COL_NAME_ENDORSEMENT_NUMBER
         Public Const COL_ENDORSEMENT_REASON As String = CertEndorseDAL.COL_ENDORSEMENT_REASON
         Public Const COL_ENDORSEMENT_TYPE As String = CertEndorseDAL.COL_ENDORSEMENT_TYPE
@@ -1811,15 +1811,15 @@ Public Class CertEndorse
                     CovEndDate = Date.Parse(Convert.ToDateTime(dv(i)(CertItemCoverageDAL.COL_NAME_END_DATE)))
                     CovEndDate = DateAdd(DateInterval.Day, 1, CovEndDate)
                     covDur = DateDiff(MONTH, CovBeginDate, CovEndDate)
-                    validateCode = CertEndorse.ValidateCertSalesPrice(obj.CertId, obj.SalesPricePost.Value, CovTypeId, certDur, covDur)
+                    validateCode = ValidateCertSalesPrice(obj.CertId, obj.SalesPricePost.Value, CovTypeId, certDur, covDur)
                     If validateCode <> 0 Then
                         Select Case validateCode
                             Case 100
                                 oErrMess = Common.ErrorCodes.GUI_DEFINITION_NOT_FOUND_ERR
-                                MyBase.Message = oErrMess
+                                Message = oErrMess
                             Case 200
                                 oErrMess = Common.ErrorCodes.GUI_INVALID_SALES_PRICE_ERR
-                                MyBase.Message = oErrMess
+                                Message = oErrMess
                         End Select
                         Return False
                     End If
@@ -2004,7 +2004,7 @@ Public Class CertEndorse
             End If
 
             If strValFlag = VALIDATION_FLAG_FULL Then
-                If Not obj.DocumentIssueDatePost Is Nothing Then
+                If obj.DocumentIssueDatePost IsNot Nothing Then
                     If obj.DocumentIssueDatePost.Value > Date.Today Then
                         Return False
                     End If
@@ -2045,7 +2045,7 @@ Public Class CertEndorse
                     If obj.RgNumberPost Is Nothing AndAlso obj.DocumentAgencyPost Is Nothing AndAlso obj.DocumentIssueDatePost Is Nothing AndAlso obj.IdTypePost Is Nothing Then
                         Return True
                     Else
-                        MyBase.Message = Common.ErrorCodes.GUI_FIELD_MUST_BE_BLANK
+                        Message = Common.ErrorCodes.GUI_FIELD_MUST_BE_BLANK
                         Return False
                     End If
                 End If
@@ -2133,16 +2133,16 @@ Public Class CertEndorse
                                 Return True
                             Else
                                 oErrMess = dal.ExecuteSP(obj.getDocTypeCode, obj.TaxIDNumbPost)
-                                If Not oErrMess Is Nothing Then
-                                    MyBase.Message = UCase(oErrMess)
+                                If oErrMess IsNot Nothing Then
+                                    Message = UCase(oErrMess)
                                     Return False
 
                                 End If
                             End If
                         Else
                             oErrMess = dal.ExecuteSP(obj.getDocTypeCode, obj.TaxIDNumbPost)
-                            If Not oErrMess Is Nothing Then
-                                MyBase.Message = UCase(oErrMess)
+                            If oErrMess IsNot Nothing Then
+                                Message = UCase(oErrMess)
                                 Return False
                             End If
                         End If
@@ -2163,8 +2163,8 @@ Public Class CertEndorse
                         'End If
 
                         oErrMess = dal.ExecuteSP(obj.getDocTypeCode, obj.TaxIDNumbPost)
-                        If Not oErrMess Is Nothing Then
-                            MyBase.Message = UCase(oErrMess)
+                        If oErrMess IsNot Nothing Then
+                            Message = UCase(oErrMess)
                             Return False
                         End If
 
@@ -2173,8 +2173,8 @@ Public Class CertEndorse
                             obj.TaxIDNumbPost = String.Empty
                         End If
                         oErrMess = dal.ExecuteSP(obj.getDocTypeCode, obj.TaxIDNumbPost)
-                        If Not oErrMess Is Nothing Then
-                            MyBase.Message = UCase(oErrMess)
+                        If oErrMess IsNot Nothing Then
+                            Message = UCase(oErrMess)
                             Return False
                         End If
                     Case Else
@@ -2245,7 +2245,7 @@ Public Class CertEndorse
                     OrElse UCase(docType) = DOC_TYPE_CNPJ Then
                     Return True
                 Else
-                    MyBase.Message = UCase(Common.ErrorCodes.GUI_DOCUMENT_TYPE_4)
+                    Message = UCase(Common.ErrorCodes.GUI_DOCUMENT_TYPE_4)
                     Return False
                 End If
             End If
@@ -2255,7 +2255,7 @@ Public Class CertEndorse
                OrElse UCase(docType) = DOC_TYPE_CNPJ Then
                 Return True
             Else
-                MyBase.Message = UCase(Common.ErrorCodes.GUI_DOCUMENT_TYPE)
+                Message = UCase(Common.ErrorCodes.GUI_DOCUMENT_TYPE)
                 Return False
             End If
 

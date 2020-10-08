@@ -57,7 +57,7 @@
         Try
             Dim dal As New OcMessageParamsDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -189,14 +189,14 @@
         Public Function AddNewRowToEmptyDV() As MessageParamsDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(MessageParamsDV.COL_OC_MESSAGE_PARAMS_ID) = (New Guid()).ToByteArray
-            row(MessageParamsDV.COL_OC_MESSAGE_ID) = Guid.Empty.ToByteArray
-            row(MessageParamsDV.COL_PARAM_NAME) = DBNull.Value
-            row(MessageParamsDV.COL_PARAM_VALUE) = DBNull.Value
-            row(MessageParamsDV.COL_CREATED_BY) = DBNull.Value
-            row(MessageParamsDV.COL_CREATED_DATE) = DBNull.Value
-            row(MessageParamsDV.COL_MODIFIED_BY) = DBNull.Value
-            row(MessageParamsDV.COL_MODIFIED_DATE) = DBNull.Value
+            row(COL_OC_MESSAGE_PARAMS_ID) = (New Guid()).ToByteArray
+            row(COL_OC_MESSAGE_ID) = Guid.Empty.ToByteArray
+            row(COL_PARAM_NAME) = DBNull.Value
+            row(COL_PARAM_VALUE) = DBNull.Value
+            row(COL_CREATED_BY) = DBNull.Value
+            row(COL_CREATED_DATE) = DBNull.Value
+            row(COL_MODIFIED_BY) = DBNull.Value
+            row(COL_MODIFIED_DATE) = DBNull.Value
             dt.Rows.Add(row)
             Return New MessageParamsDV(dt)
         End Function

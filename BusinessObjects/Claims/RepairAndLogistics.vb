@@ -59,7 +59,7 @@ Public Class RepairAndLogistics
         Try
             Dim dal As New RepairAndLogisticsDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -682,7 +682,7 @@ Public Class RepairAndLogistics
                 End If
             End With
 
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
             'Convert the Claim Number to UPPER Case
             If (Not (claimNumber.Equals(String.Empty))) Then

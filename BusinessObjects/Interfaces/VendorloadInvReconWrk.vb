@@ -67,7 +67,7 @@ Public Class VendorloadInvReconWrk
         Try
 
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(VendorloadInvReconWrkDal.TableNameDal).Rows.Remove(Row)
                 End If
             End If

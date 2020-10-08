@@ -59,7 +59,7 @@ Public Class CertEndorseCov
         Try
             Dim dal As New CertEndorseCovDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -349,7 +349,7 @@ Public Class CertEndorseCov
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CertEndorseCov = CType(objectToValidate, CertEndorseCov)
 
-            Dim MftCovID As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_COVERAGE_TYPES, Codes.COVERAGE_TYPE__MANUFACTURER)
+            Dim MftCovID As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_COVERAGE_TYPES, Codes.COVERAGE_TYPE__MANUFACTURER)
 
             If MftCovID.Equals(obj.CoverageTypeId) Then 'Only check for non-mft coverage
                 Return True

@@ -60,7 +60,7 @@ Public Class CreditCardFormat
         Try
             Dim dal As New CreditCardFormatDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -161,7 +161,7 @@ Public Class CreditCardFormat
         Try
             MyBase.Save()
             If IsFamilyDirty Then RegularExpressionBO.Save()
-            If _isDSCreator AndAlso (IsDirty Or IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso (IsDirty OrElse IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CreditCardFormatDAL
                 dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
@@ -202,10 +202,10 @@ Public Class CreditCardFormat
         Public Function AddNewRowToEmptyDV() As CreditCardFormatSearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(CreditCardFormatSearchDV.COL_CREDIT_CARD_FORMAT_ID) = (New Guid()).ToByteArray
-            row(CreditCardFormatSearchDV.COL_CREDIT_CARD_TYPE_ID) = Guid.Empty.ToByteArray
-            row(CreditCardFormatSearchDV.COL_CREDIT_CARD_TYPE) = ""
-            row(CreditCardFormatSearchDV.COL_FORMAT) = ""
+            row(COL_CREDIT_CARD_FORMAT_ID) = (New Guid()).ToByteArray
+            row(COL_CREDIT_CARD_TYPE_ID) = Guid.Empty.ToByteArray
+            row(COL_CREDIT_CARD_TYPE) = ""
+            row(COL_FORMAT) = ""
             dt.Rows.Add(row)
             Return New CreditCardFormatSearchDV(dt)
         End Function
@@ -257,7 +257,7 @@ Public Class CreditCardFormat
     End Sub
 
     Public Shared Function IsCreditCardValid(CreditCardTypeCode As String, CreditCardNumber As String) As Boolean
-        Dim dv As DataView = CreditCardFormat.LoadByCode(CreditCardTypeCode)
+        Dim dv As DataView = LoadByCode(CreditCardTypeCode)
         If dv Is Nothing OrElse dv.Count <= 0 OrElse dv.Item(0).Item(CreditCardFormatSearchDV.COL_FORMAT).Equals(String.Empty) Then
             Throw New StoredProcedureGeneratedException("Credit Card Format Error", Common.ErrorCodes.WS_CREDIT_CARD_FORMAT_NOT_FOUND)
         End If

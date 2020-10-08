@@ -41,11 +41,11 @@ Public Class TranslationBase
 
         Try
 
-            If System.Web.HttpContext.Current Is Nothing _
-                    OrElse System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageID.ToString)) Is Nothing Then
+            If Web.HttpContext.Current Is Nothing _
+                    OrElse Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageID.ToString)) Is Nothing Then
                 Return Nothing
             Else
-                Dim ds As DataSet = CType(System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageID.ToString)), DataSet)
+                Dim ds As DataSet = CType(Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageID.ToString)), DataSet)
                 Dim dr() As DataRow
 
                 dr = ds.Tables(0).Select(String.Format("{1} in ({0})", TranslationList, LabelDAL.COL_NAME_UI_PROG_CODE))
@@ -76,13 +76,13 @@ Public Class TranslationBase
 
         Try
 
-            If Not System.Web.HttpContext.Current Is Nothing Then
-                If System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)) Is Nothing Then
-                    System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)) = ds
+            If Web.HttpContext.Current IsNot Nothing Then
+                If Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)) Is Nothing Then
+                    Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)) = ds
                 Else
-                    Dim dsCache As DataSet = CType(System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)), DataSet)
+                    Dim dsCache As DataSet = CType(Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)), DataSet)
                     dsCache.Tables(0).Merge(ds.Tables(0))
-                    System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)) = dsCache
+                    Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)) = dsCache
                 End If
             End If
 
@@ -95,7 +95,7 @@ Public Class TranslationBase
 
         Try
 
-            If Not System.Web.HttpContext.Current Is Nothing Then
+            If Web.HttpContext.Current IsNot Nothing Then
 
                 'If no languageId is passed, then we need to look in the dataset for languages
                 If LanguageId.Trim.Equals(String.Empty) Then
@@ -104,10 +104,10 @@ Public Class TranslationBase
                     Next
                 End If
 
-                If System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId)) Is Nothing Then
+                If Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId)) Is Nothing Then
                     Exit Sub
                 Else
-                    Dim dsCache As DataSet = CType(System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId)), DataSet)
+                    Dim dsCache As DataSet = CType(Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId)), DataSet)
                     Dim boolDirty As Boolean = False
 
                     For Each dr As DataRow In ds.Tables(DictItemTranslationDAL.TABLE_NAME).Rows
@@ -122,7 +122,7 @@ Public Class TranslationBase
                     Next
 
                     If boolDirty Then
-                        System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId)) = dsCache
+                        Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId)) = dsCache
                     End If
 
                 End If
@@ -274,10 +274,10 @@ Public Class TranslationBase
         sResultString = BuildStringFromTranslationArray(aryItemsToTranslate) & ")"
 
         'Load the translation data from the database.
-        oDS = TranslationBase.GetTranslations(sResultString, CurrentLanguageID)
+        oDS = GetTranslations(sResultString, CurrentLanguageID)
 
         'set the view to use for the translation.
-        If Not oDS Is Nothing AndAlso oDS.Tables.Count > 0 Then
+        If oDS IsNot Nothing AndAlso oDS.Tables.Count > 0 Then
             oView.Table = oDS.Tables(0)
         End If
 
@@ -316,7 +316,7 @@ Public Class TranslationBase
 
 
         'Load the translation data from the database.
-        oDS = TranslationBase.GetTranslations(sResultString, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+        oDS = GetTranslations(sResultString, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
         'set the view to use for the translation.
         oView.Table = oDS.Tables(0)
@@ -393,7 +393,7 @@ Public Class TranslationBase
             'First verify that message text has all the placeholders for parameters
             For i As Integer = 0 To intParamCnt - 1
                 strPattern = "\{" & i.ToString & "\}"
-                If Not System.Text.RegularExpressions.Regex.Match(strMsgTranslated, strPattern).Success Then
+                If Not Text.RegularExpressions.Regex.Match(strMsgTranslated, strPattern).Success Then
                     blnReadyForParam = False
                     strMsgTranslated = String.Empty
                     Exit For
@@ -432,18 +432,18 @@ Public Class TranslationBase
             strFormatedParam = strParam.Substring(1)
             Select Case strParamType.ToUpper
                 Case "N"
-                    If Double.TryParse(strFormatedParam, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture, dblParam) Then
+                    If Double.TryParse(strFormatedParam, Globalization.NumberStyles.Number, Globalization.CultureInfo.InvariantCulture, dblParam) Then
                         strFormatedParam = dblParam.ToString("#,##0.00")
                     End If
                 Case "I"
-                    If Integer.TryParse(strFormatedParam, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, intParam) Then
+                    If Integer.TryParse(strFormatedParam, Globalization.NumberStyles.Integer, Globalization.CultureInfo.InvariantCulture, intParam) Then
                         strFormatedParam = intParam.ToString("#,###")
                     End If
                 Case "D"
                     'date1.ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
-                    If strFormatedParam.Length = 8 AndAlso System.Text.RegularExpressions.Regex.Match(strFormatedParam, "\d{8}").Success Then
+                    If strFormatedParam.Length = 8 AndAlso Text.RegularExpressions.Regex.Match(strFormatedParam, "\d{8}").Success Then
                         If Date.TryParse(strFormatedParam.Substring(0, 4) & "-" & strFormatedParam.Substring(4, 2) & "-" & strFormatedParam.Substring(6, 2), Globalization.CultureInfo.InvariantCulture, Globalization.DateTimeStyles.None, dtParam) Then
-                            strFormatedParam = dtParam.ToString("dd-MMM-yyyy", System.Globalization.CultureInfo.CurrentCulture)
+                            strFormatedParam = dtParam.ToString("dd-MMM-yyyy", Globalization.CultureInfo.CurrentCulture)
                         End If
                     End If
             End Select

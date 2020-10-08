@@ -58,7 +58,7 @@ Public Class PoliceStation
         Try
             Dim dal As New PoliceStationDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -407,14 +407,14 @@ Public Class PoliceStation
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PoliceStation = CType(objectToValidate, PoliceStation)
             If (String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso Not String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Or (Not String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Then
                 If String.IsNullOrEmpty(obj.PoliceStationDistrictCode) Then
-                    MyBase.Message = "Please enter District Code."
+                    Message = "Please enter District Code."
                     Return False
                 End If
             End If
@@ -428,14 +428,14 @@ Public Class PoliceStation
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PoliceStation = CType(objectToValidate, PoliceStation)
             If (String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso Not String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Or (Not String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Then
                 If String.IsNullOrEmpty(obj.PoliceStationDistrictName) Then
-                    MyBase.Message = "Please enter District Name."
+                    Message = "Please enter District Name."
                     Return False
                 End If
             End If

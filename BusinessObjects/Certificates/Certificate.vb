@@ -53,7 +53,7 @@ Public Class Certificate
     Public Const CANCELLATION_REASON_CODE_17 = "17"
 
     Public Const SEARCH_SORT_DEFAULT = CertificateDAL.SORT_BY_CUSTOMER_NAME
-    Public Const SEARCH_MAX_NUMBER_OF_ROWS = CertificateDAL.MAX_NUMBER_OF_ROWS
+    Public Const SEARCH_MAX_NUMBER_OF_ROWS = DALBase.MAX_NUMBER_OF_ROWS
     Public Const EQUIPMENT_NOT_FOUND As String = "EQUIPMENT_NOT_FOUND" ' Equipment not Found on Equipment Table. Change/Update can not be Made.
     Private _Global_IsSubscriberStatusValid As String
 
@@ -120,7 +120,7 @@ Public Class Certificate
         Try
             Dim dal As New CertificateDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -177,10 +177,8 @@ Public Class Certificate
 
     Public ReadOnly Property Product As ProductCode
         Get
-            If (_product Is Nothing) Then
-                If (DealerId <> Guid.Empty) AndAlso (Not ProductCode Is Nothing) AndAlso (ProductCode.Trim().Length > 0) Then
-                    _product = New ProductCode(DealerId, ProductCode, Dataset)
-                End If
+            If (_product Is Nothing) AndAlso (DealerId <> Guid.Empty) AndAlso (ProductCode IsNot Nothing) AndAlso (ProductCode.Trim().Length > 0) Then
+                _product = New ProductCode(DealerId, ProductCode, Dataset)
             End If
             Return _product
         End Get
@@ -188,10 +186,8 @@ Public Class Certificate
 
     Public ReadOnly Property Company As Company
         Get
-            If (_company Is Nothing) Then
-                If (CompanyId <> Guid.Empty) Then
-                    _company = New Company(CompanyId, Dataset)
-                End If
+            If (_company Is Nothing) AndAlso (CompanyId <> Guid.Empty) Then
+                _company = New Company(CompanyId, Dataset)
             End If
             Return _company
         End Get
@@ -202,7 +198,7 @@ Public Class Certificate
 
     Public ReadOnly Property Items As CertItem.ItemList
         Get
-            Return CertItem.GetItemListForCertificate(Id, Me)
+            Return GetItemListForCertificate(Id, Me)
         End Get
     End Property
 
@@ -210,7 +206,7 @@ Public Class Certificate
     <Obsolete("This method does not use DataSet Cache. Try to replace with Items Property")>
     Public ReadOnly Property CertItems As CertItemSearchDV
         Get
-            Return CertItem.GetItems(Id)
+            Return GetItems(Id)
         End Get
     End Property
 
@@ -1015,10 +1011,10 @@ Public Class Certificate
     Public ReadOnly Property DateAdded As DateType
         Get
             CheckDeleted()
-            If Row(CertificateDAL.COL_NAME_CREATED_DATE) Is DBNull.Value Then
+            If Row(DALBase.COL_NAME_CREATED_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New DateType(DateHelper.GetDateValue(Row(CertificateDAL.COL_NAME_CREATED_DATE).ToString()))
+                Return New DateType(DateHelper.GetDateValue(Row(DALBase.COL_NAME_CREATED_DATE).ToString()))
             End If
         End Get
     End Property
@@ -1026,10 +1022,10 @@ Public Class Certificate
     Public ReadOnly Property LastDateMaintained As DateType
         Get
             CheckDeleted()
-            If Row(CertificateDAL.COL_NAME_MODIFIED_DATE) Is DBNull.Value Then
+            If Row(DALBase.COL_NAME_MODIFIED_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New DateType(DateHelper.GetDateValue(Row(CertificateDAL.COL_NAME_MODIFIED_DATE).ToString()))
+                Return New DateType(DateHelper.GetDateValue(Row(DALBase.COL_NAME_MODIFIED_DATE).ToString()))
             End If
         End Get
     End Property
@@ -1727,7 +1723,7 @@ Public Class Certificate
                         _isSubscriberStatusValid = True
                         ' REQ-1251 Allow Claim if Suspended Reason code is set to Allow Cliams
                     ElseIf subStatus = Codes.SUBSCRIBER_STATUS__SUSPENDED Then
-                        If Not Suspended_Reason_Id.Equals(System.Guid.Empty) Then
+                        If Not Suspended_Reason_Id.Equals(Guid.Empty) Then
                             Dim oSR As New SuspendedReasons(Suspended_Reason_Id)
 
                             If oSR.Claim_Allowed_True Then
@@ -2649,7 +2645,7 @@ Public Class Certificate
                 bRetval = False
             Else
 
-                Throw New BOValidationException("Error:", ElitaPlus.Common.ErrorCodes.BO_INVALID_DATA)
+                Throw New BOValidationException("Error:", ErrorCodes.BO_INVALID_DATA)
             End If
             Return bRetval
         End Get
@@ -2688,7 +2684,7 @@ Public Class Certificate
             End If
 
             'check if address has source and source id populated
-            If Not addressObj Is Nothing AndAlso addressDeleted = False AndAlso addressObj.Source = String.Empty Then
+            If addressObj IsNot Nothing AndAlso addressDeleted = False AndAlso addressObj.Source = String.Empty Then
                 addressObj.Source = "CERT"
                 addressObj.SourceId = Id
             End If
@@ -2736,31 +2732,31 @@ Public Class Certificate
         Dim oCancellatioReason As Assurant.ElitaPlus.BusinessObjectsNew.CancellationReason
         Dim TodayDate As Date, CancelRulesForSFR As String
         Dim attvalue As AttributeValue = Dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_CANCEL_RULES_FOR_SFR).FirstOrDefault
-        If Not attvalue Is Nothing Then
+        If attvalue IsNot Nothing Then
             CancelRulesForSFR = attvalue.Value
         End If
         oCertCancelRequestData.errorExist = False
         If (IsNothing(certCancelReuestBO.CancellationReasonId) OrElse certCancelReuestBO.CancellationReasonId.Equals(Guid.Empty)) Then
-            oCertCancelRequestData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE
+            oCertCancelRequestData.errorCode = ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE
             oCertCancelRequestData.errorExist = True
             Exit Sub
         End If
 
         If Not oCertCancelRequestData.errorExist Then
             If certCancelReuestBO.CancellationRequestDate Is Nothing Then
-                oCertCancelRequestData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCEL_REQUEST_DATE
+                oCertCancelRequestData.errorCode = ErrorCodes.MSG_INVALID_CANCEL_REQUEST_DATE
                 oCertCancelRequestData.errorExist = True
                 Exit Sub
             End If
 
             'Invalid cancellation request date
             If (certCancelReuestBO.CancellationRequestDate < WarrantySalesDate.Value) Then
-                oCertCancelRequestData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCEL_REQUEST_DATE
+                oCertCancelRequestData.errorCode = ErrorCodes.MSG_INVALID_CANCEL_REQUEST_DATE
                 oCertCancelRequestData.errorExist = True
                 Exit Sub
             Else
                 If (certCancelReuestBO.CancellationRequestDate > TodayDate.Today) Then
-                    oCertCancelRequestData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCEL_REQUEST_DATE
+                    oCertCancelRequestData.errorCode = ErrorCodes.MSG_INVALID_CANCEL_REQUEST_DATE
                     oCertCancelRequestData.errorExist = True
                     Exit Sub
                 End If
@@ -2770,7 +2766,7 @@ Public Class Certificate
         If CancelRulesForSFR = Codes.YESNO_N Then
             If Not oCertCancelRequestData.errorExist Then
                 If certCancelReuestBO.CancellationDate Is Nothing Then
-                    oCertCancelRequestData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCELLATION_DATE
+                    oCertCancelRequestData.errorCode = ErrorCodes.MSG_INVALID_CANCELLATION_DATE
                     oCertCancelRequestData.errorExist = True
                     Exit Sub
                 End If
@@ -2778,7 +2774,7 @@ Public Class Certificate
                 'Invalid cancellation date
                 If Not (certCancelReuestBO.CancellationDate >= WarrantySalesDate.Value AndAlso
                     certCancelReuestBO.CancellationDate <= TodayDate.Today) Then
-                    oCertCancelRequestData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCELLATION_DATE
+                    oCertCancelRequestData.errorCode = ErrorCodes.MSG_INVALID_CANCELLATION_DATE
                     oCertCancelRequestData.errorExist = True
                     Exit Sub
                 End If
@@ -2792,7 +2788,7 @@ Public Class Certificate
                 End If
 
             Catch ex As ApplicationException
-                oCertCancelRequestData.errorCode = Common.ErrorCodes.INVALID_BANKIBANNO_INVALID
+                oCertCancelRequestData.errorCode = ErrorCodes.INVALID_BANKIBANNO_INVALID
                 oCertCancelRequestData.errorExist = True
             End Try
 
@@ -2801,21 +2797,21 @@ Public Class Certificate
 
         If Not oCertCancelRequestData.errorExist Then
             If CancReqCommentBO.CommentTypeId.Equals(Guid.Empty) Then
-                oCertCancelRequestData.errorCode = Common.ErrorCodes.GUI_JUSTIFICATION_MUST_BE_SELECTED_ERR
+                oCertCancelRequestData.errorCode = ErrorCodes.GUI_JUSTIFICATION_MUST_BE_SELECTED_ERR
                 oCertCancelRequestData.errorExist = True
             End If
         End If
 
         If Not oCertCancelRequestData.errorExist Then
             If CancReqCommentBO.CallerName = String.Empty Then
-                oCertCancelRequestData.errorCode = Common.ErrorCodes.MSG_CALLER_NAME_REQUIRED
+                oCertCancelRequestData.errorCode = ErrorCodes.MSG_CALLER_NAME_REQUIRED
                 oCertCancelRequestData.errorExist = True
             End If
         End If
 
         If Not oCertCancelRequestData.errorExist Then
             If CancReqCommentBO.Comments = String.Empty Then
-                oCertCancelRequestData.errorCode = Common.ErrorCodes.GUI_COMMENTS_ARE_REQUIRED
+                oCertCancelRequestData.errorCode = ErrorCodes.GUI_COMMENTS_ARE_REQUIRED
                 oCertCancelRequestData.errorExist = True
             End If
         End If
@@ -2850,8 +2846,8 @@ Public Class Certificate
 
 
         'Invalid cancellation date
-        If (certCancellationBO.CancellationDate Is Nothing AndAlso Not Microsoft.VisualBasic.IsDate(certCancellationBO.CancellationDate)) Then
-            oCancelCertificateData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCELLATION_DATE
+        If (certCancellationBO.CancellationDate Is Nothing AndAlso Not IsDate(certCancellationBO.CancellationDate)) Then
+            oCancelCertificateData.errorCode = ErrorCodes.MSG_INVALID_CANCELLATION_DATE
             oCancelCertificateData.errorExist = True
         End If
 
@@ -2877,28 +2873,26 @@ Public Class Certificate
                     If (oCertInstallment Is Nothing OrElse oCertInstallment.BillingStatusId.Equals(LookupListNew.GetIdFromCode(BillingStatusDv, Codes.IN_COLLECTION))) AndAlso
                             oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__22)) Then
                         'Throw New BOValidationException("CancelCertificate Error: ", Common.ErrorCodes.ERR_MSG_CERT_INSTALLMENT_INCOLLECTION_STATUS)
-                        oCancelCertificateData.errorCode = Common.ErrorCodes.ERR_MSG_CERT_INSTALLMENT_INCOLLECTION_STATUS
+                        oCancelCertificateData.errorCode = ErrorCodes.ERR_MSG_CERT_INSTALLMENT_INCOLLECTION_STATUS
                         oCancelCertificateData.errorExist = True
                     End If
                 End If
 
                 If (Not oCancelCertificateData.errorExist AndAlso paymentTypeCode.ToString = PAYMENT_PRE_AUTHORIZED AndAlso Not oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__22))) Then
                     'Throw New BOValidationException("CancelCertificate Error: ", Common.ErrorCodes.ERR_MSG_INVALID_CANCEL_REASON_CODE_FOR_PRE_AUTH_CERTS)
-                    oCancelCertificateData.errorCode = Common.ErrorCodes.ERR_MSG_INVALID_CANCEL_REASON_CODE_FOR_PRE_AUTH_CERTS
+                    oCancelCertificateData.errorCode = ErrorCodes.ERR_MSG_INVALID_CANCEL_REASON_CODE_FOR_PRE_AUTH_CERTS
                     oCancelCertificateData.errorExist = True
                 End If
 
-                If (Not oCancelCertificateData.errorExist) AndAlso (Not paymentTypeCode Is Nothing) AndAlso (paymentTypeCode.ToString = PAYMENT_BY_DIRECT_DEBIT) Then
+                If (Not oCancelCertificateData.errorExist) AndAlso (paymentTypeCode IsNot Nothing) AndAlso (paymentTypeCode.ToString = PAYMENT_BY_DIRECT_DEBIT) Then
                     If Not (oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__16))) Then
                         If Not (oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__17))) Then
                             If Not (oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__20))) Then
                                 If Not (oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__21))) Then
-                                    If Not (oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__2))) Then
-                                        If Not (oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__22))) Then
-                                            'If oCancelCertificateData.cancellationCode <> CANCELLATION_REASON_CODE_16 AndAlso oCancelCertificateData.cancellationCode <> CANCELLATION_REASON_CODE_17 Then
-                                            oCancelCertificateData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE
-                                            oCancelCertificateData.errorExist = True
-                                        End If
+                                    If Not (oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__2))) AndAlso Not (oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__22))) Then
+                                        'If oCancelCertificateData.cancellationCode <> CANCELLATION_REASON_CODE_16 AndAlso oCancelCertificateData.cancellationCode <> CANCELLATION_REASON_CODE_17 Then
+                                        oCancelCertificateData.errorCode = ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE
+                                        oCancelCertificateData.errorExist = True
 
                                     End If
                                 End If
@@ -2914,7 +2908,7 @@ Public Class Certificate
                 If Not isClaimOrOfficeManager Then
                     Dim dtMaxLossDate As Date = MaxClaimLossDateForCertificate(Id)
                     If Not certCancellationBO.CancellationDate.Value > dtMaxLossDate Then
-                        oCancelCertificateData.errorCode = Common.ErrorCodes.MSG_CERT_CANCELDATE_CANNOT_LOWER_THAN_CLAIM_LOSSDATE
+                        oCancelCertificateData.errorCode = ErrorCodes.MSG_CERT_CANCELDATE_CANNOT_LOWER_THAN_CLAIM_LOSSDATE
                         oCancelCertificateData.errorExist = True
                     End If
                 End If
@@ -2922,13 +2916,13 @@ Public Class Certificate
                 ' Based on Refund Compute Method
                 'refundMDv = LookupListNew.GetRefundComputeMethodLookupList(Authentication.LangId)
                 If (oCancellatioReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__12))) Then
-                    If (Certificate.AreThereClaimsForCancelCert(DealerId, CertNumber) = True) Then
-                        oCancelCertificateData.errorCode = Common.ErrorCodes.MSG_CERT_CANCEL_CANNOT_HAVE_CLAIMS
+                    If (AreThereClaimsForCancelCert(DealerId, CertNumber) = True) Then
+                        oCancelCertificateData.errorCode = ErrorCodes.MSG_CERT_CANCEL_CANNOT_HAVE_CLAIMS
                         oCancelCertificateData.errorExist = True
                     End If
                 End If
             Else
-                oCancelCertificateData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE
+                oCancelCertificateData.errorCode = ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE
                 oCancelCertificateData.errorExist = True
             End If
         End If
@@ -2964,21 +2958,21 @@ Public Class Certificate
                 If attValueComputeCancellation Is Nothing OrElse attValueComputeCancellation.Value = Codes.YESNO_N Then
                     If Not (oCancelCertificateData.cancellationDate >= WarrantySalesDate.Value AndAlso
                             oCancelCertificateData.cancellationDate <= TodayDate.Today) Then
-                        oCancelCertificateData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCELLATION_DATE
+                        oCancelCertificateData.errorCode = ErrorCodes.MSG_INVALID_CANCELLATION_DATE
                         oCancelCertificateData.inputAmountRequiredMissing = True
                         oCancelCertificateData.errorExist2 = True
                     End If
                 Else
                     If Not (oCancelCertificateData.cancellationDate >= WarrantySalesDate.Value AndAlso
                             certCancellationBO.CancellationRequestedDate <= TodayDate.Today) Then
-                        oCancelCertificateData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCELLATION_DATE
+                        oCancelCertificateData.errorCode = ErrorCodes.MSG_INVALID_CANCELLATION_DATE
                         oCancelCertificateData.inputAmountRequiredMissing = True
                         oCancelCertificateData.errorExist2 = True
                     End If
                 End If
             Else
                 If (oCancelCertificateData.cancellationDate < WarrantySalesDate.Value) Then
-                    oCancelCertificateData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCELLATION_DATE
+                    oCancelCertificateData.errorCode = ErrorCodes.MSG_INVALID_CANCELLATION_DATE
                     oCancelCertificateData.inputAmountRequiredMissing = True
                     oCancelCertificateData.errorExist2 = True
                 End If
@@ -2986,17 +2980,17 @@ Public Class Certificate
 
             'Input Amount Required and no monthly payments
 
-            If Not MonthlyPayments Is Nothing Then
+            If MonthlyPayments IsNot Nothing Then
                 If (inputAmountRequired AndAlso MonthlyPayments.Value = 0) Then
                     oCancelCertificateData.inputAmountRequiredMissing = True
-                    oCancelCertificateData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE
+                    oCancelCertificateData.errorCode = ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE
                     oCancelCertificateData.errorExist2 = True
 
                 End If
             Else
                 If inputAmountRequired Then
                     oCancelCertificateData.inputAmountRequiredMissing = True
-                    oCancelCertificateData.errorCode = Common.ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE
+                    oCancelCertificateData.errorCode = ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE
                     oCancelCertificateData.errorExist2 = True
 
                 End If
@@ -3006,7 +3000,7 @@ Public Class Certificate
             If inputAmountRequired AndAlso (oCancelCertificateData.customerPaid > Convert.ToDecimal(0)) _
     AndAlso (oCancelCertificateData.customerPaid > oCancelCertificateData.grossAmtReceived) Then
                 oCancelCertificateData.inputAmountRequiredMissing = True
-                oCancelCertificateData.errorCode = Common.ErrorCodes.MSG_INVALID_AMOUNT_ENTERED
+                oCancelCertificateData.errorCode = ErrorCodes.MSG_INVALID_AMOUNT_ENTERED
                 oCancelCertificateData.errorExist2 = True
 
             End If
@@ -3028,16 +3022,16 @@ Public Class Certificate
 
 
         CertCancellation.SetProcessCancellationData(oCancelCertificateData, Me, oCertCanc)
-        If Not oBankInfo Is Nothing Then
+        If oBankInfo IsNot Nothing Then
             oBankInfoData = New BankInfoData
             BankInfo.SetProcessCancellationData(oBankInfoData, oBankInfo)
-        ElseIf Not oPaymentOrderInfo Is Nothing Then
+        ElseIf oPaymentOrderInfo IsNot Nothing Then
             oBankInfoData = New BankInfoData
             PaymentOrderInfo.SetProcessCancellationData(oBankInfoData, oPaymentOrderInfo)
         Else
             oBankInfoData = Nothing
         End If
-        If Not oCertCancelComment Is Nothing Then
+        If oCertCancelComment IsNot Nothing Then
             oCommentData = New CommentData
             Comment.SetProcessCancellationData(oCommentData, oCertCancelComment)
         Else
@@ -3064,17 +3058,17 @@ Public Class Certificate
 
         CertCancellation.SetProcessCancellationData(oCancelCertificateData, Me, oCertCanc)
 
-        If Not oBankInfo Is Nothing Then
+        If oBankInfo IsNot Nothing Then
             oBankInfoData = New BankInfoData
             BankInfo.SetProcessCancellationData(oBankInfoData, oBankInfo)
-        ElseIf Not oPaymentOrderInfo Is Nothing Then
+        ElseIf oPaymentOrderInfo IsNot Nothing Then
             oBankInfoData = New BankInfoData
             PaymentOrderInfo.SetProcessCancellationData(oBankInfoData, oPaymentOrderInfo)
         Else
             oBankInfoData = Nothing
         End If
 
-        If Not oCertCancelComment Is Nothing Then
+        If oCertCancelComment IsNot Nothing Then
             oCommentData = New CommentData
             Comment.SetProcessCancellationData(oCommentData, oCertCancelComment)
         Else
@@ -3098,8 +3092,8 @@ Public Class Certificate
         Dim certId As Guid = Guid.Empty
         Dim certObj As Certificate = Nothing
 
-        If Not dsCert Is Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
-            If Not dsCert.Tables(0).Rows(0).Item("cert_id") Is DBNull.Value Then
+        If dsCert IsNot Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
+            If dsCert.Tables(0).Rows(0).Item("cert_id") IsNot DBNull.Value Then
                 certId = New Guid(CType(dsCert.Tables(0).Rows(0).Item("cert_id"), Byte()))
                 If Not certId.Equals(Guid.Empty) Then
                     certObj = New Certificate(certId)
@@ -3167,7 +3161,7 @@ Public Class Certificate
                                 addressMask As String, postalCodeMask As String,
                                 taxIdMask As String, dealerName As String,
                                 Optional ByVal sortBy As String = CertificateDAL.SORT_BY_CUSTOMER_NAME,
-                                Optional ByVal LimitResultset As Int32 = CertificateDAL.MAX_NUMBER_OF_ROWS,
+                                Optional ByVal LimitResultset As Int32 = DALBase.MAX_NUMBER_OF_ROWS,
                                 Optional ByVal accountNum As String = "",
                                 Optional ByVal certStatus As String = "",
                                 Optional ByVal invoiceNum As String = "") As CertificateSearchDV
@@ -3250,7 +3244,7 @@ Public Class Certificate
                                                        Optional ByVal Service_line_number As String = "",
                                                        Optional ByVal isDPO As Boolean = True,
                                                        Optional ByVal sortBy As String = CertificateDAL.SORT_BY_CUSTOMER_NAME,
-                                                       Optional ByVal LimitResultset As Int32 = CertificateDAL.MAX_NUMBER_OF_ROWS
+                                                       Optional ByVal LimitResultset As Int32 = DALBase.MAX_NUMBER_OF_ROWS
                                                        ) As CombinedCertificateSearchDV
 
         Try
@@ -3302,17 +3296,17 @@ Public Class Certificate
             'Show error message if entering wild card "*" in any field in the certificate search screen and keeping other fields blank.
 
             If (dealerName Is Nothing AndAlso
-                   (certNumberMask.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(certNumberMask, SEARCH_REGEX) AndAlso certNumberMask.Length = 1)) AndAlso
-                   (customerNameMask.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(customerNameMask, SEARCH_REGEX) AndAlso customerNameMask.Length = 1)) AndAlso
-                   (taxId.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(taxId, SEARCH_REGEX) AndAlso taxId.Length = 1)) AndAlso
-                   (invoiceNumber.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(invoiceNumber, SEARCH_REGEX) AndAlso invoiceNumber.Length = 1)) AndAlso
-                   (accountNumber.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(accountNumber, SEARCH_REGEX) AndAlso accountNumber.Length = 1)) AndAlso
-                   (addressMask.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(addressMask, SEARCH_REGEX) AndAlso addressMask.Length = 1)) AndAlso
-                   (serialNumber.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(serialNumber, SEARCH_REGEX) AndAlso serialNumber.Length = 1)) AndAlso
-                   (Service_line_number.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(Service_line_number, SEARCH_REGEX) AndAlso Service_line_number.Length = 1)) AndAlso
-                   (PhoneMask.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(PhoneMask, SEARCH_REGEX) AndAlso PhoneMask.Length = 1)) AndAlso
-                   (postalCodeMask.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(postalCodeMask, SEARCH_REGEX) AndAlso postalCodeMask.Length = 1)) AndAlso
-                   (vehicleLicenseNumber.Equals(String.Empty) OrElse (System.Text.RegularExpressions.Regex.IsMatch(vehicleLicenseNumber, SEARCH_REGEX) AndAlso vehicleLicenseNumber.Length = 1))) Then
+                   (certNumberMask.Equals(String.Empty) OrElse (Text.RegularExpressions.Regex.IsMatch(certNumberMask, SEARCH_REGEX) AndAlso certNumberMask.Length = 1)) AndAlso
+                   (customerNameMask.Equals(String.Empty) OrElse (Text.RegularExpressions.Regex.IsMatch(customerNameMask, SEARCH_REGEX) AndAlso customerNameMask.Length = 1)) AndAlso
+                   (taxId.Equals(String.Empty) OrElse (Text.RegularExpressions.Regex.IsMatch(taxId, SEARCH_REGEX) AndAlso taxId.Length = 1)) AndAlso
+                   (invoiceNumber.Equals(String.Empty) OrElse (Text.RegularExpressions.Regex.IsMatch(invoiceNumber, SEARCH_REGEX) AndAlso invoiceNumber.Length = 1)) AndAlso
+                   (accountNumber.Equals(String.Empty) OrElse (Text.RegularExpressions.Regex.IsMatch(accountNumber, SEARCH_REGEX) AndAlso accountNumber.Length = 1)) AndAlso
+                   (addressMask.Equals(String.Empty) OrElse (Text.RegularExpressions.Regex.IsMatch(addressMask, SEARCH_REGEX) AndAlso addressMask.Length = 1)) AndAlso
+                   (serialNumber.Equals(String.Empty) OrElse (Text.RegularExpressions.Regex.IsMatch(serialNumber, SEARCH_REGEX) AndAlso serialNumber.Length = 1)) AndAlso
+                   (Service_line_number.Equals(String.Empty) OrElse (Text.RegularExpressions.Regex.IsMatch(Service_line_number, SEARCH_REGEX) AndAlso Service_line_number.Length = 1)) AndAlso
+                   (PhoneMask.Equals(String.Empty) OrElse (Text.RegularExpressions.Regex.IsMatch(PhoneMask, SEARCH_REGEX) AndAlso PhoneMask.Length = 1)) AndAlso
+                   (postalCodeMask.Equals(String.Empty) OrElse (Text.RegularExpressions.Regex.IsMatch(postalCodeMask, SEARCH_REGEX) AndAlso postalCodeMask.Length = 1)) AndAlso
+                   (vehicleLicenseNumber.Equals(String.Empty) OrElse (Text.RegularExpressions.Regex.IsMatch(vehicleLicenseNumber, SEARCH_REGEX) AndAlso vehicleLicenseNumber.Length = 1))) Then
                 isInValidData = True
                 Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION_INFORCE_DATE, GetType(Certificate), Nothing, "Search", Nothing)}
                 Throw New BOValidationException(errors, GetType(Certificate).FullName)
@@ -3390,10 +3384,10 @@ Public Class Certificate
             Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
 
             If Dealer.GetOlitaSearchType(DealerId).Equals(Codes.OLITA_SEARCH_GENERIC) Then
-                If Not BranchCode Is Nothing AndAlso Not BranchCode.Equals(String.Empty) Then BranchCode += "*"
-                If Not CertificateNumber Is Nothing AndAlso Not CertificateNumber.Equals(String.Empty) Then CertificateNumber += "*"
-                If Not CustomerName Is Nothing AndAlso Not CustomerName.Equals(String.Empty) Then CustomerName += "*"
-                If Not Email Is Nothing AndAlso Not Email.Equals(String.Empty) Then Email += "*"
+                If BranchCode IsNot Nothing AndAlso Not BranchCode.Equals(String.Empty) Then BranchCode += "*"
+                If CertificateNumber IsNot Nothing AndAlso Not CertificateNumber.Equals(String.Empty) Then CertificateNumber += "*"
+                If CustomerName IsNot Nothing AndAlso Not CustomerName.Equals(String.Empty) Then CustomerName += "*"
+                If Email IsNot Nothing AndAlso Not Email.Equals(String.Empty) Then Email += "*"
             End If
 
             Dim LimitResultSet_Low, LimitResultSet_High As Integer
@@ -3491,7 +3485,7 @@ Public Class Certificate
                                                          postalCodeMask As String, dealerName As String, companyGroupId As Guid,
                                                          networkId As String,
                                                          Optional ByVal sortBy As String = CertificateDAL.SORT_BY_PHONE_NUMBER,
-                                                         Optional ByVal LimitResultset As Int32 = CertificateDAL.MAX_NUMBER_OF_ROWS) As PhoneNumberSearchDV
+                                                         Optional ByVal LimitResultset As Int32 = DALBase.MAX_NUMBER_OF_ROWS) As PhoneNumberSearchDV
         Try
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
             Dim dal As New CertificateDAL
@@ -3619,7 +3613,7 @@ Public Class Certificate
         Dim ds As DataSet
         Dim dtMasLoss As Date = Date.MinValue, intClaimCnt As Integer
         ds = dal.getMaxClaimsLossDate(certId)
-        If (Not ds.Tables(0) Is Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
+        If (ds.Tables(0) IsNot Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
             If True Then
                 intClaimCnt = CType(ds.Tables(0).Rows(0)(CertificateDAL.COL_NAME_CLAIM_COUNT), Integer)
                 If intClaimCnt > 0 Then
@@ -3661,7 +3655,7 @@ Public Class Certificate
         '  ds = dal.ClaimsForCancelCert(dealerId, certNumber)
         ' CancelNotClosedCert
         ds = dal.ClaimsForCancelNotClosedCert(dealerId, certNumber)
-        If (Not ds.Tables(0) Is Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
+        If (ds.Tables(0) IsNot Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
             intClaimCnt = CType(ds.Tables(0).Rows(0)(CertificateDAL.COL_NAME_CLAIM_COUNT), Integer)
             If intClaimCnt > 0 Then
                 areThereClaims = True
@@ -3670,7 +3664,7 @@ Public Class Certificate
         If areThereClaims = False Then
             ' PaidCert
             ds = dal.ClaimsForCancelPaidCert(dealerId, certNumber)
-            If (Not ds.Tables(0) Is Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
+            If (ds.Tables(0) IsNot Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
                 intClaimCnt = CType(ds.Tables(0).Rows(0)(CertificateDAL.COL_NAME_CLAIM_COUNT), Integer)
                 If intClaimCnt > 0 Then
                     areThereClaims = True
@@ -3686,7 +3680,7 @@ Public Class Certificate
         Dim ds As DataSet
         Dim intClaimCnt As Integer
         ds = dal.TotalClaimsNotClosedForCert(dealerId, certNumber)
-        If (Not ds.Tables(0) Is Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
+        If (ds.Tables(0) IsNot Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
             intClaimCnt = CType(ds.Tables(0).Rows(0)(CertificateDAL.COL_NAME_TOTAL_NUMBER_OF_CLAIMS), Integer)
             If intClaimCnt > 0 Then
                 areThereActiveClaims = True
@@ -3701,7 +3695,7 @@ Public Class Certificate
         Dim ds As DataSet
         Dim intClaimCnt As Integer
         ds = dal.ActiveClaimExist(dealerId, certNumber, cancelDate)
-        If (Not ds.Tables(0) Is Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
+        If (ds.Tables(0) IsNot Nothing) AndAlso (ds.Tables(0).Rows.Count > 0) Then
             intClaimCnt = CType(ds.Tables(0).Rows(0)(CertificateDAL.COL_NAME_TOTAL_NUMBER_OF_CLAIMS), Integer)
             If intClaimCnt > 0 Then
                 areThereActiveClaims = True
@@ -3724,7 +3718,7 @@ Public Class Certificate
 
         Get
             Dim dv As DataView = LookupListNew.GetPaymentTypeLookupList()
-            paymentTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENT_TYPES, PaymentTypeId)
+            paymentTypeCode = LookupListNew.GetCodeFromId(LookupListCache.LK_PAYMENT_TYPES, PaymentTypeId)
             Return paymentTypeCode
         End Get
 
@@ -3735,7 +3729,7 @@ Public Class Certificate
         Get
             If CollectionMethodCode Is Nothing Then
                 Dim objPaymentType As New PaymentType(PaymentTypeId)
-                CollectionMethodCode = LookupListNew.GetCodeFromId(LookupListNew.LK_COLLECTION_METHODS, objPaymentType.CollectionMethodId)
+                CollectionMethodCode = LookupListNew.GetCodeFromId(LookupListCache.LK_COLLECTION_METHODS, objPaymentType.CollectionMethodId)
             End If
 
             Return CollectionMethodCode
@@ -3748,7 +3742,7 @@ Public Class Certificate
         Get
             If PaymentInstrumentCode Is Nothing Then
                 Dim objPaymentType As New PaymentType(PaymentTypeId)
-                PaymentInstrumentCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENT_INSTRUMENT, objPaymentType.PaymentInstrumentId)
+                PaymentInstrumentCode = LookupListNew.GetCodeFromId(LookupListCache.LK_PAYMENT_INSTRUMENT, objPaymentType.PaymentInstrumentId)
             End If
 
             Return PaymentInstrumentCode
@@ -3801,7 +3795,7 @@ Public Class Certificate
 
         Get
             Dim oDealer As New Dealer(DealerId)
-            getCancelationRequestFlag = LookupListNew.GetCodeFromId(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, oDealer.CancellationRequestFlagId)
+            getCancelationRequestFlag = LookupListNew.GetCodeFromId(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, oDealer.CancellationRequestFlagId)
             Return getCancelationRequestFlag
         End Get
 
@@ -3809,7 +3803,7 @@ Public Class Certificate
     Public ReadOnly Property getProdUpgradeProgramCode As String
         Get
             If Not Product.UpgradeProgramId.Equals(Guid.Empty) Then
-                productUpgradeProgram = LookupListNew.GetCodeFromId(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Product.UpgradeProgramId)
+                productUpgradeProgram = LookupListNew.GetCodeFromId(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Product.UpgradeProgramId)
                 Return productUpgradeProgram
             Else
                 Return String.Empty
@@ -3819,7 +3813,7 @@ Public Class Certificate
     Public ReadOnly Property getUpgradeTermUOMCode As String
         Get
             If Not UpgradeTermUomId.Equals(Guid.Empty) Then
-                UpgradeTermUOM = LookupListNew.GetCodeFromId(LookupListNew.LK_UPGRADE_TERM_UNIT_OF_MEASURE, UpgradeTermUomId)
+                UpgradeTermUOM = LookupListNew.GetCodeFromId(LookupListCache.LK_UPGRADE_TERM_UNIT_OF_MEASURE, UpgradeTermUomId)
                 Return UpgradeTermUOM
             Else
                 Return String.Empty
@@ -3847,7 +3841,7 @@ Public Class Certificate
 
         ds = dal.getCertCancellationID(Id)
         dv = ds.Tables(CertificateDAL.TABLE_CANCEL_ID).DefaultView
-        If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
+        If dv IsNot Nothing AndAlso dv.Table.Rows.Count > 0 Then
             Return New Guid(CType(dv(0)(0), Byte()))
         End If
     End Function
@@ -3873,7 +3867,7 @@ Public Class Certificate
 
         ds = dal.getCertInstalBankInfoID(Id)
         dv = ds.Tables(CertificateDAL.TABLE_CANCEL_ID).DefaultView
-        If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
+        If dv IsNot Nothing AndAlso dv.Table.Rows.Count > 0 Then
             Return New Guid(CType(dv(0)(0), Byte()))
         Else
             Return Guid.Empty
@@ -3909,7 +3903,7 @@ Public Class Certificate
             If oContract Is Nothing Then
                 oContract = Contract.GetMaxExpirationContract(DealerId)
                 If oContract Is Nothing Then
-                    Throw New DataNotFoundException(Common.ErrorCodes.NO_CONTRACT_FOUND)
+                    Throw New DataNotFoundException(ErrorCodes.NO_CONTRACT_FOUND)
                 End If
             End If
             ValFlag = getValTypeCode(oContract.ID_Validation_Id)
@@ -3951,7 +3945,7 @@ Public Class Certificate
     Public ReadOnly Property IsCompanyTypeInsurance As Boolean
         Get
             Dim oCompanyNew As Company = New Company(CompanyId)
-            If oCompanyNew.CompanyTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_COMPANY_TYPE, COMPANY_TYPE_INSURANCE)) Then
+            If oCompanyNew.CompanyTypeId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_COMPANY_TYPE, COMPANY_TYPE_INSURANCE)) Then
                 Return True
             End If
 
@@ -3963,7 +3957,7 @@ Public Class Certificate
     Public ReadOnly Property getMasterclaimProcFlag As String
         Get
             Dim oCompanyNew As Company = New Company(CompanyId)
-            masterClaimProc = LookupListNew.GetCodeFromId(LookupListNew.LK_MASTERCLAIMPROC, oCompanyNew.MasterClaimProcessingId)
+            masterClaimProc = LookupListNew.GetCodeFromId(LookupListCache.LK_MASTERCLAIMPROC, oCompanyNew.MasterClaimProcessingId)
             Return masterClaimProc
         End Get
     End Property
@@ -3972,7 +3966,7 @@ Public Class Certificate
 
         Get
             Dim dv As DataView = LookupListNew.GetDocumentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            documentTypeDesc = LookupListNew.GetDescriptionFromId(LookupListNew.LK_DOCUMENT_TYPES, DocumentTypeID)
+            documentTypeDesc = LookupListNew.GetDescriptionFromId(LookupListCache.LK_DOCUMENT_TYPES, DocumentTypeID)
             Return documentTypeDesc
         End Get
 
@@ -3981,7 +3975,7 @@ Public Class Certificate
     Public ReadOnly Property getDocTypeCode As String
         Get
             Dim dv As DataView = LookupListNew.GetDocumentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            documentTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_DOCUMENT_TYPES, DocumentTypeID)
+            documentTypeCode = LookupListNew.GetCodeFromId(LookupListCache.LK_DOCUMENT_TYPES, DocumentTypeID)
             Return documentTypeCode
         End Get
 
@@ -3990,7 +3984,7 @@ Public Class Certificate
     Public ReadOnly Property getValTypeCode(ID As Guid) As String
         Get
             Dim dv As DataView = LookupListNew.GetDocumentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            ValTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATION_TYPES, ID)
+            ValTypeCode = LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATION_TYPES, ID)
             Return ValTypeCode
 
         End Get
@@ -4038,7 +4032,7 @@ Public Class Certificate
         Dim BundleItemProductCode As Generic.List(Of String) = Nothing
         Dim i As Integer, objItem As CertAddController.BundledItem
 
-        If (Not BundleItems Is Nothing) AndAlso BundleItems.Count > 0 Then
+        If (BundleItems IsNot Nothing) AndAlso BundleItems.Count > 0 Then
             If BundleItems.Count > CertAddController.MAX_BUNDLED_ITEMS_ALLOWED Then
                 ErrMsg = TranslationBase.TranslateLabelOrMessage(CertAddController.ERR_TOO_MANY_BUNDLED_ITEMS)
                 Return False
@@ -4294,7 +4288,7 @@ Public Class Certificate
 #Region "Web Svc Methods"
 
 
-    Public Shared Function GetOlitaConsumerCertList(cert_number As String, dealerId As Guid, Optional ByVal InvoiceNumberMask As String = Nothing, Optional ByVal LimitResultset As Int32 = CertificateDAL.MAX_NUMBER_OF_ROWS) As DataSet
+    Public Shared Function GetOlitaConsumerCertList(cert_number As String, dealerId As Guid, Optional ByVal InvoiceNumberMask As String = Nothing, Optional ByVal LimitResultset As Int32 = DALBase.MAX_NUMBER_OF_ROWS) As DataSet
         Dim dal As New CertificateDAL
         Dim ds As DataSet
         Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -4406,7 +4400,7 @@ Public Class Certificate
 
             If WSUtility.IsGuid(sSortBy) Then
                 Dim guidSortBy As New Guid(sSortBy)
-                sSortBy = LookupListNew.GetCodeFromId(LookupListNew.LK_CERTIFICATE_SEARCH_FIELDS, guidSortBy)
+                sSortBy = LookupListNew.GetCodeFromId(LookupListCache.LK_CERTIFICATE_SEARCH_FIELDS, guidSortBy)
             End If
 
             dv = GetCertificatesList(sCertNum, sCustName, sAddress, sZIP, sTaxID, sDealerCode, sSortBy, iLimitResultset)
@@ -4532,7 +4526,7 @@ Public Class Certificate
     End Function
 
     Public Shared Function OlitaGetCertificatesList(certNumberMask As String, customerNameMask As String,
-                        CustomerPhoneMask As String, Optional ByVal sortBy As String = CertificateDAL.SORT_BY_CERT_NUMBER, Optional ByVal LimitResultset As Int32 = CertificateDAL.MAX_NUMBER_OF_ROWS) As DataSet
+                        CustomerPhoneMask As String, Optional ByVal sortBy As String = CertificateDAL.SORT_BY_CERT_NUMBER, Optional ByVal LimitResultset As Int32 = DALBase.MAX_NUMBER_OF_ROWS) As DataSet
 
         Try
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -4687,16 +4681,16 @@ Public Class Certificate
         Public Function AddNewRowToEmptyDV() As PhoneNumberSearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(PhoneNumberSearchDV.COL_CERTIFICATE_ID) = (New Guid()).ToByteArray
-            row(PhoneNumberSearchDV.COL_CERTIFICATE_NUMBER) = ""
-            row(PhoneNumberSearchDV.COL_CUSTOMER_NAME) = ""
-            row(PhoneNumberSearchDV.COL_ADDRESS) = ""
-            row(PhoneNumberSearchDV.COL_ZIP) = ""
-            row(PhoneNumberSearchDV.COL_DEALER) = ""
-            row(PhoneNumberSearchDV.COL_STATUS_CODE) = ""
-            row(PhoneNumberSearchDV.COL_PRODUCT_CODE) = ""
-            row(PhoneNumberSearchDV.COL_HOME_PHONE) = ""
-            row(PhoneNumberSearchDV.COL_WORK_PHONE) = ""
+            row(COL_CERTIFICATE_ID) = (New Guid()).ToByteArray
+            row(COL_CERTIFICATE_NUMBER) = ""
+            row(COL_CUSTOMER_NAME) = ""
+            row(COL_ADDRESS) = ""
+            row(COL_ZIP) = ""
+            row(COL_DEALER) = ""
+            row(COL_STATUS_CODE) = ""
+            row(COL_PRODUCT_CODE) = ""
+            row(COL_HOME_PHONE) = ""
+            row(COL_WORK_PHONE) = ""
             dt.Rows.Add(row)
             Return New PhoneNumberSearchDV(dt)
         End Function
@@ -4763,7 +4757,7 @@ Public Class Certificate
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.FUTURE_WARRANTY_PRODUCT_SALE_DATES_NOT_ALLOWED)
+            MyBase.New(fieldDisplayName, ErrorCodes.FUTURE_WARRANTY_PRODUCT_SALE_DATES_NOT_ALLOWED)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -4786,7 +4780,7 @@ Public Class Certificate
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_FIELD_NUMBER_REQUIRED)
+            MyBase.New(fieldDisplayName, ErrorCodes.GUI_FIELD_NUMBER_REQUIRED)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -4810,17 +4804,19 @@ Public Class Certificate
                     If obj.RgNumber Is Nothing AndAlso obj.DocumentAgency Is Nothing AndAlso obj.DocumentIssueDate Is Nothing AndAlso obj.IdType Is Nothing Then
                         Return True
                     Else
-                        MyBase.Message = Common.ErrorCodes.GUI_FIELD_MUST_BE_BLANK
+                        Message = ErrorCodes.GUI_FIELD_MUST_BE_BLANK
                         Return False
                     End If
                 End If
 
                 'DOC_TYPE_CPF
                 'VSC
-                If (LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, DealerTypeCode) = "2" AndAlso UCase(DocType) = DOC_TYPE_CPF) Then
-                    If obj.RgNumber Is Nothing AndAlso obj.DocumentAgency Is Nothing AndAlso obj.DocumentIssueDate Is Nothing AndAlso obj.IdType Is Nothing Then
-                        Return False
-                    End If
+                If _
+                    (LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, DealerTypeCode) = "2" AndAlso
+                     UCase(DocType) = DOC_TYPE_CPF) AndAlso
+                    (obj.RgNumber Is Nothing AndAlso obj.DocumentAgency Is Nothing AndAlso
+                     obj.DocumentIssueDate Is Nothing AndAlso obj.IdType Is Nothing) Then
+                    Return False
                 End If
 
                 'ESC
@@ -4845,7 +4841,7 @@ Public Class Certificate
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_DOCUMENT_TYPE_REQUIRED)
+            MyBase.New(fieldDisplayName, ErrorCodes.GUI_DOCUMENT_TYPE_REQUIRED)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -4870,7 +4866,7 @@ Public Class Certificate
                     OrElse UCase(docType) = DOC_TYPE_CNPJ Then
                     Return True
                 Else
-                    MyBase.Message = UCase(Common.ErrorCodes.GUI_DOCUMENT_TYPE_4)
+                    Message = UCase(ErrorCodes.GUI_DOCUMENT_TYPE_4)
                     Return False
                 End If
 
@@ -4883,7 +4879,7 @@ Public Class Certificate
                OrElse UCase(docType) = DOC_TYPE_CNPJ Then
                 Return True
             Else
-                MyBase.Message = UCase(Common.ErrorCodes.GUI_DOCUMENT_TYPE)
+                Message = UCase(ErrorCodes.GUI_DOCUMENT_TYPE)
                 Return False
             End If
 
@@ -4895,7 +4891,7 @@ Public Class Certificate
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_FIELD_MUST_BE_BLANK)
+            MyBase.New(fieldDisplayName, ErrorCodes.GUI_FIELD_MUST_BE_BLANK)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -4931,7 +4927,7 @@ Public Class Certificate
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.FUTURE_DATES_NOT_ALLOWED)
+            MyBase.New(fieldDisplayName, ErrorCodes.FUTURE_DATES_NOT_ALLOWED)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -4942,7 +4938,7 @@ Public Class Certificate
             End If
 
             If obj.ValFlag = VALIDATION_FLAG_FULL Then
-                If Not obj.DocumentIssueDate Is Nothing Then
+                If obj.DocumentIssueDate IsNot Nothing Then
                     If obj.DocumentIssueDate.Value > Date.Today Then
                         Return False
                     End If
@@ -4959,7 +4955,7 @@ Public Class Certificate
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.ERROR_FOUND_BY_ORACLE_VALIDATION)
+            MyBase.New(fieldDisplayName, ErrorCodes.ERROR_FOUND_BY_ORACLE_VALIDATION)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -4981,8 +4977,8 @@ Public Class Certificate
                                 Return True
                             Else
                                 oErrMess = dal.ExecuteSP(obj.getDocTypeCode, obj.IdentificationNumber)
-                                If Not oErrMess Is Nothing Then
-                                    MyBase.Message = UCase(oErrMess)
+                                If oErrMess IsNot Nothing Then
+                                    Message = UCase(oErrMess)
                                     Return False
 
                                 End If
@@ -4991,8 +4987,8 @@ Public Class Certificate
                             'Return True
                             ' End If
                             oErrMess = dal.ExecuteSP(obj.getDocTypeCode, obj.IdentificationNumber)
-                            If Not oErrMess Is Nothing Then
-                                MyBase.Message = UCase(oErrMess)
+                            If oErrMess IsNot Nothing Then
+                                Message = UCase(oErrMess)
                                 Return False
                             End If
                             'Return True
@@ -5007,17 +5003,17 @@ Public Class Certificate
                         End If
 
                         If DisplayName = nameof(IdentificationNumber) _
-                            AndAlso (Not obj.DocumentIssueDate Is Nothing _
-                                OrElse Not obj.IdType Is Nothing _
-                                OrElse Not obj.DocumentAgency Is Nothing _
-                                OrElse Not obj.RgNumber Is Nothing _
+                            AndAlso (obj.DocumentIssueDate IsNot Nothing _
+                                OrElse obj.IdType IsNot Nothing _
+                                OrElse obj.DocumentAgency IsNot Nothing _
+                                OrElse obj.RgNumber IsNot Nothing _
                                 OrElse Not obj.DocumentTypeID.Equals(Guid.Empty)) Then
                             Return True
                         End If
 
                         oErrMess = dal.ExecuteSP(obj.getDocTypeCode, obj.IdentificationNumber)
-                        If Not oErrMess Is Nothing Then
-                            MyBase.Message = UCase(oErrMess)
+                        If oErrMess IsNot Nothing Then
+                            Message = UCase(oErrMess)
                             Return False
                         End If
 
@@ -5027,8 +5023,8 @@ Public Class Certificate
                             obj.IdentificationNumber = String.Empty
                         End If
                         oErrMess = dal.ExecuteSP(obj.getDocTypeCode, obj.IdentificationNumber)
-                        If Not oErrMess Is Nothing Then
-                            MyBase.Message = UCase(oErrMess)
+                        If oErrMess IsNot Nothing Then
+                            Message = UCase(oErrMess)
                             Return False
                         End If
                         'END 1012
@@ -5050,7 +5046,7 @@ Public Class Certificate
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
+            MyBase.New(fieldDisplayName, ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -5071,7 +5067,7 @@ Public Class Certificate
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_IS_TOO_SHORT_OR_TOO_LONG)
+            MyBase.New(fieldDisplayName, ErrorCodes.GUI_VALUE_IS_TOO_SHORT_OR_TOO_LONG)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -5099,7 +5095,7 @@ Public Class Certificate
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.FUTURE_DATE_NOT_ALLOWED)
+            MyBase.New(fieldDisplayName, ErrorCodes.FUTURE_DATE_NOT_ALLOWED)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -5440,7 +5436,7 @@ Public Class Certificate
 
         ' Check if Document Type ID is supplied otherwise default to Other
         If (Not pDocumentTypeId.HasValue) Then
-            pDocumentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_DOCUMENT_TYPES, Codes.DOCUMENT_TYPE__OTHER)
+            pDocumentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_DOCUMENT_TYPES, Codes.DOCUMENT_TYPE__OTHER)
         End If
 
         ' Check if Scan Date is supplied otherwise default to Current Date 
@@ -5506,11 +5502,11 @@ Public Class Certificate
                 row(CertificateImagesView.COL_FILE_NAME) = detail.FileName
 
                 Dim _ft As Documents.FileType = Documents.DocumentManager.Current.FileTypes.Where(Function(ft) ft.Extension = detail.FileName.Split(".".ToCharArray()).Last().ToUpper()).FirstOrDefault()
-                If (Not _ft Is Nothing) Then
+                If (_ft IsNot Nothing) Then
                     row(CertificateImagesView.COL_FILE_TYPE) = _ft.Description
                 End If
 
-                If (Not detail.FileSizeBytes Is Nothing) Then
+                If (detail.FileSizeBytes IsNot Nothing) Then
                     row(CertificateImagesView.COL_FILE_SIZE_BYTES) = detail.FileSizeBytes.Value
                 End If
                 row(CertificateImagesView.COL_COMMENTS) = detail.Comments

@@ -59,7 +59,7 @@ Public Class CompanyGroup
         Try
             Dim dal As New CompanyGroupDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -440,7 +440,7 @@ Public Property AccountingByCompany As String
         For Each companyID In selectedCompanyGuidStrCollection
             'update to new soft question GUID
             Dim newBO As Company = New Company(New Guid(companyID), Dataset)
-            If Not newBO Is Nothing Then
+            If newBO IsNot Nothing Then
                 newBO.CompanyGroupId = Id
                 newBO.Save()
             End If
@@ -452,7 +452,7 @@ Public Property AccountingByCompany As String
         For Each companyID In selectedCompanyGuidStrCollection
             'update to new soft question GUID
             Dim newBO As Company = New Company(New Guid(companyID), Dataset)
-            If Not newBO Is Nothing Then
+            If newBO IsNot Nothing Then
                 newBO.CompanyGroupId = Guid.Empty
                 newBO.Save()
             End If
@@ -499,7 +499,7 @@ Public Property AccountingByCompany As String
             Dim dal As New CompanyGroupDAL
             Dim ds As DataSet
             'REQ-863
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(CompanyGroup), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(CompanyGroup), Nothing, "Search", Nothing)}
             If btnsearchclick AndAlso (descriptionMask.Equals(String.Empty) AndAlso codeMask.Equals(String.Empty)) Then
                 Throw New BOValidationException(errors, GetType(CompanyGroup).FullName)
             Else

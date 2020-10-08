@@ -59,7 +59,7 @@ Public Class EventTask
         Try
             Dim dal As New EventTaskDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -533,7 +533,7 @@ Public Class EventTask
             Dim obj As EventTask = CType(objectToValidate, EventTask)
 
             If Not obj.CoverageTypeId = Guid.Empty Then
-                If obj.DealerId = Guid.Empty Or obj.DealerGroupId = Guid.Empty Or String.IsNullOrEmpty(obj.ProductCode) Then
+                If obj.DealerId = Guid.Empty OrElse obj.DealerGroupId = Guid.Empty OrElse String.IsNullOrEmpty(obj.ProductCode) Then
                     Return False
                 Else
                     Return True
@@ -553,7 +553,7 @@ Public Class EventTask
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
-            If (Not valueToCheck Is Nothing) AndAlso valueToCheck <> Guid.Empty Then
+            If (valueToCheck IsNot Nothing) AndAlso valueToCheck <> Guid.Empty Then
                 Dim obj As EventTask = CType(objectToValidate, EventTask)
                 If obj.CompanyGroupId <> Guid.Empty Then
                     If obj.CompanyId <> Guid.Empty OrElse obj.CountryId <> Guid.Empty OrElse obj.DealerGroupId <> Guid.Empty OrElse obj.DealerId <> Guid.Empty Then

@@ -59,7 +59,7 @@ Public Class FormCategory
         Try
             Dim dal As New FormCategoryDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -266,12 +266,12 @@ Public Class FormCategory
         Public Function AddNewRowToEmptyDV() As FormCategorySearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(FormCategorySearchDV.COL_FORM_CATEGORY_ID) = (New Guid()).ToByteArray
-            row(FormCategorySearchDV.COL_CODE) = ""
-            row(FormCategorySearchDV.COL_DESCRIPTION) = ""
-            row(FormCategorySearchDV.COL_TAB_ID) = Guid.Empty.ToByteArray
-            row(FormCategorySearchDV.COL_TAB_DESC) = ""
-            row(FormCategorySearchDV.COL_FORM_COUNT) = 0
+            row(COL_FORM_CATEGORY_ID) = (New Guid()).ToByteArray
+            row(COL_CODE) = ""
+            row(COL_DESCRIPTION) = ""
+            row(COL_TAB_ID) = Guid.Empty.ToByteArray
+            row(COL_TAB_DESC) = ""
+            row(COL_FORM_COUNT) = 0
             dt.Rows.Add(row)
             Return New FormCategorySearchDV(dt)
         End Function
@@ -296,11 +296,11 @@ Public Class FormCategory
         Public Function AddNewRowToEmptyDV() As FormSearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(FormSearchDV.COL_FORM_ID) = (New Guid()).ToByteArray
-            row(FormSearchDV.COL_FORM_NAME) = ""
-            row(FormSearchDV.COL_TAB_NAME) = ""
-            row(FormSearchDV.COL_FORM_CATEGORY_ID) = Guid.Empty.ToByteArray
-            row(FormSearchDV.COL_FORM_CATEGORY_NAME) = ""
+            row(COL_FORM_ID) = (New Guid()).ToByteArray
+            row(COL_FORM_NAME) = ""
+            row(COL_TAB_NAME) = ""
+            row(COL_FORM_CATEGORY_ID) = Guid.Empty.ToByteArray
+            row(COL_FORM_CATEGORY_NAME) = ""
             dt.Rows.Add(row)
             Return New FormSearchDV(dt)
         End Function

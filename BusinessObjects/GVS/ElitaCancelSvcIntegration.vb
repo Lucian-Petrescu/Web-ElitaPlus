@@ -85,13 +85,13 @@ Public Class ElitaCancelSvcIntegration
 
     Private Sub PopulateBOFromWebService(ds As ElitaCancelSvcIntegrationDs)
         Try
-            If ds.TRANSACTION_HEADER.Count = 0 Or ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
+            If ds.TRANSACTION_HEADER.Count = 0 OrElse ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
             With ds.TRANSACTION_HEADER.Item(0)
                 TransactionId = .TRANSACTION_ID
                 FunctionTypeCode = .FUNCTION_TYPE_CODE
             End With
 
-            If Not (FunctionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_CANCEL_SVC_INTEGRATION) Then
+            If Not (FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_CANCEL_SVC_INTEGRATION) Then
                 Throw New BOValidationException("ElitaCancelSvcIntegration Error: ", Common.ErrorCodes.ERR_FUNCTION_TYPE_CODE)
             Else
                 FunctionTypeId = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), FunctionTypeCode)
@@ -150,7 +150,7 @@ Public Class ElitaCancelSvcIntegration
         Try
 
             Dim logHeader As TransactionLogHeader = New TransactionLogHeader
-            logHeader.TransactionStatusID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSTransactionStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), DALObjects.TransactionLogHeaderDAL.TRANSACTION_STATUS_NEW)
+            logHeader.TransactionStatusID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSTransactionStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), TransactionLogHeaderDAL.TRANSACTION_STATUS_NEW)
             logHeader.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
             logHeader.FunctionTypeID = FunctionTypeId
             logHeader.TransactionXml = XMLHelper.FromDatasetToXML(dsMyElitaCancelSvcIntegration, Nothing, False).Replace("<ElitaCancelSvcIntegrationDs>", "").Replace("</ElitaCancelSvcIntegrationDs>", "")

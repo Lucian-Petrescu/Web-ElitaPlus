@@ -20,12 +20,12 @@ Public NotInheritable Class NonPastDateValidation
             'For New records date must be greater or equal to todays date(with out time)
             If Iface.IsNew Then
                 Dim objDate As DateTimeType = DateTime.Parse(CType(objectToCheck, DateTimeType), LocalizationMgr.CurrentFormatProvider)
-                If Not objDate Is Nothing Then
+                If objDate IsNot Nothing Then
                     If objDate.Value.Date < Date.Today.Date Then Return False
                 End If
             End If
             'For Old records Expiration date must be greater or equal to todays date(with out time)
-            If Iface.IsNew = False And DisplayName = Codes.EXPIRATION Then
+            If Iface.IsNew = False AndAlso DisplayName = Codes.EXPIRATION Then
                 If Iface.Expiration < Date.Today.Date Then Return False
             End If
 

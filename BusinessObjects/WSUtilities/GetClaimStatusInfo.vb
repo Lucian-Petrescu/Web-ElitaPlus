@@ -104,7 +104,7 @@ Public Class GetClaimStatusInfo
 
     Private Function IsDealerWebEnabled() As Boolean
         Dim objDealer As New Dealer(_dealerId)
-        If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objDealer.DealerSupportWebClaimsId) = "Y" Then
+        If LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, objDealer.DealerSupportWebClaimsId) = "Y" Then
             Return True
         Else
             Return False
@@ -113,7 +113,7 @@ Public Class GetClaimStatusInfo
     End Function
 
     Private Function FindDealer() As String
-        If _dealerId.Equals(Guid.Empty) AndAlso (Not DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty) Then
+        If _dealerId.Equals(Guid.Empty) AndAlso (DealerCode IsNot Nothing AndAlso DealerCode.Trim <> String.Empty) Then
             Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
             If list Is Nothing Then
                 Dim ResponseStatus As DataTable = BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE), _
@@ -236,7 +236,7 @@ Public Class GetClaimStatusInfo
         Try
             Validate()
             'Not IdentifierType Is Nothing AndAlso IdentifierType.Trim <> String.Empty
-            If Not DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty Then
+            If DealerCode IsNot Nothing AndAlso DealerCode.Trim <> String.Empty Then
                 Dim strErrorFindingDealer As String = FindDealer
                 If strErrorFindingDealer <> String.Empty Then
                     Return strErrorFindingDealer
@@ -248,7 +248,7 @@ Public Class GetClaimStatusInfo
             If ValidateErrorCode <> 0 Then ' There is a Validation error
                 Return (XMLHelper.FromDatasetToXML(_claimStatusInfoDataSet, Nothing, True, True, True, False, True))
             Else
-                If Not _claimStatusInfoDataSet.Tables(ClaimDAL.TABLE_NAME__GET_CLAIM_STATUS_INFO_RESPONSE) Is Nothing _
+                If _claimStatusInfoDataSet.Tables(ClaimDAL.TABLE_NAME__GET_CLAIM_STATUS_INFO_RESPONSE) IsNot Nothing _
                     AndAlso _claimStatusInfoDataSet.Tables(ClaimDAL.TABLE_NAME__GET_CLAIM_STATUS_INFO_RESPONSE).Rows.Count = 0 Then
                     Dim ResponseStatus As DataTable = BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_NO_RECORDS_FOUND),
                                                            Common.ErrorCodes.WS_NO_RECORDS_FOUND,

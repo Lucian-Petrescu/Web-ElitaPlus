@@ -30,9 +30,8 @@
 #Region "Public Members"
 
     Public Sub Validate()
-        If (InForceDate = Nothing Or ServiceCenterCode = Nothing Or CompanyCode = Nothing) And _
-            (RiskTypeCode = Nothing And EquipmentClassCode = Nothing) Then
-            Throw New BOValidationException("GetPriceList Error: Must provide In Force Date, Service Center Code and Company Code along with Risk Type Code or Equipment Class Code", Assurant.ElitaPlus.Common.ErrorCodes.WS_PRICELIST_INVALID_SERVICE_CENTER_DTLS_INPUT)
+        If (InForceDate = Nothing OrElse ServiceCenterCode = Nothing OrElse CompanyCode = Nothing) AndAlso (RiskTypeCode = Nothing AndAlso EquipmentClassCode = Nothing) Then
+            Throw New BOValidationException("GetPriceList Error: Must provide In Force Date, Service Center Code and Company Code along with Risk Type Code or Equipment Class Code", Common.ErrorCodes.WS_PRICELIST_INVALID_SERVICE_CENTER_DTLS_INPUT)
         End If
 
         Dim oServiceCenter As New ServiceCenter(ServiceCenterCode)
@@ -42,11 +41,11 @@
 
         Dim companyId As Guid = GetCompanyId(CompanyCode)
         If companyId.Equals(Guid.Empty) Then
-            Throw New BOValidationException("GetPriceList Error: Invalid Company Code ", Assurant.ElitaPlus.Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
+            Throw New BOValidationException("GetPriceList Error: Invalid Company Code ", Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
         End If
 
         If (Not DealerCode = Nothing) And (GetDealerID(companyId, DealerCode).Equals(Guid.Empty)) Then
-            Throw New BOValidationException("GetPriceList Error: Invalid Dealer Code ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_CODE)
+            Throw New BOValidationException("GetPriceList Error: Invalid Dealer Code ", Common.ErrorCodes.INVALID_DEALER_CODE)
         End If
 
     End Sub

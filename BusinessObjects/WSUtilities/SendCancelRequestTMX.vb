@@ -175,7 +175,7 @@ Public Class SendCancelRequestTMX
         Else
             url = New Uri("http://201.131.4.180:8080")
         End If
-            Dim request As HttpWebRequest = HttpWebRequest.Create(url)
+            Dim request As HttpWebRequest = WebRequest.Create(url)
             request.Method = WebRequestMethods.Http.Post
             request.ContentLength = data.Length
             request.ContentType = "text/xml"

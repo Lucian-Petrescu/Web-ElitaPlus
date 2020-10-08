@@ -60,7 +60,7 @@ Public Class InstallmentFactor
         Try
             Dim dal As New InstallmentFactorDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -268,7 +268,7 @@ Public Class InstallmentFactor
         Try
             Dim dal As New InstallmentFactorDAL
             Dim dv As New InstallmentFactorSearchDV(dal.GetInstallmentFactorByDealer(dealerID, compId).Tables(0))
-            dv.Sort = InstallmentFactor.InstallmentFactorSearchDV.COL_EFFECTIVE_DATE & " DESC"
+            dv.Sort = InstallmentFactorSearchDV.COL_EFFECTIVE_DATE & " DESC"
 
             Return dv
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -285,37 +285,37 @@ Public Class InstallmentFactor
             Dim row As DataRow = dt.NewRow
 
             If bo.Factor Is Nothing Then
-                row(InstallmentFactor.InstallmentFactorSearchDV.COL_FACTOR) = DBNull.Value
+                row(InstallmentFactorSearchDV.COL_FACTOR) = DBNull.Value
             Else
-                row(InstallmentFactor.InstallmentFactorSearchDV.COL_FACTOR) = bo.Factor
+                row(InstallmentFactorSearchDV.COL_FACTOR) = bo.Factor
             End If
 
             If bo.HighNumberOfPayments Is Nothing Then
-                row(InstallmentFactor.InstallmentFactorSearchDV.COL_HIGH_NUMBER_OF_PAYMENTS) = DBNull.Value
+                row(InstallmentFactorSearchDV.COL_HIGH_NUMBER_OF_PAYMENTS) = DBNull.Value
             Else
-                row(InstallmentFactor.InstallmentFactorSearchDV.COL_HIGH_NUMBER_OF_PAYMENTS) = bo.HighNumberOfPayments
+                row(InstallmentFactorSearchDV.COL_HIGH_NUMBER_OF_PAYMENTS) = bo.HighNumberOfPayments
             End If
 
             If bo.LowNumberOfPayments Is Nothing Then
-                row(InstallmentFactor.InstallmentFactorSearchDV.COL_LOW_NUMBER_OF_PAYMENTS) = DBNull.Value
+                row(InstallmentFactorSearchDV.COL_LOW_NUMBER_OF_PAYMENTS) = DBNull.Value
             Else
-                row(InstallmentFactor.InstallmentFactorSearchDV.COL_LOW_NUMBER_OF_PAYMENTS) = bo.LowNumberOfPayments
+                row(InstallmentFactorSearchDV.COL_LOW_NUMBER_OF_PAYMENTS) = bo.LowNumberOfPayments
             End If
 
             If bo.EffectiveDate Is Nothing Then
-                row(InstallmentFactor.InstallmentFactorSearchDV.COL_EFFECTIVE_DATE) = Date.MinValue
+                row(InstallmentFactorSearchDV.COL_EFFECTIVE_DATE) = Date.MinValue
             Else
-                row(InstallmentFactor.InstallmentFactorSearchDV.COL_EFFECTIVE_DATE) = bo.EffectiveDate
+                row(InstallmentFactorSearchDV.COL_EFFECTIVE_DATE) = bo.EffectiveDate
             End If
 
             If bo.ExpirationDate Is Nothing Then
-                row(InstallmentFactor.InstallmentFactorSearchDV.COL_EXPIRATION_DATE) = Date.MinValue
+                row(InstallmentFactorSearchDV.COL_EXPIRATION_DATE) = Date.MinValue
             Else
-                row(InstallmentFactor.InstallmentFactorSearchDV.COL_EXPIRATION_DATE) = bo.ExpirationDate
+                row(InstallmentFactorSearchDV.COL_EXPIRATION_DATE) = bo.ExpirationDate
             End If
 
-            row(InstallmentFactor.InstallmentFactorSearchDV.COL_INSTALLMENT_FACTOR_ID) = bo.Id.ToByteArray
-            row(InstallmentFactor.InstallmentFactorSearchDV.COL_DEALER_ID) = bo.DealerId.ToByteArray
+            row(InstallmentFactorSearchDV.COL_INSTALLMENT_FACTOR_ID) = bo.Id.ToByteArray
+            row(InstallmentFactorSearchDV.COL_DEALER_ID) = bo.DealerId.ToByteArray
 
             dt.Rows.Add(row)
         End If
@@ -390,7 +390,7 @@ Public Class InstallmentFactor
             Dim obj As InstallmentFactor = CType(objectToValidate, InstallmentFactor)
             Dim bValid As Boolean = True
 
-            If Not obj.LowNumberOfPayments Is Nothing And Not obj.HighNumberOfPayments Is Nothing Then
+            If obj.LowNumberOfPayments IsNot Nothing And obj.HighNumberOfPayments IsNot Nothing Then
                 If obj.LowNumberOfPayments.Value > obj.HighNumberOfPayments.Value Then
                     Message = ERR_LOW_PAYMENT_MORE_THAN_HIGH_PAYMENT
                     bValid = False
@@ -485,9 +485,9 @@ Public NotInheritable Class ValidInstallmentFactorPeriod
                 Dim lastRowId As Guid
                 Dim currRowPos As Integer = 0
                 If recCount > 0 Then
-                    lastRowId = New Guid(CType(ds.Tables(0).Rows(recCount - 1)(InstallmentFactor.InstallmentFactorSearchDV.COL_INSTALLMENT_FACTOR_ID), Byte()))
-                    Dim minEffective As Date = ds.Tables(0).Rows(0)(InstallmentFactor.InstallmentFactorSearchDV.COL_EFFECTIVE_DATE)
-                    Dim maxExpiration As Date = ds.Tables(0).Rows(recCount - 1)(InstallmentFactor.InstallmentFactorSearchDV.COL_EXPIRATION_DATE)
+                    lastRowId = New Guid(CType(ds.Tables(0).Rows(recCount - 1)(InstallmentFactorSearchDV.COL_INSTALLMENT_FACTOR_ID), Byte()))
+                    Dim minEffective As Date = ds.Tables(0).Rows(0)(InstallmentFactorSearchDV.COL_EFFECTIVE_DATE)
+                    Dim maxExpiration As Date = ds.Tables(0).Rows(recCount - 1)(InstallmentFactorSearchDV.COL_EXPIRATION_DATE)
                     ' Same period allowed since validation is on the day range
                     If obj.EffectiveDate = minEffective AndAlso obj.ExpirationDate = maxExpiration Then
                         Return True
@@ -502,14 +502,14 @@ Public NotInheritable Class ValidInstallmentFactorPeriod
                     End If
                     ' Find a spot in the middle
                     For Each currRow In ds.Tables(0).Rows
-                        If obj.ExpirationDate.Value = currRow(InstallmentFactor.InstallmentFactorSearchDV.COL_EXPIRATION_DATE) And _
-                            obj.EffectiveDate.Value = currRow(InstallmentFactor.InstallmentFactorSearchDV.COL_EFFECTIVE_DATE) Then
+                        If obj.ExpirationDate.Value = currRow(InstallmentFactorSearchDV.COL_EXPIRATION_DATE) And _
+                            obj.EffectiveDate.Value = currRow(InstallmentFactorSearchDV.COL_EFFECTIVE_DATE) Then
                             ' Trying to insert a Duplicate - Reject!
                             Return False
-                        ElseIf Not prevRow Is Nothing Then
+                        ElseIf prevRow IsNot Nothing Then
                             ' Inserting in the middle (Allow to fix any GAPS)
-                            If obj.EffectiveDate.Value.AddDays(-1) = prevRow(InstallmentFactor.InstallmentFactorSearchDV.COL_EXPIRATION_DATE) And _
-                               obj.ExpirationDate.Value.AddDays(1) = currRow(InstallmentFactor.InstallmentFactorSearchDV.COL_EFFECTIVE_DATE) Then
+                            If obj.EffectiveDate.Value.AddDays(-1) = prevRow(InstallmentFactorSearchDV.COL_EXPIRATION_DATE) And _
+                               obj.ExpirationDate.Value.AddDays(1) = currRow(InstallmentFactorSearchDV.COL_EFFECTIVE_DATE) Then
                                 Return True
                             End If
                         End If
@@ -540,14 +540,14 @@ Public NotInheritable Class ValidInstallmentFactorPeriod
             Dim obj As InstallmentFactor = CType(objectToValidate, InstallmentFactor)
             Dim bValid As Boolean = True
 
-            If Not obj.LowNumberOfPayments Is Nothing And Not obj.HighNumberOfPayments Is Nothing Then
+            If obj.LowNumberOfPayments IsNot Nothing And obj.HighNumberOfPayments IsNot Nothing Then
                 If (obj.Factor Is Nothing) Then
                     Message = ERR_INSTALLMENT_FACTOR_REQUIRED
                     bValid = False
                 Else
                     bValid = ValidateRange(obj)
                     If bValidFactor = True Then
-                        If Not ar Is Nothing And ar.Count > 0 Then
+                        If ar IsNot Nothing And ar.Count > 0 Then
                             Message = CType(ar(0), String)
                         End If
                     Else
@@ -630,7 +630,7 @@ Public NotInheritable Class ValidInstallmentFactorPeriod
         Public Function ValidateInstallmentFactorSequence(oNewFactor As DecimalType, oFactor As DecimalType) As Boolean
             Dim bValid As Boolean = False
 
-            If (Not oNewFactor Is Nothing AndAlso Not oFactor Is Nothing) Then
+            If (oNewFactor IsNot Nothing AndAlso oFactor IsNot Nothing) Then
                 If CType(oNewFactor, Double) > 0 Then
                     If (CType(oNewFactor, Double) >= CType(oFactor, Double)) Then
                         bValid = True

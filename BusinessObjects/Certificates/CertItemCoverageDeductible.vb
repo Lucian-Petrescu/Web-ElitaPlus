@@ -61,7 +61,7 @@
         Try
             Dim dal As New CertItemCoverageDeductibleDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -219,7 +219,7 @@
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Certificate Item Coverage Deductible.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 #End Region
 
@@ -235,7 +235,7 @@
 
         Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CertItemCoverageDeductible = CType(objectToValidate, CertItemCoverageDeductible)
-            If (LookupListNew.GetCodeFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, obj.DeductibleBasedOnId) <> "FIXED") Then
+            If (LookupListNew.GetCodeFromId(LookupListCache.LK_DEDUCTIBLE_BASED_ON, obj.DeductibleBasedOnId) <> "FIXED") Then
                 If (obj.Deductible.Value > 100) Then
                     Return False
                 End If

@@ -117,7 +117,7 @@ Public Class GVSTransactionUpdate
 
     Private Sub PopulateBOFromWebService(ds As GVSTransactionUpdateDs)
         Try
-            If ds.TRANSACTION_HEADER.Count = 0 Or ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
+            If ds.TRANSACTION_HEADER.Count = 0 OrElse ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
             With ds.TRANSACTION_HEADER.Item(0)
                 TransactionId = .TRANSACTION_ID
                 GVSOriginalTransNo = .GVS_ORIGINAL_TRANS_NO

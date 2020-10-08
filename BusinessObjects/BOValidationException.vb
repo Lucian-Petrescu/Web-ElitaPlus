@@ -24,7 +24,7 @@ Imports Assurant.ElitaPlus.Common
         UniqueId = sUniqueId
         For Each err In validationErrors
             sProperties &= " Property: " & err.PropertyName()
-            If Not err.OffendingValue Is Nothing Then
+            If err.OffendingValue IsNot Nothing Then
                 sProperties &= " Value =" & err.OffendingValue.ToString & "="
             End If
         Next

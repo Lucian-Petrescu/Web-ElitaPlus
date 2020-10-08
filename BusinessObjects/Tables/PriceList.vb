@@ -61,7 +61,7 @@ Public Class PriceList
         Try
             Dim dal As New PriceListDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -333,7 +333,7 @@ Public Class PriceList
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing List")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
         Effective = Date.Now
         Expiration = New Date(2499, 12, 31, 23, 59, 59)
 
@@ -730,7 +730,7 @@ Public Class PriceList
 
             row(PriceListDetailSelectionView.COL_NAME_PRICE_LIST_DETAIL_ID) = detail.Id.ToByteArray
             row(PriceListDetailSelectionView.COL_NAME_PRICE_LIST_ID) = detail.PriceListId.ToByteArray
-            If Not detail.Expiration Is Nothing Then
+            If detail.Expiration IsNot Nothing Then
                 'row(PriceListDetailSelectionView.COL_NAME_EXPIRATION) = String.Empty
                 'Else
                 row(PriceListDetailSelectionView.COL_NAME_EXPIRATION) = detail.Expiration.Value

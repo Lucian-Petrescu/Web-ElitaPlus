@@ -68,7 +68,7 @@
         Try
             Dim dal As New BankInfoDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -228,13 +228,13 @@
                 obj.Bank_Id = obj.Bank_Id.ToString.Trim
             End If
 
-            If (Not objCountry.BankIDLength Is Nothing) AndAlso objCountry.BankIDLength.Value > 0 Then
+            If (objCountry.BankIDLength IsNot Nothing) AndAlso objCountry.BankIDLength.Value > 0 Then
                 'ToString.Length > 0 Then
                 If (obj.Bank_Id.ToString.Trim.Length <> objCountry.BankIDLength.Value) Then
-                    MyBase.Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
+                    Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
                     Return False
                 Else
-                    If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Argentina Then
+                    If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Argentina Then
                         Dim BankId(6) As Integer, strConstant As String = "7139713"
                         Dim Total As Integer = 0, checkDigit As Integer
                         For i = 0 To 6
@@ -247,14 +247,14 @@
                             checkDigit = 0
                         End If
                         If checkDigit <> CInt(obj.Bank_Id.ToString.Substring(obj.Bank_Id.ToString.Length - 1, 1)) Then
-                            MyBase.Message = Common.ErrorCodes.POPULATE_BO_ERR
+                            Message = Common.ErrorCodes.POPULATE_BO_ERR
                             Return False
                         End If
                     End If
                 End If
             Else
                 If obj.Bank_Id.ToString.Trim.Length > 10 Then
-                    MyBase.Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
+                    Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
                     Return False
                 End If
             End If
@@ -279,12 +279,12 @@
             End If
 
             Dim objCountry As New Country(obj.CountryID)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
                  And obj.ValidateFieldsforBR = True Then
 
                 'Bank Number
                 If obj.IsEmptyString(obj.BankName) Then
-                    MyBase.Message = Common.ErrorCodes.ERR_BANKNAME_IS_REQUIRED
+                    Message = Common.ErrorCodes.ERR_BANKNAME_IS_REQUIRED
                     Return False
                 End If
 
@@ -312,17 +312,17 @@
             End If
 
             Dim objCountry As New Country(obj.CountryID)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
                  And obj.ValidateFieldsforBR = True Then
 
                 'Bank Id
                 If obj.IsEmptyString(obj.Bank_Id) Then
-                    MyBase.Message = Common.ErrorCodes.ERR_BANKID_IS_REQUIRED
+                    Message = Common.ErrorCodes.ERR_BANKID_IS_REQUIRED
                     Return False
                 End If
 
                 If obj.Bank_Id.ToString.Length > 3 Then
-                    MyBase.Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
+                    Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
                     Return False
                 End If
 
@@ -368,10 +368,10 @@
                                               oPaymentOrderInfo As PaymentOrderInfo)
         With oBankInfoData
             .bankinfoId = oPaymentOrderInfo.Id
-            If Not oPaymentOrderInfo.Account_Name Is Nothing Then
+            If oPaymentOrderInfo.Account_Name IsNot Nothing Then
                 .AccountName = oPaymentOrderInfo.Account_Name
             End If            
-            If Not oPaymentOrderInfo.Bank_Id Is Nothing Then
+            If oPaymentOrderInfo.Bank_Id IsNot Nothing Then
                 .BankID = oPaymentOrderInfo.Bank_Id
             Else
                 .BankID = Nothing
@@ -382,7 +382,7 @@
                 Dim ocountry As Country = ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID)
                 .CountryId = ocountry.Id
             End If            
-            If Not oPaymentOrderInfo.BankName Is Nothing Then
+            If oPaymentOrderInfo.BankName IsNot Nothing Then
                 .BankName = oPaymentOrderInfo.BankName
             End If            
         End With

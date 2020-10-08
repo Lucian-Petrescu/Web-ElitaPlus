@@ -59,7 +59,7 @@ Public Class OcTemplateGroupDealer
         Try
             Dim dal As New OcTemplateGroupDealerDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -173,7 +173,7 @@ Public Class OcTemplateGroupDealer
         Try
             Dim dal As New OcTemplateGroupDealerDAL
             Dim dataSet As DataSet = dal.GetAssociatedTemplateGroupCount(dealerId, templateGroupIdToExcludeFromCount)
-            If Not dataSet Is Nothing AndAlso dataSet.Tables.Count > 0 AndAlso dataSet.Tables(0).Rows.Count > 0 Then
+            If dataSet IsNot Nothing AndAlso dataSet.Tables.Count > 0 AndAlso dataSet.Tables(0).Rows.Count > 0 Then
                 If dataSet.Tables(0).Rows(0)(OcTemplateGroupDealerDAL.COL_NAME_NUMBER_OF_TEMPLATE_GROUPS) Is DBNull.Value Then
                     Return 0
                 Else

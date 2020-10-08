@@ -62,7 +62,7 @@ Public Class CancellationReqException
         Try
             Dim dal As New TransactionLogHeaderDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -297,7 +297,7 @@ Public Class CancellationReqException
             MyBase.Save()
             If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New TransactionLogHeaderDAL
-                MyBase.UpdateFamily(Dataset)
+                UpdateFamily(Dataset)
                 dal.InsertCustom(Dataset)
                 'Reload the Data from the DB
                 If Row.RowState <> DataRowState.Detached Then
@@ -602,13 +602,13 @@ Public Class CancellationReqException
         Public Function AddNewRowToEmptyDV() As ExceptionSearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ExceptionSearchDV.COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
-            row(ExceptionSearchDV.COL_CERT_NUMBER) = 0
-            row(ExceptionSearchDV.COL_MOBILE_NUMBER) = ""
-            row(ExceptionSearchDV.COL_TRANS_TYPE) = ""
-            row(ExceptionSearchDV.COL_TRANS_SCHEDULED_DATE) = DateTime.MinValue
-            row(ExceptionSearchDV.COL_ATTEMPT) = 0
-            row(ExceptionSearchDV.COL_ERROR_MSG) = ""
+            row(COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
+            row(COL_CERT_NUMBER) = 0
+            row(COL_MOBILE_NUMBER) = ""
+            row(COL_TRANS_TYPE) = ""
+            row(COL_TRANS_SCHEDULED_DATE) = DateTime.MinValue
+            row(COL_ATTEMPT) = 0
+            row(COL_ERROR_MSG) = ""
             dt.Rows.Add(Row)
             Return New ExceptionSearchDV(dt)
         End Function
@@ -639,21 +639,21 @@ Public Class CancellationReqException
                 Dim guidTemp As New Guid
                 blnEmptyTbl = True
                 dt = New DataTable
-                dt.Columns.Add(TransactionStatusDV.COL_TRANS_TMX_DEACTIVATE_ID, Guid.Empty.ToByteArray.GetType)
-                dt.Columns.Add(TransactionStatusDV.COL_ITEM_NUMBER, GetType(String))
-                dt.Columns.Add(TransactionStatusDV.COL_EXTENDED_STATUS_CODE, GetType(String))
-                dt.Columns.Add(TransactionStatusDV.COL_EXTENDED_STATUS_DATE, GetType(Date))
-                dt.Columns.Add(TransactionStatusDV.COL_EXTENDED_STATUS_COMMENT, GetType(String))
+                dt.Columns.Add(COL_TRANS_TMX_DEACTIVATE_ID, Guid.Empty.ToByteArray.GetType)
+                dt.Columns.Add(COL_ITEM_NUMBER, GetType(String))
+                dt.Columns.Add(COL_EXTENDED_STATUS_CODE, GetType(String))
+                dt.Columns.Add(COL_EXTENDED_STATUS_DATE, GetType(Date))
+                dt.Columns.Add(COL_EXTENDED_STATUS_COMMENT, GetType(String))
             Else
                 dt = dv.Table
             End If
 
             row = dt.NewRow
-            row(TransactionStatusDV.COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
-            row(TransactionStatusDV.COL_ITEM_NUMBER) = ""
-            row(TransactionStatusDV.COL_EXTENDED_STATUS_CODE) = ""
+            row(COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
+            row(COL_ITEM_NUMBER) = ""
+            row(COL_EXTENDED_STATUS_CODE) = ""
             'row(TransactionStatusDV.COL_EXTENDED_STATUS_DATE) = ""
-            row(TransactionStatusDV.COL_EXTENDED_STATUS_COMMENT) = ""
+            row(COL_EXTENDED_STATUS_COMMENT) = ""
             dt.Rows.Add(row)
 
             If blnEmptyTbl Then dv = New TransactionStatusDV(dt)
@@ -700,23 +700,23 @@ Public Class CancellationReqException
                 Dim guidTemp As New Guid
                 blnEmptyTbl = True
                 dt = New DataTable
-                dt.Columns.Add(TransactionPartDV.COL_TRANS_TMX_DEACTIVATE_ID, Guid.Empty.ToByteArray.GetType)
-                dt.Columns.Add(TransactionPartDV.COL_ITEM_NUMBER, GetType(String))
-                dt.Columns.Add(TransactionPartDV.COL_PART_CODE, GetType(String))
-                dt.Columns.Add(TransactionPartDV.COL_PART_COST, GetType(Decimal))
-                dt.Columns.Add(TransactionPartDV.COL_PART_DEFECT, GetType(String))
-                dt.Columns.Add(TransactionPartDV.COL_IN_STOCK, GetType(String))
+                dt.Columns.Add(COL_TRANS_TMX_DEACTIVATE_ID, Guid.Empty.ToByteArray.GetType)
+                dt.Columns.Add(COL_ITEM_NUMBER, GetType(String))
+                dt.Columns.Add(COL_PART_CODE, GetType(String))
+                dt.Columns.Add(COL_PART_COST, GetType(Decimal))
+                dt.Columns.Add(COL_PART_DEFECT, GetType(String))
+                dt.Columns.Add(COL_IN_STOCK, GetType(String))
             Else
                 dt = dv.Table
             End If
 
             row = dt.NewRow
-            row(TransactionPartDV.COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
-            row(TransactionPartDV.COL_ITEM_NUMBER) = ""
-            row(TransactionPartDV.COL_PART_CODE) = ""
-            row(TransactionPartDV.COL_PART_COST) = ""
-            row(TransactionPartDV.COL_PART_DEFECT) = ""
-            row(TransactionPartDV.COL_IN_STOCK) = ""
+            row(COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
+            row(COL_ITEM_NUMBER) = ""
+            row(COL_PART_CODE) = ""
+            row(COL_PART_COST) = ""
+            row(COL_PART_DEFECT) = ""
+            row(COL_IN_STOCK) = ""
             dt.Rows.Add(row)
 
             If blnEmptyTbl Then dv = New TransactionPartDV(dt)
@@ -780,23 +780,23 @@ Public Class CancellationReqException
                 Dim guidTemp As New Guid
                 blnEmptyTbl = True
                 dt = New DataTable
-                dt.Columns.Add(TransactionFollowUpDV.COL_TRANS_TMX_DEACTIVATE_ID, Guid.Empty.ToByteArray.GetType)
-                dt.Columns.Add(TransactionFollowUpDV.COL_ITEM_NUMBER, GetType(String))
-                dt.Columns.Add(TransactionFollowUpDV.COL_COMMENT_CREATED_DATE, GetType(Date))
-                dt.Columns.Add(TransactionFollowUpDV.COL_COMMENT_TYPE_CODE, GetType(String))
-                dt.Columns.Add(TransactionFollowUpDV.COL_COMMENTS, GetType(String))
-                dt.Columns.Add(TransactionFollowUpDV.COL_CALLER_NAME, GetType(String))
+                dt.Columns.Add(COL_TRANS_TMX_DEACTIVATE_ID, Guid.Empty.ToByteArray.GetType)
+                dt.Columns.Add(COL_ITEM_NUMBER, GetType(String))
+                dt.Columns.Add(COL_COMMENT_CREATED_DATE, GetType(Date))
+                dt.Columns.Add(COL_COMMENT_TYPE_CODE, GetType(String))
+                dt.Columns.Add(COL_COMMENTS, GetType(String))
+                dt.Columns.Add(COL_CALLER_NAME, GetType(String))
             Else
                 dt = dv.Table
             End If
 
             row = dt.NewRow
-            row(TransactionFollowUpDV.COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
-            row(TransactionFollowUpDV.COL_ITEM_NUMBER) = ""
+            row(COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
+            row(COL_ITEM_NUMBER) = ""
             'row(TransactionFollowUpDV.COL_COMMENT_CREATED_DATE) = ""
-            row(TransactionFollowUpDV.COL_COMMENT_TYPE_CODE) = ""
-            row(TransactionFollowUpDV.COL_COMMENTS) = ""
-            row(TransactionFollowUpDV.COL_CALLER_NAME) = ""
+            row(COL_COMMENT_TYPE_CODE) = ""
+            row(COL_COMMENTS) = ""
+            row(COL_CALLER_NAME) = ""
             dt.Rows.Add(row)
 
             If blnEmptyTbl Then dv = New TransactionFollowUpDV(dt)
@@ -807,7 +807,7 @@ Public Class CancellationReqException
     Public Shared Function IsTransactionExist(gvsOriginalTransID As String) As Boolean
         Dim objTransactionLogHeaderDAL As New TransactionLogHeaderDAL
         Dim ds As DataSet = objTransactionLogHeaderDAL.IsTransactionExist(gvsOriginalTransID)
-        If Not ds Is Nothing AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
+        If ds IsNot Nothing AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
             If CType(ds.Tables(0).Rows(0)(0), Integer) > 0 Then
                 Return True
             Else
@@ -858,8 +858,8 @@ Public Class CancellationReqException
 
         'Check Returned records for valid dates
         For Each dItem As DataRowView In dv
-            If Not dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM) Is Nothing AndAlso dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM).ToString = TransactionLogHeader.SYSTEM_TYPE_ELITA Then
-                If Not dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE) Is Nothing AndAlso IsDate(dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE)) Then
+            If dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM) IsNot Nothing AndAlso dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM).ToString = TransactionLogHeader.SYSTEM_TYPE_ELITA Then
+                If dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE) IsNot Nothing AndAlso IsDate(dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE)) Then
                     transDateElita = CType(dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE), DateTime)
                     If transDateElita > DateAdd(DateInterval.Hour, NotifyInterval * -1, Now) Then
                         bValidElita = True
@@ -867,20 +867,20 @@ Public Class CancellationReqException
                     ElseIf transDateElita = DateTime.MinValue Then
                         transDateElitaStr = TranslationBase.TranslateLabelOrMessage("GREATERTHAN5", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                     Else
-                        transDateElitaStr = transDateElita.ToString("dd-MMM-yyyy", System.Globalization.CultureInfo.CurrentCulture)
+                        transDateElitaStr = transDateElita.ToString("dd-MMM-yyyy", Globalization.CultureInfo.CurrentCulture)
                     End If
                 Else
                     transDateElitaStr = TranslationBase.TranslateLabelOrMessage("GREATERTHAN5", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 End If
-            ElseIf Not dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM) Is Nothing AndAlso dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM).ToString = TransactionLogHeader.SYSTEM_TYPE_GVS Then
-                If Not dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE) Is Nothing AndAlso IsDate(dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE)) Then
+            ElseIf dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM) IsNot Nothing AndAlso dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM).ToString = TransactionLogHeader.SYSTEM_TYPE_GVS Then
+                If dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE) IsNot Nothing AndAlso IsDate(dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE)) Then
                     transDateGVS = CType(dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE), DateTime)
                     If transDateGVS > DateAdd(DateInterval.Hour, NotifyInterval * -1, Now) Then
                         bValidGVS = True
                     ElseIf transDateGVS = DateTime.MinValue Then
                         transDateGVSStr = TranslationBase.TranslateLabelOrMessage("GREATERTHAN5", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                     Else
-                        transDateGVSStr = transDateGVS.ToString("dd-MMM-yyyy", System.Globalization.CultureInfo.CurrentCulture)
+                        transDateGVSStr = transDateGVS.ToString("dd-MMM-yyyy", Globalization.CultureInfo.CurrentCulture)
                     End If
                 Else
                     transDateGVSStr = TranslationBase.TranslateLabelOrMessage("GREATERTHAN5", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
@@ -899,8 +899,8 @@ Public Class CancellationReqException
                     msg = New System.Net.Mail.MailMessage
                     msg.To.Add(String.Format("{0}", If(EnvironmentContext.Current.Environment = Environments.Production, ElitaPlusIdentity.Current.ActiveUser.Company.Email, TEST_EMAIL).ToString))
                     msg.From = New System.Net.Mail.MailAddress(ElitaPlusIdentity.Current.ActiveUser.Company.Email)
-                    msg.Subject = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_TRANSACTION_LOG_GVS_OVERDUE_SUBJ)
-                    msg.Body = String.Format(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_TRANSACTION_LOG_GVS_OVERDUE_BODY), Now.ToString("dd-MMM-yyyy", System.Globalization.CultureInfo.CurrentCulture), transDateGVSStr)
+                    msg.Subject = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.MSG_TRANSACTION_LOG_GVS_OVERDUE_SUBJ)
+                    msg.Body = String.Format(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.MSG_TRANSACTION_LOG_GVS_OVERDUE_BODY), Now.ToString("dd-MMM-yyyy", Globalization.CultureInfo.CurrentCulture), transDateGVSStr)
                     mail.Send(msg)
                 End If
 
@@ -909,8 +909,8 @@ Public Class CancellationReqException
                     msg = New System.Net.Mail.MailMessage
                     msg.To.Add(String.Format("{0}", If(EnvironmentContext.Current.Environment = Environments.Production, ElitaPlusIdentity.Current.ActiveUser.Company.Email, TEST_EMAIL).ToString))
                     msg.From = New System.Net.Mail.MailAddress(ElitaPlusIdentity.Current.ActiveUser.Company.Email)
-                    msg.Subject = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_TRANSACTION_LOG_ELITA_OVERDUE_SUBJ)
-                    msg.Body = String.Format(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_TRANSACTION_LOG_ELITA_OVERDUE_BODY), Now.ToString("dd-MMM-yyyy", System.Globalization.CultureInfo.CurrentCulture), transDateElitaStr)
+                    msg.Subject = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.MSG_TRANSACTION_LOG_ELITA_OVERDUE_SUBJ)
+                    msg.Body = String.Format(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.MSG_TRANSACTION_LOG_ELITA_OVERDUE_BODY), Now.ToString("dd-MMM-yyyy", Globalization.CultureInfo.CurrentCulture), transDateElitaStr)
                     mail.Send(msg)
                 End If
 

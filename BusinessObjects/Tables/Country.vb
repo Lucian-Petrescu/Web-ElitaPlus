@@ -53,7 +53,7 @@ Public Class Country
         Try
             Dim dal As New CountryDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -621,7 +621,7 @@ Public Class Country
 
     Public Sub AttachPostalCodeFormat(postalCodeGuidStr() As String)
         LoadChildren(False)
-        If Not postalCodeGuidStr Is Nothing AndAlso postalCodeGuidStr.Length > 0 Then
+        If postalCodeGuidStr IsNot Nothing AndAlso postalCodeGuidStr.Length > 0 Then
             Dim i As Integer
             For i = 0 To postalCodeGuidStr.Length - 1
                 Dim PosCodeFormatId As Guid = New Guid(postalCodeGuidStr(i))
@@ -639,7 +639,7 @@ Public Class Country
 
     Public Sub AttachPostalCodeFormat(postalCodeGuidStr As String)
         LoadChildren(False)
-        If Not postalCodeGuidStr Is Nothing AndAlso postalCodeGuidStr.Length > 0 Then
+        If postalCodeGuidStr IsNot Nothing AndAlso postalCodeGuidStr.Length > 0 Then
             Dim i As Integer
             Dim PosCodeFormatId As Guid = New Guid(postalCodeGuidStr)
             'Dim couPosCode As CountryPostalCodeFormat = CountryPostalCodeFormat.Find(Me.Dataset, Me.Id, New Guid(postalCodeGuidStr))
@@ -655,7 +655,7 @@ Public Class Country
 
     Public Sub DetachPostalCodeFormat(postalCodeGuidStr() As String)
         LoadChildren(False)
-        If Not postalCodeGuidStr Is Nothing AndAlso postalCodeGuidStr.Length > 0 Then
+        If postalCodeGuidStr IsNot Nothing AndAlso postalCodeGuidStr.Length > 0 Then
             Dim i As Integer
             For i = 0 To postalCodeGuidStr.Length - 1
                 Dim couPosCode As CountryPostalCodeFormat = CountryPostalCodeFormat.Find(Dataset, Id, New Guid(postalCodeGuidStr(i)))
@@ -666,7 +666,7 @@ Public Class Country
     End Sub
     Public Sub DetachPostalCodeFormat(postalCodeGuidStr As String)
         LoadChildren(False)
-        If Not postalCodeGuidStr Is Nothing AndAlso postalCodeGuidStr.Length > 0 Then
+        If postalCodeGuidStr IsNot Nothing AndAlso postalCodeGuidStr.Length > 0 Then
             Dim i As Integer
             Dim couPosCode As CountryPostalCodeFormat = CountryPostalCodeFormat.Find(Dataset, Id, New Guid(postalCodeGuidStr))
             couPosCode.Delete()
@@ -784,7 +784,7 @@ Public Class Country
 
             ' Create Array
             For index = 0 To oCountriesDv.Table.Rows.Count - 1
-                If Not oCountriesDv.Table.Rows(index)(CountryDAL.COL_NAME_COUNTRY_ID) Is System.DBNull.Value Then
+                If oCountriesDv.Table.Rows(index)(CountryDAL.COL_NAME_COUNTRY_ID) IsNot DBNull.Value Then
                     oCountriesArr.Add(New Guid(CType(oCountriesDv.Table.Rows(index)(CountryDAL.COL_NAME_COUNTRY_ID), Byte())))
                 End If
             Next

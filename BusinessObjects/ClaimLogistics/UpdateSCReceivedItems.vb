@@ -52,7 +52,7 @@ Public Class UpdateSCReceivedItems
 
                 Dim i As Integer
                 For i = 0 To ds.CLAIMS.Count - 1
-                    If Not ds.CLAIMS(i).CLAIM_NUMBER Is Nothing AndAlso ds.CLAIMS(i).CLAIM_NUMBER <> "" Then
+                    If ds.CLAIMS(i).CLAIM_NUMBER IsNot Nothing AndAlso ds.CLAIMS(i).CLAIM_NUMBER <> "" Then
                         claimStr = claimStr & ds.CLAIMS(i).CLAIM_NUMBER & DELIMITER
                     End If
                 Next
@@ -172,11 +172,11 @@ Public Class UpdateSCReceivedItems
 
     Public ReadOnly Property ServiceCenterID As Guid
         Get
-            If _serviceCenterId.Equals(Guid.Empty) AndAlso Not ServiceCenterCode Is Nothing AndAlso ServiceCenterCode <> "" Then
+            If _serviceCenterId.Equals(Guid.Empty) AndAlso ServiceCenterCode IsNot Nothing AndAlso ServiceCenterCode <> "" Then
 
                 Dim dvServiceCenter As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
 
-                If Not dvServiceCenter Is Nothing AndAlso dvServiceCenter.Count > 0 Then
+                If dvServiceCenter IsNot Nothing AndAlso dvServiceCenter.Count > 0 Then
                     _serviceCenterId = LookupListNew.GetIdFromCode(dvServiceCenter, ServiceCenterCode)
 
                     If _serviceCenterId.Equals(Guid.Empty) Then

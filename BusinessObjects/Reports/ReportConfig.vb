@@ -59,7 +59,7 @@ Public Class ReportConfig
         Try
             Dim dal As New ReportConfigDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -229,7 +229,7 @@ Public Class ReportConfig
         Public Function AddNewRowToEmptyDV() As ReportConfigSearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ReportConfigSearchDV.COL_REPORT_CONFIG_ID) = (New Guid()).ToByteArray
+            row(COL_REPORT_CONFIG_ID) = (New Guid()).ToByteArray
             dt.Rows.Add(row)
             Return New ReportConfigSearchDV(dt)
         End Function

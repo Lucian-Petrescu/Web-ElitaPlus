@@ -59,7 +59,7 @@ Public Class ClaimIssueStatus
         Try
             Dim dal As New ClaimIssueStatusDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -169,15 +169,15 @@ Public Class ClaimIssueStatus
     Public Property ProcessedDate As DateType
         Get
             CheckDeleted()            
-            If Row(ClaimIssueStatusDAL.COL_NAME_CREATED_DATE) Is DBNull.Value Then
+            If Row(DALBase.COL_NAME_CREATED_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New DateType(CType(Row(ClaimIssueStatusDAL.COL_NAME_CREATED_DATE), Date))
+                Return New DateType(CType(Row(DALBase.COL_NAME_CREATED_DATE), Date))
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(ClaimIssueStatusDAL.COL_NAME_CREATED_DATE, Value)
+            SetValue(DALBase.COL_NAME_CREATED_DATE, Value)
         End Set
     End Property
     Public Property IssueProcessReasonId As Guid
@@ -199,30 +199,30 @@ Public Class ClaimIssueStatus
     Public Property ProcessedBy As String
         Get
             CheckDeleted()
-            If Row(ClaimIssueStatusDAL.COL_NAME_PROCESSED_BY) Is DBNull.Value Then
+            If Row(DALBase.COL_NAME_PROCESSED_BY) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(ClaimIssueStatusDAL.COL_NAME_PROCESSED_BY), String)
+                Return CType(Row(DALBase.COL_NAME_PROCESSED_BY), String)
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(ClaimIssueStatusDAL.COL_NAME_PROCESSED_BY, Value)
+            SetValue(DALBase.COL_NAME_PROCESSED_BY, Value)
         End Set        
     End Property
 
     Public Property CreatedBy As String
         Get
             CheckDeleted()
-            If Row(ClaimIssueStatusDAL.COL_NAME_CREATED_BY) Is DBNull.Value Then
+            If Row(DALBase.COL_NAME_CREATED_BY) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(ClaimIssueStatusDAL.COL_NAME_CREATED_BY), String)
+                Return CType(Row(DALBase.COL_NAME_CREATED_BY), String)
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(ClaimIssueStatusDAL.COL_NAME_CREATED_BY, Value)
+            SetValue(DALBase.COL_NAME_CREATED_BY, Value)
         End Set
     End Property
 

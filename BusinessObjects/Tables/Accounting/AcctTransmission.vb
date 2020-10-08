@@ -71,7 +71,7 @@ Public Class AcctTransmission
             Dim dal As New AcctTransmissionDAL
 
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -453,10 +453,10 @@ Public Class AcctTransmission
                 Dataset = New DataSet
                 Row = Nothing
                 Load(objId)
-            ElseIf Me.Row.RowState = DataRowState.Deleted Or Me.Row.RowState = DataRowState.Detached Then
+            ElseIf Me.Row.RowState = DataRowState.Deleted OrElse Me.Row.RowState = DataRowState.Detached Then
                 dal = New AcctTransmissionDAL
                 Dim objId As Guid = New Guid(CType(Row(AcctTransmissionDAL.COL_NAME_ACCT_TRANSMISSION_ID, DataRowVersion.Original), Byte()))
-                dal.DeleteCustom(objId, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED))
+                dal.DeleteCustom(objId, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED))
             Else
                 MyBase.Save()
                 If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
@@ -514,7 +514,7 @@ Public Class AcctTransmission
                         ElseIf ds.Tables(tblName).TableName = AcctTransLogDAL.Table_AP_INVOICE Then
                             _apFile = True
                         Else
-                            RejectReason = TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.FILE_OUT_OF_BALANCE)
+                            RejectReason = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.FILE_OUT_OF_BALANCE)
                             Exit Sub
                         End If
 
@@ -525,7 +525,7 @@ Public Class AcctTransmission
             Next
 
             tbl = ds.Tables(tblName)
-            If Not tbl Is Nothing Then
+            If tbl IsNot Nothing Then
 
                 If tbl.Rows.Count = 0 Then
                     CreditAmount = 0
@@ -562,7 +562,7 @@ Public Class AcctTransmission
                 End If
 
                 If CreditAmount <> DebitAmount Then
-                    RejectReason = TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.FILE_OUT_OF_BALANCE)
+                    RejectReason = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.FILE_OUT_OF_BALANCE)
                 End If
 
             Else
@@ -572,7 +572,7 @@ Public Class AcctTransmission
             End If
 
         Catch ex As Exception
-            RejectReason = TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.FILE_OUT_OF_BALANCE)
+            RejectReason = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.FILE_OUT_OF_BALANCE)
         End Try
 
     End Sub
@@ -587,7 +587,7 @@ Public Class AcctTransmission
             OrElse FileText.ToString.ToLower.Contains(String.Format("<{0}>", XML_FIELD_TOTALAMOUNT.ToLower)) Then
 
             Dim txtRead As System.IO.TextReader = New System.IO.StringReader(FileText)
-            Dim xlr As System.Xml.XmlReader = System.Xml.XmlReader.Create(txtRead)
+            Dim xlr As System.Xml.XmlReader = Xml.XmlReader.Create(txtRead)
 
             ds.ReadXml(xlr)
 
@@ -636,8 +636,8 @@ Public Class AcctTransmission
             Dim _acctTransDAL As New AcctTransmissionDAL
             Dim _arrStatus As New ArrayList
 
-            _arrStatus.Add(LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_PENDING))
-            _arrStatus.Add(LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_FAILED))
+            _arrStatus.Add(LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_PENDING))
+            _arrStatus.Add(LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_FAILED))
 
             Return New AcctTransmissionSearchDV(_acctTransDAL.LoadList(CompanyId, _arrStatus, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -650,7 +650,7 @@ Public Class AcctTransmission
 
         Try
             Dim _acctTransDAL As New AcctTransmissionDAL
-            Return New AcctTransmissionSearchDV(_acctTransDAL.LoadList(ParentFileName, ParentBatchNumber, TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.FTP_FAILURE), LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED), ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
+            Return New AcctTransmissionSearchDV(_acctTransDAL.LoadList(ParentFileName, ParentBatchNumber, TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.FTP_FAILURE), LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED), ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
@@ -661,7 +661,7 @@ Public Class AcctTransmission
 
         Try
             Dim _acctTransDAL As New AcctTransmissionDAL
-            Return New AcctTransmissionSearchDV(_acctTransDAL.LoadList(CompanyId, StartDate, EndDate, String.Empty, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED), ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
+            Return New AcctTransmissionSearchDV(_acctTransDAL.LoadList(CompanyId, StartDate, EndDate, String.Empty, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED), ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
@@ -673,7 +673,7 @@ Public Class AcctTransmission
 
         Try
             Dim _acctTransDAL As New AcctTransmissionDAL
-            Return New AcctTransmissionSearchDV(_acctTransDAL.LoadList(CompanyId, Date.MinValue, Date.MinValue, BatchNumber, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED), ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
+            Return New AcctTransmissionSearchDV(_acctTransDAL.LoadList(CompanyId, Date.MinValue, Date.MinValue, BatchNumber, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED), ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try

@@ -59,7 +59,7 @@ Public Class RelatedEquipment
         Try
             Dim dal As New RelatedEquipmentDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -232,7 +232,7 @@ Public Class RelatedEquipment
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
     Public Function GetRelatedEquipmentList(equipmentId As Guid) As DataView
@@ -249,7 +249,7 @@ Public Class RelatedEquipment
         Try
             Dim dv As DataView = LookupListNew.GetEquipmentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             Dim STR As String = dv.RowFilter.ToString
-            STR &= " AND " & EquipmentDAL.COL_NAME_CODE & " <> '" & LookupListNew.GetCodeFromId(dv, equipment_Type) & "'"
+            STR &= " AND " & DALBase.COL_NAME_CODE & " <> '" & LookupListNew.GetCodeFromId(dv, equipment_Type) & "'"
             dv.RowFilter = STR
             Return dv
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

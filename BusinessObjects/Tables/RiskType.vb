@@ -88,12 +88,12 @@ Public Class RiskType
         Try
             Dim dal As New RiskTypeDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.RISK_TYPE_TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
             Row = Nothing
-            If Not Dataset Is Nothing Then
+            If Dataset IsNot Nothing Then
                 If Dataset.Tables.IndexOf(dal.RISK_TYPE_TABLE_NAME) >= 0 Then
                     Row = FindRow(id, dal.RISK_TYPE_ID_COL, Dataset.Tables(dal.RISK_TYPE_TABLE_NAME))
                 End If

@@ -65,7 +65,7 @@ Public Class PriceListDetail
         Try
             Dim dal As New PriceListDetailDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -883,7 +883,7 @@ Public Class PriceListDetail
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Price List Code.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
     'US 224089 - Getting prices for parts
@@ -969,7 +969,7 @@ Public Class PriceListDetail
             ''''to check if the new record is the very first record
             'If dsTemp.Tables(0).Rows(0)(1).ToString() <> "" Then
             '''''check if dv count is > 1 as the first record should be saved without check
-            If Not dv Is Nothing And dv.Count > 1 Then
+            If dv IsNot Nothing And dv.Count > 1 Then
 
                 maxExpDate = CType(dv.ToTable().Compute("Max(Expiration)", String.Empty), DateTime) 'dsTemp.Tables(0).Rows(0)(1)
                 minEffDate = CType(dv.ToTable().Compute("Min(Effective)", String.Empty), DateTime) 'dsTemp.Tables(0).Rows(0)(0)
@@ -1058,10 +1058,10 @@ Public Class PriceListDetail
                     Dim ExpPlist As New PriceListDetail(pId, Dataset)
                     ExpPlist.BeginEdit()
 
-                    If ExpPlist.Effective > PriceListDetail.GetCurrentDateTime() Then
+                    If ExpPlist.Effective > GetCurrentDateTime() Then
                         ExpPlist.Expiration = ExpPlist.Effective.Value.AddSeconds(1)
                     Else
-                        ExpPlist.Expiration = PriceListDetail.GetCurrentDateTime().AddSeconds(-1)
+                        ExpPlist.Expiration = GetCurrentDateTime().AddSeconds(-1)
                     End If
                     ExpPlist.EndEdit()
                     ExpPlist.Save()
@@ -1472,10 +1472,10 @@ Public Class PriceListDetail
         Try
             Dim dal As New PriceListDetailDAL
             Dim ds As New DataSet
-            Dim equipConditionId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
+            Dim equipConditionId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
             ds = dal.GetPriceForMethodofRepair(MethodofRepairId, companyId, ServiceCenterCode, EffectiveDate, SalesPrice, RiskTypeId,
                                                equipClassId, equipmentId, conditionId, dealerId, serviceLevelCode)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return New PriceListDetail.PriceListResultsDV(ds.Tables(0))
                 'Else
                 '   Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, Messages.PRICE_LIST_NOT_FOUND)
@@ -1523,11 +1523,11 @@ Public Class PriceListDetail
             Dim ds As New DataSet
             Dim dv As New PriceListDetail.PriceListResultsDV
             ds = dal.GetRepairPrices(companyId, ServiceCenterCode, EffectiveDate, SalesPrice, RiskTypeId, equipClassId, equipmentId, conditionId, dealerId, serviceLevelCode)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 dv = New PriceListDetail.PriceListResultsDV(ds.Tables(0))
-                Dim condition As String = PriceListDetail.PriceListResultsDV.COL_NAME_SERVICE_CLASS_CODE & "='" _
+                Dim condition As String = PriceListResultsDV.COL_NAME_SERVICE_CLASS_CODE & "='" _
                                           & LookupListNew.GetCodeFromId(Codes.SERVICE_CLASS, serviceClassId) & "' AND " &
-                                          PriceListDetail.PriceListResultsDV.COL_NAME_SERVICE_TYPE_CODE & "='" _
+                                          PriceListResultsDV.COL_NAME_SERVICE_TYPE_CODE & "='" _
                                           & LookupListNew.GetCodeFromId(Codes.SERVICE_CLASS_TYPE, serviceTypeId) & "'"
                 dv.RowFilter = condition
                 Return dv

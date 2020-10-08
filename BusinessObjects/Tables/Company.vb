@@ -76,14 +76,14 @@ Public Class Company
 
 #Region "Private Members"
     Private Sub Initialize()
-        CompanyTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMPANY_TYPE, COMPANY_TYPE_SERVICES)
-        UPR_USES_WP_Id = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "Y")
-        SalutationId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")
+        CompanyTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMPANY_TYPE, COMPANY_TYPE_SERVICES)
+        UPR_USES_WP_Id = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "Y")
+        SalutationId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "N")
         ClaimNumberOffset = New LongType(0)
-        RequireItemDescriptionId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "Y")
-        ReqCustomerLegalInfoId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLITYP, "0")
-        UniqueCertificateNumbersId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")
-        UsePreInvoiceProcessId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")
+        RequireItemDescriptionId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "Y")
+        ReqCustomerLegalInfoId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0")
+        UniqueCertificateNumbersId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "N")
+        UsePreInvoiceProcessId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "N")
     End Sub
 
 #End Region
@@ -459,7 +459,7 @@ Public Class Company
         End Set
     End Property
 
-    <PostalCodeChecker(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_POSTALCODEFORMAT_ERR)> _
+    <PostalCodeChecker(Common.ErrorCodes.INVALID_POSTALCODEFORMAT_ERR)> _
     Public Property PostalCode As String
         Get
             CheckDeleted()
@@ -1136,7 +1136,7 @@ Public Class Company
     Public Sub AttachAccCloseInfo(ClosingDate As DateType)
 
         Dim newBO As AccountingCloseInfo = New AccountingCloseInfo(Dataset)
-        If Not newBO Is Nothing Then
+        If newBO IsNot Nothing Then
             newBO.CompanyId = Id
             newBO.ClosingDate = ClosingDate
             newBO.Save()
@@ -1146,7 +1146,7 @@ Public Class Company
 
     Public Sub DetachAccCloseInfo(AccCloseInfo As AccountingCloseInfo)
 
-        If Not AccCloseInfo Is Nothing Then
+        If AccCloseInfo IsNot Nothing Then
             AccCloseInfo.Delete()
             AccCloseInfo.Save()
         End If
@@ -1174,7 +1174,7 @@ Public Class Company
             Dim index As Integer
             ' Create Array
             For index = 0 To dtCompanyIDs.Rows.Count - 1
-                If Not dtCompanyIDs.Rows(index)(dal.COL_NAME_COMPANY_ID) Is System.DBNull.Value Then
+                If dtCompanyIDs.Rows(index)(dal.COL_NAME_COMPANY_ID) IsNot DBNull.Value Then
                     CompanyIDs.Add(New Guid(CType(dtCompanyIDs.Rows(index)(dal.COL_NAME_COMPANY_ID), Byte())))
                 End If
             Next
@@ -1213,7 +1213,7 @@ Public Class Company
         For Each cmpCountryIdStr In selectedCountyGuidStrCollection
             'update to new CompanyCountry GUID
             Dim newBO As CompanyCountry = New CompanyCountry(Dataset)
-            If Not newBO Is Nothing Then
+            If newBO IsNot Nothing Then
                 newBO.CompanyId = Id
                 newBO.CountryId = New Guid(cmpCountryIdStr)
                 newBO.Save()
@@ -1227,7 +1227,7 @@ Public Class Company
         For Each cmpCountryIdStr In selectedCountyGuidStrCollection
             'update to new CompanyCountry GUID
             Dim newBO As CompanyCountry = New CompanyCountry(Dataset, Id, New Guid(cmpCountryIdStr))
-            If Not newBO Is Nothing Then
+            If newBO IsNot Nothing Then
                 newBO.Delete()
                 newBO.Save()
             End If
@@ -1418,7 +1418,7 @@ Public NotInheritable Class CheckDoublicatePREFIX
 
     Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As Company = CType(objectToValidate, Company)
-        Dim yesGuid As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "Y")
+        Dim yesGuid As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "Y")
 
         If Not obj.UniqueCertificateNumbersId.Equals(Guid.Empty) AndAlso obj.UniqueCertificateNumbersId.Equals(yesGuid) Then
             If Dealer.GetDuplicatePrefixCount(obj.Id) > 0 Then
@@ -1443,7 +1443,7 @@ Public NotInheritable Class CheckIfCompanyCodeAlreadyExists
 
     Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As Company = CType(objectToValidate, Company)
-        Dim yesGuid As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "Y")
+        Dim yesGuid As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "Y")
 
         If Company.CheckIfCompanyCodeAlreadyExists(obj.Code, obj.Id) Then
             Return False

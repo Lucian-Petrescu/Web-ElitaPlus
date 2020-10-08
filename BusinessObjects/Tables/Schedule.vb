@@ -59,7 +59,7 @@ Public Class Schedule
         Try
             Dim dal As New ScheduleDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -316,7 +316,7 @@ Public Class Schedule
     Public Shared Function GetSchedulesList(scheduleCode As String, scheduleDescription As String) As ScheduleSearchDV
         Try
             Dim dal As New ScheduleDAL
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Schedule), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Schedule), Nothing, "Search", Nothing)}
 
             'Convert the scheduleCode to UPPER Case
             If (Not (scheduleCode.Equals(String.Empty))) Then
@@ -359,7 +359,7 @@ Public Class Schedule
             Dim obj As Schedule = CType(objectToValidate, Schedule)
             Dim dal As New ScheduleDAL
 
-            If (Not obj.Code Is Nothing) AndAlso (obj.Code.Trim <> String.Empty) Then
+            If (obj.Code IsNot Nothing) AndAlso (obj.Code.Trim <> String.Empty) Then
 
                 If Not dal.IsScheduleCodeUnique(obj.Code, obj.Id) Then
                     Return False

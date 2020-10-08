@@ -69,7 +69,7 @@ Public Class Item
         Try
             Dim dal As New ItemDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -275,7 +275,7 @@ Public Class Item
     Public Function ProductCodeExists() As Boolean
         Dim dal As New ItemDAL
         Dim lngItemNum As Long = 0
-        If Not ItemNumber Is Nothing Then
+        If ItemNumber IsNot Nothing Then
             lngItemNum = ItemNumber.Value
         End If
         Return (dal.ProductCodeExists(ProductCodeId, RiskTypeId, lngItemNum))
@@ -316,7 +316,7 @@ Public Class Item
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Item = CType(objectToValidate, Item)
 
-            If LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y) = obj.OptionalItem AndAlso (obj.OptionalItemCode Is Nothing OrElse obj.OptionalItemCode.Trim = String.Empty) Then
+            If LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y) = obj.OptionalItem AndAlso (obj.OptionalItemCode Is Nothing OrElse obj.OptionalItemCode.Trim = String.Empty) Then
                 Return False
             End If
             Return True
@@ -333,10 +333,10 @@ Public Class Item
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Item = CType(objectToValidate, Item)
-            If Not obj.OptionalItemCode Is Nothing AndAlso obj.OptionalItemCode.Trim <> String.Empty Then
+            If obj.OptionalItemCode IsNot Nothing AndAlso obj.OptionalItemCode.Trim <> String.Empty Then
                 Dim lngItemNum As Long = 0
                 Dim blnDup As Boolean = True
-                If Not obj.ItemNumber Is Nothing Then
+                If obj.ItemNumber IsNot Nothing Then
                     lngItemNum = obj.ItemNumber.Value
                 End If
                 Dim dal As New ItemDAL

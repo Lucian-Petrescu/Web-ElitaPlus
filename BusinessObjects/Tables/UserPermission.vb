@@ -19,7 +19,7 @@ Public Class UserPermissionList
     End Sub
 
     Public Overloads Overrides Function GetNewChild(parentId As System.Guid) As BusinessObjectBase
-        Return New UserPermission(MyBase.Parent.Dataset) With {.EntityId = parentId}
+        Return New UserPermission(Parent.Dataset) With {.EntityId = parentId}
     End Function
 End Class
 

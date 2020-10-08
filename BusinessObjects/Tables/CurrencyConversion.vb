@@ -64,7 +64,7 @@ Public Class CurrencyConversion
         Try
             Dim dal As New CurrencyConversionDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -420,7 +420,7 @@ Public Class CurrencyConversion
             Dim DV As CurrencyConversion.CurrencyRateDV = FindMaxdate(obj.DealerId, obj.Currency1Id, obj.Currency2Id)
             Dim DVRow As DataRow = DV.Table.Rows(0)
 
-            If DVRow(DV.COL_EFFECTIVE) Is DBNull.Value Or DVRow(DV.COL_EFFECTIVE) Is Nothing Then
+            If DVRow(DV.COL_EFFECTIVE) Is DBNull.Value OrElse DVRow(DV.COL_EFFECTIVE) Is Nothing Then
                 Return True
             ElseIf CType(DVRow(DV.COL_EFFECTIVE), Date) <> DateAdd("d", -1, obj.EffectiveDate.Value) Then
                 Message = Common.ErrorCodes.GUI_EFFECTIVE_DATE_MUST_BE_1_DAY_HIGHER_THAN_PREVIOUS_EFFECTIVE_DATE '" Effective date must be 1 day higher than previous effective date."

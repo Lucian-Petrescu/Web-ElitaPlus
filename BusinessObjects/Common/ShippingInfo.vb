@@ -59,7 +59,7 @@ Public Class ShippingInfo
         Try
             Dim dal As New ShippingInfoDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -319,9 +319,9 @@ Public Class ShippingInfo
             Dim rowIndex As Integer
             For rowIndex = 0 To parentClaim.Dataset.Tables(ShippingInfoDAL.TABLE_NAME).Rows.Count - 1
                 row = parentClaim.Dataset.Tables(ShippingInfoDAL.TABLE_NAME).Rows.Item(rowIndex)
-                If Not (row.RowState = DataRowState.Deleted) Or (row.RowState = DataRowState.Detached) Then
+                If Not (row.RowState = DataRowState.Deleted) OrElse (row.RowState = DataRowState.Detached) Then
                     Dim si As ShippingInfo = New ShippingInfo(row)
-                    If parentClaim.ShippingInfoId.Equals(si.Id) And si.IsNew Then
+                    If parentClaim.ShippingInfoId.Equals(si.Id) AndAlso si.IsNew Then
                         si.Delete()
                     End If
                 End If

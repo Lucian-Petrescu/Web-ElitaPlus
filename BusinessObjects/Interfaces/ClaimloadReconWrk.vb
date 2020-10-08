@@ -37,10 +37,10 @@ Public Class ClaimloadReconWrk
     Public Const COL_NAME_REPAIR_CODE As String = ClaimloadReconWrkDAL.COL_NAME_REPAIR_CODE
     Public Const COL_NAME_CALLER_NAME As String = ClaimloadReconWrkDAL.COL_NAME_CALLER_NAME
     Public Const COL_NAME_CONTACT_NAME As String = ClaimloadReconWrkDAL.COL_NAME_CONTACT_NAME
-    Public Const COL_NAME_CREATED_BY As String = ClaimloadReconWrkDAL.COL_NAME_CREATED_BY
-    Public Const COL_NAME_CREATED_DATE As String = ClaimloadReconWrkDAL.COL_NAME_CREATED_DATE
-    Public Const COL_NAME_MODIFIED_BY As String = ClaimloadReconWrkDAL.COL_NAME_MODIFIED_BY
-    Public Const COL_NAME_MODIFIED_DATE As String = ClaimloadReconWrkDAL.COL_NAME_MODIFIED_DATE
+    Public Const COL_NAME_CREATED_BY As String = DALBase.COL_NAME_CREATED_BY
+    Public Const COL_NAME_CREATED_DATE As String = DALBase.COL_NAME_CREATED_DATE
+    Public Const COL_NAME_MODIFIED_BY As String = DALBase.COL_NAME_MODIFIED_BY
+    Public Const COL_NAME_MODIFIED_DATE As String = DALBase.COL_NAME_MODIFIED_DATE
     Public Const COL_NAME_REPAIR_DATE As String = ClaimloadReconWrkDAL.COL_NAME_REPAIR_DATE
     Public Const COL_NAME_VISIT_DATE As String = ClaimloadReconWrkDAL.COL_NAME_VISIT_DATE
     Public Const COL_NAME_INVOICE_DATE As String = ClaimloadReconWrkDAL.COL_NAME_INVOICE_DATE
@@ -169,7 +169,7 @@ Public Class ClaimloadReconWrk
         Try
             Dim dal As New ClaimloadReconWrkDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If

@@ -688,7 +688,7 @@ Public Class SubmitClaim
                 'Call the Create Comment Logic
                 Dim oCommentBO As Comment = claimBO.AddNewComment()
                 oCommentBO.Comments = "This web claim was established with a Make, Model, or IMEI that does not match the enrollment record. Please validate that the claimed Make, Model, and IMEI match the enrolled information prior to authorizing this claim."
-                oCommentBO.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__MAKE_MODEL_IMEI_MISMATCH)
+                oCommentBO.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__MAKE_MODEL_IMEI_MISMATCH)
                 oCommentBO.Validate()
             End If
 

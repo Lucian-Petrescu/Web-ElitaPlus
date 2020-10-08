@@ -59,7 +59,7 @@ Public Class EarningPattern
         Try
             Dim dal As New EarningPatternDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -294,7 +294,7 @@ Public Class EarningPattern
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.EARNING_PATTERN_DATE_IS_INVALID)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.EARNING_PATTERN_DATE_IS_INVALID)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -313,7 +313,7 @@ Public Class EarningPattern
         Inherits ValidBaseAttribute
 
         Public Sub New(fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.EARNING_PATTERN_RANGE_IS_INVALID)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.EARNING_PATTERN_RANGE_IS_INVALID)
         End Sub
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
@@ -352,7 +352,7 @@ Public Class EarningPattern
                                 obj.Effective.Value = currRow("EFFECTIVE") Then
                                 ' Trying to insert a Duplicate - Reject!
                                 Return False
-                            ElseIf Not prevRow Is Nothing Then
+                            ElseIf prevRow IsNot Nothing Then
                                 ' Inserting in the middle (Allow to fix any GAPS)
                                 If obj.Effective.Value.AddDays(-1) = prevRow("EXPIRATION") And _
                                    obj.Expiration.Value.AddDays(1) = currRow("EFFECTIVE") Then

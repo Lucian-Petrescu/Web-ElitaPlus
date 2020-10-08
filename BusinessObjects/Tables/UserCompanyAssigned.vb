@@ -7,7 +7,7 @@ Public Class UserCompanyAssigned
     Public Const COL_USER_ID As String = UserDAL.COL_NAME_USER_ID
     Public Const COL_COMPANY_ID As String = UserDAL.COL_NAME_COMPANY_ID
     Public Const COL_COMPANY_CODE As String = UserDAL.COL_NAME_COMPANY_CODE
-    Public Const COL_DESCRIPTION As String = UserDAL.COL_NAME_DESCRIPTION
+    Public Const COL_DESCRIPTION As String = DALBase.COL_NAME_DESCRIPTION
     Public Const COL_AUTHORIZATION_LIMIT As String = UserCompanyAssignedDAL.COL_NAME_AUTHORIZATION_LIMIT
     Public Const COL_PAYMENT_LIMIT As String = UserCompanyAssignedDAL.COL_NAME_PAYMENT_LIMIT
     Public Const COL_LIABILITY_OVERRIDE_LIMIT As String = UserCompanyAssignedDAL.COL_NAME_LIABILITY_OVERRIDE_LIMIT
@@ -62,7 +62,7 @@ Public Class UserCompanyAssigned
             Dim dal As New UserCompanyAssignedDAL
 
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -102,7 +102,7 @@ Public Class UserCompanyAssigned
         Try
             Dim dal As New UserCompanyAssignedDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If

@@ -59,7 +59,7 @@ Public Class PartsDescription
         Try
             Dim dal As New PartsDescriptionDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -352,7 +352,7 @@ Public Class PartsDescription
             Dim obj As PartsDescription = CType(objectToValidate, PartsDescription)
             Dim dal As New PartsDescriptionDAL
 
-            If (Not obj.Code Is Nothing) AndAlso (obj.Code.Trim <> String.Empty) Then
+            If (obj.Code IsNot Nothing) AndAlso (obj.Code.Trim <> String.Empty) Then
 
                 If Not dal.IsPartCodeUnique(obj.RiskGroupId, obj.CompanyGroupId, obj.Code.Trim) Then
                     Return False
@@ -375,7 +375,7 @@ Public Class PartsDescription
             Dim obj As PartsDescription = CType(objectToValidate, PartsDescription)
             Dim dal As New PartsDescriptionDAL
 
-            If (Not obj.DescriptionEnglish Is Nothing) AndAlso (obj.DescriptionEnglish.Trim <> String.Empty) Then
+            If (obj.DescriptionEnglish IsNot Nothing) AndAlso (obj.DescriptionEnglish.Trim <> String.Empty) Then
 
                 If Not dal.IsEnglishDescriptionUnique(obj.RiskGroupId, obj.CompanyGroupId, obj.DescriptionEnglish.Trim) Then
                     Return False

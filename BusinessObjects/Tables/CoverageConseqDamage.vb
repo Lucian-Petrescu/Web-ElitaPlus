@@ -85,7 +85,7 @@ Public Class CoverageConseqDamage
         Try
             Dim dal As New CoverageConseqDamageDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -312,15 +312,15 @@ Public Class CoverageConseqDamage
         Public Function AddNewRowToEmptyDV() As ConseqDamageSearchDV
             Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ConseqDamageSearchDV.COL_COVERAGE_CONSEQ_DAMAGE_ID) = (New Guid()).ToByteArray
-            row(ConseqDamageSearchDV.COL_COVERAGE_ID) = Guid.Empty.ToByteArray
-            row(ConseqDamageSearchDV.COL_CONSEQ_DAMAGE_TYPE_XCD) = DBNull.Value
-            row(ConseqDamageSearchDV.COL_LIABILITY_LIMIT_BASE_XCD) = DBNull.Value
-            row(ConseqDamageSearchDV.COL_LIABILITY_LIMIT_PER_INCIDENT) = DBNull.Value
-            row(ConseqDamageSearchDV.COL_LIABILITY_LIMIT_CUMULATIVE) = DBNull.Value
-            row(ConseqDamageSearchDV.COL_EFFECTIVE) = DBNull.Value
-            row(ConseqDamageSearchDV.COL_EXPIRATION) = DBNull.Value
-            row(ConseqDamageSearchDV.COL_FULFILMENT_METHOD_XCD) = DBNull.Value
+            row(COL_COVERAGE_CONSEQ_DAMAGE_ID) = (New Guid()).ToByteArray
+            row(COL_COVERAGE_ID) = Guid.Empty.ToByteArray
+            row(COL_CONSEQ_DAMAGE_TYPE_XCD) = DBNull.Value
+            row(COL_LIABILITY_LIMIT_BASE_XCD) = DBNull.Value
+            row(COL_LIABILITY_LIMIT_PER_INCIDENT) = DBNull.Value
+            row(COL_LIABILITY_LIMIT_CUMULATIVE) = DBNull.Value
+            row(COL_EFFECTIVE) = DBNull.Value
+            row(COL_EXPIRATION) = DBNull.Value
+            row(COL_FULFILMENT_METHOD_XCD) = DBNull.Value
             dt.Rows.Add(row)
             Return New ConseqDamageSearchDV(dt)
         End Function

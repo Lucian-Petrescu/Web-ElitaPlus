@@ -59,7 +59,7 @@ Public Class RegionStandardization
         Try
             Dim dal As New RegionStandardizationDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -214,7 +214,7 @@ Public Class RegionStandardization
             If userCompanies.Count > 0 Then
                 ds = dal.GetRegionAliasList(descriptionMask, regionIdForSearch, Country.GetCountries(userCompanies))
             Else
-                Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COMPANYID_REQUIRED, GetType(Region), Nothing, "CompanyID", Nothing)
+                Dim err As New ValidationError(Common.ErrorCodes.INVALID_COMPANYID_REQUIRED, GetType(Region), Nothing, "CompanyID", Nothing)
                 Throw New BOValidationException(New ValidationError() {err}, "Company ID")
             End If
 

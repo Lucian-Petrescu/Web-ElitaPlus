@@ -34,7 +34,7 @@ Public Class KeyValueDictionary
                 keyValuePairStringArray = keyValuePairString.Split(New Char() {Me.KeyValueSeperator})
                 key = keyValuePairStringArray(0).TrimStart(New Char() {Me.Delimiter}).TrimEnd(New Char() {Me.Delimiter})
                 value = keyValuePairStringArray(1).TrimStart(New Char() {Me.Delimiter}).TrimEnd(New Char() {Me.Delimiter})
-                MyBase.Add(key, value)
+                Add(key, value)
             Next
         End If
     End Sub

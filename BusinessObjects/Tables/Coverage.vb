@@ -60,7 +60,7 @@ Public Class Coverage
         Try
             Dim dal As New CoverageDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -84,7 +84,7 @@ Public Class Coverage
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        DeductibleBasedOnId = LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, "FIXED")
+        DeductibleBasedOnId = LookupListNew.GetIdFromCode(LookupListCache.LK_DEDUCTIBLE_BASED_ON, "FIXED")
         Me.DeductiblePercent = 0
         Me.Deductible = 0
         Inuseflag = "N"
@@ -868,7 +868,7 @@ Public Class Coverage
             Dim dal As New CoverageDAL
             Dim ds As New DataSet
 
-            If Not (ItemId.Equals(Guid.Empty) Or CoverageTypeId.Equals(Guid.Empty) Or CertificateDuration Is Nothing Or CoverageDuration Is Nothing) Then
+            If Not (ItemId.Equals(Guid.Empty) OrElse CoverageTypeId.Equals(Guid.Empty) OrElse CertificateDuration Is Nothing OrElse CoverageDuration Is Nothing) Then
                 ds = dal.MaxExpiration(ItemId, CoverageTypeId, CertificateDuration, CoverageDuration)
                 If ds.Tables(0).Rows.Count = 1 Then
                     retVal = ds.Tables(0).Rows(0).Item(EXPIRATION_COUNT)
@@ -889,7 +889,7 @@ Public Class Coverage
             Dim dal As New CoverageDAL
             Dim ds As New DataSet
 
-            If Not (ItemId.Equals(Guid.Empty) Or CoverageTypeId.Equals(Guid.Empty) Or CertificateDuration Is Nothing Or CoverageDuration Is Nothing) Then
+            If Not (ItemId.Equals(Guid.Empty) OrElse CoverageTypeId.Equals(Guid.Empty) OrElse CertificateDuration Is Nothing OrElse CoverageDuration Is Nothing) Then
                 ds = dal.MaxExpiration(ItemId, CoverageTypeId, CertificateDuration, CoverageDuration)
                 If ds.Tables(0).Rows.Count = 1 Then
                     retVal = ds.Tables(0).Rows(0).Item(MAX_EXPIRATION)
@@ -910,7 +910,7 @@ Public Class Coverage
         Dim dal As New CoverageDAL
         Dim maxExpiration As Date
 
-        If Not (obj.DealerId.Equals(Guid.Empty) Or obj.ProductCodeId.Equals(Guid.Empty) Or obj.RiskTypeId.Equals(Guid.Empty) Or obj.ItemId.Equals(Guid.Empty) Or obj.CoverageTypeId.Equals(Guid.Empty) Or obj.CertificateDuration Is Nothing Or obj.CoverageDuration Is Nothing) Then
+        If Not (obj.DealerId.Equals(Guid.Empty) OrElse obj.ProductCodeId.Equals(Guid.Empty) OrElse obj.RiskTypeId.Equals(Guid.Empty) OrElse obj.ItemId.Equals(Guid.Empty) OrElse obj.CoverageTypeId.Equals(Guid.Empty) OrElse obj.CertificateDuration Is Nothing OrElse obj.CoverageDuration Is Nothing) Then
             ds = dal.GetCoverageList(obj.DealerId, obj.ProductCodeId, obj.RiskTypeId, obj.ItemId, obj.CoverageTypeId, obj.CertificateDuration, obj.CoverageDuration, obj.Effective, obj.Expiration, Guid.Empty)
             Dim recCount As Integer = 0
             If ds.Tables.Count > 0 Then
@@ -934,7 +934,7 @@ Public Class Coverage
         Dim dal As New CoverageDAL
         Dim minEffective As Date
 
-        If Not (obj.DealerId.Equals(Guid.Empty) Or obj.ProductCodeId.Equals(Guid.Empty) Or obj.RiskTypeId.Equals(Guid.Empty) Or obj.ItemId.Equals(Guid.Empty) Or obj.CoverageTypeId.Equals(Guid.Empty) Or obj.CertificateDuration Is Nothing Or obj.CoverageDuration Is Nothing) Then
+        If Not (obj.DealerId.Equals(Guid.Empty) OrElse obj.ProductCodeId.Equals(Guid.Empty) OrElse obj.RiskTypeId.Equals(Guid.Empty) OrElse obj.ItemId.Equals(Guid.Empty) OrElse obj.CoverageTypeId.Equals(Guid.Empty) OrElse obj.CertificateDuration Is Nothing OrElse obj.CoverageDuration Is Nothing) Then
             ds = dal.GetCoverageList(obj.DealerId, obj.ProductCodeId, obj.RiskTypeId, obj.ItemId, obj.CoverageTypeId, obj.CertificateDuration, obj.CoverageDuration, obj.Effective, obj.Expiration, Guid.Empty)
             Dim recCount As Integer = 0
             If ds.Tables.Count > 0 Then
@@ -1000,7 +1000,7 @@ Public Class Coverage
         Try
             Dim dal As New CoverageDAL
             Dim dsCoverageCertificateCount As DataSet = dal.GetAssociatedCertificateCount(coverageId)
-            If Not dsCoverageCertificateCount Is Nothing AndAlso dsCoverageCertificateCount.Tables.Count > 0 AndAlso dsCoverageCertificateCount.Tables(0).Rows.Count > 0 Then
+            If dsCoverageCertificateCount IsNot Nothing AndAlso dsCoverageCertificateCount.Tables.Count > 0 AndAlso dsCoverageCertificateCount.Tables(0).Rows.Count > 0 Then
                 If dsCoverageCertificateCount.Tables(0).Rows(0)(CoverageDAL.COL_NAME_NUMBER_OF_CERTIFICATES) Is DBNull.Value Then
                     Return 0
                 Else
@@ -1030,16 +1030,16 @@ Public Class Coverage
 
             Dim oContract As Contract = New Contract
             'Def-26342: Added condition to check null value for Effective and Expiration.
-            If Not (obj.Effective Is Nothing And obj.Expiration Is Nothing) Then
+            If Not (obj.Effective Is Nothing AndAlso obj.Expiration Is Nothing) Then
                 oContract = oContract.GetContract(obj.DealerId, obj.Effective.Value, obj.Expiration.Value)
             End If
 
-            If Not oContract Is Nothing Then
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_CONTRACT_TYPES, oContract.ContractTypeId) = "3" Then
+            If oContract IsNot Nothing Then
+                If LookupListNew.GetCodeFromId(LookupListCache.LK_CONTRACT_TYPES, oContract.ContractTypeId) = "3" Then
                     Return True
                 End If
             End If
-            If (LookupListNew.GetCodeFromId(LookupListNew.LK_COVERAGE_TYPES, obj.CoverageTypeId) = MAN_COV_MAIN_PARTS) Or (LookupListNew.GetCodeFromId(LookupListNew.LK_COVERAGE_TYPES, obj.CoverageTypeId) = EXT_COV_MAIN_PARTS) Then
+            If (LookupListNew.GetCodeFromId(LookupListCache.LK_COVERAGE_TYPES, obj.CoverageTypeId) = MAN_COV_MAIN_PARTS) Or (LookupListNew.GetCodeFromId(LookupListCache.LK_COVERAGE_TYPES, obj.CoverageTypeId) = EXT_COV_MAIN_PARTS) Then
                 Return True
             End If
 
@@ -1117,7 +1117,7 @@ Public Class Coverage
                             obj.Effective.Value = currRow("COVERAGE_EFFECTIVE") Then
                                 ' Trying to insert a Duplicate - Reject!
                                 Return False
-                            ElseIf Not prevRow Is Nothing Then
+                            ElseIf prevRow IsNot Nothing Then
                                 ' Inserting in the middle (Allow to fix any GAPS)
                                 If obj.Effective.Value.AddDays(-1) = prevRow("COVERAGE_EXPIRATION") And
                                obj.Expiration.Value.AddDays(1) = currRow("COVERAGE_EFFECTIVE") Then
@@ -1149,7 +1149,7 @@ Public Class Coverage
             Dim bValid As Boolean = True
             Dim obj As Coverage = CType(objectToValidate, Coverage)
             Try
-                If Not obj.Effective Is Nothing And Not obj.Expiration Is Nothing Then
+                If obj.Effective IsNot Nothing And obj.Expiration IsNot Nothing Then
                     Dim oContract As Contract = New Contract
                     oContract = oContract.GetContract(obj.DealerId, obj.Effective.Value, obj.Expiration.Value)
                     If oContract Is Nothing Then
@@ -1201,15 +1201,15 @@ Public Class Coverage
             Dim SinglePremiumRenewable As String = "4"
 
             Try
-                If Not obj.Effective Is Nothing And Not obj.Expiration Is Nothing Then
+                If obj.Effective IsNot Nothing AndAlso obj.Expiration IsNot Nothing Then
                     Dim oContract As Contract = New Contract
                     oContract = oContract.GetContract(obj.DealerId, obj.Effective.Value, obj.Expiration.Value)
 
-                    If (Not oContract Is Nothing) Then
-                        Dim sVal As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PERIOD_RENEW, oContract.RecurringPremiumId)
+                    If (oContract IsNot Nothing) Then
+                        Dim sVal As String = LookupListNew.GetCodeFromId(LookupListCache.LK_PERIOD_RENEW, oContract.RecurringPremiumId)
 
-                        If (Not obj.CertificateDuration Is Nothing) And (obj.CertificateDuration <> 0) Then
-                            If (Not sVal Is Nothing) And (CType(sVal, Long) <> 0) Then
+                        If (obj.CertificateDuration IsNot Nothing) AndAlso (obj.CertificateDuration <> 0) Then
+                            If (sVal IsNot Nothing) AndAlso (CType(sVal, Long) <> 0) Then
                                 If Not sVal = SinglePremiumRenewable Then
                                     If CType(obj.CertificateDuration, Long) Mod CType(sVal, Long) = 0 Then
                                         Return True
@@ -1246,15 +1246,15 @@ Public Class Coverage
             Dim SinglePremiumRenewable As String = "4"
 
             Try
-                If Not obj.Effective Is Nothing And Not obj.Expiration Is Nothing Then
+                If obj.Effective IsNot Nothing AndAlso obj.Expiration IsNot Nothing Then
                     Dim oContract As Contract = New Contract
                     oContract = oContract.GetContract(obj.DealerId, obj.Effective.Value, obj.Expiration.Value)
 
-                    If (Not oContract Is Nothing) Then
-                        Dim sVal As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PERIOD_RENEW, oContract.RecurringPremiumId)
+                    If (oContract IsNot Nothing) Then
+                        Dim sVal As String = LookupListNew.GetCodeFromId(LookupListCache.LK_PERIOD_RENEW, oContract.RecurringPremiumId)
 
-                        If (Not obj.CoverageDuration Is Nothing) And (obj.CoverageDuration <> 0) Then
-                            If (Not sVal Is Nothing) And (CType(sVal, Long) <> 0) Then
+                        If (obj.CoverageDuration IsNot Nothing) AndAlso (obj.CoverageDuration <> 0) Then
+                            If (sVal IsNot Nothing) And (CType(sVal, Long) <> 0) Then
                                 If Not sVal = SinglePremiumRenewable Then
                                     If CType(obj.CoverageDuration, Long) Mod CType(sVal, Long) = 0 Then
                                         Return True
@@ -1289,15 +1289,15 @@ Public Class Coverage
             Dim obj As Coverage = CType(objectToValidate, Coverage)
 
             Try
-                If Not obj.Effective Is Nothing And Not obj.Expiration Is Nothing Then
+                If obj.Effective IsNot Nothing And obj.Expiration IsNot Nothing Then
                     Dim oContract As Contract = New Contract
                     oContract = oContract.GetContract(obj.DealerId, obj.Effective.Value, obj.Expiration.Value)
 
-                    If (Not oContract Is Nothing) Then
-                        Dim sVal As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PERIOD_RENEW, oContract.RecurringPremiumId)
+                    If (oContract IsNot Nothing) Then
+                        Dim sVal As String = LookupListNew.GetCodeFromId(LookupListCache.LK_PERIOD_RENEW, oContract.RecurringPremiumId)
 
-                        If (Not obj.OffsetToStart Is Nothing) And (obj.OffsetToStart <> 0) Then
-                            If (Not sVal Is Nothing) And (CType(sVal, Long) <> 0) Then
+                        If (obj.OffsetToStart IsNot Nothing) And (obj.OffsetToStart <> 0) Then
+                            If (sVal IsNot Nothing) And (CType(sVal, Long) <> 0) Then
                                 If CType(obj.OffsetToStart, Long) Mod CType(sVal, Long) = 0 Then
                                     Return True
                                 Else
@@ -1328,14 +1328,14 @@ Public Class Coverage
             Dim obj As Coverage = CType(objectToValidate, Coverage)
 
             Try
-                If (Not obj.OffsetToStartDays Is Nothing) And (obj.OffsetToStartDays <> 0) Then
-                    If Not obj.Effective Is Nothing And Not obj.Expiration Is Nothing Then
+                If (obj.OffsetToStartDays IsNot Nothing) And (obj.OffsetToStartDays <> 0) Then
+                    If obj.Effective IsNot Nothing And obj.Expiration IsNot Nothing Then
                         Dim oContract As Contract = New Contract
                         oContract = oContract.GetContract(obj.DealerId, obj.Effective.Value, obj.Expiration.Value)
 
-                        If (Not oContract Is Nothing) Then
-                            Dim sVal As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PERIOD_RENEW, oContract.RecurringPremiumId)
-                            If (Not sVal Is Nothing) And (CType(sVal, Long) <> 0) Then 'Offset to start days not allowed for Perodic Renewable contract
+                        If (oContract IsNot Nothing) Then
+                            Dim sVal As String = LookupListNew.GetCodeFromId(LookupListCache.LK_PERIOD_RENEW, oContract.RecurringPremiumId)
+                            If (sVal IsNot Nothing) And (CType(sVal, Long) <> 0) Then 'Offset to start days not allowed for Perodic Renewable contract
                                 Return False
                             End If
                         End If
@@ -1363,13 +1363,13 @@ Public Class Coverage
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Coverage = CType(objectToValidate, Coverage)
             'Get Dealer Company specific flag settings
-            If ((Not obj Is Nothing) And (Not obj.DealerId = Guid.Empty)) Then
+            If ((obj IsNot Nothing) And (Not obj.DealerId = Guid.Empty)) Then
                 Dim objCompany = New Company()
                 Dim ds As DataSet = objCompany.GetCompanyAgentFlagForDealer(obj.DealerId)
 
-                If (Not ds Is Nothing AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(CompanyDAL.TABLE_NAME_FLAG_REQAGENT).Rows.Count > 0) Then
+                If (ds IsNot Nothing AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(CompanyDAL.TABLE_NAME_FLAG_REQAGENT).Rows.Count > 0) Then
                     Dim RequiresAgentCodeId As Guid = New Guid(CType(ds.Tables(CompanyDAL.TABLE_NAME_FLAG_REQAGENT).Rows(0)(CompanyDAL.COL_NAME_REQUIRE_AGENT_CODE_ID), Byte())) 'ds.Tables(0).Rows(0)(0)
-                    If (RequiresAgentCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
+                    If (RequiresAgentCodeId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)) Then
                         Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                         Return mandatAttr.IsValid(valueToCheck, objectToValidate)
                     End If
@@ -1396,18 +1396,18 @@ Public Class Coverage
             REM ProdLiabilityLimitBasedOnId is set to a value other than: 
             REM “Not Applicable”,  “Claim/Liability Limit Applied To” 
 
-            If ((Not obj Is Nothing) And (Not obj.ProductCodeId = Guid.Empty)) Then
+            If ((obj IsNot Nothing) And (Not obj.ProductCodeId = Guid.Empty)) Then
                 Dim objProductCode = New ProductCode(obj.ProductCodeId)
-                If Not objProductCode Is Nothing Then
+                If objProductCode IsNot Nothing Then
 
-                    Dim sProdLimitBaseOnCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PRODUCT_LIABILITY_LIMIT_BASE, objProductCode.ProdLiabilityLimitBasedOnId)
+                    Dim sProdLimitBaseOnCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_PRODUCT_LIABILITY_LIMIT_BASE, objProductCode.ProdLiabilityLimitBasedOnId)
 
                     If Not String.IsNullOrEmpty(sProdLimitBaseOnCode) And
-                        String.Compare(sProdLimitBaseOnCode, LookupListNew.LK_COVERAGE_NOT_APPLICABLE_TYPE, True) <> 0 Then
+                        String.Compare(sProdLimitBaseOnCode, LookupListCache.LK_COVERAGE_NOT_APPLICABLE_TYPE, True) <> 0 Then
                         ' On ProductCode "Claim/Liability Limit Base On" is set to value OTHER than "Not Applicable"
 
-                        If String.Equals(objProductCode.ProductLimitApplicableToXCD, LookupListNew.LK_PROD_LIMIT_APPLICABLE_TO_ALL, StringComparison.OrdinalIgnoreCase) Or
-                            String.Equals(objProductCode.ProductLimitApplicableToXCD, LookupListNew.LK_PROD_LIMIT_APPLICABLE_TO_CLAIMONLY, StringComparison.OrdinalIgnoreCase) Then
+                        If String.Equals(objProductCode.ProductLimitApplicableToXCD, LookupListCache.LK_PROD_LIMIT_APPLICABLE_TO_ALL, StringComparison.OrdinalIgnoreCase) Or
+                            String.Equals(objProductCode.ProductLimitApplicableToXCD, LookupListCache.LK_PROD_LIMIT_APPLICABLE_TO_CLAIMONLY, StringComparison.OrdinalIgnoreCase) Then
                             ' "Claim/Liability Limit Applied" set to "ALL" or "Claim Limit Only"
 
 

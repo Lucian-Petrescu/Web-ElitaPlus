@@ -53,7 +53,7 @@ Public Class PriceGroup
         Try
             Dim dal As New PriceGroupDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -184,7 +184,7 @@ Public Class PriceGroup
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Price Group")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
         'copy the childrens        
         Dim detail As PriceGroupDetail
         For Each detail In original.PriceGroupDetailChildren

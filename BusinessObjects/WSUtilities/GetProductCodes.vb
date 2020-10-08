@@ -182,10 +182,10 @@ Public Class GetProductCodes
             Validate()
 
             Dim dvDealrs As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
-            If Not dvDealrs Is Nothing AndAlso dvDealrs.Count > 0 Then
+            If dvDealrs IsNot Nothing AndAlso dvDealrs.Count > 0 Then
                 dealerId = LookupListNew.GetIdFromCode(dvDealrs, DealerCode)
                 If dealerId.Equals(Guid.Empty) Then
-                    Throw New BOValidationException("GetProductCodes Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_CODE)
+                    Throw New BOValidationException("GetProductCodes Error: ", Common.ErrorCodes.INVALID_DEALER_CODE)
                 End If
             End If
 
@@ -193,7 +193,7 @@ Public Class GetProductCodes
                                     SortBy, AscDescOrder, ProductClassCode)
 
             If productCodesList Is Nothing OrElse productCodesList.Count <= 0 Then
-                Throw New BOValidationException("GetProductCodes Error: ", Assurant.ElitaPlus.Common.ErrorCodes.NO_PRODUCTCODES_FOUND_ERR)
+                Throw New BOValidationException("GetProductCodes Error: ", Common.ErrorCodes.NO_PRODUCTCODES_FOUND_ERR)
             End If
           
             Dim ds As New DataSet("GetProductCodes")

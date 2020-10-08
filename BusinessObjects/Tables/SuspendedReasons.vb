@@ -88,7 +88,7 @@ Public Class SuspendedReasons
         Dim newRow As DataRow = Dataset.Tables(0).NewRow
 
         For Each drv As DataRow In inDv.Tables(0).Rows
-            Dim cguid As Guid = New Guid(CType(drv.Item(SuspendedReasons.COL_NAME_ID), Byte()))
+            Dim cguid As Guid = New Guid(CType(drv.Item(COL_NAME_ID), Byte()))
 
             If cguid = Id Then
                 Dataset.Tables(0).Rows.Add(newRow)
@@ -130,7 +130,7 @@ Public Class SuspendedReasons
             Dim dal As New SuspendedReasonsDAL
 
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If

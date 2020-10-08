@@ -175,9 +175,9 @@ Public Class GetActiveClaimsForSvc
 
     Private ReadOnly Property ExtendedClaimStatusListItemID As Guid
         Get
-            If Not CurrentClaimStatusCode Is Nothing AndAlso Not CurrentClaimStatusCode.Equals(String.Empty) Then
+            If CurrentClaimStatusCode IsNot Nothing AndAlso Not CurrentClaimStatusCode.Equals(String.Empty) Then
                 If _ExtendedClaimStatusListItemID.Equals(Guid.Empty) Then
-                    _ExtendedClaimStatusListItemID = LookupListNew.GetIdFromCode(LookupListNew.LK_EXTENDED_CLAIM_STATUSES, CurrentClaimStatusCode)
+                    _ExtendedClaimStatusListItemID = LookupListNew.GetIdFromCode(LookupListCache.LK_EXTENDED_CLAIM_STATUSES, CurrentClaimStatusCode)
                     If _ExtendedClaimStatusListItemID.Equals(Guid.Empty) Then
                         Throw New BOValidationException("GetActiveClaimsForSvc Error: ", Common.ErrorCodes.INVALID_CLAIM_EXTENDED_STATUS_CODE)
                     End If

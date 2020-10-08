@@ -54,7 +54,7 @@ Public Class BestReplacementGroup
         Try
             Dim dal As New BestReplacementGroupDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -179,7 +179,7 @@ Public Class BestReplacementGroup
         If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
         'copy the childrens        
         Dim detail As BestReplacement
         For Each detail In original.BestReplacementChildren
@@ -215,7 +215,7 @@ Public Class BestReplacementGroup
 #Region "Constants"
         Public Const COL_NAME_CODE As String = BestReplacementGroupDAL.COL_NAME_CODE
         Public Const COL_NAME_DESCRIPTION As String = BestReplacementGroupDAL.COL_NAME_DESCRIPTION
-        Public Const COL_NAME_SHORT_DESC As String = BestReplacementGroupDAL.COL_NAME_CLAIM_ID
+        Public Const COL_NAME_SHORT_DESC As String = DALBase.COL_NAME_CLAIM_ID
         Public Const COL_NAME_MIGRATION_PATH_ID As String = BestReplacementGroupDAL.COL_NAME_MIGRATION_PATH_ID
         Public Const COL_NAME_COMPANY_GROUP_ID As String = BestReplacementGroupDAL.COL_NAME_COMPANY_GROUP_ID
 #End Region

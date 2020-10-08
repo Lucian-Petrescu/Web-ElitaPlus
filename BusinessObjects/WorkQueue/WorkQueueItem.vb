@@ -21,9 +21,9 @@ Public Class WorkQueueItem
     Private Shared ReadOnly Property WorkQueueClientProxy As WrkQueue.WorkQueueServiceClient
         Get
             Dim wrkQueClient As WrkQueue.WorkQueueServiceClient
-            If (oWorkQueueServiceClient Is Nothing OrElse oWorkQueueServiceClient.State <> ServiceModel.CommunicationState.Opened) Then
+            If (oWorkQueueServiceClient Is Nothing OrElse oWorkQueueServiceClient.State <> CommunicationState.Opened) Then
                 SyncLock syncRoot
-                    If (oWorkQueueServiceClient Is Nothing OrElse oWorkQueueServiceClient.State <> ServiceModel.CommunicationState.Opened) Then
+                    If (oWorkQueueServiceClient Is Nothing OrElse oWorkQueueServiceClient.State <> CommunicationState.Opened) Then
                         oWorkQueueServiceClient = ServiceHelper.CreateWorkQueueServiceClient()
                     End If
                 End SyncLock
@@ -41,7 +41,7 @@ Public Class WorkQueueItem
             SyncLock (syncRoot)
                 If (Not oDataTypes.ContainsKey(dataTypeName)) Then
                     workQueueDataItemTypes = WorkQueue.GetWorkQueueItemDataTypes()
-                    If (Not workQueueDataItemTypes Is Nothing) Then
+                    If (workQueueDataItemTypes IsNot Nothing) Then
                         For Each wqdi As WrkQueue.WorkQueueItemDataType In workQueueDataItemTypes
                             oDataTypes.Add(wqdi.Name, wqdi.Id)
                         Next
@@ -72,10 +72,10 @@ Public Class WorkQueueItem
         Dim workQueueItem As WorkQueueItem
         wkqItem = GetNextQueueItemForUser(networkId)
 
-        If (Not wkqItem Is Nothing) Then
+        If (wkqItem IsNot Nothing) Then
             workQueueItem = New WorkQueueItem(wkqItem)
             Select Case workQueueItem.WorkQueueItemType
-                Case Assurant.ElitaPlus.BusinessObjectsNew.WorkQueueItem.ItemType.Issue
+                Case ItemType.Issue
                     If Not IsWorkQueueItemAssociatedToPendingClaim(New WorkQueueItem(wkqItem)) Then
                         workQueueItem = GetNextValidWorkQueueItem(networkId)
                     Else
@@ -375,7 +375,7 @@ Namespace WrkQueue
         Default Friend Property Metadata(metadataName As String) As String
             Get
                 Dim oWqid As WorkQueueItemData
-                oWqid = (From wqid In WorkQueueItemDataList Where wqid.WorkQueueDataTypeId = Assurant.ElitaPlus.BusinessObjectsNew.WorkQueueItem.GetDataTypeId(metadataName) Select wqid).FirstOrDefault()
+                oWqid = (From wqid In WorkQueueItemDataList Where wqid.WorkQueueDataTypeId = BusinessObjectsNew.WorkQueueItem.GetDataTypeId(metadataName) Select wqid).FirstOrDefault()
                 If (oWqid Is Nothing) Then
                     Return Nothing
                 Else
@@ -388,12 +388,12 @@ Namespace WrkQueue
                 If (WorkQueueItemDataList Is Nothing) Then
                     length = 0
                 Else
-                    oWorkQueueItemData = (From wqid In WorkQueueItemDataList Where wqid.WorkQueueDataTypeId = Assurant.ElitaPlus.BusinessObjectsNew.WorkQueueItem.GetDataTypeId(metadataName) Select wqid).FirstOrDefault()
+                    oWorkQueueItemData = (From wqid In WorkQueueItemDataList Where wqid.WorkQueueDataTypeId = BusinessObjectsNew.WorkQueueItem.GetDataTypeId(metadataName) Select wqid).FirstOrDefault()
                     length = WorkQueueItemDataList.Length
                 End If
                 If (oWorkQueueItemData Is Nothing) Then
                     oWorkQueueItemData = New WorkQueueItemData()
-                    oWorkQueueItemData.WorkQueueDataTypeId = Assurant.ElitaPlus.BusinessObjectsNew.WorkQueueItem.GetDataTypeId(metadataName)
+                    oWorkQueueItemData.WorkQueueDataTypeId = BusinessObjectsNew.WorkQueueItem.GetDataTypeId(metadataName)
                     oWorkQueueItemData.CreatedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                     ReDim Preserve WorkQueueItemDataList(length)
                     WorkQueueItemDataList(WorkQueueItemDataList.Length - 1) = oWorkQueueItemData

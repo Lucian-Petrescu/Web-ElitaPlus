@@ -59,7 +59,7 @@ Public Class TransallMapping
         Try
             Dim dal As New TransallMappingDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -342,7 +342,7 @@ Public Class TransallMapping
         Dim transMapOutIdStr As Guid
         For Each transMapOutIdStr In transMapOutIdGuidStrCollection
             Dim tranMapOutBO As TransallMappingOut = New TransallMappingOut(transMapOutIdStr)
-            If Not tranMapOutBO Is Nothing Then
+            If tranMapOutBO IsNot Nothing Then
                 tranMapOutBO.Delete()
                 tranMapOutBO.Save()
             End If

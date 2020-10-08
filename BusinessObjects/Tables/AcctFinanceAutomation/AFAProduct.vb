@@ -59,7 +59,7 @@ Public Class AfAProduct
         Try
             Dim dal As New AFAProductDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -272,7 +272,7 @@ Public Class AfAProduct
             Dim obj As AfAProduct = CType(objectToValidate, AfAProduct)
             Dim dal As New AFAProductDAL
 
-            If (Not obj.Code Is Nothing) AndAlso (obj.Code.Trim <> String.Empty) Then
+            If (obj.Code IsNot Nothing) AndAlso (obj.Code.Trim <> String.Empty) Then
 
                 If Not dal.IsProdCodeUnique(obj.DealerId, obj.Code, obj.Id) Then
                     Return False

@@ -100,7 +100,7 @@ Public Class ClaimValidation
 
     Private Sub PopulateBOFromWebService(ds As ClaimValidationDs)
         Try
-            If ds.TRANSACTION_HEADER.Count = 0 Or ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
+            If ds.TRANSACTION_HEADER.Count = 0 OrElse ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
             With ds.TRANSACTION_HEADER.Item(0)
                 TransactionId = .TRANSACTION_ID
                 FunctionTypeCode = .FUNCTION_TYPE
@@ -179,10 +179,10 @@ Public Class ClaimValidation
         Dim userInfo As String
         userInfo = "User:" & ElitaPlusIdentity.Current.ActiveUser.NetworkId & "; Date:" & Date.Now.ToString("s") & TimeZoneInfo.Local.ToString.Substring(4, 6)
 
-        If errorCode Is Nothing Or errorCode = "" Then
+        If errorCode Is Nothing OrElse errorCode = "" Then
             result = "OK"
         Else
-            If Not propertyName Is Nothing AndAlso propertyName <> "" Then
+            If propertyName IsNot Nothing AndAlso propertyName <> "" Then
                 propertyName = propertyName & ": "
             End If
 
@@ -210,7 +210,7 @@ Public Class ClaimValidation
                                          </TRANSACTION_DATA_RECORD>
 
 
-        If Not errXml Is Nothing AndAlso errXml.HasElements Then
+        If errXml IsNot Nothing AndAlso errXml.HasElements Then
             tranDataRecXml.Add(errXml)
         End If
 
@@ -239,7 +239,7 @@ Public Class ClaimValidation
 
             ' Now only support claim update validation
             ' For claim insert, open for future implementation
-            If Not (FunctionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM) Then
+            If Not (FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM) Then
                 Dim errorInfo As String = "User:" & ElitaPlusIdentity.Current.ActiveUser.NetworkId & "; Date:" & Date.Now.ToString("s") & TimeZoneInfo.Local.ToString.Substring(4, 6)
                 outputXml = <Error>
                                 <Code><%= Common.ErrorCodes.ERR_FUNCTION_TYPE_CODE %></Code>
@@ -272,7 +272,7 @@ Public Class ClaimValidation
 
                     Dim methodOfRepairId As Guid = Guid.Empty
                     If methodOfRepairCode IsNot Nothing Then
-                        methodOfRepairId = LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, methodOfRepairCode)
+                        methodOfRepairId = LookupListNew.GetIdFromCode(LookupListCache.LK_METHODS_OF_REPAIR, methodOfRepairCode)
                         If methodOfRepairId.Equals(Guid.Empty) Then
                             ComposeResult(outputXml, parentItemNumber, parentItemNumber, claimNumber, Common.ErrorCodes.INVALID_METHOD_OF_REPAIR)
                             claimHasError = True
@@ -368,7 +368,7 @@ Public Class ClaimValidation
                     Dim drStatus As DataRow() = dsMyClaimValidation.EXTENDED_CLAIM_STATUS.Select(dsMyClaimValidation.EXTENDED_CLAIM_STATUS.TRANSACTION_DATA_RECORD_IdColumn.ColumnName _
                                                                                                & "=" & drRec(dsMyClaimValidation.TRANSACTION_DATA_RECORD.TRANSACTION_DATA_RECORD_IdColumn.ColumnName))
 
-                    If Not drStatus Is Nothing Then
+                    If drStatus IsNot Nothing Then
                         While statusCount < drStatus.Length
                             Dim statusParentItemNumber As String = CType(CheckDBNull(drStatus(statusCount)(dsMyClaimValidation.EXTENDED_CLAIM_STATUS.PARENT_ITEM_NUMBERColumn)), String)
                             Dim statusItemNumber As String = CType(CheckDBNull(drStatus(statusCount)(dsMyClaimValidation.EXTENDED_CLAIM_STATUS.ITEM_NUMBERColumn)), String)
@@ -378,7 +378,7 @@ Public Class ClaimValidation
                             Dim claimStatusByGroupId As Guid = Guid.Empty
                             statusCount = statusCount + 1
 
-                            If Not statusCode Is Nothing AndAlso statusCode = DALObjects.ClaimStatusDAL.BUDGET_APPROVED Then
+                            If statusCode IsNot Nothing AndAlso statusCode = ClaimStatusDAL.BUDGET_APPROVED Then
                                 ComposeResult(outputXml, parentItemNumber, statusItemNumber, claimNumber, Common.ErrorCodes.INVALID_CLAIM_EXTENDED_STATUS_CODE)
                                 claimHasError = True
                                 Exit While
@@ -418,7 +418,7 @@ Public Class ClaimValidation
                     Dim drPart As DataRow() = dsMyClaimValidation.PARTS_LIST.Select(dsMyClaimValidation.PARTS_LIST.TRANSACTION_DATA_RECORD_IdColumn.ColumnName _
                                                                                & "=" & drRec(dsMyClaimValidation.TRANSACTION_DATA_RECORD.TRANSACTION_DATA_RECORD_IdColumn.ColumnName))
 
-                    If Not drPart Is Nothing Then
+                    If drPart IsNot Nothing Then
                         While partCount < drPart.Length
                             Dim partParentItemNumber As String = CType(CheckDBNull(drPart(partCount)(dsMyClaimValidation.PARTS_LIST.PARENT_ITEM_NUMBERColumn)), String)
                             Dim partItemNumber As String = CType(CheckDBNull(drPart(partCount)(dsMyClaimValidation.PARTS_LIST.ITEM_NUMBERColumn)), String)
@@ -470,7 +470,7 @@ Public Class ClaimValidation
                     Dim drFollowUp As DataRow() = dsMyClaimValidation.FOLLOWUP.Select(dsMyClaimValidation.FOLLOWUP.TRANSACTION_DATA_RECORD_IdColumn.ColumnName _
                                                                                & "=" & drRec(dsMyClaimValidation.TRANSACTION_DATA_RECORD.TRANSACTION_DATA_RECORD_IdColumn.ColumnName))
 
-                    If Not drFollowUp Is Nothing Then
+                    If drFollowUp IsNot Nothing Then
                         While followupCount < drFollowUp.Length
                             Dim followUpParentItemNumber As String = CType(CheckDBNull(drFollowUp(followupCount)(dsMyClaimValidation.FOLLOWUP.PARENT_ITEM_NUMBERColumn)), String)
                             Dim followUpItemNumber As String = CType(CheckDBNull(drFollowUp(followupCount)(dsMyClaimValidation.FOLLOWUP.ITEM_NUMBERColumn)), String)

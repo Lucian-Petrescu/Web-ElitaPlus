@@ -62,7 +62,7 @@ Public Class OlitaInsertCert
         Dim salutationDesc As String
         Dim list As DataView = LookupListNew.GetSalutationLookupList (ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
-        salutationDesc = LookupListNew.GetDescriptionFromCode(LookupListNew.LK_SALUTATION, originalSalutationCode)
+        salutationDesc = LookupListNew.GetDescriptionFromCode(LookupListCache.LK_SALUTATION, originalSalutationCode)
 
         Return salutationDesc
     End Function

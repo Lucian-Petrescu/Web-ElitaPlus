@@ -59,7 +59,7 @@ Public Class CoverageByCompanyGroup
         Try
             Dim dal As New CoverageByCompanyGroupDAL
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
@@ -206,7 +206,7 @@ Public Class CoverageByCompanyGroup
 
             ' Create Array
             For index = 0 To oUsedCompGrpDv.Table.Rows.Count - 1
-                If Not oUsedCompGrpDv.Table.Rows(index)(CoverageByCompanyGroupDAL.COL_NAME_COMPANY_GROUP_ID) Is System.DBNull.Value Then
+                If oUsedCompGrpDv.Table.Rows(index)(CoverageByCompanyGroupDAL.COL_NAME_COMPANY_GROUP_ID) IsNot DBNull.Value Then
                     oUsedCompGrpArr.Add(New Guid(CType(oUsedCompGrpDv.Table.Rows(index)(CoverageByCompanyGroupDAL.COL_NAME_COMPANY_GROUP_ID), Byte())))
                 End If
             Next
