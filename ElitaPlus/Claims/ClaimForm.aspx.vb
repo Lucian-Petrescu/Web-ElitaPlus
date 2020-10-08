@@ -2062,36 +2062,20 @@ Partial Class ClaimForm
     End Sub
 
     Sub PopulateControlsForDeniedClaim()
-        If Not Me.State.MyBO.DeniedReasons Is Nothing Then
-            'Me.PopulateControlFromBOProperty(Me.TextboxDeniedReasons, Me.State.MyBO.DeniedReasons)
+        If Me.State.MyBO.DeniedReasons IsNot Nothing Then
+
             Dim deniedReasonsString As String = Me.State.MyBO.DeniedReasons
             Dim dv As DataView = LookupListNew.GetDeniedReasonLookupList(Authentication.LangId)
             Dim translationSplitString As String = Nothing
-            If (deniedReasonsString.IndexOf(";") > 0) Then
-                For Each extendedcode As String In deniedReasonsString.Split(";")
-                    Try
-                        translationSplitString = translationSplitString + dv.ToTable().Select("extended_code ='" & extendedcode & "'").First()("description") + Environment.NewLine
-                    Catch ex As Exception
+            PopulateDeniedReasons(deniedReasonsString, translationSplitString, dv)
 
-                    End Try
-
-                Next
-                Me.PopulateControlFromBOProperty(Me.TextboxDeniedReasons, translationSplitString)
-            Else
-                Try
-                    Me.PopulateControlFromBOProperty(Me.TextboxDeniedReasons, dv.ToTable().Select("extended_code ='" & Me.State.MyBO.DeniedReasons & "'").First()("description"))
-                Catch ex As Exception
-                    Me.PopulateControlFromBOProperty(Me.TextboxDeniedReasons, "")
-                End Try
-            End If
-            'Me.TextboxDeniedReasons.Text = Me.TextboxDeniedReasons.Text.Replace(";",Environment.NewLine)
             ControlMgr.SetVisibleControl(Me, Me.LabelDeniedReason, False)
             ControlMgr.SetVisibleControl(Me, Me.cboDeniedReason, False)
         Else
             ControlMgr.SetVisibleControl(Me, Me.LabelDeniedReasons, False)
             ControlMgr.SetVisibleControl(Me, Me.TextboxDeniedReasons, False)
         End If
-        If Not Me.State.MyBO.ClaimedEquipment Is Nothing Then
+        If Me.State.MyBO.ClaimedEquipment IsNot Nothing Then
             With Me.State.MyBO.ClaimedEquipment
                 Me.PopulateControlFromBOProperty(Me.TextboxCurrentDeviceSKU, .SKU)
                 Me.PopulateControlFromBOProperty(Me.TextboxManufacturer, .Manufacturer)
@@ -2102,64 +2086,92 @@ Partial Class ClaimForm
         End If
     End Sub
 
-    Sub PopulateControlsForSingleAuth()
-        If (Not Me.State.IsMultiAuthClaim) Then
-            Dim claimBo As Claim = CType(Me.State.MyBO, Claim)
+    Private Sub PopulateDeniedReasons(deniedReasonsString As String, translationSplitString As String, dv As DataView)
 
-            If Not claimBo.WhoPaysId.Equals(Guid.Empty) Then
-                SetSelectedItem(Me.cboWhoPays, claimBo.WhoPaysId)
-            End If
-            If Me.State.MyBO.DealerTypeCode = Codes.DEALER_TYPES__VSC Then
-                Me.PopulateControlFromBOProperty(Me.TextboxCurrentOdometer, claimBo.CurrentOdometer)
-            End If
+        Dim deniedReasons = GetDeniedReason(deniedReasonsString, dv)
+        Me.PopulateControlFromBOProperty(Me.TextboxDeniedReasons, deniedReasons)
+    End Sub
 
-            Me.PopulateControlFromBOProperty(Me.TextboxServiceCenter, claimBo.ServiceCenter)
-            Me.PopulateControlFromBOProperty(Me.TextboxLoanerCenter, claimBo.LoanerCenter)
-            Me.PopulateControlFromBOProperty(Me.TextboxRepairDate, claimBo.RepairDate)
-            'Me.PopulateControlFromBOProperty(Me.TextboxDEVICE_ACTIVATION_DATE, claimBo.DeviceActivationDate)
-            'Me.PopulateControlFromBOProperty(Me.TextboxEMPLOYEE_NUMBER, claimBo.EmployeeNumber)
-            Me.PopulateControlFromBOProperty(Me.TextboxInvoiceProcessDate, claimBo.InvoiceProcessDate)
-            Me.PopulateControlFromBOProperty(Me.TextboxInvoiceDate, claimBo.InvoiceDate)
-            Me.PopulateControlFromBOProperty(Me.TextboxLoanerReturnedDate, claimBo.LoanerReturnedDate)
-            Me.PopulateControlFromBOProperty(Me.TextboxAuthorizationNumber, claimBo.AuthorizationNumber)
-            Me.PopulateControlFromBOProperty(Me.TextboxSource, claimBo.Source)
-            Me.PopulateControlFromBOProperty(Me.TextboxTechnicalReport, claimBo.TechnicalReport)
-            Me.PopulateControlFromBOProperty(Me.TextboxDefectReason, LookupListNew.GetDescriptionFromCode("CAUSES_OF_LOSS", claimBo.DefectReason))
-            Me.PopulateControlFromBOProperty(Me.TextboxExpectedRepairDate, claimBo.ExpectedRepairDate)
-            Me.PopulateControlFromBOProperty(Me.TextboxBatchNumber, claimBo.BatchNumber)
-            Me.PopulateControlFromBOProperty(Me.TextboxSpecialService, claimBo.SpecialService)
-            Me.PopulateControlFromBOProperty(Me.TextboxStoreNumber, claimBo.StoreNumber)
-            Me.PopulateControlFromBOProperty(Me.TextboxSpecialInstruction, claimBo.SpecialInstruction)
-            If claimBo.CanDisplayVisitAndPickUpDates Then
-                Me.PopulateControlFromBOProperty(Me.TextboxVisitDate, claimBo.VisitDate)
-                Me.PopulateControlFromBOProperty(Me.TextboxPickupDate, claimBo.PickUpDate)
-            End If
+    Private Function GetDeniedReason(deniedReasonsString As String, dv As DataView) As String
+        Dim strDeniedReason As String = String.Empty
 
-            If Me.State.MyBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT Then
-                Me.LabelRepairDate.Text = TranslationBase.TranslateLabelOrMessage("REPLACEMENT_DATE") + ":"
-                Me.LabelExpectedRepairDate.Text = TranslationBase.TranslateLabelOrMessage("EXPECTED_REPLACEMENT_DATE") + ":"
-            End If
-            Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, claimBo.AuthorizedAmount)
-
-            If Not String.IsNullOrEmpty(claimBo.LoanerRquestedXcd) Then
-                TextboxLoanerRequested.Text = LookupListNew.GetDescriptionFromExtCode(LookupListNew.LK_YESNO_EXT, ElitaPlusIdentity.Current.ActiveUser.LanguageId, claimBo.LoanerRquestedXcd)
-            End If
-
-            'Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, State.AuthorizedAmount)
-            Dim objCountry As New Country(Me.State.MyBO.Company.CountryId)
-            If Not claimBo.ServiceCenterObject Is Nothing AndAlso claimBo.ServiceCenterObject.Id.Equals(objCountry.DefaultSCId) Then
-                Me.State.IsTEMP_SVC = True
-            Else
-                Me.State.IsTEMP_SVC = False
-            End If
+        If (deniedReasonsString.IndexOf(";") > 0) Then
+            For Each extendedcode As String In deniedReasonsString.Split(";")
+                Try
+                    strDeniedReason = strDeniedReason + dv.ToTable().Select("extended_code ='" & extendedcode & "'").First()("description") + Environment.NewLine
+                Catch ex As Exception
+                End Try
+            Next
         Else
-            Dim claim As MultiAuthClaim = CType(Me.State.MyBO, MultiAuthClaim)
-            Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, claim.AuthorizedAmount)
-            'Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, State.AuthorizedAmount)
-            Me.State.claimAuthList = CType(Me.State.MyBO, MultiAuthClaim).ClaimAuthorizationChildren.OrderBy(Function(i) i.AuthorizationNumber).ToList
-            ucClaimConsequentialDamage.PopulateConsequentialDamage(Me.State.MyBO)
+            strDeniedReason = dv.ToTable().Select("extended_code ='" & Me.State.MyBO.DeniedReasons & "'").First()("description")
+        End If
+        Return strDeniedReason
+    End Function
+
+    Sub PopulateControls()
+        If (Not Me.State.IsMultiAuthClaim) Then
+            PopulateControlsForSingleAuthClaim()
+        Else
+            PopulateControlsForMultiAuthClaim()
+        End If
+    End Sub
+
+    Private Sub PopulateControlsForMultiAuthClaim()
+
+        Dim claim As MultiAuthClaim = CType(Me.State.MyBO, MultiAuthClaim)
+        Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, claim.AuthorizedAmount)
+        'Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, State.AuthorizedAmount)
+        Me.State.claimAuthList = CType(Me.State.MyBO, MultiAuthClaim).ClaimAuthorizationChildren.OrderBy(Function(i) i.AuthorizationNumber).ToList
+        ucClaimConsequentialDamage.PopulateConsequentialDamage(Me.State.MyBO)
+    End Sub
+
+    Private Sub PopulateControlsForSingleAuthClaim()
+
+        Dim claimBo As Claim = CType(Me.State.MyBO, Claim)
+
+        If Not claimBo.WhoPaysId.Equals(Guid.Empty) Then
+            SetSelectedItem(Me.cboWhoPays, claimBo.WhoPaysId)
+        End If
+        If Me.State.MyBO.DealerTypeCode = Codes.DEALER_TYPES__VSC Then
+            Me.PopulateControlFromBOProperty(Me.TextboxCurrentOdometer, claimBo.CurrentOdometer)
         End If
 
+        Me.PopulateControlFromBOProperty(Me.TextboxServiceCenter, claimBo.ServiceCenter)
+        Me.PopulateControlFromBOProperty(Me.TextboxLoanerCenter, claimBo.LoanerCenter)
+        Me.PopulateControlFromBOProperty(Me.TextboxRepairDate, claimBo.RepairDate)
+        Me.PopulateControlFromBOProperty(Me.TextboxInvoiceProcessDate, claimBo.InvoiceProcessDate)
+        Me.PopulateControlFromBOProperty(Me.TextboxInvoiceDate, claimBo.InvoiceDate)
+        Me.PopulateControlFromBOProperty(Me.TextboxLoanerReturnedDate, claimBo.LoanerReturnedDate)
+        Me.PopulateControlFromBOProperty(Me.TextboxAuthorizationNumber, claimBo.AuthorizationNumber)
+        Me.PopulateControlFromBOProperty(Me.TextboxSource, claimBo.Source)
+        Me.PopulateControlFromBOProperty(Me.TextboxTechnicalReport, claimBo.TechnicalReport)
+        Me.PopulateControlFromBOProperty(Me.TextboxDefectReason, LookupListNew.GetDescriptionFromCode("CAUSES_OF_LOSS", claimBo.DefectReason))
+        Me.PopulateControlFromBOProperty(Me.TextboxExpectedRepairDate, claimBo.ExpectedRepairDate)
+        Me.PopulateControlFromBOProperty(Me.TextboxBatchNumber, claimBo.BatchNumber)
+        Me.PopulateControlFromBOProperty(Me.TextboxSpecialService, claimBo.SpecialService)
+        Me.PopulateControlFromBOProperty(Me.TextboxStoreNumber, claimBo.StoreNumber)
+        Me.PopulateControlFromBOProperty(Me.TextboxSpecialInstruction, claimBo.SpecialInstruction)
+        If claimBo.CanDisplayVisitAndPickUpDates Then
+            Me.PopulateControlFromBOProperty(Me.TextboxVisitDate, claimBo.VisitDate)
+            Me.PopulateControlFromBOProperty(Me.TextboxPickupDate, claimBo.PickUpDate)
+        End If
+
+        If Me.State.MyBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT Then
+            Me.LabelRepairDate.Text = TranslationBase.TranslateLabelOrMessage("REPLACEMENT_DATE") + ":"
+            Me.LabelExpectedRepairDate.Text = TranslationBase.TranslateLabelOrMessage("EXPECTED_REPLACEMENT_DATE") + ":"
+        End If
+        Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, claimBo.AuthorizedAmount)
+
+        If Not String.IsNullOrEmpty(claimBo.LoanerRquestedXcd) Then
+            TextboxLoanerRequested.Text = LookupListNew.GetDescriptionFromExtCode(LookupListNew.LK_YESNO_EXT, ElitaPlusIdentity.Current.ActiveUser.LanguageId, claimBo.LoanerRquestedXcd)
+        End If
+
+        Dim objCountry As New Country(Me.State.MyBO.Company.CountryId)
+        If claimBo.ServiceCenterObject IsNot Nothing AndAlso claimBo.ServiceCenterObject.Id.Equals(objCountry.DefaultSCId) Then
+            Me.State.IsTEMP_SVC = True
+        Else
+            Me.State.IsTEMP_SVC = False
+        End If
     End Sub
 
     Sub PopulateDeductibleCollected()
@@ -2206,7 +2218,7 @@ Partial Class ClaimForm
         'Else
         '    Me.PopulateControlFromBOProperty(Me.txtCurrentRetailPrice, GetDeviceCurrentRetailValue(Me.State.MyBO.Id))
         'End If
-        PopulateControlsForSingleAuth()
+        PopulateControls()
 
         ControlMgr.SetVisibleControl(Me, Me.LabelMethodOfRepair, Not IsDfFulfillment())
         ControlMgr.SetVisibleControl(Me, Me.TextboxMethodOfRepair, Not IsDfFulfillment())
@@ -2219,11 +2231,11 @@ Partial Class ClaimForm
     Private Sub PopulateClaimStatus()
 
         If Me.State.MyBO.ClaimStatusesCount > 0 Then
-            If Not Me.State.MyBO.LatestClaimStatus.StatusDescription Is Nothing Then
+            If Me.State.MyBO.LatestClaimStatus.StatusDescription IsNot Nothing Then
                 Me.TextboxClaimStatus.Text = Me.State.MyBO.LatestClaimStatus.StatusDescription
             End If
 
-            If Not Me.State.MyBO.LatestClaimStatus.Owner Is Nothing Then
+            If Me.State.MyBO.LatestClaimStatus.Owner IsNot Nothing Then
                 Me.TextboxClaimStatus.Text = String.Format("{0} {1}", Me.TextboxClaimStatus.Text, Me.State.MyBO.LatestClaimStatus.Owner)
             End If
 
