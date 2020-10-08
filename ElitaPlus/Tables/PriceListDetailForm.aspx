@@ -154,11 +154,11 @@
         <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
         <div id="tabs" class="style-tabs">
             <ul>
-                <li><a href="#tabsService">
+                <li><a href="#tabsService" rel="noopener noreferrer">
                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">SERVICE</asp:Label></a></li>
-                <li><a href="#tabsVendor">
+                <li><a href="#tabsVendor" rel="noopener noreferrer">
                     <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">VENDOR</asp:Label></a></li>
-                <li><a href="#tabsPendingApprovals">
+                <li><a href="#tabsPendingApprovals" rel="noopener noreferrer">
                     <asp:Label ID="lblPendingApprovals" runat="server" CssClass="tabHeaderText">PENDING_APPROVALS</asp:Label></a></li>
             </ul>
             <div class="Pages">

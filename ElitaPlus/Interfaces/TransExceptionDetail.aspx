@@ -537,11 +537,11 @@
                                                      <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
                                                             <div id="tabs" class="style-tabs">
                                                                 <ul>
-                                                                    <li><a href="#tabsStatus">
+                                                                    <li><a href="#tabsStatus" rel="noopener noreferrer">
                                                                         <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">STATUS</asp:Label></a></li>
-                                                                    <li><a href="#tabsParts">
+                                                                    <li><a href="#tabsParts" rel="noopener noreferrer">
                                                                         <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">PARTS</asp:Label></a></li>
-                                                                    <li><a href="#tabsFollowUP">
+                                                                    <li><a href="#tabsFollowUP" rel="noopener noreferrer">
                                                                         <asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">FOLLOW_UP</asp:Label></a></li>
                                                                 </ul>
 

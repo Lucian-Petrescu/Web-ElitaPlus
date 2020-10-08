@@ -1,4 +1,4 @@
-<%@ Register TagPrefix="uc1" TagName="ErrorController" Src="../Common/ErrorController.ascx" %>
+﻿<%@ Register TagPrefix="uc1" TagName="ErrorController" Src="../Common/ErrorController.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="UserControlAddress" Src="../Common/UserControlAddress.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="UserControlAvailableSelected" Src="../Common/UserControlAvailableSelected.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlClaimCloseRules" Src="~/Common/UserControlClaimCloseRules.ascx" %>
@@ -473,9 +473,9 @@
                                                                 <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
                                                                 <div id="tabs" class="style-tabs" style="border: none;">
                                                                     <ul style="text-align: center; background-color: white; border: none;">
-                                                                        <li><a href="#tabsClaimCloseRules">
+                                                                        <li><a href="#tabsClaimCloseRules" rel="noopener noreferrer">
                                                                             <asp:Label ID="Label1" runat="server" CssClass="tabHeaderText">CLAIM_CLOSE_RULES</asp:Label></a></li>
-                                                                        <li><a href="#tabsAttributes">
+                                                                        <li><a href="#tabsAttributes" rel="noopener noreferrer">
                                                                             <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">ATTRIBUTES</asp:Label></a></li>
 
                                                                     </ul>

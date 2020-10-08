@@ -273,10 +273,10 @@
                                             <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
                                             <div id="tabs" class="style-tabs-old" style="border:none;">
                                                 <ul>
-                                                    <li><a href="#tabNotes"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderTextOld">Notes</asp:Label></a></li>
-                                                    <li><a href="#tabQuestions"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderTextOld">Questions</asp:Label></a></li>
-                                                    <li><a href="#tabRules"><asp:Label ID="Label1" runat="server" CssClass="tabHeaderTextOld">Rules</asp:Label></a></li>
-                                                    <li><a href="#tabWorkQueue"><asp:Label ID="Label2" runat="server" CssClass="tabHeaderTextOld">WORK_QUEUE</asp:Label></a></li>
+                                                    <li><a href="#tabNotes" rel="noopener noreferrer"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderTextOld">Notes</asp:Label></a></li>
+                                                    <li><a href="#tabQuestions" rel="noopener noreferrer"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderTextOld">Questions</asp:Label></a></li>
+                                                    <li><a href="#tabRules" rel="noopener noreferrer"><asp:Label ID="Label1" runat="server" CssClass="tabHeaderTextOld">Rules</asp:Label></a></li>
+                                                    <li><a href="#tabWorkQueue" rel="noopener noreferrer"><asp:Label ID="Label2" runat="server" CssClass="tabHeaderTextOld">WORK_QUEUE</asp:Label></a></li>
                                                 </ul>
                                                 <div id="tabNotes" style="background:#d5d6e4">
                                                     <asp:Panel ID="PanelNotesEditDetail" runat="server" Width="100%" Height="100%">

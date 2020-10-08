@@ -181,7 +181,7 @@
         <div id="Div3" class="overlay_message_content" style="width: 1100px; left: 8%">
             <p class="modalTitle">
                 <asp:Label ID="lblCertificateImage" runat="server" Text="CERTIFICATE_IMAGE"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('modalCertificateImages');">
+                <a href="javascript:void(0)" onclick="hideModal('modalCertificateImages');" rel="noopener noreferrer">
                     <img id="img3" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a></p>
             <iframe class="pdfContainer" align="left" runat="server" id="pdfIframe"></iframe>

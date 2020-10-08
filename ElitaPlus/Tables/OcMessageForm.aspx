@@ -59,8 +59,8 @@
         <asp:HiddenField ID="hdnDisabledTab" runat="server" />
         <div id="tabs" class="style-tabs">
 	        <ul>
-		        <li><a href="#tab_MessageParameters"><asp:Label ID="lblParametersTab" runat="server" CssClass="tabHeaderText">PARAMETERS_TAB</asp:Label></a></li>
-		        <li><a href="#tab_MessageAttempts"><asp:Label ID="lblMessageAttemptsTab" runat="server" CssClass="tabHeaderText">MESSAGEATTEMPTS_TAB</asp:Label></a></li>
+		        <li><a href="#tab_MessageParameters" rel="noopener noreferrer"><asp:Label ID="lblParametersTab" runat="server" CssClass="tabHeaderText">PARAMETERS_TAB</asp:Label></a></li>
+		        <li><a href="#tab_MessageAttempts" rel="noopener noreferrer"><asp:Label ID="lblMessageAttemptsTab" runat="server" CssClass="tabHeaderText">MESSAGEATTEMPTS_TAB</asp:Label></a></li>
 	        </ul>
             <div id="tab_MessageParameters">
                 <div class="Page" runat="server" style="height: 100%; overflow: auto">

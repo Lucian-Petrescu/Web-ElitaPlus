@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ClaimForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.ClaimForm"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ClaimForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.ClaimForm"
     Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" EnableSessionState="True" %>
 
 <%@ Register TagPrefix="uc1" TagName="UserControlContactInfo" Src="../Common/UserControlContactInfo_New.ascx" %>
@@ -61,7 +61,7 @@
         <div id="light" class="overlay_message_content">
             <p class="modalTitle">
                 <asp:Label ID="lblChangeServiceCenterPrompt" runat="server" Text="CONFIRM"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalChangeServiceCenter');">
+                <a href="javascript:void(0)" onclick="hideModal('ModalChangeServiceCenter');" rel="noopener noreferrer">
                     <img id="Img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
@@ -94,7 +94,7 @@
         <div id="light" class="overlay_message_content" style="left: 5%; right: 5%; top: 5%; max-height: 80%">
             <p class="modalTitle">
                 <asp:Label ID="lblModalTitle" runat="server" Text="SEARCH_SERVICE_CENTER"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalServiceCenter');">
+                <a href="javascript:void(0)" onclick="hideModal('ModalServiceCenter');" rel="noopener noreferrer">
                     <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
@@ -111,7 +111,7 @@
                         <td align="left">
                             <asp:Label ID="Label1" runat="server" Text="CONFIRM"></asp:Label></td>
                         <td align="right">
-                            <a href="javascript:void(0)" onclick="hideModal('ModalReopenClaim');">
+                            <a href="javascript:void(0)" onclick="hideModal('ModalReopenClaim');" rel="noopener noreferrer">
                                 <img id="Img3" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                                     width="16" height="18" align="absmiddle" /></a>
             </p>
@@ -591,15 +591,15 @@
                     <asp:HiddenField ID="hdnDisabledTab" runat="server" />
                     <div id="tabs" class="style-tabs">
                         <ul>
-                            <li><a href="#tbDeviceInfo">
+                            <li><a href="#tbDeviceInfo" rel="noopener noreferrer">
                                 <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">DEVICE_INFORMATION</asp:Label></a></li>
-                            <li><a href="#tbClaimShippingInfo">
+                            <li><a href="#tbClaimShippingInfo" rel="noopener noreferrer">
                                 <asp:Label ID="Label3" runat="server" CssClass="tabHeaderText">CLAIM_SHIPPING</asp:Label></a></li>
-                            <li><a href="#tbClaimAuthorization">
+                            <li><a href="#tbClaimAuthorization" rel="noopener noreferrer">
                                 <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">CLAIM_AUTHORIZATIONS</asp:Label></a></li>
-                            <li><a href="#tbClaimConsequentialDamage">
+                            <li><a href="#tbClaimConsequentialDamage" rel="noopener noreferrer">
                                 <asp:Label ID="Label2" runat="server" CssClass="tabHeaderText">CLAIM_CONSEQUENTIAL_DAMAGE</asp:Label></a></li>
-                            <li><a href="#tbClaimFulfillmentDetails">
+                            <li><a href="#tbClaimFulfillmentDetails" rel="noopener noreferrer">
                                 <asp:Label ID="lblClaimFulfillmentDetails" runat="server" CssClass="tabHeaderText">CLAIM_FULFILLMENT</asp:Label></a></li>
                         </ul>
 

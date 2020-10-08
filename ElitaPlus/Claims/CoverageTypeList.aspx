@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CoverageTypeList.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CoverageTypeList.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.CoverageTypeList" Theme="Default"
     MasterPageFile="../Navigation/masters/ElitaBase.Master" EnableViewState="true" %>
 
@@ -56,7 +56,7 @@
         <div class="dataContainer" style="width: 100%;">
             <div id="tabs" class="style-tabs">
                 <ul>
-                    <li><a href="#tabsCoverageType">
+                    <li><a href="#tabsCoverageType" rel="noopener noreferrer">
                         <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Coverage_Type</asp:Label></a></li>
                 </ul>
                <table width="100%" class="dataGrid" border="0" cellspacing="0" cellpadding="0">

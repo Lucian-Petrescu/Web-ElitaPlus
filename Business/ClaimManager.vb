@@ -459,7 +459,7 @@ Public Class ClaimManager
 
                 oReplacementClaim.AuthorizedAmount = oAuthAmount
 
-                oReplacementClaim.ClaimNumber = pClaimNUmber + "R"
+                oReplacementClaim.ClaimNumber = pClaimNUmber & "R"
 
                 AddCommentToCertificate(pCert.CertificateId, oReplacementClaim, pComments)
                 Save(pClaim)
@@ -1736,7 +1736,7 @@ Public Class ClaimManager
             oClaimNumber = pRepairClaim.ClaimNumber
         End If
 
-        oReplacementClaim.ClaimNumber = oClaimNumber + "R"
+        oReplacementClaim.ClaimNumber = oClaimNumber & "R"
         oReplacementClaim.MethodOfRepairId = MethodofRepairCodes.Replacement.ToGuid(ListCodes.MethodOfRepair, CommonManager)
 
         oReplacementClaim.AuthorizedAmount = GetPriceListByMethodOfRepair(pCertificate.ItemCoverages.ElementAt(0),
@@ -1762,7 +1762,7 @@ Public Class ClaimManager
             oClaimNumber = pRepairClaim.ClaimNumber
         End If
 
-        oServiceWarrantyClaim.ClaimNumber = pRepairClaim.ClaimNumber + "S"
+        oServiceWarrantyClaim.ClaimNumber = pRepairClaim.ClaimNumber & "S"
         oServiceWarrantyClaim.AuthorizedAmount = 0D
         oServiceWarrantyClaim.Deductible = 0D
 
@@ -1928,10 +1928,10 @@ Public Class ClaimManager
         pClaim.MasterClaimNumber = oClaimNumber
 
         If (pClaimType = ClaimTypeCodes.OriginalReplacement) Then
-            pClaim.ClaimNumber = pClaim.ClaimNumber + "R"
+            pClaim.ClaimNumber = pClaim.ClaimNumber & "R"
 
         ElseIf (pClaimType = ClaimTypeCodes.ServiceWarranty) Then
-            pClaim.ClaimNumber = pClaim.ClaimNumber + "S"
+            pClaim.ClaimNumber = pClaim.ClaimNumber & "S"
         End If
     End Sub
 
@@ -3138,7 +3138,7 @@ pCic.Item IsNot Nothing AndAlso
                                        p.ServiceTypeCode = ServiceTypeCodes.Labor).FirstOrDefault.Price
                 End If
             Else
-                Throw New PriceListNotConfiguredException(Guid.Empty, pServiceCenterCode, "Labor Amount not configured for Service Center: " + pServiceCenterCode)
+                Throw New PriceListNotConfiguredException(Guid.Empty, pServiceCenterCode, "Labor Amount not configured for Service Center: " & pServiceCenterCode)
             End If
 
             If (oPriceListbyMakeAndModel IsNot Nothing AndAlso oPriceListbyMakeAndModel.Count > 0) Then
@@ -3152,14 +3152,14 @@ pCic.Item IsNot Nothing AndAlso
                                        p.ServiceTypeCode = ServiceTypeCodes.Parts).FirstOrDefault.Price
                 End If
             Else
-                Throw New PriceListNotConfiguredException(Guid.Empty, pServiceCenterCode, "Parts Amount not configured for Service Center: " + pServiceCenterCode)
+                Throw New PriceListNotConfiguredException(Guid.Empty, pServiceCenterCode, "Parts Amount not configured for Service Center: " & pServiceCenterCode)
             End If
 
 
             Return laborAmount + partsAmount
 
         Catch ex As InvalidOperationException
-            Throw New PriceListNotConfiguredException(Guid.Empty, pServiceCenterCode, "Exchange Rate not configured for Dealer:" + pDealerCode)
+            Throw New PriceListNotConfiguredException(Guid.Empty, pServiceCenterCode, "Exchange Rate not configured for Dealer:" & pDealerCode)
         End Try
 
     End Function

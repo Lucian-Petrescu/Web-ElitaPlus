@@ -1506,7 +1506,7 @@ Public Class CertItemCoverage
                     flag = False
                     errMsg.Add(ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND)
                 ElseIf (oContract.BackEndClaimsAllowedId.Equals(yesId)) Then
-                    flag = flag
+                    flag = True
                 Else
                     If ((Not claimsManager) AndAlso (Not officeManager) AndAlso (Not IHQSup) AndAlso Not otherAllowedRoles) Then
                         flag = False

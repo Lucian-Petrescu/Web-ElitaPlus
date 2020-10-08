@@ -129,8 +129,8 @@
             <asp:HiddenField ID="hdnDisabledTabs" runat="server" Value="" />            
             <div id="tabs" class="style-tabs" style="display: none;">
                 <ul>
-                    <li><a href="#tabsCaseList"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">CASE_LIST</asp:Label></a></li>
-                    <li><a href="#tabsActionInfo"><asp:Label ID="Label17" runat="server" CssClass="tabHeaderText">CASE_ACTION</asp:Label></a></li>
+                    <li><a href="#tabsCaseList" rel="noopener noreferrer"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">CASE_LIST</asp:Label></a></li>
+                    <li><a href="#tabsActionInfo" rel="noopener noreferrer"><asp:Label ID="Label17" runat="server" CssClass="tabHeaderText">CASE_ACTION</asp:Label></a></li>
                 </ul>
                 <div id="tabsCaseList">
                     <table class="dataGrid" border="0" width="100%">
