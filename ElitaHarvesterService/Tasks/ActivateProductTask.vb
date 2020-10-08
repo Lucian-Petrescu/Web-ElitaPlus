@@ -105,7 +105,7 @@ Public NotInheritable Class ActivateProductTask
         apRequestSubscriberInfo.Street = CustRegistration.ContactInfo.Address.Address1
         apRequestSubscriberInfo.CountryCode = CountryCode
         apRequestSubscriberInfo.EmailAddress = CustRegistration.ContactInfo.Email
-        apRequestSubscriberInfo.RequestedPassword = Codes.MCAFEE_REQ_PASSWORD
+        apRequestSubscriberInfo.RequestedPassword = Codes.MCAFEE_REQ_PASS
         Return apRequestSubscriberInfo
     End Function
 

@@ -818,7 +818,7 @@ Public Class Codes
 
     Public Const MCAFEE_PROD_CODE_PHONE As String = "1046-47942-mmsspl"
     Public Const MCAFEE_PROD_CODE_TABLET As String = "1046-47944-mmstl"
-    Public Const MCAFEE_REQ_PASSWORD As String = "mcafee123"
+    Public Const MCAFEE_REQ_PASS As String = "mcafee123"
 
     'REQ-1153
     ' Address Types 

@@ -19,7 +19,7 @@ Public Class OlitaUpdateConsumerInfo
     Public Const DATA_COL_NAME_POSTAL_CODE As String = "postal_code"
     Public Const DATA_COL_NAME_HOME_PHONE As String = "home_phone"
     Public Const DATA_COL_NAME_EMAIL As String = "email"
-    Public Const DATA_COL_NAME_USER_PASSWORD As String = "user_pw"
+    Public Const DATA_COL_NAME_USER_PASS As String = "user_pw"
 
     Public Const DATA_COL_NAME_CERT_ID As String = "cert_id"
     Public Const DATA_COL_NAME_CERT_ITEM_ID As String = "cert_item_id"
@@ -426,15 +426,15 @@ Public Class OlitaUpdateConsumerInfo
     <ValueMandatory("")> _
     Public Property UserPassword As String
         Get
-            If Row(DATA_COL_NAME_USER_PASSWORD) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_USER_PASS) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(DATA_COL_NAME_USER_PASSWORD), String)
+                Return CType(Row(DATA_COL_NAME_USER_PASS), String)
             End If
         End Get
         Set
             CheckDeleted()
-            SetValue(DATA_COL_NAME_USER_PASSWORD, Value)
+            SetValue(DATA_COL_NAME_USER_PASS, Value)
         End Set
     End Property
 
