@@ -72,10 +72,10 @@ Public MustInherit Class BusinessObjectListBase
     Public Overridable Function GetChild(childId As Guid) As BusinessObjectBase
         Dim bo As BusinessObjectBase
         Try
-            bo = CType(_boType.GetConstructor(BindingFlags.Instance Or
-                                        BindingFlags.NonPublic Or
-                                        BindingFlags.Public, Nothing,
-                                        New Type() {GetType(Guid), GetType(DataSet)}, Nothing).Invoke(New Object() {childId, _table.DataSet}), BusinessObjectBase)
+            bo = _boType.GetConstructor(BindingFlags.Instance Or _
+                                        BindingFlags.NonPublic Or _
+                                        BindingFlags.Public, Nothing, _
+                                        New Type() {GetType(Guid), GetType(DataSet)}, Nothing).Invoke(New Object() {childId, _table.DataSet})
         Catch ex As Exception
             If Not ex.InnerException Is Nothing AndAlso ex.InnerException.GetType Is GetType(DataNotFoundException) Then
                 Throw ex.InnerException
@@ -89,7 +89,7 @@ Public MustInherit Class BusinessObjectListBase
     Public Function GetChildThird(childId As Guid, ds As DataSet, SecondaryKeyName As String) As BusinessObjectBase
         Dim bo As BusinessObjectBase
         Try
-            bo = CType(_boType.GetConstructor(New Type() {GetType(Guid), GetType(DataSet), GetType(String)}).Invoke(New Object() {childId, _table.DataSet, SecondaryKeyName}), BusinessObjectBase)
+            bo = _boType.GetConstructor(New Type() {GetType(Guid), GetType(DataSet), GetType(String)}).Invoke(New Object() {childId, _table.DataSet, SecondaryKeyName})
         Catch ex As Exception
             If ex.InnerException IsNot Nothing AndAlso ex.InnerException.GetType Is GetType(DataNotFoundException) Then
                 Throw ex.InnerException
@@ -101,26 +101,26 @@ Public MustInherit Class BusinessObjectListBase
     End Function
 
     Public Overridable Function GetNewChild() As BusinessObjectBase
-        Dim bo = CType(_boType.GetConstructor(BindingFlags.Instance Or
-                                                              BindingFlags.NonPublic Or
-                                                              BindingFlags.Public, Nothing,
-                                                              New Type() {GetType(DataSet)}, Nothing).Invoke(New Object() {_table.DataSet}), BusinessObjectBase)
+        Dim bo As BusinessObjectBase = _boType.GetConstructor(BindingFlags.Instance Or _
+                                                              BindingFlags.NonPublic Or _
+                                                              BindingFlags.Public, Nothing, _
+                                                              New Type() {GetType(DataSet)}, Nothing).Invoke(New Object() {_table.DataSet})
         Return bo
     End Function
 
     Public Overridable Function GetNewChild(parentId As Guid) As BusinessObjectBase
-        Dim bo = CType(_boType.GetConstructor(BindingFlags.Instance Or
-                                                              BindingFlags.NonPublic Or
-                                                              BindingFlags.Public, Nothing,
-                                                              New Type() {GetType(DataSet), GetType(Guid)}, Nothing).Invoke(New Object() {_table.DataSet, parentId}), BusinessObjectBase)
+        Dim bo As BusinessObjectBase = _boType.GetConstructor(BindingFlags.Instance Or _
+                                                              BindingFlags.NonPublic Or _
+                                                              BindingFlags.Public, Nothing, _
+                                                              New Type() {GetType(DataSet), GetType(Guid)}, Nothing).Invoke(New Object() {_table.DataSet, parentId})
         Return bo
     End Function
 
     Public Overridable Function GetNewChild(parentId As Guid, secondaryTableName As String) As BusinessObjectBase
-        Dim bo = CType(_boType.GetConstructor(BindingFlags.Instance Or
+        Dim bo As BusinessObjectBase = _boType.GetConstructor(BindingFlags.Instance Or
                                                               BindingFlags.NonPublic Or
                                                               BindingFlags.Public, Nothing,
-                                                              New Type() {GetType(DataSet), GetType(Guid), GetType(String)}, Nothing).Invoke(New Object() {_table.DataSet, parentId, secondaryTableName}), BusinessObjectBase)
+                                                              New Type() {GetType(DataSet), GetType(Guid), GetType(String)}, Nothing).Invoke(New Object() {_table.DataSet, parentId, secondaryTableName})
         Return bo
     End Function
 
@@ -164,10 +164,10 @@ Public MustInherit Class BusinessObjectListBase
 
 #Region "Protected Methods"
     Friend Overridable Function GetChild(row As DataRow) As BusinessObjectBase
-        Dim bo = CType(_boType.GetConstructor(BindingFlags.Instance Or
-                                                              BindingFlags.NonPublic Or
-                                                              BindingFlags.Public, Nothing,
-                                                              New Type() {GetType(DataRow)}, Nothing).Invoke(New Object() {row}), BusinessObjectBase)
+        Dim bo As BusinessObjectBase = _boType.GetConstructor(BindingFlags.Instance Or _
+                                                              BindingFlags.NonPublic Or _
+                                                              BindingFlags.Public, Nothing, _
+                                                              New Type() {GetType(DataRow)}, Nothing).Invoke(New Object() {row})
         Return bo
     End Function
 #End Region

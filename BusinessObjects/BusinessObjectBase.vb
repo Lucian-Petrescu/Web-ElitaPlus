@@ -728,7 +728,7 @@ Public MustInherit Class BusinessObjectBase
     Public ReadOnly Property ModifiedDate As DateType
         Get
             If Row(DALBase.COL_NAME_MODIFIED_DATE) Is DBNull.Value Then Return Nothing
-            Return New DateType(Row(DALBase.COL_NAME_MODIFIED_DATE))
+            Return New DateType(CType(Row(DALBase.COL_NAME_MODIFIED_DATE), Date))
         End Get
     End Property
 
